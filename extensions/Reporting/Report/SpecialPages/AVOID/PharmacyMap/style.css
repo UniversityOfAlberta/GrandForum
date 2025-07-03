@@ -1,0 +1,362 @@
+/* Any custom styles should go here */
+
+span#infinity {
+    margin: 5px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+span#infinity:hover {
+    cursor: pointer;
+}
+
+div.ui-dialog-content {
+    padding: 0 !important;
+}
+
+div.ui-dialog-buttonpane {
+    margin: 0 !important;
+    padding: 0.5em 1em 0.5em !important;
+}
+
+table.wikitable {
+    border: hidden !important;
+    margin: 0;
+    padding: 0;
+}
+
+table.wikitable tr.even {
+    background: #FFFFFF;
+}
+
+table.wikitable tr.odd {
+    background: #F2F2F2;
+}
+
+table.wikitable tr.deleted {
+    background: #FEB8B8;
+}
+
+#map-container {
+    height:500px;
+    width:100%;
+    /*display: table-row;*/
+    position: relative;
+}
+
+#map {
+    float:right;
+    width:100%;
+    height:100%;
+    border-radius:15px;
+    bottom: 30px;
+}
+
+#currentView {
+    height: 100%;
+    width: 100%;
+    /*display: table;*/
+}
+
+@media print {
+   #map{
+        min-height:300px;
+   }
+   #map-container {
+        min-height:300px;
+   }
+}
+
+#footer {
+    display: none;
+}
+
+#pageTitle {
+    display: none;
+}
+
+.hide{
+  opacity:0;
+}
+
+#button3, #button2{
+  -webkit-transition: -webkit-transform 2s; /* Safari */
+    transition: transform 2s;
+}
+#button1{
+  z-index:10;
+  -webkit-transition: opacity 2s; /* Safari */
+  transition: opacity 2s;
+}
+
+.animateToRight{
+  -webkit-transform: translate(100px); /* Safari */
+    transform: translate(100px);
+}
+.animateToLeft{
+    -webkit-transform: translate(-100px); /* Safari */
+    transform: translate(-100px);
+}
+
+#treemap-container {
+    padding: 0 0 1em 0 !important;
+}
+
+#treemap {
+  display: flex;
+  width: 100%;
+  height: auto;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+input[type=button] {
+  width: 30%;
+  height: 88%;
+  margin: 5px;
+}
+
+.main-button {
+  font-family: 'Raleway', sans-serif;
+  font-size: 28px;
+  font-weight: 800;
+  font-size: 200%;
+  position: relative;
+  background: none;
+  color: rosybrown;
+  border: 0.2em solid rosybrown;
+  padding: 0.5em 1em;
+  transition: all .1s ease;
+}
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -60px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.tooltip .tooltiptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
+
+.category{
+    margin: 0;
+    width: 100%;
+    text-align:center;
+    font-weight: bold;
+    line-height: 1em;
+    padding: 0.6em;
+    white-space: nowrap;
+    box-sizing: border-box;
+}
+
+.note_small{
+    font-size: 0.6em !important;
+    width:300px;
+}
+
+#listTable {
+  table-layout: fixed;
+  width: 100% !important;
+}
+#listTable td{
+  width: auto !important;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+#listTable th{
+  width: auto !important;
+  white-space: normal;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+#map-container {
+    height: 700px;
+}
+
+#map {
+    float:right;
+    width:100%;
+    height:100%;
+    border-radius:15px;
+    bottom: 30px;
+}
+
+#db_powered{
+    width: 100%; 
+    margin-top: 1em;
+    text-align: center;
+    font-size: 1.25em;
+    user-select: none;
+}
+
+@media only screen and (max-width: 767px) {
+    #map-container {
+        height: calc(50vh);
+    }
+}
+
+#load_map {
+   text-align:center;
+   display:none;
+
+}
+
+table#listTable.dataTable tbody tr:hover {
+  background-color: #fff;
+  cursor: pointer;
+}
+
+table#listTable.dataTable tbody tr:hover > .sorting_1 {
+  background-color: #fff;
+  cursor: pointer;
+}
+
+.alert-msg {
+    position: fixed;
+    padding: 10px 50px;
+    border-radius: 4px;
+    background-color: gray;
+    color: white;
+    z-index: 1000;
+    top: 50%;
+    left: 20%;
+    display: none;
+}
+
+.bkmark_img {
+    height:32px;
+    filter: invert(66%) sepia(37%) saturate(3993%) hue-rotate(336deg) brightness(95%) contrast(93%);
+    /* filter color found here: https://codepen.io/sosuke/pen/Pjoqqp */
+}
+
+.bkmark_img:hover{
+    filter: invert(68%) sepia(39%) saturate(1460%) hue-rotate(330deg) brightness(103%) contrast(93%);
+}
+
+#questionsTable {
+    border: 1px solid black !important;
+}
+
+#questionsTable ul {
+    margin-top: 0;
+}
+
+#questionsTable ul li:first-child {
+    margin-top: 0;
+}
+
+
+input.hs-search-field__input {
+    height: 50px;
+    width: 700px;
+    margin-bottom: 10px;
+    font-size: 25px;
+    border-radius: 0.5em !important;
+    padding-left: 14px;
+    background-color: #fff;
+    border: 1px solid #000;
+    box-shadow: none;
+    -webkit-appearance: none;
+}
+
+.searches {
+    font-size:20px;
+    margin-bottom:20px;
+}
+
+/* AI Search */
+.container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    max-width: 1200px;
+    margin: auto;
+    border: 1px solid #ccc;
+    overflow: hidden;
+}
+.chat-box {
+    flex: 1;
+    overflow: auto;
+    background: #F4F4F4;
+    padding: 10px;
+}
+.message-list {
+    list-style: none;
+    padding: 0;
+}
+.message-list li {
+    margin-bottom: 10px;
+    padding: 0.5em;
+    border-radius: 5px;
+    background: #0070c7;
+    color: white;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.25);
+}
+.message-list li.ai {
+    background-color: #fff;
+    color: black;
+    margin-right: 30px;
+    margin-left: -30px;
+}
+
+.input-area {
+    display: flex;
+    padding: 10px;
+    background: #fff;
+}
+.input-field {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.icon-button, .send-button {
+    margin-left: 10px;
+    padding: 10px 20px;
+    border: none;
+    background-color: #0070c7;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.icon-button:hover, .send-button:hover {
+    background-color: #0056B3;
+}
+
+.icon-button:focus, .send-button:focus {
+    background-color: #0070c7 !important;
+}

@@ -1,0 +1,91 @@
+<% if(this.model.opportunity.get('isAllowedToEdit')){ %>
+    <td valign="top"><span id="deleteTask" class="delete-icon" style="margin: 7px 5px 0 5px;" title="Delete Task"></span></td>
+    <td valign="top"><%= HTML.TextBox(this, 'task', {placeholder: 'Enter Task...', style: "width:100%;box-sizing:border-box;margin:0;"}) %></td>
+    <% if(isLeaderAllowedToEdit){ %>
+        <td valign="top">
+            <%= HTML.Select(this, 'assignees', {
+                style: 'width:200px; display: none',
+                multiple: true,
+                options: 
+                    _.map(this.project.members.toJSON(), function(person) {
+                        return {option: person.fullName, value: person.id};
+                    }),
+            }) %>
+        </td>
+    <% } else { %>
+        <td>
+            <% 
+            var assigneesList = this.model.get('assignees'); // Assuming 'assignees' is an array of assignee objects
+            if (assigneesList && assigneesList.length > 0) {
+                assigneesList.forEach(function(assignee, index) {
+                    %>
+                    <div><a href="<%= assignee.url %>"><%= assignee.name %></a></div>
+                    <% 
+                });
+            } else {
+                %>
+                <div>No Assignees</div>
+                <%
+            }
+            %>
+        </td>
+    <% } %>
+    <td valign="top" style="white-space:nowrap;"><%= HTML.DatePicker(this, 'dueDate', {format: 'yy-mm-dd', style: 'width:5em'}) %></td>
+<% } else { %>
+    <td><%= task %></td>
+    <td>
+        <% 
+        var assigneesList = this.model.get('assignees'); // Assuming 'assignees' is an array of assignee objects
+        if (assigneesList && assigneesList.length > 0) {
+            assigneesList.forEach(function(assignee, index) {
+                %>
+                <div><a href="<%= assignee.url %>"><%= assignee.name %></a></div>
+                <% 
+            });
+        } else {
+            %>
+            <div>No Assignees</div>
+            <%
+        }
+        %>
+    </td>
+    <td align="center"><%= dueDate %></td>
+    
+<% } %>
+<% if(isLeaderAllowedToEdit){ %>
+    <td valign="top" style="white-space:nowrap;">
+        <button id="changeStatusButton" type="button">Change Status</button>
+        <div id="changeStatusDialog"></div>
+    </td>
+
+    <td valign="top" style="white-space:nowrap; width:40%">
+        <%= HTML.TextArea(this, 'details', {style: "height: 63px;width:100%;box-sizing:border-box;margin:0;"}) %>
+
+    </td>
+    
+<% } else if(isMemberAllowedToEdit) { %>
+    <td valign="top" style="white-space:nowrap;">
+        <button id="changeStatusButton" type="button">Change Status</button>
+        <div id="changeStatusDialog"></div>
+    </td>
+
+    <td valign="top" style="white-space:nowrap; width:40%">
+        <%= HTML.TextArea(this, 'details', {style: "height: 63px;width:100%;box-sizing:border-box;margin:0;"}) %>
+
+    </td>
+    
+
+<% } else { %>
+    <td valign="top" style="white-space:nowrap;">
+        <button id="changeStatusButton" type="button">Change Status</button>
+        <div id="changeStatusDialog"></div>
+    </td>
+
+    <td valign="top" style="white-space:nowrap; width:40%">
+        <%= HTML.TextArea(this, 'details', {style: "height: 63px;width:100%;box-sizing:border-box;margin:0;"}) %>
+
+    </td>
+    
+   
+<% } %>
+

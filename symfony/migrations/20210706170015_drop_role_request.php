@@ -22,7 +22,7 @@ class DropRoleRequest extends AbstractMigration
      */
     public function up()
     {
-        $this->dropTable('grand_role_request');
+        $this->table('grand_role_request')->drop()->save();
     }
 
     /**

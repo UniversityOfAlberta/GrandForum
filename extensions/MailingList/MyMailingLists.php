@@ -13,7 +13,7 @@ function runMyMailingLists($par) {
 
 class MyMailingLists extends SpecialPage{
 
-    function MyMailingLists() {
+    function __construct() {
         SpecialPage::__construct("MyMailingLists", null, true, 'runMyMailingLists');
     }
     
@@ -24,6 +24,7 @@ class MyMailingLists extends SpecialPage{
 
     function execute($par){
         global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle, $wgMessage, $config;
+        $this->getOutput()->setPageTitle("My Mailing Lists");
         $person = Person::newFromWgUser();
         if(isset($_POST['unsub'])){
             foreach($_POST['unsub'] as $unsub){
@@ -45,10 +46,11 @@ class MyMailingLists extends SpecialPage{
         }
         else{
             $lists = MailingList::getPersonLists($person);
-            foreach(MailingList::getPublicLists() as $list){
-                if(array_search($list, $lists) === false){
-                    $publicLists[] = $list;
-                }
+            
+        }
+        foreach(MailingList::getPublicLists() as $list){
+            if(array_search($list, $lists) === false){
+                $publicLists[] = $list;
             }
         }
         $wgOut->addHTML("<form method='POST'><table class='mailTable' frame='box' rules='all'><thead>
@@ -70,9 +72,12 @@ class MyMailingLists extends SpecialPage{
     }
     
     static function createTab(&$tabs){
-        global $wgUser, $wgTitle, $wgServer, $wgScriptPath;
+        global $config, $wgUser, $wgTitle, $wgServer, $wgScriptPath;
         $me = Person::newFromWgUser();
         if($wgUser->isLoggedIn() && !$me->isCandidate()){
+            if($config->getValue('networkName') == "BD" && !$me->isRoleAtLeast(STAFF)){
+                return true;
+            }
             $selected = "";
             if($wgTitle->getNSText() == "Mail" || 
                ($wgTitle->getNSText() == "Special" && $wgTitle->getText() == "MyMailingLists")){

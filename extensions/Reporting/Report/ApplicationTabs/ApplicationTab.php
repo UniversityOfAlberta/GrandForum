@@ -9,13 +9,18 @@ class ApplicationTab extends AbstractTab {
     var $extra;
     var $showAllWithPDFs;
     var $idProjectRange = array(0, 1);
+    var $gets = array();
 
-    function ApplicationTab($rp, $people=null, $year=REPORTING_YEAR, $title=null, $extraCols=array(), $showAllWithPDFs=false, $idProjectRange=null){
+    function __construct($rp, $people=null, $year=REPORTING_YEAR, $title=null, $extraCols=array(), $showAllWithPDFs=false, $idProjectRange=null, $gets=array()){
         $me = Person::newFromWgUser();
         $this->rp = $rp;
         $this->year = $year;
         $this->extraCols = $extraCols;
         $this->showAllWithPDFs = $showAllWithPDFs;
+        $this->gets = $gets;
+        foreach($this->gets as $id => $get){
+            $_GET[$id] = $get;
+        }
         if($people !== null){
             $newPeople = array();
             foreach($people as $person){
@@ -55,10 +60,10 @@ class ApplicationTab extends AbstractTab {
             }
         }
         if($title == null){
-            parent::AbstractTab($report->name);
+            parent::__construct($report->name);
         }
         else{
-            parent::AbstractTab($title);
+            parent::__construct($title);
         }
         if($idProjectRange != null){
             $this->idProjectRange = $idProjectRange;
@@ -72,9 +77,13 @@ class ApplicationTab extends AbstractTab {
 
     function generateBody(){
         global $wgServer, $wgScriptPath;
+        foreach($this->gets as $id => $get){
+            $_GET[$id] = $get;
+        }
         $me = Person::newFromWgUser();
         $rpId = (is_array($this->rp)) ? $this->rp[0] : $this->rp;
         $rpId .= $this->year;
+        $rpId .= md5(serialize($this->gets));
         
         $isPerson = true;
         foreach($this->people as $person){
@@ -144,7 +153,7 @@ class ApplicationTab extends AbstractTab {
         }
         else{
             $this->html .= "<th>Generation Date</th>
-                            <th width='1%'>PDF&nbsp;Download</th>";
+                            <th width='1%'>Download</th>";
             foreach($this->extraCols as $key => $extra){
                 $this->html .= (!is_numeric($key)) ? "<th>$key</th>" : "<th>Extra</th>";
             }
@@ -204,9 +213,10 @@ class ApplicationTab extends AbstractTab {
                         foreach($report as $rep){
                             $pdf = $rep->getPDF();
                             $pdfButton = (count($pdf) > 0) ? "<a class='button' href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$pdf[0]['token']}'>Download</a>" : "";
+                            $docButton = (count($pdf) > 0) ? "<a class='button' href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$pdf[0]['token']}&doc'>Download</a>" : "";
                             $pdfDate = (count($pdf) > 0) ? "{$pdf[0]['timestamp']}" : "";
                             $this->html .= "<td align='center'>{$pdfDate}</td>
-                                            <td>{$pdfButton}</td>";
+                                            <td align='center'>{$pdfButton}&nbsp;{$docButton}</td>";
                             foreach($this->extraCols as $extra){
                                 $section = new EditableReportSection();
                                 $section->setParent($rep);
@@ -242,10 +252,11 @@ class ApplicationTab extends AbstractTab {
                                     $this->html .= "<td></td>";
                                 }
                             }
-                            $pdfButton = (count($pdf) > 0) ? "<a class='button' href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$pdf[0]['token']}'>Download</a>" : "";
+                            $pdfButton = (count($pdf) > 0) ? "<a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$pdf[0]['token']}'><img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' /></a>" : "";
+                            $docButton = (count($pdf) > 0) ? "<a href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$pdf[0]['token']}&doc'><img src='{$wgServer}{$wgScriptPath}/skins/word.gif' /></a>" : "";
                             $pdfDate = (count($pdf) > 0) ? "{$pdf[0]['timestamp']}" : "";
                             $this->html .= "<td align='center'>{$pdfDate}</td>
-                                            <td>{$pdfButton}</td>";
+                                            <td align='center'>{$pdfButton}&nbsp;{$docButton}</td>";
                             foreach($this->extraCols as $extra){
                                 $section = new EditableReportSection();
                                 $section->setParent($rep);

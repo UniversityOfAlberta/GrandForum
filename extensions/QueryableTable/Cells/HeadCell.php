@@ -7,7 +7,7 @@ class HeadCell extends Cell{
     
     static $nFootnotes = 0;
     
-    function HeadCell($cellType, $params, $cellValue, $rowN, $colN, $table){
+    function __construct($cellType, $params, $cellValue, $rowN, $colN, $table){
         if(isset($params[0])){
             $this->value = $params[0];
             foreach($params as $key => $param){

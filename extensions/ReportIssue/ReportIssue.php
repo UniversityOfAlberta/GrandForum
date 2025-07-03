@@ -1,7 +1,7 @@
 <?php
 
     $wgHooks['BeforePageDisplay'][] = 'reportIssue';
-    $wgHooks['UnknownAction'][] = 'reportIssueAction';
+    UnknownAction::createAction('reportIssueAction');
 
     function reportIssue($wgOut, $skin){
         global $wgServer, $wgScriptPath, $config;
@@ -9,30 +9,78 @@
         $wgOut->addScript("<link rel='stylesheet' type='text/css' href='{$wgServer}{$wgScriptPath}/extensions/ReportIssue/reportIssue.css?".filemtime(dirname(__FILE__)."/reportIssue.css")."' />");
         $wgOut->addScript("<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/ReportIssue/reportIssue.js?".filemtime(dirname(__FILE__)."/reportIssue.js")."' ></script>");
         
-        $loggedIn = "";
-        if(!$me->isLoggedIn()){
-            $loggedIn = "<b>Email:</b> <input type='text' name='email' /><br />";
+        $firstName = str_replace("'", "&#39;", $me->getFirstName());
+        $lastName = str_replace("'", "&#39;", $me->getLastName());
+        $email = str_replace("'", "&#39;", $me->getEmail());
+        $loggedIn = "<tr>
+                        <td class='label'><en>First Name</en><fr>Prénom</fr>:</td>
+                        <td class='value'><input type='text' name='first_name' value='{$firstName}' /></td>
+                     </tr>
+                     <tr>
+                        <td class='label'><en>Last Name</en><fr>Nom</fr>:</td>
+                        <td class='value'><input type='text' name='last_name' value='{$lastName}' /></td>
+                     </tr>
+                     <tr>
+                        <td class='label'><en>Email</en><fr>Courriel</fr>:</td>
+                        <td class='value'><input type='text' name='email' value='{$email}' /></td>
+                     </tr>";
+        if($config->getValue('networkFullName') == 'AVOID AB'){
+            $loggedIn .= "<tr>
+                        <td class='label'><en>Topic</en><fr>Topic</fr>:</td>
+                        <td class='value'>
+                            <select name='topic'>
+                                <option></option>
+                                <option>Virtual Gym</option>
+                                <option>Vibrant Minds</option>
+                                <option>Other</option>
+                            </select>
+                        </td>
+                     </tr>";
         }
-        
         $wgOut->addHTML("<div title='Report Issue' id='reportIssueDialog' style='display:none;'>
-            <p>If you are experiencing an issue on the current page, you can report it here.  Explain what the issue is and a report will be sent to {$config->getValue('supportEmail')}.  The following information will automatically be sent:</p>
+            <p>
+                <en>If you are experiencing an issue on the current page, you can report it here.  Explain what the issue is and a report will be sent to {$config->getValue('supportEmail')}.  The following information will automatically be sent:</en>
+                <fr>Si vous rencontrez un problème sur la page actuelle, vous pouvez le signaler ici. Expliquez la nature du problème; un rapport sera envoyé à {$config->getValue('supportEmail')}. Les renseignements suivants seront automatiquement transmis:</fr>
+            </p>
             <ul>
-                <li>User/Email (if logged in)</li>
-                <li>Browser Information</li>
-                <li>Url of Page</li>
-                <li>Screenshot of page</li>
+                <li>
+                    <en>User/Email (if logged in)</en>
+                    <fr>Utilisateur/courriel (si connecté)</fr>
+                </li>
+                <li>
+                    <en>Browser Information</en>
+                    <fr>Information sur le navigateur</fr>
+                </li>
+                <li>
+                    <en>Url of Page</en>
+                    <fr>URL de la page</fr>
+                </li>
+                <li>
+                    <en>Screenshot of page</en>
+                    <fr>Capture d’écran de la page</fr>
+                </li>
             </ul>
+            <table>
             {$loggedIn}
-            <b>Additional Comments:</b>
+            </table>
+            <b><en>Additional Comments:</en><fr>Commentaires supplémentaires:</fr></b>
             <textarea style='width:100%;height:100px;' id='additional_comments'></textarea>
         </div>");
         
         $wgOut->addHTML("<div title='Contact Us' id='contactUsDialog' style='display:none; width: 112px;'>
-            {$loggedIn}
+            <en>
+                Do you have questions, comments or need some help?<br />
+                Send us an email.
+            </en>
+            <fr>
+                Vous avez des questions, des commentaires ou besoin d’aide?<br />
+                Envoyez-nous un courriel.
+            </fr>
             <table>
+                {$loggedIn}
                 <tr>
-                    <td align='right'><b>Topic:</b></td>
-                    <td> 
+                    <td class='label'><b><en>Subject</en><fr>Objet</fr>:</b></td>
+                    <td class='value'> 
                         <select id='topic' style='vertical-align:middle;'>
                             <option selected>Find an expert</option>
                             <option>Find a student</option>
@@ -41,14 +89,28 @@
                     </td>
                 </tr>
                 <tr id='topic_other'>
-                    <td align='right'><b>Specify:</b></td>
-                    <td><input type='text' id='topicOther' /></td>
+                    <td class='label'></td>
+                    <td class='value'><input type='text' id='topicOther' /></td>
                 </tr>
             </table>
-            <b>Description:</b><br />
+            <b><en>Message</en><fr>Message</fr>:</b><br />
             <textarea style='width:100%;height:100px;' id='additional_comments'></textarea>
-            <div id='fileSizeError' class='error' style='display:none;'>This file is too large, please choose a file smaller than 5MB</div>
-            <b>Attachment:</b><br /><input type='file' /> (5MB max)
+            <div id='contactFile'>
+                <div id='fileSizeError' class='error' style='display:none;'>This file is too large, please choose a file smaller than 5MB</div>
+                <b>Attachment:</b><br /><input type='file' /> (5MB max)
+            </div>
+        </div>");
+        
+        $wgOut->addHTML("<div title='Help' id='helpDialog' style='display:none; width: 112px;'>
+            <table>
+                {$loggedIn}
+                <tr>
+                    <td class='label'>Phone #:</td>
+                    <td class='value'><input type='text' name='phone' value='' /></td>
+                 </tr>
+            </table>
+            <b>Message:</b><br />
+            <textarea style='width:100%;height:100px;' id='additional_comments'></textarea>
         </div>");
         return true;
     }
@@ -65,32 +127,40 @@
                 $file_size = strlen($file);
             }
             $uid = md5(uniqid(time()));
-            $email = ($me->isLoggedIn()) ? $me->getEmail() : $_POST['email'];
+            $email = $_POST['email'];
             $msg = "";
             $subj = "";
+            $phone = (isset($_POST['phone'])) ? "({$_POST['phone']})" : "";
+            $topic = (isset($_POST['topic'])) ? "{$_POST['topic']}" : "";
             if(isset($_POST['img'])){
                 $subj = "Report Issue";
                 $msg = "<p>{$comments}</p><br />
-                        <b>User:</b> {$me->getName()} ({$email})<br />
+                        <b>User:</b> {$_POST['first_name']} {$_POST['last_name']} ({$email}) {$phone}<br />
+                        <b>Topic:</b> {$topic}<br />
                         <b>Browser:</b> {$_POST['browser']}<br />
                         <b>Url:</b> <a href='{$_POST['url']}'>{$_POST['url']}</a>";
             }
             else{
-                $subj = "Contact Us - {$_POST['topic']}";
+                if(isset($_POST['topic'])){
+                    $subj = "Contact Us - {$_POST['topic']}";
+                }
+                else{
+                    $subj = "Help";
+                }
                 $msg = "<p>{$comments}</p><br />
-                        <b>User:</b> {$me->getName()} ({$email})";
+                        <b>User:</b> {$_POST['first_name']} {$_POST['last_name']} ({$email}) {$phone}";
             }
             
             $eol = "\r\n";
             // Basic headers
-            $header = "From: {$me->getName()} <{$me->getEmail()}>".$eol;
-            $header .= "Reply-To: {$me->getEmail()}".$eol;
+            $header = "From: {$_POST['first_name']} {$_POST['last_name']} <{$_POST['email']}>".$eol;
+            $header .= "Reply-To: {$_POST['email']}".$eol;
             $header .= "MIME-Version: 1.0".$eol;
             $header .= "Content-Type: multipart/mixed; boundary=\"".$uid."\"".$eol;
 
             // Put everything else in $message
             $message = "--".$uid.$eol;
-            $message .= "Content-Type: text/html; charset=ISO-8859-1".$eol;
+            $message .= "Content-Type: text/html; charset=UTF-8".$eol;
             $message .= "Content-Transfer-Encoding: 8bit".$eol.$eol;
             $message .= $msg.$eol.$eol;
             if(isset($_POST['img'])){

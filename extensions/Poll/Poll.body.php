@@ -3,7 +3,7 @@ autoload_register('Poll');
 require_once("MyPolls.php");
 require_once("CreatePoll.php");
 
-$wgHooks['UnknownAction'][] = 'PollView::viewPoll';
+UnknownAction::createAction('PollView::viewPoll');
 $notificationFunctions[] = 'PollView::createNotification';
 
 class PollView {
@@ -54,6 +54,7 @@ class PollView {
                     $wgOut->loginToUse();
                     $wgOut->output();
                     $wgOut->disable();
+                    exit;
                 }
                 return false;
             }

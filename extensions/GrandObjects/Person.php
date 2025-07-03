@@ -82,12 +82,14 @@ class Person extends BackboneModel {
     var $degreeStartDate;
     var $movedOn;
     var $thesis;
+    var $extra = array();
     var $leadershipCache = array();
     var $themesCache = array();
     var $hqpCache = array();
     var $projectCache = array();
     var $evaluateCache = array();
-    
+    var $clipboard = null;
+
     /**
      * Returns a new Person from the given id
      * @param int $id The id of the person
@@ -258,6 +260,27 @@ class Person extends BackboneModel {
     }
     
     /**
+     * Returns a new Person from the given orcid (null if not found)
+     * In the event of a collision, the first user is returned
+     * NOTE: this might be slow since orcid is not a table index
+     * @param string $email The email address of the Person
+     * @return Person The Person from the given email
+     */
+    static function newFromOrcid($orcid){
+        $orcid = trim(str_replace("http://orcid.org/", "", 
+                      str_replace("https://orcid.org/", "", $orcid)));
+        $data = DBFunctions::select(array('mw_user'),
+                                    array('user_id'),
+                                    array('user_orcid' => $orcid));
+        if(count($data) > 0){
+            return Person::newFromId($data[0]['user_id']);
+        }
+        else{
+            return new Person(array());
+        }
+    }
+    
+    /**
      * Removes certain characters from a person's name to help matching
      * @param string $name The name to clean
      * @return string The cleaned up name
@@ -339,6 +362,7 @@ class Person extends BackboneModel {
                                               'user_agencies',
                                               'user_mitacs',
                                               'user_crc',
+                                              'user_extra',
                                               'user_gender',
                                               'user_pronouns',
                                               'user_birth_date',
@@ -760,6 +784,8 @@ class Person extends BackboneModel {
      */
     static function getAllPeopleDuring($filter=null, $startRange, $endRange){
         self::generateAllPeopleCache();
+        $startRange = cleanDate($startRange);
+        $endRange = cleanDate($endRange);
         $people = array();
         foreach(self::$allPeopleCache as $row){
             $person = Person::newFromId($row);
@@ -877,7 +903,7 @@ class Person extends BackboneModel {
 
     // Constructor
     // Takes in a resultset containing the 'user id' and 'user name'
-    function Person($data){
+    function __construct($data){
         global $wgUser;
         if(count($data) > 0){
             if(@$data[0]['candidate'] == 1 && !$wgUser->isLoggedIn()){
@@ -920,6 +946,10 @@ class Person extends BackboneModel {
             $this->office = @$data[0]['user_office'];
             $this->publicProfile = @$data[0]['user_public_profile'];
             $this->privateProfile = @$data[0]['user_private_profile'];
+            $this->extra = @json_decode($data[0]['user_extra'], true);
+            if($this->extra == null){
+                $this->extra = array();
+            }
             $this->hqps = null;
             $this->historyHqps = null;
             $this->candidate = @$data[0]['candidate'];
@@ -1013,6 +1043,7 @@ class Person extends BackboneModel {
                       'crdc' => $this->getCRDC(),
                       'publicProfile' => $publicProfile,
                       'privateProfile' => $privateProfile,
+                      'extra' => $this->getExtra(),
                       'url' => $this->getUrl(),
                       'candidate' => ($this->isCandidate() == 1));
         if($config->getValue('networkName') == 'FES'){
@@ -1079,6 +1110,7 @@ class Person extends BackboneModel {
                                           'user_agencies' => json_encode($this->getAgencies()),
                                           'user_mitacs' => $this->getMitacs(),
                                           'user_crc' => json_encode($this->getCanadaResearchChair()),
+                                          'user_extra' => json_encode($this->extra),
                                           'user_public_profile' => $this->getProfile(false),
                                           'user_private_profile' => $this->getProfile(true)),
                                     array('user_name' => EQ($this->getName())));
@@ -1148,6 +1180,7 @@ class Person extends BackboneModel {
                                           'user_agencies' => json_encode($this->getAgencies()),
                                           'user_mitacs' => $this->getMitacs(),
                                           'user_crc' => json_encode($this->getCanadaResearchChair()),
+                                          'user_extra' => json_encode($this->extra),
                                           'user_public_profile' => $this->getProfile(false),
                                           'user_private_profile' => $this->getProfile(true)),
                                     array('user_id' => EQ($this->getId())));
@@ -1310,10 +1343,40 @@ class Person extends BackboneModel {
     
     /**
      * Returns when the User registered
+     * @param boolean $format Whether to format to yyyy-mm-dd
      * @return string The string representing the date that this user Registered
      */
-    function getRegistration(){
-        return $this->getUser()->getRegistration();
+    function getRegistration($format=false){
+        $registration = $this->getUser()->getRegistration();
+        if($format){
+            return substr($registration, 0, 4)."-".substr($registration, 4, 2)."-".substr($registration, 6, 2);
+        }
+        return $registration;
+    }
+    
+    /**
+     * Returns when the User last user activity occured
+     * @return string Returns when the User last user activity occured
+     */
+    function getTouched(){
+        $data = DBFunctions::select(array('mw_user'),
+                                    array('user_touched'),
+                                    array('user_id' => $this->id));
+        if($data[0]['user_touched'] == 0){
+            return $this->getRegistration();
+        }
+        return $data[0]['user_touched'];
+    }
+    
+    function isAuthenticated(){
+        $data = DBFunctions::select(array('mw_user'),
+                                    array('user_email_authenticated', 'user_email_token'),
+                                    array('user_id' => $this->id));
+        if(isset($data[0])){
+            $row = $data[0];
+            return ($row['user_email_token'] == "" || $row['user_email_authenticated'] != "");
+        }
+        return false;
     }
       
     /**
@@ -1409,6 +1472,8 @@ class Person extends BackboneModel {
     }
     
     function isThemeLeaderDuring($startRange, $endRange){
+        $startRange = cleanDate($startRange);
+        $endRange = cleanDate($endRange);
         $sql = "SELECT *
                 FROM grand_theme_leaders l
                 WHERE l.user_id = '{$this->id}'
@@ -1430,6 +1495,8 @@ class Person extends BackboneModel {
     }
     
     function isThemeCoordinatorDuring($startRange, $endRange){
+        $startRange = cleanDate($startRange);
+        $endRange = cleanDate($endRange);
         $sql = "SELECT *
                 FROM grand_theme_leaders l
                 WHERE l.user_id = '{$this->id}'
@@ -1588,14 +1655,6 @@ class Person extends BackboneModel {
         if($this->isMe() || $me->isRoleAtLeast(STAFF)){
             return $this->gender;
         }
-        else{
-            // Check Project Leadership
-            foreach($this->getProjects(true) as $project){
-                if($me->isRole(PL, $project)){
-                    return $this->gender;
-                }
-            }
-        }
         return "";
     }
     
@@ -1609,8 +1668,11 @@ class Person extends BackboneModel {
             return "";
         }
         $me = Person::newFromWgUser();
-        if($me->isLoggedIn()){
-            if($this->nationality != ""){
+        if($this->isMe() || $me->isRoleAtLeast(STAFF)){
+            if($config->getValue('nationalityAll')){
+                return $this->nationality;
+            }
+            else if($this->nationality != ""){
                 if($this->nationality == "Canadian" || 
                    $this->nationality == "Landed Immigrant"){
                     return "Canadian";
@@ -2159,6 +2221,8 @@ class Person extends BackboneModel {
      * @return array An array of People
      */
     static function getAllMovedOnDuring($startRange, $endRange){
+        $startRange = cleanDate($startRange);
+        $endRange = cleanDate($endRange);
         $sql = "SELECT `user_id`
                 FROM `grand_movedOn`
                 WHERE effective_date BETWEEN '$startRange' AND '$endRange'";
@@ -2256,6 +2320,16 @@ class Person extends BackboneModel {
         else{
             $this->university = Cache::fetch("user_university_{$this->id}");
         }
+        if($this->university === null){
+            $this->university = array("university" => "",
+                                      "faculty"    => "",
+                                      "department" => "",
+                                      "position"   => "",
+                                      "date"       => "",
+                                      "start"      => "",
+                                      "end"        => ""
+                                     );
+        }
         return $this->university;
     }
 
@@ -2351,11 +2425,16 @@ class Person extends BackboneModel {
      * @return array The last University that this Person was at between the given range
      */ 
     function getUniversityDuring($startRange, $endRange){
+        $startRange = cleanDate($startRange);
+        $endRange = cleanDate($endRange);
         $data = $this->getUniversitiesDuring($startRange, $endRange);
         if(isset($data[0])){
             return $data[0];
         }
-        return null;
+        return array("university" => "",
+                     "department" => "",
+                     "position"   => "",
+                     "date"       => "");
     }
     
     /*
@@ -2377,6 +2456,8 @@ class Person extends BackboneModel {
      * @return array The Universities that this Person was at between the given range
      */ 
     function getUniversitiesDuring($startRange, $endRange){
+        $startRange = cleanDate($startRange);
+        $endRange = cleanDate($endRange);
         if(!isset($this->universityDuring[$startRange.$endRange])){
             $sql = "SELECT * 
                     FROM grand_user_university uu, grand_universities u, grand_positions p
@@ -2549,7 +2630,7 @@ class Person extends BackboneModel {
      */
     function setCRDC($keywords){
         $me = Person::newFromWgUser();
-        if($me->isAllowedToEdit($this)){
+        if($me->isAllowedToEdit($this) && is_array($keywords)){
             $cacheId = "crdc_{$this->getId()}";
             DBFunctions::delete('grand_person_crdc',
                                 array('user_id' => $this->getId()));
@@ -2946,6 +3027,10 @@ class Person extends BackboneModel {
         if($this->id == 0){
             return array();
         }
+        
+        $startRange = cleanDate($startRange);
+        $endRange = cleanDate($endRange);
+        
         $cacheId = "personRolesDuring".$this->id."_".$startRange.$endRange;
         if(Cache::exists($cacheId)){
             $data = Cache::fetch($cacheId);
@@ -2980,6 +3065,7 @@ class Person extends BackboneModel {
         if($this->id == 0){
             return array();
         }
+        $date = cleanDate($date);
         $cacheId = "personRolesDuring".$this->id."_".$date;
         if(Cache::exists($cacheId)){
             $data = Cache::fetch($cacheId);
@@ -3183,7 +3269,11 @@ class Person extends BackboneModel {
                 $this->projectCache["{$history}"] = $projects;
             }
         }
+        
         if($history === false){
+            if($this->projects == null){
+                $this->projects = $projects;
+            }
             return $this->projects;
         }
         else {
@@ -3234,8 +3324,8 @@ class Person extends BackboneModel {
      */
     function getRelationsDuring($type='all', $startRange, $endRange){
         $type = DBFunctions::escape($type);
-        $startRange = DBFunctions::escape($startRange);
-        $endRange = DBFunctions::escape($endRange);
+        $startRange = cleanDate($startRange);
+        $endRange = cleanDate($endRange);
         $sql = "SELECT *
                 FROM grand_relations
                 WHERE user1 = '{$this->id}'
@@ -3292,7 +3382,7 @@ class Person extends BackboneModel {
     function getRelations($type='all', $history=false, $inverse=false){
         $me = Person::newFromWgUser();
         $relations = array();
-        if($inverse && ($me->isRoleAtLeast(STAFF) || $me->isRole(PL) || $me->isRole(PA))){
+        if($inverse && ($me->isRoleAtLeast(STAFF) || $me->isRole(PL) || $me->isRole(PA) || $me->isRole("Assessor"))){
             $where = "WHERE user2 = '{$this->id}'";
         }
         else{
@@ -3935,9 +4025,6 @@ class Person extends BackboneModel {
     
     function isEpic2(){
         $date = "2020-09-01";
-        $university = $this->getUniversity();
-        $position = $university['position'];
-        $uniDate = $university['date'];
         if($this->isSubRoleBefore("Affiliate HQP", $date) || 
            $this->isSubRoleBefore("Project Funded HQP", $date) ||
            $this->isSubRoleBefore("WP/CC Funded HQP", $date) ||
@@ -4067,6 +4154,8 @@ class Person extends BackboneModel {
      * @return array This Person's HQP
      */
     function getHQPDuring($startRange, $endRange){
+        $startRange = cleanDate($startRange);
+        $endRange = cleanDate($endRange);
         if(isset($this->hqpCache[$startRange.$endRange])){
             return $this->hqpCache[$startRange.$endRange];
         }
@@ -4154,6 +4243,8 @@ class Person extends BackboneModel {
      * @return array This Person's Supervisors
      */
     function getSupervisorsDuring($startRange, $endRange){
+        $startRange = cleanDate($startRange);
+        $endRange = cleanDate($endRange);
         $sql = "SELECT *
                 FROM grand_relations
                 WHERE user2 = '{$this->id}'
@@ -4551,6 +4642,8 @@ class Person extends BackboneModel {
      * @return The Projects that this Person is a leader of
      */
     function leadershipDuring($startRange, $endRange){
+        $startRange = cleanDate($startRange);
+        $endRange = cleanDate($endRange);
         if(isset($this->leadershipCache[$startRange.$endRange])){
             return $this->leadershipCache[$startRange.$endRange];
         }
@@ -4910,8 +5003,13 @@ class Person extends BackboneModel {
      * @return string This Person's pronouns
      */
     function getPronouns(){
+        global $config;
         $me = Person::newFromWgUser();
-        if($me->isAllowedToEditDemographics($this)){
+        if($me->isAllowedToEditDemographics($this) ||
+           ($config->getValue('networkName') != "FES" && $me->isLoggedIn())){
+            if($this->pronouns == null){
+                return "";
+            }
             return $this->pronouns;
         }
         return "";
@@ -4964,6 +5062,71 @@ class Person extends BackboneModel {
         }
         return "";
     }
+    
+    /**
+     * Returns This Person's extra
+     * @return string This Person's extra
+     * TODO: This should probably be expanded to also include other fields
+     * like the crc, ecr etc. to slim down the number of random fields in the user model
+     */
+    function getExtra($field=null, $default=""){
+        $me = Person::newFromWgUser();
+        if($me->isLoggedIn()){
+            $extra = $this->extra;
+            Hooks::run('PersonExtra', array($this, &$extra));
+            if($field != null){
+                return isset($extra[$field]) ? $extra[$field] : $default;
+            }
+            return $extra;
+        }
+        else{
+            return array();
+        }
+    }
+
+    /**
+     * Returns all resources that are clipped by user
+     * @return json of resources
+     */
+    function getClipboard(){
+        if($this->clipboard == null){
+            $clipboard = array();
+            $data = DBFunctions::select(array('grand_clipboard'),
+                                        array('*'),
+                                        array('user_id' => EQ($this->id)));
+            if(count($data) > 0){
+                $clipboard['id'] = $data[0]['id'];
+                $clipboard['user_id'] = $data[0]['user_id'];
+                $clipboard['objs'] = json_decode($data[0]['json_objs'], TRUE);
+                $clipboard['date'] = $data[0]['date_created'];
+            }
+            else {
+                return array();
+            }
+        }
+        $this->clipboard = $clipboard;
+        return $this->clipboard;
+    }
+
+    function saveClipboard($arr){
+        $data = DBFunctions::select(array('grand_clipboard'),
+                                    array('*'),
+                                    array('user_id' => EQ($this->id)));
+        if(count($data)==0){
+            DBFunctions::insert('grand_clipboard',
+                                array('user_id' => $this->id,
+                                      'json_objs' => json_encode($arr)));
+        }
+        else{
+            $status = DBFunctions::update('grand_clipboard',
+                                          array('json_objs' => json_encode($arr)),
+                                          array('user_id' => EQ($this->id)));
+        }
+        DBFunctions::commit();
+        Gamification::log("CreateClipBoard");
+        return true;
+    }
+
 }
 if(isset($facultyMap)){
     Person::$facultyMap = array_flip(array_flatten($facultyMap));

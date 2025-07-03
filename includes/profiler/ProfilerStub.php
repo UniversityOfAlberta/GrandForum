@@ -1,7 +1,5 @@
 <?php
 /**
- * Stub profiling functions.
- *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -18,28 +16,32 @@
  * http://www.gnu.org/copyleft/gpl.html
  *
  * @file
- * @ingroup Profiler
  */
 
 /**
- * Stub profiler that does nothing
+ * Stub profiler that does nothing.
  *
  * @ingroup Profiler
  */
 class ProfilerStub extends Profiler {
-	public function isStub() {
-		return true;
+	public function scopedProfileIn( $section ) {
+		return null; // no-op
 	}
-	public function isPersistent() {
-		return false;
+
+	public function getFunctionStats() {
+		return [];
 	}
-	public function profileIn( $fn ) {}
-	public function profileOut( $fn ) {}
-	public function getOutput() {}
-	public function close() {}
-	public function logData() {}
-	public function getCurrentSection() { return ''; }
-	public function transactionWritingIn( $server, $db ) {}
-	public function transactionWritingOut( $server, $db ) {}
-	public function getRawData() { return array(); }
+
+	public function getOutput() {
+		return '';
+	}
+
+	public function close() {
+	}
+
+	public function logData() {
+	}
+
+	public function logDataPageOutputOnly() {
+	}
 }

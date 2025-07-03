@@ -6,14 +6,13 @@
 				"name": "Base",
 				"classes": [
 					"mw",
-					"mw.Map",
 					"mw.Message",
 					"mw.loader",
-					"mw.loader.store",
 					"mw.html",
-					"mw.html.Cdata",
 					"mw.html.Raw",
-					"mw.hook"
+					"mw.hook",
+					"mw.template",
+					"mw.errorLogger"
 				]
 			},
 			{
@@ -21,20 +20,24 @@
 				"classes": [
 					"mw.Title",
 					"mw.Uri",
+					"mw.String",
+					"mw.messagePoster.*",
 					"mw.notification",
 					"mw.Notification_",
+					"mw.storage",
+					"mw.storage.session",
 					"mw.user",
 					"mw.util",
-					"mw.plugin.*"
+					"mw.plugin.*",
+					"mw.cookie",
+					"mw.experiments",
+					"mw.viewport",
+					"mw.visibleTimeout"
 				]
 			},
 			{
-				"name": "Actions",
-				"classes": ["mw.toolbar"]
-			},
-			{
 				"name": "API",
-				"classes": ["mw.Api*"]
+				"classes": ["mw.Api*", "mw.ForeignApi*"]
 			},
 			{
 				"name": "Language",
@@ -45,15 +48,26 @@
 				]
 			},
 			{
-				"name": "Page",
+				"name": "Interfaces",
 				"classes": [
-					"mw.page*"
+					"mw.Feedback*",
+					"mw.Upload*",
+					"mw.ForeignUpload",
+					"mw.ForeignStructuredUpload*",
+					"mw.GallerySlideshow",
+					"mw.rcfilters*"
 				]
 			},
 			{
-				"name": "Interfaces",
+				"name": "Widgets",
 				"classes": [
-					"mw.Feedback"
+					"mw.widgets*"
+				]
+			},
+			{
+				"name": "Special",
+				"classes": [
+					"mw.special*"
 				]
 			},
 			{
@@ -61,9 +75,7 @@
 				"classes": [
 					"mw.log",
 					"mw.inspect",
-					"mw.inspect.reports",
-					"mw.Debug",
-					"mw.Debug.profile"
+					"mw.Debug"
 				]
 			}
 		]
@@ -73,7 +85,22 @@
 		"groups": [
 			{
 				"name": "Plugins",
-				"classes": ["jQuery.plugin.*"]
+				"classes": [
+					"jQuery.client",
+					"jQuery.colorUtil",
+					"jQuery.plugin.*"
+				]
+			}
+		]
+	},
+	{
+		"name": "Vue",
+		"groups": [
+			{
+				"name": "Plugins",
+				"classes": [
+					"Vue"
+				]
 			}
 		]
 	},
@@ -81,8 +108,22 @@
 		"name": "Upstream",
 		"groups": [
 			{
-				"name": "OOJS",
-				"classes": ["OO", "OO.*"]
+				"name": "OOjs",
+				"classes": [
+					"OO",
+					"OO.EmitterList",
+					"OO.EventEmitter",
+					"OO.Factory",
+					"OO.Registry",
+					"OO.SortedEmitterList"
+				]
+			},
+			{
+				"name": "OOUI",
+				"classes": [
+					"OO.ui",
+					"OO.ui.*"
+				]
 			},
 			{
 				"name": "jQuery",

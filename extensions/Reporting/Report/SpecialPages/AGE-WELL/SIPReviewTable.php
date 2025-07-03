@@ -13,7 +13,7 @@ function runSIPReviewTable($par) {
 
 class SIPReviewTable extends SpecialPage{
 
-    function SIPReviewTable() {
+    function __construct() {
         SpecialPage::__construct("SIPReviewTable", null, false, 'runSIPReviewTable');
     }
     
@@ -24,6 +24,7 @@ class SIPReviewTable extends SpecialPage{
 
     function execute($par){
         global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle, $wgMessage;
+        $this->getOutput()->setPageTitle("SIP Review Table");
         if(isset($_GET['download']) && isset($_GET['year']) && isset($_GET['key'])){
             header('Content-Type: data:application/vnd.ms-excel');
             header('Content-Disposition: attachment; filename="'.$_GET['key'].' Review.xls"');
@@ -325,7 +326,7 @@ class SIPReviewTable extends SpecialPage{
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle, $special_evals;
         $person = Person::newFromWgUser();
         
-        if(self::userCanExecute($wgUser)){
+        if((new self)->userCanExecute($wgUser)){
             $selected = @($wgTitle->getText() == "SIPReviewTable") ? "selected" : false;
             $tabs["Manager"]['subtabs'][] = TabUtils::createSubTab("SIP Review Table", "$wgServer$wgScriptPath/index.php/Special:SIPReviewTable", $selected);
         }

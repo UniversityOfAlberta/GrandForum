@@ -5,14 +5,14 @@ class PersonDemographicsTab extends AbstractEditableTab {
     var $person;
     var $visibility;
 
-    function PersonDemographicsTab($person, $visibility){
-        parent::AbstractEditableTab("EDI");
+    function __construct($person, $visibility){
+        parent::__construct("EDI");
         $this->person = $person;
         $this->visibility = $visibility;
     }
 
     function generateBody(){
-        global $wgUser;
+        global $wgUser, $config;
         $me = Person::newFromWgUser();       
         if($me->isAllowedToEditDemographics($this->person)){
             $this->html .= "Your self-reported EDI information will be kept confidential, and only aggregate data is utilized for central reporting purposes. \"I prefer not to answer\" options are available for each prompt.";
@@ -78,11 +78,11 @@ class PersonDemographicsTab extends AbstractEditableTab {
         
             $this->html .= "</table>";
             
-            $this->html .= "<p style='margin-top:2em;'>Future Energy Systems (FES) is focused on leading the energy transition with a vision of optimal, fair, and environmentally responsible energy systems. Achieving this vision will rely on the research of many individuals across many fields, contributing to an interdisciplinary, multidisciplinary, transdisciplinary, intersectional environment where progress and pursuit of knowledge comes first, free from personal, social, or political bias.</p>
+            $this->html .= "<p style='margin-top:2em;'>{$config->getValue('networkFullName')} ({$config->getValue('networkName')}) is focused on leading the energy transition with a vision of optimal, fair, and environmentally responsible energy systems. Achieving this vision will rely on the research of many individuals across many fields, contributing to an interdisciplinary, multidisciplinary, transdisciplinary, intersectional environment where progress and pursuit of knowledge comes first, free from personal, social, or political bias.</p>
             
-                            <p>Equity, diversity, and inclusion (EDI) are important aspects of this vision for progress. FES envisions EDI being understood and reframed as a concept; not as efforts separate from our work, but as central components of effective, high-quality research.</p>
+                            <p>Equity, diversity, and inclusion (EDI) are important aspects of this vision for progress. {$config->getValue('networkName')} envisions EDI being understood and reframed as a concept; not as efforts separate from our work, but as central components of effective, high-quality research.</p>
                             
-                            <p>To learn more about the FES EDI program or visit the EDI pages on our <a href='https://www.futureenergysystems.ca/about/equity-diversity-and-inclusion' target='_blank'>website</a>.</p>";
+                            <p>To learn more about the {$config->getValue('networkName')} EDI program or visit the EDI pages on our <a href='https://www.futureenergysystems.ca/about/equity-diversity-and-inclusion' target='_blank'>website</a>.</p>";
         }
         
         return $this->html;
@@ -157,11 +157,11 @@ class PersonDemographicsTab extends AbstractEditableTab {
                             {$minorityField->render()}
                             <span id='ethnicity' style='display:none;'>{$ethnicityField->render()}</span>
 
-                            <p style='margin-top:2em;'>Future Energy Systems (FES) is focused on leading the energy transition with a vision of optimal, fair, and environmentally responsible energy systems. Achieving this vision will rely on the research of many individuals across many fields, contributing to an interdisciplinary, multidisciplinary, transdisciplinary, intersectional environment where progress and pursuit of knowledge comes first, free from personal, social, or political bias.</p>
+                            <p style='margin-top:2em;'>{$config->getValue('networkFullName')} ({$config->getValue('networkName')}) is focused on leading the energy transition with a vision of optimal, fair, and environmentally responsible energy systems. Achieving this vision will rely on the research of many individuals across many fields, contributing to an interdisciplinary, multidisciplinary, transdisciplinary, intersectional environment where progress and pursuit of knowledge comes first, free from personal, social, or political bias.</p>
             
-                            <p>Equity, diversity, and inclusion (EDI) are important aspects of this vision for progress. FES envisions EDI being understood and reframed as a concept; not as efforts separate from our work, but as central components of effective, high-quality research.</p>
+                            <p>Equity, diversity, and inclusion (EDI) are important aspects of this vision for progress. {$config->getValue('networkName')} envisions EDI being understood and reframed as a concept; not as efforts separate from our work, but as central components of effective, high-quality research.</p>
                             
-                            <p>To learn more about the FES EDI program or visit the EDI pages on our <a href='https://www.futureenergysystems.ca/about/equity-diversity-and-inclusion' target='_blank'>website</a>.</p>
+                            <p>To learn more about the {$config->getValue('networkName')} EDI program or visit the EDI pages on our <a href='https://www.futureenergysystems.ca/about/equity-diversity-and-inclusion' target='_blank'>website</a>.</p>
                             
                             <script type='text/javascript'>
                                 $('[name=minorityStatus]').change(function(){

@@ -20,6 +20,7 @@ abstract class BackboneModel {
      * @return mixed Returns a jsonified version of this BackboneModel
      */
     function toJSON(){
+       
         return json_encode($this->toArray());
     }
     

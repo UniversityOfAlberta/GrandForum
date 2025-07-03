@@ -21,6 +21,8 @@
  * @ingroup Cache
  */
 
+use Wikimedia\IPUtils;
+
 /**
  * Base class for data storage in the file system.
  *
@@ -36,8 +38,8 @@ abstract class FileCacheBase {
 	protected $mCached;
 
 	/* @todo configurable? */
-	const MISS_FACTOR = 15; // log 1 every MISS_FACTOR cache misses
-	const MISS_TTL_SEC = 3600; // how many seconds ago is "recent"
+	private const MISS_FACTOR = 15; // log 1 every MISS_FACTOR cache misses
+	private const MISS_TTL_SEC = 3600; // how many seconds ago is "recent"
 
 	protected function __construct() {
 		global $wgUseGzip;
@@ -124,7 +126,7 @@ abstract class FileCacheBase {
 		$cachetime = $this->cacheTimestamp();
 		$good = ( $timestamp <= $cachetime && $wgCacheEpoch <= $cachetime );
 		wfDebug( __METHOD__ .
-			": cachetime $cachetime, touched '{$timestamp}' epoch {$wgCacheEpoch}, good $good\n" );
+			": cachetime $cachetime, touched '{$timestamp}' epoch {$wgCacheEpoch}, good $good" );
 
 		return $good;
 	}
@@ -154,22 +156,16 @@ abstract class FileCacheBase {
 	/**
 	 * Save and compress text to the cache
 	 * @param string $text
-	 * @return string compressed text
+	 * @return string|false Compressed text
 	 */
 	public function saveText( $text ) {
-		global $wgUseFileCache;
-
-		if ( !$wgUseFileCache ) {
-			return false;
-		}
-
 		if ( $this->useGzip() ) {
 			$text = gzencode( $text );
 		}
 
 		$this->checkCacheDirs(); // build parent dir
 		if ( !file_put_contents( $this->cachePath(), $text, LOCK_EX ) ) {
-			wfDebug( __METHOD__ . "() failed saving " . $this->cachePath() . "\n" );
+			wfDebug( __METHOD__ . "() failed saving " . $this->cachePath() );
 			$this->mCached = null;
 
 			return false;
@@ -185,9 +181,9 @@ abstract class FileCacheBase {
 	 * @return void
 	 */
 	public function clearCache() {
-		wfSuppressWarnings();
+		Wikimedia\suppressWarnings();
 		unlink( $this->cachePath() );
-		wfRestoreWarnings();
+		Wikimedia\restoreWarnings();
 		$this->mCached = false;
 	}
 
@@ -231,36 +227,31 @@ abstract class FileCacheBase {
 
 	/**
 	 * Roughly increments the cache misses in the last hour by unique visitors
-	 * @param $request WebRequest
+	 * @param WebRequest $request
 	 * @return void
 	 */
 	public function incrMissesRecent( WebRequest $request ) {
-		global $wgMemc;
 		if ( mt_rand( 0, self::MISS_FACTOR - 1 ) == 0 ) {
 			# Get a large IP range that should include the user  even if that
 			# person's IP address changes
 			$ip = $request->getIP();
-			if ( !IP::isValid( $ip ) ) {
+			if ( !IPUtils::isValid( $ip ) ) {
 				return;
 			}
-			$ip = IP::isIPv6( $ip )
-				? IP::sanitizeRange( "$ip/32" )
-				: IP::sanitizeRange( "$ip/16" );
+
+			$ip = IPUtils::isIPv6( $ip )
+				? IPUtils::sanitizeRange( "$ip/32" )
+				: IPUtils::sanitizeRange( "$ip/16" );
 
 			# Bail out if a request already came from this range...
-			$key = wfMemcKey( get_class( $this ), 'attempt', $this->mType, $this->mKey, $ip );
-			if ( $wgMemc->get( $key ) ) {
+			$cache = ObjectCache::getLocalClusterInstance();
+			$key = $cache->makeKey( static::class, 'attempt', $this->mType, $this->mKey, $ip );
+			if ( !$cache->add( $key, 1, self::MISS_TTL_SEC ) ) {
 				return; // possibly the same user
 			}
-			$wgMemc->set( $key, 1, self::MISS_TTL_SEC );
 
 			# Increment the number of cache misses...
-			$key = $this->cacheMissKey();
-			if ( $wgMemc->get( $key ) === false ) {
-				$wgMemc->set( $key, 1, self::MISS_TTL_SEC );
-			} else {
-				$wgMemc->incr( $key );
-			}
+			$cache->incrWithInit( $this->cacheMissKey( $cache ), self::MISS_TTL_SEC );
 		}
 	}
 
@@ -269,15 +260,16 @@ abstract class FileCacheBase {
 	 * @return int
 	 */
 	public function getMissesRecent() {
-		global $wgMemc;
+		$cache = ObjectCache::getLocalClusterInstance();
 
-		return self::MISS_FACTOR * $wgMemc->get( $this->cacheMissKey() );
+		return self::MISS_FACTOR * $cache->get( $this->cacheMissKey( $cache ) );
 	}
 
 	/**
+	 * @param BagOStuff $cache Instance that the key will be used with
 	 * @return string
 	 */
-	protected function cacheMissKey() {
-		return wfMemcKey( get_class( $this ), 'misses', $this->mType, $this->mKey );
+	protected function cacheMissKey( BagOStuff $cache ) {
+		return $cache->makeKey( static::class, 'misses', $this->mType, $this->mKey );
 	}
 }

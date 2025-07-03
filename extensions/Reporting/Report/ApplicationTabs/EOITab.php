@@ -9,7 +9,7 @@ class EOITab extends AbstractTab {
     var $showAllWithPDFs;
     var $idProjectRange = array(0, 1);
 
-    function EOITab($rp, $people, $year=REPORTING_YEAR, $title=null, $extraCols=array(), $showAllWithPDFs=false){
+    function __construct($rp, $people, $year=REPORTING_YEAR, $title=null, $extraCols=array(), $showAllWithPDFs=false){
         $me = Person::newFromWgUser();
         $this->rp = $rp;
         $this->year = $year;
@@ -27,10 +27,10 @@ class EOITab extends AbstractTab {
             $report = new DummyReport($this->rp, $me, null, $year);
         }
         if($title == null){
-            parent::AbstractTab($report->name);
+            parent::__construct($report->name);
         }
         else{
-            parent::AbstractTab($title);
+            parent::__construct($title);
         }
         $this->html = "";
     }

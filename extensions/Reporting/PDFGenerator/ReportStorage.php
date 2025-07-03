@@ -85,7 +85,7 @@ class ReportStorage {
     function fetch_pdf($tok, $strict = true) {
         $tok = DBFunctions::escape($tok);
         $ext = ($strict) ? "user_id = {$this->_uid} AND proj_id = {$this->_pid} AND" : "";
-        $sql = "SELECT report_id, user_id, proj_id, type, submitted, auto, timestamp, len_pdf, pdf, encrypted, generation_user_id, submission_user_id, year 
+        $sql = "SELECT report_id, user_id, proj_id, type, submitted, auto, timestamp, len_pdf, html, pdf, encrypted, generation_user_id, submission_user_id, year 
                 FROM grand_pdf_report 
                 WHERE {$ext} ((encrypted = 0 AND token = '{$tok}') OR 
                               (encrypted = 1 AND token = '".@decrypt($tok, true)."'))
@@ -105,11 +105,22 @@ class ReportStorage {
         $this->_cache['timestamp'] = $res[0]['timestamp'];
         $this->_cache['year'] = $res[0]['year'];
         $this->_cache['len_pdf'] = $res[0]['len_pdf'];
+        
         $this->_cache['generation_user_id'] = $res[0]['generation_user_id'];
         $this->_cache['submission_user_id'] = $res[0]['submission_user_id'];
         $this->_cache['encrypted'] = $res[0]['encrypted'];
 
+        $this->_cache['html'] = ($this->_cache['encrypted']) ? decrypt($res[0]['html']) : $res[0]['html'];
         return ($this->_cache['encrypted']) ? decrypt($res[0]['pdf']) : $res[0]['pdf'];
+    }
+    
+    function getHTML(){
+        return $this->_cache['html'];
+    }
+    
+    function getBody(){
+        $html = $this->_cache['html'];
+        return @explode("</body>", @explode("<body id='pdfBody'>", $html)[1])[0];
     }
     
     function mark_submitted($tok) {

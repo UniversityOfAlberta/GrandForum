@@ -34,11 +34,19 @@ autoload_register('GrandObjects/API/Search');
 autoload_register('GrandObjects/API/Journal');
 autoload_register('GrandObjects/API/Posting');
 autoload_register('GrandObjects/API/CRM');
+autoload_register('GrandObjects/API/DataCollection');
+autoload_register('GrandObjects/API/AvoidResource');
+autoload_register('GrandObjects/API/AskAnExpertEvent');
+autoload_register('GrandObjects/API/ActionPlan');
+autoload_register('GrandObjects/API/Gamification');
 autoload_register('GrandObjects/API/LIMS');
+autoload_register('GrandObjects/API/LIMSPmm');
+
 
 global $apiRequest;
 // Person
 
+$apiRequest->addAction('Hidden','person/current', 'PersonAPI');
 $apiRequest->addAction('Hidden','person/:id', 'PersonAPI');
 $apiRequest->addAction('Hidden','person/:id/projects', 'PersonProjectsAPI');
 $apiRequest->addAction('Hidden','person/:id/projects/:personProjectId', 'PersonProjectsAPI');
@@ -67,7 +75,7 @@ $apiRequest->addAction('Hidden','people/simple', 'PeopleAPI');
 $apiRequest->addAction('Hidden','people/:role/simple', 'PeopleAPI');
 $apiRequest->addAction('Hidden','people/:role/:university/simple', 'PeopleAPI');
 $apiRequest->addAction('Hidden','people/:role/:university/:department/simple', 'PeopleAPI');
-
+$apiRequest->addAction('Hidden', 'clipboard', 'PersonClipboardAPI');
 // Role
 $apiRequest->addAction('Hidden','role', 'RoleAPI');
 $apiRequest->addAction('Hidden','role/:id', 'RoleAPI');
@@ -220,13 +228,49 @@ $apiRequest->addAction('Hidden','limsopportunity/:opportunity_id/tasks', 'LIMSTa
 $apiRequest->addAction('Hidden','limstask', 'LIMSTaskAPI');
 $apiRequest->addAction('Hidden','limstask/:id', 'LIMSTaskAPI');
 
+// LIMSPmm
+$apiRequest->addAction('Hidden','limscontactpmm', 'LIMSContactAPIPmm');
+$apiRequest->addAction('Hidden','limscontactpmm/:id', 'LIMSContactAPIPmm');
+$apiRequest->addAction('Hidden','limscontactpmm/:contact_id/limsopportunitiespmm', 'LIMSOpportunityAPIPmm');
+$apiRequest->addAction('Hidden','limscontactpmm/project/:project_id', 'LIMSContactAPIPmm');
+$apiRequest->addAction('Hidden','limsopportunitypmm', 'LIMSOpportunityAPIPmm');
+$apiRequest->addAction('Hidden','limsopportunitypmm/:id', 'LIMSOpportunityAPIPmm');
+$apiRequest->addAction('Hidden','limsopportunitypmm/:id/files/:file_id', 'LIMSOpportunityAPIPmm');
+$apiRequest->addAction('Hidden','limsopportunitypmm/:opportunity_id/tasks', 'LIMSTaskAPIPmm');
+$apiRequest->addAction('Hidden','limstaskpmm', 'LIMSTaskAPIPmm');
+$apiRequest->addAction('Hidden','limstaskpmm/:id', 'LIMSTaskAPIPmm');
+$apiRequest->addAction('Hidden','limstaskpmm/:id/files/:file_id', 'LIMSTaskAPIPmm');
+
+
+// DataCollection
+$apiRequest->addAction('Hidden','datacollection', 'DataCollectionAPI');
+$apiRequest->addAction('Hidden','datacollection/:id', 'DataCollectionAPI');
+$apiRequest->addAction('Hidden','datacollection/:personId/:page', 'DataCollectionAPI');
+
+// AVOID Resource
+$apiRequest->addAction('Hidden','avoidResource', 'AvoidResourceAPI');
+$apiRequest->addAction('Hidden','avoidResource/:id', 'AvoidResourceAPI');
+$apiRequest->addAction('Hidden','avoidResources/:cat/', 'AvoidResourceCategoryAPI');
+
+//AVOID AskAnExpertEvent
+$apiRequest->addAction('Hidden','askanexpert', 'AskAnExpertEventAPI');
+$apiRequest->addAction('Hidden','askanexpert/:id', 'AskAnExpertEventAPI');
+
+// AVOID ActionPlan
+$apiRequest->addAction('Hidden','actionplan', 'ActionPlanAPI');
+$apiRequest->addAction('Hidden','actionplan/:id', 'ActionPlanAPI');
+
+// Gamification
+$apiRequest->addAction('Hidden', 'gamification/', 'GamificationAPI');
+$apiRequest->addAction('Hidden', 'gamification/:userId', 'GamificationAPI');
+$apiRequest->addAction('Hidden', 'gamification/:userId/list', 'GamificationAPI');
+
+function addScript($file){
+    global $wgServer, $wgScriptPath;
+    echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/$file.js?".filemtime("extensions/GrandObjects/BackboneModels/$file.js")."'></script>\n";
+}
+
 function createModels(){
-
-    function addScript($file){
-        global $wgserver, $wgScriptPath;
-        echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/$file.js?".filemtime("extensions/GrandObjects/BackboneModels/$file.js")."'></script>\n";
-    }
-
     addScript("RelationModel");
     addScript("RangeCollection");
     addScript("Thread");
@@ -256,10 +300,16 @@ function createModels(){
     addScript("CRMContact");
     addScript("CRMOpportunity");
     addScript("CRMTask");
-    addScript("LIMSContact");
+    addScript("DataCollection");
+    addScript("AvoidResource");
+    addScript("AskAnExpertEvent");
+    addScript("ActionPlan");
     addScript("LIMSOpportunity");
     addScript("LIMSTask");
-    
+    addScript("LIMSContact");
+    addScript("LIMSContactPmm");
+    addScript("LIMSOpportunityPmm");
+    addScript("LIMSTaskPmm");
     return true;
 }
 ?>

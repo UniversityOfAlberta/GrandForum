@@ -78,7 +78,7 @@ class Theme {
         return $return;
     }
     
-    function Theme($data){
+    function __construct($data){
         if(count($data) > 0){
             $this->id = $data[0]['id'];
             $this->acronym = $data[0]['acronym'];
@@ -246,6 +246,15 @@ class Theme {
                 $papers[$paper->getId()] = $paper;
             }
         }
+        /* TODO: Don't do this yet, maybe re-enable it later if needed
+        $data = DBFunctions::execSQL("SELECT id
+                                      FROM grand_products
+                                      WHERE data LIKE '%\"theme\"%:\"{$this->acronym}%'
+                                         OR data LIKE '%\"theme\"%:\"All Themes%'");
+        foreach($data as $row){
+            $paper = Product::newFromId($row['id']);
+            $papers[$paper->getId()] = $paper;
+        }*/
         return $papers;
     }
     
@@ -273,11 +282,11 @@ class Theme {
      * Returns all of the Projects in this Theme
      * @return array The Projects in this Theme
      */
-    function getProjects(){
+    function getProjects($all=false){
         $return = array();
         $projects = Project::getAllProjects();
         foreach($projects as $project){
-            if($project->getStatus() == "Active"){
+            if($all || $project->getStatus() == "Active"){
                 foreach($project->getChallenges() as $challenge){
                     if($challenge->getAcronym() == $this->getAcronym()){
                         $return[$project->getName()] = $project;

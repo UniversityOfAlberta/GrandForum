@@ -8,12 +8,15 @@
 $wgHooks['CheckImpersonationPermissions'][] = 'AbstractReport::checkImpersonationPermissions';
 $wgHooks['ImpersonationMessage'][] = 'AbstractReport::impersonationMessage';
 $wgHooks['CanUserReadPDF'][] = 'AbstractReport::canUserReadPDF';
-$wgHooks['UnknownAction'][] = 'AbstractReport::downloadBlob';
-$wgHooks['UnknownAction'][] = 'AbstractReport::tinyMCEUpload';
+
+UnknownAction::createAction('AbstractReport::downloadBlob');
+UnknownAction::createAction('AbstractReport::tinyMCEUpload');
 
 require_once("ReportConstants.php");
 require_once("ReportDashboardTableTypes.php");
-require_once("SpecialPages/ReviewerAssignments.php");
+if($config->getValue('networkName') != "AVOID"){
+    require_once("SpecialPages/ReviewerAssignments.php");
+}
 require_once("SpecialPages/{$config->getValue('networkName')}/Report.php");
 require_once("SpecialPages/{$config->getValue('networkName')}/DummyReport.php");
 if(file_exists("SpecialPages/{$config->getValue('networkName')}/ReportPDFs.php")){
@@ -22,6 +25,8 @@ if(file_exists("SpecialPages/{$config->getValue('networkName')}/ReportPDFs.php")
 if(file_exists("SpecialPages/{$config->getValue('networkName')}/ReportSurvey.php")){
     require_once("SpecialPages/{$config->getValue('networkName')}/ReportSurvey.php");
 }
+
+require_once("ReportItemCallback.php");
 
 autoload_register('Reporting/Report');
 autoload_register('Reporting/Report/ApplicationTabs');
@@ -42,10 +47,12 @@ abstract class AbstractReport extends SpecialPage {
     var $ajax;
     var $header;
     var $headerName;
+    var $skipTopLine = false;
     var $sections;
     var $currentSection;
     var $permissions;
     var $sectionPermissions;
+    var $scripts = array();
     var $person;
     var $project;
     var $readOnly = false;
@@ -75,6 +82,12 @@ abstract class AbstractReport extends SpecialPage {
         $year = $sto->metadata('year');
         if($type == ""){
             $type = $sto->metadata('type');
+            if(strstr($type, "RP_PROJECT_REPORT_") !== false){
+                $type = "RP_PROJECT_REPORT_{GET(id)}";
+            }
+            if(strstr($type, "RP_THEME_REPORT_") !== false){
+                $type = "RP_THEME_REPORT_{GET(id)}";
+            }
             $type = ReportXMLParser::findPDFReport($type, true);
         }
         $proj = Project::newFromHistoricId($sto->get_report_project_id());
@@ -85,7 +98,7 @@ abstract class AbstractReport extends SpecialPage {
     // $personId forces the report to use a specific user id as the owner of this Report
     // $projectName is the name of the Project this Report belongs to
     // $topProjectOnly means that the Report should override all ReportItemSets which use Projects as their data with the Project belonging to $projectName
-    function AbstractReport($xmlFileName, $personId=-1, $projectName=false, $topProjectOnly=false, $year=REPORTING_YEAR, $quick=false){
+    function __construct($xmlFileName, $personId=-1, $projectName=false, $topProjectOnly=false, $year=REPORTING_YEAR, $quick=false){
         global $wgUser, $wgMessage, $config;
         $this->name = "";
         $this->extends = "";
@@ -106,7 +119,7 @@ abstract class AbstractReport extends SpecialPage {
         if(isset($_GET['person'])){
             $me = Person::newFromWgUser();
             $person = Person::newFromId($_GET['person']);
-            if($me->relatedTo($person, SUPERVISES)){
+            if($me->relatedTo($person, SUPERVISES) || $me->relatedTo($person, "Assesses")){
                 // Just to be safer, only allow this functionally for supervisors
                 $personId = $_GET['person'];
             }
@@ -175,7 +188,7 @@ abstract class AbstractReport extends SpecialPage {
             
             $currentSection = @$_GET['section'];
             foreach($this->sections as $section){
-                if(strip_tags($section->name) == $currentSection && $currentSection != ""){
+                if(strip_tags($section->getPostId()) == $currentSection && $currentSection != ""){
                     $this->currentSection = $section;
                     break;
                 }
@@ -209,8 +222,8 @@ abstract class AbstractReport extends SpecialPage {
         }
     }
     
-    function execute(){
-        global $wgOut, $wgServer, $wgScriptPath, $wgUser, $wgImpersonating, $wgRealUser, $config, $wgAdditionalMailParams;
+    function execute($par){
+        global $wgOut, $wgServer, $wgScriptPath, $wgUser, $wgImpersonating, $wgRealUser, $config, $wgAdditionalMailParams, $wgPasswordSender;
         $me = Person::newFromWgUser();
         if($this->name != ""){
             if((isset($_POST['submit']) && $_POST['submit'] == "Save") || isset($_GET['showInstructions'])){
@@ -229,22 +242,25 @@ abstract class AbstractReport extends SpecialPage {
                     $register = "";
                     if(isExtensionEnabled('Register')){
                         $register = "or <a href='{$wgServer}{$wgScriptPath}/index.php/Special:Register'>
-                                            <span class='en'>register</span>
-                                            <span class='fr'>inscrire</span>
+                                            <en>register</en>
+                                            <fr>inscrire</fr>
                                         </a>";
                     }
                     $wgOut->clearHTML();
                     $wgOut->setPageTitle("Not logged in");
-                    $wgOut->addHTML("<span class='en'>Please login {$register} in order to access this page.</span>
-                                     <span class='fr'>Veuillez vous connecter ou vous {$register} pour accéder au site web.</span>");
+                    $wgOut->addHTML("<en>Please login {$register} in order to access this page.</en>
+                                     <fr>Veuillez vous connecter ou vous {$register} pour accéder au site web.</fr>");
                     $wgOut->addHTML("<script type='text/javascript'>
-                        $('h1').html(\"<span class='en'>Not logged in</span><span class='fr'>Pas connecté</span>\");
+                        $('h1').html(\"<en>Not logged in</en><fr>Pas connecté</fr>\");
                     </script>");
                     return;
                 }
                 permissionError();
             }
-            if(isset($_POST['submit']) && ($_POST['submit'] == "Save" || $_POST['submit'] == "Next")){
+            if(isset($_POST['submit']) && ($_POST['submit'] == "Save" || 
+                                           $_POST['submit'] == "Next" || 
+                                           $_POST['submit'] == "Previous" ||
+                                           $_POST['submit'] == "Submit")){
                 $oldData = array();
                 parse_str(@$_POST['oldData'], $oldData);
                 $_POST['oldData'] = $oldData;
@@ -278,7 +294,7 @@ abstract class AbstractReport extends SpecialPage {
                 $prog = array();
                 foreach($this->sections as $section){
                     if($section instanceof EditableReportSection){
-                        $prog[str_replace("/", "", str_replace("&", "", str_replace("'", "", str_replace(" ", "", strip_tags($section->name)))))] = $section->getPercentComplete();
+                        $prog[str_replace("/", "", str_replace("&", "", str_replace("'", "", str_replace(" ", "", strip_tags($section->getPostId())))))] = $section->getPercentComplete();
                     }
                 }
                 header('Content-Type: text/json');
@@ -305,8 +321,8 @@ abstract class AbstractReport extends SpecialPage {
                     	}
                     	
                     	$url = "{$wgServer}{$wgScriptPath}/index.php/Special:ReportArchive?getpdf={$tok}";
-                    	$headers = "From: {$config->getValue('networkName')} Support <{$config->getValue('supportEmail')}>\r\n" .
-                                   "Reply-To: {$config->getValue('networkName')} Support <{$config->getValue('supportEmail')}>\r\n" .
+                    	$headers = "From: {$config->getValue('networkName')} Support <{$wgPasswordSender}>\r\n" .
+                                   "Reply-To: {$config->getValue('networkName')} Support <{$wgPasswordSender}>\r\n" .
                                    "X-Mailer: PHP/" . phpversion();
                         $message = "The report '{$this->name}' has been submitted by {$me->getName()}.\n\nClick here to download: $url";
                         $subject = (isset($_GET['subject'])) ? $_GET['subject'] : "Report Submitted";
@@ -334,12 +350,16 @@ abstract class AbstractReport extends SpecialPage {
         else{
             // File not found
             $wgOut->setPageTitle("Report not Found");
-            $wgOut->addHTML("<span class='en'>The report specified does not exist</span>
-                             <span class='fr'>Le rapport spécifié n'existe pas.</span>");
+            $wgOut->addHTML("<en>The report specified does not exist</en>
+                             <fr>Le rapport spécifié n'existe pas.</fr>");
             $wgOut->addHTML("<script type='text/javascript'>
-                                $('h1').html(\"<span class='en'>Report not Found</span><span class='fr'>Rapport introuvable</span>\");
+                                $('h1').html(\"<en>Report not Found</en><fr>Rapport introuvable</fr>\");
                             </script>");
         }
+    }
+    
+    function addScript($script){
+        $this->scripts[] = $script;
     }
     
     function notifySupervisors($tok){
@@ -397,10 +417,13 @@ abstract class AbstractReport extends SpecialPage {
         return $return;
     }
     
-    function getPDF($submittedByOwner=false){
+    function getPDF($submittedByOwner=false, $pdfType=''){
         if(isset($this->pdfFiles[0]) && $this->pdfFiles[0] != $this->xmlName){
             $file = $this->pdfFiles[0];
             $report = new DummyReport($file, $this->person, $this->project, $this->year, true);
+            if($pdfType != ""){
+                $report->pdfType = $pdfType;
+            }
             $report->year = $this->year;
             return $report->getPDF();
         }
@@ -448,34 +471,33 @@ abstract class AbstractReport extends SpecialPage {
         }
         $largestDate = "0000-00-00 00:00:00";
         $return = array();
-        foreach($check as $c){
+        foreach($check as $i => $c){
             $tst = $c['timestamp'];
             if($c['submitted'] == 1){
-                $c['status'] = "Generated/Submitted";
+                $check[$i]['status'] = "Generated/Submitted";
             }
             else if($foundSameUser){
-                $c['status'] = "Generated/Not Submitted";
+                $check[$i]['status'] = "Generated/Not Submitted";
             }
             else if(!$foundSameUser){
-                $c['status'] = "Generated/Not Submitted";
+                $check[$i]['status'] = "Generated/Not Submitted";
             }
             else{
-                $c['status'] = "Generated/Not Submitted";
+                $check[$i]['status'] = "Generated/Not Submitted";
             }
-            $c['name'] = $this->name;
-            if(strcmp($tst, $largestDate) > 0){
-                $largestDate = $tst;
-                $return = array($c);
-            }
+            $check[$i]['name'] = $this->name;
         }
+        usort($check, function($a, $b){
+            return (strcmp($a['timestamp'], $b['timestamp']) < 0);
+        });
         if(isset($check2) && count($check2) > 0){
             foreach($check2 as $chk){
                 if($chk['timestamp'] > $largestDate){
-                    $return[0]['status'] = "Submitted/Re-Generated";
+                    $check[0]['status'] = "Submitted/Re-Generated";
                 }
             }
         }
-        return $return;
+        return $check;
     }
     
     // Sets the name of this Report
@@ -490,9 +512,10 @@ abstract class AbstractReport extends SpecialPage {
         if($this->project != null){
             $item->setProjectId($this->project->getId());
         }
+        $name = $item->varSubstitute($name);
         if($this->project != null){
             if($this->project instanceof Project){
-                if($this->project->getName() == ""){
+                if($this->project->getName() == "" || strstr($name, $this->project->getName()) !== false){
                     $this->name = $name;
                 }
                 else{
@@ -500,13 +523,17 @@ abstract class AbstractReport extends SpecialPage {
                 }
             }
             else if($this->project instanceof Theme){
-                $this->name = $name.": {$this->project->getAcronym()}";
+                if($this->project->getAcronym() == "" || strstr($name, $this->project->getAcronym()) !== false){
+                    $this->name = $name;
+                }
+                else{
+                    $this->name = $name.": {$this->project->getAcronym()}";
+                }
             }
         }
         else{
             $this->name = $name;
         }
-        $this->name = $item->varSubstitute($this->name);
     }
     
     function setHeaderName($name){
@@ -523,6 +550,10 @@ abstract class AbstractReport extends SpecialPage {
         $this->headerName = $item->varSubstitute($name);
     }
     
+    function setSkipTopline($skipTopLine){
+        $this->skipTopLine = $skipTopLine;
+    }
+    
     // Specifies which report this one inherits from
     function setExtends($extends){
         $this->extends = $extends;
@@ -535,12 +566,12 @@ abstract class AbstractReport extends SpecialPage {
     
     // Sets the type of Report
     function setReportType($type){
-        $this->reportType = $type;
+        $this->reportType = $this->varSubstitute($type);
     }
     
     // Sets the type of PDF to generate when generatePDF is called
     function setPDFType($type){
-        $this->pdfType = $type;
+        $this->pdfType = $this->varSubstitute($type);
     }
     
     // Sets the PDF Files that this Report will generate
@@ -563,12 +594,27 @@ abstract class AbstractReport extends SpecialPage {
     }
     
     // Adds a new section to this Report
-    function addSection($section, $position=null){
+    function addSection($section, $position=null, $after=null){
         $section->setParent($this);
         if($position == null){
-            $this->sections[] = $section;
+            if($after == null){
+                // Next section as normal
+                $this->sections[] = $section;
+            }
+            else{
+                // Insert after section
+                $sections = $this->sections;
+                $this->sections = array();
+                foreach($sections as $sect){
+                    $this->sections[] = $sect;
+                    if($sect->id == $after){
+                        $this->sections[] = $section;
+                    }
+                }
+            }
         }
         else{
+            // Insert at specific position
             array_splice($this->sections, $position, 0, array($section));
         }
     }
@@ -578,6 +624,7 @@ abstract class AbstractReport extends SpecialPage {
         foreach($this->sections as $key => $sec){
             if($section->id == $sec->id){
                 unset($this->sections[$key]);
+                $this->sections = array_values($this->sections);
                 return;
             }
         }
@@ -618,12 +665,12 @@ abstract class AbstractReport extends SpecialPage {
         $permissions = str_split($permissions);
         if(count($permissions) > 0){
             foreach($permissions as $permission){
-                $this->sectionPermissions[$role][$sectionId][$permission] = true;
+                $this->sectionPermissions["$role"][$sectionId][$permission] = true;
             }
         }
         else{
             // No permissions were explicitly defined, so add 'empty' permission (signals that the user has no permissions)
-            $this->sectionPermissions[$role][$sectionId][""] = true;
+            $this->sectionPermissions["$role"][$sectionId][""] = true;
         }
     }
     
@@ -631,7 +678,7 @@ abstract class AbstractReport extends SpecialPage {
     function getPercentChars(){
         $percents = array();
         foreach($this->sections as $section){
-            $percents["{$section->name}"] = $section->getPercentChars();
+            $percents["{$section->getPostId()}"] = $section->getPercentChars();
         }
         return $percents;
     }
@@ -710,7 +757,9 @@ abstract class AbstractReport extends SpecialPage {
         $me = Person::newFromWgUser();
         $rResult = $me->isRoleAtLeast(MANAGER);
         $pResult = false;
+        $tResult = false;
         $nProjectTags = 0;
+        $nThemeTags = 0;
         foreach($this->permissions as $type => $perms){
             foreach($perms as $perm){
                 switch($type){
@@ -787,13 +836,6 @@ abstract class AbstractReport extends SpecialPage {
                             }
                             else if(strstr($perm['perm']['role'], "+") !== false){
                                 $role = str_replace("+", "", $perm['perm']['role']);
-                                if(strstr($role, "-Candidate") !== false){
-                                    $role = str_replace("-Candidate", "", $role);
-                                    $role = constant($role)."-Candidate";
-                                }
-                                else{
-                                    $role = constant($role);
-                                }
                                 $rResultTmp = $me->isRoleAtLeastDuring($role, $perm['start'], $perm['end']);
                             }
                             else{
@@ -814,7 +856,7 @@ abstract class AbstractReport extends SpecialPage {
                         break;
                     case "Project":
                         $nProjectTags++;
-                        if($this->project != null){
+                        if($this->project != null && $this->project->getId() != 0){
                             if(isset($perm['perm']['deleted']) && $perm['perm']['deleted'] !== null){
                                 $pResult = ($pResult || (($perm['perm']['deleted'] && 
                                            $this->project->isDeleted() && 
@@ -835,6 +877,16 @@ abstract class AbstractReport extends SpecialPage {
                             }
                         }
                         break;
+                    case "Theme":
+                        $nThemeTags++;
+                        if($this->project != null && $this->project->getId() != 0){
+                            if($me->isThemeLeaderOf($this->project) || 
+                               $me->isThemeCoordinatorOf($this->project) ||
+                               $me->isRoleAtLeast(SD)){
+                                $tResult = true;
+                            }
+                        }
+                        break;
                     case "Person":
                         if($me->getId() == $perm['perm']['id']){
                             $rResult = true;
@@ -846,7 +898,10 @@ abstract class AbstractReport extends SpecialPage {
         if($nProjectTags == 0){
             $pResult = true;
         }
-        return ($pResult && $rResult);
+        if($nThemeTags == 0){
+            $tResult = true;
+        }
+        return ($tResult && $pResult && $rResult);
     }
     
     function getSectionPermissions($section){
@@ -881,6 +936,11 @@ abstract class AbstractReport extends SpecialPage {
                 $roles[] = EVALUATOR."-{$row['type']}";
             }
         }
+        if(!$me->isLoggedIn()){
+            $roles[] = "LoggedOut";
+            $roles[] = "LoggedOut+";
+        }
+        
         $permissions = array();
         foreach($roles as $role){
             if(isset($this->sectionPermissions[$role][$section->id])){
@@ -948,7 +1008,7 @@ abstract class AbstractReport extends SpecialPage {
     
     // Generates the PDF for the report, and saves it to the Database
     function generatePDF($person=null, $submit=false){
-        global $wgOut, $wgUser, $config, $wgServer, $wgScriptPath, $wgAdditionalMailParams;
+        global $wgOut, $wgUser, $config, $wgServer, $wgScriptPath, $wgAdditionalMailParams, $wgPasswordSender;
         session_write_close();
         if($this->disabled){
             echo "This Report is disabled until further notice";
@@ -985,7 +1045,7 @@ abstract class AbstractReport extends SpecialPage {
                         if($submit){
                             $report->submitReport($person);
                         }
-                        wfRunHooks('AfterGeneratePDF', array($sto));
+                        Hooks::run('AfterGeneratePDF', array($sto));
                     }
                 }
             }
@@ -1009,8 +1069,8 @@ abstract class AbstractReport extends SpecialPage {
             if(isset($_GET['emails']) && $_GET['emails'] != "" && $wgScriptPath == "" && $tok != ""){
                 $personSubmitting = Person::newFromWgUser();
             	$url = "{$wgServer}{$wgScriptPath}/index.php/Special:ReportArchive?getpdf={$tok}";
-            	$headers = "From: {$config->getValue('networkName')} Support <{$config->getValue('supportEmail')}>\r\n" .
-                           "Reply-To: {$config->getValue('networkName')} Support <{$config->getValue('supportEmail')}>\r\n" .
+            	$headers = "From: {$config->getValue('networkName')} Support <{$wgPasswordSender}>\r\n" .
+                           "Reply-To: {$config->getValue('networkName')} Support <{$wgPasswordSender}>\r\n" .
                            "X-Mailer: PHP/" . phpversion();
                 $message = "'{$this->name}' has been submitted by {$personSubmitting->getName()}.\n\nClick here to download: $url";
                 $subject = (isset($_GET['subject'])) ? $_GET['subject'] : "Report Submitted";
@@ -1018,7 +1078,7 @@ abstract class AbstractReport extends SpecialPage {
                     mail($email, $subject, $message, $headers, $wgAdditionalMailParams);
                 }
             }
-            wfRunHooks('AfterGeneratePDF', array($sto));
+            Hooks::run('AfterGeneratePDF', array($sto));
         }
         if($submit){
             $this->submitReport($person);
@@ -1047,6 +1107,12 @@ abstract class AbstractReport extends SpecialPage {
         }
     }
     
+    // Checks whether or not this report has a pdf generated
+    function isGenerated(){
+        $check = $this->getPDF();
+        return (isset($check[0]));
+    }
+    
     // Checks whether or not this report has been submitted or not
     function isSubmitted(){
         $check = $this->getPDF();
@@ -1067,7 +1133,7 @@ abstract class AbstractReport extends SpecialPage {
         if(!DBFunctions::DBWritable()){
             $writable = "false";
         }
-        $wgOut->addStyle("../extensions/Reporting/Report/style/report.css?".filemtime(dirname(__FILE__)."/style/report.css"));
+        $wgOut->addScript("<link rel='stylesheet' type='text/css' href='$wgServer$wgScriptPath/extensions/Reporting/Report/style/report.css?".filemtime(dirname(__FILE__)."/style/report.css")."'></style>");
         $wgOut->addScript("<script type='text/javascript'>
             var dbWritable = {$writable};
         </script>");
@@ -1087,7 +1153,9 @@ abstract class AbstractReport extends SpecialPage {
         $wgOut->addHTML("<div id='autosaveDiv'><span style='float:left;width:100%;text-align:left'><span style='float:right;' class='autosaveSpan'></span></span></div>
                             </div>
                             </div>");
-        
+        foreach($this->scripts as $script){
+            $wgOut->addHTML($this->varSubstitute($script));
+        }
         $wgOut->addHTML("   <div id='reportMain' class='displayTableCell'><div>");
         if(!$this->topProjectOnly || ($this->topProjectOnly && !$this->currentSection->private)){
             $this->currentSection->render();
@@ -1110,6 +1178,9 @@ abstract class AbstractReport extends SpecialPage {
         $wgOut->addHTML("</div>\n");
         $wgOut->addHTML("<script type='text/javascript'>
             autosaveDiv = $('.autosaveSpan');
+            if(networkName == 'AVOID'){
+                $('#reportMain').addClass('program-body');
+            }
         </script>");
     }
     
@@ -1369,10 +1440,24 @@ abstract class AbstractReport extends SpecialPage {
     }
     
     static function blobConstant($constant){
-        if(defined("{$constant}")){
-            return constant("{$constant}");
+        $plus = (substr($constant, -1) == "+");
+        $candidate = (strstr($constant, "-Candidate") !== false);
+        if($plus){
+            $constant = str_replace("+", "", $constant);
+            $plus = true;
         }
-        return "{$constant}";
+        if($candidate){
+            $constant = str_replace("-Candidate", "", $constant);
+            $candidate = true;
+        }
+        
+        if(defined("{$constant}")){
+            $constant = constant("{$constant}");
+        }
+        
+        $constant = ($candidate) ? "{$constant}-Candidate" : $constant;
+        $constant = ($plus)      ? "{$constant}+"          : $constant;
+        return $constant;
     }
     
     static function tinyMCEUpload($action){
@@ -1438,6 +1523,7 @@ abstract class AbstractReport extends SpecialPage {
         $item = new StaticReportItem();
         $section = new ReportSection();
         $item->setParent($section);
+        $item->personId = $this->person->getId();
         $section->setParent($this);
         return $item->varSubstitute($value);
     }

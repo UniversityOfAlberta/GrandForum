@@ -1,0 +1,36 @@
+<p class="trackerHeader"><b>
+    <en>Action Plan Daily Tracker - Accomplished your plan today?</en>
+    <fr>Outil de suivi du plan d'action hebdomadaire - Avez-vous atteint vos objectifs aujourd'hui?</fr>
+</b></p>
+<table class='wikitable' style='width: 100%;'>
+    <tr>
+        <th style='width: 14.2%;line-height:1em;'><en>Mon</en><fr>Lun</fr><br /><small><%= new Date(date.replace(/-/g, "/")).toLocaleString(wgLang + '-US', { month: 'short', day: 'numeric'}) %></small></th>
+        <th style='width: 14.2%;line-height:1em;'><en>Tue</en><fr>Mar</fr><br /><small><%= new Date(new Date(date.replace(/-/g, "/")).getTime() + 1*60*60*24*1000).toLocaleString(wgLang + '-US', { month: 'short', day: 'numeric'}) %></small></th>
+        <th style='width: 14.2%;line-height:1em;'><en>Wed</en><fr>Mer</fr><br /><small><%= new Date(new Date(date.replace(/-/g, "/")).getTime() + 2*60*60*24*1000).toLocaleString(wgLang + '-US', { month: 'short', day: 'numeric'}) %></small></th>
+        <th style='width: 14.2%;line-height:1em;'><en>Thu</en><fr>Jeu</fr><br /><small><%= new Date(new Date(date.replace(/-/g, "/")).getTime() + 3*60*60*24*1000).toLocaleString(wgLang + '-US', { month: 'short', day: 'numeric'}) %></small></th>
+        <th style='width: 14.2%;line-height:1em;'><en>Fri</en><fr>Ven</fr><br /><small><%= new Date(new Date(date.replace(/-/g, "/")).getTime() + 4*60*60*24*1000).toLocaleString(wgLang + '-US', { month: 'short', day: 'numeric'}) %></small></th>
+        <th style='width: 14.2%;line-height:1em;'><en>Sat</en><fr>Sam</fr><br /><small><%= new Date(new Date(date.replace(/-/g, "/")).getTime() + 5*60*60*24*1000).toLocaleString(wgLang + '-US', { month: 'short', day: 'numeric'}) %></small></th>
+        <th style='width: 14.2%;line-height:1em;'><en>Sun</en><fr>Dim</fr><br /><small><%= new Date(new Date(date.replace(/-/g, "/")).getTime() + 6*60*60*24*1000).toLocaleString(wgLang + '-US', { month: 'short', day: 'numeric'}) %></small></th>
+     </tr>
+     <% if(type == "Fitbit Monitoring"){ %>
+        <tr>
+            <td align='center'><% if(tracker.Mon == 1){ %> &#10003; <% } else { %>&nbsp;<% } %></td>
+            <td align='center'><% if(tracker.Tue == 1){ %> &#10003; <% } else { %>&nbsp;<% } %></td>
+            <td align='center'><% if(tracker.Wed == 1){ %> &#10003; <% } else { %>&nbsp;<% } %></td>
+            <td align='center'><% if(tracker.Thu == 1){ %> &#10003; <% } else { %>&nbsp;<% } %></td>
+            <td align='center'><% if(tracker.Fri == 1){ %> &#10003; <% } else { %>&nbsp;<% } %></td>
+            <td align='center'><% if(tracker.Sat == 1){ %> &#10003; <% } else { %>&nbsp;<% } %></td>
+            <td align='center'><% if(tracker.Sun == 1){ %> &#10003; <% } else { %>&nbsp;<% } %></td>
+         </tr>
+     <% } else { %>
+        <tr>
+            <td class='checkCell' align='center'><%= HTML.CheckBox(this, 'tracker.Mon', {value: 1}) %></td>
+            <td class='checkCell' align='center'><%= HTML.CheckBox(this, 'tracker.Tue', {value: 1}) %></td>
+            <td class='checkCell' align='center'><%= HTML.CheckBox(this, 'tracker.Wed', {value: 1}) %></td>
+            <td class='checkCell' align='center'><%= HTML.CheckBox(this, 'tracker.Thu', {value: 1}) %></td>
+            <td class='checkCell' align='center'><%= HTML.CheckBox(this, 'tracker.Fri', {value: 1}) %></td>
+            <td class='checkCell' align='center'><%= HTML.CheckBox(this, 'tracker.Sat', {value: 1}) %></td>
+            <td class='checkCell' align='center'><%= HTML.CheckBox(this, 'tracker.Sun', {value: 1}) %></td>
+         </tr>
+     <% } %>
+</table>

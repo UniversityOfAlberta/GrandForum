@@ -13,7 +13,7 @@ function runEEAReviewTable($par) {
 
 class EEAReviewTable extends SpecialPage{
 
-    function EEAReviewTable() {
+    function __construct() {
         SpecialPage::__construct("EEAReviewTable", null, false, 'runEEAReviewTable');
     }
     
@@ -24,6 +24,7 @@ class EEAReviewTable extends SpecialPage{
 
     function execute($par){
         global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle, $wgMessage;
+        $this->getOutput()->setPageTitle("EEA Review Table");
         if(isset($_GET['download']) && isset($_GET['year']) && isset($_GET['key'])){
             header('Content-Type: data:application/vnd.ms-excel');
             header('Content-Disposition: attachment; filename="'.$_GET['key'].' Review.xls"');
@@ -150,7 +151,7 @@ class EEAReviewTable extends SpecialPage{
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle, $special_evals;
         $person = Person::newFromWgUser();
         
-        if(self::userCanExecute($wgUser)){
+        if((new self)->userCanExecute($wgUser)){
             $selected = @($wgTitle->getText() == "EEAReviewTable") ? "selected" : false;
             $tabs["Manager"]['subtabs'][] = TabUtils::createSubTab("EEA Review Table", "$wgServer$wgScriptPath/index.php/Special:EEAReviewTable", $selected);
         }

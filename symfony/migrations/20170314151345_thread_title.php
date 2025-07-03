@@ -23,7 +23,7 @@ class ThreadTitle extends AbstractMigration
     public function up()
     {
         $table = $this->table("grand_threads");
-        $table->changeColumn('title', 'string', array('limit' => 1024))
+        $table->changeColumn('title', 'string', array('limit' => 512))
               ->save();
     }
 

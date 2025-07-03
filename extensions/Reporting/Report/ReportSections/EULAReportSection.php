@@ -2,38 +2,12 @@
 
 class EULAReportSection extends EditableReportSection {
     
-    // Saves all the blobs in this EditableReportSection
-    function saveBlobs(){
-        if(!$this->checkPermission('w')){
-            return array();
-        }
-        $errors = array();
-        foreach($this->items as $item){
-            $errors = array_merge($errors, $item->save());
-        }
-        return $errors;
-    }
-    
     function render(){
         global $wgOut, $wgServer, $wgScriptPath, $wgTitle, $config;
         if(!$this->checkPermission('r')){
             // User cannot view section
             $wgOut->addHTML("<div><div id='reportHeader'>Permission Error</div><hr /><div id='reportBody'>You are not permitted to view this section</div></div>");
             return;
-        }
-        $action = $wgTitle->getFullUrl()."?report=".urlencode($this->getParent()->xmlName)."&section=".urlencode($this->name)."&showSection";
-        if($this->getParent()->project != null){
-            if($this->getParent()->project instanceof Project){
-                if($this->getParent()->project->getName() == ""){
-                    $action .= "&project=".urlencode($this->getParent()->project->getId());
-                }
-                else{
-                    $action .= "&project=".urlencode($this->getParent()->project->getName());
-                }
-            }
-            else if($this->getParent()->project instanceof Theme){
-                $action .= "&project=".urlencode($this->getParent()->project->getAcronym());
-            }
         }
         $autosave = " class='noautosave'";
         if($this->autosave && $this->checkPermission('w') && DBFunctions::DBWritable()){
@@ -48,7 +22,7 @@ class EULAReportSection extends EditableReportSection {
             $number = implode(', ', $numbers).'. ';
         }
         
-        $wgOut->addHTML("<div><form action='$action' autocomplete='off' method='post' name='report' enctype='multipart/form-data'$autosave>
+        $wgOut->addHTML("<div><form action='{$this->getAction()}' autocomplete='off' method='post' name='report' enctype='multipart/form-data'$autosave>
                             <div id='reportHeader'>{$number}{$this->title}</div>
                              <hr />
                              <div id='reportBody'>");
@@ -78,13 +52,15 @@ class EULAReportSection extends EditableReportSection {
         $wgOut->addHTML("</div>
                              <hr />
                              <div id='reportFooter'>
-                                <input type='submit' value='Next' name='submit' $disabled />&nbsp;<span class='autosaveSpan'></span><img id='submit_throbber' style='display:none;vertical-align:-20%;' src='../skins/Throbber.gif' />
+                                <button type='submit' value='Next' name='submit' style='width:155px;' $disabled>
+                                    <en>Next</en><fr>Suivant</fr>
+                                </button>&nbsp;<span class='autosaveSpan'></span><img id='submit_throbber' style='display:none;vertical-align:-20%;' src='../skins/Throbber.gif' />
                              </div>
                          </form></div>\n");
         $wgOut->addHTML("<script type='text/javascript'>
-            $('input[name=submit]').click(function(){
+            $('button[name=submit][value=Next]').click(function(){
                 _.defer(function(){
-                    $('a.reportTab.selectedReportTab').next().click();
+                    $('a.reportTab.selectedReportTab').nextAll('a:not(.disabled_lnk)').first().click();
                 });
             });
         </script>");

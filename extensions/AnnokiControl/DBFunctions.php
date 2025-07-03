@@ -118,8 +118,8 @@ class DBFunctions {
     
     static function initDB(){
         if(DBFunctions::$dbr == null && DBFunctions::isReady()){
-            DBFunctions::$dbr = wfGetDB(DB_SLAVE);
-            DBFunctions::$dbw = wfGetDB(DB_MASTER);
+            DBFunctions::$dbr = wfGetDB(DB_REPLICA);
+            DBFunctions::$dbw = wfGetDB(DB_PRIMARY);
             DBFunctions::$mysqlnd = function_exists('mysqli_fetch_all');
         }
     }
@@ -186,10 +186,10 @@ class DBFunctions {
 	        $rows = array();
 	        if($result != null){
 	            if(DBFunctions::$mysqlnd){
-	                $rows = mysqli_fetch_all($result->result, MYSQLI_ASSOC);
+	                $rows = mysqli_fetch_all(ResultWrapper::unwrap($result), MYSQLI_ASSOC);
 	            }
 	            else{
-	                while ($row = mysqli_fetch_array($result->result, MYSQLI_ASSOC)) {
+	                while ($row = mysqli_fetch_array(ResultWrapper::unwrap($result), MYSQLI_ASSOC)) {
 		                $rows[] = $row;
 	                }
 	            }
@@ -458,16 +458,16 @@ class DBFunctions {
 	 * Begins a Transaction
 	 */
 	static function begin(){
-	    DBFunctions::initDB();
-	    DBFunctions::$dbw->begin();
+        DBFunctions::initDB();
+        DBFunctions::execSQL("BEGIN", true);
 	}
 	
 	/**
 	 * Commits the transaction to the DB
 	 */
 	static function commit(){
-	    DBFunctions::initDB();
-		DBFunctions::$dbw->commit();
+        DBFunctions::initDB();
+        DBFunctions::execSQL("COMMIT", true);
 	}
 	
 	/**
@@ -475,12 +475,7 @@ class DBFunctions {
 	 */
 	static function rollback(){
 	    DBFunctions::initDB();
-	    DBFunctions::$dbw->rollback();
-	}
-	
-	static function close(){
-	    DBFunctions::initDB();
-	    DBFunctions::$dbw->close();
+        DBFunctions::execSQL("ROLLBACK", true);
 	}
 	
 	/**

@@ -50,7 +50,7 @@ class Alumni extends BackboneModel {
         return $alumni;
     }
  
-    function Alumni($data){
+    function __construct($data){
         if(count($data) > 0){
             $this->id = $data[0]['id'];
             $this->user_id = $data[0]['user_id'];

@@ -36,7 +36,7 @@ class UofANews {
         return $news;
     }
 
-    function UofANews($row){
+    function __construct($row){
         $this->id = $row['id'];
         $this->user_id = $row['user_id'];
         $this->title = $row['title'];

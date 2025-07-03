@@ -78,7 +78,7 @@ class University extends BackboneModel {
         return $unis;
     }
     
-    function University($data){
+    function __construct($data){
         if(count($data) > 0){
             $row = $data[0];
             $this->id = $row['university_id'];

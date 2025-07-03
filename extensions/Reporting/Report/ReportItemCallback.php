@@ -1,5 +1,75 @@
 <?php
 
+abstract class Callbackable {
+    
+    //Function that finds all variables in CDATA (if any) and substitutes them by finding there values with the help of RI type-specific callbacks
+    function varSubstitute($cdata){
+        $matches = array();
+        preg_match_all('/{\$(.+?)}/', $cdata, $matches);
+        
+        foreach($matches[1] as $k => $m){
+            if(isset(ReportItemCallback::$callbacks[$m])){
+                $v = str_replace("$", "\\$", ReportItemCallback::call($this, $m));
+                $v = str_replace(",", "&#44;", $v);
+                $cdata = str_replace("{\$".$m."}", @nl2br($v), $cdata);
+            }
+        }
+        
+        // Support nested function calls
+        preg_match_all('/(?={((?:[^{}]++|{(?1)})++)})/', $cdata, $matches);
+        // Reverse the array so that it gets the inner most first
+        //print_r($matches[1]);
+        //$matches[1] = array_reverse($matches[1]);
+        $recursive = false;
+        $noLongerRecursive = false;
+        foreach($matches[1] as $k => $m){
+            $m = $matches[1][$k];
+            $e = explode('(', $m);
+            if(isset($e[1])){
+                // Function call
+                $f = $e[0];
+                $a = explode(",", str_replace(")", "", $e[1]));
+                foreach($a as $key => $arg){
+                    $arg = trim($arg);
+                    $a[$key] = AbstractReport::blobConstant($arg);
+                }
+                if(isset(ReportItemCallback::$callbacks[$f])){
+                    if(strstr($m, "{") !== false || strstr($m, "}") !== false){
+                        // Don't process yet if there are recursive calls
+                        $recursive = true;
+                        continue;
+                    }
+                    else{
+                        $v = ReportItemCallback::call($this, $f, $a);
+                        if(is_array($v)){
+                            foreach($matches[1] as $k2 => $m2){
+                                $matches[1][$k2] = str_replace("{".$m."}", serialize($v), $m2);
+                            }
+                            $cdata = str_replace("{".$m."}", serialize($v), $cdata);
+                        }
+                        else{
+                            $v = str_replace(",", "&#44;", $v);
+                            foreach($matches[1] as $k2 => $m2){
+                                $matches[1][$k2] = str_replace("{".$m."}", $v, $m2);
+                            }
+                            $cdata = str_replace("{".$m."}", $v, $cdata);
+                        }
+                        if($recursive){
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        if($recursive){
+            // There are recursive calls, now call them
+            $cdata = $this->varSubstitute($cdata);
+        }
+        return $cdata;
+    }
+    
+}
+
 class ReportItemCallback {
     
     static $reportCallback;
@@ -33,6 +103,7 @@ class ReportItemCallback {
             "project_status" => "getProjectStatus",
             "project_description" => "getProjectDescription",
             "project_theme" => "getProjectTheme",
+            "project_theme_lead_emails" => "getProjectThemeLeadEmails",
             "project_start" => "getProjectStart",
             "project_end" => "getProjectEnd",
             "project_length" => "getProjectLength",
@@ -41,6 +112,7 @@ class ReportItemCallback {
             "project_leader_ids" => "getProjectLeaderIds",
             "project_past_leader_names" => "getPastProjectLeaderNames",
             "project_nis" => "getProjectNIs",
+            "project_members" => "getProjectMembers",
             "project_evolved_from" => "getProjectEvolvedFrom",
             "project_evolved_into" => "getProjectEvolvedInto",
             "project_n_collaborators" => "getNCollaborators",
@@ -62,6 +134,12 @@ class ReportItemCallback {
             "project_n_movedon" => "getNMovedOn",
             "project_n_progressed" => "getNProgressed",
             "project_intcomp_application" => "getIntCompApplication", // hard-coded strings
+            "project_cic_partners" => "getCICPartners",
+            // Themes
+            "theme_id" => "getThemeId",
+            "theme_name" => "getThemeName",
+            "theme_full_name" => "getThemeFullName",
+            "theme_url" => "getThemeUrl",
             // Milestones
             "milestone_id" => "getMilestoneId",
             "milestone_title" => "getMilestoneTitle",
@@ -112,6 +190,7 @@ class ReportItemCallback {
             "user_uni" => "getUserUni",
             "user_nationality" => "getUserNationality",
             "user_supervisors" => "getUserSupervisors",
+            "user_current_supervisors" => "getUserCurrentSupervisors",
             "user_supervisor_id" => "getUserSupervisorId",
             "user_projects" => "getUserProjects",
             "user_project_end_date" => "getUserProjectEndDate",
@@ -148,14 +227,20 @@ class ReportItemCallback {
             "contribution_total" => "getContributionTotal",
             // ELITE
             "getElitePostingField" => "getElitePostingField",
+            // BD
+            "themeSurveyStats" => "getThemeSurveyStats",
+            "projectSurveyStats" => "getProjectSurveyStats",
             // Other
             "wgUserId" => "getWgUserId",
             "wgServer" => "getWgServer",
             "wgScriptPath" => "getWgScriptPath",
+            "wgLang" => "getWgLang",
             "GET" => "getGet",
             "networkName" => "getNetworkName",
+            "networkFullName" => "getNetworkFullName",
             "id" => "getId",
             "name" => "getName",
+            "i" => "getI",
             "index" => "getIndex",
             "value" => "getValue",
             "pdfHTML" => "getPDFHTML",
@@ -174,7 +259,9 @@ class ReportItemCallback {
             "getHTML" => "getHTML",
             "getArray" => "getArray",
             "getExtra" => "getExtra",
+            "isValidUserId" => "isValidUserId",
             "getPDFUserId" => "getPDFUserId",
+            "showLanguage" => "showLanguage",
             "concat" => "concat",
             "trim" => "trim",
             "add" => "add",
@@ -182,20 +269,26 @@ class ReportItemCallback {
             "multiply" => "multiply",
             "divide" => "divide",
             "round" => "round",
+            "max" => "max",
+            "min" => "min",
             "number_format" => "number_format",
             "getArrayCount" => "getArrayCount",
             "isArrayComplete" => "isArrayComplete",
             "replace" => "replace",
-            "substr" => "substr",
             "strtolower" => "strtolower",
             "strtoupper" => "strtoupper",
+            "substr" => "substr",
             "nl2br" => "nl2br",
             "comma" => "comma",
+            "encrypt" => "encrypt",
+            "decrypt" => "decrypt",
             "set" => "set",
             "get" => "get",
             "if" => "ifCond",
             "and" => "andCond",
             "or" => "orCond",
+            "matches" => "matches",
+            "!matches" => "notMatches",
             "contains" => "contains",
             "!contains" => "notContains",
             "!" => "not",
@@ -210,7 +303,7 @@ class ReportItemCallback {
     var $reportItem;
     
     // Constructor
-    function ReportItemCallback($reportItem){
+    function __construct($reportItem){
         $this->reportItem = $reportItem;
     }
     
@@ -312,7 +405,7 @@ class ReportItemCallback {
         return $project_stat;
     }
     
-    function getProjectDescription(){
+    function getProjectDescription($key=""){
         $project_desc = "";
         if($this->reportItem->projectId != 0 ){
             $project = Project::newFromHistoricId($this->reportItem->projectId);
@@ -320,6 +413,9 @@ class ReportItemCallback {
                 return "";
             }
             $project_desc = $project->getDescription();
+        }
+        if($key != "" && isset($project_desc[$key])){
+            return $project_desc[$key];
         }
         return $project_desc;
     }
@@ -335,6 +431,23 @@ class ReportItemCallback {
             $project_theme = implode(", ", $challenges->pluck('getAcronym()'));
         }
         return $project_theme;
+    }
+    
+    function getProjectThemeLeadEmails($delim=","){
+        $leadEmails = array();
+        $project_theme = "";
+        if($this->reportItem->projectId != 0){
+            $project = Project::newFromHistoricId($this->reportItem->projectId);
+            if($project == null){
+                return "";
+            }
+            foreach($project->getChallenges() as $challenge){
+                foreach($challenge->getLeaders() as $leader){
+                    $leadEmails[$leader->getEmail()] = $leader->getEmail();
+                }   
+            }
+        }
+        return implode($delim, $leadEmails);
     }
     
     function getProjectStart(){
@@ -470,6 +583,29 @@ class ReportItemCallback {
         return implode(", ", $nis);
     }
     
+    function getProjectMembers(){
+        $members = array();
+        if($this->reportItem->projectId != 0){
+            $project = Project::newFromHistoricId($this->reportItem->projectId);
+            if($project == null){
+                return "";
+            }
+            $year = $this->reportItem->getReport()->year;
+            foreach(array_merge($project->getAllPeople(CI),
+                                $project->getAllPeople(AR),
+                                $project->getAllPeople(HQP),
+                                $project->getAllPeople()) as $person){
+                if(!$person->isRole(PL, $project)){
+                    $members[$person->getId()] = "<a href='{$person->getUrl()}' target='_blank'>{$person->getNameForForms()}</a>";
+                }
+            }
+        }
+        if(count($members) == 0){
+            $members[] = "N/A";
+        }
+        return implode(", ", $members);
+    }
+    
     function getProjectEvolvedInto(){
         $projects = array();
         if($this->reportItem->projectId != 0 ){
@@ -538,6 +674,48 @@ class ReportItemCallback {
             }
         }
         return implode(", ", $newProjects);
+    }
+    
+    function getThemeId(){
+        return $this->getProjectId();
+    }
+    
+    function getThemeName(){
+        $theme_name = "";
+        if($this->reportItem->projectId != 0){
+            $theme = Theme::newFromId($this->reportItem->projectId);
+            if($theme == null){
+                return "";
+            }
+            $theme_name = $theme->getAcronym();
+        }
+        $theme_name = str_replace("<", "&lt;", $theme_name);
+        $theme_name = str_replace(">", "&gt;", $theme_name);
+        return $theme_name;
+    }
+    
+    function getThemeFullName(){
+        $theme_name = "";
+        if($this->reportItem->projectId != 0){
+            $theme = Theme::newFromId($this->reportItem->projectId);
+            if($theme == null){
+                return "";
+            }
+            $theme_name = $theme->getName();
+        }
+        return $theme_name;
+    }
+    
+    function getThemeUrl(){
+        $theme_name = "";
+        if($this->reportItem->projectId != 0){
+            $theme = Theme::newFromId($this->reportItem->projectId);
+            if($theme == null){
+                return "";
+            }
+            $theme_url = $theme->getUrl();
+        }
+        return $theme_url;
     }
     
     function getNFaceWithStakeholder($startDate = false, $endDate = false){
@@ -1349,6 +1527,21 @@ class ReportItemCallback {
         return implode(", ", $supervisors);
     }
     
+    function getUserCurrentSupervisors(){
+        $supervisors = array();
+        $person = Person::newFromId($this->reportItem->personId);
+        $me = $person;
+        foreach(Person::getAllPeople('all') as $person){
+            foreach($person->getRelations(SUPERVISES) as $rel){
+                if($rel->getUser2()->getId() == $me->getId()){
+                    $sup = $rel->getUser1();
+                    $supervisors[$sup->getId()] = "<a target='_blank' href='{$sup->getUrl()}'>{$sup->getNameForForms()}</a>";
+                }
+            }
+        }
+        return implode(", ", $supervisors);
+    }
+    
     function getUserSupervisorId(){
         $person = Person::newFromId($this->reportItem->personId);
         foreach($person->getSupervisors() as $supervisor){
@@ -1521,6 +1714,24 @@ class ReportItemCallback {
             return $map[$project->getName()];
         }
         return "";
+    }
+    
+    function getCICPartners(){
+        $data = DBFunctions::select(array('grand_report_blobs'),
+                                    array('data'),
+                                    array('rp_type' => 'RP_PROJECT_TABLE',
+                                          'rp_section' => 'PROJECTS',
+                                          'rp_item' => 'BUDGET'));
+        
+        $partners = array("");
+        foreach($data as $row){
+            $obj = unserialize($row['data']);
+            foreach($obj as $partner){
+                $partners[] = $partner['partner'];
+            }
+        }
+        $partners = array_unique($partners);
+        return implode(",", $partners);
     }
     
     function getSPLSubProjects(){
@@ -1734,6 +1945,16 @@ class ReportItemCallback {
         return @$elitePosting->{$field};
     }
     
+    function getThemeSurveyStats(){
+        $theme = Theme::newFromId($this->reportItem->projectId);
+        return str_replace("\n", "", SurveyTab::getHTML("", null, $theme));
+    }
+    
+    function getProjectSurveyStats(){
+        $project = Project::newFromHistoricId($this->reportItem->projectId);
+        return str_replace("\n", "", SurveyTab::getHTML("", $project, null));
+    }
+    
     function getWgUserId(){
         global $wgUser;
         return $wgUser->getId();
@@ -1749,9 +1970,17 @@ class ReportItemCallback {
         return $wgScriptPath;
     }
     
+    function getWgLang(){
+        global $wgLang;
+        return $wgLang->getCode();
+    }
+    
     function getGet($var1){
         if(isset($_GET[$var1])){
-            return $_GET[$var1];
+            return str_replace("(", "&#40;", 
+                   str_replace(")", "&#41;", 
+                   str_replace("{", "&#123;", 
+                   str_replace("}", "&#125;", $_GET[$var1]))));
         }
         return "";
     }
@@ -1759,6 +1988,11 @@ class ReportItemCallback {
     function getNetworkName(){
         global $config;
         return $config->getValue('networkName');
+    }
+    
+    function getNetworkFullName(){
+        global $config;
+        return $config->getValue('networkFullName');
     }
     
     function getId(){
@@ -1794,6 +2028,10 @@ class ReportItemCallback {
             $product = Product::newFromId($productId);
             return $product->getTitle();
         }
+    }
+    
+    function getI(){
+        return $this->getIndex() - 1;
     }
     
     function getIndex(){
@@ -1941,6 +2179,16 @@ class ReportItemCallback {
         return count($array);
     }
     
+    function showLanguage($en, $fr){
+        global $wgLang;
+        if($wgLang->getCode() == "en"){
+            return $en;
+        }
+        else {
+            return $fr;
+        }
+    }
+    
     function concat(){
         $args = func_get_args();
         $concat = "";
@@ -1958,7 +2206,9 @@ class ReportItemCallback {
         $args = func_get_args();
         $sum = 0;
         foreach($args as $arg){
-            $sum += $arg;
+            if(is_numeric($arg)){
+                $sum += $arg;
+            }
         }
         return $sum;
     }
@@ -1980,6 +2230,14 @@ class ReportItemCallback {
             return "";
         }
         return number_format(round($val, $dec), $dec, ".", "");
+    }
+    
+    function max($val1, $val2){
+        return max($val1, $val2);
+    }
+    
+    function min($val1, $val2){
+        return min($val1, $val2);
     }
     
     function number_format($val, $decimals=0, $dec_point="." , $thousands_sep=","){
@@ -2009,10 +2267,6 @@ class ReportItemCallback {
         return str_replace($pattern, $replacement, $string);
     }
     
-    function substr($string, $start, $length){
-        return substr($string, $start, $length);
-    }
-    
     function strtolower($str){
         return strtolower($str);
     }
@@ -2021,12 +2275,24 @@ class ReportItemCallback {
         return strtoupper($str);
     }
     
+    function substr($string, $offset, $length=null){
+        return substr($string, $offset, $length);
+    }
+    
     function nl2br($str){
         return nl2br($str);
     }
     
     function comma(){
         return ",";
+    }
+    
+    function encrypt($string){
+        return encrypt($string);
+    }
+    
+    function decrypt($string){
+        return decrypt($string);
     }
     
     function set($key, $val){
@@ -2064,6 +2330,15 @@ class ReportItemCallback {
         return $bool;
     }
     
+    function matches($str, $pattern){
+        return preg_match("/$pattern/", $str);
+    }
+    
+    function notMatches($str, $pattern){
+        return !$this->matches($str, $pattern);
+    }
+    
+    // $haystack, $needle
     function contains($val1, $val2){
         return (strstr($val1, $val2) !== false);
     }
@@ -2121,6 +2396,15 @@ class ReportItemCallback {
             return $set[$index];
         }
         return "";
+    }
+    
+    function isValidUserId($id){
+        $id = decrypt($id);
+        $data = DBFunctions::execSQL("SELECT user_id
+                                      FROM mw_user
+                                      WHERE user_id = '".DBFunctions::escape($id)."'
+                                      AND deleted != 1");
+        return (count($data) > 0);
     }
     
     function getPDFUserId($tok){

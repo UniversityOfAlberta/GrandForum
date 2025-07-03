@@ -4,7 +4,7 @@ LIMSOpportunity = Backbone.Model.extend({
     contact: null, // Parent obj
 
     initialize: function(){
-        this.tasks = new LIMSTasks();
+        this.tasks = new LIMSTasksPmm();
         this.tasks.opportunity = this;
         if(!this.isNew()){
             this.tasks.fetch();

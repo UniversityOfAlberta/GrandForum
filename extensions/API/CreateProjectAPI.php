@@ -2,7 +2,7 @@
 
 class CreateProjectAPI extends API{
 
-    function CreateProjectAPI(){
+    function __construct(){
         $this->addPOST("acronym",true,"The name of the project","MEOW");
 	    $this->addPOST("fullName",true,"The full name of the project","Media Enabled Organizational Workflow");
 	    $this->addPOST("status",true,"The status of this project","Proposed");
@@ -99,6 +99,7 @@ class CreateProjectAPI extends API{
 	                                    array('evolution_id' => $evoId,
 	                                          'project_id' => $nsId,
 	                                          'status' => $status,
+	                                          'start_date' => $effective_date,
 	                                          'type' => $type),
 	                                    true);
 	    }

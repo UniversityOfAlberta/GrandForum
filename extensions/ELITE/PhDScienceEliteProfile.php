@@ -5,7 +5,7 @@
  */
 
 class PhDScienceEliteProfile extends EliteProfile {
-    
+
     static $rpType = "SCI_PHD_ELITE";
     
     function acceptedMessage(){

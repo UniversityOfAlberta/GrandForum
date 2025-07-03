@@ -21,6 +21,8 @@
  * @ingroup MaintenanceLanguage
  */
 
+use MediaWiki\MediaWikiServices;
+
 require_once __DIR__ . '/../Maintenance.php';
 
 /**
@@ -34,23 +36,23 @@ class DateFormats extends Maintenance {
 
 	public function __construct() {
 		parent::__construct();
-		$this->mDescription = "Test various language time and date functions";
+		$this->addDescription( 'Test various language time and date functions' );
 	}
 
 	public function execute() {
 		global $IP;
 		foreach ( glob( "$IP/languages/messages/Messages*.php" ) as $filename ) {
 			$base = basename( $filename );
-			$m = array();
+			$m = [];
 			if ( !preg_match( '/Messages(.*)\.php$/', $base, $m ) ) {
 				continue;
 			}
 			$code = str_replace( '_', '-', strtolower( $m[1] ) );
 			$this->output( "$code " );
-			$lang = Language::factory( $code );
+			$lang = MediaWikiServices::getInstance()->getLanguageFactory()->getLanguage( $code );
 			$prefs = $lang->getDatePreferences();
 			if ( !$prefs ) {
-				$prefs = array( 'default' );
+				$prefs = [ 'default' ];
 			}
 			$this->output( "date: " );
 			foreach ( $prefs as $index => $pref ) {
@@ -78,5 +80,5 @@ class DateFormats extends Maintenance {
 	}
 }
 
-$maintClass = "DateFormats";
+$maintClass = DateFormats::class;
 require_once RUN_MAINTENANCE_IF_MAIN;

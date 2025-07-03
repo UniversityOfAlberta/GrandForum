@@ -1,0 +1,738 @@
+[
+    {
+        "id": "IngredientsForChange",
+        "title": "Ingredients for Change",
+        "titleFr": "Pour un changement réussi",
+        "videos": 5,
+        "questions": 4,
+        "tags": ["everything"],
+        "resources": [],
+        "resourcesFr": []
+    },
+    {
+        "id": "Activity",
+        "title": "Activity",
+        "titleFr": "Activité physique",
+        "videos": 8,
+        "questions": 3,
+        "tags": ["activity module"],
+        "resources": [
+            {
+                "file": "9. Balance with Hal _ Joanne.mp4",
+                "title": "Video: Balance with Hal & Joanne",
+                "tags": [ "balance" ]
+            },
+            {
+                "file": "9. Staying Active with Hal _ Joanne.mp4",
+                "title": "Video: Staying Active with Hal & Joanne",
+                "tags": [ "activity", "aerobic" ]
+            },
+            {
+                "file": "9. Strength with Hal _ Joanne.mp4",
+                "title": "Video: Strength with Hal & Joanne",
+                "tags": [ "strength" ]
+            },
+            {
+                "file": "Activity Vid.mp4",
+                "title": "Video: Exercise at Home",
+                "tags": [ "activity vid" ]
+            },
+            {
+                "file": "Movement is Medicine.pdf",
+                "title": "Movement is Medicine",
+                "tags": []
+            },
+            {
+                "file": "physical-literacy-infographic-en.pdf",
+                "title": "What is Physical Literacy",
+                "tags": []
+            },
+            {
+                "file": "physical-literacy-key-messages-en.pdf",
+                "title": "Physical Literacy Key Messages",
+                "tags": []
+            },
+            {
+                "file": "Tips to Get Active.pdf",
+                "title": "Tips to Get Active",
+                "tags": []
+            }
+        ],
+        "resourcesFr": [
+            {
+                "file": "Conseils pour être actif.pdf",
+                "title": "Conseils pour être actif",
+                "tags": []
+            },
+            {
+                "file": "Programme en douceur.pdf",
+                "title": "Programme en douceur",
+                "tags": []
+            },
+            {
+                "file": "Programme posture et stabilité.pdf",
+                "title": "Programme posture et stabilité",
+                "tags": []
+            },
+            {
+                "file": "Programme sans limite.pdf",
+                "title": "Programme sans limite",
+                "tags": []
+            },
+            {
+                "file": "Programme sur chaise.pdf",
+                "title": "Programme sur chaise",
+                "tags": []
+            },
+            {
+                "file": "Programme vitalité.pdf",
+                "title": "Programme vitalité",
+                "tags": []
+            }
+        ]
+    },
+    {
+        "id": "Vaccination",
+        "title": "Vaccinate",
+        "titleFr": "Vaccination",
+        "videos": 7,
+        "questions": 3,
+        "tags": ["vaccination module"],
+        "resources": [
+            {
+                "file": "11. Vaccinate with Hal _ Joanne.mp4",
+                "title": "Video: Vaccinate with Hal & Joanne",
+                "tags": [ "vaccination" ]
+            },
+            {
+                "file": "13. COVID-19 Vaccine Tip Sheet.pdf",
+                "title": "COVID-19 Vaccine Tip Sheet",
+                "tags": [ "vaccination", "covid-19" ]
+            },
+            {
+                "file": "13. Vaccination FAQ.pdf",
+                "title": "Vaccination FAQ",
+                "tags": []
+            },
+            {
+                "file": "Immunizations Across the Lifespan.pdf",
+                "title": "Immunizations Accross the Lifespan",
+                "tags": []
+            },
+            {
+                "file": "Shingles Patient Fact Sheet.pdf",
+                "title": "Shingles Patient Fact Sheet",
+                "tags": []
+            },
+            {
+                "file": "Vaccinate Vid.mp4",
+                "title": "Video: Vaccination",
+                "tags": [ "vaccinate vid" ]
+            },
+            {
+                "file": "Vaccines Work Poster PHAC.pdf",
+                "title": "Vaccines Work",
+                "tags": [ ]
+            }
+        ],
+        "resourcesFr": [
+            {
+                "file": "La vaccination au cours de la vie.pdf",
+                "title": "La vaccination au cours de la vie",
+                "tags": [ ]
+            },
+            {
+                "file": "Les vaccins fonctionnent.pdf",
+                "title": "Les vaccins fonctionnent",
+                "tags": [ ]
+            },
+            {
+                "file": "Programme de vaccination contre le zona.pdf",
+                "title": "Programme de vaccination contre le zona",
+                "tags": [ ]
+            }
+        ]
+    },
+    {
+        "id": "OptimizeMedication",
+        "title": "Optimize Medication",
+        "titleFr": "Optimisation des médicaments",
+        "videos": 6,
+        "questions": 3,
+        "tags": ["optimize medication module"],
+        "resources": [
+            {
+                "file": "15. Optimize Medication with Hal _ Joanne.mp4",
+                "title": "Video: Optimize Medication with Hal & Joanne",
+                "tags": [ "optimize medication" ]
+            },
+            {
+                "file": "Optimize Medication Q&A.mp4",
+                "title": "Video: Pharmacists Q&A",
+                "tags": [ "optimize medication" ]
+            },
+            {
+                "file": "fact+sheet_Deprescribing_ENGLISH+FINAL_web (1).pdf",
+                "title": "Deprescribing Facts",
+                "tags": []
+            },
+            {
+                "file": "Medications _ Falls Risk.pdf",
+                "title": "Medications and the Risk of Falling",
+                "tags": []
+            },
+            {
+                "file": "Medication Tracker Sheet Planner.pdf",
+                "title": "Medication Tracker",
+                "tags": [ "medtrack" ]
+            },
+            {
+                "file": "Ontario MedsCheck.pdf",
+                "title": "Ontario MedsCheck Program",
+                "tags": [""]
+            },
+            {
+                "file": "Optimize Med Vid.mp4",
+                "title": "Video: Optimize Medication",
+                "tags": ["optimize med vid"]
+            }
+        ],
+        "resourcesFr": [
+            {
+                "file": "Ai-je encore besoin de ce médicament.pdf",
+                "title": "Ai-je encore besoin de ce médicament",
+                "tags": []
+            },
+            {
+                "file": "Bien connaître tous ses médicaments.pdf",
+                "title": "Bien connaître tous ses médicaments",
+                "tags": []
+            },
+            {
+                "file": "Guide des médicaments sédatifs-hypnotiques.pdf",
+                "title": "Guide des médicaments sédatifs-hypnotiques",
+                "tags": []
+            },
+            {
+                "file": "La déprescription.pdf",
+                "title": "La déprescription",
+                "tags": []
+            },
+            {
+                "file": "Les médicaments et les chutes.pdf",
+                "title": "Les médicaments et les chutes",
+                "tags": []
+            },
+            {
+                "file": "Outil de suivi des médicaments.pdf",
+                "title": "Outil de suivi des médicaments",
+                "tags": []
+            },
+            {
+                "file": "Qu_est-ce que la déprescription.pdf",
+                "title": "Qu'est-ce que la déprescription",
+                "tags": []
+            },
+            {
+                "file": "Utilisation sécuritaire de médicaments pour les adultes plus âgés.pdf",
+                "title": "Utilisation sécuritaire de médicaments pour les adultes plus âgés",
+                "tags": []
+            }
+        ]
+    },
+    {
+        "id": "Interact",
+        "title": "Interact",
+        "titleFr": "Vie sociale",
+        "videos": 7,
+        "questions": 3,
+        "tags": ["interact module"],
+        "resources": {
+            "Addressing Isolation": [
+                {
+                    "file": "Gadget Gizmos and Lines.pdf",
+                    "title": "Gadget Gizmos and Lines",
+                    "tags": ["interact"]
+                },
+                {
+                    "file": "19. Isolation Tip Sheet (without Technology).pdf",
+                    "title": "Isolation Tip Sheet (without Technology)",
+                    "tags": ["interact"]
+                },
+                {
+                    "file": "19. Isolation Tip Sheet (with Technology).pdf",
+                    "title": "Isolation Tip Sheet (with Technology)",
+                    "tags": ["interact"]
+                },
+                {
+                    "file": "Interact Vid.mp4",
+                    "title": "Video: Interact",
+                    "tags": ["interact vid"]
+                },
+                {
+                    "file": "https://www.youtube.com/watch?v=Sric7XAaaqU",
+                    "title": "Video: Interact to Avoid Frailty",
+                    "tags": []
+                }
+            ],
+            "Mental Health": [
+                {
+                    "file": "Understanding your Care Options.pdf",
+                    "title": "Understanding your Care Options",
+                    "tags": ["interact"]
+                },
+                {
+                    "file": "Positive Mental Health in Later Life.pdf",
+                    "title": "Positive Mental Health in Later Life",
+                    "tags": ["interact"]
+                },
+                {
+                    "file": "Mental Health & Well-being.pdf",
+                    "title": "Mental Health & Well-being",
+                    "tags": ["interact"]
+                },
+                {
+                    "file": "Depression in Later Life.pdf",
+                    "title": "Depression in Later Life",
+                    "tags": ["interact"]
+                },
+                {
+                    "file": "Anxiety in Later Life.pdf",
+                    "title": "Anxiety in Later Life",
+                    "tags": ["interact"]
+                }
+            ]
+        },
+        "resourcesFr": [
+        
+        ]
+    },
+    {
+        "id": "DietAndNutrition",
+        "title": "Diet and Nutrition",
+        "titleFr": "Alimentation",
+        "videos": 12,
+        "questions": 4,
+        "tags": ["diet and nutrition module"],
+        "resources": {
+            "Recipes" : [
+                {
+                    "file": "20. Chili Recipe with Hal _ Joanne.mp4",
+                    "title": "Video: Chili with Hal & Joanne",
+                    "tags": [ "protein" ]
+                },
+                {
+                    "file": "Hearty Chicken Noodle Soup Recipe.pdf",
+                    "title": "Hearty Chicken Noodle Soup",
+                    "tags": [ ]
+                },
+                {
+                    "file": "Open-Faced Egg Salad Sandwiches.pdf",
+                    "title": "Open-Faced Egg Salad Sandwiches",
+                    "tags": [ ]
+                },
+                {
+                    "file": "Tofu and Vegetable Stir Fry Recipe.pdf",
+                    "title": "Tofu and Vegetable Stir Fry",
+                    "tags": [ ]
+                },
+                {
+                    "file": "Vegetarian Tacos.pdf",
+                    "title": "Vegetarian Tacos",
+                    "tags": [ ]
+                },
+                {
+                    "file": "Gluten-Free Lemon Blueberry Muffins Recipe.pdf",
+                    "title": "Gluten-Free Lemon Blueberry Muffins",
+                    "tags": [ ]
+                }
+            ],
+            "Nutrition Recommendations": [
+                {
+                    "file": "https://food-guide.canada.ca/en/",
+                    "title": "Canada's Food Guide",
+                    "tags": [ ]
+                },
+                {
+                    "file": "vitamind_patient_guide.pdf",
+                    "title": "Vitamin D Guide",
+                    "tags": [ ]
+                },
+                {
+                    "file": "20. Protein with Hal _ Joanne.mp4",
+                    "title": "Video: The Importance of Protein with Hal & Joanne",
+                    "tags": [ "protein" ]
+                },
+                {
+                    "file": "Nutrition & Aging Q&A.mp4",
+                    "title": "Video: Nutrition and Aging Q&A",
+                    "tags": [ "diet and nutrition" ]
+                },
+                {
+                    "file": "Diet_Nutrition Vid.mp4",
+                    "title": "Video: Why Protein",
+                    "tags": ["diet and nutrition vid"]
+                },
+                {
+                    "file": "https://youtu.be/8pICPPnDVc0",
+                    "title": "Eating Well, Aging Well: A Community Conversation",
+                    "tags": [ ]
+                },
+                {
+                    "file": "Healthy Eating, Healthy Ageing_Slides.pdf",
+                    "title": "Healthy Eating, Healthy Aging",
+                    "tags": [ ]
+                },
+                {
+                    "file": "Protein Foods for Older Adults.pdf",
+                    "title": "Protein Foods for Older Adults",
+                    "tags": [ ]
+                },
+                {
+                    "file": "Protein serves and nutrition risk handout-2.pdf",
+                    "title": "Protein serves and nutrition risk handout",
+                    "tags": [ ] 
+                },
+                {
+                    "file": "Meet Your Iron Needs on a Gluten-Free Diet.pdf",
+                    "title": "Meet Your Iron Needs",
+                    "tags": [ ]
+                }
+            ],
+            "Food Accessibility": [
+                
+            ],
+            "Healthy Eating Routines": [
+                {
+                    "file": "22. AVOID Frailty Grocery List.pdf",
+                    "title": "AVOID Frailty Eat Well Grocery Shopping List",
+                    "tags": [ "diet and nutrition", "protein", "calcium", "vitamin d" ]
+                },
+                {
+                    "file": "A Guide to Healthy Eating for Older Adults.pdf",
+                    "title": "A Guide to Healthy Eating for Older Adults",
+                    "tags": [ ]
+                },
+                {
+                    "file": "Meal Planning Toolkit.pdf",
+                    "title": "Meal Planning Toolkit",
+                    "tags": [ ]
+                },
+                {
+                    "file": "https://healthconnectontario.health.gov.on.ca/static/guest/related-articles/hcns-nutrition-program",
+                    "title": "Speak to a Registered Dietitian",
+                    "tags": []
+                }
+            ],
+            "Dietary Restrictions": [
+                {
+                    "file": "Canadian Celiac gluten free diet booklet.pdf",
+                    "title": "Canadian Celiac gluten free diet booklet",
+                    "tags": [ ]
+                },
+                {
+                    "file": "how-to-manage-your-cholesterol-en.pdf",
+                    "title": "How to manage your Cholesterol",
+                    "tags": [ ]
+                }
+            ],
+            "Appetite": [
+                {
+                    "file": "https://www.cravingchange.ca/",
+                    "title": "Craving Change",
+                    "tags": [ ]
+                },
+                {
+                    "file": "Improving Appetite.pdf",
+                    "title": "Improving Appetite",
+                    "tags": [ ]
+                }
+            ],
+            "Accessibility": [
+                {
+                    "file": "Eat Well and Save Money.pdf",
+                    "title": "Eat Well and Save Money",
+                    "tags": [ ]
+                }
+            ]
+        },
+        "resourcesFr": [
+            {
+                "file": "Coup d_oeil sur l_alimentation pour les personnes vivant avec le diabète.pdf",
+                "title": "Coup d'oeil sur l'alimentation pour les personnes vivant avec le diabète",
+                "tags": [ ]
+            },
+            {
+                "file": "Guide des aliments à haute valeur nutritive.pdf",
+                "title": "Guide des aliments à haute valeur nutritive",
+                "tags": [ ]
+            },
+            {
+                "file": "Guide pour les personnes vivant avec la maladie coeliaque.pdf",
+                "title": "Guide pour les personnes vivant avec la maladie coeliaque",
+                "tags": [ ]
+            },
+            {
+                "file": "Guide vers une saine alimentation pour les adultes âgés.pdf",
+                "title": "Guide vers une saine alimentation pour les adultes âgés",
+                "tags": [ ]
+            },
+            {
+                "file": "La liste de courses imprimable.pdf",
+                "title": "La liste de courses imprimable",
+                "tags": [ ]
+            },
+            {
+                "file": "Le guide alimentaire.pdf",
+                "title": "Le guide alimentaire",
+                "tags": [ ]
+            },
+            {
+                "file": "Les aliments protéinés.pdf",
+                "title": "Les aliments protéinés",
+                "tags": [ ]
+            },
+            {
+                "file": "Recette de sandwich aux oeufs.pdf",
+                "title": "Recette de sandwich aux oeufs",
+                "tags": [ ]
+            },
+            {
+                "file": "Recette de sauté au tofu.pdf",
+                "title": "Recette de sauté au tofu",
+                "tags": [ ]
+            },
+            {
+                "file": "Recette de soupe poulet et nouilles.pdf",
+                "title": "Recette de soupe poulet et nouilles",
+                "tags": [ ]
+            }
+        ]
+    },
+    {
+        "id": "Sleep",
+        "title": "Sleep",
+        "titleFr": "Sommeil",
+        "videos": 6,
+        "questions": 4,
+        "tags": [],
+        "resources": [
+            {
+                "file": "Anxiety Canada - Getting a Good Night_s Sleep.pdf",
+                "title": "Getting a Good Night's Sleep",
+                "tags": []
+            },
+            {
+                "file": "Are Adults Getting Enough Sleep.pdf",
+                "title": "Are Adults Getting Enough Sleep",
+                "tags": []
+            },
+            {
+                "file": "Canadian Mental Health Association Sleep Booklet.pdf",
+                "title": "Sleep Booklet",
+                "tags": []
+            },
+            {
+                "file": "Canadian Sleep Society - Sleep in Aging.pdf",
+                "title": "Sleep in Aging",
+                "tags": []
+            },
+            {
+                "file": "Helpful Hints for Better Sleep.pdf",
+                "title": "Helpful Hints for Better Sleep",
+                "tags": []
+            },
+            {
+                "file": "Insomnia Resources.pdf",
+                "title": "Insomnia Resources",
+                "tags": []
+            },
+            {
+                "file": "Sleep diary blank.pdf",
+                "title": "Sleep diary",
+                "tags": []
+            },
+            {
+                "file": "Sleeping Pills.pdf",
+                "title": "Sleeping Pills",
+                "tags": []
+            },
+            {
+                "file": "When Sleep Becomes An Issue - Alzheimer-Society-Canada.pdf",
+                "title": "When Sleep Becomes An Issue",
+                "tags": []
+            },
+            {
+                "file": "Take care of your Sleep.pdf",
+                "title": "Take care of your Sleep",
+                "tags": []
+            },
+            {
+                "file": "Sleep Presentation AVOID program.pdf",
+                "title": "The Road to Better Sleep",
+                "tags": []
+            }
+        ],
+        "resourcesFr": [
+            {
+                "file": "Comment obtenir une bonne nuit de sommeil sans médicaments.pdf",
+                "title": "Comment obtenir une bonne nuit de sommeil sans médicaments",
+                "tags": []
+            },
+            {
+                "file": "Insomnie et anxiété chez les personnes âgées.pdf",
+                "title": "Insomnie et anxiété chez les personnes âgées",
+                "tags": []
+            },
+            {
+                "file": "Le journal du sommeil.pdf",
+                "title": "Le journal du sommeil",
+                "tags": []
+            },
+            {
+                "file": "Le sommeil des canadiens.pdf",
+                "title": "Le sommeil des canadiens",
+                "tags": []
+            },
+            {
+                "file": "L_insomnie.pdf",
+                "title": "L'insomnie",
+                "tags": []
+            },
+            {
+                "file": "Quand le sommeil devient un problème.pdf",
+                "title": "Quand le sommeil devient un problème",
+                "tags": []
+            },
+            {
+                "file": "Trucs pour mieux dormir.pdf",
+                "title": "Trucs pour mieux dormir",
+                "tags": []
+            }
+        ]
+    },
+    {
+        "id": "FallsPrevention",
+        "title": "Falls Prevention",
+        "titleFr": "Prévention des chutes",
+        "videos": 6,
+        "questions": 3,
+        "tags": [],
+        "resources": [
+            {
+                "file": "14 Exercises for Seniors to Improve Strength and Balance.pdf",
+                "title": "14 Exercises for Seniors to Improve Strength and Balance",
+                "tags": []
+            },
+            {
+                "file": "https://drive.google.com/file/d/1Yuaur9QmvNOSx_ijzWiLzrYmeH2Cz2xD/view",
+                "title": "Balancing Act: Empowering Aging with Exercise",
+                "tags": [ ]
+            },
+            {
+                "file": "Fall Prevention Guide.pdf",
+                "title": "Fall Prevention Guide",
+                "tags": []
+            },
+            {
+                "file": "Preventing Falls on Stairs.pdf",
+                "title": "Preventing Falls on Stairs",
+                "tags": []
+            },
+            {
+                "file": "Preventing Vision Related Falls.pdf",
+                "title": "Preventing Vision Related Falls",
+                "tags": []
+            },
+            {
+                "file": "What to do AFTER a fall.pdf",
+                "title": "What to do AFTER a fall",
+                "tags": []
+            }
+            ,
+            {
+                "file": "You CAN prevent falls.pdf",
+                "title": "You CAN prevent falls",
+                "tags": []
+            },
+            {
+                "file": "https://safe-seniors.com/",
+                "title": "Online Fitness Exercises",
+                "tags": []
+            }
+            
+        ],
+        "resourcesFr": [
+            {
+                "file": "14 exercices pour améliorer la force et l_équilibre.pdf",
+                "title": "14 exercices pour améliorer la force et l'équilibre",
+                "tags": []
+            },
+            {
+                "file": "Chute chez les ainés au Canada.pdf",
+                "title": "Chute chez les ainés au Canada",
+                "tags": []
+            },
+            {
+                "file": "Dépliant Prévenir les chutes.pdf",
+                "title": "Dépliant Prévenir les chutes",
+                "tags": []
+            },
+            {
+                "file": "Feuillet Prévenir les chutes.pdf",
+                "title": "Feuillet Prévenir les chutes",
+                "tags": []
+            },
+            {
+                "file": "Guide de prévention des chutes.pdf",
+                "title": "Guide de prévention des chutes",
+                "tags": []
+            },
+            {
+                "file": "IMP.pdf",
+                "title": "IMP",
+                "tags": []
+            },
+            {
+                "file": "La sécurité dans les escaliers.pdf",
+                "title": "La sécurité dans les escaliers",
+                "tags": []
+            },
+            {
+                "file": "Les chutes, comment réagir.pdf",
+                "title": "Les chutes, comment réagir",
+                "tags": []
+            },
+            {
+                "file": "Médicament et chutes.pdf",
+                "title": "Médicament et chutes",
+                "tags": []
+            },
+            {
+                "file": "Prévenir les chutes.pdf",
+                "title": "Prévenir les chutes",
+                "tags": []
+            },
+            {
+                "file": "Prévenir les chutes dans les escaliers.pdf",
+                "title": "Prévenir les chutes dans les escaliers",
+                "tags": []
+            },
+            {
+                "file": "Programme PIED.pdf",
+                "title": "Programme PIED",
+                "tags": []
+            },
+            {
+                "file": "Que faire en cas de chute.pdf",
+                "title": "Que faire en cas de chute",
+                "tags": []
+            },
+            {
+                "file": "Réduire le risque de chute.pdf",
+                "title": "Réduire le risque de chute",
+                "tags": []
+            }
+        ]
+    }
+]

@@ -13,12 +13,13 @@ function runProjections($par) {
 
 class Projections extends SpecialPage{
 
-	function Projections() {
+	function __construct() {
 		SpecialPage::__construct("Projections", MANAGER.'+', true, 'runProjections');
 	}
 
 	function execute($par){
 		global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle, $config;
+		$this->getOutput()->setPageTitle("Projections");
 	    $projects = Project::getAllProjectsEver();
 	    $phaseDates = $config->getValue("projectPhaseDates");
 	    $year = date('Y', strtotime($phaseDates[PROJECT_PHASE]) - (3 * 30 * 24 * 60 * 60));

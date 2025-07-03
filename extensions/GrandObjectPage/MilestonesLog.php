@@ -6,7 +6,7 @@ $wgSpecialPages['MilestonesLog'] = 'MilestonesLog'; # Let MediaWiki know about t
 $wgExtensionMessagesFiles['MilestonesLog'] = $dir . 'MilestonesLog.i18n.php';
 $wgSpecialPageGroups['MilestonesLog'] = 'network-tools';
 
-$wgHooks['UnknownAction'][] = 'MilestonesLog::milestoneData';
+UnknownAction::createAction('MilestonesLog::milestoneData');
 $wgHooks['SubLevelTabs'][] = 'MilestonesLog::createSubTabs';
 
 function runMilestonesLog($par){
@@ -15,7 +15,7 @@ function runMilestonesLog($par){
 
 class MilestonesLog extends SpecialPage{
 
-	function MilestonesLog() {
+	function __construct() {
 		SpecialPage::__construct("MilestonesLog", null, false, 'runMilestonesLog');
 	}
 	
@@ -68,6 +68,7 @@ class MilestonesLog extends SpecialPage{
 
 	function execute($par){
 		global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle;
+		$this->getOutput()->setPageTitle("Milestones Log");
 	    $wgOut->addHTML("<table id='milestonesHistory' frame='box' rules='all'>
 	                        <thead>
 	                            <tr>
@@ -100,8 +101,7 @@ class MilestonesLog extends SpecialPage{
 	
 	static function createSubTabs(&$tabs){
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle;
-
-        if(self::userCanExecute($wgUser)){
+        if((new self)->userCanExecute($wgUser)){
             $selected = @($wgTitle->getText() == "MilestonesLog") ? "selected" : false;
             $tabs["Manager"]['subtabs'][] = TabUtils::createSubTab("Milestones Log", "$wgServer$wgScriptPath/index.php/Special:MilestonesLog", $selected);
         }

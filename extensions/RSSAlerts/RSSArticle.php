@@ -38,7 +38,7 @@ class RSSArticle extends BackboneModel {
         return new RSSArticle($data);
     }
 
-    function RSSArticle($data=null){
+    function __construct($data=null){
         if(count($data) > 0){
             $this->id = $data[0]['id'];
             $this->feed = $data[0]['feed'];

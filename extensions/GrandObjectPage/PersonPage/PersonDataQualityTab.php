@@ -5,8 +5,8 @@ class PersonDataQualityTab extends AbstractTab {
     var $person;
     var $visibility;
 
-    function PersonDataQualityTab($person, $visibility){
-        parent::AbstractTab("Data Quality Checks");
+    function __construct($person, $visibility){
+        parent::__construct("Data Quality Checks");
         $this->person = $person;
         $this->visibility = $visibility;
     }

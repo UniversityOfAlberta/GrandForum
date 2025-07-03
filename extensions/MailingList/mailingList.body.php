@@ -12,7 +12,7 @@ $wgHooks['userCan'][] = 'MailList::userCanExecute';
 
 class MailList{
     
-    function userCanExecute(&$title, &$user, $action, &$result){
+    static function userCanExecute(&$title, &$user, $action, &$result){
         global $wgOut, $wgServer, $wgScriptPath, $config;
         if($action == "read"){
             $me = Person::newFromUser($user);
@@ -45,7 +45,7 @@ class MailList{
         return true;
     }
     
-    function removeNextPart($body){
+    static function removeNextPart($body){
         $exploded = explode("-------------- next part --------------", $body);
         $lines = explode("\n", $exploded[0]);
         $body = "";
@@ -55,7 +55,7 @@ class MailList{
         return $body;
     }
     
-    function removeQuotedText($body) {
+    static function removeQuotedText($body) {
         $bodyLines = explode("\n", $body);
         $bodyLines = array_reverse($bodyLines);
         $hasQuotesAtEnd = false;
@@ -131,7 +131,7 @@ class MailList{
         return implode("\n\n", $bodyLines);
     }
     
-    function createMailListTable($action, $article){
+    static function createMailListTable($action, $article){
         global $wgOut, $wgTitle, $wgScriptPath, $wgServer, $wgUser, $config;
         $result = true;
         if($wgTitle->getText() == "Mail Index" || $wgTitle->getNsText() == "Mail" && strpos($wgTitle->getText(), "MAIL") !== 0){
@@ -238,12 +238,12 @@ class MailList{
             $wgOut->setPageTitle("Mailing List Archives");
             $wgOut->output();
             $wgOut->disable();
-            return false;
+            exit;
         }
         return false;
     }
     
-    function createMailListThread($project_name, $thread){
+    static function createMailListThread($project_name, $thread){
         global $wgOut;
         $sql = "SELECT m.subject, m.body, m.date, m.author, m.user_name, m.address
                 FROM wikidev_projects p, wikidev_messages m
@@ -272,7 +272,7 @@ class MailList{
                     </table>");
                     $body = self::removeQuotedText(self::removeNextPart($row['body']));
                     $wgOut->addHTML("<div class='inner-message'>");
-                    $wgOut->addWikiText($body);
+                    $wgOut->addWikiTextAsContent($body);
                 $wgOut->addHTML("</div></div>");
             }
         }
@@ -282,6 +282,7 @@ class MailList{
         }
         $wgOut->output();
         $wgOut->disable();
+        exit;
     }
 }
 

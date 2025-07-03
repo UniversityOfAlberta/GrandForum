@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Project Report: {$project_name} - {$project_full_name}" reportType="RP_PROJECT_REPORT_{GET(id)}" pdfType="RP_PROJECT_REPORT_{GET(id)}" pdfFiles="ProjectReportPDF" year="0" personId="0" ajax="true" disabled="false">
+    <Permissions>
+        <Role role="Staff+">
+            <SectionPermission id="report" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+        <Role role="PL">
+            <SectionPermission id="report" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+        <Role role="PS">
+            <SectionPermission id="report" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+        <Project />
+        <If if="{!matches({GET(id)},^[0-9][0-9][0-9][0-9]_Q[1-4])}">
+            <SectionPermission id="report" permissions="--" />
+            <SectionPermission id="submit" permissions="--" />
+        </If>
+    </Permissions>
+    <ReportSection id="report" type="EditableReportSection" name="Project Report" title="{$project_name}: {$project_full_name}">
+        <!-- Variables -->
+        <Static>
+            {set(year,    {substr({GET(id)}, 0, 4)})}
+            {set(quarter, {substr({GET(id)}, 6, 1)})}
+        </Static>
+        <If if="{==({get(quarter)},1)}">
+            <![CDATA[
+                <h3>{get(year)}:R{get(quarter)} Report - Submit by: February 15, {get(year)}</h3>
+            ]]>
+        </If>
+        <ElseIf if="{==({get(quarter)},2)}">
+            <![CDATA[
+                <h3>{get(year)}:R{get(quarter)} Report - Submit by: June 15, {get(year)}</h3>
+            ]]>
+        </ElseIf>
+        <ElseIf if="{==({get(quarter)},3)}">
+            <![CDATA[
+                <h3>{get(year)}:R{get(quarter)} Report - Submit by: October 15, {get(year)}</h3>
+            ]]>
+        </ElseIf>
+        <!-- Past Reports -->
+        <Static>
+            <![CDATA[
+                <div class="pdfnodisplay">
+                <h3>Past Reports</h3>
+                <table class="wikitable">
+                    <tr>
+            ]]>
+        </Static>
+        <!-- Year Header -->
+        <For from="{$project_start}" to="{timestamp(Y)}">
+            <If if="{>=({$getExtra},2024)}">
+                <![CDATA[
+                    <th colspan='3'>{$getExtra}</th>
+                ]]>
+            </If>
+            <Else>
+                <![CDATA[
+                    <th colspan='4'>{$getExtra}</th>
+                ]]>
+            </Else>
+        </For>
+        <Static>
+            <![CDATA[
+                    </tr>
+                    <tr>
+            ]]>
+        </Static>
+        <!-- Quarter Header -->
+        <For from="{$project_start}" to="{timestamp(Y)}">
+            <Static>
+                <![CDATA[
+                    {set(y, {$getExtra})}
+                ]]>
+            </Static>
+            <If if="{>=({$getExtra},2024)}">
+                <For from="1" to="3">
+                    <Static>
+                        <![CDATA[
+                            {set(q, {$getExtra})}
+                            <th>R{get(q)}</th>
+                        ]]>
+                    </Static>
+                </For>
+            </If>
+            <Else>
+                <For from="1" to="4">
+                    <Static>
+                        <![CDATA[
+                            {set(q, {$getExtra})}
+                            <th>R{get(q)}</th>
+                        ]]>
+                    </Static>
+                </For>
+            </Else>
+        </For>
+        <Static>
+            <![CDATA[
+                    </tr>
+                    <tr>
+            ]]>
+        </Static>
+        <!-- PDF Rows -->
+        <For from="{$project_start}" to="{timestamp(Y)}">
+            <Static>
+                <![CDATA[
+                    {set(y, {$getExtra})}
+                ]]>
+            </Static>
+            <If if="{>=({$getExtra},2024)}">
+                <For from="1" to="3">
+                    <Static>
+                        <![CDATA[
+                            {set(q, {$getExtra})}
+                        ]]>
+                    </Static>
+                    <ReportItem id="pdf" type="PDFReportItem" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />" class="" project="true" reportType="ProjectReport" pdfType="RP_PROJECT_REPORT_{get(y)}_Q{get(q)}" year="0" showWord="true">
+                        <![CDATA[
+                            <td style='padding-left:0.5em; padding-right:0.5em;'>{$item}</td>
+                        ]]>
+                    </ReportItem>
+                </For>
+            </If>
+            <Else>
+                <For from="1" to="4">
+                    <Static>
+                        <![CDATA[
+                            {set(q, {$getExtra})}
+                        ]]>
+                    </Static>
+                    <ReportItem id="pdf" type="PDFReportItem" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />" class="" project="true" reportType="ProjectReport" pdfType="RP_PROJECT_REPORT_{get(y)}_Q{get(q)}" year="0" showWord="true">
+                        <![CDATA[
+                            <td style='padding-left:0.5em; padding-right:0.5em;'>{$item}</td>
+                        ]]>
+                    </ReportItem>
+                </For>
+            </Else>
+        </For>
+        <Static>
+            <![CDATA[
+                    </tr>
+                </table>
+                </div>
+            ]]>
+        </Static>
+        
+        <!-- Start the Report -->
+        <ReportItem id="description" type="Textarea" blobItem="DESCRIPTION" rich="true">
+            <![CDATA[
+                <h3>Project Summary <small style='font-weight: normal; font-size: 0.695em'>(From <a href='{$project_url}' target='_blank'>Project Profile</a>)</small></h3>
+                {project_description(summary)}
+                <h3>1. Description of work and next steps</h3>
+                <p>General description of the activities performed in the past 4 months in relation to the overall goals, objectives, and timelines of the project, mentioning any notable administrative or research outcome. Briefly explain next steps.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="edi" type="Textarea" blobItem="EDI" rich="true">
+            <![CDATA[
+                <h3>2. Equity, diversity, and inclusion update</h3>
+                <p>Mention any challenges, opportunities or lessons learnt that are relevant to EDI in your research activities or in relation to the project team.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="challenges" type="Textarea" blobItem="CHALLENGES" rich="true">
+            <![CDATA[
+                <h3>3. Identified or anticipated challenges (if any)</h3>
+                <p>If relevant, explain any challenges or concerns that have been identified during the past 3 months, including anticipated ones, and possible solutions to address them.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="adjustments" type="Textarea" blobItem="ADJUSTMENTS" rich="true">
+            <![CDATA[
+                <h3>4. Milestones adjustments</h3>
+                <p>Have you modified your project milestones because of activities/ challenges you’ve encountered in the past 4 months? If so, provide a brief description of the changes and the rationale that supports them.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="ktee" type="Textarea" blobItem="KTEE" rich="true">
+            <![CDATA[
+                <h3>5. Knowledge mobilization and community engagement</h3>
+                <p>Have there been any updates regarding knowledge mobilization or community engagement in the past 4 months? Please provide a brief description of activities to include the type of organization or sector (public, private, not-for-profit), location or country (Canadian, international) and type of engagement (data collection, event). Please specify if you have engaged with a Canadian Indigenous Organization.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="changes" type="Textarea" blobItem="CHANGES" rich="true">
+            <![CDATA[
+                <h3>6. Changes in the research team</h3>
+                <p>Have there been any changes to the research team in the past 4 months? This includes new HQP or affiliated researchers, extension or termination of contracts etc. For new team members, please add them as members on the Forum including their first and last names, roles, institutions, contract start and end dates, and position.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="findings" type="Textarea" blobItem="FINDINGS" rich="true">
+            <![CDATA[
+                <h3>7. Preliminary findings</h3>
+                <p>Have there been any significant preliminary findings or results from your research in the past 4 months? Please provide a brief summary of key insights, trends, or outcomes observed so far.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <!-- Outputs -->
+        <!--Static>
+            <![CDATA[
+                <h2>Outputs</h2>
+                <a class="button" target="_blank" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts">Manage Outputs</a>
+                <table class='wikitable'>
+                    <thead>
+                        <tr>
+                            <th>Research Output</th>
+                            <th>Count</th>
+                            <th>Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            ]]>
+        </Static>
+        <ReportItem id="journal_notes" type="Textarea" blobItem="JOURNAL_NOTES" height="65px">
+            <![CDATA[
+                <tr>
+                    <td>Journal publication <span class='clicktooltip' title='<b>Publication</b><ul><li>Peer-Reviewed Journal Article</li></ul>'>&#9432;</span></td>
+                    <td align='center'>{getNProducts(1900-01-01,9999-12-31,all,Peer-Reviewed Journal Article)}</td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="conference_notes" type="Textarea" blobItem="CONFERENCE_NOTES" height="65px">
+            <![CDATA[
+                <tr>
+                    <td>Conference Paper <span class='clicktooltip' title='<b>Publication</b><ul><li>Conference Proceedings</li></ul>'>&#9432;</span></td>
+                    <td align='center'>{getNProducts(1900-01-01,9999-12-31,all,Conference Proceedings)}</td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="policy_notes" type="Textarea" blobItem="POLICY_NOTES" height="65px">
+            <![CDATA[
+                <tr>
+                    <td>Policy Briefs <span class='clicktooltip' title='<b>IP Management</b><ul><li>Policy</li></ul>'>&#9432;</span></td>
+                    <td align='center'>{getNProducts(1900-01-01,9999-12-31,all,Policy)}</td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="workshop_notes" type="Textarea" blobItem="WORKSHOP_NOTES" height="65px">
+            <![CDATA[
+                <tr>
+                    <td>Workshop <span class='clicktooltip' title='<b>Activity</b><ul><li>Conference/Symposium/Workshop Contribution</li></ul>'>&#9432;</span></td>
+                    <td align='center'>{getNProducts(1900-01-01,9999-12-31,all,Conference/Symposium/Workshop Contribution)}</td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <Static>
+            <![CDATA[
+                    </tbody>
+                </table>
+            ]]>
+        </Static-->
+    </ReportSection>
+    <ReportSection id="submit" tooltip="PDF generation and submission" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="review" type="SimpleReviewSubmitReportItem" emails="{$my_email},{$project_theme_lead_emails}" />
+    </ReportSection>
+</Report>

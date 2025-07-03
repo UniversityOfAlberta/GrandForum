@@ -22,6 +22,10 @@ else{
 }
 define('DPI_CONSTANT', DPI/72);
 
+if(isset($_GET['generatePDF'])){
+    require_once($dir . '/../../../config/dompdf_config.inc.php');
+}
+
 PDFGenerator::$preview = isset($_GET['preview']);
 
 /**
@@ -338,7 +342,6 @@ abstract class PDFGenerator {
 		    </script>";
         }
         else{
-            require_once(dirname(__FILE__) . '/../../../Classes/dompdf/dompdf_config.inc.php');
             global $dompdfOptions;
             $dompdf = new Dompdf\Dompdf($dompdfOptions);
             $dompdf->setPaper('A4', $orientation);
@@ -748,7 +751,10 @@ EOF;
 		</head>";
 		$headerName = @$report->headerName;
 		if($headerName == ""){
-            if($project != null){
+            if(isset($_GET['headerName'])){
+                $headerName = $_GET['headerName'];
+            }
+            else if($project != null){
                 if($project->getName() == ""){
                     $headerName = "{$person->getReversedName()}";
                 }
@@ -779,11 +785,13 @@ if ( isset($pdf) ) {
 
   // Draw a line along the bottom
   $y = $h - $text_height2 - '.PDFGenerator::cmToPixels($margins['bottom']).';
-  $pdf->line('.PDFGenerator::cmToPixels($margins['left']).', 
-             '.PDFGenerator::cmToPixels($margins['top']).', 
-             $w - '.PDFGenerator::cmToPixels($margins['right']).', 
-             '.PDFGenerator::cmToPixels($margins['top']).', 
-             $color, 0.5);
+  if(!'.var_export(@$report->skipTopLine, true).'){
+          $pdf->line('.PDFGenerator::cmToPixels($margins['left']).', 
+                     '.PDFGenerator::cmToPixels($margins['top']).', 
+                     $w - '.PDFGenerator::cmToPixels($margins['right']).', 
+                     '.PDFGenerator::cmToPixels($margins['top']).', 
+                     $color, 0.5);
+  }
   $pdf->line('.PDFGenerator::cmToPixels($margins['left']).', 
              $h - '.PDFGenerator::cmToPixels($margins['bottom']).', 
              $w - '.PDFGenerator::cmToPixels($margins['right']).', 
@@ -841,7 +849,7 @@ if ( isset($pdf) ) {
      * @param string $name The name of the PDF document
      * @returns string Returns the pdf string
      */
-    function processChapters($dompdf, $name, $report){
+    static function processChapters($dompdf, $name, $report){
         global $IP;
         $str = "";
         $attached = array();
@@ -934,7 +942,7 @@ if ( isset($pdf) ) {
      * Adds a pdf to the end of the PDF
      * @param string $pdf The id of the pdf
      */
-    function attachPDF($pdf){
+    static function attachPDF($pdf){
         global $wgOut;
         $pdf = strip_tags($pdf);
         $wgOut->addHTML("<script type='text/php'>

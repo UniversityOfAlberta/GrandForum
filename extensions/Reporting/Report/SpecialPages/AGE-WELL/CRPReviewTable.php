@@ -13,7 +13,7 @@ function runCRPReviewTable($par) {
 
 class CRPReviewTable extends SpecialPage{
 
-    function CRPReviewTable() {
+    function __construct() {
         SpecialPage::__construct("CRPReviewTable", null, false, 'runCRPReviewTable');
     }
     
@@ -24,6 +24,7 @@ class CRPReviewTable extends SpecialPage{
 
     function execute($par){
         global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle, $wgMessage;
+        $this->getOutput()->setPageTitle("CRP Review Table");
         if(isset($_GET['download']) && isset($_GET['year']) && isset($_GET['key'])){
             header('Content-Type: data:application/vnd.ms-excel');
             header('Content-Disposition: attachment; filename="'.$_GET['key'].' Review.xls"');
@@ -209,7 +210,7 @@ class CRPReviewTable extends SpecialPage{
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle, $special_evals;
         $person = Person::newFromWgUser();
         
-        if(self::userCanExecute($wgUser)){
+        if((new self)->userCanExecute($wgUser)){
             $selected = @($wgTitle->getText() == "CRPReviewTable") ? "selected" : false;
             $tabs["Manager"]['subtabs'][] = TabUtils::createSubTab("CRP Review Table", "$wgServer$wgScriptPath/index.php/Special:CRPReviewTable", $selected);
         }

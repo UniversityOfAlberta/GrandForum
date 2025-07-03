@@ -4,8 +4,8 @@ abstract class CheckBox extends UIElement {
 
     var $options = array();
     
-    function CheckBox($id, $name, $value, $options, $validations=VALIDATE_NOTHING){
-        parent::UIElement($id, $name, $value, $validations);
+    function __construct($id, $name, $value, $options, $validations=VALIDATE_NOTHING){
+        parent::__construct($id, $name, $value, $validations);
         $this->options = $options;
     }
     

@@ -28,17 +28,17 @@
  * @ingroup JobQueue
  */
 class EmaillingJob extends Job {
-	function __construct( $title, $params ) {
+	public function __construct( ?Title $title, array $params ) {
 		parent::__construct( 'sendMail', Title::newMainPage(), $params );
 	}
 
-	function run() {
+	public function run() {
 		$status = UserMailer::send(
 			$this->params['to'],
 			$this->params['from'],
 			$this->params['subj'],
 			$this->params['body'],
-			$this->params['replyto']
+			[ 'replyTo' => $this->params['replyto'] ]
 		);
 
 		return $status->isOK();

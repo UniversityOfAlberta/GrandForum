@@ -1,9 +1,11 @@
 <?php
 
-$wgHooks['UnknownAction'][] = 'PersonProfileTab::getPersonCloudData';
-$wgHooks['UnknownAction'][] = 'PersonVisualizationsTab::getTimelineData';
-$wgHooks['UnknownAction'][] = 'PersonVisualizationsTab::getDoughnutData';
-$wgHooks['UnknownAction'][] = 'PersonVisualizationsTab::getChordData';
+autoload_register('GrandObjectPage/PersonPage');
+
+UnknownAction::createAction('PersonProfileTab::getPersonCloudData');
+UnknownAction::createAction('PersonVisualizationsTab::getTimelineData');
+UnknownAction::createAction('PersonVisualizationsTab::getDoughnutData');
+UnknownAction::createAction('PersonVisualizationsTab::getChordData');
 
 $wgHooks['ArticleViewHeader'][] = 'PersonPage::processPage';
 $wgHooks['userCan'][] = 'PersonPage::userCanExecute';
@@ -11,7 +13,7 @@ $wgHooks['SubLevelTabs'][] = 'PersonPage::createSubTabs';
 
 class PersonPage {
 
-    function userCanExecute(&$title, &$user, $action, &$result){
+    static function userCanExecute(&$title, &$user, $action, &$result){
         global $config;
         $name = $title->getNSText();
         $referrer = @$_SERVER['HTTP_REFERER'];
@@ -27,7 +29,7 @@ class PersonPage {
         return true;
     }
 
-    function processPage($article, $outputDone, $pcache){
+    static function processPage($article, $outputDone, $pcache){
         global $wgOut, $wgUser, $wgRoles, $wgServer, $wgScriptPath, $wgTitle, $wgRoleValues, $config;
         
         $me = Person::newFromId($wgUser->getId());
@@ -159,8 +161,12 @@ class PersonPage {
                     $tabbedPage->addTab(new PersonRelationsTab($person, $visibility));
                     //$tabbedPage->addTab(new PersonProductsTab($person, $visibility));
                     $tabbedPage->addTab(new PersonDashboardTab($person, $visibility));
-                    $tabbedPage->addTab(new PersonVisualizationsTab($person, $visibility));
-                    $tabbedPage->addTab(new PersonDataQualityTab($person, $visibility));
+                    if(isExtensionEnabled("Visualizations")){
+                        $tabbedPage->addTab(new PersonVisualizationsTab($person, $visibility));
+                    }
+                    if(isExtensionEnabled("Duplicates")){
+                        $tabbedPage->addTab(new PersonDataQualityTab($person, $visibility));
+                    }
                 }
                 if(isExtensionEnabled("UofANews")){
                     $tabbedPage->addTab(new PersonUofANewsTab($person, $visibility));
@@ -177,6 +183,7 @@ class PersonPage {
                 self::showTitle($person, $visibility);
                 $wgOut->output();
                 $wgOut->disable();
+                exit;
             }
             else if($person != null && 
                     $person->getName() != null && 
@@ -193,6 +200,7 @@ class PersonPage {
                 }
                 $wgOut->output();
                 $wgOut->disable();
+                exit;
             }
             else if(array_search($role, $wgRoles) !== false && $wgTitle->getText() != "Mail Index" && strstr($wgTitle->getText(), "MAIL ") === false){
                 // User does not exist
@@ -202,6 +210,7 @@ class PersonPage {
                 $wgOut->addHTML("There is no user '$role:$name'");
                 $wgOut->output();
                 $wgOut->disable();
+                exit;
             }
             else if($wgTitle->getText() == "Mail Index"){
                 TabUtils::clearActions();
@@ -213,7 +222,7 @@ class PersonPage {
     /**
      * Displays the title for this person
      */
-    function showTitle($person, $visibility){
+    static function showTitle($person, $visibility){
         global $wgOut;
         $wgOut->setPageTitle($person->getReversedName());
         $wgOut->addHTML("<script type='text/javascript'>

@@ -13,7 +13,7 @@ function runHQPReviewTable($par) {
 
 class HQPReviewTable extends SpecialPage{
 
-    function HQPReviewTable() {
+    function __construct() {
         SpecialPage::__construct("HQPReviewTable", null, false, 'runHQPReviewTable');
     }
     
@@ -24,6 +24,7 @@ class HQPReviewTable extends SpecialPage{
 
     function execute($par){
         global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle, $wgMessage;
+        $this->getOutput()->setPageTitle("HQP Review Table");
         if(isset($_GET['download']) && isset($_GET['year']) && isset($_GET['key'])){
             header('Content-Type: data:application/vnd.ms-excel');
             header('Content-Disposition: attachment; filename="'.$_GET['key'].' Review.xls"');
@@ -157,7 +158,7 @@ class HQPReviewTable extends SpecialPage{
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle, $special_evals;
         $person = Person::newFromWgUser();
         
-        if(self::userCanExecute($wgUser)){
+        if((new self)->userCanExecute($wgUser)){
             $selected = @($wgTitle->getText() == "HQPReviewTable") ? "selected" : false;
             $tabs["Manager"]['subtabs'][] = TabUtils::createSubTab("HQP Review Table", "$wgServer$wgScriptPath/index.php/Special:HQPReviewTable", $selected);
         }

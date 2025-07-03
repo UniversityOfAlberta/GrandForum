@@ -5,11 +5,11 @@ Feature: AddMember
 
     Scenario: Anon trying to create an account (should be disabled)
         Given I am on "index.php/Special:Userlogin/signup"
-        Then I should see "Permission error"
+        Then I should see "No such special page"
         
     Scenario: Anon trying to create an account 2 (should be disabled)
         Given I am on "index.php?title=Special:UserLogin&action=submitlogin&type=login&returnto=Help%3AContents&type=signup"
-        Then I should see "Permission error"
+        Then I should see "No such special page"
 
     Scenario: HQP trying to request a user (should not be allowed to)
         Given I am logged in as "HQP.User1" using password "HQP.Pass1"
@@ -26,7 +26,7 @@ Feature: AddMember
         And I check "role_field_HQP"
         And I check "project_field_Phase2Project1"
         And I check "project_field_Phase2Project1SubProject1"
-        And I fill in "combo_position_field0" with "My Position"
+        And I select "Technician" from "hqp_position_field0"
         And I select "Canadian" from "nationality_field"
         And I press "Submit Request"
         Then I should see "User Creation Request Submitted"
@@ -49,7 +49,9 @@ Feature: AddMember
         And I check "role_field_HQP"
         And I check "project_field_Phase2Project1"
         And I check "project_field_Phase2Project1SubProject1"
-        And I fill in "combo_position_field0" with "My Position"
+        And I fill in "combo_university_field0" with "University of Alberta"
+        And I fill in "combo_dept_field0" with "Computing Science"
+        And I select "Technician" from "hqp_position_field0"
         And I select "Canadian" from "nationality_field"
         And I check "Yes" from "cand_field"
         And I press "Submit Request"
@@ -72,7 +74,7 @@ Feature: AddMember
         And I check "role_field_HQP"
         And I check "project_field_Phase2Project1"
         And I check "project_field_Phase2Project1SubProject1"
-        And I fill in "combo_position_field0" with "My Position"
+        And I select "Technician" from "hqp_position_field0"
         And I select "Canadian" from "nationality_field"
         And I press "Submit Request"
         Then I should see "The name provided is similar to the following person"
@@ -123,7 +125,7 @@ Feature: AddMember
         And I fill in "last_name_field" with "Öå"
         And I fill in "email_field" with "Ààè.Öå@behat-test.com"
         And I check "role_field_HQP"
-        And I fill in "combo_position_field0" with "My Position"
+        And I select "Technician" from "hqp_position_field0"
         And I select "Canadian" from "nationality_field"
         And I press "Submit Request"
         Then I should see "User Creation Request Submitted"

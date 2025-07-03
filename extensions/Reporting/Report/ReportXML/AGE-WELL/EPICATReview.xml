@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="EPIC-AT Award 2024" reportType="RP_EPIC_REVIEW" ajax="true" disabled="false" year="2024">
+<Report name="EPIC-AT Award 2025" reportType="RP_EPIC_REVIEW" ajax="true" disabled="false" year="2025">
     <Permissions>
         <Role role="Evaluator">
             <SectionPermission id="instructions" permissions="rw" />
@@ -125,7 +125,7 @@
                 </tr>
             ]]>
         </Static>
-        <ReportItemSet id="hqp_materials" type="MaterialsReportItemSet" subType="EPIC-2024">
+        <ReportItemSet id="hqp_materials" type="MaterialsReportItemSet" subType="EPIC-2025">
             <ReportItem id="hqp_pdf" type="PDFReportItem" reportType="EPIC-AT" width="100%" project="true">
                 <![CDATA[<tr><td>{$user_name}</td><td>{$item}</td>]]>
             </ReportItem>
@@ -142,7 +142,7 @@
         </Static>
     </ReportSection>
     <ReportSection id="review" tooltip="HQP Review" name="HQP Review" blobSection="HQP_REVIEW" type="EditableReportSection">
-        <ReportItemSet id="hqp_materials" type="MaterialsReportItemSet" subType="EPIC-2024">
+        <ReportItemSet id="hqp_materials" type="MaterialsReportItemSet" subType="EPIC-2025">
             <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{$user_name}">
                 <ReportItem id="overall" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="HQP_REVIEW_OVERALL_COMM" blobSubItem="{$user_id}">
                     <![CDATA[

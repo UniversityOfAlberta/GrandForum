@@ -1,9 +1,5 @@
 <?php
 /**
- * action=edit / action=submit handler
- *
- * Copyright © 2012 Timo Tijhof
- *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -20,57 +16,63 @@
  *
  * @file
  * @ingroup Actions
- * @author Timo Tijhof
  */
 
 /**
- * Page edition handler
+ * Page edition handler (action=edit)
  *
- * This is a wrapper that will call the EditPage class, or ExternalEdit
- * if $wgUseExternalEditor is set to true and requested by the user.
+ * This is a wrapper that will call the EditPage class or a custom editor from an extension.
  *
+ * @stable for subclasssing
  * @ingroup Actions
  */
 class EditAction extends FormlessAction {
 
+	/**
+	 * @stable to override
+	 * @return string
+	 */
 	public function getName() {
 		return 'edit';
 	}
 
+	/**
+	 * @stable to override
+	 * @return string|null
+	 */
 	public function onView() {
 		return null;
 	}
 
+	/**
+	 * @stable to override
+	 */
 	public function show() {
-		$page = $this->page;
-		$user = $this->getUser();
+		$this->useTransactionalTimeLimit();
 
-		if ( wfRunHooks( 'CustomEditor', array( $page, $user ) ) ) {
-			$editor = new EditPage( $page );
+		$out = $this->getOutput();
+		$out->setRobotPolicy( 'noindex,nofollow' );
+
+		// The editor should always see the latest content when starting their edit.
+		// Also to ensure cookie blocks can be set (T152462).
+		$out->enableClientCache( false );
+
+		if ( $this->getContext()->getConfig()->get( 'UseMediaWikiUIEverywhere' ) ) {
+			$out->addModuleStyles( [
+				'mediawiki.ui.input',
+				'mediawiki.ui.checkbox',
+			] );
+		}
+
+		$article = $this->getArticle();
+		if ( $this->getHookRunner()->onCustomEditor( $article, $this->getUser() ) ) {
+			$editor = new EditPage( $article );
+			$editor->setContextTitle( $this->getTitle() );
 			$editor->edit();
 		}
 	}
-}
 
-/**
- * Edit submission handler
- *
- * This is the same as EditAction; except that it sets the session cookie.
- *
- * @ingroup Actions
- */
-class SubmitAction extends EditAction {
-
-	public function getName() {
-		return 'submit';
-	}
-
-	public function show() {
-		if ( session_id() == '' ) {
-			// Send a cookie so anons get talk message notifications
-			wfSetupSession();
-		}
-
-		parent::show();
+	public function doesWrites() {
+		return true;
 	}
 }

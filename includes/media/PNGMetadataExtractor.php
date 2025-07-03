@@ -40,16 +40,16 @@ class PNGMetadataExtractor {
 	/** @var array */
 	private static $textChunks;
 
-	const VERSION = 1;
-	const MAX_CHUNK_SIZE = 3145728; // 3 megabytes
+	public const VERSION = 1;
+	private const MAX_CHUNK_SIZE = 3145728; // 3 megabytes
 
-	static function getMetadata( $filename ) {
+	public static function getMetadata( $filename ) {
 		self::$pngSig = pack( "C8", 137, 80, 78, 71, 13, 10, 26, 10 );
 		self::$crcSize = 4;
 		/* based on list at http://owl.phy.queensu.ca/~phil/exiftool/TagNames/PNG.html#TextualData
-		 * and http://www.w3.org/TR/PNG/#11keywords
+		 * and https://www.w3.org/TR/PNG/#11keywords
 		 */
-		self::$textChunks = array(
+		self::$textChunks = [
 			'xml:com.adobe.xmp' => 'xmp',
 			# Artist is unofficial. Author is the recommended
 			# keyword in the PNG spec. However some people output
@@ -72,11 +72,11 @@ class PNGMetadataExtractor {
 			'label' => 'Label',
 			'creation time' => 'DateTimeDigitized',
 			/* Other potentially useful things - Document */
-		);
+		];
 
 		$frameCount = 0;
 		$loopCount = 1;
-		$text = array();
+		$text = [];
 		$duration = 0.0;
 		$bitDepth = 0;
 		$colorType = 'unknown';
@@ -105,8 +105,7 @@ class PNGMetadataExtractor {
 			if ( !$buf || strlen( $buf ) < 4 ) {
 				throw new Exception( __METHOD__ . ": Read error" );
 			}
-			$chunk_size = unpack( "N", $buf );
-			$chunk_size = $chunk_size[1];
+			$chunk_size = unpack( "N", $buf )[1];
 
 			if ( $chunk_size < 0 ) {
 				throw new Exception( __METHOD__ . ": Chunk size too big for unpack" );
@@ -122,9 +121,11 @@ class PNGMetadataExtractor {
 				if ( !$buf || strlen( $buf ) < $chunk_size ) {
 					throw new Exception( __METHOD__ . ": Read error" );
 				}
+				$width = unpack( 'N', substr( $buf, 0, 4 ) )[1];
+				$height = unpack( 'N', substr( $buf, 4, 4 ) )[1];
 				$bitDepth = ord( substr( $buf, 8, 1 ) );
 				// Detect the color type in British English as per the spec
-				// http://www.w3.org/TR/PNG/#11IHDR
+				// https://www.w3.org/TR/PNG/#11IHDR
 				switch ( ord( substr( $buf, 9, 1 ) ) ) {
 					case 0:
 						$colorType = 'greyscale';
@@ -174,7 +175,7 @@ class PNGMetadataExtractor {
 			} elseif ( $chunk_type == "iTXt" ) {
 				// Extracts iTXt chunks, uncompressing if necessary.
 				$buf = self::read( $fh, $chunk_size );
-				$items = array();
+				$items = [];
 				if ( preg_match(
 					'/^([^\x00]{1,79})\x00(\x00|\x01)\x00([^\x00]*)(.)[^\x00]*\x00(.*)$/Ds',
 					$buf, $items )
@@ -201,19 +202,19 @@ class PNGMetadataExtractor {
 					// if compressed
 					if ( $items[2] == "\x01" ) {
 						if ( function_exists( 'gzuncompress' ) && $items[4] === "\x00" ) {
-							wfSuppressWarnings();
+							Wikimedia\suppressWarnings();
 							$items[5] = gzuncompress( $items[5] );
-							wfRestoreWarnings();
+							Wikimedia\restoreWarnings();
 
 							if ( $items[5] === false ) {
 								// decompression failed
-								wfDebug( __METHOD__ . ' Error decompressing iTxt chunk - ' . $items[1] . "\n" );
+								wfDebug( __METHOD__ . ' Error decompressing iTxt chunk - ' . $items[1] );
 								fseek( $fh, self::$crcSize, SEEK_CUR );
 								continue;
 							}
 						} else {
 							wfDebug( __METHOD__ . ' Skipping compressed png iTXt chunk due to lack of zlib,'
-								. " or potentially invalid compression method\n" );
+								. " or potentially invalid compression method" );
 							fseek( $fh, self::$crcSize, SEEK_CUR );
 							continue;
 						}
@@ -245,9 +246,9 @@ class PNGMetadataExtractor {
 					fseek( $fh, self::$crcSize, SEEK_CUR );
 					continue;
 				}
-				wfSuppressWarnings();
+				Wikimedia\suppressWarnings();
 				$content = iconv( 'ISO-8859-1', 'UTF-8', $content );
-				wfRestoreWarnings();
+				Wikimedia\restoreWarnings();
 
 				if ( $content === false ) {
 					throw new Exception( __METHOD__ . ": Read error (error with iconv)" );
@@ -280,25 +281,25 @@ class PNGMetadataExtractor {
 					$compression = substr( $postKeyword, 0, 1 );
 					$content = substr( $postKeyword, 1 );
 					if ( $compression !== "\x00" ) {
-						wfDebug( __METHOD__ . " Unrecognized compression method in zTXt ($keyword). Skipping.\n" );
+						wfDebug( __METHOD__ . " Unrecognized compression method in zTXt ($keyword). Skipping." );
 						fseek( $fh, self::$crcSize, SEEK_CUR );
 						continue;
 					}
 
-					wfSuppressWarnings();
+					Wikimedia\suppressWarnings();
 					$content = gzuncompress( $content );
-					wfRestoreWarnings();
+					Wikimedia\restoreWarnings();
 
 					if ( $content === false ) {
 						// decompression failed
-						wfDebug( __METHOD__ . ' Error decompressing zTXt chunk - ' . $keyword . "\n" );
+						wfDebug( __METHOD__ . ' Error decompressing zTXt chunk - ' . $keyword );
 						fseek( $fh, self::$crcSize, SEEK_CUR );
 						continue;
 					}
 
-					wfSuppressWarnings();
+					Wikimedia\suppressWarnings();
 					$content = iconv( 'ISO-8859-1', 'UTF-8', $content );
-					wfRestoreWarnings();
+					Wikimedia\restoreWarnings();
 
 					if ( $content === false ) {
 						throw new Exception( __METHOD__ . ": Read error (error with iconv)" );
@@ -308,7 +309,7 @@ class PNGMetadataExtractor {
 					$text[$finalKeyword]['x-default'] = $content;
 					$text[$finalKeyword]['_type'] = 'lang';
 				} else {
-					wfDebug( __METHOD__ . " Cannot decompress zTXt chunk due to lack of zlib. Skipping.\n" );
+					wfDebug( __METHOD__ . " Cannot decompress zTXt chunk due to lack of zlib. Skipping." );
 					fseek( $fh, $chunk_size, SEEK_CUR );
 				}
 			} elseif ( $chunk_type == 'tIME' ) {
@@ -398,14 +399,14 @@ class PNGMetadataExtractor {
 			}
 		}
 
-		return array(
+		return [
 			'frameCount' => $frameCount,
 			'loopCount' => $loopCount,
 			'duration' => $duration,
 			'text' => $text,
 			'bitDepth' => $bitDepth,
 			'colorType' => $colorType,
-		);
+		];
 	}
 
 	/**
@@ -413,7 +414,7 @@ class PNGMetadataExtractor {
 	 *
 	 * @param resource $fh The file handle
 	 * @param int $size Size in bytes.
-	 * @throws Exception if too big.
+	 * @throws Exception If too big
 	 * @return string The chunk.
 	 */
 	private static function read( $fh, $size ) {

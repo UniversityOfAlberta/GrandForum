@@ -14,12 +14,14 @@ function runFESPeopleTable($par){
 
 class FESPeopleTable extends SpecialPage {
 
-    function FESPeopleTable() {
+    function __construct() {
 		SpecialPage::__construct("FESPeopleTable", STAFF.'+', true, 'runFESPeopleTable');
 	}
 
     function execute($par){
 		global $wgServer, $wgScriptPath, $wgUser, $wgOut, $config;
+
+		$this->getOutput()->setPageTitle("Members Table");
 		$me = Person::newFromWgUser();
 		$people = Person::getAllPeople();
     

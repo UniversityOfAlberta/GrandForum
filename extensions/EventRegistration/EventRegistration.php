@@ -34,7 +34,7 @@ class EventRegistration extends BackboneModel {
         return new EventRegistration($data);
     }
 
-    function EventRegistration($data=null){
+    function __construct($data=null){
         if(count($data) > 0){
             $this->id = $data[0]['id'];
             $this->eventId = $data[0]['event_id'];

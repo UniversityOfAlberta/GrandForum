@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Theme Report" reportType="RP_THEME_REPORT_{GET(id)}" pdfType="RP_THEME_REPORT_{GET(id)}" pdfFiles="ThemeReportPDF" year="0" personId="0" ajax="true" disabled="false">
+    <Permissions>
+        <Role role="Staff+">
+            <SectionPermission id="report" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+        <Role role="TL">
+            <SectionPermission id="report" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+        <Theme />
+        <If if="{!matches({GET(id)},^[0-9][0-9][0-9][0-9]_Q[1-4])}">
+            <SectionPermission id="report" permissions="--" />
+            <SectionPermission id="submit" permissions="--" />
+        </If>
+    </Permissions>
+    <ReportSection id="report" type="EditableReportSection" name="Theme Report" title="{$theme_name}: {$theme_full_name}">
+        <!-- Variables -->
+        <Static>
+            {set(year,    {substr({GET(id)}, 0, 4)})}
+            {set(quarter, {substr({GET(id)}, 6, 1)})}
+        </Static>
+        <If if="{==({get(quarter)},1)}">
+            <![CDATA[
+                <h3>{get(year)}:R{get(quarter)} Report - Submit by: March 15, {get(year)}</h3>
+            ]]>
+        </If>
+        <ElseIf if="{==({get(quarter)},2)}">
+            <![CDATA[
+                <h3>{get(year)}:R{get(quarter)} Report - Submit by: July 15, {get(year)}</h3>
+            ]]>
+        </ElseIf>
+        <ElseIf if="{==({get(quarter)},3)}">
+            <![CDATA[
+                <h3>{get(year)}:R{get(quarter)} Report - Submit by: November 15, {get(year)}</h3>
+            ]]>
+        </ElseIf>
+        
+        <!-- Past Reports -->
+        <Static>
+            {set(startYear, {timestamp(Y-m-d)})}
+        </Static>
+        <ReportItemSet type="ThemeProjects" all="true">
+            <Static>
+                {set(startYear, {min({get(startYear)},{substr({$project_start},0,4)})} )}
+            </Static>
+        </ReportItemSet>
+        <Static>
+            <![CDATA[
+                <div class="pdfnodisplay">
+                <h3>Past Reports</h3>
+                <table id='past' class="wikitable">
+                    <tr>
+                        <th rowspan='2'>Project</th>
+            ]]>
+        </Static>
+        <!-- Year Header -->
+        <For from="{get(startYear)}" to="{timestamp(Y)}">
+            <If if="{>=({$getExtra},2024)}">
+                <![CDATA[
+                    <th colspan='3'>{$getExtra}</th>
+                ]]>
+            </If>
+            <Else>
+                <![CDATA[
+                    <th colspan='4'>{$getExtra}</th>
+                ]]>
+            </Else>
+        </For>
+        <Static>
+            <![CDATA[
+                    </tr>
+                    <tr>
+            ]]>
+        </Static>
+        <!-- Quarter Header -->
+        <For from="{get(startYear)}" to="{timestamp(Y)}">
+            <Static>
+                <![CDATA[
+                    {set(y, {$getExtra})}
+                ]]>
+            </Static>
+            <If if="{>=({$getExtra},2024)}">
+                <For from="1" to="3">
+                    <Static>
+                        <![CDATA[
+                            {set(q, {$getExtra})}
+                            <th>R{get(q)}</th>
+                        ]]>
+                    </Static>
+                </For>
+            </If>
+            <Else>
+                <For from="1" to="4">
+                    <Static>
+                        <![CDATA[
+                            {set(q, {$getExtra})}
+                            <th>R{get(q)}</th>
+                        ]]>
+                    </Static>
+                </For>
+            </Else>
+        </For>
+        <Static>
+            <![CDATA[
+                    </tr>
+            ]]>
+        </Static>
+        <!-- PDF Rows -->
+        <ReportItemSet type="ThemeProjects" all="true">
+            <Static>
+                <![CDATA[
+                    <tr class="project">
+                        <td><b>{$project_name}</b></td>
+                ]]>
+            </Static>
+            <For from="{get(startYear)}" to="{timestamp(Y)}">
+                <Static>
+                    <![CDATA[
+                        {set(y, {$getExtra})}
+                    ]]>
+                </Static>
+                <If if="{>=({$getExtra},2024)}">
+                    <For from="1" to="3">
+                        <Static>
+                            <![CDATA[
+                                {set(q, {$getExtra})}
+                            ]]>
+                        </Static>
+                        <ReportItem id="pdf" type="PDFReportItem" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />" class="" project="true" reportType="ProjectReportPDF" pdfType="RP_PROJECT_REPORT_{get(y)}_Q{get(q)}" year="0" showWord="true">
+                            <![CDATA[
+                                <td style='padding-left:0.5em; padding-right:0.5em;'>{$item}</td>
+                            ]]>
+                        </ReportItem>
+                    </For>
+                </If>
+                <Else>
+                    <For from="1" to="4">
+                        <Static>
+                            <![CDATA[
+                                {set(q, {$getExtra})}
+                            ]]>
+                        </Static>
+                        <ReportItem id="pdf" type="PDFReportItem" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />" class="" project="true" reportType="ProjectReportPDF" pdfType="RP_PROJECT_REPORT_{get(y)}_Q{get(q)}" year="0" showWord="true">
+                            <![CDATA[
+                                <td style='padding-left:0.5em; padding-right:0.5em;'>{$item}</td>
+                            ]]>
+                        </ReportItem>
+                    </For>
+                </Else>
+            </For>
+            <Static>
+                <![CDATA[
+                    </tr>
+                ]]>
+            </Static>
+        </ReportItemSet>
+        <Static>
+            <![CDATA[
+                <tr>
+                    <th style='text-align:left;'>Merged</th>
+            ]]>
+        </Static>
+        <For from="{get(startYear)}" to="{timestamp(Y)}">
+            <If if="{>=({$getExtra},2024)}">
+                <For from="1" to="3">
+                    <Static>
+                        <![CDATA[
+                            <th>
+                                <a class='merged pdf' style="width:auto;" href="#"><img src="{$wgServer}{$wgScriptPath}/skins/pdf.gif"></a>
+                                <a class='merged doc' style="width:auto;" href="#"><img src="{$wgServer}{$wgScriptPath}/skins/word.gif"></a>
+                            </th>
+                        ]]>
+                    </Static>
+                </For>
+            </If>
+            <Else>
+                <For from="1" to="4">
+                    <Static>
+                        <![CDATA[
+                            <th>
+                                <a class='merged pdf' style="width:auto;" href="#"><img src="{$wgServer}{$wgScriptPath}/skins/pdf.gif"></a>
+                                <a class='merged doc' style="width:auto;" href="#"><img src="{$wgServer}{$wgScriptPath}/skins/word.gif"></a>
+                            </th>
+                        ]]>
+                    </Static>
+                </For>
+            </Else>
+        </For>
+        <Static>
+            <![CDATA[
+                    </tr>
+                </table>
+                </div>
+                <script type='text/javascript'>
+                    $('.merged.pdf').each(function(i, el){
+                        var id = i+1;
+                        var pdfs = [];
+                        $('#past tr.project').each(function(i, el){
+                            $("a.pdf", $('td', $(el)).eq(id)).each(function(j, a){
+                                var href = $(a).attr("href").split("?getpdf=");
+                                pdfs.push(href[1]);
+                            });
+                        });
+                        if(pdfs.length > 0){
+                            var urlPdf = wgServer + wgScriptPath + "/index.php/Special:ReportArchive?merge=" + pdfs.join(",") + "&cover&generatePDF&headerName={$theme_name}";
+                            var urlDoc = urlPdf + "&doc";
+                            $(el).attr("href", urlPdf);
+                            $(el).next().attr("href", urlDoc);
+                        }
+                        else{
+                            $(el).hide();
+                            $(el).next().hide();
+                        }
+                    });
+                </script>
+            ]]>
+        </Static>
+        
+        <!-- Start the Report -->
+        <ReportItem id="description" type="Textarea" blobItem="DESCRIPTION" rich="true">
+            <![CDATA[
+                <h3>1. Description of work and next steps</h3>
+                <p>Summarize and highlight relevant activities performed in the past 4 months in relation to the overall goals, objectives, and timelines of the theme, mentioning any notable administrative or research outcome. Briefly explain next steps.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="edi" type="Textarea" blobItem="EDI" rich="true">
+            <![CDATA[
+                <h3>2. Equity, diversity, and inclusion update</h3>
+                <p>Summarize and highlight relevant challenges, opportunities or lessons learnt that are relevant to EDI in your theme’s research activities or in relation to the project teams. </p>
+                <b><a href='#' onClick='$("#surveyStats").slideToggle();'>Toggle Survey Stats</a></b>
+                <div id='surveyStats' style='display:none;'>
+                    {$themeSurveyStats}
+                </div>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="challenges" type="Textarea" blobItem="CHALLENGES" rich="true">
+            <![CDATA[
+                <h3>3. Identified or anticipated challenges (if any)</h3>
+                <p>If relevant, summarize any challenges or concerns that have been identified during the past 3 months, including anticipated ones, and possible solutions to address them.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="adjustments" type="Textarea" blobItem="ADJUSTMENTS" rich="true">
+            <![CDATA[
+                <h3>4. Milestones adjustments</h3>
+                <p>Have project milestones been modified because of activities or challenges encountered in the past 4 months? If so, provide a brief overview of the changes and the rationale that supports them.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="ktee" type="Textarea" blobItem="KTEE" rich="true">
+            <![CDATA[
+                <h3>5. Knowledge mobilization and community engagement</h3>
+                <p>Have there been any updates regarding knowledge mobilization or community engagement in the past 4 months? Please provide a brief description of activities to include the type of organization or sector (public, private, not-for-profit), location or country (Canadian, international) and type of engagement (data collection, event). Please specify if you have engaged with a Canadian Indigenous Organization.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="findings" type="Textarea" blobItem="FINDINGS" rich="true">
+            <![CDATA[
+                <h3>6. Preliminary findings</h3>
+                <p>Please provide a brief summary of any significant preliminary findings or results from the Theme's projects.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="submit" tooltip="PDF generation and submission" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="review" type="SimpleReviewSubmitReportItem" emails="{$my_email},martha.munezhi@torontomu.ca,anna.triandafyllidou@torontomu.ca,bagheri@torontomu.ca" />
+    </ReportSection>
+</Report>

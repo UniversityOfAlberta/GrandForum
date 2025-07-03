@@ -3,7 +3,7 @@ $wgHooks['ArticleViewHeader'][] = 'MaterialPage::processPage';
 
 class MaterialPage {
 
-    function processPage($article, $outputDone, $pcache){
+    static function processPage($article, $outputDone, $pcache){
         global $wgTitle, $wgUser, $wgOut, $wgServer, $wgScriptPath, $wgFileExtensions, $wgMessage;
         $me = Person::newFromId($wgUser->getId());
         if($wgTitle->getNSText() == "Multimedia"){
@@ -57,6 +57,7 @@ class MaterialPage {
                 $wgOut->addHTML("There is no Material with the id '{$wgTitle->getText()}'");
                 $wgOut->output();
                 $wgOut->disable();
+                exit;
             }
             if(!$create){
                 $wgOut->setPageTitle(str_replace("&#39;", "'", $material->getTitle()));
@@ -296,7 +297,7 @@ class MaterialPage {
             }
             $wgOut->output();
             $wgOut->disable();
-            return true;
+            exit;
         }
         return true;
     }

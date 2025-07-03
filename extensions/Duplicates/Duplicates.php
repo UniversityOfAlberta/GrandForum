@@ -13,7 +13,7 @@ $wgSpecialPages['Duplicates'] = 'Duplicates'; # Let MediaWiki know about the spe
 $wgExtensionMessagesFiles['Duplicates'] = $dir . 'Duplicates.i18n.php';
 $wgSpecialPageGroups['Duplicates'] = 'other-tools';
 
-$wgHooks['UnknownAction'][] = 'handleDuplicates';
+UnknownAction::createAction('handleDuplicates');
 $wgHooks['SubLevelTabs'][] = 'Duplicates::createSubTabs';
 
 function handleDuplicates($action, $request){
@@ -49,7 +49,7 @@ function handleDuplicates($action, $request){
 
 class Duplicates extends SpecialPage{
 
-	function Duplicates() {
+	function __construct() {
 		SpecialPage::__construct("Duplicates", MANAGER.'+', true, 'Duplicates::execute');
 	}
 	
@@ -65,6 +65,7 @@ class Duplicates extends SpecialPage{
 
 	function execute($par){
 	    global $wgServer, $wgScriptPath, $wgOut;
+	    $this->getOutput()->setPageTitle("Duplicates");
 	    ProductHandler::init();
 	    MyProductHandler::init();
 	    PersonHandler::init();

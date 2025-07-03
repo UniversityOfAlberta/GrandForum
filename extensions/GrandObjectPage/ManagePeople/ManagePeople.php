@@ -10,7 +10,11 @@ class ManagePeople extends BackbonePage {
     }
     
     function userCanExecute($user){
+        global $config;
         $me = Person::newFromWgUser();
+        if($config->getValue('networkName') == "AVOID" || $config->getValue('networkName') == "Voyant"){
+            return ($me->isRoleAtLeast(STAFF));
+        }
         return $me->isRoleAtLeast(NI);
     }
     
@@ -36,10 +40,10 @@ class ManagePeople extends BackbonePage {
         $me = Person::newFromWgUser();
         $universities = new Collection(University::getAllUniversities());
         $uniNames = $universities->pluck('name');
-        $positions = json_encode(array_values(Person::getAllPositions()));
+        $positions = large_json_encode(array_values(Person::getAllPositions()));
 
-        $departments = json_encode(array_values(Person::getAllDepartments()));
-        $faculties = json_encode(array_values(Person::getAllFaculties()));
+        $departments = large_json_encode(array_values(Person::getAllDepartments()));
+        $faculties = large_json_encode(array_values(Person::getAllFaculties()));
         $organizations = array_unique($uniNames);
         sort($organizations);
         
@@ -73,7 +77,7 @@ class ManagePeople extends BackbonePage {
     
     static function createToolboxLinks(&$toolbox){
         global $wgServer, $wgScriptPath, $wgUser;
-        if(self::userCanExecute($wgUser)){
+        if((new self)->userCanExecute($wgUser)){
             $toolbox['People']['links'][] = TabUtils::createToolboxLink("Manage People", "$wgServer$wgScriptPath/index.php/Special:ManagePeople");
         }
         return true;

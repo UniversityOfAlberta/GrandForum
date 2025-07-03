@@ -19,7 +19,7 @@ class PeopleAPI extends RESTAPI {
             $finalPeople = array();
             foreach($exploded as $role){
                 $role = trim($role);
-                if($config->getValue('networkName') == "FES"){
+                if($config->getValue('networkType') == "CFREF"){
                     if($role == "Former-".HQP){
                         $role = "Alumni";
                     }

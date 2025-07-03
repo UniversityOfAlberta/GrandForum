@@ -13,7 +13,7 @@ function runNewsletter($par) {
 
 class Newsletter extends SpecialPage{
 
-    function Newsletter() {
+    function __construct() {
         SpecialPage::__construct("Newsletter", null, false, 'runNewsletter');
     }
     
@@ -23,6 +23,7 @@ class Newsletter extends SpecialPage{
 
     function execute($par){
         global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle, $wgMessage;
+        $this->getOutput()->setPageTitle("Newsletter");
         exec('grep -r -e "No.*images?" -e "You.*are.*receiving.*this.*email.*because.*you.*are.*subscribed.*to.*the.*mailing.*list" /var/lib/mailman/archives/private/director/attachments/ | grep "attachment.html" | grep -v "5eaf95e9" | grep -v "3399ada1" | grep -v "d77a4937" | grep -v "f03e87ef"', $output);
         //exec('grep -r "HQP.*Monthly.*Newsletter" /var/lib/mailman/archives/private/hqp/attachments/ | grep "attachment.html"', $output);
         $wgOut->addHTML("<div id='accordion'>");

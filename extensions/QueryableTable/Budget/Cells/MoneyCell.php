@@ -7,7 +7,7 @@ class MoneyCell extends Cell{
     var $totalY = -1;
     var $postText = "";
     
-    function MoneyCell($cellType, $params, $cellValue, $rowN, $colN, $table){
+    function __construct($cellType, $params, $cellValue, $rowN, $colN, $table){
         $value = '';
         if($cellValue != ''){
             if(isset($params[0]) && isset($params[1])){

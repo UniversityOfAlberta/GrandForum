@@ -13,7 +13,7 @@ function runEPICTable($par) {
 
 class EPICTable extends SpecialPage{
 
-    function EPICTable() {
+    function __construct() {
         SpecialPage::__construct("EPICTable", null, false, 'runEPICTable');
     }
     
@@ -24,6 +24,7 @@ class EPICTable extends SpecialPage{
 
     function execute($par){
         global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle, $wgMessage;
+        $this->getOutput()->setPageTitle("EPIC Table");
         EPICTable::generateHTML($wgOut);
     }
     
@@ -121,7 +122,7 @@ class EPICTable extends SpecialPage{
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle, $special_evals;
         $person = Person::newFromWgUser();
         
-        if(self::userCanExecute($wgUser)){
+        if((new self)->userCanExecute($wgUser)){
             $selected = @($wgTitle->getText() == "EPICTable") ? "selected" : false;
             $tabs["Manager"]['subtabs'][] = TabUtils::createSubTab("EPIC Surveys", "$wgServer$wgScriptPath/index.php/Special:EPICTable", $selected);
         }

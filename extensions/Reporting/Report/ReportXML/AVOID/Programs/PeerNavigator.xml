@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Peer Navigator" reportType="RP_PEER_NAVIGATOR" ajax="true" disabled="false">
+    <Permissions>
+        <Role role="INACTIVE+"></Role>
+    </Permissions>
+        <Script>
+        <![CDATA[
+            <script type="text/javascript">var pageDC = new DataCollection();
+                pageDC.init(me.get('id'), 'Programs-Hit');
+                pageDC.append('log', new Date().toISOString().slice(0, 10), false);
+                
+                dc.init(me.get('id'), 'Program-PeerNavigator');
+                dc.increment('count');
+            </script>
+        ]]>
+    </Script>
+    <ReportSection id="consent" tooltip="Program Details" name="Program Details" title="Program Details" blobSection="CONSENT" type="NextPrevReportSection">
+        <Static>
+            <![CDATA[
+                <script type="text/javascript">
+                    $("#reportHeader").hide();
+                    $("#reportHeader").next().hide();
+                    _.defer(function(){
+                        $(".toggleHeader").hide();
+                    });
+                </script>
+                <div style='overflow: auto;'>
+                    
+                    <div style='display:flex; align-items: center;'>
+                        <div class='program-header' style='min-width: 9em; text-align: center;'>
+                            PEER NAVIGATOR
+                        </div>
+                        <div class='program-text' style='min-width: 200px;'>
+                            The Peer Navigator Program is a free, one-on-one program that supports community members who need help with registration, getting through the healthy aging assessment, or navigating the AVOID Frailty program in general.
+                        </div>
+                    </div>
+                    <img src="{$wgServer}{$wgScriptPath}/skins/people5.png" style='float: right; height: 300px; margin: 0 0 1em 1em;' />
+                    
+                    <p>Peer Navigators will support you in working towards better managing your health by helping you:</p>
+                    <div class='program-box'>Complete your intake assessment with you</div>
+                    <div class='program-box'>Identify resources and programs of interest</div>
+                    <div class='program-box'>Help you register using a username and password of choice</div>
+                    <br />
+                    <img src="{$wgServer}{$wgScriptPath}/skins/people6.png" style='float: left; height: 350px; transform: scaleX(-1); margin: 1em 1em 1em 0;' />
+                    
+                    <p>Peer Navigators <b>provide support in the online aspect of the program. Trained navigators will meet you for a one-on-one appointment so that you can enjoy all that the AVOID Frailty program has to offer.</b></p>
+                    
+                    <div class='program-button' onClick='$(".toggleHeader").click();'>
+                        Complete the Participant Consent Form to get started with a Peer Navigator
+                    </div>
+                </div>
+            ]]>
+        </Static>
+        <ReportItemSet id="consentToggle" type="ToggleHeader" title="Consent Form">
+            <ReportItem id="eula" type="Checkbox" blobItem="EULA" blobType="BLOB_ARRAY" labels="By clicking here, I am verifying that: I have read the information above and I consent to participate in this program" options="Yes">
+                <![CDATA[
+                    <div class="eula">
+                        <p>The Peer Navigator Program is one of AVOID Frailty’s programs and supported by The Canadian Frailty Network. The one-on-one navigator program supports community members who need help with program registration, the healthy aging assessment, and/or navigating the site in general. As part of the program, participants are paired with trained volunteer navigators.</p>
+                        Peer navigators will request personal information from you as it pertains to the program. This information will include, but may not be limited to:
+                        <ul>
+                            <li>Your name, address, email address and phone number</li>
+                            <li>Information regarding your health challenges</li>
+                            <li>Barriers you face in meeting your goals; and</li>
+                            <li>Goals and actions you want to take to better manage your health </li>
+                        </ul>
+                        <p> All information collected will be directly related to your participation in the AVOID Frailty Program and in electronic form only. Your personal information will only be used for the purposes of the AVOID Frailty Program. Peer navigators will sign a confidentiality agreement, and be required to complete a CPIC.</p>
+                        By agreeing to this consent form, you are confirming you understand that:
+                        <ul>
+                            <li>You are agreeing to provide relevant personal information to the Peer Navigator volunteer</li>
+                            <li>All information you provide will be kept strictly confidential</li>
+                            <li>Members of the Peer Navigator Team will use the information you provide for the sole purpose of maximizing your success in the AVOID Frailty Program.</li>
+                            <li>If you have any concerns regarding how your personal information is managed or about your participation in the program, you may contact Holly Hao <a href="mailto:hollycfncha@gmail.com">hollycfncha@gmail.com</a></li>
+                        </ul>
+                    </div>
+                    <br />
+                    {$item}
+                ]]>
+            </ReportItem>
+            <ReportItem id="name" type="Text" blobItem="NAME" blobType="BLOB_TEXT" width="250px" default="{$user_name}">
+                <![CDATA[
+                    <table>
+                        <tr>
+                            <td class="label required">Name:</td>
+                            <td class="value">{$item}</td>
+                        </tr>
+                ]]>
+            </ReportItem>
+            <ReportItem id="date" type="Calendar" blobItem="DATE" blobType="BLOB_TEXT" default="{time2date({$timestamp},Y-m-d)}">
+                <![CDATA[
+                        <tr>
+                            <td class="label required">Date:</td>
+                            <td class="value">{$item}</td>
+                        </tr>
+                    </table>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+    </ReportSection>
+    <ReportSection id="register" tooltip="Register" name="Register" title="Register" blobSection="REGISTER" type="NextPrevReportSection">
+        <If if="{and(
+                    {==({getArray(RP_PEER_NAVIGATOR,CONSENT,EULA,0,{$user_id},0,eula)},Yes)},
+                    {!=({getText(RP_PEER_NAVIGATOR,CONSENT,NAME,0,{$user_id},0)},)},
+                    {!=({getText(RP_PEER_NAVIGATOR,CONSENT,DATE,0,{$user_id},0)},)}
+                )}">
+            <Static>
+                <![CDATA[
+                    <p>Registering doesn’t guarantee you a spot in our navigator program. Someone will be in touch with you to discuss the program further.</p>
+                    
+                ]]>
+            </Static>
+            <ReportItem id="name" type="Text" blobItem="NAME" blobType="BLOB_TEXT" width="250px" default="{$user_name}">
+                <![CDATA[
+                    <table>
+                        <tr>
+                            <td class="label required">Name:</td>
+                            <td class="value">{$item}</td>
+                        </tr>
+                ]]>
+            </ReportItem>
+            <ReportItem id="email" type="Text" blobItem="EMAIL" blobType="BLOB_TEXT" width="250px" default="{$user_email}">
+                <![CDATA[
+                        <tr>
+                            <td class="label required">Email:</td>
+                            <td class="value">{$item}</td>
+                        </tr>
+                ]]>
+            </ReportItem>
+            <ReportItem id="phone" type="Text" blobItem="PHONE" width="250px" blobType="BLOB_TEXT">
+                <![CDATA[
+                        <tr>
+                            <td class="label required">Phone Number:</td>
+                            <td class="value">{$item}</td>
+                        </tr>
+                    </table>
+                ]]>
+            </ReportItem>
+            <Static>
+                <![CDATA[
+                    <h3>Communication Consent </h3>
+                    <p>By providing your contact information you are consenting to receive communications from AVOID Frailty about your program selection. A member of our team will be in touch in a few business days.</p>
+                ]]>
+            </Static>
+            <ReportItem id="submit" type="SubmitEmail">
+                <![CDATA[
+                    <table>
+                        <tr>
+                            <td><b>Program:</b></td>
+                            <td>Peer Navigator (Get Support)</td>
+                        </tr>
+                        <tr>
+                            <td><b>User:</b></td>
+                            <td>{$user_name} &lt;{$user_email}&gt;</td>
+                        </tr>
+                        <tr>
+                            <td><b>Date Submitted:</b></td>
+                            <td>{time2date({$timestamp})}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Name:</b></td>
+                            <td>{getText(RP_PEER_NAVIGATOR,REGISTER,NAME,0,{$user_id},0}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Email:</b></td>
+                            <td>{getText(RP_PEER_NAVIGATOR,REGISTER,EMAIL,0,{$user_id},0}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Phone Number:</b></td>
+                            <td>{getText(RP_PEER_NAVIGATOR,REGISTER,PHONE,0,{$user_id},0}</td>
+                        </tr>
+                    </table>
+                ]]>
+            </ReportItem>
+        </If>
+        <Else>
+            <![CDATA[
+                <p>Please fill out all Consent Form fields</p>
+            ]]>
+        </Else>
+    </ReportSection>
+</Report>

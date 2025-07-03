@@ -4,7 +4,7 @@ class UploadICSAPI extends API{
 
     var $structure = null;
 
-    function UploadICSAPI(){
+    function __construct(){
         
     }
 

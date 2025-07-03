@@ -3,8 +3,8 @@
 class HeaderReportSection extends AbstractReportSection {
     
     // Creates a new ReportSection (not editable)
-    function HeaderReportSection(){
-        $this->AbstractReportSection();
+    function __construct(){
+        parent::__construct();
     }
     
     function renderTab(){

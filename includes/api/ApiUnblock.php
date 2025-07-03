@@ -1,9 +1,5 @@
 <?php
 /**
- *
- *
- * Created on Sep 7, 2007
- *
  * Copyright © 2007 Roan Kattouw "<Firstname>.<Lastname>@gmail.com"
  *
  * This program is free software; you can redistribute it and/or modify
@@ -24,6 +20,9 @@
  * @file
  */
 
+use MediaWiki\Block\DatabaseBlock;
+use MediaWiki\ParamValidator\TypeDef\UserDef;
+
 /**
  * API module that facilitates the unblocking of users. Requires API write mode
  * to be enabled.
@@ -32,6 +31,8 @@
  */
 class ApiUnblock extends ApiBase {
 
+	use ApiBlockInfoTrait;
+
 	/**
 	 * Unblocks the specified user or provides the reason the unblock failed.
 	 */
@@ -39,39 +40,60 @@ class ApiUnblock extends ApiBase {
 		$user = $this->getUser();
 		$params = $this->extractRequestParams();
 
-		if ( is_null( $params['id'] ) && is_null( $params['user'] ) ) {
-			$this->dieUsageMsg( 'unblock-notarget' );
-		}
-		if ( !is_null( $params['id'] ) && !is_null( $params['user'] ) ) {
-			$this->dieUsageMsg( 'unblock-idanduser' );
-		}
+		$this->requireOnlyOneParameter( $params, 'id', 'user', 'userid' );
 
-		if ( !$user->isAllowed( 'block' ) ) {
-			$this->dieUsageMsg( 'cantunblock' );
+		if ( !$this->getPermissionManager()->userHasRight( $user, 'block' ) ) {
+			$this->dieWithError( 'apierror-permissiondenied-unblock', 'permissiondenied' );
 		}
-		# bug 15810: blocked admins should have limited access here
-		if ( $user->isBlocked() ) {
+		# T17810: blocked admins should have limited access here
+		$block = $user->getBlock();
+		if ( $block ) {
 			$status = SpecialBlock::checkUnblockSelf( $params['user'], $user );
 			if ( $status !== true ) {
-				$this->dieUsageMsg( $status );
+				$this->dieWithError(
+					$status,
+					null,
+					[ 'blockinfo' => $this->getBlockDetails( $block ) ]
+				);
 			}
 		}
 
-		$data = array(
-			'Target' => is_null( $params['id'] ) ? $params['user'] : "#{$params['id']}",
-			'Reason' => $params['reason']
-		);
-		$block = Block::newFromTarget( $data['Target'] );
-		$retval = SpecialUnblock::processUnblock( $data, $this->getContext() );
-		if ( $retval !== true ) {
-			$this->dieUsageMsg( $retval[0] );
+		// Check if user can add tags
+		if ( $params['tags'] !== null ) {
+			$ableToTag = ChangeTags::canAddTagsAccompanyingChange( $params['tags'], $user );
+			if ( !$ableToTag->isOK() ) {
+				$this->dieStatus( $ableToTag );
+			}
 		}
 
-		$res['id'] = $block->getId();
-		$target = $block->getType() == Block::TYPE_AUTO ? '' : $block->getTarget();
-		$res['user'] = $target instanceof User ? $target->getName() : $target;
-		$res['userid'] = $target instanceof User ? $target->getId() : 0;
-		$res['reason'] = $params['reason'];
+		if ( $params['userid'] !== null ) {
+			$username = User::whoIs( $params['userid'] );
+
+			if ( $username === false ) {
+				$this->dieWithError( [ 'apierror-nosuchuserid', $params['userid'] ], 'nosuchuserid' );
+			} else {
+				$params['user'] = $username;
+			}
+		}
+
+		$data = [
+			'Target' => $params['id'] === null ? $params['user'] : "#{$params['id']}",
+			'Reason' => $params['reason'],
+			'Tags' => $params['tags']
+		];
+		$block = DatabaseBlock::newFromTarget( $data['Target'] );
+		$retval = SpecialUnblock::processUnblock( $data, $this->getContext() );
+		if ( $retval !== true ) {
+			$this->dieStatus( $this->errorArrayToStatus( $retval ) );
+		}
+
+		$target = $block->getType() == DatabaseBlock::TYPE_AUTO ? '' : $block->getTarget();
+		$res = [
+			'id' => $block->getId(),
+			'user' => $target instanceof User ? $target->getName() : $target,
+			'userid' => $target instanceof User ? $target->getId() : 0,
+			'reason' => $params['reason']
+		];
 		$this->getResult()->addValue( null, $this->getModuleName(), $res );
 	}
 
@@ -84,82 +106,40 @@ class ApiUnblock extends ApiBase {
 	}
 
 	public function getAllowedParams() {
-		return array(
-			'id' => array(
+		return [
+			'id' => [
 				ApiBase::PARAM_TYPE => 'integer',
-			),
-			'user' => null,
-			'token' => null,
+			],
+			'user' => [
+				ApiBase::PARAM_TYPE => 'user',
+				UserDef::PARAM_ALLOWED_USER_TYPES => [ 'name', 'ip', 'cidr', 'id' ],
+			],
+			'userid' => [
+				ApiBase::PARAM_TYPE => 'integer',
+				ApiBase::PARAM_DEPRECATED => true,
+			],
 			'reason' => '',
-		);
-	}
-
-	public function getParamDescription() {
-		$p = $this->getModulePrefix();
-
-		return array(
-			'id' => "ID of the block you want to unblock (obtained through list=blocks). " .
-				"Cannot be used together with {$p}user",
-			'user' => "Username, IP address or IP range you want to unblock. " .
-				"Cannot be used together with {$p}id",
-			'token' => "An unblock token previously obtained through prop=info",
-			'reason' => 'Reason for unblock',
-		);
-	}
-
-	public function getResultProperties() {
-		return array(
-			'' => array(
-				'id' => array(
-					ApiBase::PROP_TYPE => 'integer',
-					ApiBase::PROP_NULLABLE => true
-				),
-				'user' => array(
-					ApiBase::PROP_TYPE => 'string',
-					ApiBase::PROP_NULLABLE => true
-				),
-				'userid' => array(
-					ApiBase::PROP_TYPE => 'integer',
-					ApiBase::PROP_NULLABLE => true
-				),
-				'reason' => array(
-					ApiBase::PROP_TYPE => 'string',
-					ApiBase::PROP_NULLABLE => true
-				)
-			)
-		);
-	}
-
-	public function getDescription() {
-		return 'Unblock a user.';
-	}
-
-	public function getPossibleErrors() {
-		return array_merge( parent::getPossibleErrors(), array(
-			array( 'unblock-notarget' ),
-			array( 'unblock-idanduser' ),
-			array( 'cantunblock' ),
-			array( 'ipbblocked' ),
-			array( 'ipbnounblockself' ),
-		) );
+			'tags' => [
+				ApiBase::PARAM_TYPE => 'tags',
+				ApiBase::PARAM_ISMULTI => true,
+			],
+		];
 	}
 
 	public function needsToken() {
-		return true;
+		return 'csrf';
 	}
 
-	public function getTokenSalt() {
-		return '';
-	}
-
-	public function getExamples() {
-		return array(
-			'api.php?action=unblock&id=105',
-			'api.php?action=unblock&user=Bob&reason=Sorry%20Bob'
-		);
+	protected function getExamplesMessages() {
+		return [
+			'action=unblock&id=105'
+				=> 'apihelp-unblock-example-id',
+			'action=unblock&user=Bob&reason=Sorry%20Bob'
+				=> 'apihelp-unblock-example-user',
+		];
 	}
 
 	public function getHelpUrls() {
-		return 'https://www.mediawiki.org/wiki/API:Block';
+		return 'https://www.mediawiki.org/wiki/Special:MyLanguage/API:Block';
 	}
 }

@@ -7,15 +7,17 @@ if(file_exists("../../test.tmp")){
 else{
     define("TESTING", false);
 }
-require_once("../../config/Config.php");
+require_once("../../config/ForumConfig.php");
 
 $ti = $config->getValue("topInverted");
 $si = $config->getValue("sideInverted");
 $th = $config->getValue("topHeaderColor");
 $sc = $config->getValue("sideColor");
 $hl = $config->getValue("highlightColor");
+$shl = ($config->getValue("sideHighlightColor") != "") ? $config->getValue("sideHighlightColor") : $hl;
 $hlFontColor = $config->getValue("highlightFontColor");
 $hlc = $config->getValue("hyperlinkColor");
+$hbc = $config->getValue("headerBorderColor");
 $bc = $config->getValue("mainBorderColor");
 $hc = $config->getValue("headerColor");
 $iconPath = $config->getValue("iconPath");
@@ -44,6 +46,44 @@ echo <<<EOF
     color: $hlFontColor !important;
 }
 
+.changeImg span.changeImgIcon {
+    color: white; 
+    background: #333333;
+    text-align: center; 
+    border-radius: 3px; 
+    vertical-align:middle; 
+    display: inline-block; 
+    width:24px; 
+    font-size: 24px;
+    line-height:24px;
+    text-decoration: none !important;
+}
+
+.changeImg:hover span.changeImgIcon {
+    background: {$hlc};
+    color: white;
+}
+
+/*
+#side .highlights-text {
+    color: $shl !important;
+}
+
+#side .highlights-text-hover:hover {
+    color: $shl !important;
+}
+*/
+
+#side .highlights-background {
+    background: $shl !important;
+    color: $hlFontColor !important;
+}
+
+#side .highlights-background-hover:hover {
+    background: $shl !important;
+    color: $hlFontColor !important;
+}
+
 h2, h3, h4, h5, h6, h7 {
     color: $hc !important;
 }
@@ -64,6 +104,10 @@ h1 {
 }
 
 #header {
+    border-bottom: 1px solid {$hbc};
+}
+
+#header, #mobileMenu {
     background: $sc;
 }
 
@@ -84,6 +128,15 @@ h1 {
     background: $sc;
 }
 
+#sideToggle {
+    border-left: 1px solid {$hbc};
+    border-right: 1px solid {$hbc};
+}
+
+#side hr {
+    background-color: {$hbc};
+}
+
 #sideToggle, #allTabs {
     background: $sc;
     color: #FFFFFF;
@@ -91,7 +144,7 @@ h1 {
 }
 
 #sideToggle:hover, #allTabs:hover {
-    color: $hl;
+    color: $shl;
     background: $sc;
     border-top: 3px solid $hl;
 }
@@ -117,7 +170,7 @@ h1 {
     color: $hlc !important;
 }
 
-.selected .highlights-tab, .highlights-tab:hover {
+.selected .highlights-tab, .highlights-tab:hover, .highlights-tab:focus {
     border-width: 3px 0 0 0;
     border-style: solid;
     border-color: $hl;
@@ -139,17 +192,17 @@ input:focus, textarea:focus {
     border: none !important;
 }
 
-input[type=button], input[type=submit], .button, .button:visited, .dt-button, .ui-button, .button:link , :not(.mce-btn):not(.mce-window-head) > button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose):not([disabled]) {
+input[type=button], input[type=submit], .button, .button:visited, .dt-button, .ui-button, .button:link , :not(.mce-btn):not(.mce-window-head) > button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose):not(.program-button):not([disabled]) {
     color:#606060 !important;
     fill:#606060 !important;
 }
 
-input[type=button]:hover, input[type=submit]:hover, .button:hover,  .dt-button:hover, .ui-button:hover, :not(.mce-btn):not(.mce-window-head) > button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose):not([disabled]):hover {
+input[type=button]:hover, input[type=submit]:hover, .button:hover,  .dt-button:hover, .ui-button:not([disabled]):hover, :not(.mce-btn):not(.mce-window-head) > button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose):not(.program-button):not([disabled]):hover {
     color: $hlc !important;
     fill: $hlc !important;
 }
 
-input[type=button]:active, input[type=submit]:active, .button:active, .dt-button, .ui-button:active, .ui-state button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose):not([disabled]):active {
+input[type=button]:active, input[type=submit]:active, .button:active, .dt-button, .ui-button:not([disabled]):active, .ui-state button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose):not(.program-button):not([disabled]):active {
     color: $hlc !important;
     fill: $hlc !important;
 }
@@ -159,12 +212,30 @@ input[disabled] , input[disabled]:hover , input[disabled]:active, select[disable
     fill:#606060 !important;
 }
 
+input:checked + .toggle {
+    background-color: {$hl};
+}
+
+input:focus + .toggle {
+    box-shadow: 0 0 1px {$hl};
+}
+
 .ui-widget-header a .ui-icon {
     background-image: url(../smoothness/images/ui-icons_ffffff_256x240.png);
 }
 
 .ui-widget-header a:hover .ui-icon {
     background-image: url(../smoothness/images/ui-icons_222222_256x240.png);
+}
+
+.toggleHeader, .ui-accordion-header {
+    background: #cfcfcf !important;
+    padding-left: 35px !important;
+    border: none !important;
+}
+
+.toggleHeader, .ui-accordion-header:hover {
+    background: #bfbfbf !important;
 }
 
 /* Icons */
@@ -291,8 +362,12 @@ a {
     color: $hlc;
 }
 
-a:hover {
+a:hover, a:focus {
     color: $hlc;
+}
+
+a.reportTab:focus {
+    border-color: $hlc;
 }
 
 a:visited {
@@ -301,6 +376,10 @@ a:visited {
 
 a:active {
     color: $hlc;
+}
+
+.fontSize:hover, .fontSize.selected {
+    color: $th !important;
 }
 
 .clicktooltip:hover {
@@ -317,6 +396,20 @@ a:active {
     background: $th;
 }
 
+/* AVOID */
+
+.program-header {
+    background: {$th};
+}
+
+.program-box {
+    background: {$th};
+}
+
+.module, .module:hover, .module:visited {
+    border: 2px solid {$hlc};
+}
+
 EOF;
 
 if($config->getValue("topInverted")){
@@ -325,7 +418,7 @@ if($config->getValue("topInverted")){
     #topheader {
         background: #FFFFFF;
         color: {$ti};
-        border-bottom: 1px solid rgba(0,0,0,0.10);
+        border-bottom: 1px solid {$hbc};
     }
     
     #topheader a {
@@ -353,7 +446,7 @@ EOF;
 if($config->getValue("sideInverted")){
     echo <<<EOF
     #submenu ul a, #header ul a {
-        color: {$hl};
+        color: {$shl};
     }
     
     #side, #nav, #sideFooter {
@@ -361,11 +454,11 @@ if($config->getValue("sideInverted")){
     }
     
     #sideToggle, #allTabs {
-        color: {$hl};
+        color: {$shl};
     }
     
     #nav li a {
-        color: {$hl};
+        color: {$shl};
     }
     
     #nav li > span {

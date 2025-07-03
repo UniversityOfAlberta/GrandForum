@@ -2,7 +2,7 @@
 
 class VPersNotNullCell extends Cell{
     
-    function VPersNotNullCell($cellType, $params, $cellValue, $rowN, $colN, $table){
+    function __construct($cellType, $params, $cellValue, $rowN, $colN, $table){
         if($cellValue == ''){
             $this->error = "&#39;$cellValue&#39; is not a valid researcher.";
             $this->value = $cellValue;

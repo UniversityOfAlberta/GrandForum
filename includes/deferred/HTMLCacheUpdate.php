@@ -1,7 +1,5 @@
 <?php
 /**
- * HTML cache invalidation of all pages linking to a given title.
- *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -18,53 +16,41 @@
  * http://www.gnu.org/copyleft/gpl.html
  *
  * @file
- * @ingroup Cache
  */
 
 /**
- * Class to invalidate the HTML cache of all the pages linking to a given title.
+ * HTML file cache invalidation all the pages linking to a given title
  *
  * @ingroup Cache
+ * @deprecated Since 1.34; Enqueue jobs from HTMLCacheUpdateJob::newForBacklinks instead
  */
-class HTMLCacheUpdate implements DeferrableUpdate {
+class HTMLCacheUpdate extends DataUpdate {
 	/** @var Title */
-	public $mTitle;
-
+	private $title;
 	/** @var string */
-	public $mTable;
+	private $table;
 
 	/**
 	 * @param Title $titleTo
 	 * @param string $table
+	 * @param string $causeAction Triggering action
+	 * @param string $causeAgent Triggering user
 	 */
-	function __construct( Title $titleTo, $table ) {
-		$this->mTitle = $titleTo;
-		$this->mTable = $table;
+	public function __construct(
+		Title $titleTo, $table, $causeAction = 'unknown', $causeAgent = 'unknown'
+	) {
+		$this->title = $titleTo;
+		$this->table = $table;
+		$this->causeAction = $causeAction;
+		$this->causeAgent = $causeAgent;
 	}
 
 	public function doUpdate() {
-		wfProfileIn( __METHOD__ );
-
-		$job = new HTMLCacheUpdateJob(
-			$this->mTitle,
-			array(
-				'table' => $this->mTable,
-			) + Job::newRootJobParams( // "overall" refresh links job info
-				"htmlCacheUpdate:{$this->mTable}:{$this->mTitle->getPrefixedText()}"
-			)
+		$job = HTMLCacheUpdateJob::newForBacklinks(
+			$this->title,
+			$this->table,
+			[ 'causeAction' => $this->getCauseAction(), 'causeAgent' => $this->getCauseAgent() ]
 		);
-
-		$count = $this->mTitle->getBacklinkCache()->getNumLinks( $this->mTable, 200 );
-		if ( $count >= 200 ) { // many backlinks
-			JobQueueGroup::singleton()->push( $job );
-			JobQueueGroup::singleton()->deduplicateRootJob( $job );
-		} else { // few backlinks ($count might be off even if 0)
-			$dbw = wfGetDB( DB_MASTER );
-			$dbw->onTransactionIdle( function () use ( $job ) {
-				$job->run(); // just do the purge query now
-			} );
-		}
-
-		wfProfileOut( __METHOD__ );
+		JobQueueGroup::singleton()->lazyPush( $job );
 	}
 }

@@ -17,25 +17,31 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  *
  * @file
- */
-
-/**
- * @defgroup Actions Action done on pages
+ * @ingroup Actions
  */
 
 /**
  * An action which shows a form and does something based on the input from the form
+ *
+ * @stable to extend
+ *
+ * @ingroup Actions
  */
 abstract class FormAction extends Action {
 
 	/**
 	 * Get an HTMLForm descriptor array
+	 * @stable to override
 	 * @return array
 	 */
-	abstract protected function getFormFields();
+	protected function getFormFields() {
+		// Default to an empty form with just a submit button
+		return [];
+	}
 
 	/**
 	 * Add pre- or post-text to the form
+	 * @stable to override
 	 * @return string HTML which will be sent to $form->addPreText()
 	 */
 	protected function preText() {
@@ -43,6 +49,7 @@ abstract class FormAction extends Action {
 	}
 
 	/**
+	 * @stable to override
 	 * @return string
 	 */
 	protected function postText() {
@@ -51,48 +58,80 @@ abstract class FormAction extends Action {
 
 	/**
 	 * Play with the HTMLForm if you need to more substantially
+	 * @stable to override
 	 * @param HTMLForm $form
 	 */
 	protected function alterForm( HTMLForm $form ) {
 	}
 
 	/**
+	 * Whether the form should use OOUI
+	 * @stable to override
+	 * @return bool
+	 */
+	protected function usesOOUI() {
+		return false;
+	}
+
+	/**
 	 * Get the HTMLForm to control behavior
+	 * @stable to override
 	 * @return HTMLForm|null
 	 */
 	protected function getForm() {
 		$this->fields = $this->getFormFields();
 
 		// Give hooks a chance to alter the form, adding extra fields or text etc
-		wfRunHooks( 'ActionModifyFormFields', array( $this->getName(), &$this->fields, $this->page ) );
+		$this->getHookRunner()->onActionModifyFormFields(
+			$this->getName(),
+			$this->fields,
+			$this->getArticle()
+		);
 
-		$form = new HTMLForm( $this->fields, $this->getContext(), $this->getName() );
-		$form->setSubmitCallback( array( $this, 'onSubmit' ) );
+		if ( $this->usesOOUI() ) {
+			$form = HTMLForm::factory( 'ooui', $this->fields, $this->getContext(), $this->getName() );
+		} else {
+			$form = new HTMLForm( $this->fields, $this->getContext(), $this->getName() );
+		}
+		$form->setSubmitCallback( [ $this, 'onSubmit' ] );
 
+		$title = $this->getTitle();
+		$form->setAction( $title->getLocalURL( [ 'action' => $this->getName() ] ) );
 		// Retain query parameters (uselang etc)
-		$form->addHiddenField( 'action', $this->getName() ); // Might not be the same as the query string
 		$params = array_diff_key(
 			$this->getRequest()->getQueryValues(),
-			array( 'action' => null, 'title' => null )
+			[ 'action' => null, 'title' => null ]
 		);
-		$form->addHiddenField( 'redirectparams', wfArrayToCgi( $params ) );
+		if ( $params ) {
+			$form->addHiddenField( 'redirectparams', wfArrayToCgi( $params ) );
+		}
 
 		$form->addPreText( $this->preText() );
 		$form->addPostText( $this->postText() );
 		$this->alterForm( $form );
 
 		// Give hooks a chance to alter the form, adding extra fields or text etc
-		wfRunHooks( 'ActionBeforeFormDisplay', array( $this->getName(), &$form, $this->page ) );
+		$this->getHookRunner()->onActionBeforeFormDisplay(
+			$this->getName(),
+			$form,
+			$this->getArticle()
+		);
 
 		return $form;
 	}
 
 	/**
-	 * Process the form on POST submission.  If you return false from getFormFields(),
-	 * this will obviously never be reached.  If you don't want to do anything with the
-	 * form, just return false here
+	 * Process the form on POST submission.
+	 *
+	 * If you don't want to do anything with the form, just return false here.
+	 *
+	 * This method will be passed to the HTMLForm as a submit callback (see
+	 * HTMLForm::setSubmitCallback) and must return as documented for HTMLForm::trySubmit.
+	 *
+	 * @see HTMLForm::setSubmitCallback()
+	 * @see HTMLForm::trySubmit()
 	 * @param array $data
-	 * @return bool|array True for success, false for didn't-try, array of errors on failure
+	 * @return bool|string|array|Status Must return as documented for HTMLForm::trySubmit
 	 */
 	abstract public function onSubmit( $data );
 
@@ -109,6 +148,7 @@ abstract class FormAction extends Action {
 	 * form (delete, protect, etc) and to do something exciting on 'success', be that
 	 * display something new or redirect to somewhere.  Some actions have more exotic
 	 * behavior, but that's what subclassing is for :D
+	 * @stable to override
 	 */
 	public function show() {
 		$this->setHeaders();
@@ -123,46 +163,10 @@ abstract class FormAction extends Action {
 	}
 
 	/**
-	 * @see Action::execute()
-	 *
-	 * @param array|null $data
-	 * @param bool $captureErrors
-	 * @throws ErrorPageError|Exception
+	 * @stable to override
 	 * @return bool
 	 */
-	public function execute( array $data = null, $captureErrors = true ) {
-		try {
-			// Set a new context so output doesn't leak.
-			$this->context = clone $this->getContext();
-
-			// This will throw exceptions if there's a problem
-			$this->checkCanExecute( $this->getUser() );
-
-			$fields = array();
-			foreach ( $this->fields as $key => $params ) {
-				if ( isset( $data[$key] ) ) {
-					$fields[$key] = $data[$key];
-				} elseif ( isset( $params['default'] ) ) {
-					$fields[$key] = $params['default'];
-				} else {
-					$fields[$key] = null;
-				}
-			}
-			$status = $this->onSubmit( $fields );
-			if ( $status === true ) {
-				// This might do permanent stuff
-				$this->onSuccess();
-				return true;
-			} else {
-				return false;
-			}
-		}
-		catch ( ErrorPageError $e ) {
-			if ( $captureErrors ) {
-				return false;
-			} else {
-				throw $e;
-			}
-		}
+	public function doesWrites() {
+		return true;
 	}
 }

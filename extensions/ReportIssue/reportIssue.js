@@ -1,10 +1,27 @@
 $(document).ready(function(){
     
     var dataToSend = {};
-    
-    $("div#side").append("<div id='reportIssue'><button><span class='en'>Report Issue</span><span class='fr' style='font-size:0.85em;'>Signaler un problème</span></button><span class='throbber' style='display:none;'></span></div>");
+    var selector = (showSideBar) ? "div#side" : "#header ul";
+
+    $(selector).append("<div id='reportIssue'><button><en>Report Issue</en><fr style='font-size:0.85em;line-height:1em;'>Signaler un problème</fr></button><span class='throbber' style='display:none;'></span></div>");
     if(isExtensionEnabled("ContactUs")){
-        $("div#side").append("<div id='contactUs'><button>Contact Us</button></div>");
+        $(selector).append("<div id='contactUs'><button><en>Contact Us</en><fr>Contactez-nous</fr></button></div>");
+    }
+    
+    if(!showSideBar){
+        $("#reportIssue, #contactUs").css("display", "inline-block")
+                                     .css("margin-right", "10px")
+                                     .css("margin-top", "8px")
+                                     .css("float", "right");
+    }
+    
+    if(networkName != "AI4Society"){
+        $("#topic").append("<option></option>");
+        $("#topic").val('');
+        $("#topic").closest("tr").hide();
+        $("#topic_other").show();
+        $("#topic_other td").first().text("Subject:");
+        $("#contactFile").hide();
     }
     
     $("div#contactUsDialog input[type=file]").change(function(e){
@@ -34,47 +51,97 @@ $(document).ready(function(){
     
     $("div#reportIssueDialog").dialog({
         autoOpen: false,
-        width: 400,
+        width: '35em',
         buttons: {
-            "Submit": function(){   
-                dataToSend.comments = $("div#reportIssueDialog textarea").val();             
-                dataToSend.email = $("div#reportIssueDialog input[name=email]").val();
-                $.post(wgServer + wgScriptPath + '/index.php?action=reportIssue', dataToSend, function(response){
-                    $(this).dialog('close');
-                    clearSuccess();
-                    addSuccess('The issue has been reported.');
-                }.bind(this));
+            "Submit": {
+                text: (wgLang == 'en') ? "Submit" : "Soumettre",
+                click: function(){   
+                    dataToSend.first_name = $("div#reportIssueDialog input[name=first_name]").val();
+                    dataToSend.last_name = $("div#reportIssueDialog input[name=last_name]").val();
+                    dataToSend.email = $("div#reportIssueDialog input[name=email]").val();
+                    dataToSend.comments = $("div#reportIssueDialog textarea").val();
+                    dataToSend.topic = $("div#reportIssueDialog select[name=topic]").val();
+                    $.post(wgServer + wgScriptPath + '/index.php?action=reportIssue', dataToSend, function(response){
+                        $(this).dialog('close');
+                        clearSuccess();
+                        addSuccess('The issue has been reported.');
+                    }.bind(this));
+                }
             },
-            "Cancel": function(){
-                $(this).dialog('close');
+            "Cancel": {
+                text: (wgLang == 'en') ? "Cancel" : "Annuler",
+                click: function(){
+                    $(this).dialog('close');
+                }
             }
         }
     });
     
     $("div#contactUsDialog").dialog({
         autoOpen: false,
-        width: 400,
+        width: '35em',
+        title: (wgLang == 'en') ? "Contact Us" : "Communiquez avec nous",
         buttons: {
-            "Submit": function(){
-                dataToSend.topic = $("div#contactUsDialog #topic").val();
-                if(dataToSend.topic == "Other" && $("div#contactUsDialog #topicOther").val().trim() != ""){
-                    dataToSend.topic += ": " + $("div#contactUsDialog #topicOther").val().trim();
+            "Submit": {
+                text: (wgLang == 'en') ? "Submit" : "Soumettre",
+                click: function(){
+                    dataToSend.topic = $("div#contactUsDialog #topic").val();
+                    if(dataToSend.topic == "Other" && $("div#contactUsDialog #topicOther").val().trim() != ""){
+                        dataToSend.topic += ": " + $("div#contactUsDialog #topicOther").val().trim();
+                    }
+                    if(dataToSend.topic == ""){
+                        dataToSend.topic = $("div#contactUsDialog #topicOther").val().trim();
+                    }
+                    dataToSend.first_name = $("div#contactUsDialog input[name=first_name]").val();
+                    dataToSend.last_name = $("div#contactUsDialog input[name=last_name]").val();
+                    dataToSend.email = $("div#contactUsDialog input[name=email]").val();
+                    dataToSend.comments = $("div#contactUsDialog textarea").val();
+                    $.post(wgServer + wgScriptPath + '/index.php?action=reportIssue', dataToSend, function(response){
+                        $(this).dialog('close');
+                        clearSuccess();
+                        addSuccess('Your message has been sent to support.');
+                    }.bind(this));
                 }
-                dataToSend.comments = $("div#contactUsDialog textarea").val();
-                dataToSend.email = $("div#contactUsDialog input[name=email]").val();
-                $.post(wgServer + wgScriptPath + '/index.php?action=reportIssue', dataToSend, function(response){
-                    $(this).dialog('close');
-                    clearSuccess();
-                    addSuccess('Your message has been sent to support.');
-                }.bind(this));
             },
-            "Cancel": function(){
-                $(this).dialog('close');
+            "Cancel": {
+                text: (wgLang == 'en') ? "Cancel" : "Annuler",
+                click: function(){
+                    $(this).dialog('close');
+                }
+            }
+        }
+    });
+    
+    $("div#helpDialog").dialog({
+        autoOpen: false,
+        width: '35em',
+        title: (wgLang == 'en') ? "Help" : "Aide",
+        buttons: {
+            "Submit": {
+                text: (wgLang == 'en') ? "Submit" : "Soumettre",
+                click: function(){
+                    dataToSend.first_name = $("div#helpDialog input[name=first_name]").val();
+                    dataToSend.last_name = $("div#helpDialog input[name=last_name]").val();
+                    dataToSend.email = $("div#helpDialog input[name=email]").val();
+                    dataToSend.phone = $("div#helpDialog input[name=phone]").val();
+                    dataToSend.comments = $("div#helpDialog textarea").val();
+                    $.post(wgServer + wgScriptPath + '/index.php?action=reportIssue', dataToSend, function(response){
+                        $(this).dialog('close');
+                        clearSuccess();
+                        addSuccess('Your message has been sent to support.');
+                    }.bind(this));
+                }
+            },
+            "Cancel": {
+                text: (wgLang == 'en') ? "Cancel" : "Annuler",
+                click: function(){
+                    $(this).dialog('close');
+                }
             }
         }
     });
    
-    $("div#reportIssue button").click(function(){
+    $("div#reportIssue button, #mobileMenu .reportIssue").click(function(){
         $("div#reportIssue .throbber").show();
         html2canvas(document.body).then(function(canvas) {
             dataToSend = {
@@ -86,10 +153,11 @@ $(document).ready(function(){
             };
             $("div#reportIssueDialog").dialog('open');
             $("div#reportIssue .throbber").hide();
+            $(window).resize();
         });
     });
     
-    $("div#contactUs button").click(function(){
+    $("div#contactUs button, .contactUs").click(function(){
         dataToSend = {
             topic: '',
             comments: '',
@@ -98,15 +166,45 @@ $(document).ready(function(){
         };
         $("div#contactUsDialog").dialog('open');
         $("div#contactUsDialog input[type=file]").change();
+        $(window).resize();
+    });
+    
+    $("#helpButton, #mobileMenu .helpButton").click(function(){
+        dataToSend = {
+            phone: '',
+            comments: '',
+            email: ''
+        };
+        $("div#helpDialog").dialog('open');
+        $(window).resize();
     });
     
     $("div#contactUsDialog #topic").change(function(){
-        if($("#topic").val() == "Other"){
+        if($("#topic").val() == "Other" || $("#topic").val() == ""){
             $("#topic_other").show();
         }
         else{
             $("#topic_other").hide();
         }
     }).change();
+    
+    $(window).resize(function(){
+        var desiredWidth = "35em";
+        if(window.matchMedia('(max-width: 767px)').matches){
+            desiredWidth = $(window).width()*0.99;
+        }
+        else if(window.matchMedia('(max-width: 1024px)').matches){
+            desiredWidth = "35em";
+        }
+        
+        if($('#helpDialog, #contactUsDialog, #reportIssueDialog').is(':visible')){
+            $('#helpDialog, #contactUsDialog, #reportIssueDialog').dialog({
+                width: desiredWidth
+            });
+            $('#helpDialog, #contactUsDialog, #reportIssueDialog').dialog({
+                position: { 'my': 'center', 'at': 'center' }
+            });
+        }
+    }).resize();
     
 });

@@ -4,7 +4,7 @@ autoload_register('API');
 global $apiRequest;
 $apiRequest = new APIRequest();
 
-$wgHooks['UnknownAction'][1000] = array($apiRequest, 'processRequest');
+UnknownAction::createAction(array($apiRequest, 'processRequest'));
 
 /**
  * @package API
@@ -127,7 +127,10 @@ class APIRequest{
 		$this->addAction('User Accounts', 'updateUserPhone', 'UserPhoneAPI');
         $this->addAction('User Accounts', 'updateUserEmail', 'UserEmailAPI');
         $this->addAction('User Accounts', 'importMetrics', 'ImportMetricsAPI');
-		
+        $this->addAction("User Accounts", "checkUserTags", "UserTagsAPI");
+        $this->addAction("User Accounts", "checkFrailtyIndex", "UserFrailtyIndexAPI");
+        $this->addAction("User Accounts", "checkInPersonFrailtyIndex", "UserInPersonFrailtyIndexAPI");
+        $this->addAction("User Accounts", "userunsub", "UserUnsubAPI");
 		//POST
 		$this->addAction('Projects', 'createProject', 'CreateProjectAPI');
 		$this->addAction('Projects', 'addProjectMilestone', 'ProjectMilestoneAPI');
@@ -135,6 +138,11 @@ class APIRequest{
 		$this->addAction('Projects', 'updateProjectMilestone', new ProjectMilestoneAPI(true));
 		$this->addAction('Projects', 'evolveProject', 'EvolveProjectAPI');
 		$this->addAction('Projects', 'deleteProject', 'DeleteProjectAPI');
+		
+		$this->addAction("Hidden", "fitbit", "AvoidFitbitAPI");
+		$this->addAction("Hidden", "aiSearch", "AISearchAPI");
+		$this->addAction("User Accounts", "callAvoidResourcesApi", "AvoidResourcesAPI");
+		$this->addAction("User Accounts", "DownloadWordHtmlApi", "DownloadWordHtmlAPI");
 	}
 }
 

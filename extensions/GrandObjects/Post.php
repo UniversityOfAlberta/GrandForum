@@ -12,7 +12,7 @@ class Post extends BackboneModel{
 
 //-----Static Functions/Constructor---//
     // Constructor
-    function Post($data){
+    function __construct($data){
         if(count($data) > 0){
             $this->id = $data[0]['id'];
             $this->thread_id = $data[0]['thread_id'];

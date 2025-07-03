@@ -1,7 +1,11 @@
-( function ( mw, $ ) {
+( function () {
 	'use strict';
 
 	/**
+	 * Fired after an edit was successfully saved.
+	 *
+	 * Does not fire for null edits.
+	 *
 	 * @event postEdit
 	 * @member mw.hook
 	 * @param {Object} [data] Optional data
@@ -18,59 +22,65 @@
 	 * @member mw.hook
 	 */
 
-	var config = mw.config.get( [ 'wgAction', 'wgCookiePrefix', 'wgCurRevisionId' ] ),
-		// This should match EditPage::POST_EDIT_COOKIE_KEY_PREFIX:
-		cookieKey = config.wgCookiePrefix + 'PostEditRevision' + config.wgCurRevisionId,
-		$div, id;
+	var postEdit = mw.config.get( 'wgPostEdit' );
 
 	function showConfirmation( data ) {
+		var $container, $popup, $content, timeoutId;
+
+		function fadeOutConfirmation() {
+			$popup.addClass( 'postedit-faded' );
+			setTimeout( function () {
+				$container.remove();
+				mw.hook( 'postEdit.afterRemoval' ).fire();
+			}, 250 );
+		}
+
 		data = data || {};
+
 		if ( data.message === undefined ) {
-			data.message = $.parseHTML( mw.message( 'postedit-confirmation', data.user || mw.user ).escaped() );
+			data.message = $.parseHTML( mw.message(
+				mw.config.get( 'wgEditSubmitButtonLabelPublish' ) ?
+					'postedit-confirmation-published' :
+					'postedit-confirmation-saved',
+				data.user || mw.user
+			).escaped() );
 		}
 
-		$div = $(
-			'<div class="postedit-container">' +
-				'<div class="postedit">' +
-					'<div class="postedit-icon postedit-icon-checkmark postedit-content"></div>' +
-					'<a href="#" class="postedit-close">&times;</a>' +
-				'</div>' +
-			'</div>'
-		);
-
+		$content = $( '<div>' ).addClass( 'postedit-icon postedit-icon-checkmark postedit-content' );
 		if ( typeof data.message === 'string' ) {
-			$div.find( '.postedit-content' ).text( data.message );
+			$content.text( data.message );
 		} else if ( typeof data.message === 'object' ) {
-			$div.find( '.postedit-content' ).append( data.message );
+			$content.append( data.message );
 		}
 
-		$div
-			.click( fadeOutConfirmation )
-			.prependTo( 'body' );
+		$popup = $( '<div>' ).addClass( 'postedit mw-notification' ).append( $content )
+			.on( 'click', function () {
+				clearTimeout( timeoutId );
+				fadeOutConfirmation();
+			} );
 
-		id = setTimeout( fadeOutConfirmation, 3000 );
+		$container = $( '<div>' ).addClass( 'postedit-container' ).append( $popup );
+		timeoutId = setTimeout( fadeOutConfirmation, 3000 );
+
+		$( document.body ).prepend( $container );
 	}
 
-	function fadeOutConfirmation() {
-		clearTimeout( id );
-		$div.find( '.postedit' ).addClass( 'postedit postedit-faded' );
-		setTimeout( removeConfirmation, 500 );
-
-		return false;
+	// JS-only flag that allows another module providing a hook handler to suppress the default one.
+	if ( !mw.config.get( 'wgPostEditConfirmationDisabled' ) ) {
+		mw.hook( 'postEdit' ).add( showConfirmation );
 	}
 
-	function removeConfirmation() {
-		$div.remove();
-		mw.hook( 'postEdit.afterRemoval' ).fire();
+	if ( postEdit ) {
+		mw.hook( 'postEdit' ).fire( {
+			// The following messages can be used here:
+			// * postedit-confirmation-saved
+			// * postedit-confirmation-created
+			// * postedit-confirmation-restored
+			message: mw.msg(
+				'postedit-confirmation-' + postEdit,
+				mw.user
+			)
+		} );
 	}
 
-	mw.hook( 'postEdit' ).add( showConfirmation );
-
-	if ( config.wgAction === 'view' && $.cookie( cookieKey ) === '1' ) {
-		$.cookie( cookieKey, null, { path: '/' } );
-		mw.config.set( 'wgPostEdit', true );
-
-		mw.hook( 'postEdit' ).fire();
-	}
-
-} ( mediaWiki, jQuery ) );
+}() );

@@ -26,6 +26,7 @@
 
 /**
  * A formatter that outputs unified diffs
+ * @newable
  * @ingroup DifferenceEngine
  */
 class UnifiedDiffFormatter extends DiffFormatter {
@@ -35,6 +36,16 @@ class UnifiedDiffFormatter extends DiffFormatter {
 
 	/** @var int */
 	protected $trailingContextLines = 2;
+
+	/**
+	 * @param string[] $lines
+	 * @param string $prefix
+	 */
+	protected function lines( $lines, $prefix = ' ' ) {
+		foreach ( $lines as $line ) {
+			$this->writeOutput( "{$prefix}{$line}\n" );
+		}
+	}
 
 	/**
 	 * @param string[] $lines

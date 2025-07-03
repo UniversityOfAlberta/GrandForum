@@ -2,6 +2,7 @@
 
 autoload_register('AccessControls');
 
+require "SpecialSideUserLogin.php";
 require "Management.php";
 require "AnnokiNamespaces.php";
 require "AccessControls.body.php";
@@ -48,6 +49,7 @@ $wgHooks['UserGetRights'][] = 'GrandAccess::changeGroups';
 $wgHooks['isValidEmailAddr'][] = 'isValidEmailAddr';
 $wgHooks['UserSetCookies'][] = 'userSetCookies';
 $wgHooks['BeforeInitialize'][] = 'checkLoggedIn';
+$wgHooks['BeforeInitialize'][] = 'touchUser';
 
 //$wgHooks['WatchArticle'][] = 'preventUnauthorizedWatching'; //This doesn't work anyway.  Users can still add pages to their watchlist through the raw editor.
 
@@ -59,6 +61,8 @@ if ($egAnProtectUploads){
   $wgHooks['ArticleViewHeader'][] = 'UploadProtection::addNsInfoToImagePage';
   $wgHooks['UploadVerification'][] = 'UploadProtection::preventUnauthorizedOverwrite';
  }
+ 
+UnknownAction::createAction('logout');
 
 define("EX_ACCESS_CONTROLS", true);
 
@@ -87,11 +91,7 @@ $wgExtensionCredits['specialpage'][] = array(
 				       );
 				       
 function permissionError(){
-    global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle;
-    if($wgTitle == null){
-        // Depending on when this function is called, the title may not be created yet, so make an empty one
-        $wgTitle = new Title();
-    }
+    global $wgOut, $wgUser, $wgServer, $wgScriptPath;
     $wgOut->setPageTitle("Permission error");
     $wgOut->addHTML("<p>You are not allowed to execute the action you have requested.</p>");
     if(!$wgUser->isLoggedIn()){

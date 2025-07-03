@@ -21,6 +21,9 @@
  * @ingroup FileRepo
  */
 
+use MediaWiki\MediaWikiServices;
+use Wikimedia\Rdbms\ILoadBalancer;
+
 /**
  * A foreign repository with a MediaWiki database accessible via the configured LBFactory
  *
@@ -30,65 +33,65 @@ class ForeignDBViaLBRepo extends LocalRepo {
 	/** @var string */
 	protected $wiki;
 
-	/** @var string */
-	protected $dbName;
-
-	/** @var string */
-	protected $tablePrefix;
+	/** @var array */
+	protected $fileFactory = [ ForeignDBFile::class, 'newFromTitle' ];
 
 	/** @var array */
-	protected $fileFactory = array( 'ForeignDBFile', 'newFromTitle' );
+	protected $fileFromRowFactory = [ ForeignDBFile::class, 'newFromRow' ];
 
-	/** @var array */
-	protected $fileFromRowFactory = array( 'ForeignDBFile', 'newFromRow' );
+	/** @var bool */
+	protected $hasSharedCache;
 
 	/**
 	 * @param array|null $info
 	 */
-	function __construct( $info ) {
+	public function __construct( $info ) {
 		parent::__construct( $info );
+		'@phan-var array $info';
 		$this->wiki = $info['wiki'];
-		list( $this->dbName, $this->tablePrefix ) = wfSplitWikiID( $this->wiki );
 		$this->hasSharedCache = $info['hasSharedCache'];
 	}
 
-	/**
-	 * @return DatabaseBase
-	 */
-	function getMasterDB() {
-		return wfGetDB( DB_MASTER, array(), $this->wiki );
+	public function getMasterDB() {
+		return $this->getDBLoadBalancer()->getConnectionRef( DB_MASTER, [], $this->wiki );
+	}
+
+	public function getReplicaDB() {
+		return $this->getDBLoadBalancer()->getConnectionRef( DB_REPLICA, [], $this->wiki );
 	}
 
 	/**
-	 * @return DatabaseBase
+	 * @return Closure
 	 */
-	function getSlaveDB() {
-		return wfGetDB( DB_SLAVE, array(), $this->wiki );
+	protected function getDBFactory() {
+		return function ( $index ) {
+			return $this->getDBLoadBalancer()->getConnectionRef( $index, [], $this->wiki );
+		};
 	}
 
-	function hasSharedCache() {
+	/**
+	 * @return ILoadBalancer
+	 */
+	protected function getDBLoadBalancer() {
+		$lbFactory = MediaWikiServices::getInstance()->getDBLoadBalancerFactory();
+
+		return $lbFactory->getMainLB( $this->wiki );
+	}
+
+	private function hasSharedCache() {
 		return $this->hasSharedCache;
 	}
 
-	/**
-	 * Get a key on the primary cache for this repository.
-	 * Returns false if the repository's cache is not accessible at this site.
-	 * The parameters are the parts of the key, as for wfMemcKey().
-	 * @return bool|string
-	 */
-	function getSharedCacheKey( /*...*/ ) {
+	public function getSharedCacheKey( ...$args ) {
 		if ( $this->hasSharedCache() ) {
-			$args = func_get_args();
-			array_unshift( $args, $this->wiki );
-
-			return implode( ':', $args );
+			return $this->wanCache->makeGlobalKey( $this->wiki, ...$args );
 		} else {
 			return false;
 		}
 	}
 
 	protected function assertWritableRepo() {
-		throw new MWException( get_class( $this ) . ': write operations are not supported.' );
+		throw new MWException( static::class . ': write operations are not supported.' );
 	}
 
 	public function getInfo() {

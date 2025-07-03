@@ -1,11 +1,11 @@
 <?php
 
-$wgHooks['UnknownAction'][] = 'PublicUniTreeTab::getPublicUniTreeData';
+UnknownAction::createAction('PublicUniTreeTab::getPublicUniTreeData');
 
 class PublicUniTreeTab extends AbstractTab {
 	
-	function PublicUniTreeTab(){
-        parent::AbstractTab("Institutions");
+	function __construct(){
+        parent::__construct("Institutions");
     }
 
     function generateBody(){

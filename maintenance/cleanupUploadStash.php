@@ -25,6 +25,8 @@
  * @ingroup Maintenance
  */
 
+use MediaWiki\MediaWikiServices;
+
 require_once __DIR__ . '/Maintenance.php';
 
 /**
@@ -33,21 +35,21 @@ require_once __DIR__ . '/Maintenance.php';
  *
  * @ingroup Maintenance
  */
-class UploadStashCleanup extends Maintenance {
+class CleanupUploadStash extends Maintenance {
 
 	public function __construct() {
 		parent::__construct();
-		$this->mDescription = "Clean up abandoned files in temporary uploaded file stash";
+		$this->addDescription( 'Clean up abandoned files in temporary uploaded file stash' );
 		$this->setBatchSize( 50 );
 	}
 
 	public function execute() {
 		global $wgUploadStashMaxAge;
 
-		$repo = RepoGroup::singleton()->getLocalRepo();
+		$repo = MediaWikiServices::getInstance()->getRepoGroup()->getLocalRepo();
 		$tempRepo = $repo->getTempRepo();
 
-		$dbr = $repo->getSlaveDb();
+		$dbr = $repo->getReplicaDB();
 
 		// how far back should this look for files to delete?
 		$cutoff = time() - $wgUploadStashMaxAge;
@@ -65,7 +67,7 @@ class UploadStashCleanup extends Maintenance {
 			$this->output( "No stashed files to cleanup according to the DB.\n" );
 		} else {
 			// finish the read before starting writes.
-			$keys = array();
+			$keys = [];
 			foreach ( $res as $row ) {
 				array_push( $keys, $row->us_key );
 			}
@@ -75,6 +77,8 @@ class UploadStashCleanup extends Maintenance {
 			// UploadStash's own methods means it's less likely to fall accidentally
 			// out-of-date someday
 			$stash = new UploadStash( $repo );
+
+			$lbFactory = MediaWikiServices::getInstance()->getDBLoadBalancerFactory();
 
 			$i = 0;
 			foreach ( $keys as $key ) {
@@ -87,6 +91,7 @@ class UploadStashCleanup extends Maintenance {
 					$this->output( "Failed removing stashed upload with key: $key ($type)\n" );
 				}
 				if ( $i % 100 == 0 ) {
+					$lbFactory->waitForReplication();
 					$this->output( "$i\n" );
 				}
 			}
@@ -95,17 +100,20 @@ class UploadStashCleanup extends Maintenance {
 
 		// Delete all the corresponding thumbnails...
 		$dir = $tempRepo->getZonePath( 'thumb' );
-		$iterator = $tempRepo->getBackend()->getFileList( array( 'dir' => $dir, 'adviseStat' => 1 ) );
+		$iterator = $tempRepo->getBackend()->getFileList( [ 'dir' => $dir, 'adviseStat' => 1 ] );
+		if ( $iterator === null ) {
+			$this->fatalError( "Could not get file listing." );
+		}
 		$this->output( "Deleting old thumbnails...\n" );
 		$i = 0;
-		$batch = array(); // operation batch
+		$batch = [];
 		foreach ( $iterator as $file ) {
 			if ( wfTimestamp( TS_UNIX, $tempRepo->getFileTimestamp( "$dir/$file" ) ) < $cutoff ) {
-				$batch[] = array( 'op' => 'delete', 'src' => "$dir/$file" );
-				if ( count( $batch ) >= $this->mBatchSize ) {
+				$batch[] = [ 'op' => 'delete', 'src' => "$dir/$file" ];
+				if ( count( $batch ) >= $this->getBatchSize() ) {
 					$this->doOperations( $tempRepo, $batch );
 					$i += count( $batch );
-					$batch = array();
+					$batch = [];
 					$this->output( "$i\n" );
 				}
 			}
@@ -118,20 +126,25 @@ class UploadStashCleanup extends Maintenance {
 
 		// Apparently lots of stash files are not registered in the DB...
 		$dir = $tempRepo->getZonePath( 'public' );
-		$iterator = $tempRepo->getBackend()->getFileList( array( 'dir' => $dir, 'adviseStat' => 1 ) );
-		$this->output( "Deleting orphaned temp files...\n" );
-		if ( strpos( $dir, '/local-temp' ) === false ) { // sanity check
-			$this->error( "Temp repo is not using the temp container.", 1 ); // die
+		$iterator = $tempRepo->getBackend()->getFileList( [ 'dir' => $dir, 'adviseStat' => 1 ] );
+		if ( $iterator === null ) {
+			$this->fatalError( "Could not get file listing." );
 		}
+		$this->output( "Deleting orphaned temp files...\n" );
+		if ( strpos( $dir, '/local-temp' ) === false ) {
+			// sanity check
+			$this->fatalError( "Temp repo is not using the temp container." );
+		}
+
 		$i = 0;
-		$batch = array(); // operation batch
+		$batch = [];
 		foreach ( $iterator as $file ) {
 			if ( wfTimestamp( TS_UNIX, $tempRepo->getFileTimestamp( "$dir/$file" ) ) < $cutoff ) {
-				$batch[] = array( 'op' => 'delete', 'src' => "$dir/$file" );
-				if ( count( $batch ) >= $this->mBatchSize ) {
+				$batch[] = [ 'op' => 'delete', 'src' => "$dir/$file" ];
+				if ( count( $batch ) >= $this->getBatchSize() ) {
 					$this->doOperations( $tempRepo, $batch );
 					$i += count( $batch );
-					$batch = array();
+					$batch = [];
 					$this->output( "$i\n" );
 				}
 			}
@@ -146,10 +159,10 @@ class UploadStashCleanup extends Maintenance {
 	protected function doOperations( FileRepo $tempRepo, array $ops ) {
 		$status = $tempRepo->getBackend()->doQuickOperations( $ops );
 		if ( !$status->isOK() ) {
-			$this->error( print_r( $status->getErrorsArray(), true ) );
+			$this->error( print_r( Status::wrap( $status )->getErrorsArray(), true ) );
 		}
 	}
 }
 
-$maintClass = "UploadStashCleanup";
+$maintClass = CleanupUploadStash::class;
 require_once RUN_MAINTENANCE_IF_MAIN;

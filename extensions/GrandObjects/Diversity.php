@@ -89,7 +89,7 @@ class Diversity extends BackboneModel {
     var $stem = "";
     var $comments = "";
 
-    function Diversity($data){
+    function __construct($data){
         if(count($data) > 0){
             $this->id = $data[0]['id'];
             $this->language = $data[0]['language'];
@@ -97,30 +97,30 @@ class Diversity extends BackboneModel {
             $this->submitted = $data[0]['submitted'];
             $this->decline = $data[0]['decline'];
             $this->reason = $data[0]['reason'];
-            $this->gender = unserialize($data[0]['gender']);
-            $this->orientation = unserialize($data[0]['orientation']);
+            $this->gender = (unserialize($data[0]['gender']) != false) ? unserialize($data[0]['gender']) : $this->gender;
+            $this->orientation = (unserialize($data[0]['orientation']) != false) ? unserialize($data[0]['orientation']) : $this->orientation;
             $this->indigenous = $data[0]['indigenous'];
             $this->disability = $data[0]['disability'];
-            $this->disabilityVisibility = unserialize($data[0]['disability_visibility']);
+            $this->disabilityVisibility = (unserialize($data[0]['disability_visibility']) != false) ? unserialize($data[0]['disability_visibility']) : $this->disabilityVisibility;
             $this->minority = $data[0]['minority'];
             $this->race = unserialize($data[0]['race']);
             $this->languageMinority = unserialize($data[0]['language_minority']);
             $this->immigration = unserialize($data[0]['immigration']);
             $this->affiliation = $data[0]['affiliation'];
             $this->age = $data[0]['age'];
-            $this->indigenousApply = unserialize($data[0]['indigenous_apply']);
+            $this->indigenousApply = (unserialize($data[0]['indigenous_apply']) != false) ? unserialize($data[0]['indigenous_apply']) : $this->indigenousApply;
             $this->trueSelf = $data[0]['true_self'];
             $this->valued = $data[0]['valued'];
             $this->space = $data[0]['space'];
-            $this->respected = unserialize($data[0]['respected']);
-            $this->leastRespected = unserialize($data[0]['least_respected']);
+            $this->respected = (unserialize($data[0]['respected']) != false) ? unserialize($data[0]['respected']) : $this->respected;
+            $this->leastRespected = (unserialize($data[0]['least_respected']) != false) ? unserialize($data[0]['least_respected']) : $this->leastRespected;
             $this->principles = $data[0]['principles'];
             $this->principlesDescribe = $data[0]['principles_describe'];
             $this->statement = $data[0]['statement'];
-            $this->improve = unserialize($data[0]['improve']);
+            $this->improve = (unserialize($data[0]['improve']) != false) ? unserialize($data[0]['improve']) : $this->improve;
             $this->training = $data[0]['training'];
-            $this->preventsTraining = unserialize($data[0]['prevents_training']);
-            $this->trainingTaken = unserialize($data[0]['training_taken']);
+            $this->preventsTraining = (unserialize($data[0]['prevents_training']) != false) ? unserialize($data[0]['prevents_training']) : $this->preventsTraining;
+            $this->trainingTaken = (unserialize($data[0]['training_taken']) != false) ? unserialize($data[0]['training_taken']) : $this->trainingTaken;
             $this->implemented = $data[0]['implemented'];
             $this->stem = $data[0]['stem'];
             $this->comments = $data[0]['comments'];

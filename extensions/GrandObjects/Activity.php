@@ -15,7 +15,7 @@ class Activity {
      * @param integer $id The id of the Activity
      * @return Activity The Activity with the given id
      */
-    function newFromId($id){
+    static function newFromId($id){
         if(isset(self::$activityCache[$id])){
             return self::$activityCache[$id];
         }
@@ -33,7 +33,7 @@ class Activity {
      * @param string $id The name of the Activity
      * @return Activity The Activity with the given name
      */
-    function newFromName($name, $projectId=""){
+    static function newFromName($name, $projectId=""){
         if($projectId != ""){
             $data = DBFunctions::select(array('grand_activities'),
                                         array('*'),
@@ -52,7 +52,7 @@ class Activity {
      * Constructs a new Activity from the given DB resultset
      * @param array $data the DB resultset
      */
-    function Activity($data){
+    function __construct($data){
         if(isset($data[0])){
             $this->id = $data[0]['id'];
             $this->name = $data[0]['name'];

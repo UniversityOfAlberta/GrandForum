@@ -13,7 +13,7 @@ function runReportStatusTable($par) {
 
 class ReportStatusTable extends SpecialPage{
 
-    function ReportStatusTable() {
+    function __construct() {
         SpecialPage::__construct("ReportStatusTable", null, false, 'runReportStatusTable');
     }
     
@@ -24,6 +24,7 @@ class ReportStatusTable extends SpecialPage{
 
     function execute($par){
         global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle, $wgMessage;
+        $this->getOutput()->setPageTitle("Report Status Table");
         ReportStatusTable::generateHTML($wgOut);
     }
     
@@ -277,7 +278,7 @@ class ReportStatusTable extends SpecialPage{
     
     static function createSubTabs(&$tabs){
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle, $special_evals;
-        if(self::userCanExecute($wgUser)){
+        if((new self)->userCanExecute($wgUser)){
             $selected = @($wgTitle->getText() == "ReportStatusTable") ? "selected" : false;
             $tabs["Manager"]['subtabs'][] = TabUtils::createSubTab("Report Status", "$wgServer$wgScriptPath/index.php/Special:ReportStatusTable", $selected);
         }

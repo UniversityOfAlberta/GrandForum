@@ -22,26 +22,23 @@
  */
 
 /**
- * Handles per process caching of items
+ * Class for process caching individual properties of expiring items
+ *
+ * When the key for an entire item is deleted, all properties for it are deleted
+ *
  * @ingroup Cache
+ * @deprecated Since 1.32 Use MapCacheLRU instead
  */
 class ProcessCacheLRU {
-	/** @var Array */
-	protected $cache = array(); // (key => prop => value)
-	/** @var Array */
-	protected $cacheTimes = array(); // (key => prop => UNIX timestamp)
-
-	protected $maxCacheKeys; // integer; max entries
+	/** @var MapCacheLRU */
+	protected $cache;
 
 	/**
-	 * @param $maxKeys integer Maximum number of entries allowed (min 1).
+	 * @param int $maxKeys Maximum number of entries allowed (min 1).
 	 * @throws UnexpectedValueException When $maxCacheKeys is not an int or =< 0.
 	 */
 	public function __construct( $maxKeys ) {
-		if ( !is_int( $maxKeys ) || $maxKeys < 1 ) {
-			throw new UnexpectedValueException( __METHOD__ . " must be given an integer >= 1" );
-		}
-		$this->maxCacheKeys = $maxKeys;
+		$this->cache = new MapCacheLRU( $maxKeys );
 	}
 
 	/**
@@ -49,38 +46,25 @@ class ProcessCacheLRU {
 	 * This will prune the cache if it gets too large based on LRU.
 	 * If the item is already set, it will be pushed to the top of the cache.
 	 *
-	 * @param $key string
-	 * @param $prop string
-	 * @param $value mixed
+	 * @param string $key
+	 * @param string $prop
+	 * @param mixed $value
 	 * @return void
 	 */
 	public function set( $key, $prop, $value ) {
-		if ( isset( $this->cache[$key] ) ) {
-			$this->ping( $key ); // push to top
-		} elseif ( count( $this->cache ) >= $this->maxCacheKeys ) {
-			reset( $this->cache );
-			$evictKey = key( $this->cache );
-			unset( $this->cache[$evictKey] );
-			unset( $this->cacheTimes[$evictKey] );
-		}
-		$this->cache[$key][$prop] = $value;
-		$this->cacheTimes[$key][$prop] = time();
+		$this->cache->setField( $key, $prop, $value );
 	}
 
 	/**
 	 * Check if a property field exists for a cache entry.
 	 *
-	 * @param $key string
-	 * @param $prop string
-	 * @param $maxAge integer Ignore items older than this many seconds (since 1.21)
+	 * @param string $key
+	 * @param string $prop
+	 * @param float $maxAge Ignore items older than this many seconds (since 1.21)
 	 * @return bool
 	 */
-	public function has( $key, $prop, $maxAge = 0 ) {
-		if ( isset( $this->cache[$key][$prop] ) ) {
-			return ( $maxAge <= 0 || ( time() - $this->cacheTimes[$key][$prop] ) <= $maxAge );
-		}
-
-		return false;
+	public function has( $key, $prop, $maxAge = 0.0 ) {
+		return $this->cache->hasField( $key, $prop, $maxAge );
 	}
 
 	/**
@@ -88,45 +72,40 @@ class ProcessCacheLRU {
 	 * This returns null if the property is not set.
 	 * If the item is already set, it will be pushed to the top of the cache.
 	 *
-	 * @param $key string
-	 * @param $prop string
+	 * @param string $key
+	 * @param string $prop
 	 * @return mixed
 	 */
 	public function get( $key, $prop ) {
-		if ( isset( $this->cache[$key][$prop] ) ) {
-			$this->ping( $key ); // push to top
-			return $this->cache[$key][$prop];
-		} else {
-			return null;
-		}
+		return $this->cache->getField( $key, $prop );
 	}
 
 	/**
-	 * Clear one or several cache entries, or all cache entries
+	 * Clear one or several cache entries, or all cache entries.
 	 *
-	 * @param $keys string|Array
+	 * @param string|array|null $keys
 	 * @return void
 	 */
 	public function clear( $keys = null ) {
-		if ( $keys === null ) {
-			$this->cache = array();
-			$this->cacheTimes = array();
-		} else {
-			foreach ( (array)$keys as $key ) {
-				unset( $this->cache[$key] );
-				unset( $this->cacheTimes[$key] );
-			}
-		}
+		$this->cache->clear( $keys );
 	}
 
 	/**
-	 * Push an entry to the top of the cache
+	 * Resize the maximum number of cache entries, removing older entries as needed
 	 *
-	 * @param $key string
+	 * @param int $maxKeys
+	 * @return void
+	 * @throws UnexpectedValueException
 	 */
-	protected function ping( $key ) {
-		$item = $this->cache[$key];
-		unset( $this->cache[$key] );
-		$this->cache[$key] = $item;
+	public function resize( $maxKeys ) {
+		$this->cache->setMaxSize( $maxKeys );
+	}
+
+	/**
+	 * Get cache size
+	 * @return int
+	 */
+	public function getSize() {
+		return $this->cache->getMaxSize();
 	}
 }

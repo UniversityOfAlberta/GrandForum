@@ -168,7 +168,7 @@ class Project extends BackboneModel {
         }
     }
     
-    function generateProjectCache(){
+    static function generateProjectCache(){
         if(count(self::$projectDataCache) == 0){
             $data = DBFunctions::execSQL("SELECT p.id, p.name, p.phase, p.parent_id, e.new_id, e.action, e.effective_date, e.id as evolutionId, e.clear, s.type, s.status, s.start_date, s.end_date, s.private
                                           FROM grand_project p, grand_project_evolution e, grand_project_status s
@@ -363,7 +363,7 @@ class Project extends BackboneModel {
     
     // Constructor
     // Takes in a resultset containing the 'project id' and 'project name'
-    function Project($data){
+    function __construct($data){
         if(isset($data[0])){
             $this->id = $data[0]['id'];
             $this->name = $data[0]['name'];
@@ -773,15 +773,10 @@ class Project extends BackboneModel {
             $id = $row['user_id'];
             $person = Person::newFromId($id);
             if($person->getId() != 0){
-                if($filter == PL){
-                    if($person->isRole(PL, $this)){
-                        $people[$person->getId()] = $person;
-                    }
-                }
-                else if(($filter == null || 
-                         ($person->isRole($filter, $this) && !$person->isRole(PL, $this)) || 
-                         ($person->isRole($filter."-Candidate", $this) && !$person->isRole(PL, $this) && $this->getStatus() == "Proposed")) && 
-                        !$person->isRole(ADMIN)){
+                if(($filter == null || 
+                    $person->isRole($filter, $this) || 
+                    ($person->isRole($filter."-Candidate", $this) && $this->getStatus() == "Proposed")) && 
+                   !$person->isRole(ADMIN)){
                     $people[$person->getId()] = $person;
                 }
             }
@@ -797,6 +792,8 @@ class Project extends BackboneModel {
             $startRange = date("Y-01-01 00:00:00");
             $endRange = date("Y-12-31 23:59:59");
         }
+        $startRange = cleanDate($startRange);
+        $endRange = cleanDate($endRange);
         $people = array();
         if(!$this->clear){
             $preds = $this->getPreds();
@@ -851,6 +848,7 @@ class Project extends BackboneModel {
     }
     
     function getAllPeopleOn($filter, $date, $includeManager=false){
+        $date = cleanDate($date);
         $people = array();
         if(!$this->clear){
             $preds = $this->getPreds();
@@ -972,6 +970,8 @@ class Project extends BackboneModel {
     }
     
     function getMultimediaDuring($start, $end){
+        $start = cleanDate($start);
+        $end = cleanDate($end);
         $multimedia = array();
         $sql = "SELECT m.id
                 FROM `grand_materials` m, `grand_materials_projects` p
@@ -1104,6 +1104,7 @@ class Project extends BackboneModel {
     
     // Returns the description of the Project
     function getDescription($history=false){
+        global $config;
         $sql = "(SELECT description 
                 FROM grand_project_descriptions d
                 WHERE d.project_id = '{$this->id}'\n";
@@ -1119,7 +1120,19 @@ class Project extends BackboneModel {
         
         $data = DBFunctions::execSQL($sql);
         if(DBFunctions::getNRows() > 0){
-            return $data[0]['description'];
+            $description = @unserialize($data[0]['description']);
+            if(!$config->getValue("projectSectionMap")){
+                if($description === false){
+                    return $data[0]['description'];
+                }
+                return implode("", $description);
+            }
+            if($description === false){
+                return array();
+            }
+            else{
+                return $description;
+            }
         }
         return "";
     }
@@ -1195,14 +1208,16 @@ class Project extends BackboneModel {
      * @return array Returns an array of file Articles that belong to this Project
      */
     function getFiles(){
-        $sql = "SELECT p.page_id
-                FROM mw_an_upload_permissions u, mw_page p
+        $sql = "SELECT i.img_name
+                FROM mw_an_upload_permissions u, mw_image i
                 WHERE u.nsName = REPLACE('{$this->getName()}', ' ', '_')
-                AND (u.upload_name = REPLACE(p.page_title, '_', ' ') OR u.upload_name = REPLACE(CONCAT('File:', p.page_title), '_', ' '))";
+                AND (u.upload_name = REPLACE(i.img_name, '_', ' ') OR u.upload_name = REPLACE(CONCAT('File:', i.img_name), '_', ' '))";
         $data = DBFunctions::execSQL($sql);
         $articles = array();
         foreach($data as $row){
-            $article = Article::newFromId($row['page_id']);
+            $title = Title::newFromText($row['img_name'], NS_FILE);
+            
+            $article = Article::newFromTitle($title, RequestContext::getMain());
             if($article != null){
                 $articles[] = $article;
             }

@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="LETTER OF INTENT (LOI)" reportType="RP_LOI" pdfType="RP_LOI" year="0" allowIdProjects="true" ajax="true">
+    <ReportSection id="intent" type="EditableReportSection" blobSection="INTENT" name="Letter of Intent" title="Construction Innovation Centre (CIC) LETTER OF INTENT (LOI) for Proposed Research Project" pagebreak="false">
+        <ReportItem id="pi" type="Text" blobItem="PI" width="300px">
+            <![CDATA[
+                <table cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td class="label">
+                            Name of Principal Investigator:&nbsp;
+                        </td>
+                        <td class="value">
+                            {$item}
+                        </td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="institution" type="Text" blobItem="INSTITUTION" width="300px">
+            <![CDATA[
+                    <tr>
+                        <td class="label">
+                            Department and University:&nbsp;
+                        </td>
+                        <td class="value">
+                            {$item}
+                        </td>
+                    </tr>
+                </table>
+                <b>Do you have a role in the CIC that creates a potential conflict of interest in evaluating this LOI?</b><br />
+            ]]>
+        </ReportItem>
+        <If if="{==({getArray(RP_LOI, INTENT, COI, 0, {$user_id}, {$project_id}, coi)},Yes)}">
+            <ReportItem id="coi" type="Checkbox" blobItem="COI" blobType="BLOB_ARRAY" labels="Do you have a role in the CIC that creates a potential conflict of interest in evaluating this LOI?" options="Yes">
+                <![CDATA[
+                    {$item}
+                ]]>
+            </ReportItem>
+            <ReportItem id="coi_explain" type="Textarea" blobItem="COI_EXPLAIN" optional="true">
+                <![CDATA[
+                    <p style='margin-top:0.5em;'>{$item}</p>
+                ]]>
+            </ReportItem>
+        </If>
+        <Else>
+            <![CDATA[
+                <i>No</i>
+            ]]>
+        </Else>
+        <ReportItem id="title" type="Text" blobItem="TITLE" width="510px">
+            <![CDATA[
+                <h3>Title of Project</h3>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="keywords" type="MultiText" blobItem="KEYWORDS" blobType="BLOB_ARRAY" labels="Keyword" types="Text" multiple="true" min="5" max="10" orientation="list">
+            <![CDATA[
+                <h3>Keywords</h3>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="problem" type="Textarea" blobItem="PROBLEM" rich="true">
+            <![CDATA[
+                <h3>Research Problem Statement</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="objectives" type="Textarea" blobItem="OBJECTIVES" rich="true">
+            <![CDATA[
+                <h3>Project Objectives</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="methodology" type="Textarea" blobItem="METHODOLOGY" rich="true">
+            <![CDATA[
+                <h3>Brief Methodology</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="team" type="MultiText" class="wikitable" blobItem="TEAM" blobType="BLOB_ARRAY" labels="Name|Email|Faculty|Department|Discipline" types="Text|Text|Text|Text|Text" multiple="true">
+            <![CDATA[
+                <h3>Proposed Research Team (i.e., other faculty members)</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="experience" type="Textarea" blobItem="EXPERIENCE" rich="true">
+            <![CDATA[
+                <h3>Prior Research Experience Relevant to the Proposed Project</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <!-- Budget -->
+        <Static>
+            <![CDATA[
+                <h2>Budget</h2>
+            ]]>
+        </Static>
+        <ReportItem type="MultiText" blobType="BLOB_ARRAY" blobItem="BUDGET" multiple="true" class="wikitable"
+                    indices="partner|year1|year2|year3|year4|year5|comments" 
+                    labels="Partner/Source|Year 1|Year 2|Year 3|Year 4|Year 5|Comments" 
+                    types="Text|Text|Text|Text|Text|Text|Textarea">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="cost" type="Textarea" blobItem="COST" rich="true">
+            <![CDATA[
+                <h3>Project Cost Items</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="requested" type="Textarea" blobItem="REQUESTED" rich="true">
+            <![CDATA[
+                <h3>Requested Funds from CIC and Ratio of Matching Funds to CIC Funds from Planned Sources</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="milestones" type="Textarea" blobItem="MILESTONES" rich="true">
+            <![CDATA[
+                <h3>Project Duration and Milestones</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="area" type="Checkbox" blobItem="AREA" blobType="BLOB_ARRAY" options="Productivity and Performance|Health and Safety|Sustainability and the Environment|Off-site Construction and Modularization|Energy|Design and Planning|Other" delimiter="&lt;br />">
+            <![CDATA[
+                <h2>Metrics to Evaluate Project LOI:</h2>
+                <h3>Fit</h3>
+                <table cellpadding="0" cellspacing="0" style="width:100%;">
+                    <tr>
+                        <td style="width:50%; padding-right:1em;" valign="top">
+                            <h4 style="width:100%;">Research Area</h4>
+                            {$item}
+                        </td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="method" type="Checkbox" blobItem="METHOD" blobType="BLOB_ARRAY" options="Artificial Intelligence (AI)|Automation and Technology|Simulation Modeling|Systems and Data Integration|Visualization/BIM|Decision support systems|Other" delimiter="&lt;br />">
+            <![CDATA[
+                        <td style="width:50%;" valign="top">
+                            <h4 style="width:100%;">Research Method</h4>
+                            {$item}
+                        </td>
+                    </tr>
+                </table>
+            ]]>
+        </ReportItem>
+        <ReportItem id="fit_explain" type="Textarea" blobItem="FIT_EXPLAIN" optional="true">
+            <![CDATA[
+                <br />
+                If other, please specify:
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="implementation" type="Textarea" blobItem="IMPLEMENTATION" rich="true">
+            <![CDATA[
+                <h3>Potential for Implementation</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="interest" type="MultiText" class="wikitable" blobItem="INTEREST" blobType="BLOB_ARRAY" indices="partner|engagement" labels="Confirmed industry partners|Engagement (role, in-kinds, cash contribution, etc.)" types="Text|Textarea" sizes="50%|50%" multiple="true">
+            <![CDATA[
+                <h3>Interest</h3>
+                <h4>Have industry partners shown willingness to participate in the project?</h4>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="interest_other" type="MultiText" class="wikitable" blobItem="INTEREST_OTHER" blobType="BLOB_ARRAY" indices="partner|engagement" labels="Other potential industry partners|Engagement (role, in-kinds, cash contribution, etc.)" types="Text|Textarea" sizes="50%|50%" multiple="true">
+            <![CDATA[
+                <h4>Other potential industry partners</h4>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="multidiscipline" type="Textarea" blobItem="MULTIDISCIPLINE" rich="true">
+            <![CDATA[
+                <h3>Multi-disciplinary Research</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="reach" type="Textarea" blobItem="REACH" rich="true">
+            <![CDATA[
+                <h3>Reach of Benefits</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="contributions" type="Textarea" blobItem="CONTRIBUTIONS" rich="true">
+            <![CDATA[
+                <h3>Scientific Contributions</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="metrics" type="Textarea" blobItem="METRICS" rich="true">
+            <![CDATA[
+                <h3>Proposed Metrics to Measure Project Performance at Completion</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="endorsement" type="Checkbox" blobItem="ENDORSEMENT" blobType="BLOB_ARRAY" options="Hole School|Nasseri School|Masonry Group|Steel Center">
+            <![CDATA[
+                <h3>Please indicate whether any of the following groups are endorsing your LOI:</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="signatures" type="Textarea" blobItem="SIGNATURES" rich="true" optional="true">
+            <![CDATA[
+                <h3>Name and signature of the director of the endorsing group (if any):</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="acknowledge" type="Checkbox" blobItem="ACKNOWLEDGE" blobType="BLOB_ARRAY" options="I have read and agree to this stipulation">
+            <![CDATA[
+                <h3>By completing this form, you acknowledge that PIs of projects that are approved by the CIC are required to participate in and present at the CIC’s Innovation in Construction Forum</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+</Report>

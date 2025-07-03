@@ -2,7 +2,7 @@
 
     class ProjectLeadersArray extends GroupByArray {
         
-        function ProjectLeadersArray($table){
+        function __construct($table){
             $project = $table->obj;
             $people = $project->getLeaders();
             foreach($people as $person){

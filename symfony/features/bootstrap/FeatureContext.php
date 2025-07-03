@@ -1,34 +1,62 @@
 <?php
 define('TESTING', true);
-require_once("../config/Config.php");
+require_once("../config/ForumConfig.php");
 require_once("../Classes/simplehtmldom/simple_html_dom.php");
+require_once("Patch.php");
 
-exec(sprintf("%s > %s 2>&1 & echo $! >> %s", 
-             "phantomjs --webdriver=8643 --ignore-ssl-errors=true", 
-             "phantomjs.log", 
-             "phantomjs.pid"));
+/**
+ * Scrolling doesn't seem to always happen automatically so this is needed in order to 
+ * force a scroll whenever an element is interacted with
+ */
+$objPatch = new Patch('vendor/instaclick/php-webdriver/lib/WebDriver/Session.php');
+$objPatch->redefineFunction("
+    public function moveto(\$parameters)
+    {
+        try {
+            \$result = \$this->curl('POST', '/scrollto', \$parameters);
+            \$result = \$this->curl('POST', '/moveto', \$parameters);
+        } catch (WebDriverException\ScriptTimeout \$e) {
+            throw WebDriverException::factory(WebDriverException::UNKNOWN_ERROR);
+        }
+
+        return \$result['value'];
+    }");
+eval($objPatch->getCode());
+
+putenv("OPENSSL_CONF=/dev/null");
+
+function getSeleniumPid(){
+    exec('netstat -nlap 2>&1 /dev/null | grep ":::4444"', $output);
+    $pid = @trim(explode("LISTEN", str_replace("/java", "", $output[0]))[1]);
+    return $pid;
+}
+
+$pid = getSeleniumPid();
+if($pid != ""){
+    exec("kill $pid");
+    sleep(1);
+}
+exec(sprintf("%s > %s 2>&1 &", 
+             "PATH=bin/firefox/:bin/:\$PATH MOZ_HEADLESS=1 java -jar bin/selenium.jar", 
+             "selenium.log"));
 
 use Behat\Behat\Context\ClosuredContextInterface,
     Behat\Behat\Context\TranslatedContextInterface,
     Behat\Behat\Context\BehatContext,
-    Behat\Behat\Exception\PendingException;
-use Behat\Gherkin\Node\PyStringNode,
-    Behat\Gherkin\Node\TableNode;
+    Behat\Behat\Exception\PendingException,
+    Behat\Gherkin\Node\PyStringNode,
+    Behat\Gherkin\Node\TableNode,
+    PHPUnit\Framework\Assert;
 
 //
 // Require 3rd-party libraries here:
 //
-require_once 'vendor/phpunit/phpunit/src/Framework/Assert/Functions.php';
+//require_once 'vendor/phpunit/phpunit/src/Framework/Assert/Functions.php';
 
 /**
  * Features context.
  */
 class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
-
-    static $scenarioId = 0;
-    static $stepId;
-    static $skipScreenshot = false;
-    static $screenshotTaken = false;
     
     /**
      * Initializes context.
@@ -36,11 +64,9 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
      *
      * @param array $parameters context parameters (set them up through behat.yml)
      */
-    public function __construct(array $parameters){
+    public function __construct(){
         global $currentSession;
         $currentSession = $this;
-        self::$stepId = 1;
-        self::$scenarioId++;
     }
     
     public function spin($lambda, $wait = 5000, $args=array()){
@@ -64,17 +90,29 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
     }
     
     /**
+     * @BeforeScenario
+     */
+    public function beforeScenario($event){
+        global $currentSession;
+        if(!$currentSession->getSession()->getDriver()->isStarted()){
+            $currentSession->getSession()->getDriver()->start();
+            $currentSession->getSession()->getDriver()->resizeWindow(1366, 1080,'current');
+        }
+        $currentSession->getSession()->getDriver()->reset();
+        $this->currentScenario = $event->getScenario();
+    }
+    
+    /**
      * @BeforeSuite
      */
     public static function prepare($event){
         global $currentSession;
         // Create test database
         system("php ../maintenance/seed.php &> /dev/null");
-        system("rm -f screenshots/*");
         $fp = fopen("../test.tmp", 'w');
         fwrite($fp, "This file should delete it's self once the test suite is done running.\nDo not delete this file until then.");
         fclose($fp);
-        $currentSession->getSession()->getDriver()->resizeWindow(1280, 1024,'current');
+        system("rm -fr output/assets/screenshots");
     }
     
     /**
@@ -83,8 +121,15 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
     public static function clean($event){
         global $currentSession;
         $currentSession->getSession()->stop();
-        system("php ../maintenance/cleanAllLists.php &> /dev/null");
+        if(file_exists("/usr/lib/mailman/bin/list_members")){
+            system("php ../maintenance/cleanAllLists.php &> /dev/null");
+        }
         unlink("../test.tmp");
+        $pid = getSeleniumPid();
+        if($pid != ""){
+            exec("kill $pid");
+            sleep(1);
+        }
     }
     
     /**
@@ -94,7 +139,7 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
         global $currentSession;
         // Delay the session so that it doesn't process futher while the page is still loading
         try{
-            $currentSession->getSession()->wait(25);
+            $currentSession->getSession()->wait(20);
         }
         catch(Exception $e){
             
@@ -104,7 +149,7 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
     /**
      * @AfterStep
      */
-    public static function afterStep($event){
+    public function afterStep($event){
         global $currentSession;
         /*try {
             // Check for PHP errors on each step
@@ -116,22 +161,6 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
         catch(Exception $e){
             
         }*/
-        if((strstr(strtolower($event->getStep()->getText()), "i should see") !== false ||
-            strstr(strtolower($event->getStep()->getText()), "i should not see") !== false)){
-            self::$skipScreenshot = true;
-        }
-        self::$screenshotTaken = false;
-        try{
-            if(!self::$skipScreenshot){
-                $currentSession->iTakeAScreenshot();
-                self::$screenshotTaken = true;
-            }
-        }
-        catch(Exception $e){
-            
-        }
-        self::$skipScreenshot = false;
-        self::$stepId++;
     }
 
     /**
@@ -141,15 +170,14 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
         $this->visit('index.php');
         $this->fillField('wpName', $username);
         $this->fillField('wpPassword', $password);
-        $this->pressButton('wpLoginattempt');
+        $this->pressButton('wpLoginAttempt');
     }
     
     /**
      * @Then /^I take a screenshot$/
      */
     public function iTakeAScreenshot(){
-        file_put_contents("screenshots/".self::$scenarioId."_".self::$stepId.".png", $this->getSession()->getDriver()->getScreenshot());
-        file_put_contents("screenshots/".self::$scenarioId."_".self::$stepId.".html", $this->getSession()->getPage()->getContent());
+        // Do Nothing
     }
     
     /**
@@ -245,42 +273,45 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
      * @Then /^"([^"]*)" should be subscribed to "([^"]*)"$/
      */
     public function shouldBeSubscribedTo($email, $list){
-        self::$skipScreenshot = true;
-        $command = "/usr/lib/mailman/bin/list_members $list";
-        exec($command, $output);
-        $found = false;
-        foreach($output as $line){
-            if($line == $email){
-                $found = true;
+        if(file_exists("/usr/lib/mailman/bin/list_members")){
+            $command = "/usr/lib/mailman/bin/list_members $list";
+            exec($command, $output);
+            $found = false;
+            foreach($output as $line){
+                if($line == $email){
+                    $found = true;
+                }
             }
+            Assert::assertTrue($found);
         }
-        assertTrue($found);
     }
     
     /**
      * @Then /^"([^"]*)" should not be subscribed to "([^"]*)"$/
      */
     public function shouldNotBeSubscribedTo($email, $list){
-        self::$skipScreenshot = true;
-        $command = "/usr/lib/mailman/bin/list_members $list";
-        exec($command, $output);
-        $found = false;
-        foreach($output as $line){
-            if($line == $email){
-                $found = true;
+        if(file_exists("/usr/lib/mailman/bin/list_members")){
+            $command = "/usr/lib/mailman/bin/list_members $list";
+            exec($command, $output);
+            $found = false;
+            foreach($output as $line){
+                if($line == $email){
+                    $found = true;
+                }
             }
+            Assert::assertFalse($found);
         }
-        assertFalse($found);
     }
     
     /**
      * @Then /^unsubscribe "([^"]*)" from "([^"]*)"$/
      */
     public function unsubscribeFrom($email, $list){
-        self::$skipScreenshot = true;
-        $command =  "/usr/lib/mailman/bin/remove_members -n -N $list $email";
-		exec($command, $output);
-		assertTrue(count($output) == 0 || (count($output) > 0 && $output[0] == ""));
+        if(file_exists("/usr/lib/mailman/bin/remove_members")){
+            $command =  "/usr/lib/mailman/bin/remove_members -n -N $list $email";
+		    exec($command, $output);
+		    Assert::assertTrue(count($output) == 0 || (count($output) > 0 && $output[0] == ""));
+		}
     }
     
     /**
@@ -289,7 +320,7 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
     public function theLoadTimeShouldBeNoGreaterThan($maxTime)
     {
         $time = $this->getSession()->evaluateScript('return window.performance.timing.domContentLoadedEventEnd- window.performance.timing.navigationStart;');
-        assertFalse($time > $maxTime);
+        Assert::assertFalse($time > $maxTime);
     }
     
     /**
@@ -352,7 +383,7 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
         $text = str_replace("&#39;", "'", $this->getSession()->getPage()->getText());
         $strpos1 = strpos($text, stripslashes($string1));
         $strpos2 = strpos($text, stripslashes($string2));
-        assertTrue($strpos1 < $strpos2);
+        Assert::assertTrue($strpos1 < $strpos2);
     }
     
     /**
@@ -362,7 +393,7 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
         $text = str_replace("&#39;", "'", $this->getSession()->getPage()->getText());
         $strpos1 = strpos($text, stripslashes($string1));
         $strpos2 = strpos($text, stripslashes($string2));
-        assertFalse($strpos1 < $strpos2);
+        Assert::assertFalse($strpos1 < $strpos2);
     }
     
     /**
@@ -378,8 +409,9 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
      */
     public function fillInTinyMCEWith($id, $text){
         $text = addslashes($text);
-        $this->getSession()->evaluateScript("$('textarea[name=$id]').tinymce().setContent('$text');");
-        $this->getSession()->evaluateScript("$('textarea[name=$id]').tinymce().fire('keyup');");
+        $script = "_.defer(function(){ $('textarea[name=$id]').tinymce().setContent('$text'); });" .
+                  "_.defer(function(){ $('textarea[name=$id]').tinymce().fire('keyup'); });";
+        $this->getSession()->getDriver()->executeScript($script);
     }
     
     /**
@@ -387,7 +419,8 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
      */
     public function fillInTagItWith($id, $text){
         $text = addslashes($text);
-        $this->getSession()->evaluateScript("$('[name=$id]').tagit('createTag', '$text');");
+        $script = "$('[name=$id]').tagit('createTag', '$text');";
+        $this->getSession()->getDriver()->executeScript($script);
     }
     
     /**
@@ -395,22 +428,21 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
      */
     public function selectFromChosenWith($id, $text){
         $text = addslashes($text);
-        $this->getSession()->evaluateScript("
-            var text = '$text';
-            $('select[name=$id] option').each(function(i, el){
-                if($(el).val() == text ||
-                   $(el).text() == text){
-                    text = $(el).val();
-                }
-            });
-            $('select[name=$id]').val(text).trigger('chosen:updated').change()");
+        $script = "chosenText = '$text'; " .
+                  "$('select[name=$id] option').each(function(i, el){
+                                                if($(el).val() == chosenText ||
+                                                   $(el).text() == chosenText){
+                                                    chosenText = $(el).val();
+                                                }
+                                            }); " .
+                  "$('select[name=$id]').val(chosenText).trigger('chosen:updated').change();";
+        $this->getSession()->getDriver()->executeScript($script);
     }
     
     /**
      * @Given /^I validate report xml$/
      */
     public function validateReportXML(){
-        self::$skipScreenshot = true;
         $files = self::listFiles("../extensions/Reporting/Report/ReportXML");
         foreach($files as $file){
             $content = file_get_contents($file);
@@ -467,9 +499,10 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
     */
     public function dragLiLeftOrRight($parent, $id, $source, $destination)
     {
-        $this->getSession()->evaluateScript('$("#'.$parent.' #'.$destination.'").append($("#'.$parent.' #'.$source.' li[data-id='.$id.']").detach());');
-        $this->getSession()->evaluateScript('$("#'.$parent.' #'.$source.'")[0].Sortable.option("onSort")({target: $("#'.$parent.' #'.$source.'")});');
-        $this->getSession()->evaluateScript('$("#'.$parent.' #'.$destination.'")[0].Sortable.option("onSort")({target: $("#'.$parent.' #'.$destination.'")});');
+        $script = '$("#'.$parent.' #'.$destination.'").append($("#'.$parent.' #'.$source.' li[data-id='.$id.']").detach()); ' .
+                  '$("#'.$parent.' #'.$source.'")[0].Sortable.option("onSort")({target: $("#'.$parent.' #'.$source.'")}); ' .
+                  '$("#'.$parent.' #'.$destination.'")[0].Sortable.option("onSort")({target: $("#'.$parent.' #'.$destination.'")});';
+        $this->getSession()->getDriver()->executeScript($script);
     }
     
     /**
@@ -477,10 +510,9 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
     */
     public function iLogIShouldSee($js, $text)
     {
-        self::$skipScreenshot = true;
         $value = $this->getSession()->evaluateScript('return '.$js);
         $json = json_encode($value);
-        assertTrue((strpos($json, $text) !== false));
+        Assert::assertTrue((strpos($json, $text) !== false));
     }
     
     /**
@@ -488,15 +520,22 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
     */
     public function iLogIShouldNotSee($js, $text)
     {
-        self::$skipScreenshot = true;
         $value = $this->getSession()->evaluateScript('return '.$js);
         $json = json_encode($value);
-        assertTrue((strpos($json, $text) === false));
+        Assert::assertTrue((strpos($json, $text) === false));
+    }
+    
+    /**
+    * @When /^I blur$/
+    */
+    public function iBlur()
+    {
+        $this->getSession()->getDriver()->executeScript("$(':focus').blur();");
+        $this->getSession()->wait(100);
     }
     
     static function listFiles($dir){
         global $config;
-        self::$skipScreenshot = true;
         $return = array();
         $files = array_diff(scandir($dir), array('.', '..'));
         foreach($files as $file){

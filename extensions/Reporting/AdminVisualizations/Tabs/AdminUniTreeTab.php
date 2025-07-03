@@ -2,8 +2,8 @@
 
 class AdminUniTreeTab extends AbstractTab {
 	
-	function AdminUniTreeTab(){
-        parent::AbstractTab("University Funding");
+	function __construct(){
+        parent::__construct("University Funding");
     }
 
     function generateBody(){

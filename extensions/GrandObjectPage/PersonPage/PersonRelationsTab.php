@@ -5,8 +5,8 @@ class PersonRelationsTab extends AbstractTab {
     var $person;
     var $visibility;
 
-    function PersonRelationsTab($person, $visibility){
-        parent::AbstractTab("Relations");
+    function __construct($person, $visibility){
+        parent::__construct("Relations");
         $this->person = $person;
         $this->visibility = $visibility;
     }
@@ -79,7 +79,7 @@ class PersonRelationsTab extends AbstractTab {
                         else{
                             $position = $hqp->getUniversity();
                         }
-                        $position = $position['position'];
+                        $position = @$position['position'];
                         
                         $this->html .= 
                         "<tr><td>$start_date</td><td>$end_date</td><td>$position</td>

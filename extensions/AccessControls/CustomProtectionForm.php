@@ -101,7 +101,7 @@ class CustomProtectionForm extends ProtectionForm {
 		return $this->saveCustomProtection();
 		
 }
-	function execute() {
+	function execute($par) {
 		global $wgRequest, $wgOut;
 
 		if( $wgRequest->wasPosted() ) {

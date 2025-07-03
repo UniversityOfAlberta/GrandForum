@@ -14,7 +14,7 @@ class Notification{
 	var $history;
 	var $creator;
 	
-	function Notification($name, $description, $url, $time=null, $history=false){
+	function __construct($name, $description, $url, $time=null, $history=false){
 		$this->name = $name;
 		$this->description = $description;
 		$this->url = $url;
@@ -44,7 +44,7 @@ class Notification{
 	}
 	
 	static function addNotification($creator, $user, $name, $message, $url, $mail=false){
-	    global $wgServer, $wgScriptPath, $wgImpersonating, $config, $wgAdditionalMailParams;
+	    global $wgServer, $wgScriptPath, $wgImpersonating, $config, $wgAdditionalMailParams, $wgPasswordSender;
 	    if($wgImpersonating){
 	        return;
 	    }
@@ -62,7 +62,7 @@ class Notification{
                 VALUES('{$id}','{$user->getId()}','$name','{$message}','{$url}',CURRENT_TIMESTAMP,'1')";
         if($mail){
             if($id == 0){
-                $from = "From: {$config->getValue('siteName')} <{$config->getValue('supportEmail')}>" . "\r\n";
+                $from = "From: {$config->getValue('siteName')} <{$wgPasswordSender}>" . "\r\n";
             }
             else{
                 $from = "From: {$creator->getNameForForms()} <{$creator->getEmail()}>" . "\r\n";

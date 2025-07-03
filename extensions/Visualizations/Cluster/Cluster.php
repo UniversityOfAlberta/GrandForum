@@ -9,11 +9,11 @@ class Cluster extends Visualization {
     var $sizeLabel = "";
     var $countLabel = "";
     
-    function Cluster($url, $sizeLabel="Size", $countLabel="Count"){
+    function __construct($url, $sizeLabel="Size", $countLabel="Count"){
         $this->url = $url;
         $this->sizeLabel = $sizeLabel;
         $this->countLabel = $countLabel;
-        self::Visualization();
+        parent::__construct();
     }
     
     static function init(){

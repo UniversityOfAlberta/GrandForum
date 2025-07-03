@@ -12,6 +12,10 @@ class SelectReportItem extends AbstractReportItem {
             $labels = explode("|", $this->getAttr('labels', ''));
         }
         $value = $this->getBlobValue();
+		$default = $this->getAttr('default', '');
+		if($value === null && $default != ''){
+		    $value = $default;
+		}
         $width = (isset($this->attributes['width'])) ? $this->attributes['width'] : "";
         $inline = (strtolower($this->getAttr("inline", "false")) == "true");
         $items = array();

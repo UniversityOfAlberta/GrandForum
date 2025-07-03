@@ -12,7 +12,7 @@ $wgSpecialPageGroups['SpecialEventRegistration'] = 'network-tools';
 
 class SpecialEventRegistration extends SpecialPage{
 
-    function SpecialEventRegistration() {
+    function __construct() {
         parent::__construct("SpecialEventRegistration", '', true);
     }
     
@@ -111,7 +111,7 @@ class SpecialEventRegistration extends SpecialPage{
             }
             else{
                 // For the rest
-                $message .= "<p>Contact <a href='mailto:ai4s@ualberta.ca'>ai4s@ualberta.ca</a> if you have any questions.</p>";
+                $message .= "<p>Contact <a href='mailto:{$config->getValue('supportEmail')}'>{$config->getValue('supportEmail')}</a> if you have any questions.</p>";
             }
             if($event->getImageUrl(1) != ""){
                 $message .= "<div style='text-align:center;width:100%;'><img style='max-height: 200px;width: 100%;object-fit: contain;object-position: left;' src='{$event->getImageUrl(1)}'></div>";
@@ -137,6 +137,7 @@ class SpecialEventRegistration extends SpecialPage{
 
     function execute($par){
         global $wgOut, $wgTitle, $wgUser, $config, $wgServer, $wgScriptPath;
+        $this->getOutput()->setPageTitle("Event Registration");
         $me = Person::newFromWgUser();
         if(isset($_POST['submit'])){
             $this->handleEdit();
@@ -150,7 +151,7 @@ class SpecialEventRegistration extends SpecialPage{
         }
         $default = $event;
         if($event != null && $event->title != "" && $event->getVisibility() == "Publish"){
-            $wgOut->setPageTitle("Event Registration: {$event->title}");
+            $this->getOutput()->setPageTitle("Event Registration: {$event->title}");
             $eventOptions[$event->id] = $event->title;
             $defaultEvent = $event->id;
         }
@@ -248,10 +249,15 @@ class SpecialEventRegistration extends SpecialPage{
         
         $roleField = new SelectBox("role", "role", $defaultRole, $roles);
         
-        $prepreamble = "<p>AI4Society holds a variety of events such as dialogues, workshops, symposia, etc. Please select the upcoming event you want to attend, and fill out the information required. You will receive the login information via email.</p>";
+        $prepreamble = "<p>{$config->getValue('networkName')} holds a variety of events such as dialogues, workshops, symposia, etc. Please select the upcoming event you want to attend, and fill out the information required. You will receive the login information via email.</p>";
         $preamble = "";
         $appendix = "";
-        $showOther = "style='display:block;'";
+        if($config->getValue('networkName') == "AI4Society"){
+            $showOther = "style='display:block;'";
+        }
+        else{
+            $showOther = "style='display:none;'";
+        }
         if(trim($default->title) == "Replaying Japan Conference"){
             $preamble = "<p>Register for Replaying Japan 2021 Here!<br />
                            Replaying Japan 2021の参加登録はこちらから行って下さい。</p>

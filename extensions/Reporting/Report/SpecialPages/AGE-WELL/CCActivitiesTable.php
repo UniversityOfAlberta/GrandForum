@@ -13,7 +13,7 @@ function runCCActivitiesTable($par) {
 
 class CCActivitiesTable extends SpecialPage{
 
-    function CCActivitiesTable() {
+    function __construct() {
         SpecialPage::__construct("CCActivitiesTable", null, false, 'runCCActivitiesTable');
     }
     
@@ -24,6 +24,7 @@ class CCActivitiesTable extends SpecialPage{
 
     function execute($par){
         global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle, $wgMessage;
+        $this->getOutput()->setPageTitle("CC Activities Table");
         CCActivitiesTable::generateHTML($wgOut);
     }
     
@@ -121,7 +122,7 @@ class CCActivitiesTable extends SpecialPage{
     
     static function createSubTabs(&$tabs){
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle, $special_evals;
-        if(self::userCanExecute($wgUser)){
+        if((new self)->userCanExecute($wgUser)){
             $selected = @($wgTitle->getText() == "CCActivitiesTable") ? "selected" : false;
             $tabs["Manager"]['subtabs'][] = TabUtils::createSubTab("CC Activities Table", "$wgServer$wgScriptPath/index.php/Special:CCActivitiesTable", $selected);
         }

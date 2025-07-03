@@ -83,7 +83,7 @@ class LIMSOpportunity extends BackboneModel {
         return $opportunities;
     }
 
-    function LIMSOpportunity($data){
+    function __construct($data){
         global $wgServer, $wgScriptPath;
         if(count($data) > 0){
             $this->id = $data[0]['id'];

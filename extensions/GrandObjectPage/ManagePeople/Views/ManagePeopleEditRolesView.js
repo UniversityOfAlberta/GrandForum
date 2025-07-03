@@ -74,7 +74,7 @@ ManagePeopleEditRolesView = Backbone.View.extend({
     addRole: function(){
         var role = new Role();
         role.startTracking();
-        role.set("name", HQP);
+        role.set("name", wgRoles[0]);
         role.set("userId", this.person.get('id'));
         this.roles.add(role);
         this.$el.scrollTop(this.el.scrollHeight);

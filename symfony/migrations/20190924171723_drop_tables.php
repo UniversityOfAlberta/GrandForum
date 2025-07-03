@@ -22,8 +22,8 @@ class DropTables extends AbstractMigration
      */
     public function up()
     {
-        $this->dropTable('grand_researcher_cv');
-        $this->dropTable('grand_review_results');
+        $this->table('grand_researcher_cv')->drop()->save();
+        $this->table('grand_review_results')->drop()->save();
     }
 
     /**

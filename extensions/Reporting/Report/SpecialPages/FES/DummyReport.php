@@ -2,7 +2,7 @@
 
 class DummyReport extends AbstractReport{
     
-    function DummyReport($reportType, $person, $project=null, $year=REPORTING_YEAR){
+    function __construct($reportType, $person, $project=null, $year=REPORTING_YEAR){
         global $config;
         if(is_numeric($reportType) || ReportXMLParser::findReport($reportType) != ""){
             $fileName = ReportXMLParser::findReport($reportType);
@@ -30,7 +30,7 @@ class DummyReport extends AbstractReport{
         /*if($projectName != null){
             $topProjectOnly = true;
         }*/
-        $this->AbstractReport($fileName, $person->getId(), $projectName, $topProjectOnly, $year);
+        parent::__construct($fileName, $person->getId(), $projectName, $topProjectOnly, $year);
     }
     
 }

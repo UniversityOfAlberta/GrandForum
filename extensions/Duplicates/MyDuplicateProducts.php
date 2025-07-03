@@ -14,12 +14,13 @@ function runMyDuplicateProducts($par){
 
 class MyDuplicateProducts extends SpecialPage{
 
-	function MyDuplicateProducts() {
+	function __construct() {
 		SpecialPage::__construct("MyDuplicateProducts", HQP.'+', true, 'runMyDuplicateProducts');
 	}
 
 	function execute($par){
 	    global $wgServer, $wgScriptPath, $wgOut, $wgUser, $config;
+	    $this->getOutput()->setPageTitle('My Duplicate '.Inflect::pluralize($config->getValue('productsTerm')));
 	    $me = Person::newFromId($wgUser->getId());
 	    ProductHandler::init();
 	    MyProductHandler::init();

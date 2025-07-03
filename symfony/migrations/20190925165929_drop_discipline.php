@@ -22,8 +22,8 @@ class DropDiscipline extends AbstractMigration
      */
     public function up()
     {
-        $this->dropTable('grand_disciplines');
-        $this->dropTable('grand_disciplines_map');
+        $this->table('grand_disciplines')->drop()->save();
+        $this->table('grand_disciplines_map')->drop()->save();
     }
 
     /**

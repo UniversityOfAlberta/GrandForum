@@ -12,8 +12,8 @@ class ProjectKPITab extends AbstractTab {
     var $project;
     var $visibility;
 
-    function ProjectKPITab($project, $visibility){
-        parent::AbstractTab("KPI Summary");
+    function __construct($project, $visibility){
+        parent::__construct("KPI Summary");
         $this->project = $project;
         $this->visibility = $visibility;
     }

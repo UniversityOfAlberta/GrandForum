@@ -5,8 +5,8 @@ class HQPExitTab extends AbstractEditableTab {
     var $person;
     var $visibility;
 
-    function HQPExitTab($person, $visibility){
-        parent::AbstractEditableTab("HQP Alumni");
+    function __construct($person, $visibility){
+        parent::__construct("HQP Alumni");
         $this->person = $person;
         $this->visibility = $visibility;
     }
@@ -242,9 +242,13 @@ EOF;
                 foreach(Person::getAllUniversities() as $uni){
                     $universities[] = $uni;
                 }
+                
+                $partners = json_encode($partners);
+                $universities = json_encode($universities);
+                
                 $wgOut->addScript("
-                    var partners = [\"".implode("\",\n\"", $partners)."\"];
-                    var universities = [\"".implode("\",\n\"", $universities)."\"];
+                    var partners = {$partners};
+                    var universities = {$universities};
                     
                     function showNewMovedOn(){
                         $('#movedOn_new').show();
@@ -276,12 +280,12 @@ EOF;
                                                                "employment_type" => "",
                                                                "thesis" => null,
                                                                "reason" => "graduated"), true);
-                if($config->getValue('networkName') == 'FES'){
+                if($config->getValue('networkType') == "CFREF"){
                     $acks = DBFunctions::select(array('grand_acknowledgements'),
                                                 array('*'),
                                                 array('user_id' => EQ($this->person->getId())));
                     $checked = (count($acks) > 0) ? "checked='checked'" : "";
-                    $this->html .= "<br /><input type='checkbox' value='Yes' name='acknowledged' $checked /> Check this box to confirm that the HQP has consented to share their employment information with FES";
+                    $this->html .= "<br /><input type='checkbox' value='Yes' name='acknowledged' $checked /> Check this box to confirm that the HQP has consented to share their employment information with {$config->getValue('networkName')}";
                 }
                 $this->html .= "<br /><input id='addMovedOn' type='button' onClick='showNewMovedOn();' value='Add \"Alumni\" Info' />";
             }

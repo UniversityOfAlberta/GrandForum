@@ -7,8 +7,8 @@ class HQPProfileTab extends AbstractEditableTab {
     var $person;
     var $visibility;
 
-    function HQPProfileTab($person, $visibility){
-        parent::AbstractEditableTab("HQP Profile");
+    function __construct($person, $visibility){
+        parent::__construct("HQP Profile");
         $this->person = $person;
         $this->visibility = $visibility;
     }

@@ -2,11 +2,11 @@
 
 autoload_register('Reporting/AdminVisualizations/Tabs');
 
-$wgHooks['UnknownAction'][] = 'AdminChordTab::getAdminChordData';
-$wgHooks['UnknownAction'][] = 'AdminUniTreeTab::getAdminUniTreeData';
-$wgHooks['UnknownAction'][] = 'AdminProjTreeTab::getAdminProjTreeData';
-$wgHooks['UnknownAction'][] = 'AdminUniversityMapTab::getAdminUniversityMapData';
-$wgHooks['UnknownAction'][] = 'HQPPromotionsTab::getHQPPromotionsData';
+UnknownAction::createAction('AdminChordTab::getAdminChordData');
+UnknownAction::createAction('AdminUniTreeTab::getAdminUniTreeData');
+UnknownAction::createAction('AdminProjTreeTab::getAdminProjTreeData');
+UnknownAction::createAction('AdminUniversityMapTab::getAdminUniversityMapData');
+UnknownAction::createAction('HQPPromotionsTab::getHQPPromotionsData');
 
 $dir = dirname(__FILE__) . '/';
 $wgSpecialPages['AdminVisualizations'] = 'AdminVisualizations'; # Let MediaWiki know about the special page.
@@ -21,12 +21,13 @@ function runAdminVisualizations($par) {
 
 class AdminVisualizations extends SpecialPage{
 
-	function AdminVisualizations() {
+	function __construct() {
 		SpecialPage::__construct("AdminVisualizations", MANAGER.'+', true, 'runAdminVisualizations');
 	}
 
-    function execute(){
+    function execute($par){
         global $wgOut;
+        $this->getOutput()->setPageTitle("Admin Visualizations");
         $tabbedPage = new TabbedPage("adminVis");
         $tabbedPage->addTab(new AdminChordTab());
         $tabbedPage->addTab(new AdminUniTreeTab());

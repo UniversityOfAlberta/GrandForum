@@ -2,7 +2,7 @@
 
 class Head3Cell extends Cell{
     
-    function Head3Cell($cellType, $params, $cellValue, $rowN, $colN, $table){
+    function __construct($cellType, $params, $cellValue, $rowN, $colN, $table){
         if(isset($params[0])){
             $this->value = $params[0];
         }

@@ -4,8 +4,8 @@ class MyProductHandler extends AbstractDuplicatesHandler {
         
     var $type;
         
-    function MyProductHandler($id, $type){
-        $this->AbstractDuplicatesHandler($id);
+    function __construct($id, $type){
+        parent::__construct($id);
         $this->type = $type;
     }
     
@@ -81,12 +81,16 @@ class MyProductHandler extends AbstractDuplicatesHandler {
                 $datas2 = array();
                 if(is_array($data1)){
                     foreach($data1 as $key => $data){
-                        $datas1[] = "<b>$key</b>:&nbsp;".$data."\n";
+                        if(is_string($data)){
+                            $datas1[] = "<b>$key</b>:&nbsp;".$data."\n";
+                        }
                     }
                 }
                 if(is_array($data2)){
                     foreach($data2 as $key => $data){
-                        $datas2[] = "<b>$key</b>:&nbsp;".$data."\n";
+                        if(is_string($data)){
+                            $datas2[] = "<b>$key</b>:&nbsp;".$data."\n";
+                        }
                     }
                 }
                 

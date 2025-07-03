@@ -1,0 +1,28 @@
+<td valign="top" style="width:40px" id="row_<%= id %>">
+    <h3 style="margin-top:0;"><%= PublicName %></h3>
+    <%= AgencyDescription %>
+    <br /><br />
+    <a style="cursor: pointer;" onClick="$(this).hide();$(this).siblings('div').slideDown();">Show more information</a>
+    <div style="display:none;">
+        <% if(Eligibility != ""){ %>
+            <b>Eligibility:</b> <%= Eligibility %><br />
+        <% } %>
+        <% if(ParentAgency != ""){ %>
+            <b>Organization:</b> <%= ParentAgency %><br />
+        <% } %>
+        <% if(PhysicalAddress1 != ""){ %>
+            <b>Address:</b> <%= PhysicalAddress1 %><br />
+        <% } %>
+        <% if (EmailAddressMain != ""){ %>
+            <b>Email:</b> <a href='mailto:<%= EmailAddressMain %>'><%= EmailAddressMain %></a><br />
+        <% } %>
+        <% if ( PhoneNumbers.length != 0){ %>
+            <b>Phone:</b> <%= PhoneNumbers[0].Phone %><br />
+        <% } %>
+        <% if (WebsiteAddress != ""){ %>
+            <b>Website:</b> <a href='<%=WebsiteAddress %>' target='_blank'><%=WebsiteAddress%></a><br />
+        <% } %>
+	<a style="cursor: pointer;" onClick="$(this).parent().slideUp();$(this).parent().siblings('a').show();">Show less</a>
+
+    </div>
+</td>

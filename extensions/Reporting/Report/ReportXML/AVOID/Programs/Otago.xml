@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Otago Exercise Program" reportType="RP_OTAGO" ajax="true" disabled="false">
+    <Permissions>
+        <Role role="INACTIVE+"></Role>
+    </Permissions>
+    <Script>
+        <![CDATA[
+            <script type="text/javascript">var pageDC = new DataCollection();
+                pageDC.init(me.get('id'), 'Programs-Hit');
+                pageDC.append('log', new Date().toISOString().slice(0, 10), false);
+                
+                dc.init(me.get('id'), 'Program-Otago');
+                dc.increment('count');
+            </script>
+        ]]>
+    </Script>
+    <ReportSection id="otago" tooltip="Otago Exercise Program" name="Otago Exercise Program" title="Otago Exercise Program" blobSection="OTAGO" type="NextPrevReportSection">
+        <ReportItem id="register1" type="Checkbox" options="Thursdays, 1:00 to 2:00pm&lt;br />January 19 to March 23, YMCA 100 Wright Cres" blobType="BLOB_ARRAY" blobItem="REGISTER">
+            <![CDATA[
+                <script type="text/javascript">
+                    $("#reportHeader").hide();
+                    $("#reportHeader").next().hide();
+                </script>
+                <div style='overflow: auto;'>
+                    <div style='display:flex;'>
+                        <div style='width: 100%;'>
+                            <div class='program-header' style='text-align:center; line-height: inherit; height: auto;'>
+                                Otago Exercise Program<br />
+                                <span style='font-size: 0.5em;'>An in-person falls prevention program</span>
+                            </div>
+                            <img src="{$wgServer}{$wgScriptPath}/skins/woman1.png" style='margin-top: 0.5em; height: 10em; padding: 0 1em; float: right;' />
+                            <p>The idea behind the evidence-based Otago Exercise Program is that muscle strength, flexibility, balance, and reaction time can all be improved to <b>reduce your risk of falling</b>.</p>
+                            <p>
+                                <b>We</b> provide in-person instruction with a trained Otago fitness leader once per week.<br />
+                                <b>You</b> do the prescribed exercises 2 additional times each week on your own.
+                            </p>
+                            <div class='program-box' style='width: 21em; margin-right: -14em; margin-top: 3em; float: right;'>
+                                <b>Best suited for:</b>
+                                <ul>
+                                    <li>Persons who have fallen in the past year.</li>
+                                    <li>Persons who have muscle weakness and balance difficulties.</li>
+                                    <li>Persons who can walk in their own home with or without a walking aid</li>
+                                </ul>
+                            </div>
+                            <p><b>Upcoming Sessions:</b></p>
+                            <!--span class='program-text'>Register for a FREE upcoming 10-week session:</span><br />
+                            <div class='program-button' style='width: 14em;'>{$item}</div><br /-->
+                        
+            ]]>
+        </ReportItem>
+        <!--ReportItem id="register" type="Checkbox" 
+                    labels="April 4 to June 6, 2024 - 10 weeks &lt;br />Time: Thursdays from 3:30 to 4:30pm &lt;br />Location: Rural Frontenac, Lennox &amp; Addington Allied Health Team 310 Bridge Street West Unit G1" 
+                    options="April 4 to June 6, 2024 - 10 weeks &lt;br />Time: Thursdays from 3:30 to 4:30pm &lt;br />Location: Rural Frontenac, Lennox &amp; Addington Allied Health Team 310 Bridge Street West Unit G1" blobType="BLOB_ARRAY" blobItem="REGISTER3">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem-->
+        <Static>
+            <![CDATA[
+                <p>
+                    April 4 to June 6, 2024 - 10 weeks <br />
+                    Time: Thursdays from 3:30 to 4:30pm <br />
+                    Location: Rural Frontenac, Lennox & Addington Allied Health Team 310 Bridge Street West Unit G1
+                </p>
+            ]]>
+        </Static>
+        <ReportItem id="phone" type="Text" width="180px" blobItem="PHONE">
+            <![CDATA[
+                <b>Phone Number:</b> {$item} (optional)<br />
+                <p><span class='program-text'>You will be contacted with further details</span></p>
+            ]]>
+        </ReportItem>
+        <ReportItem id="submit" type="SubmitEmail">
+            <![CDATA[
+                <table>
+                    <tr>
+                        <td><b>Program:</b></td>
+                        <td>Otago Exercise Program</td>
+                    </tr>
+                    <tr>
+                        <td><b>User:</b></td>
+                        <td>{$user_name} &lt;{$user_email}&gt;</td>
+                    </tr>
+                    <tr>
+                        <td><b>Date Submitted:</b></td>
+                        <td>{time2date({$timestamp})}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Phone Number:</b></td>
+                        <td>{getArray(RP_OTAGO,OTAGO,PHONE,0,{$user_id},0}</td>
+                    </tr>
+                    <tr>
+                        <td valign='top'><b>Training Date:</b></td>
+                        <td>
+                            <div>
+                                April 4 to June 6, 2024 - 10 weeks <br />
+                                Time: Thursdays from 3:30 to 4:30pm <br />
+                                Location: Rural Frontenac, Lennox & Addington Allied Health Team 310 Bridge Street West Unit G1
+                            </div>
+                            <!--div>{getArray(RP_OTAGO,OTAGO,REGISTER3,0,{$user_id},0,register}</div-->
+                        </td>
+                    </tr>
+                </table>
+            ]]>
+        </ReportItem>
+        <Static>
+            <![CDATA[   </div>
+                        <div style='width: 16em; margin-left: 1em;'>
+                            <div class='program-box' style='width: 12em; margin-top: 0;'>Improve balance</div><br />
+                            <div class='program-box' style='width: 12em;'>Increase muscle strength</div><br />
+                            <div class='program-box' style='width: 12em;'>Improve general fitness and wellbeing</div><br />
+                            <div class='program-box' style='width: 12em;'>Reduce risk of falling</div><br />
+                        </div>
+                    </div>
+                    <div style='width: 100%; text-align: center;'>
+                        In Partnership with: <img src='{$wgServer}{$wgScriptPath}/skins/KFLA.png' style='height: 6em;' />
+                    </div>
+                </div>
+                <script type='text/javascript'>
+                    $(".program-button").click(function(e){
+                        var checkbox = $('input[type=checkbox]', this);
+                        if($(e.target).not("input").length == 1){
+                            $(checkbox).click();
+                        }
+                    });
+                    $(document).ready(function(){
+                        $("#reportFooter").hide();
+                        $("#reportFooter").prev().hide();
+                    });
+                </script>
+            ]]>
+        </Static>
+    </ReportSection>
+</Report>

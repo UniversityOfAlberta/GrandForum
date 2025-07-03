@@ -1,11 +1,11 @@
 <?php
 
-$wgHooks['UnknownAction'][] = 'PublicWordleTab::getPublicWordleData';
+UnknownAction::createAction('PublicWordleTab::getPublicWordleData');
 
 class PublicWordleTab extends AbstractTab {
 	
-	function PublicWordleTab(){
-        parent::AbstractTab("Project Tag Cloud");
+	function __construct(){
+        parent::__construct("Project Tag Cloud");
     }
 
     function generateBody(){
@@ -56,7 +56,9 @@ class PublicWordleTab extends AbstractTab {
 	        <div id='results'>
 	            <ul>";
 	    foreach($projects as $project){
-	        $this->html .= "<li style='display:none;'><a href='{$project->getUrl()}'>{$project->getName()} - {$project->getFullName()}</a> <span style='display:none;'>{$project->getDescription()}</span></li>\n";
+	        $description = $project->getDescription();
+	        $description = (is_array($description)) ? implode(" ", $description) : $description;
+	        $this->html .= "<li style='display:none;'><a href='{$project->getUrl()}'>{$project->getName()} - {$project->getFullName()}</a> <span style='display:none;'>{$description}</span></li>\n";
 	    }
 	    $this->html .= "</ul>
 	        </div>
@@ -70,7 +72,9 @@ class PublicWordleTab extends AbstractTab {
 	        $projects = Project::getAllProjects();
 	        $description = array();
 	        foreach($projects as $project){
-	            $description[] = strip_tags($project->getDescription());
+	            $pdesc = $project->getDescription();
+	            $pdesc = (is_array($pdesc)) ? implode(" ", $pdesc) : $pdesc;
+	            $description[] = strip_tags($pdesc);
 	            $description[] = strip_tags($project->getFullName());
             }
             $data = array();

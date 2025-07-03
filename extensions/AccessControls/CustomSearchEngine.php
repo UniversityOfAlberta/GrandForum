@@ -1,18 +1,23 @@
 <?php
+
+use MediaWiki\MediaWikiServices;
+
 $wgSearchType = "CustomSearchEngine";
 
 class CustomSearchEngine extends SearchMySQL {
+    protected $strictMatching = false;
+
 	public static function allowedSearchableNS() {
 		global $egAnnokiNamespaces, $wgUser, $wgExtraNamespaces;
 
-		$searchableNS = parent::searchableNamespaces();
+		$searchableNS = MediaWikiServices::getInstance()->getSearchEngineConfig()->searchableNamespaces();
 		$accessibleNS = array_flip(AnnokiNamespaces::getNamespacesForUser($wgUser));
 
 		$namespaces = array();
 		foreach ($searchableNS as $id => $nsName) {
-			if ($id < 100)
+			if ($id < 100){
 				$namespaces[$id] = $nsName;
-
+            }
 			else if (isset($accessibleNS[$nsName])) {
 				$namespaces[$id] = $nsName;
 			}
@@ -32,7 +37,7 @@ class CustomSearchEngine extends SearchMySQL {
 	
 	function updateNamespaces() {
 		global $wgRequest;
-		$allowed = array_keys(CustomSearchEngine::allowedSearchableNS());;
+		$allowed = array_keys(CustomSearchEngine::allowedSearchableNS());
 		
 		if ($wgRequest->getText("fulltext") == "Search")
 			$this->namespaces = $allowed;

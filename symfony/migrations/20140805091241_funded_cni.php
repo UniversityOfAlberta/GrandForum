@@ -24,8 +24,8 @@ class FundedCni extends AbstractMigration
     {
         $cni_table = $this->table('grand_funded_cni', array('id' => false, 'primary_key' => array('user_id', 'year')));
         if(!$cni_table->exists()){
-            $cni_table->addColumn('user_id', 'integer')
-                      ->addColumn('year', 'integer')
+            $cni_table->addColumn('user_id', 'integer', array('default' => 0, 'null' => false))
+                      ->addColumn('year', 'integer', array('default' => 0, 'null' => false))
                       ->addIndex(array('user_id'))
                       ->create();
         }

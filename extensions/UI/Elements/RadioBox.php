@@ -4,8 +4,8 @@ abstract class RadioBox extends UIElement {
 
     var $options = array();
     
-    function RadioBox($id, $name, $value, $options, $validations=VALIDATE_NOTHING){
-        parent::UIElement($id, $name, $value, $validations);
+    function __construct($id, $name, $value, $options, $validations=VALIDATE_NOTHING){
+        parent::__construct($id, $name, $value, $validations);
         $this->options = $options;
     }
     

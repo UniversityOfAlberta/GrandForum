@@ -13,7 +13,7 @@ function runKPISummary($par) {
 
 class KPISummary extends SpecialPage{
 
-	function KPISummary() {
+	function __construct() {
 		SpecialPage::__construct("KPISummary", MANAGER.'+', true, 'runKPISummary');
 	}
 

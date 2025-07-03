@@ -20,24 +20,25 @@
  * @file
  */
 
+use MediaWiki\MediaWikiServices;
+
 /**
- * Example class for HTTP accessable external objects.
+ * Example class for HTTP accessible external objects.
  * Only supports reading, not storing.
  *
  * @ingroup ExternalStorage
  */
 class ExternalStoreHttp extends ExternalStoreMedium {
-	/**
-	 * @see ExternalStoreMedium::fetchFromURL()
-	 */
 	public function fetchFromURL( $url ) {
-		return Http::get( $url );
+		return MediaWikiServices::getInstance()->getHttpRequestFactory()->
+			get( $url, [], __METHOD__ );
 	}
 
-	/**
-	 * @see ExternalStoreMedium::store()
-	 */
-	public function store( $cluster, $data ) {
+	public function store( $location, $data ) {
 		throw new MWException( "ExternalStoreHttp is read-only and does not support store()." );
+	}
+
+	public function isReadOnly( $location ) {
+		return true;
 	}
 }

@@ -1,5 +1,7 @@
 <?php
 
+use MediaWiki\MediaWikiServices;
+
 class GlobalSearchAPI extends RESTAPI {
     
     function doGET(){
@@ -244,6 +246,7 @@ class GlobalSearchAPI extends RESTAPI {
                 $bibs = DBFunctions::select(array('grand_bibliography'),
                                             array('title', 'description', 'id'));
                 Product::generateProductTagsCache();
+                $data = array();
                 foreach($bibs as $bibliography){
                     $bTitle = unaccentChars($bibliography['title']);
                     $bDescription = unaccentChars($bibliography['description']);
@@ -294,6 +297,7 @@ class GlobalSearchAPI extends RESTAPI {
                 break;
             case 'events':
                 $data = array();
+                $results = array();
                 $events = EventPosting::getAllPostings();
                 foreach($events as $event){
                     $title = unaccentChars($event->getTitle());
@@ -335,7 +339,7 @@ class GlobalSearchAPI extends RESTAPI {
                     // forward current cookies to curl
                     $cookies = array();
                     foreach($_COOKIE as $key => $value){
-                        if ($key != 'Array'){
+                        if ($key != 'Array' && !is_array($value)){
                             $cookies[] = $key . '=' . $value;
                         }
                     }
@@ -356,7 +360,7 @@ class GlobalSearchAPI extends RESTAPI {
                 if(isset($results->query)){
                     foreach($results->query->pages as $page){
                         $article = Article::newFromId($page->pageid);
-                        if($article != null && $article->getTitle()->userCanRead() && array_search($article->getTitle()->getNSText(), $blacklistedNamespaces) === false){
+                        if($article != null && MediaWikiServices::getInstance()->getPermissionManager()->userCan('read', $wgUser, $article->getTitle()) && array_search($article->getTitle()->getNSText(), $blacklistedNamespaces) === false){
                             $project = Project::newFromName($article->getTitle()->getNSText());
                             if($project != null && $project->getName() != ""){
                                 // Namespace belongs to a project

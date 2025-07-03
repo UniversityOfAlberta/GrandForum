@@ -20,6 +20,8 @@
  * @file
  */
 
+use MediaWiki\MediaWikiServices;
+
 /**
  * Generic operation result class
  * Has warning/error list, boolean status and arbitrary value
@@ -36,145 +38,139 @@
  * unconditionally, i.e. both on success and on failure -- so that the
  * developer of the calling code is reminded that the function can fail, and
  * so that a lack of error-handling will be explicit.
+ *
+ * @newable
  */
-class Status {
-	/** @var bool */
-	public $ok = true;
-
-	/** @var mixed */
-	public $value;
-
-	/** Counters for batch operations */
-	/** @var int */
-	public $successCount = 0;
-
-	/** @var int */
-	public $failCount = 0;
-
-	/** Array to indicate which items of the batch operations were successful */
-	/** @var array */
-	public $success = array();
-
-	/** @var array */
-	public $errors = array();
-
-	/** @var callable */
+class Status extends StatusValue {
+	/** @var callable|false */
 	public $cleanCallback = false;
 
+	/** @var MessageLocalizer|null */
+	protected $messageLocalizer;
+
 	/**
-	 * Factory function for fatal errors
+	 * Succinct helper method to wrap a StatusValue
 	 *
-	 * @param string|Message $message message name or object
+	 * This is is useful when formatting StatusValue objects:
+	 * @code
+	 *     $this->getOutput()->addHtml( Status::wrap( $sv )->getHTML() );
+	 * @endcode
+	 *
+	 * @param StatusValue|Status $sv
 	 * @return Status
 	 */
-	static function newFatal( $message /*, parameters...*/ ) {
-		$params = func_get_args();
-		$result = new self;
-		call_user_func_array( array( &$result, 'error' ), $params );
-		$result->ok = false;
+	public static function wrap( $sv ) {
+		if ( $sv instanceof static ) {
+			return $sv;
+		}
+
+		$result = new static();
+		$result->ok =& $sv->ok;
+		$result->errors =& $sv->errors;
+		$result->value =& $sv->value;
+		$result->successCount =& $sv->successCount;
+		$result->failCount =& $sv->failCount;
+		$result->success =& $sv->success;
+
 		return $result;
 	}
 
 	/**
-	 * Factory function for good results
+	 * Backwards compatibility logic
 	 *
-	 * @param $value Mixed
-	 * @return Status
+	 * @param string $name
+	 * @return mixed
+	 * @throws RuntimeException
 	 */
-	static function newGood( $value = null ) {
-		$result = new self;
-		$result->value = $value;
-		return $result;
+	public function __get( $name ) {
+		if ( $name === 'ok' ) {
+			return $this->isOK();
+		}
+		if ( $name === 'errors' ) {
+			return $this->getErrors();
+		}
+
+		throw new RuntimeException( "Cannot get '$name' property." );
 	}
 
 	/**
 	 * Change operation result
+	 * Backwards compatibility logic
 	 *
-	 * @param bool $ok Whether the operation completed
+	 * @param string $name
 	 * @param mixed $value
+	 * @throws RuntimeException
 	 */
-	public function setResult( $ok, $value = null ) {
-		$this->ok = $ok;
-		$this->value = $value;
+	public function __set( $name, $value ) {
+		if ( $name === 'ok' ) {
+			$this->setOK( $value );
+		} elseif ( !property_exists( $this, $name ) ) {
+			// Caller is using undeclared ad-hoc properties
+			$this->$name = $value;
+		} else {
+			throw new RuntimeException( "Cannot set '$name' property." );
+		}
 	}
 
 	/**
-	 * Returns whether the operation completed and didn't have any error or
-	 * warnings
+	 * Makes this Status object use the given localizer instead of the global one.
+	 * If it is an IContextSource or a ResourceLoaderContext, it will also be used to
+	 * determine the interface language.
+	 * @note This setting does not survive serialization. That's usually for the best
+	 *   (there's no guarantee we'll still have the same localization settings after
+	 *   unserialization); it is the caller's responsibility to set the localizer again
+	 *   if needed.
+	 * @param MessageLocalizer $messageLocalizer
+	 */
+	public function setMessageLocalizer( MessageLocalizer $messageLocalizer ) {
+		$this->messageLocalizer = $messageLocalizer;
+	}
+
+	/**
+	 * Splits this Status object into two new Status objects, one which contains only
+	 * the error messages, and one that contains the warnings, only. The returned array is
+	 * defined as:
+	 * [
+	 *     0 => object(Status) # The Status with error messages, only
+	 *     1 => object(Status) # The Status with warning messages, only
+	 * ]
 	 *
-	 * @return Boolean
+	 * @return Status[]
 	 */
-	public function isGood() {
-		return $this->ok && !$this->errors;
+	public function splitByErrorType() {
+		list( $errorsOnlyStatus, $warningsOnlyStatus ) = parent::splitByErrorType();
+		// phan/phan#2133?
+		'@phan-var Status $errorsOnlyStatus';
+		'@phan-var Status $warningsOnlyStatus';
+
+		if ( $this->messageLocalizer ) {
+			$errorsOnlyStatus->setMessageLocalizer( $this->messageLocalizer );
+			$warningsOnlyStatus->setMessageLocalizer( $this->messageLocalizer );
+		}
+		$errorsOnlyStatus->cleanCallback =
+			$warningsOnlyStatus->cleanCallback = $this->cleanCallback;
+
+		return [ $errorsOnlyStatus, $warningsOnlyStatus ];
 	}
 
 	/**
-	 * Returns whether the operation completed
-	 *
-	 * @return Boolean
+	 * Returns the wrapped StatusValue object
+	 * @return StatusValue
+	 * @since 1.27
 	 */
-	public function isOK() {
-		return $this->ok;
+	public function getStatusValue() {
+		return $this;
 	}
 
 	/**
-	 * Add a new warning
-	 *
-	 * @param string|Message $message message name or object
-	 */
-	public function warning( $message /*, parameters... */ ) {
-		$params = array_slice( func_get_args(), 1 );
-		$this->errors[] = array(
-			'type' => 'warning',
-			'message' => $message,
-			'params' => $params );
-	}
-
-	/**
-	 * Add an error, do not set fatal flag
-	 * This can be used for non-fatal errors
-	 *
-	 * @param string|Message $message message name or object
-	 */
-	public function error( $message /*, parameters... */ ) {
-		$params = array_slice( func_get_args(), 1 );
-		$this->errors[] = array(
-			'type' => 'error',
-			'message' => $message,
-			'params' => $params );
-	}
-
-	/**
-	 * Add an error and set OK to false, indicating that the operation
-	 * as a whole was fatal
-	 *
-	 * @param string|Message $message message name or object
-	 */
-	public function fatal( $message /*, parameters... */ ) {
-		$params = array_slice( func_get_args(), 1 );
-		$this->errors[] = array(
-			'type' => 'error',
-			'message' => $message,
-			'params' => $params );
-		$this->ok = false;
-	}
-
-	/**
-	 * Sanitize the callback parameter on wakeup, to avoid arbitrary execution.
-	 */
-	public function __wakeup() {
-		$this->cleanCallback = false;
-	}
-
-	/**
-	 * @param $params array
+	 * @param array $params
 	 * @return array
 	 */
-	protected function cleanParams( $params ) {
+	protected function cleanParams( array $params ) {
 		if ( !$this->cleanCallback ) {
 			return $params;
 		}
-		$cleanParams = array();
+		$cleanParams = [];
 		foreach ( $params as $i => $param ) {
 			$cleanParams[$i] = call_user_func( $this->cleanCallback, $param );
 		}
@@ -184,89 +180,100 @@ class Status {
 	/**
 	 * Get the error list as a wikitext formatted list
 	 *
-	 * @param string $shortContext a short enclosing context message name, to
+	 * @param string|bool $shortContext A short enclosing context message name, to
 	 *        be used when there is a single error
-	 * @param string $longContext a long enclosing context message name, for a list
-	 * @return String
+	 * @param string|bool $longContext A long enclosing context message name, for a list
+	 * @param string|Language|StubUserLang|null $lang Language to use for processing messages
+	 * @return string
 	 */
-	public function getWikiText( $shortContext = false, $longContext = false ) {
-		if ( count( $this->errors ) == 0 ) {
-			if ( $this->ok ) {
+	public function getWikiText( $shortContext = false, $longContext = false, $lang = null ) {
+		$rawErrors = $this->getErrors();
+		if ( count( $rawErrors ) === 0 ) {
+			if ( $this->isOK() ) {
 				$this->fatal( 'internalerror_info',
 					__METHOD__ . " called for a good result, this is incorrect\n" );
 			} else {
 				$this->fatal( 'internalerror_info',
 					__METHOD__ . ": Invalid result object: no error text but not OK\n" );
 			}
+			$rawErrors = $this->getErrors(); // just added a fatal
 		}
-		if ( count( $this->errors ) == 1 ) {
-			$s = $this->getErrorMessage( $this->errors[0] )->plain();
+		if ( count( $rawErrors ) === 1 ) {
+			$s = $this->getErrorMessage( $rawErrors[0], $lang )->plain();
 			if ( $shortContext ) {
-				$s = wfMessage( $shortContext, $s )->plain();
+				$s = $this->msgInLang( $shortContext, $lang, $s )->plain();
 			} elseif ( $longContext ) {
-				$s = wfMessage( $longContext, "* $s\n" )->plain();
+				$s = $this->msgInLang( $longContext, $lang, "* $s\n" )->plain();
 			}
 		} else {
-			$errors = $this->getErrorMessageArray( $this->errors );
+			$errors = $this->getErrorMessageArray( $rawErrors, $lang );
 			foreach ( $errors as &$error ) {
 				$error = $error->plain();
 			}
 			$s = '* ' . implode( "\n* ", $errors ) . "\n";
 			if ( $longContext ) {
-				$s = wfMessage( $longContext, $s )->plain();
+				$s = $this->msgInLang( $longContext, $lang, $s )->plain();
 			} elseif ( $shortContext ) {
-				$s = wfMessage( $shortContext, "\n$s\n" )->plain();
+				$s = $this->msgInLang( $shortContext, $lang, "\n$s\n" )->plain();
 			}
 		}
 		return $s;
 	}
 
 	/**
-	 * Get the error list as a Message object
+	 * Get a bullet list of the errors as a Message object.
 	 *
-	 * @param string|string[] $shortContext A short enclosing context message name (or an array of
-	 * message names), to be used when there is a single error.
-	 * @param string|string[] $longContext A long enclosing context message name (or an array of
-	 * message names), for a list.
+	 * $shortContext and $longContext can be used to wrap the error list in some text.
+	 * $shortContext will be preferred when there is a single error; $longContext will be
+	 * preferred when there are multiple ones. In either case, $1 will be replaced with
+	 * the list of errors.
 	 *
+	 * $shortContext is assumed to use $1 as an inline parameter: if there is a single item,
+	 * it will not be made into a list; if there are multiple items, newlines will be inserted
+	 * around the list.
+	 * $longContext is assumed to use $1 as a standalone parameter; it will always receive a list.
+	 *
+	 * If both parameters are missing, and there is only one error, no bullet will be added.
+	 *
+	 * @param string|string[]|bool $shortContext A message name or an array of message names.
+	 * @param string|string[]|bool $longContext A message name or an array of message names.
+	 * @param string|Language|StubUserLang|null $lang Language to use for processing messages
 	 * @return Message
 	 */
-	public function getMessage( $shortContext = false, $longContext = false ) {
-		if ( count( $this->errors ) == 0 ) {
-			if ( $this->ok ) {
+	public function getMessage( $shortContext = false, $longContext = false, $lang = null ) {
+		$rawErrors = $this->getErrors();
+		if ( count( $rawErrors ) === 0 ) {
+			if ( $this->isOK() ) {
 				$this->fatal( 'internalerror_info',
 					__METHOD__ . " called for a good result, this is incorrect\n" );
 			} else {
 				$this->fatal( 'internalerror_info',
 					__METHOD__ . ": Invalid result object: no error text but not OK\n" );
 			}
+			$rawErrors = $this->getErrors(); // just added a fatal
 		}
-		if ( count( $this->errors ) == 1 ) {
-			$s = $this->getErrorMessage( $this->errors[0] );
+		if ( count( $rawErrors ) === 1 ) {
+			$s = $this->getErrorMessage( $rawErrors[0], $lang );
 			if ( $shortContext ) {
-				$s = wfMessage( $shortContext, $s );
+				$s = $this->msgInLang( $shortContext, $lang, $s );
 			} elseif ( $longContext ) {
 				$wrapper = new RawMessage( "* \$1\n" );
 				$wrapper->params( $s )->parse();
-				$s = wfMessage( $longContext, $wrapper );
+				$s = $this->msgInLang( $longContext, $lang, $wrapper );
 			}
 		} else {
-			$msgs = $this->getErrorMessageArray( $this->errors );
+			$msgs = $this->getErrorMessageArray( $rawErrors, $lang );
 			$msgCount = count( $msgs );
-
-			if ( $shortContext ) {
-				$msgCount++;
-			}
 
 			$s = new RawMessage( '* $' . implode( "\n* \$", range( 1, $msgCount ) ) );
 			$s->params( $msgs )->parse();
 
 			if ( $longContext ) {
-				$s = wfMessage( $longContext, $s );
+				$s = $this->msgInLang( $longContext, $lang, $s );
 			} elseif ( $shortContext ) {
-				$wrapper = new RawMessage( "\n\$1\n", $s );
+				$wrapper = new RawMessage( "\n\$1\n", [ $s ] );
 				$wrapper->parse();
-				$s = wfMessage( $shortContext, $wrapper );
+				$s = $this->msgInLang( $shortContext, $lang, $wrapper );
 			}
 		}
 
@@ -274,109 +281,114 @@ class Status {
 	}
 
 	/**
-	 * Return the message for a single error.
-	 * @param $error Mixed With an array & two values keyed by
-	 * 'message' and 'params', use those keys-value pairs.
-	 * Otherwise, if its an array, just use the first value as the
-	 * message and the remaining items as the params.
+	 * Return the message for a single error
 	 *
-	 * @return String
+	 * The code string can be used a message key with per-language versions.
+	 * If $error is an array, the "params" field is a list of parameters for the message.
+	 *
+	 * @param array|string $error Code string or (key: code string, params: string[]) map
+	 * @param string|Language|null $lang Language to use for processing messages
+	 * @return Message
 	 */
-	protected function getErrorMessage( $error ) {
+	protected function getErrorMessage( $error, $lang = null ) {
 		if ( is_array( $error ) ) {
 			if ( isset( $error['message'] ) && $error['message'] instanceof Message ) {
 				$msg = $error['message'];
 			} elseif ( isset( $error['message'] ) && isset( $error['params'] ) ) {
-				$msg = wfMessage( $error['message'],
-					array_map( 'wfEscapeWikiText', $this->cleanParams( $error['params'] ) ) );
+				$msg = $this->msg( $error['message'], array_map( function ( $param ) {
+					return is_string( $param ) ? wfEscapeWikiText( $param ) : $param;
+				}, $this->cleanParams( $error['params'] ) ) );
 			} else {
 				$msgName = array_shift( $error );
-				$msg = wfMessage( $msgName,
-					array_map( 'wfEscapeWikiText', $this->cleanParams( $error ) ) );
+				$msg = $this->msg( $msgName, array_map( function ( $param ) {
+					return is_string( $param ) ? wfEscapeWikiText( $param ) : $param;
+				}, $this->cleanParams( $error ) ) );
 			}
+		} elseif ( is_string( $error ) ) {
+			$msg = $this->msg( $error );
 		} else {
-			$msg = wfMessage( $error );
+			throw new UnexpectedValueException( 'Got ' . get_class( $error ) . ' for key.' );
+		}
+
+		if ( $lang ) {
+			$msg->inLanguage( $lang );
 		}
 		return $msg;
 	}
 
 	/**
-	 * Get the error message as HTML. This is done by parsing the wikitext error
-	 * message.
-	 * @param string $shortContext a short enclosing context message name, to
+	 * Get the error message as HTML. This is done by parsing the wikitext error message
+	 * @param string|bool $shortContext A short enclosing context message name, to
 	 *        be used when there is a single error
-	 * @param string $longContext a long enclosing context message name, for a list
-	 * @return String
+	 * @param string|bool $longContext A long enclosing context message name, for a list
+	 * @param string|Language|null $lang Language to use for processing messages
+	 * @return string
 	 */
-	public function getHTML( $shortContext = false, $longContext = false ) {
-		$text = $this->getWikiText( $shortContext, $longContext );
-		$out = MessageCache::singleton()->parse( $text, null, true, true );
-		return $out instanceof ParserOutput ? $out->getText() : $out;
+	public function getHTML( $shortContext = false, $longContext = false, $lang = null ) {
+		$text = $this->getWikiText( $shortContext, $longContext, $lang );
+		$out = MediaWikiServices::getInstance()->getMessageCache()
+			->parse( $text, null, true, true, $lang );
+		return $out instanceof ParserOutput
+			? $out->getText( [ 'enableSectionEditLinks' => false ] )
+			: $out;
 	}
 
 	/**
-	 * Return an array with the wikitext for each item in the array.
-	 * @param $errors Array
-	 * @return Array
+	 * Return an array with a Message object for each error.
+	 * @param array $errors
+	 * @param string|Language|null $lang Language to use for processing messages
+	 * @return Message[]
 	 */
-	protected function getErrorMessageArray( $errors ) {
-		return array_map( array( $this, 'getErrorMessage' ), $errors );
-	}
-
-	/**
-	 * Merge another status object into this one
-	 *
-	 * @param Status $other Other Status object
-	 * @param bool $overwriteValue Whether to override the "value" member
-	 */
-	public function merge( $other, $overwriteValue = false ) {
-		$this->errors = array_merge( $this->errors, $other->errors );
-		$this->ok = $this->ok && $other->ok;
-		if ( $overwriteValue ) {
-			$this->value = $other->value;
-		}
-		$this->successCount += $other->successCount;
-		$this->failCount += $other->failCount;
+	protected function getErrorMessageArray( $errors, $lang = null ) {
+		return array_map( function ( $e ) use ( $lang ) {
+			return $this->getErrorMessage( $e, $lang );
+		}, $errors );
 	}
 
 	/**
 	 * Get the list of errors (but not warnings)
 	 *
-	 * @return array A list in which each entry is an array with a message key as its first element.
+	 * @return array[] A list in which each entry is an array with a message key as its first element.
 	 *         The remaining array elements are the message parameters.
+	 * @deprecated since 1.25
 	 */
 	public function getErrorsArray() {
-		return $this->getStatusArray( "error" );
+		return $this->getStatusArray( 'error' );
 	}
 
 	/**
 	 * Get the list of warnings (but not errors)
 	 *
-	 * @return array A list in which each entry is an array with a message key as its first element.
+	 * @return array[] A list in which each entry is an array with a message key as its first element.
 	 *         The remaining array elements are the message parameters.
+	 * @deprecated since 1.25
 	 */
 	public function getWarningsArray() {
-		return $this->getStatusArray( "warning" );
+		return $this->getStatusArray( 'warning' );
 	}
 
 	/**
-	 * Returns a list of status messages of the given type
-	 * @param $type String
-	 * @return Array
+	 * Returns a list of status messages of the given type (or all if false)
+	 *
+	 * @note this handles RawMessage poorly
+	 *
+	 * @param string|bool $type
+	 * @return array[]
 	 */
-	protected function getStatusArray( $type ) {
-		$result = array();
-		foreach ( $this->errors as $error ) {
-			if ( $error['type'] === $type ) {
-				if ( $error['message'] instanceof Message ) {
+	protected function getStatusArray( $type = false ) {
+		$result = [];
+
+		foreach ( $this->getErrors() as $error ) {
+			if ( $type === false || $error['type'] === $type ) {
+				if ( $error['message'] instanceof MessageSpecifier ) {
 					$result[] = array_merge(
-						array( $error['message']->getKey() ),
+						[ $error['message']->getKey() ],
 						$error['message']->getParams()
 					);
 				} elseif ( $error['params'] ) {
-					$result[] = array_merge( array( $error['message'] ), $error['params'] );
+					$result[] = array_merge( [ $error['message'] ], $error['params'] );
 				} else {
-					$result[] = array( $error['message'] );
+					$result[] = [ $error['message'] ];
 				}
 			}
 		}
@@ -385,67 +397,49 @@ class Status {
 	}
 
 	/**
-	 * Returns a list of status messages of the given type, with message and
-	 * params left untouched, like a sane version of getStatusArray
-	 *
-	 * @param $type String
-	 *
-	 * @return Array
+	 * Don't save the callback when serializing, because Closures can't be
+	 * serialized and we're going to clear it in __wakeup anyway.
+	 * Don't save the localizer, because it can be pretty much anything. Restoring it is
+	 * the caller's responsibility (otherwise it will just fall back to the global request context).
+	 * @return array
 	 */
-	public function getErrorsByType( $type ) {
-		$result = array();
-		foreach ( $this->errors as $error ) {
-			if ( $error['type'] === $type ) {
-				$result[] = $error;
-			}
-		}
-		return $result;
+	public function __sleep() {
+		$keys = array_keys( get_object_vars( $this ) );
+		return array_diff( $keys, [ 'cleanCallback', 'messageLocalizer' ] );
 	}
 
 	/**
-	 * Returns true if the specified message is present as a warning or error
-	 *
-	 * Note, due to the lack of tools for comparing Message objects, this
-	 * function will not work when using a Message object as a parameter.
-	 *
-	 * @param string $msg message name
-	 * @return Boolean
+	 * Sanitize the callback parameter on wakeup, to avoid arbitrary execution.
 	 */
-	public function hasMessage( $msg ) {
-		foreach ( $this->errors as $error ) {
-			if ( $error['message'] === $msg ) {
-				return true;
-			}
-		}
-		return false;
+	public function __wakeup() {
+		$this->cleanCallback = false;
+		$this->messageLocalizer = null;
 	}
 
 	/**
-	 * If the specified source message exists, replace it with the specified
-	 * destination message, but keep the same parameters as in the original error.
-	 *
-	 * Note, due to the lack of tools for comparing Message objects, this
-	 * function will not work when using a Message object as the search parameter.
-	 *
-	 * @param Message|string $source Message key or object to search for
-	 * @param Message|string $dest Replacement message key or object
-	 * @return bool Return true if the replacement was done, false otherwise.
+	 * @param string|MessageSpecifier $key
+	 * @param string|string[] ...$params
+	 * @return Message
 	 */
-	public function replaceMessage( $source, $dest ) {
-		$replaced = false;
-		foreach ( $this->errors as $index => $error ) {
-			if ( $error['message'] === $source ) {
-				$this->errors[$index]['message'] = $dest;
-				$replaced = true;
-			}
+	private function msg( $key, ...$params ) : Message {
+		if ( $this->messageLocalizer ) {
+			return $this->messageLocalizer->msg( $key, ...$params );
+		} else {
+			return wfMessage( $key, ...$params );
 		}
-		return $replaced;
 	}
 
 	/**
-	 * @return mixed
+	 * @param string|MessageSpecifier $key
+	 * @param string|Language|StubUserLang|null $lang
+	 * @param mixed ...$params
+	 * @return Message
 	 */
-	public function getValue() {
-		return $this->value;
+	private function msgInLang( $key, $lang, ...$params ) : Message {
+		$msg = $this->msg( $key, ...$params );
+		if ( $lang ) {
+			$msg->inLanguage( $lang );
+		}
+		return $msg;
 	}
 }

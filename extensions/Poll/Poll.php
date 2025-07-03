@@ -29,7 +29,7 @@ class Poll {
         }
     }
     
-    function Poll($id, $name, $options){
+    function __construct($id, $name, $options){
         $this->id = $id;
         $this->name = $name;
         $this->options = $options;

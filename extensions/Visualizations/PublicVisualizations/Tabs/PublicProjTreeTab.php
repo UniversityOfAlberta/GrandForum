@@ -1,11 +1,11 @@
 <?php
 
-$wgHooks['UnknownAction'][] = 'PublicProjTreeTab::getPublicProjTreeData';
+UnknownAction::createAction('PublicProjTreeTab::getPublicProjTreeData');
 
 class PublicProjTreeTab extends AbstractTab {
 	
-	function PublicProjTreeTab(){
-        parent::AbstractTab("Projects");
+	function __construct(){
+        parent::__construct("Projects");
     }
 
     function generateBody(){

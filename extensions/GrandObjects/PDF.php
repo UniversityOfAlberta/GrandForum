@@ -57,7 +57,7 @@ class PDF extends BackboneModel {
         return $pdfs;
     }
     
-    function PDF($data){
+    function __construct($data){
         if(count($data) > 0){
             $this->id = $data[0]['token'];
             $this->reportId = $data[0]['report_id'];
@@ -155,7 +155,7 @@ class PDF extends BackboneModel {
                 }
                 break;
         }
-        return trim("{$this->year} {$title}");
+        return ($this->year == 0) ? $title : "{$this->year} {$title}";
     }
     
     /**
@@ -163,15 +163,36 @@ class PDF extends BackboneModel {
      * @return string The PDF data, or null if the user is not allowed to read this PDF
      */
     function getPDF(){
-        if($this->userCanRead()){
-            $data = DBFunctions::select(array('grand_pdf_report'),
-                                        array('pdf', 'encrypted'),
-                                        array('report_id' => $this->getReportId()));
-            if(count($data) > 0){
-                return ($data[0]['encrypted']) ? decrypt($data[0]['pdf']) : $data[0]['pdf'];
-            }
+        $data = DBFunctions::select(array('grand_pdf_report'),
+                                    array('pdf', 'encrypted'),
+                                    array('report_id' => $this->getReportId()));
+        if(count($data) > 0){
+            return ($data[0]['encrypted']) ? decrypt($data[0]['pdf']) : $data[0]['pdf'];
         }
         return null;
+    }
+    
+    /**
+     * Returns the PDF html.  If the user is not allowed to read this PDF, then null is returned
+     * @return string The PDF data, or null if the user is not allowed to read this PDF
+     */
+    function getHTML(){
+        $data = DBFunctions::select(array('grand_pdf_report'),
+                                    array('html', 'encrypted'),
+                                    array('report_id' => $this->getReportId()));
+        if(count($data) > 0){
+            return ($data[0]['encrypted']) ? decrypt($data[0]['html']) : $data[0]['html'];
+        }
+        return null;
+    }
+    
+    /**
+     * Returns the PDF data.  If the user is not allowed to read this PDF, then null is returned
+     * @return string The PDF data, or null if the user is not allowed to read this PDF
+     */
+    function getBody(){
+        $html = $this->getHTML();
+        return @explode("</body>", @explode("<body id='pdfBody'>", $html)[1])[0];
     }
     
     /**
@@ -196,7 +217,7 @@ class PDF extends BackboneModel {
             return true;
         }
         $result = false;
-        wfRunHooks('CanUserReadPDF', array($me, $this, &$result));
+        Hooks::run('CanUserReadPDF', array($me, $this, &$result));
         return $result;
     }
     

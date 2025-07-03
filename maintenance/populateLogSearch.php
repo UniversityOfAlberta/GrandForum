@@ -24,6 +24,8 @@
 
 require_once __DIR__ . '/Maintenance.php';
 
+use MediaWiki\MediaWikiServices;
+
 /**
  * Maintenance script that makes the required database updates for populating the
  * log_search table retroactively
@@ -31,11 +33,16 @@ require_once __DIR__ . '/Maintenance.php';
  * @ingroup Maintenance
  */
 class PopulateLogSearch extends LoggedUpdateMaintenance {
-	static $tableMap = array( 'rev' => 'revision', 'fa' => 'filearchive', 'oi' => 'oldimage', 'ar' => 'archive' );
+	private static $tableMap = [
+		'rev' => 'revision',
+		'fa' => 'filearchive',
+		'oi' => 'oldimage',
+		'ar' => 'archive'
+	];
 
 	public function __construct() {
 		parent::__construct();
-		$this->mDescription = "Migrate log params to new table and index for searching";
+		$this->addDescription( 'Migrate log params to new table and index for searching' );
 		$this->setBatchSize( 100 );
 	}
 
@@ -48,28 +55,47 @@ class PopulateLogSearch extends LoggedUpdateMaintenance {
 	}
 
 	protected function doDBUpdates() {
+		$batchSize = $this->getBatchSize();
 		$db = $this->getDB( DB_MASTER );
-		if ( !$db->tableExists( 'log_search' ) ) {
+		if ( !$db->tableExists( 'log_search', __METHOD__ ) ) {
 			$this->error( "log_search does not exist" );
+
 			return false;
 		}
-		$start = $db->selectField( 'logging', 'MIN(log_id)', false, __FUNCTION__ );
+		$start = $db->selectField( 'logging', 'MIN(log_id)', '', __FUNCTION__ );
 		if ( !$start ) {
 			$this->output( "Nothing to do.\n" );
+
 			return true;
 		}
-		$end = $db->selectField( 'logging', 'MAX(log_id)', false, __FUNCTION__ );
+		$end = $db->selectField( 'logging', 'MAX(log_id)', '', __FUNCTION__ );
+
+		// This maintenance script is for updating pre-1.16 to 1.16. The target_author_id and
+		// target_author_ip relations it adds will later be migrated to target_author_actor by
+		// migrateActors.php. If the schema is already 1.34, we should have nothing to do.
+		if ( !$db->fieldExists( 'logging', 'log_user', __METHOD__ ) ) {
+			$this->output(
+				"This does not appear to be an upgrade from MediaWiki pre-1.16 "
+				. "(logging.log_user does not exist).\n"
+			);
+			$this->output( "Nothing to do.\n" );
+
+			return true;
+		}
 
 		# Do remaining chunk
-		$end += $this->mBatchSize - 1;
+		$end += $batchSize - 1;
 		$blockStart = $start;
-		$blockEnd = $start + $this->mBatchSize - 1;
+		$blockEnd = $start + $batchSize - 1;
+		$lbFactory = MediaWikiServices::getInstance()->getDBLoadBalancerFactory();
 
-		$delTypes = array( 'delete', 'suppress' ); // revisiondelete types
+		$delTypes = [ 'delete', 'suppress' ]; // revisiondelete types
 		while ( $blockEnd <= $end ) {
 			$this->output( "...doing log_id from $blockStart to $blockEnd\n" );
-			$cond = "log_id BETWEEN $blockStart AND $blockEnd";
-			$res = $db->select( 'logging', '*', $cond, __FUNCTION__ );
+			$cond = "log_id BETWEEN " . (int)$blockStart . " AND " . (int)$blockEnd;
+			$res = $db->select(
+				'logging', [ 'log_id', 'log_type', 'log_action', 'log_params' ], $cond, __FUNCTION__
+			);
 			foreach ( $res as $row ) {
 				// RevisionDelete logs - revisions
 				if ( LogEventsList::typeAction( $row, $delTypes, 'revision' ) ) {
@@ -89,8 +115,10 @@ class PopulateLogSearch extends LoggedUpdateMaintenance {
 						} else {
 							// Clean up the row...
 							$db->update( 'logging',
-								array( 'log_params' => implode( ',', $params ) ),
-								array( 'log_id' => $row->log_id ) );
+								[ 'log_params' => implode( ',', $params ) ],
+								[ 'log_id' => $row->log_id ],
+								__METHOD__
+							);
 						}
 					}
 					$items = explode( ',', $params[1] );
@@ -106,10 +134,11 @@ class PopulateLogSearch extends LoggedUpdateMaintenance {
 					$userField = $prefix . '_user';
 					$userTextField = $prefix . '_user_text';
 					// Add item author relations...
-					$userIds = $userIPs = array();
+					$userIds = $userIPs = [];
 					$sres = $db->select( $table,
-						array( $userField, $userTextField ),
-						array( $field => $items )
+						[ $userField, $userTextField ],
+						[ $field => $items ],
+						__METHOD__
 					);
 					foreach ( $sres as $srow ) {
 						if ( $srow->$userField > 0 ) {
@@ -121,8 +150,8 @@ class PopulateLogSearch extends LoggedUpdateMaintenance {
 					// Add item author relations...
 					$log->addRelations( 'target_author_id', $userIds, $row->log_id );
 					$log->addRelations( 'target_author_ip', $userIPs, $row->log_id );
-				// RevisionDelete logs - log events
 				} elseif ( LogEventsList::typeAction( $row, $delTypes, 'event' ) ) {
+					// RevisionDelete logs - log events
 					$params = LogPage::extractParams( $row->log_params );
 					// Param format: <item CSV> [<ofield> <nfield>]
 					if ( count( $params ) < 1 ) {
@@ -133,15 +162,16 @@ class PopulateLogSearch extends LoggedUpdateMaintenance {
 					// Add item relations...
 					$log->addRelations( 'log_id', $items, $row->log_id );
 					// Add item author relations...
-					$userIds = $userIPs = array();
+					$userIds = $userIPs = [];
 					$sres = $db->select( 'logging',
-						array( 'log_user', 'log_user_text' ),
-						array( 'log_id' => $items )
+						[ 'log_user', 'log_user_text' ],
+						[ 'log_id' => $items ],
+						__METHOD__
 					);
 					foreach ( $sres as $srow ) {
 						if ( $srow->log_user > 0 ) {
 							$userIds[] = intval( $srow->log_user );
-						} elseif ( IP::isIPAddress( $srow->log_user_text ) ) {
+						} elseif ( Wikimedia\IPUtils::isIPAddress( $srow->log_user_text ) ) {
 							$userIPs[] = $srow->log_user_text;
 						}
 					}
@@ -149,14 +179,15 @@ class PopulateLogSearch extends LoggedUpdateMaintenance {
 					$log->addRelations( 'target_author_ip', $userIPs, $row->log_id );
 				}
 			}
-			$blockStart += $this->mBatchSize;
-			$blockEnd += $this->mBatchSize;
-			wfWaitForSlaves();
+			$blockStart += $batchSize;
+			$blockEnd += $batchSize;
+			$lbFactory->waitForReplication();
 		}
 		$this->output( "Done populating log_search table.\n" );
+
 		return true;
 	}
 }
 
-$maintClass = "PopulateLogSearch";
+$maintClass = PopulateLogSearch::class;
 require_once RUN_MAINTENANCE_IF_MAIN;

@@ -41,7 +41,7 @@ class LIMS extends BackbonePage {
     
     static function createSideBarLink(&$toolbox){
         global $wgServer, $wgScriptPath, $wgUser;
-        if(self::userCanExecute($wgUser)){
+        if((new self)->userCanExecute($wgUser)){
             $link = TabUtils::createToolboxLink("LIMS", "$wgServer$wgScriptPath/index.php/Special:LIMS");
             $toolbox['Other']['links'][] = $link;
         }

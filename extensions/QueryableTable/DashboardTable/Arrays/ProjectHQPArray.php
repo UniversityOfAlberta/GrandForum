@@ -2,7 +2,7 @@
 
     class ProjectHQPArray extends GroupByArray {
         
-        function ProjectHQPArray($table){
+        function __construct($table){
             $project = $table->obj;
             $start = $project->getCreated();
             $end = ($project->isDeleted()) ? $project->getDeleted() : date('Y-m-d')." 23:59:59";

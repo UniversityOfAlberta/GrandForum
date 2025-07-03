@@ -2,7 +2,7 @@
 
 class RightCell extends Cell{
     
-    function RightCell($cellType, $params, $cellValue, $rowN, $colN, $table){
+    function __construct($cellType, $params, $cellValue, $rowN, $colN, $table){
         $this->value = $cellValue;
     }
     

@@ -25,39 +25,39 @@
  */
 
 /**
- * A special page page that list most used images
+ * A special page that lists most used images
  *
  * @ingroup SpecialPage
  */
 class MostimagesPage extends ImageQueryPage {
-	function __construct( $name = 'Mostimages' ) {
+	public function __construct( $name = 'Mostimages' ) {
 		parent::__construct( $name );
 	}
 
-	function isExpensive() {
+	public function isExpensive() {
 		return true;
 	}
 
-	function isSyndicated() {
+	public function isSyndicated() {
 		return false;
 	}
 
-	function getQueryInfo() {
-		return array(
-			'tables' => array( 'imagelinks' ),
-			'fields' => array(
+	public function getQueryInfo() {
+		return [
+			'tables' => [ 'imagelinks' ],
+			'fields' => [
 				'namespace' => NS_FILE,
 				'title' => 'il_to',
 				'value' => 'COUNT(*)'
-			),
-			'options' => array(
+			],
+			'options' => [
 				'GROUP BY' => 'il_to',
 				'HAVING' => 'COUNT(*) > 1'
-			)
-		);
+			]
+		];
 	}
 
-	function getCellHtml( $row ) {
+	protected function getCellHtml( $row ) {
 		return $this->msg( 'nimagelinks' )->numParams( $row->value )->escaped() . '<br />';
 	}
 

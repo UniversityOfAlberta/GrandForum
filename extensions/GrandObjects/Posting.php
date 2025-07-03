@@ -107,7 +107,7 @@ class Posting extends BackboneModel {
         return $return;
     }
     
-    function Posting($data){
+    function __construct($data){
         if(count($data) > 0){
             $row = $data[0];
             $this->id = $row['id'];
@@ -260,7 +260,7 @@ class Posting extends BackboneModel {
     }
     
     function generatePreviewCode(){
-        $this->previewCode = md5(microtime() + rand(0,1000));
+        $this->previewCode = md5(microtime() . rand(0,1000));
         DBFunctions::update(static::$dbTable,
                             array('preview_code' => $this->previewCode),
                             array('id' => $this->id));

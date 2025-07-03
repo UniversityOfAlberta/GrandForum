@@ -31,8 +31,8 @@ class Collaborations extends AbstractMigration
         $collabs = $this->table("grand_collaborations", array("id" => "id"));
         $projects = $this->table("grand_collaboration_projects", array("id" => false, 'primary_key' => array('collaboration_id', 'project_id')));
 
-        $projects->addColumn('collaboration_id', 'integer')
-            ->addColumn('project_id', 'integer')
+        $projects->addColumn('collaboration_id', 'integer', array('default' => 0, 'null' => false))
+            ->addColumn('project_id', 'integer', array('default' => 0, 'null' => false))
             ->create();
 
         $collabs->addColumn('organization_name', 'string', array('limit' => 256))

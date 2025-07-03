@@ -22,7 +22,7 @@ function runPublicVisualizations($par) {
 
 class PublicVisualizations extends SpecialPage{
 
-	function PublicVisualizations() {
+	function __construct() {
 		SpecialPage::__construct("PublicVisualizations", '', false, 'runPublicVisualizations');
 	}
 	
@@ -34,13 +34,14 @@ class PublicVisualizations extends SpecialPage{
         return true;
     }
 
-    function execute(){
+    function execute($par){
         global $wgOut, $config;
+        $this->getOutput()->setPageTitle("Public Visualizations");
         $me = Person::newFromWgUser();
         $tabbedPage = new TabbedPage("publicVis");
         if($config->getValue('projectsEnabled')){
             $tabbedPage->addTab(new PublicChordTab());
-            if($config->getValue('networkName') == "FES"){
+            if($config->getValue('networkType') == "CFREF"){
                 $tabbedPage->addTab(new PublicPersonChordTab());
             }
             $tabbedPage->addTab(new PublicProjectClusterTab());
@@ -62,7 +63,7 @@ class PublicVisualizations extends SpecialPage{
     
     static function createSubTabs(&$tabs){
 	    global $wgServer, $wgScriptPath, $wgTitle, $wgUser;
-	    if(self::userCanExecute($wgUser)){
+	    if((new self)->userCanExecute($wgUser)){
 	        $selected = @($wgTitle->getText() == "PublicVisualizations") ? "selected" : false;
             $tabs["Main"]['subtabs'][] = TabUtils::createSubTab("Visualizations", "$wgServer$wgScriptPath/index.php/Special:PublicVisualizations", $selected);
 	    }

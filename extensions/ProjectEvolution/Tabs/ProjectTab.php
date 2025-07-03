@@ -2,8 +2,8 @@
 
 abstract class ProjectTab extends AbstractInlineEditableTab {
     
-    function ProjectTab($name){
-        parent::AbstractTab($name);
+    function __construct($name){
+        parent::__construct($name);
     }
     
     function generateEditBody(){

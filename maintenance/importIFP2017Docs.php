@@ -19,7 +19,7 @@ $people = Person::getAllEvaluates('IFP-ETC', 2017);
 foreach($people as $person){
     if(file_exists("docs/{$person->getLastName()}.zip")){
         $contents = file_get_contents("docs/{$person->getLastName()}.zip");
-        $magic = MimeMagic::singleton();
+        $magic = MediaWiki\MediaWikiServices::getInstance()->getMimeAnalyzer();
         $name = "{$person->getLastName()}.zip";
         $size = strlen($contents);
         $mime = $magic->guessMimeType("docs/{$person->getLastName()}.zip", false);

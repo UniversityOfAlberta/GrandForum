@@ -2,8 +2,8 @@
 
 class FormContainer extends UIElementArray {
     
-    function FormContainer($id){
-        parent::UIElementArray($id);
+    function __construct($id){
+        parent::__construct($id);
     }
     
     function render(){

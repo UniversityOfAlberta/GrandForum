@@ -1,10 +1,17 @@
 <?php
 
-require_once('../../config/Config.php');
+require_once('../../config/ForumConfig.php');
 
 function question($question, $hidden=false){
     echo "\n$question: ";
-    return ($hidden) ? exec('read -s PW; echo $PW') : rtrim(fgets(STDIN), PHP_EOL);
+    if($hidden){
+        system('stty -echo');
+    }
+    $value = rtrim(fgets(STDIN), PHP_EOL);
+    if($hidden){
+        system('stty echo');
+    }
+    return $value;
 }
 
 function createProject($acronym, $fullName, $status, $type, $bigbet, $phase, $effective_date, $description, $problem, $solution, $challenge="Not Specified", $parent_id=0){
@@ -153,9 +160,18 @@ if($wgUser->getID() == 0){
     } while($password1 != $password2);
     
     // Create Admin User
-    User::createNew("Admin", array('real_name' => "Admin",
-                                   'password' => User::crypt($password1), 
+    User::createNew("Admin", array('real_name' => "Admin", 
                                    'email' => $email));
+    DBFunctions::update('mw_user',
+                        array('user_id' => 1),
+                        array('user_name' => "Admin"));
+    DBFunctions::update('mw_actor',
+                        array('actor_id' => 1,
+                              'actor_user' => 1),
+                        array('actor_name' => "Admin"));
+    DBFunctions::update('mw_user',
+                        array('user_password' => MediaWiki\MediaWikiServices::getInstance()->getPasswordFactory()->newFromPlaintext($password1)->toString()),
+                        array('user_id' => 1));
     DBFunctions::insert('grand_roles',
                         array('user_id' => 1,
                               'role' => 'Admin',
@@ -232,8 +248,7 @@ if(file_exists("people.csv")){
                 $profile = @trim($cells[8]);
                 $username = str_replace(" ", "", str_replace("'", "", "$fname.$lname"));
                 
-                User::createNew($username, array('real_name' => "$fname $lname", 
-                                                 'password' => User::crypt(mt_rand()), 
+                User::createNew($username, array('real_name' => "$fname $lname",
                                                  'email' => $email));
                 Person::$cache = array();
                 Person::$namesCache = array();

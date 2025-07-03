@@ -22,7 +22,7 @@ class DropTravelForm extends AbstractMigration
      */
     public function up()
     {
-        $this->dropTable('grand_travel_forms');
+        $this->table('grand_travel_forms')->drop()->save();
     }
 
     /**

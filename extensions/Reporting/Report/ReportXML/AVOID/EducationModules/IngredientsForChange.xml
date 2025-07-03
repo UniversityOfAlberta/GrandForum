@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Ingredients For Change" reportType="RP_INGREDIENTS_FOR_CHANGE" ajax="true" disabled="false">
+    <Permissions>
+        <Role role="LoggedOut+">
+            <SectionPermission id="q1" permissions="--" />
+            <SectionPermission id="q2" permissions="--" />
+            <SectionPermission id="q3" permissions="--" />
+            <SectionPermission id="q4" permissions="--" />
+            <SectionPermission id="a1" permissions="--" />
+            <SectionPermission id="a2" permissions="--" />
+            <SectionPermission id="a3" permissions="--" />
+            <SectionPermission id="a4" permissions="--" />
+        </Role>
+    </Permissions>
+    
+    <Script>
+        <![CDATA[
+            <script type="text/javascript">
+                var pageDC = new DataCollection();
+                pageDC.init(me.get('id'), 'EducationResources-Hit');
+                pageDC.append('log', new Date().toISOString().slice(0, 10), false);
+                
+                if(typeof quizInterval != 'undefined'){
+                    clearInterval(quizInterval);
+                }
+                quizInterval = setInterval(function(){
+                    if($("#Quiz").hasClass("selectedReportTab") ||
+                       $("#Answer1").hasClass("selectedReportTab")){
+                        $("#Quiz").text("Quiz (Q1)").addClass("fakeSelectedReportTab");
+                    }
+                    else if($("#Quiz2").hasClass("selectedReportTab") ||
+                        $("#Answer2").hasClass("selectedReportTab")){
+                        $("#Quiz").text("Quiz (Q2)").addClass("fakeSelectedReportTab");
+                    }
+                    else if($("#Quiz3").hasClass("selectedReportTab") ||
+                        $("#Answer3").hasClass("selectedReportTab")){
+                        $("#Quiz").text("Quiz (Q3)").addClass("fakeSelectedReportTab");
+                    }
+                    else if($("#Quiz4").hasClass("selectedReportTab") ||
+                        $("#Answer4").hasClass("selectedReportTab")){
+                        $("#Quiz").text("Quiz (Q4)").addClass("fakeSelectedReportTab");
+                    }
+                    else{
+                        $("#Quiz").text("Quiz").removeClass("fakeSelectedReportTab");
+                    }
+                }, 100);
+                
+                $('#reportTabs').append("<div class='program-body' style='text-align: center; margin:5px;'><img src='" + wgServer + wgScriptPath + "/EducationModules/IngredientsForChange.png' style='width:100%;' /><br ><b>Ingredients for Change</b></div>");
+            </script>
+        ]]>
+    </Script>
+
+    <ReportSection id="video1" tooltip="Introduction" name="Introduction" title="Introduction" type="VideoReportSection">
+        <ReportItem id="video1" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/IngredientsForChange/1. Introduction.mp4">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="video2" tooltip="Ingredients 1: Confidence" name="Ingredients 1: Confidence" title="Ingredients 1: Confidence" type="VideoReportSection">
+        <ReportItem id="video2" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/IngredientsForChange/2. Confidence.mp4">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="video3" tooltip="Ingredients 2: Support" name="Ingredients 2: Support" title="Ingredients 2: Support" type="VideoReportSection">
+        <ReportItem id="video3" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/IngredientsForChange/3. Support.mp4">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="video4" tooltip="Ingredients 3: Motivation" name="Ingredients 3: Motivation" title="Ingredients 3: Motivation" type="VideoReportSection">
+        <ReportItem id="video4" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/IngredientsForChange/4. Motivation.mp4">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <!-- Question 1 -->
+    <ReportSection id="q1" tooltip="Quiz" name="Quiz"  title="QUESTION 1" blobSection="QUIZ" type="QuizReportSection">
+        <Static>
+            <![CDATA[
+                <script type="text/javascript">
+                    dc.init(me.get('id'), 'IngredientsForChange');
+                    dc.increment('quizPageCount');
+                    dc.timer('quizTime');
+                </script>
+                <p>Now that you’ve read about the three main ingredients (or factors) involved in making changes to your behaviour, let's review and see how much you remember.</p>
+            ]]>
+        </Static>
+        <ReportItem id="q1" type="Radio" blobItem="Q1" blobType="BLOB_TEXT" options="a. Confidence, support, motivation|b. Control, hope, determination|c. Competency, choice, comfort">
+            <![CDATA[
+                <h3>The three factors involved in making healthy lifestyle choices are:</h3>
+                {$item}
+                <script type='text/javascript'>
+                    dc.radio('q1', 'input[type=radio]');
+                </script>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <!-- Answer 1 -->
+    <ReportSection id="a1" tooltip="Answers1" name="Answer1" title="QUESTION 1" blobSection="QUIZ" type="QuizReportSection" hidden="true">
+        <ReportItem id="q1" type="Answer" blobItem="Q1" blobType="BLOB_TEXT" label="Answer 1" answer="a. Confidence, support, motivation">
+            <![CDATA[
+                {$item}
+                <p>
+                    Change is difficult, but when you know the ingredients, it can be manageable.  Having confidence in your chosen actions, support from others and access to resources, and being motivated by internal goals will help you be successful in making healthy lifestyle choices. Keep these in mind if you hit a roadblock and come back to them to rethink how they apply to you.
+                </p>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <!-- Question 2 -->
+    <ReportSection id="q2" tooltip="Quiz" name="Quiz2" title="QUESTION 2" blobSection="QUIZ" type="QuizReportSection" hidden="true">
+        <ReportItem id="q2" type="Radio" blobItem="Q2" blobType="BLOB_TEXT" options="a. Knowing what my plan is|b. Being fearless in every situation|c. Never failing at my plan">
+            <![CDATA[
+                <h3>Confidence is:</h3>
+                {$item}
+                <script type='text/javascript'>
+                    dc.radio('q2', 'input[type=radio]');
+                </script>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <!-- Answer 2 -->
+    <ReportSection id="a2" tooltip="Answers1" name="Answer2" title="QUESTION 2" blobSection="QUIZ" type="QuizReportSection" hidden="true">
+        <ReportItem id="q2" type="Answer" blobItem="Q2" blobType="BLOB_TEXT" label="Answer 2" answer="a. Knowing what my plan is">
+            <![CDATA[
+                {$item}
+                <p>
+                    Confidence can mean many things, but in the context of changing your lifestyle it simply means—something we feel ready for and <b>having a plan that we know we can follow through on</b> what is manageable.<br /> 
+                    When you are ready to reflect on your level of confidence, you can ask yourself: <b>WHAT am I willing to start with today?</b><br /> 
+                    This will give you an idea of how to engage in a behaviour that matches your current confidence level.
+                </p>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <!-- Question 3 -->
+    <ReportSection id="q3" tooltip="Quiz" name="Quiz3" title="QUESTION 3" blobSection="QUIZ" type="QuizReportSection" hidden="true">
+        <ReportItem id="q3" type="Radio" blobItem="Q3" blobType="BLOB_TEXT" options="a. Never being alone|b. Not falling down|c. Having access to help on my journey">
+            <![CDATA[
+                <h3>Support is:</h3>
+                {$item}
+                <script type='text/javascript'>
+                    dc.radio('q3', 'input[type=radio]');
+                </script>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <!-- Answer 3 -->
+    <ReportSection id="a3" tooltip="Answers1" name="Answer3" title="QUESTION 3" blobSection="QUIZ" type="QuizReportSection" hidden="true">
+        <ReportItem id="q3" type="Answer" blobItem="Q3" blobType="BLOB_TEXT" label="Answer 3" answer="c. Having access to help on my journey">
+            <![CDATA[
+                {$item}
+                <p>
+                    In the context of lifestyle change, support represents all the resources that can be crucial to beginning and maintaining the desired behaviour.
+                </p>
+                <p>
+                    <b>Support is HOW we do the things we do.</b><br />
+                    When you are confident about making a change, you can access a list of resources that include information varying from recipes to activity plans and other health recommendations.
+                </p>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <!-- Question 4 -->
+    <ReportSection id="q4" tooltip="Quiz" name="Quiz4" title="QUESTION 4" blobSection="QUIZ" type="QuizReportSection" hidden="true">
+        <ReportItem id="q4" type="Radio" blobItem="Q4" blobType="BLOB_TEXT" options="a. Always being in motion|b. Knowing why I'm doing something|c. Having a plan">
+            <![CDATA[
+                <h3>Motivation is:</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <!-- Answer 4 -->
+    <ReportSection id="a4" tooltip="Answers1" name="Answer4" title="QUESTION 4" blobSection="QUIZ" type="QuizReportSection" hidden="true">
+        <ReportItem id="q4" type="Answer" blobItem="Q4" blobType="BLOB_TEXT" label="Answer 4" answer="b. Knowing why I'm doing something">
+            <![CDATA[
+                {$item}
+                <p>
+                    Motivation, especially internal motivation, can be one of the most important ingredients involved in changing our habits, because it connects us to our goals and reminds us WHY we do the things we do.<br />
+                    Think about the things you do in your spare time. What do they have in common?<br />
+                    The answer is probably that these are activities you enjoy or that are related to an important personal value. Can you connect a new healthy habit to one of your personal values?
+                </p>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="video5" tooltip="Conclusion" name="Conclusion" title="Conclusion" type="VideoReportSection">
+        <ReportItem id="video5" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/IngredientsForChange/6. Conclusion.mp4">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="backtomodules" name="Back to Modules" type="ReportSection">
+        <Static>
+            <![CDATA[
+                Redirecting back to AVOID Education...
+                <script type="text/javascript">
+                    setTimeout(function(){
+                        document.location = wgServer + wgScriptPath + '/index.php/Special:EducationResources';
+                    }, 1000);
+                </script>
+            ]]>
+        </Static>
+    </ReportSection>
+
+</Report>

@@ -49,7 +49,7 @@ class LIMSContact extends BackboneModel {
 	    return $contacts;
 	}
 	
-	function LIMSContact($data){
+	function __construct($data){
 	    if(count($data) > 0){
 		    $this->id = $data[0]['id'];
 		    $this->title = $data[0]['title'];

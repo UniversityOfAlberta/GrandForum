@@ -24,6 +24,10 @@
 
 require __DIR__ . '/../Maintenance.php';
 
+use MediaWiki\MediaWikiServices;
+use MediaWiki\Revision\RevisionRecord;
+use MediaWiki\Revision\SlotRecord;
+
 /**
  * Maintenance script to benchmark how long it takes to parse a given title at an optionally
  * specified timestamp
@@ -34,35 +38,52 @@ class BenchmarkParse extends Maintenance {
 	/** @var string MediaWiki concatenated string timestamp (YYYYMMDDHHMMSS) */
 	private $templateTimestamp = null;
 
-	/** @var array Cache that maps a Title DB key to revision ID for the requested timestamp */
-	private $idCache = array();
+	private $clearLinkCache = false;
 
-	function __construct() {
+	/**
+	 * @var LinkCache
+	 */
+	private $linkCache;
+
+	/** @var array Cache that maps a Title DB key to revision ID for the requested timestamp */
+	private $idCache = [];
+
+	public function __construct() {
 		parent::__construct();
 		$this->addDescription( 'Benchmark parse operation' );
 		$this->addArg( 'title', 'The name of the page to parse' );
-		$this->addOption( 'cold', 'Don\'t repeat the parse operation to warm the cache' );
+		$this->addOption( 'warmup', 'Repeat the parse operation this number of times to warm the cache',
+			false, true );
+		$this->addOption( 'loops', 'Number of times to repeat parse operation post-warmup',
+			false, true );
 		$this->addOption( 'page-time',
 			'Use the version of the page which was current at the given time',
 			false, true );
 		$this->addOption( 'tpl-time',
 			'Use templates which were current at the given time (except that moves and ' .
-				'deletes are not handled properly)',
+			'deletes are not handled properly)',
 			false, true );
+		$this->addOption( 'reset-linkcache', 'Reset the LinkCache after every parse.',
+			false, false );
 	}
 
-	function execute() {
+	public function execute() {
 		if ( $this->hasOption( 'tpl-time' ) ) {
 			$this->templateTimestamp = wfTimestamp( TS_MW, strtotime( $this->getOption( 'tpl-time' ) ) );
-			Hooks::register( 'BeforeParserFetchTemplateAndtitle', array( $this, 'onFetchTemplate' ) );
+			Hooks::register( 'BeforeParserFetchTemplateAndtitle', [ $this, 'onFetchTemplate' ] );
 		}
 
-		$title = Title::newFromText( $this->getArg() );
+		$this->clearLinkCache = $this->hasOption( 'reset-linkcache' );
+		// Set as a member variable to avoid function calls when we're timing the parse
+		$this->linkCache = MediaWikiServices::getInstance()->getLinkCache();
+
+		$title = Title::newFromText( $this->getArg( 0 ) );
 		if ( !$title ) {
 			$this->error( "Invalid title" );
 			exit( 1 );
 		}
 
+		$revLookup = MediaWikiServices::getInstance()->getRevisionLookup();
 		if ( $this->hasOption( 'page-time' ) ) {
 			$pageTimestamp = wfTimestamp( TS_MW, strtotime( $this->getOption( 'page-time' ) ) );
 			$id = $this->getRevIdForTime( $title, $pageTimestamp );
@@ -71,9 +92,9 @@ class BenchmarkParse extends Maintenance {
 				exit( 1 );
 			}
 
-			$revision = Revision::newFromId( $id );
+			$revision = $revLookup->getRevisionById( $id );
 		} else {
-			$revision = Revision::newFromTitle( $title );
+			$revision = $revLookup->getRevisionByTitle( $title );
 		}
 
 		if ( !$revision ) {
@@ -81,22 +102,30 @@ class BenchmarkParse extends Maintenance {
 			exit( 1 );
 		}
 
-		if ( !$this->hasOption( 'cold' ) ) {
+		$warmup = $this->getOption( 'warmup', 1 );
+		for ( $i = 0; $i < $warmup; $i++ ) {
 			$this->runParser( $revision );
 		}
 
+		$loops = $this->getOption( 'loops', 1 );
+		if ( $loops < 1 ) {
+			$this->fatalError( 'Invalid number of loops specified' );
+		}
 		$startUsage = getrusage();
 		$startTime = microtime( true );
-		$this->runParser( $revision );
+		for ( $i = 0; $i < $loops; $i++ ) {
+			$this->runParser( $revision );
+		}
 		$endUsage = getrusage();
 		$endTime = microtime( true );
 
 		printf( "CPU time = %.3f s, wall clock time = %.3f s\n",
 			// CPU time
-			$endUsage['ru_utime.tv_sec'] + $endUsage['ru_utime.tv_usec'] * 1e-6
-				- $startUsage['ru_utime.tv_sec'] - $startUsage['ru_utime.tv_usec'] * 1e-6,
+			( $endUsage['ru_utime.tv_sec'] + $endUsage['ru_utime.tv_usec'] * 1e-6
+			- $startUsage['ru_utime.tv_sec'] - $startUsage['ru_utime.tv_usec'] * 1e-6 ) / $loops,
 			// Wall clock time
-			$endTime - $startTime );
+			( $endTime - $startTime ) / $loops
+		);
 	}
 
 	/**
@@ -106,20 +135,20 @@ class BenchmarkParse extends Maintenance {
 	 * @param string $timestamp
 	 * @return bool|string Revision ID, or false if not found or error
 	 */
-	function getRevIdForTime( Title $title, $timestamp ) {
-		$dbr = wfGetDB( DB_SLAVE );
+	private function getRevIdForTime( Title $title, $timestamp ) {
+		$dbr = $this->getDB( DB_REPLICA );
 
 		$id = $dbr->selectField(
-			array( 'revision', 'page' ),
+			[ 'revision', 'page' ],
 			'rev_id',
-			array(
+			[
 				'page_namespace' => $title->getNamespace(),
 				'page_title' => $title->getDBkey(),
 				'rev_timestamp <= ' . $dbr->addQuotes( $timestamp )
-			),
+			],
 			__METHOD__,
-			array( 'ORDER BY' => 'rev_timestamp DESC', 'LIMIT' => 1 ),
-			array( 'revision' => array( 'INNER JOIN', 'rev_page=page_id' ) )
+			[ 'ORDER BY' => 'rev_timestamp DESC', 'LIMIT' => 1 ],
+			[ 'revision' => [ 'JOIN', 'rev_page=page_id' ] ]
 		);
 
 		return $id;
@@ -128,11 +157,16 @@ class BenchmarkParse extends Maintenance {
 	/**
 	 * Parse the text from a given Revision
 	 *
-	 * @param Revision $revision
+	 * @param RevisionRecord $revision
 	 */
-	function runParser( Revision $revision ) {
-		$content = $revision->getContent();
-		$content->getParserOutput( $revision->getTitle(), $revision->getId() );
+	private function runParser( RevisionRecord $revision ) {
+		$content = $revision->getContent( SlotRecord::MAIN );
+		$title = Title::newFromLinkTarget( $revision->getPageAsLinkTarget() );
+
+		$content->getParserOutput( $title, $revision->getId() );
+		if ( $this->clearLinkCache ) {
+			$this->linkCache->clear();
+		}
 	}
 
 	/**
@@ -145,7 +179,7 @@ class BenchmarkParse extends Maintenance {
 	 * @param string|bool &$id
 	 * @return bool
 	 */
-	function onFetchTemplate( Parser $parser, Title $title, &$skip, &$id ) {
+	private function onFetchTemplate( Parser $parser, Title $title, &$skip, &$id ) {
 		$pdbk = $title->getPrefixedDBkey();
 		if ( !isset( $this->idCache[$pdbk] ) ) {
 			$proposedId = $this->getRevIdForTime( $title, $this->templateTimestamp );
@@ -159,5 +193,5 @@ class BenchmarkParse extends Maintenance {
 	}
 }
 
-$maintClass = 'BenchmarkParse';
+$maintClass = BenchmarkParse::class;
 require RUN_MAINTENANCE_IF_MAIN;

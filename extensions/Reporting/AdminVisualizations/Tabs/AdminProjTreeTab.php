@@ -2,8 +2,8 @@
 
 class AdminProjTreeTab extends AbstractTab {
 	
-	function AdminProjTreeTab(){
-        parent::AbstractTab("Project Funding");
+	function __construct(){
+        parent::__construct("Project Funding");
     }
 
     function generateBody(){

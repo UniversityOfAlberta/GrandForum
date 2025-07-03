@@ -2,7 +2,7 @@
 
 class Head2Cell extends Cell{
     
-    function Head2Cell($cellType, $params, $cellValue, $rowN, $colN, $table){
+    function __construct($cellType, $params, $cellValue, $rowN, $colN, $table){
         if(isset($params[0])){
             $this->value = $params[0];
         }

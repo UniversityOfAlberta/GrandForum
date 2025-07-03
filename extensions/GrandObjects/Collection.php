@@ -11,7 +11,7 @@ class Collection {
     /**
      * @param array $objects The array of objects to populate this Collection
      */
-    function Collection(&$objects){
+    function __construct($objects){
         $this->objects = (is_array($objects)) ? $objects : array();
     }
 

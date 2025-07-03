@@ -54,7 +54,7 @@ abstract class UIElement {
     var $attr;
     var $colspan = 1;
     
-    function UIElement($id, $name, $value, $validations){
+    function __construct($id, $name, $value, $validations){
         $this->parent = null;
         $this->id = $id;
         $this->name = $name;
@@ -298,6 +298,11 @@ abstract class UIElement {
      */
     function isValidationSet($validation){
         return (($this->validations & $validation) !== 0);
+    }
+    
+    
+    function exists(){
+        return (!($this instanceof FakeField));
     }
 }
 

@@ -57,6 +57,7 @@ class ReportXMLParser {
     
     static function findReport($rp){
         global $config;
+        $rp = "{$rp}";
         if(count(self::$fileMap) == 0){
             $files = self::listReports();
             foreach($files as $file){
@@ -103,7 +104,7 @@ class ReportXMLParser {
     
     // Creates a new ReportXMLParser.  $xml should be a string containing the contents of an xml file, 
     // and $report should be the Report object which is being created
-    function ReportXMLParser($xml, $report){
+    function __construct($xml, $report){
         $this->xml = $xml;
         $this->report = $report;
         $this->errors = array();
@@ -264,6 +265,9 @@ class ReportXMLParser {
             if(isset($attributes->headerName)){
                 $this->report->setHeaderName("{$attributes->headerName}");
             }
+            if(isset($attributes->skipTopLine) && strtolower($attributes->skipTopLine) == 'true'){
+                $this->report->setSkipTopLine(true);
+            }
             if(isset($attributes->reportType)){
                 $type = AbstractReport::blobConstant($attributes->reportType);
                 $this->report->setReportType($type);
@@ -304,11 +308,20 @@ class ReportXMLParser {
             if(isset($children->Permissions)){
                 $this->parsePermissions($children->Permissions);
             }
+            if(isset($children->Script)){
+                $this->parseScripts($children->Script);
+            }
             if(!$quick){
                 if(isset($children->ReportSection)){
                     $this->parseReportSection($children->ReportSection);
                 }
             }
+        }
+    }
+    
+    function parseScripts($node){
+        foreach($node as $key => $n){
+            $this->report->addScript("{$n}");
         }
     }
     
@@ -349,6 +362,20 @@ class ReportXMLParser {
                 }
                 $this->parseProjectSectionPermissions($child, $projName);
                 $this->report->addPermission("Project", array("deleted" => $deleted, "project" => $projName), "{$start}", "{$end}");
+            }
+            else if($key == "Theme"){
+                $attributes = $child->attributes();
+                $themeName = (isset($attributes->theme)) ? "{$attributes->theme}" : "";
+                $start = (isset($attributes->start)) ? AbstractReport::blobConstant($attributes->start) : "0000-00-00";
+                $end = (isset($attributes->end)) ? AbstractReport::blobConstant($attributes->end) : "2100-12-31";
+                if($start == null){
+                    $this->errors[] = "Start time '{$attributes->start}' does not exist";
+                }
+                if($end == null){
+                    $this->errors[] = "Start time '{$attributes->end}' does not exist";
+                }
+                $this->parseProjectSectionPermissions($child, $themeName);
+                $this->report->addPermission("Theme", array("theme" => $themeName), "{$start}", "{$end}");
             }
             else if($key == "Person"){
                 $attributes = $child->attributes();
@@ -436,10 +463,11 @@ class ReportXMLParser {
                     }
                     $section = new $type();
                     $position = isset($attributes->position) ? "{$attributes->position}" : null;
+                    $after = isset($attributes->after) ? "{$attributes->after}" : null;
                     foreach($attributes as $key => $value){
 		            	$section->setAttribute("{$key}", "{$value}");
 		            }
-                    $this->report->addSection($section, $position);
+                    $this->report->addSection($section, $position, $after);
                 }
                 else{
                     $type = get_class($section);
@@ -463,8 +491,11 @@ class ReportXMLParser {
                 if(isset($attributes->tooltip)){
                     $section->setTooltip(str_replace("'", "&#39;", "{$attributes->tooltip}"));
                 }
+                if(isset($attributes->postId)){
+                    $section->setPostId("{$attributes->postId}");
+                }
                 if(isset($attributes->disabled)){
-                    $section->setDisabled($attributes->tooltip);
+                    $section->setDisabled($attributes->disabled);
                 }
                 if(isset($attributes->blobSection)){
                     $sec = AbstractReport::blobConstant($attributes->blobSection);

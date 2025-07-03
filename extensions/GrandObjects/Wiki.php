@@ -3,6 +3,8 @@
 /**
  * @package GrandObjects
  */
+ 
+use MediaWiki\MediaWikiServices;
 
 class Wiki extends BackboneModel {
 
@@ -62,7 +64,7 @@ class Wiki extends BackboneModel {
             return $articles;
 	}
 	
-	function Wiki($article){
+	function __construct($article){
 		$this->id = $article->getId();
 		$this->ns = $article->getTitle()->getNsText();
 		$this->title = $article->getTitle()->getText();
@@ -71,7 +73,15 @@ class Wiki extends BackboneModel {
 	}
 	
 	function getText(){
-	    return $this->article->getContent();
+	    global $wgUser;
+	    $parser = MediaWikiServices::getInstance()->getParser();
+	    $content = $this->article->getPage()->getContent();
+	    $text = "";
+	    if($content != null){
+	        $text = $content->getText();
+	        $text = $parser->parse($text, $this->article->getTitle(), new ParserOptions($wgUser))->getText();
+	    }
+	    return $text;
 	}
 	
 	function toArray(){

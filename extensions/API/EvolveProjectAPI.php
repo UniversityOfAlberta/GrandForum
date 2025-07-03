@@ -2,7 +2,7 @@
 
 class EvolveProjectAPI extends API{
 
-    function EvolveProjectAPI(){
+    function __construct(){
         $this->addPOST("project",true,"The name of the project to evolve", "OLDMEOW");
         $this->addPOST("acronym",true,"The new name of the project","MEOW");
 	    $this->addPOST("effective_date",true, "The date that this action should take place", "2012-10-15");

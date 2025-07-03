@@ -168,7 +168,7 @@ END;
 	static function getUserFromNamespace($nsName) {
 	  global $egAnnokiNamespaces, $egAnnokiTablePrefix;
 		$nsId = $egAnnokiNamespaces->getNsId($nsName);
-		$dbr =& wfGetDB( DB_READ );
+		$dbr =& wfGetDB( DB_REPLICA );
 		$result = $dbr->select("${egAnnokiTablePrefix}extranamespaces", "nsUser", array("nsId" => $nsId) );
 
 		$row = $dbr->fetchRow($result);

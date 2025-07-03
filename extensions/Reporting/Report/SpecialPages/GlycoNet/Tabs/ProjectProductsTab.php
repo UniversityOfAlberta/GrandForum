@@ -4,8 +4,8 @@ class ProjectProductsTab extends AbstractTab {
 
     var $project;
 
-    function ProjectProductsTab($project){
-        parent::AbstractTab("Products");
+    function __construct($project){
+        parent::__construct("Products");
         $this->project = $project;
     }
     

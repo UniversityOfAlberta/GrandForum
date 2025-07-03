@@ -1,11 +1,11 @@
 <?php
 
-$wgHooks['UnknownAction'][] = 'PublicNetworkTab::getPublicNetworkData';
+UnknownAction::createAction('PublicNetworkTab::getPublicNetworkData');
 
 class PublicNetworkTab extends AbstractTab {
 	
-	function PublicNetworkTab(){
-        parent::AbstractTab("Network");
+	function __construct(){
+        parent::__construct("Network");
     }
 
     function generateBody(){

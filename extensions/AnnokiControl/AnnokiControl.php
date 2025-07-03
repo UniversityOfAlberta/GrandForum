@@ -6,6 +6,7 @@ if (!defined('MEDIAWIKI')) {
 
 define('ANNOKI', true);
 
+require_once("UnknownAction.php");
 require_once("DBFunctions.php");
 require_once('AnnokiConfig.php');
 
@@ -44,6 +45,12 @@ $egAnnokiExtensions = array();
 
 $egAnnokiExtensions['Shibboleth'] = array('name' => 'Shibboleth',
                                              'path' => "$IP/extensions/Shibboleth/Shibboleth.php");
+                                             
+$egAnnokiExtensions['GoogleLogin'] = array('name' => 'GoogleLogin',
+                                             'path' => "$IP/extensions/GoogleLogin/GoogleLogin.body.php");
+                                             
+$egAnnokiExtensions['OpenIDConnect'] = array('name' => 'OpenIDConnect',
+                                             'path' => "$IP/extensions/OpenIDConnect/OpenIDConnect.php");
 
 $egAnnokiExtensions['AccessControl'] = array('name' => 'Annoki Access Controls',
                                              'path' => "$IP/extensions/AccessControls/AccessControls.php");
@@ -162,7 +169,6 @@ foreach($egAnnokiExtensions as $key => $extension){
 require_once("$IP/extensions/CrossForumExport/CrossForumExport.php");
 
 require_once("AnnokiControl_body.php");
-$wgHooks['SpecialPageBeforeExecute'][] = 'showSpecialPageHeader';
 $wgHooks['MessagesPreLoad'][] = 'AnnokiControl::onMessagesPreLoad';
 $wgHooks['UserGetLanguageObject'][] = 'AnnokiControl::onUserGetLanguageObject';
 
@@ -174,7 +180,7 @@ $wgExtensionCredits['specialpage'][] = array(
                          );
                          
 function getTableName($baseName) {
-    $dbr = wfGetDB(DB_READ);
+    $dbr = wfGetDB(DB_REPLICA);
     $tblName = $dbr->tableName("$baseName");
     $tblName = str_replace("`", "", "$tblName");
     return $tblName;
@@ -210,11 +216,6 @@ function orderSpecialPages(&$aSpecialPages){
         }
     }
     $aSpecialPages = array_merge($array1, $array2);
-    return true;
-}
-
-function showSpecialPageHeader($special, $subpage){
-    $special->setHeaders();
     return true;
 }
 

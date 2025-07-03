@@ -22,7 +22,7 @@ class DropProductsReported extends AbstractMigration
      */
     public function up()
     {
-        $this->dropTable('grand_products_reported');
+        $this->table('grand_products_reported')->drop()->save();
     }
 
     /**

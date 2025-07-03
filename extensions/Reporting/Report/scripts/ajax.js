@@ -46,7 +46,7 @@ $(document).ready(function(){
         if($(this).hasClass('selectedReportTab')){
             currentSectionHref = href;
         }
-        $(this).removeAttr('href');
+        $(this).attr('href', '#');
         
         $(this).click(function(){
             var selectedIndex = $(".reportTab").index($(".selectedReportTab"));
@@ -188,7 +188,10 @@ $(document).ready(function(){
                                                  }, animationTime, animationEasingIn);
                         _.defer(initResizeEvent);
                     }
-                    timeout = setTimeout(function(){findAutosaves(updateProgress);}, animationTime+1); // Make sure that there was enough time to complete the animation, then find the new autosaves
+
+                    $("#bodyContent").scrollTop(0);
+                    _.defer(function(){ findAutosaves(updateProgress); });
+
                     setUpFormSubmit();
                     lastSaveString = $("form[name=report]").serialize();
                 });

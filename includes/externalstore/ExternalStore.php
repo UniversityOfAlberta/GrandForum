@@ -3,6 +3,8 @@
  * @defgroup ExternalStorage ExternalStorage
  */
 
+use MediaWiki\MediaWikiServices;
+
 /**
  * Interface for data storage in external repositories.
  *
@@ -42,6 +44,7 @@
  * as the possibility to have any storage format (i.e. for archives).
  *
  * @ingroup ExternalStorage
+ * @deprecated 1.34 Use ExternalStoreFactory directly instead
  */
 class ExternalStore {
 	/**
@@ -50,18 +53,16 @@ class ExternalStore {
 	 * @param string $proto Type of external storage, should be a value in $wgExternalStores
 	 * @param array $params Associative array of ExternalStoreMedium parameters
 	 * @return ExternalStoreMedium|bool The store class or false on error
+	 * @deprecated 1.34
 	 */
-	public static function getStoreObject( $proto, array $params = array() ) {
-		global $wgExternalStores;
-
-		if ( !$wgExternalStores || !in_array( $proto, $wgExternalStores ) ) {
-			return false; // protocol not enabled
+	public static function getStoreObject( $proto, array $params = [] ) {
+		try {
+			return MediaWikiServices::getInstance()
+				->getExternalStoreFactory()
+				->getStore( $proto, $params );
+		} catch ( ExternalStoreException $e ) {
+			return false;
 		}
-
-		$class = 'ExternalStore' . ucfirst( $proto );
-
-		// Any custom modules should be added to $wgAutoLoadClasses for on-demand loading
-		return class_exists( $class ) ? new $class( $params ) : false;
 	}
 
 	/**
@@ -71,58 +72,16 @@ class ExternalStore {
 	 * @param array $params Associative array of ExternalStoreMedium parameters
 	 * @return string|bool The text stored or false on error
 	 * @throws MWException
+	 * @deprecated 1.34
 	 */
-	public static function fetchFromURL( $url, array $params = array() ) {
-		$parts = explode( '://', $url, 2 );
-		if ( count( $parts ) != 2 ) {
-			return false; // invalid URL
-		}
-
-		list( $proto, $path ) = $parts;
-		if ( $path == '' ) { // bad URL
+	public static function fetchFromURL( $url, array $params = [] ) {
+		try {
+			return MediaWikiServices::getInstance()
+				->getExternalStoreAccess()
+				->fetchFromURL( $url, $params );
+		} catch ( ExternalStoreException $e ) {
 			return false;
 		}
-
-		$store = self::getStoreObject( $proto, $params );
-		if ( $store === false ) {
-			return false;
-		}
-
-		return $store->fetchFromURL( $url );
-	}
-
-	/**
-	 * Fetch data from multiple URLs with a minimum of round trips
-	 *
-	 * @param array $urls The URLs of the text to get
-	 * @return array Map from url to its data.  Data is either string when found
-	 *     or false on failure.
-	 */
-	public static function batchFetchFromURLs( array $urls ) {
-		$batches = array();
-		foreach ( $urls as $url ) {
-			$scheme = parse_url( $url, PHP_URL_SCHEME );
-			if ( $scheme ) {
-				$batches[$scheme][] = $url;
-			}
-		}
-		$retval = array();
-		foreach ( $batches as $proto => $batchedUrls ) {
-			$store = self::getStoreObject( $proto );
-			if ( $store === false ) {
-				continue;
-			}
-			$retval += $store->batchFetchFromURLs( $batchedUrls );
-		}
-		// invalid, not found, db dead, etc.
-		$missing = array_diff( $urls, array_keys( $retval ) );
-		if ( $missing ) {
-			foreach ( $missing as $url ) {
-				$retval[$url] = false;
-			}
-		}
-
-		return $retval;
 	}
 
 	/**
@@ -131,28 +90,34 @@ class ExternalStore {
 	 * class itself as a parameter.
 	 *
 	 * @param string $url A partial external store URL ("<store type>://<location>")
-	 * @param $data string
+	 * @param string $data
 	 * @param array $params Associative array of ExternalStoreMedium parameters
 	 * @return string|bool The URL of the stored data item, or false on error
 	 * @throws MWException
+	 * @deprecated 1.34
 	 */
-	public static function insert( $url, $data, array $params = array() ) {
-		$parts = explode( '://', $url, 2 );
-		if ( count( $parts ) != 2 ) {
-			return false; // invalid URL
-		}
+	public static function insert( $url, $data, array $params = [] ) {
+		try {
+			$esFactory = MediaWikiServices::getInstance()->getExternalStoreFactory();
+			$location = $esFactory->getStoreLocationFromUrl( $url );
 
-		list( $proto, $path ) = $parts;
-		if ( $path == '' ) { // bad URL
+			return $esFactory->getStoreForUrl( $url, $params )->store( $location, $data );
+		} catch ( ExternalStoreException $e ) {
 			return false;
 		}
+	}
 
-		$store = self::getStoreObject( $proto, $params );
-		if ( $store === false ) {
-			return false;
-		} else {
-			return $store->store( $path, $data );
-		}
+	/**
+	 * Fetch data from multiple URLs with a minimum of round trips
+	 *
+	 * @param array $urls The URLs of the text to get
+	 * @return array Map from url to its data.  Data is either string when found
+	 *     or false on failure.
+	 * @throws MWException
+	 * @deprecated 1.34
+	 */
+	public static function batchFetchFromURLs( array $urls ) {
+		return MediaWikiServices::getInstance()->getExternalStoreAccess()->fetchFromURLs( $urls );
 	}
 
 	/**
@@ -162,14 +127,13 @@ class ExternalStore {
 	 * provided by $wgDefaultExternalStore.
 	 *
 	 * @param string $data
-	 * @param array $params Associative array of ExternalStoreMedium parameters
-	 * @return string|bool The URL of the stored data item, or false on error
+	 * @param array $params Map of ExternalStoreMedium::__construct context parameters
+	 * @return string The URL of the stored data item
 	 * @throws MWException
+	 * @deprecated 1.34
 	 */
-	public static function insertToDefault( $data, array $params = array() ) {
-		global $wgDefaultExternalStore;
-
-		return self::insertWithFallback( (array)$wgDefaultExternalStore, $data, $params );
+	public static function insertToDefault( $data, array $params = [] ) {
+		return MediaWikiServices::getInstance()->getExternalStoreAccess()->insert( $data, $params );
 	}
 
 	/**
@@ -178,52 +142,29 @@ class ExternalStore {
 	 * itself. It also fails-over to the next possible clusters
 	 * as provided in the first parameter.
 	 *
-	 * @param array $tryStores refer to $wgDefaultExternalStore
+	 * @param array $tryStores Refer to $wgDefaultExternalStore
 	 * @param string $data
-	 * @param array $params Associative array of ExternalStoreMedium parameters
-	 * @return string|bool The URL of the stored data item, or false on error
+	 * @param array $params Map of ExternalStoreMedium::__construct context parameters
+	 * @return string The URL of the stored data item
 	 * @throws MWException
+	 * @deprecated 1.34
 	 */
-	public static function insertWithFallback( array $tryStores, $data, array $params = array() ) {
-		$error = false;
-		while ( count( $tryStores ) > 0 ) {
-			$index = mt_rand( 0, count( $tryStores ) - 1 );
-			$storeUrl = $tryStores[$index];
-			wfDebug( __METHOD__ . ": trying $storeUrl\n" );
-			list( $proto, $path ) = explode( '://', $storeUrl, 2 );
-			$store = self::getStoreObject( $proto, $params );
-			if ( $store === false ) {
-				throw new MWException( "Invalid external storage protocol - $storeUrl" );
-			}
-			try {
-				$url = $store->store( $path, $data ); // Try to save the object
-			} catch ( MWException $error ) {
-				$url = false;
-			}
-			if ( strlen( $url ) ) {
-				return $url; // Done!
-			} else {
-				unset( $tryStores[$index] ); // Don't try this one again!
-				$tryStores = array_values( $tryStores ); // Must have consecutive keys
-				wfDebugLog( 'ExternalStorage',
-					"Unable to store text to external storage $storeUrl" );
-			}
-		}
-		// All stores failed
-		if ( $error ) {
-			throw $error; // rethrow the last error
-		} else {
-			throw new MWException( "Unable to store text to external storage" );
-		}
+	public static function insertWithFallback( array $tryStores, $data, array $params = [] ) {
+		return MediaWikiServices::getInstance()
+			->getExternalStoreAccess()
+			->insert( $data, $params, $tryStores );
 	}
 
 	/**
-	 * @param $data string
-	 * @param $wiki string
-	 * @return string|bool The URL of the stored data item, or false on error
+	 * @param string $data
+	 * @param string $wiki
+	 * @return string The URL of the stored data item
 	 * @throws MWException
+	 * @deprecated 1.34 Use insertToDefault() with 'wiki' set
 	 */
 	public static function insertToForeignDefault( $data, $wiki ) {
-		return self::insertToDefault( $data, array( 'wiki' => $wiki ) );
+		return MediaWikiServices::getInstance()
+			->getExternalStoreAccess()
+			->insert( $data, [ 'domain' => $wiki ] );
 	}
 }

@@ -6,7 +6,7 @@ $wgHooks['ArticleViewHeader'][] = 'ThemePage::processPage';
 
 class ThemePage {
 
-    function processPage($article, $outputDone, $pcache){
+    static function processPage($article, $outputDone, $pcache){
         global $wgOut, $wgTitle, $wgUser, $wgRoles, $wgServer, $wgScriptPath, $config;
         
         $me = Person::newFromId($wgUser->getId());
@@ -31,9 +31,7 @@ class ThemePage {
                 if($theme != null && $theme->getId() != 0 &&
                    !$theme->userCanEdit()){
                     TabUtils::clearActions();
-                    $wgOut->clearHTML();
-                    $wgOut->permissionRequired('');
-                    $wgOut->output();
+                    permissionError();
                     exit;
                 }
                 return true;
@@ -90,6 +88,7 @@ class ThemePage {
                 
                 $wgOut->output();
                 $wgOut->disable();
+                exit;
             }
         }
         return true;

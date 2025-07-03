@@ -15,12 +15,13 @@ function runProjectEvolution($par){
 
 class ProjectEvolution extends SpecialPage {
     
-    function ProjectEvolution(){
+    function __construct(){
 		SpecialPage::__construct("ProjectEvolution", STAFF.'+', true, 'runProjectEvolution');
     }    
     
-    function execute(){
-        global $wgOut;
+    function execute($par){
+        global $wgOut, $config;
+        $this->getOutput()->setPageTitle($config->getValue('projectTerm')." Evolution");
         $tabbedPage = new TabbedPage("project");
         $tabbedPage->addTab(new CreateProjectTab());
         $tabbedPage->addTab(new EvolveProjectTab());
@@ -31,15 +32,16 @@ class ProjectEvolution extends SpecialPage {
         </script>");
         $wgOut->output();
         $wgOut->disable();
+        exit;
         return true;
     }
     
     static function createSubTabs(&$tabs){
-	    global $wgServer, $wgScriptPath, $wgTitle, $wgUser;
+	    global $wgServer, $wgScriptPath, $wgTitle, $wgUser, $config;
 	    $person = Person::newFromWgUser();
 	    if($person->isRoleAtLeast(STAFF)){
 	        $selected = @($wgTitle->getText() == "ProjectEvolution") ? "selected" : false;
-	        $tabs["Manager"]['subtabs'][] = TabUtils::createSubTab("Project Evolution", "$wgServer$wgScriptPath/index.php/Special:ProjectEvolution", $selected);
+	        $tabs["Manager"]['subtabs'][] = TabUtils::createSubTab($config->getValue('projectTerm')." Evolution", "$wgServer$wgScriptPath/index.php/Special:ProjectEvolution", $selected);
 	    }
 	    return true;
     }

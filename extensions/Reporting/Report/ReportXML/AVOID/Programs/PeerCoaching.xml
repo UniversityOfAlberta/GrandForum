@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Peer Coaching" reportType="RP_PEER_COACHING" ajax="true" disabled="false">
+    <Permissions>
+        <Role role="INACTIVE+"></Role>
+    </Permissions>
+        <Script>
+        <![CDATA[
+            <script type="text/javascript">var pageDC = new DataCollection();
+                pageDC.init(me.get('id'), 'Programs-Hit');
+                pageDC.append('log', new Date().toISOString().slice(0, 10), false);
+                
+                dc.init(me.get('id'), 'Program-PeerCoaching');
+                dc.increment('count');
+            </script>
+        ]]>
+    </Script>
+    <ReportSection id="consent" tooltip="Program Details" name="Program Details" title="Program Details" blobSection="CONSENT" type="NextPrevReportSection">
+        <Static>
+            <![CDATA[
+                <script type="text/javascript">
+                    $("#reportHeader").hide();
+                    $("#reportHeader").next().hide();
+                    _.defer(function(){
+                        $(".toggleHeader").hide();
+                    });
+                </script>
+                <div style='overflow: auto;'>
+                    <img src="{$wgServer}{$wgScriptPath}/skins/man2.png" style='float: right; height: 350px;' />
+                    <div style='display:flex; align-items: center;'>
+                        <div class='program-header' style='min-width: 8em; text-align: center;'>
+                            PEER COACHING
+                        </div>
+                        <div class='program-text' style='min-width: 200px;'>
+                            The Peer Coaching Program is a free, telephone-based program that supports AVOID Frailty program participants who are having trouble managing their health.
+                        </div>
+                    </div>
+                    
+                    <p>Peer Coaches will support you in working towards better managing your health by helping you:</p>
+                    <div class='program-box'>Determine goals and actions you want to take</div>
+                    <div class='program-box'>Identify barriers and learn problem-solving skills</div>
+                    <div class='program-box'>Become more motivated to initiate and maintain health-behaviour changes</div>
+                    <br />
+                    <img src="{$wgServer}{$wgScriptPath}/skins/man1.png" style='float: left; height: 350px; transform: scaleX(-1); margin: 0 0 1em 0;' />
+                    <p><b>Trained coaches will connect with you by telephone</b> for 30 minutes, once a week, for three months.</p>
+                    
+                    <p>Peer Coaches <b>provide support in self-managing health through behaviour change</b>. This complements and enhances professional health care.</p>
+                    
+                    <p>Coaches do not provide medical/clinical advice or treatment.</p>
+                    <div class='program-button' onClick='$(".toggleHeader").click();'>
+                        Click Here to view the Consent Form and get started with a Peer Coach
+                    </div>
+                </div>
+            ]]>
+        </Static>
+        <ReportItemSet id="consentToggle" type="ToggleHeader" title="Consent Form">
+            <ReportItem id="eula" type="Checkbox" blobItem="EULA" blobType="BLOB_ARRAY" labels="By clicking here, I am verifying that: I have read the information above and I consent to participate in this program" options="Yes">
+                <![CDATA[
+                    <div class="eula">
+                        <p>The Peer Coach Program is one of AVOID Frailty’s programs. The program is supported by The Canadian Frailty Network, and operates out of Kingston, ON. This telephone-based coaching program supports members of the AVOID Frailty program to become better health self-managers. As part of the program, participants are paired with trained volunteer Peer Coaches based on gender, age, shared interests or conditions and/or life circumstances.</p>
+                        In order to maximize your success in the Peer Coach Program, members of the Coach Team will request personal information from you. This information will include, but may not be limited to:
+                        <ul>
+                            <li>Your name, address, email address and phone number</li>
+                            <li>Information regarding your health challenges</li>
+                            <li>Barriers you face in meeting your goals; and</li>
+                            <li>Goals and actions you want to take to better manage your health </li>
+                        </ul>
+                        <p>All information collected will be directly related to your participation in the Peer Coach Program. The information may be collected in paper and/or electronic form. Electronic records will be password protected. All information will only be accessible to members of the Peer Coach Team. Your personal information will only be used for the purposes of the Peer Coach Program. Information regarding your health challenges, barriers, goals, actions and life circumstances will be permanently destroyed once you have left the program.</p>
+                        By agreeing to this consent form, you are confirming you understand that:
+                        <ul>
+                            <li>You are agreeing to provide relevant personal information to the Peer Coach Program</li>
+                            <li>All information you provide will be kept strictly confidential and will only be accessible to members of the Peer Coach Team</li>
+                            <li>Members of the Peer Coach Team will use the information you provide for the sole purpose of maximizing your success in the Peer Coach Program.</li>
+                            <li>All personal information regarding your health challenges, barriers, goals, actions, and life circumstances will be permanently destroyed once you have completed the program; and</li>
+                            <li>If you have any concerns regarding how your personal information is managed or about your participation in the program, you may contact Holly Cao <a href="mailto:hollycfncha@gmail.com">hollycfncha@gmail.com</a></li>
+                        </ul>
+                    </div>
+                    <br />
+                    {$item}
+                ]]>
+            </ReportItem>
+            <ReportItem id="name" type="Text" blobItem="NAME" blobType="BLOB_TEXT" default="{$user_name}">
+                <![CDATA[
+                    <table>
+                        <tr>
+                            <td class="label required">Name:</td>
+                            <td class="value">{$item}</td>
+                        </tr>
+                ]]>
+            </ReportItem>
+            <ReportItem id="date" type="Calendar" blobItem="DATE" blobType="BLOB_TEXT" default="{time2date({$timestamp},Y-m-d)}">
+                <![CDATA[
+                        <tr>
+                            <td class="label required">Date:</td>
+                            <td class="value">{$item}</td>
+                        </tr>
+                    </table>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+    </ReportSection>
+    <ReportSection id="register" tooltip="Register" name="Register" title="Register" blobSection="REGISTER" type="NextPrevReportSection">
+        <If if="{and(
+                    {==({getArray(RP_PEER_COACHING,CONSENT,EULA,0,{$user_id},0,eula)},Yes)},
+                    {!=({getText(RP_PEER_COACHING,CONSENT,NAME,0,{$user_id},0)},)},
+                    {!=({getText(RP_PEER_COACHING,CONSENT,DATE,0,{$user_id},0)},)}
+                )}">
+            <Static>
+                <![CDATA[
+                    <p>Registering doesn’t guarantee you a spot in our coach program. Someone will be in touch with you to discuss the program further.</p>
+                    
+                ]]>
+            </Static>
+            <ReportItem id="name" type="Text" blobItem="NAME" blobType="BLOB_TEXT" width="250px" default="{$user_name}">
+                <![CDATA[
+                    <table>
+                        <tr>
+                            <td class="label required">Name:</td>
+                            <td class="value">{$item}</td>
+                        </tr>
+                ]]>
+            </ReportItem>
+            <ReportItem id="age" type="Text" blobItem="AGE" blobType="BLOB_TEXT" width="250px">
+                <![CDATA[
+                        <tr>
+                            <td class="label required">Age:</td>
+                            <td class="value">{$item}</td>
+                        </tr>
+                ]]>
+            </ReportItem>
+            <ReportItem id="gender" type="Text" blobItem="GENDER" blobType="BLOB_TEXT" width="250px" default="{$user_gender}">
+                <![CDATA[
+                        <tr>
+                            <td class="label required">Gender:</td>
+                            <td class="value">{$item}</td>
+                        </tr>
+                ]]>
+            </ReportItem>
+            <ReportItem id="email" type="Text" blobItem="EMAIL" blobType="BLOB_TEXT" width="250px" default="{$user_email}">
+                <![CDATA[
+                        <tr>
+                            <td class="label required">Email:</td>
+                            <td class="value">{$item}</td>
+                        </tr>
+                ]]>
+            </ReportItem>
+            <ReportItem id="phone" type="Text" blobItem="PHONE" width="250px" blobType="BLOB_TEXT">
+                <![CDATA[
+                        <tr>
+                            <td class="label required">Phone Number:</td>
+                            <td class="value">{$item}</td>
+                        </tr>
+                ]]>
+            </ReportItem>
+            <ReportItem id="address" type="Text" blobItem="ADDRESS" width="250px" blobType="BLOB_TEXT">
+                <![CDATA[
+                        <tr>
+                            <td class="label required">Mailing address:</td>
+                            <td class="value">{$item}</td>
+                        </tr>
+                    </table>
+                ]]>
+            </ReportItem>
+            <Static>
+                <![CDATA[
+                    <h3>Communication Consent </h3>
+                    <p>By providing your contact information you are consenting to receive communications from AVOID Frailty about your program selection. A member of our team will be in touch in a few business days.</p>
+                ]]>
+            </Static>
+            <ReportItem id="submit" type="SubmitEmail">
+                <![CDATA[
+                    <table>
+                        <tr>
+                            <td><b>Program:</b></td>
+                            <td>Peer Coaching (Get Support)</td>
+                        </tr>
+                        <tr>
+                            <td><b>User:</b></td>
+                            <td>{$user_name} &lt;{$user_email}&gt;</td>
+                        </tr>
+                        <tr>
+                            <td><b>Date Submitted:</b></td>
+                            <td>{time2date({$timestamp})}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Name:</b></td>
+                            <td>{getText(RP_PEER_COACHING,REGISTER,NAME,0,{$user_id},0}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Age:</b></td>
+                            <td>{getText(RP_PEER_COACHING,REGISTER,AGE,0,{$user_id},0}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Gender:</b></td>
+                            <td>{getText(RP_PEER_COACHING,REGISTER,GENDER,0,{$user_id},0}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Email:</b></td>
+                            <td>{getText(RP_PEER_COACHING,REGISTER,EMAIL,0,{$user_id},0}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Phone Number:</b></td>
+                            <td>{getText(RP_PEER_COACHING,REGISTER,PHONE,0,{$user_id},0}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Mailing address:</b></td>
+                            <td>{getText(RP_PEER_COACHING,REGISTER,ADDRESS,0,{$user_id},0}</td>
+                        </tr>
+                    </table>
+                ]]>
+            </ReportItem>
+        </If>
+        <Else>
+            <![CDATA[
+                <p>Please fill out all Consent Form fields</p>
+            ]]>
+        </Else>
+    </ReportSection>
+</Report>

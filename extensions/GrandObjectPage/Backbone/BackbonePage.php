@@ -53,7 +53,7 @@ abstract class BackbonePage extends SpecialPage {
         }
     }
     
-    function BackbonePage(){
+    function __construct(){
         SpecialPage::__construct(get_class($this), 'NULL', false);
     }
     

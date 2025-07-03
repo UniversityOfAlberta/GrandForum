@@ -24,7 +24,7 @@ if( !defined( 'MEDIAWIKI' ) )
  */
 class SkinCavendish extends SkinTemplate {
 	/** Using cavendish. */
-	function initPage( &$out ) {
+	function initPage( $out ) {
 		SkinTemplate::initPage($out);
 		$this->skinname  = 'cavendish';
 		$this->stylename = 'cavendish';
@@ -45,14 +45,12 @@ class CavendishTemplate extends QuickTemplate {
 		global $wgRequest, $wgServer, $wgScriptPath, $wgOut, $wgLogo, $wgTitle, $wgUser, $wgMessage, $wgImpersonating, $wgDelegating, $wgTitle, $config, $wgLang;
 		$this->skin = $skin = $this->data['skin'];
 		$action = $wgRequest->getText( 'action' );
-
-		// Suppress warnings to prevent notices about missing indexes in $this->data
-		wfSuppressWarnings();
 		
 ?><!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php $this->text('lang') ?>" lang="<?php $this->text('lang') ?>" dir="<?php $this->text('dir') ?>">
 	<head>
 		<meta http-equiv="Content-Type" content="<?php $this->text('mimetype') ?>; charset=<?php $this->text('charset') ?>" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
         <?php if(!TESTING && $wgScriptPath != "" && !DEMO){ ?>
             <meta name="robots" content="noindex, nofollow" />
             <meta name="googlebot" content="noindex, nofollow" />
@@ -60,6 +58,7 @@ class CavendishTemplate extends QuickTemplate {
 		<title><?php $this->text('pagetitle') ?></title>
 		<link type="image/x-icon" href="<?php echo $wgServer.$wgScriptPath.'/favicon.png'; ?>" rel="shortcut icon" />
 		<link rel='stylesheet' id='roboto-css'  href='//fonts.googleapis.com/css?family=Roboto%3A400%2C400i%2C500%2C500i%2C700%2C700i&#038;ver=4.9.13' type='text/css' media='all' />
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
 		<link type="text/css" href="<?php $this->text('stylepath') ?>/smoothness/jquery-ui-1.8.21.custom.css" rel="Stylesheet" />
 
 		<link rel="stylesheet" href="<?php $this->text('stylepath') ?>/<?php $this->text('stylename') ?>/autocomplete.css" type="text/css" />
@@ -70,7 +69,6 @@ class CavendishTemplate extends QuickTemplate {
 		
 		<link type="text/css" href="<?php $this->text('stylepath') ?>/<?php $this->text('stylename') ?>/jquery.qtip.min.css" rel="Stylesheet" />
 		<link type="text/css" href="<?php $this->text('stylepath') ?>/<?php $this->text('stylename') ?>/chosen/chosen.css.php" rel="Stylesheet" />
-		<?php $this->html('csslinks') ?>
 
 		<link rel="stylesheet" href="<?php $this->text('stylepath') ?>/common/shared.css" type="text/css" media="screen" />
 		<link rel="stylesheet" href="<?php $this->text('stylepath') ?>/common/commonPrint.css" type="text/css" media="print" />
@@ -101,10 +99,10 @@ class CavendishTemplate extends QuickTemplate {
 		    <?php
 		        
 		        if($wgLang->getCode() == "en"){
-		            echo ".fr { display: none !important; }";
+		            echo "fr, .fr { display: none !important; }";
 		        }
 		        else if($wgLang->getCode() == "fr"){
-		            echo ".en { display: none !important; }";
+		            echo "en, .en { display: none !important; }";
 		        }
 		        
 		    ?>
@@ -113,7 +111,7 @@ class CavendishTemplate extends QuickTemplate {
         <link rel="stylesheet" href="https://cdn.datatables.net/fixedcolumns/3.3.2/css/fixedColumns.dataTables.min.css" />
         <link rel="stylesheet" href="https://cdn.datatables.net/fixedheader/3.1.7/css/fixedHeader.dataTables.min.css" />
 		
-		<script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/date.js"></script>
+		<script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/date.js?<?php echo filemtime('scripts/date.js'); ?>"></script>
 		<script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/inflection.js?version=2021.02.09"></script>
 		<script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/to-title-case.js"></script>
 		<script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/countries.en.js"></script>
@@ -150,6 +148,7 @@ class CavendishTemplate extends QuickTemplate {
         <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
         <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/pdfmake.min.js"></script>
         <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js"></script>
+        <script type="text/javascript"  src="//cdn.zingchart.com/zingchart.min.js"></script>
         <script src="https://www.google.com/recaptcha/api.js" async defer></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery.qtip.min.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery.forceNumeric.js"></script>
@@ -165,6 +164,8 @@ class CavendishTemplate extends QuickTemplate {
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/tagIt/js/tag-it.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/sortable.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/switcheroo.js"></script>
+        <script language="javascript" type="text/javascript" src="https://maps.google.com/maps/api/js?&libraries=places&key=<?php echo $config->getValue('googleAPI'); ?>"></script>
+        <script src="https://www.google.com/recaptcha/api.js?hl=<?php echo "{$wgLang->getCode()}"; ?>" async defer></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/raphael.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/spinner.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/filter.js"></script>
@@ -261,30 +262,13 @@ class CavendishTemplate extends QuickTemplate {
 		<script type="text/javascript">
 		    var wgServer = "<?php echo $wgServer; ?>";
 		    var wgScriptPath = "<?php echo $wgScriptPath; ?>";
-		    var wgBreakFrames = "<?php echo $wgBreakFrames; ?>";
 		    var wgUserName = "<?php echo $wgUser->getName(); ?>";
 		    var wgLang = "<?php echo $wgLang->getCode(); ?>";
 		</script>
+		
 		<?php createModels(); ?>
-		<?php echo $wgOut->getScript(); ?>
-		<!-- site js -->
-		<?php	if($this->data['jsvarurl']) { ?>
-		<script type="<?php $this->text('jsmimetype') ?>" src="<?php $this->text('jsvarurl') ?>"><!-- site js --></script>
-		<?php	} ?>
-		<!-- should appear here -->
-		<?php	if($this->data['pagecss']) { ?>
-				<style type="text/css"><?php $this->html('pagecss') ?></style>
-		<?php	}
-				if($this->data['usercss']) { ?>
-				<style type="text/css"><?php $this->html('usercss') ?></style>
-		<?php	}
-				if($this->data['userjs']) { ?>
-				<script type="<?php $this->text('jsmimetype') ?>" src="<?php $this->text('userjs' ) ?>"></script>
-		<?php	}
-				if($this->data['userjsprev']) { ?>
-				<script type="<?php $this->text('jsmimetype') ?>"><?php $this->html('userjsprev') ?></script>
-		<?php	}
-				if($this->data['trackbackhtml']) print $this->data['trackbackhtml']; ?>
+		<?php echo $wgOut->getBottomScripts(); ?>
+		
 
 		<script type='text/javascript'>
 		
@@ -303,6 +287,8 @@ class CavendishTemplate extends QuickTemplate {
 		    isAllowedToCreateBSIPostings = <?php echo json_encode(BSIPosting::isAllowedToCreate()); ?>;
 		    isAllowedToCreateCRMContacts = <?php echo json_encode(CRMContact::isAllowedToCreate()); ?>;
 		    isAllowedToCreateLIMSContacts = <?php echo json_encode(LIMSContact::isAllowedToCreate()); ?>;
+			isAllowedToCreateLIMSPmmContacts = <?php echo json_encode(LIMSContactPmm::isAllowedToCreate()); ?>;
+
 		    wgRoles = <?php global $wgAllRoles; echo json_encode($wgAllRoles); ?>;
 		    roleDefs = <?php echo json_encode($config->getValue('roleDefs')); ?>;
 		    subRoles = <?php $subRoles = $config->getValue('subRoles'); asort($subRoles); echo json_encode($subRoles); ?>;
@@ -315,12 +301,17 @@ class CavendishTemplate extends QuickTemplate {
 		    
 		    skin = "<?php echo $config->getValue('skin'); ?>";
 		    orcidId = "<?php echo $config->getValue('orcidId'); ?>";
+		    fitbitId = "<?php echo $config->getValue('fitbitId'); ?>";
 		    currentTimestamp = "<?php echo currentTimestamp(); ?>";
 		    projectPhase = <?php echo PROJECT_PHASE; ?>;
 		    projectsEnabled = <?php var_export($config->getValue('projectsEnabled')); ?>;
 		    showNonNetwork = <?php var_export($config->getValue("showNonNetwork")) ?>;
 		    alumniEnabled = <?php var_export($config->getValue('alumniEnabled')); ?>;
 		    networkName = "<?php echo $config->getValue('networkName'); ?>";
+		    networkFullName = "<?php echo $config->getValue('networkFullName'); ?>";
+		    networkType = "<?php echo $config->getValue('networkType'); ?>";
+		    supportEmail = "<?php echo $config->getValue('supportEmail'); ?>";
+		    otherEmail = "<?php echo $config->getValue('otherEmail'); ?>";
 		    extensions = <?php echo json_encode($config->getValue('extensions')); ?>;
 		    iconPath = "<?php echo $config->getValue('iconPath'); ?>";
 		    iconPathHighlighted = "<?php echo $config->getValue('iconPathHighlighted'); ?>";
@@ -338,6 +329,8 @@ class CavendishTemplate extends QuickTemplate {
 		    splitDept = "<?php echo $config->getValue('splitDept'); ?>";
 		    relationTypes = <?php echo json_encode($config->getValue('relationTypes')); ?>;
 		    boardMods = <?php echo json_encode($config->getValue('boardMods')); ?>;
+		    showSideBar = <?php var_export($config->getValue('showSideBar')) ?>;
+		    embed = <?php var_export(isset($_GET['embed'])); ?>;
 		    
 		    var today = new Date().toISOString().split('T')[0];
 		
@@ -404,29 +397,48 @@ class CavendishTemplate extends QuickTemplate {
 		    }
 		    
 		    function setBodyContentTop(){
+		        if(embed){
+		            return;
+		        }
 		        if(!$("#header").is(":visible")){
 		            $("#submenu").css("margin-top", "-45px");
 		            $("#sideToggle").css("line-height", ($("#submenu").height() - 6) + "px");
 		        }
-		        $("#bodyContent").css('top', $("#submenu").offset().top + $("#submenu").height());
+		        var top = $("#topheader").outerHeight() + $(".top-nav").outerHeight() + 1;
+	            if(window.matchMedia('(max-width: 1024px)').matches){
+	                if(me.isLoggedIn()){
+		                $("#side").hide();
+		            }
+		            else{
+		                $("#submenu").css('border-width', "0 0 1px 1px");
+		            }
+	                var sideOuterHeight = $("#side:visible").outerHeight();
+	                if(sideOuterHeight == undefined){
+	                    sideOuterHeight = 0;
+	                }
+	                if($("#submenu").is(":visible")){
+	                    top = $("#submenu").offset().top + $("#submenu").outerHeight();
+                    }
+                    $("#mobileMenu").css("top", sideOuterHeight + top);
+                    if($("#mobileMenu").is(":visible")){
+                        top += $("#mobileMenu").outerHeight();
+                    }
+                    $("#side").css("top", top);
+                    $("#bodyContent").css("top", sideOuterHeight + top);
+                }
+                else{
+                    $("#submenu").css('border-width', "0 0 0 1px");
+                    if($("#submenu").is(":visible")){
+                        top = $("#submenu").offset().top + $("#submenu").height();
+                    }
+                    $("#bodyContent").css('top', top);
+                    if(me.isLoggedIn() && showSideBar){
+                        $("#side").show();
+                    }
+                    $("#side").css("top", 0);
+                }
 		        $("#sideToggle").height($("ul.top-nav").innerHeight() + $("div#submenu").height() - 3);
 		    }
-
-		    function setMinWidth(){
-	            $("body").css('min-width', '0');
-	            minWidth = parseInt($("#header ul").css('left')) +
-	                       parseInt($("#header ul").css('right')) +
-	                       parseInt($("body").css('margin-left')) +
-	                       parseInt($("body").css('margin-right'));
-	            $.each($("#header li"), function(index, val){
-	                minWidth += $(this).width() + 
-	                            parseInt($(this).css('padding-left')) + 
-	                            parseInt($(this).css('padding-right')) +
-	                            parseInt($(this).css('margin-left')) + 
-	                            parseInt($(this).css('margin-right'));
-	            });
-	            $("html").css('min-width', minWidth);
-	        }
 	        
 	        function addAPIMessages(response){
 	            clearError();
@@ -507,18 +519,24 @@ class CavendishTemplate extends QuickTemplate {
                     }   
                 });
             }
-	        
+            
 		    $(document).ready(function(){
 		        renderProductLinks();
 		        setBodyContentTop();
 		        setNavHeight();
                 $(window).resize(setBodyContentTop);
                 $(window).resize(setNavHeight);
-		        setMinWidth();
 		        
 		        $('a.disabledButton').click(function(e){
                     e.preventDefault();
                 });
+                
+                $(document).on('click', '.checkCell', function(e){
+                    if(e.target == this){
+                        $('input', this).click();
+                    }
+                });
+                
 		        $('.tooltip').qtip({
 		            position: {
 		                adjust: {
@@ -624,6 +642,18 @@ class CavendishTemplate extends QuickTemplate {
                         $.cookie('sideToggled', 'out', {expires: 30});
                     }
 		        });
+		        
+		        $("input[type=password]").each(function(){
+		            var el = $("<i class='far fa-eye' class='togglePassword' style='margin-left: -30px; cursor: pointer; color: black;'></i>");
+		            $(this).after(el);
+		            var self = this;
+		            $(el).click(function(){
+		                var type = $(self).attr('type') === 'password' ? 'text' : 'password';
+                        $(self).attr('type', type);
+		                this.classList.toggle('fa-eye-slash');
+		            });
+		        });
+		        
 		    });
 		</script>
 		<?php if(isExtensionEnabled('Shibboleth') && isset($_SERVER['uid'])){ ?>
@@ -648,6 +678,13 @@ class CavendishTemplate extends QuickTemplate {
                 });
             </script>
 	        <iframe id="logoutFrame" style="display:none;" src=""></iframe>
+		<?php } ?>
+		<?php if($config->getValue('networkName') == "AVOID"){ ?>
+		    <style>
+	            .top-nav-mid {
+	                font-size: 1.25em;
+	            }
+		    </style>
 		<?php } ?>
 		<?php if(!(!TESTING && $wgScriptPath != "" && !DEMO)){ ?>
 		    <style>
@@ -721,6 +758,14 @@ class CavendishTemplate extends QuickTemplate {
 		        #bodyContent .ui-tabs-panel {
 		            padding: 0;
 		        }
+		        
+		        #avoidButtons {
+		            display: none;
+		        }
+		        
+		        #mobileMenu {
+		            display: none;
+		        }
 		    </style>
 		    <script type="text/javascript">
 		        parent.postMessage(-1, "*");
@@ -768,9 +813,7 @@ class CavendishTemplate extends QuickTemplate {
             header_remove("X-Frame-Options");
 		 } ?>
 	</head>
-<body <?php if($this->data['body_ondblclick']) { ?> ondblclick="<?php $this->text('body_ondblclick') ?>"<?php } ?>
-<?php if($this->data['body_onload']) { ?> onload="<?php $this->text('body_onload') ?>"<?php } ?>
- class="mediawiki <?php $this->text('dir') ?> <?php $this->text('pageclass') ?> <?php $this->text('skinnameclass') ?>">
+<body class="mediawiki ltr ns-0 ns-subject skin-cavendish">
 
 <div id="internal"></div>
 <div id="container">
@@ -782,9 +825,13 @@ class CavendishTemplate extends QuickTemplate {
                     call_user_func($function);
                 }
             }
-            echo "<div class='smallLogo'><a href='{$this->data['nav_urls']['mainpage']['href']}' title='$wgSitename'><img src='$wgServer$wgScriptPath/{$config->getValue('logo')}' /></a></div>";
+            $logoUrl = ($config->getValue('logoUrl') != "") ? $config->getValue('logoUrl') : $this->data['nav_urls']['mainpage']['href'];
+            echo "<div class='smallLogo'><a href='{$logoUrl}' title='$wgSitename'><img src='$wgServer$wgScriptPath/{$config->getValue('logo')}' alt='{$wgSitename}' /></a></div>";
             echo "<div class='search'><div id='globalSearch'></div></div>";
-            echo "<div class='login'>";
+            echo "<div class='login'>
+                    <span id='fontSizeContainer'>
+                        <en>Font Size</en><fr>Taille de la police</fr>: <a class='fontSize fontSizeSmall'>A</a><a class='fontSize fontSizeMedium'>A</a><a class='fontSize fontSizeLarge'>A</a>
+                    </span>";
             if($config->getValue('bilingual')){
                 echo "<select name='lang' style='vertical-align:middle;'>";
                 echo ($wgLang->getCode() == "en") ? "<option value='en' selected>English</option>" : "<option value='en'>English</option>";
@@ -814,8 +861,9 @@ class CavendishTemplate extends QuickTemplate {
                         $text = ($text == "") ? "Flickr" : $text;
                         break;
                     case 'twitter':
-                        $img = "glyphicons_social_31_twitter";
-                        $text = ($text == "") ? "Twitter" : $text;
+                        $img = "";
+                        $text = ($text == "") ? "&#120143;" : $text;
+                        $text2 = "X";
                         break;
                     case 'facebook':
                         $img = "glyphicons_social_30_facebook";
@@ -842,42 +890,40 @@ class CavendishTemplate extends QuickTemplate {
                         $text = ($text == "") ? "Intranet" : $text;
                         break;
                 }
-                echo "<a class='changeImg' style='white-space:nowrap;' name='$img' href='$link' target='_blank'>
-	                        <img src='$wgServer$wgScriptPath/{$config->getValue('iconPath')}$img.png' />&nbsp;$text
-	                  </a>";
+                if($img != ""){
+                    echo "<a class='changeImg' style='white-space:nowrap;' name='$img' href='$link' target='_blank'>
+	                            <img src='$wgServer$wgScriptPath/{$config->getValue('iconPath')}$img.png' />&nbsp;$text
+	                      </a>";
+	            }
+	            else{
+	                echo "<a class='changeImg' style='white-space:nowrap;' name='$img' href='$link' target='_blank'>
+	                            <span class='changeImgIcon' style=''>$text</span> $text2
+	                      </a>";
+	            }
 	        }
 	        echo "</div>";
-            echo "<a id='status_help_faq' name='question_mark_8x16' class='menuTooltip' title='Help/FAQ' href='$wgServer$wgScriptPath/index.php/Help:Contents'><img src='$wgServer$wgScriptPath/skins/icons/white/question_mark_8x16.png' />&nbsp;&nbsp;<span class='en'>Help/FAQ</span><span class='fr'>Aide/FAQ</span></a>";
+            echo "<a id='status_help_faq' name='question_mark_16x32' class='menuTooltip' title='FAQ' href='$wgServer$wgScriptPath/index.php/Help:Contents'><img src='$wgServer$wgScriptPath/skins/icons/white/question_mark_16x32.png' alt='FAQ' style='height: 16px;' />&nbsp;&nbsp;<span class='en'>FAQ</span><span class='fr'>FAQ</span></a>";
             if(count($config->getValue("socialLinks")) > 0){
-	            echo "<a id='share' style='cursor:pointer;' name='share_16x16' class='menuTooltipHTML'><img src='$wgServer$wgScriptPath/skins/icons/white/share_16x16.png' />&nbsp;▼</a>";
+	            echo "<a id='share' style='cursor:pointer;' name='share_32x32' class='menuTooltipHTML'><img src='$wgServer$wgScriptPath/skins/icons/white/share_32x32.png' style='height: 16px;' />&nbsp;▼</a>";
 	        }
 	        if($wgUser->isLoggedIn()){
 		        $p = Person::newFromId($wgUser->getId());
 		        
 		        $notificationAnimation = "";
+		        $notificationText = "";
 		        if(count($notifications) > 0){
 		            $notificationAnimation = "animation: shake 2s; animation-iteration-count: infinite;";
 		            $notificationText = " (".count($notifications).")";
 		        }
-		        echo "<a id='status_notifications' name='mail_16x12' class='menuTooltip' title='Notifications$notificationText' href='$wgServer$wgScriptPath/index.php?action=viewNotifications'><img src='$wgServer$wgScriptPath/skins/icons/white/mail_16x12.png' style='$notificationAnimation' /></a>";
+		        echo "<a id='status_notifications' name='mail_32x24' class='menuTooltip' title='Notifications$notificationText' href='$wgServer$wgScriptPath/index.php?action=viewNotifications'><img src='$wgServer$wgScriptPath/skins/icons/white/mail_32x24.png' alt='Notifications' style='$notificationAnimation;height:12px;' /></a>";
 		        echo "<a id='status_profile' class='menuTooltip' title='Profile' href='{$p->getUrl()}'>{$p->getNameForForms()}</a>";
-		        echo "<a id='status_profile_photo' class='menuTooltip' title='Profile' href='{$p->getUrl()}'><img class='photo' src='{$p->getPhoto()}' /></a>";
+		        echo "<a id='status_profile_photo' class='menuTooltip' title='Profile' href='{$p->getUrl()}'><img class='photo' src='{$p->getPhoto()}' alt='Profile' /></a>";
 		        if(!$wgImpersonating && !$wgDelegating){
-		            $logout = $this->data['personal_urls']['logout'];
-	                $getStr = "";
-                    foreach($_GET as $key => $get){
-                        if($key == "title" || $key == "returnto"){
-                            continue;
-                        }
-                        if(strlen($getStr) == 0){
-                            $getStr .= "?$key=$get";
-                        }
-                        else{
-                            $getStr .= "&$key=$get";
-                        }
-                    }
-	                $logout['href'] .= urlencode($getStr);
-	                echo "<a id='status_logout' name='arrow_right_16x16' class='menuTooltip' style='cursor: pointer;' title='Logout' href='{$logout['href']}'><img src='$wgServer$wgScriptPath/skins/icons/white/arrow_right_16x16.png' /></a>";
+		            $logoutUrl = "{$wgServer}{$wgScriptPath}/index.php?action=logout";
+		            if(isExtensionEnabled("OpenIDConnect")){
+		                $logoutUrl = "{$config->getValue('oidcUrl')}/oidc/logout?post_logout_redirect_uri=".urlencode($logoutUrl)."&client_id={$config->getValue('oidcClientId')}";
+		            }
+	                echo "<a id='status_logout' name='arrow_right_32x32' class='menuTooltip' style='cursor: pointer;' title='Logout' href='{$logoutUrl}'><img src='$wgServer$wgScriptPath/skins/icons/white/arrow_right_32x32.png' alt='Logout' style='height: 16px;' /></a>";
 	            }
 	        }
 	        echo "</div>";
@@ -891,11 +937,11 @@ class CavendishTemplate extends QuickTemplate {
                 $docs = "<a title='docs' target='_blank' href='https://grand.cs.ualberta.ca/~dwt/glyconet_test/docs/_build/html/'>Docs</a>";
                 
                 if(strstr($wgScriptPath, "staging") !== false){
-                    echo "<div style='position:absolute;top:15px;left:525px;'>
+                    echo "<div style='position:absolute;top:15px;left:620px;'>
                             STAGING ($branchFull, $revIdFull), $docs&nbsp;&nbsp;<a target='_blank' href='https://grand.cs.ualberta.ca/~dwt/behat_test/symfony/output/output.html'><img src='https://grand.cs.ualberta.ca/~dwt/behat_test/testSuiteStatus.php' /></a></div>";
                 }
                 else{
-                    echo "<div style='position:absolute;top:15px;left:525px;'>
+                    echo "<div style='position:absolute;top:15px;left:620px;'>
                             DEVELOPMENT ($branchFull, $revIdFull), $docs&nbsp;&nbsp;<a target='_blank' href='https://grand.cs.ualberta.ca/~dwt/behat_test/symfony/output/output.html'><img src='https://grand.cs.ualberta.ca/~dwt/behat_test/testSuiteStatus.php' /></a></div>";
                 }
             }
@@ -915,10 +961,10 @@ class CavendishTemplate extends QuickTemplate {
             $GLOBALS['tabs']['Other'] = TabUtils::createTab("", "");
             $GLOBALS['tabs']['Main'] = TabUtils::createTab($config->getValue("networkName"), "$wgServer$wgScriptPath/index.php/Main_Page");
             $GLOBALS['tabs']['Profile'] = TabUtils::createTab("My Profile");
-            $GLOBALS['tabs']['Manager'] = TabUtils::createTab("Manager");
+            $GLOBALS['tabs']['Manager'] = TabUtils::createTab("<span class='en'>Manager</span><span class='fr'>Gérant</span>");
             
-            wfRunHooks('TopLevelTabs', array(&$GLOBALS['tabs']));
-            wfRunHooks('SubLevelTabs', array(&$GLOBALS['tabs']));
+            Hooks::run('TopLevelTabs', array(&$GLOBALS['tabs']));
+            Hooks::run('SubLevelTabs', array(&$GLOBALS['tabs']));
         ?>
 	    <?php 
 		    global $wgUser, $wgScriptPath, $tabs;
@@ -969,8 +1015,10 @@ class CavendishTemplate extends QuickTemplate {
                 }
 		    }
         ?>
-	    <div id="header" style="<?php if(count($headerTabs) == 0){ echo 'display:none;'; } ?>">
-	        <a id="allTabs"><img src="<?php echo $wgServer.$wgScriptPath; ?>/skins/hamburger<?php if($config->getValue("sideInverted")){ echo "_inverted"; } ?>.png" /></a>
+	    <div id="header" style="<?php if(count($headerTabs) == 0 && $config->getValue('showSideBar')){ echo 'display:none;'; } ?>">
+	        <?php if(count($headerTabs) > 0){ ?>
+	            <a id="allTabs">&#9776;</a>
+	        <?php } ?>
 		    <a name="top" id="contentTop"></a>
 	        <ul class="top-nav">
 	            <?php echo implode("\n", $headerTabs); ?>
@@ -987,7 +1035,7 @@ class CavendishTemplate extends QuickTemplate {
 		       	        foreach($tab['subtabs'] as $subtab){
 		       	            $j++;
 		       	            $class = "subtab_{$i}_{$j}";
-		           	        if(count($subtab['dropdown']) > 0){
+		           	        if(!empty($subtab['dropdown'])){
 		           	            foreach($subtab['dropdown'] as $dropdown){
 		           	                if(count($dropdown['dropdown']) > 0){
 		           	                    echo "<li class='$class hidden {$dropdown['selected']}'><a style='cursor: default; background: white; color: {$config->getValue('highlightColor')} !important;'>".htmlspecialchars($dropdown['text'])."</a></li>";
@@ -1001,7 +1049,7 @@ class CavendishTemplate extends QuickTemplate {
 		           	            }
 		           	            $dropdownScript .= "createDropDown('$class', '{$subtab['text']}', 125);";
 		           	        }
-		           	        else if($subtab['href'] != ""){
+		           	        else if(isset($subtab['href']) && $subtab['href'] != ""){
 		           	            echo "<li class='$class {$subtab['selected']}'><a class='highlights-tab' href='".htmlspecialchars($subtab['href'])."'>".$subtab['text']."</a></li>";
 		           	        }
 		           	    }
@@ -1033,18 +1081,22 @@ class CavendishTemplate extends QuickTemplate {
 		    </ul>
 		    <?php
 		        echo "<div id='sideFooter' style='font-size: 0.80em; text-align:center; padding:5px; position:absolute; bottom:0;'>";
-		        if($config->getValue('networkSite') != ""){
-                    echo "&nbsp;&nbsp;<a target='_blank' href='{$config->getValue('networkSite')}'>{$config->getValue('networkName')} Website</a>&nbsp;&nbsp;";
-                }
-                if(!isExtensionEnabled("ContactUs")){
-                    echo "&nbsp;&nbsp;<a href='mailto:{$config->getValue('supportEmail')}'><span class='en'>Support</span><span class='fr'>Soutien</span></a>&nbsp;&nbsp;";
-                }
-                echo "    <p style='text-align:left;'><span class='en'>The following NCEs have contributed to the development of the Forum: <br />GRAND, AGE-WELL, GlycoNet, CFN</span><span class='fr'>Les RCE suivants ont contribué au développement du Forum : GRAND, AGE-WELL, GlycoNet, CFN</span></p>
-                      </div>";
+		        
+                echo "</div>";
             ?>
 		</div><!-- end of SIDE div -->
 		<div id="allTabsDropdown" style="display:none;"></div>
 	<div id="mBody">
+	    <div id="mobileMenu">
+	        <?php if(isExtensionEnabled("ContactUs")){ ?>
+	            <?php if($config->getValue('networkName') == "AVOID"){ ?>
+	                <button class="helpButton" type="button" style="width:132px; padding-left:0; padding-right: 0;"><en>Help</en><fr>Aide</fr></button>
+	            <?php } else { ?>
+	                <button class="contactUs" type="button" style="width:132px; padding-left:0; padding-right: 0;"><en>Contact Us</en><fr>Contactez-nous</fr></button>
+	            <?php } ?>
+	        <?php } ?>
+	        <button class="reportIssue" type="button" style="width:132px; padding-left:0; padding-right: 0;"><en>Report Issue</en><fr style='font-size:0.85em;line-height:1em;'>Signaler un problème</fr></button>
+	    </div>
 		<div id="bodyContent" class=' <?php if(isset($_COOKIE['sideToggled']) && $_COOKIE['sideToggled'] == 'in') echo "menu-in";?>'>
 			<?php if($this->data['sitenotice']) { ?><div id="siteNotice"><?php $this->html('sitenotice') ?></div><?php } ?>
 			<h1><?php $this->text('title') ?></h1>
@@ -1087,6 +1139,34 @@ class CavendishTemplate extends QuickTemplate {
 	    </div><!-- end of the FOOTER div -->
 		</div><!-- end of MAINCONTENT div -->	
 	</div><!-- end of MBODY div -->
+	<script type="text/javascript">
+	    var fontSize = $.cookie('fontSize');
+        $(".fontSize").click(function(){
+            $(".fontSize").removeClass("selected");
+            $(this).addClass("selected");
+            if($(this).hasClass("fontSizeSmall")){
+                fontSize = "13px";
+            }
+            else if($(this).hasClass("fontSizeMedium")){
+                fontSize = "14px";
+            }
+            else if($(this).hasClass("fontSizeLarge")){
+                fontSize = "16px";
+            }
+            $.cookie('fontSize', fontSize, {expires: 180});
+            $("#bodyContent").css("font-size", fontSize);
+            $(".top-nav .top-nav-element").css("font-size", fontSize);
+        });
+        if(fontSize == "13px"){
+            $(".fontSizeSmall").click();
+        }
+        else if(fontSize == "14px" || fontSize == undefined){
+            $(".fontSizeMedium").click();
+        }
+        else if(fontSize == "16px"){
+            $(".fontSizeLarge").click();
+        }
+	</script>
 </div><!-- end of the CONTAINER div -->
 <?php echo wfReportTimeOld(); ?>
 
@@ -1113,7 +1193,7 @@ class CavendishTemplate extends QuickTemplate {
         <a class="administration highlights-background-hover" href="<?php echo "$wgServer$wgScriptPath/index.php/"; ?>EDI">Equity, Diversity & Inclusion</a>
 <?php } ?>
 <?php
-	global $wgServer, $wgScriptPath, $wgUser, $wgRequest, $wgAuth, $wgTitle, $config;
+	global $wgServer, $wgScriptPath, $wgUser, $wgRequest, $wgAuth, $wgTitle, $config, $wgMessage, $wgImpersonating, $wgDelegating;
 	    $GLOBALS['toolbox'] = array();
         
         $GLOBALS['toolbox']['People'] = TabUtils::createToolboxHeader("People");
@@ -1122,12 +1202,18 @@ class CavendishTemplate extends QuickTemplate {
         $GLOBALS['toolbox']['Other'] = TabUtils::createToolboxHeader("Other");
         
 		if($wgUser->isLoggedIn()){
-		    if(isset($_GET['returnto'])){
+		    $me = Person::newFromWgUser();
+		    if(!$me->isAuthenticated() && !($wgImpersonating || $wgDelegating) && !isExtensionEnabled("GoogleLogin") && !isExtensionEnabled("OpenIDConnect")){
+		        $wgUser->logout();
+		        $wgMessage->addError("You have not yet verified this account by email");
+		        redirect("$wgServer$wgScriptPath");
+		    }
+		    if(count($_POST) > 0 && isset($_GET['returnto'])){
 		        redirect("$wgServer$wgScriptPath/index.php/{$_GET['returnto']}");
 		    }
-		    $me = Person::newFromWgUser();
-		    wfRunHooks('ToolboxHeaders', array(&$GLOBALS['toolbox']));
-	        wfRunHooks('ToolboxLinks', array(&$GLOBALS['toolbox']));
+		    
+            Hooks::run('ToolboxHeaders', array(&$GLOBALS['toolbox']));
+            Hooks::run('ToolboxLinks', array(&$GLOBALS['toolbox']));
 	        if($config->getValue("showUploadFile") && !$me->isCandidate()){
 	            $GLOBALS['toolbox']['Other']['links'][1000] = TabUtils::createToolboxLink("Upload File", "$wgServer$wgScriptPath/index.php/Special:Upload");
 	        }
@@ -1139,6 +1225,9 @@ class CavendishTemplate extends QuickTemplate {
 	            $GLOBALS['toolbox']['Other']['links'][] = TabUtils::createToolboxLink("E-Resource Library", "$wgServer$wgScriptPath/index.php/E-Resource_Library");
 	            $GLOBALS['toolbox']['Other']['links'][] = TabUtils::createToolboxLink("Ecosystem Map", "$wgServer$wgScriptPath/index.php/Ecosystem_Map");
 	            $GLOBALS['toolbox']['Other']['links'][] = TabUtils::createToolboxLink("Forum Help and FAQs", "$wgServer$wgScriptPath/index.php/FAQ");
+	        }
+	        if($wgUser->isLoggedIn() && $config->getValue('networkName') == "BD"){
+	            $GLOBALS['toolbox']['Other']['links'][] = TabUtils::createToolboxLink("Resources", "$wgServer$wgScriptPath/index.php/Resources");
 	        }
 	        if($config->getValue("showOtherTools") && !$me->isCandidate()){
 	            $GLOBALS['toolbox']['Other']['links'][9999] = TabUtils::createToolboxLink("Other Tools", "$wgServer$wgScriptPath/index.php/Special:SpecialPages");
@@ -1161,238 +1250,61 @@ class CavendishTemplate extends QuickTemplate {
 	                echo "<a class='administration highlights-background-hover' style='padding: 5px 8px 5px 10px;' href='$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:Projects'>Projects</a>";
 	            }
 	        }
+	        if(!$config->getValue('showSideBar')){
+	            echo "<style>
+	                #side {
+	                    display: none;
+	                }
+	                
+	                #bodyContent {
+	                    left: 0;
+	                }
+	                
+	                #outerHeader {
+	                    left: 0;
+	                }
+	                
+	                #sideToggle{
+	                    display: none;
+	                }
+	                
+	                #header ul {
+	                    left: 15px;
+	                }
+	                
+	                #submenu > ul {
+	                    margin-left: 15px;
+	                }
+	            </style>";
+	        }
 		}
 		else {
 		    global $wgSiteName, $wgOut, $wgLang;
 		    setcookie('sideToggled', 'out', time()-3600);
-		    $loginFailed = (isset($_POST['wpLoginattempt']) || isset($_POST['wpMailmypassword']));
-		    if($loginFailed){
-		        if(isset($_POST['wpName'])){
-		            $_POST['wpUsername'] = $_POST['wpName'];
-		        }
-		        else{
-		            $_POST['wpName'] = $_POST['wpUsername'];
-		        }
-		        $_POST['wpName'] = sanitizeInput($_POST['wpName']);
-		        $_POST['wpUsername'] = $_POST['wpName'];
-		        $_POST['wpPassword'] = sanitizeInput($_POST['wpPassword']);
-		        $person = Person::newFromName($_POST['wpName']);
-		        $user = User::newFromName($_POST['wpName']);
-		        if($user == null || $user->getId() == 0 || $user->getName() != $_POST['wpName']){
-		            $failMessage = "<p class='inlineError'>
-		                                <span class='en'>There is no user by the name of <b>{$_POST['wpName']}</b>.  If you are an HQP and do not have an account, please ask your supervisor to create one for you.</span>
-		                                <span class='fr'>Il n’y a pas d’utilisateurs avec le nom <b>{$_POST['wpName']}</b>. Si vous êtes un-e PHQ et que vous n’avez pas de compte, veuillez demander à votre superviseur de vous en créer.</span><br />";
-		            if(isset($_POST['wpMailmypassword'])){
-		                $failMessage .= "<b>Password request failed</b>";
-		            }
-		            $failMessage .= "</p>";
-		        }
-		        else if(isset($_POST['wpMailmypassword'])){
-		            $user = User::newFromName($_POST['wpUsername']);
-		            $user->load();
-		            $failMessage = "<p class='inlineSuccess'><span class='en'>A new password has been sent to the e-mail address registered for &quot;{$_POST['wpName']}&quot;.  Please wait a few minutes for the email to appear.  If you do not recieve an email, then contact <a class='highlights-text-hover' style='padding: 0;background:none;display:inline;border-width: 0;' href='mailto:{$config->getValue('supportEmail')}'>Forum Support</a>.<br /><br /><b>NOTE:</b> Only one password reset can be requested every 10 minutes.</span><span class='fr'>Un nouveau mot de passe a été envoyé au courriel enregistré sous « {$_POST['wpName']} ». Veuillez attendre quelques minutes pour que le courriel apparaisse. Si vous ne recevez pas de courriel, veuillez contacter le <a class='highlights-text-hover' style='padding: 0;background:none;display:inline;border-width: 0;' href='mailto:{$config->getValue('supportEmail')}'>Service d’assistance du forum</a>.<br /><br /><b>N.B. :</b> Une seule demande de réinitialisation du mot de passe peut être faite toutes les 10 minutes.</span></p>";
-		        }
-		        else{
-		            $failMessage = "<p class='inlineError'>
-		                                <span class='en'>Incorrect password entered. Please try again.</span>
-		                                <span class='fr'>Vous avez mis le mauvais mot de passe.</span>
-		                            </p>";
-		        }
-		        if($user != null && $user->checkTemporaryPassword($_POST['wpPassword'])){
-		            LoginForm::clearLoginThrottle($_POST['wpName']);
-		            $failMessage = "";
-		            return;
-		        }
-		        if(isset($_POST['wpMailmypassword'])){
-		            echo "<script type='text/javascript'>
-		                parent.showResetMessage(\"$failMessage\");
-		            </script>";
-		            exit;
-		        }
-		        $wgOut->clearHTML();
-		        if($wgLang->getCode() == "en"){
-		            $wgOut->setPageTitle("Login");
-		        }
-		        else if($wgLang->getCode() == "fr"){
-		            $wgOut->setPageTitle("Connexion");
-		        }
-		        $wgOut->addHTML("
-		        <div class='en'>
-                    <p>Typical problems with login:</p>
-                    <ol>
-                        <li>You have no account setup for you yet
-                            <ul>
-                                <li>Ask your supervisor or {$config->getValue('projectThemes')} coordinator to setup one for you</li>
-                            </ul>
-                        </li>
-                        <li>There is an account but you do not remember your ID
-                            <ul>
-                                <li>Look for the name through “search” textbox above (note that ".HQP." will typically not show up in the search)</li>
-                                <li>When you see your name in the drop-down list, click on it and go to your profile page</li>
-                                <li>The URL indicates the actual login ID (case sensitive, period between first and last name required, accents required)</li>
-                            </ul>
-                        </li>
-                        <li>You know your ID but not your password
-                            <ul>
-                                <li>Click on the “E-mail new password” link to receive a temporary one in your mailbox (look in your spam folder; if you do not receive one within 30 minutes contact your {$config->getValue('projectThemes')} coordinator to check whether your email address is setup correctly)</li>
-                            </ul>
-                        </li>
-                    </ol>
-                </div>
-                <div class='fr'>
-                    <p>Problèmes typiques de connexion:</p>
-                    <ol>
-                        <li>Votre compte n’a pas encore été configuré
-                            <ul>
-                                <li>Vous avez un compte, mais vous ne vous souvenez pas de votre identifiant</li>
-                            </ul>
-                        </li>
-                        <li>Vous avez un compte, mais vous ne vous souvenez pas de votre identifiant
-                            <ul>
-                                <li>Cherchez le nom dans la zone de texte « chercher » ci-dessus (notez que Candidat-e n'apparaîtra généralement pas dans la recherche)</li>
-                                <li>Quand vous voyez votre nom dans la liste déroulante, cliquez dessus et allez à votre page de profil</li>
-                                <li>L'URL indique l'identifiant de connexion (est sensible à la casse, il faut un point entre prénom et nom, les accents sont nécessaires)</li>
-                            </ul>
-                        </li>
-                        <li>Vous connaissez votre identifiant, mais pas votre mot de passe
-                            <ul>
-                                <li>Cliquez sur le lien « Envoyer nouveau mot de passe » pour recevoir un mot de passe temporaire dans votre messagerie (regardez dans votre dossier spam ; si vous ne le recevez pas dans les 30 minutes qui suivent, contactez le coordinateur thématique pour vérifier si votre adresse courriel a été bien configuré)</li>
-                            </ul>
-                        </li>
-                    </ol>
-                </div>");
-		        $message = "
-<p>
-<span class='en'>You must have cookies enabled to log in to {$config->getValue('siteName')}.</span>
-<span class='fr'>Vous devez activer les cookies pour vous connecter au Forum {$config->getValue('networkName')}.</span>
-<br />
-</p>
-<p>
-<span class='en'>Your login ID is a concatenation of your first and last names: <b>First.Last</b> (case sensitive)
-If you have forgotten your password please enter your login and ID and request a new random password to be sent to the email address associated with your Forum account.</span>
-<span class='fr'>Votre identifiant de connexion est une combinaison de votre prénom et nom : <b>Premier.Dernier</b> (sensible à la casse). Si vous avez oublié votre mot de passe veuillez entrer votre information de connexion et identifiant, puis demandez qu’un nouveau mot de passe aléatoire soit envoyé au courriel associé à votre compte Forum.</span>
-</p>";
+		    echo "<span class='highlights-text pBodyLogin en'>Login</span><span class='highlights-text pBodyLogin fr'>Connexion</span>";
+		    if(!isExtensionEnabled("OpenIDConnect")){
+		        $userLogin = new SpecialSideUserLogin();
+		        $userLogin->render();
 		    }
-		    if($_SESSION == null || 
-		       $wgRequest->getSessionData('wsLoginToken') == "" ||
-		       $wgRequest->getSessionData('wsLoginToken') == null){
-		        wfSetupSession();
-		        LoginForm::setLoginToken();
+		    if(isExtensionEnabled("GoogleLogin")){
+		        echo "
+                <script type='text/javascript'>
+                    $('.pBodyLogin').parent().hide();
+                    $('.pBodyLogin').parent().css('width', '100%');
+                    $('#side').append(\"<div style='text-align: center; margin-bottom:15px;'><a id='googleLogin' class='button' style='width: 130px;padding-left:0;padding-right:0;' href='{$wgServer}{$wgScriptPath}/index.php/Special:UserLogin'>Google Login</a></div>\");
+                </script>
+                ";
 		    }
-		    $getStr = "";
-	        foreach($_GET as $key => $get){
-	            if($key == "title" || 
-	               $key == "returnto" || 
-	               $key == "returntoquery" ||
-	               ($key == "action" && $get == "submitlogin") ||
-	               ($key == "type" && $get == "login")){
-	                continue;
-	            }
-	            if(strlen($getStr) == 0){
-	                $getStr .= "?$key=$get";
-	            }
-	            else{
-	                $getStr .= "&$key=$get";
-	            }
-	        }
-	        $returnTo = "";
-	        if(isset($_GET['returnto'])){
-	            $returnTo = $_GET['returnto'];
-	            if(isset($_GET['returntoquery'])){
-	                $returnTo .= "?".$_GET['returntoquery'];
-	            }
-	        }
-	        else if (isset($_GET['title'])){
-	            $returnTo .= str_replace(" ", "_", $_GET['title']);
-	        }
-	        else {
-	            $url = str_replace("$wgScriptPath/", "", 
-	                   str_replace("index.php/", "", $wgRequest->getRequestURL()));
-	            $returnTo .= str_replace(" ", "_", $url);
-	        }
-	        $returnTo .= $getStr;
-	        $returnTo = urlencode($returnTo);
-	        if(isset($_POST['returnto'])){
-	            $returnTo = $_POST['returnto'];
-	        }
-	        
-		    $wgUser->setCookies();
-		    
-		    if(isset($_POST['wpPassword']) &&
-		       isset($_POST['wpNewPassword']) &&
-		       isset($_POST['wpRetype']) &&
-		       isset($_POST['wpName']) &&
-		       $_POST['wpNewPassword'] == $_POST['wpRetype']){
-		        $user = User::newFromName($_POST['wpName']);
-		        $user->load();
-		        if($user->checkPassword($_POST['wpNewPassword'])){
-		            redirect("$wgServer$wgScriptPath/index.php/$returnTo");
-		        }
+		    if(isExtensionEnabled("OpenIDConnect")){
+		        echo "
+                <script type='text/javascript'>
+                    $('.pBodyLogin').parent().hide();
+                    $('.pBodyLogin').parent().css('width', '100%');
+                    $('#side').append(\"<div style='text-align: center; margin-bottom:15px;'><a id='googleLogin' class='button' style='width: 130px;padding-left:0;padding-right:0;' href='{$wgServer}{$wgScriptPath}/index.php/Special:UserLogin'>Login</a></div>\");
+                </script>
+                ";
 		    }
-		    $emailPassword = "
-		        <form target='resetFrame' method='post' action='$wgServer$wgScriptPath/index.php/Special:PasswordReset' style='position:relative;left:10px;'>
-		            <div style='width:180px;'>
-                        <input id='wpUsername1' type='hidden' name='wpUsername' value='' />
-                        <input type='hidden' name='wpEmail' value='' />
-                        <input class='dark' type='submit' name='wpMailmypassword' id='wpMailmypassword' tabindex='6' value='E-mail new password' />
-                    </div>
-		        </form>
-		        <iframe name='resetFrame' id='resetFrame' src='' style='width:0;height:0;border:0;' frameborder='0' width='0' height='0'></iframe>
-		        <script type='text/javascript'>
-		            function showResetMessage(message){
-		                $('#failMessage').parent().show();
-		                $('#failMessage').hide();
-		                $('#failMessage').html(message);
-		                $('#failMessage').slideDown();
-		            }
-		            $('#wpUsername1').attr('value', $('#wpName1').val());
-		            $('#wpName1').change(function(){
-		                $('#wpUsername1').attr('value', $('#wpName1').val());
-		            }).keyup(function(){
-		                $('#wpUsername1').attr('value', $('#wpName1').val());
-		            });
-		        </script>";
-		    if($failMessage != ""){
-		        $message .= "<script type='text/javascript'>
-		            $('#failMessage').parent().show();
-	                $('#failMessage').hide();
-	                $('#failMessage').slideDown();
-		        </script>";
-		    }
-		    $token = LoginForm::getLoginToken();
-		    $name = $wgRequest->getText('wpName');
-		    $name = sanitizeInput($name);
-		    echo "<span class='highlights-text pBodyLogin en'>Login</span><span class='highlights-text pBodyLogin fr'>Connexion</span>
-			<ul class='pBody pBodyLogin'>";
-		    echo <<< EOF
-<form style='position:relative;left:10px;' name="userlogin" method="post" action="$wgServer$wgScriptPath/index.php?title=Special:UserLogin&amp;action=submitlogin&amp;type=login&amp;returnto={$returnTo}">
-    <div style="width:180px;">
-        <div style="display:none;">
-            <div style='display:inline-block;width:100%;font-size:12px;margin-bottom:10px;' id='failMessage'>$failMessage</div>
-        </div>
-        $message
-        <input type='text' class='loginText dark' class='tooltip' title="Your username is in the form of 'First.Last' (case-sensitive)"
-               style='width:100%; box-sizing: border-box; margin:0; margin-bottom:10px;' name="wpName" value="$name" id="wpName1" placeholder='Username (First.Last)' tabindex="1" size='20' /><br />
-        <input type='password' class='loginPassword dark' 
-               style='width:100%; box-sizing: border-box; margin:0; margin-bottom:10px;' name="wpPassword" id="wpPassword1" placeholder='Password' tabindex="2" size='20' /><br />
-        <input type='checkbox' name="wpRemember"
-               tabindex="4" value="1" id="wpRemember" /> <label class='en' for="wpRemember">Remember my login on this computer</label><label class='fr' for="wpRemember">Se souvenir de mes informations de connexion sur cet ordinateur</label><br />
-        <input type='submit' class='dark' name="wpLoginattempt" id="wpLoginattempt" tabindex="5" style="margin-bottom:10px;" value="Log in" />
-        <input type="hidden" name="wpLoginToken" value="$token" />
-    </div>
-</form>
-$emailPassword
-<script type='text/javascript'>
-    if(wgLang == 'fr'){
-        $('#wpName1').attr('placeholder', 'Mot d’utilisateur');
-        $('#wpPassword1').attr('placeholder', 'Mot de passe');
-        $('#wpLoginattempt').attr('value', 'Connexion');
-        $('#wpMailmypassword').attr('value', 'Envoyer nouveau mot de passe').css('font-size', '0.75em');
-    }
-</script>
-</li></ul>
-EOF;
-            if(isExtensionEnabled("Shibboleth")){
+		    if(isExtensionEnabled("Shibboleth")){
                 echo "
                 <script type='text/javascript'>
                     $('.pBodyLogin').parent().hide();
@@ -1412,8 +1324,8 @@ EOF;
                 }
             }
         }
-		wfRunHooks( 'MonoBookTemplateToolboxEnd', array( &$this ) );
-		wfRunHooks( 'SkinTemplateToolboxEnd', array( &$this ) );
+        Hooks::run( 'MonoBookTemplateToolboxEnd', array( &$this ) );
+        Hooks::run( 'SkinTemplateToolboxEnd', array( &$this ) );
 ?>
 	</li>
 <?php

@@ -2,8 +2,8 @@
 
 class CompletionTab extends AbstractTab {
 
-    function CompletionTab(){
-        parent::AbstractTab("2024");
+    function __construct(){
+        parent::__construct("2024");
     }
 
     function generateBody(){

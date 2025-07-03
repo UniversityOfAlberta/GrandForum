@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Three Months Form" reportType="RP_AVOID_THREEMO" pdfType="RPTP_AVOID" pdfFiles="THREEMOFORMPDF" ajax="true" disabled="false" extends="IntakeSurveyAustralia">
+
+    <ReportSection id="eula" delete="true" />
+    <ReportSection id="socio_info" delete="true" />
+    <ReportSection id="healthquestions" delete="true" />
+    <ReportSection id="healthquestions2" delete="true" />
+    <ReportSection id="healthquestions3" delete="true" />
+    <ReportSection id="healthquestions4" delete="true" />
+    <ReportSection id="healthquestions5" delete="true" />
+    <ReportSection id="healthquestions6" delete="true" />
+    <ReportSection id="healthquestions7" delete="true" />
+    <ReportSection id="clinicalfrailty" delete="true" />
+    <ReportSection id="OnSiteEvaluation" delete="true" />
+    <ReportSection id="FitBit" delete="true" />
+    <ReportSection id="behaviouralassess" title="{showLanguage(Three Month Follow Up: Behavioural Self-Assessment,
+                                                               Suivi de trois mois: Auto-évaluer vos habitudes)}">
+        <Static>
+            <![CDATA[
+                <script type="text/javascript">
+                    function checkVaccination(){
+                        var shinglesVaccination = '{getText(RP_AVOID,behaviouralassess,vaccinate3_avoid,0,{$user_id},0)}';
+                        var pneumoniaVaccination = '{getText(RP_AVOID,behaviouralassess,vaccinate4_avoid,0,{$user_id},0)}';
+                        if(shinglesVaccination == 'Yes'){
+                            $('input[type="radio"][name="SelfAssessment_vaccinate3_avoid"]').val("Yes");
+                            $('input[type="hidden"][name="SelfAssessment_vaccinate3_avoid"]').val("Yes");
+                            $('span#vaccinate3_avoid').hide();
+                            $('span#vaccinate3specify').hide();
+
+                        }
+                        if(pneumoniaVaccination == 'Yes'){
+                            $('input[type="radio"][name="SelfAssessment_vaccinate4_avoid"]').val("Yes");
+                            $('input[type="hidden"][name="SelfAssessment_vaccinate4_avoid"]').val("Yes");
+                            $('span#vaccinate4_avoid').hide();
+                            $('span#vaccinate4specify').hide();
+                        }
+                        saveAll();
+                    }
+                    $(document).ready(function(){
+                        checkVaccination();
+                    });
+                </script>
+            ]]>
+        </Static>
+    </ReportSection>
+</Report>

@@ -5,8 +5,8 @@ class ProjectDashboardTab extends AbstractEditableTab {
     var $project;
     var $visibility;
 
-    function ProjectDashboardTab($project, $visibility){
-        parent::AbstractTab("Dashboard");
+    function __construct($project, $visibility){
+        parent::__construct("Dashboard");
         $this->project = $project;
         $this->visibility = $visibility;
         if(isset($_GET['showDashboard'])){
@@ -94,7 +94,9 @@ class ProjectDashboardTab extends AbstractEditableTab {
         if($me->isRoleAtLeast(HQP) && ($me->isMemberOf($this->project) || !$me->isSubRole("UofC"))){
             $this->showUpToDate($this->project, $this->visibility);
             if(!$this->project->isSubProject()){
-                $this->showTopProducts($this->project, $this->visibility);
+                if($config->getValue('nProjectTopProducts') > 0){
+                    $this->showTopProducts($this->project, $this->visibility);
+                }
                 if($config->getValue('projectTechEnabled')){
                     $this->showTechnologyEvaluationAdoption($this->project, $this->visibility);
                     $this->showPolicy($this->project, $this->visibility);
@@ -116,7 +118,9 @@ class ProjectDashboardTab extends AbstractEditableTab {
         global $config;
         $this->showEditUpToDate($this->project, $this->visibility);
         if(!$this->project->isSubProject()){
-            $this->showEditTopProducts($this->project, $this->visibility);
+            if($config->getValue('nProjectTopProducts') > 0){
+                $this->showTopProducts($this->project, $this->visibility);
+            }
             if($config->getValue('projectTechEnabled')){
                 $this->showEditTechnologyEvaluationAdoption($this->project, $this->visibility);
                 $this->showEditPolicy($this->project, $this->visibility);
@@ -227,6 +231,7 @@ class ProjectDashboardTab extends AbstractEditableTab {
     }
     
     function showEditTechnologyEvaluationAdoption($project, $visibility){
+        global $config;
         if(!$visibility['isLead']){
             return;
         }
@@ -287,7 +292,7 @@ class ProjectDashboardTab extends AbstractEditableTab {
                             <b>Please provide a brief description of your technology:</b>
                             <textarea style='height:100px;' name='response4'>{$technology['response4']}</textarea>
                             <br />
-                            <p><small>Note: If your research group has developed more than one technology that have been assessed and/or adopted by a third party organization, please contact the FES office at <a href='mailto:fes@ualberta.ca'>fes@ualberta.ca</a></small></p>
+                            <p><small>Note: If your research group has developed more than one technology that have been assessed and/or adopted by a third party organization, please contact the {$config->getValue('networkName')} office at <a href='mailto:{$config->getValue('otherEmail')}'>{$config->getValue('otherEmail')}</a></small></p>
                             <p><small>Innovation Canada info: <a target='_blank' href='https://www.ic.gc.ca/eic/site/080.nsf/eng/00002.html'>https://www.ic.gc.ca/eic/site/080.nsf/eng/00002.html</a></small></p>
                         </div>
                         <script type='text/javascript'>
@@ -363,7 +368,7 @@ class ProjectDashboardTab extends AbstractEditableTab {
     
     function showUpToDate($project, $visibility){
         global $config;
-        if($config->getValue('networkName') == "FES"){
+        if($config->getValue('networkType') == "CFREF"){
             $year = date('Y', time() - (3 * 30 * 24 * 60 * 60));
             $upToDate = $project->getUpToDate($year);
             if($upToDate){
@@ -374,7 +379,7 @@ class ProjectDashboardTab extends AbstractEditableTab {
     
     function showEditUpToDate($project, $visibility){
         global $config;
-        if($config->getValue('networkName') == "FES"){
+        if($config->getValue('networkType') == "CFREF"){
             $year = date('Y', time() - (3 * 30 * 24 * 60 * 60));
             $upToDate = $project->getUpToDate($year);
             $field = new SingleCheckBox("upToDate", "Up To Date", $upToDate, array("&nbsp;<b>The information in this section is current as per the end of Fiscal Year (".($year-1)."-".($year).")</b>" => 1));

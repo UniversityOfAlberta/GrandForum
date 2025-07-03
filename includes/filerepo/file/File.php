@@ -5,6 +5,9 @@
  *
  * Represents files in a repository.
  */
+use MediaWiki\HookContainer\ProtectedHookAccessorTrait;
+use MediaWiki\MediaWikiServices;
+use Wikimedia\AtEase\AtEase;
 
 /**
  * Base code for files.
@@ -28,6 +31,7 @@
  * @ingroup FileAbstraction
  */
 
+// @phan-file-suppress PhanTypeMissingReturn false positives
 /**
  * Implements some public methods and some protected utility functions which
  * are required by multiple child classes. Contains stub functionality for
@@ -42,35 +46,46 @@
  *
  * RepoGroup::singleton()->getLocalRepo()->newFile( $title );
  *
- * The convenience functions wfLocalFile() and wfFindFile() should be sufficient
- * in most cases.
+ * Consider the services container below;
  *
+ * $services = MediaWikiServices::getInstance();
+ *
+ * The convenience services $services->getRepoGroup()->getLocalRepo()->newFile()
+ * and $services->getRepoGroup()->findFile() should be sufficient in most cases.
+ *
+ * @TODO: DI - Instead of using MediaWikiServices::getInstance(), a service should
+ * ideally accept a RepoGroup in its constructor and then, use $this->repoGroup->findFile()
+ * and $this->repoGroup->getLocalRepo()->newFile().
+ *
+ * @stable to extend
  * @ingroup FileAbstraction
  */
-abstract class File {
+abstract class File implements IDBAccessObject {
+	use ProtectedHookAccessorTrait;
+
 	// Bitfield values akin to the Revision deletion constants
-	const DELETED_FILE = 1;
-	const DELETED_COMMENT = 2;
-	const DELETED_USER = 4;
-	const DELETED_RESTRICTED = 8;
+	public const DELETED_FILE = 1;
+	public const DELETED_COMMENT = 2;
+	public const DELETED_USER = 4;
+	public const DELETED_RESTRICTED = 8;
 
 	/** Force rendering in the current process */
-	const RENDER_NOW = 1;
+	public const RENDER_NOW = 1;
 	/**
 	 * Force rendering even if thumbnail already exist and using RENDER_NOW
 	 * I.e. you have to pass both flags: File::RENDER_NOW | File::RENDER_FORCE
 	 */
-	const RENDER_FORCE = 2;
+	public const RENDER_FORCE = 2;
 
-	const DELETE_SOURCE = 1;
+	public const DELETE_SOURCE = 1;
 
 	// Audience options for File::getDescription()
-	const FOR_PUBLIC = 1;
-	const FOR_THIS_USER = 2;
-	const RAW = 3;
+	public const FOR_PUBLIC = 1;
+	public const FOR_THIS_USER = 2;
+	public const RAW = 3;
 
 	// Options for File::thumbName()
-	const THUMB_FULL_NAME = 1;
+	public const THUMB_FULL_NAME = 1;
 
 	/**
 	 * Some member variables can be lazy-initialised using __get(). The
@@ -127,7 +142,7 @@ abstract class File {
 	/** @var string Relative path including trailing slash */
 	protected $hashPath;
 
-	/** @var string number of pages of a multipage document, or false for
+	/** @var int|false Number of pages of a multipage document, or false for
 	 *    documents which aren't multipage documents
 	 */
 	protected $pageCount;
@@ -138,16 +153,19 @@ abstract class File {
 	/** @var Title */
 	protected $redirectTitle;
 
-	/** @var bool Wether the output of transform() for this file is likely to be valid. */
+	/** @var bool Whether the output of transform() for this file is likely to be valid. */
 	protected $canRender;
 
-	/** @var bool Wether this media file is in a format that is unlikely to
+	/** @var bool Whether this media file is in a format that is unlikely to
 	 *    contain viruses or malicious content
 	 */
 	protected $isSafeFile;
 
 	/** @var string Required Repository class type */
-	protected $repoClass = 'FileRepo';
+	protected $repoClass = FileRepo::class;
+
+	/** @var array Cache of tmp filepaths pointing to generated bucket thumbnails, keyed by width */
+	protected $tmpBucketedThumbCache = [];
 
 	/**
 	 * Call this constructor from child classes.
@@ -156,11 +174,13 @@ abstract class File {
 	 * may return false or throw exceptions if they are not set.
 	 * Most subclasses will want to call assertRepoDefined() here.
 	 *
+	 * @stable to call
 	 * @param Title|string|bool $title
 	 * @param FileRepo|bool $repo
 	 */
-	function __construct( $title, $repo ) {
-		if ( $title !== false ) { // subclasses may not use MW titles
+	public function __construct( $title, $repo ) {
+		// Some subclasses do not use $title, but set name/title some other way
+		if ( $title !== false ) {
 			$title = self::normalizeTitle( $title, 'exception' );
 		}
 		$this->title = $title;
@@ -176,7 +196,7 @@ abstract class File {
 	 * @throws MWException
 	 * @return Title|null
 	 */
-	static function normalizeTitle( $title, $exception = false ) {
+	public static function normalizeTitle( $title, $exception = false ) {
 		$ret = $title;
 		if ( $ret instanceof Title ) {
 			# Normalize NS_MEDIA -> NS_FILE
@@ -197,32 +217,33 @@ abstract class File {
 		return $ret;
 	}
 
-	function __get( $name ) {
-		$function = array( $this, 'get' . ucfirst( $name ) );
+	public function __get( $name ) {
+		$function = [ $this, 'get' . ucfirst( $name ) ];
 		if ( !is_callable( $function ) ) {
 			return null;
 		} else {
-			$this->$name = call_user_func( $function );
+			$this->$name = $function();
 
 			return $this->$name;
 		}
 	}
 
 	/**
-	 * Normalize a file extension to the common form, and ensure it's clean.
-	 * Extensions with non-alphanumeric characters will be discarded.
+	 * Normalize a file extension to the common form, making it lowercase and checking some synonyms,
+	 * and ensure it's clean. Extensions with non-alphanumeric characters will be discarded.
+	 * Keep in sync with mw.Title.normalizeExtension() in JS.
 	 *
-	 * @param string $ext (without the .)
-	 * @return string
+	 * @param string $extension File extension (without the leading dot)
+	 * @return string File extension in canonical form
 	 */
-	static function normalizeExtension( $ext ) {
-		$lower = strtolower( $ext );
-		$squish = array(
+	public static function normalizeExtension( $extension ) {
+		$lower = strtolower( $extension );
+		$squish = [
 			'htm' => 'html',
 			'jpeg' => 'jpg',
 			'mpeg' => 'mpg',
 			'tiff' => 'tif',
-			'ogv' => 'ogg' );
+			'ogv' => 'ogg' ];
 		if ( isset( $squish[$lower] ) ) {
 			return $squish[$lower];
 		} elseif ( preg_match( '/^[0-9a-z]+$/', $lower ) ) {
@@ -240,11 +261,11 @@ abstract class File {
 	 *
 	 * @return bool|null
 	 */
-	static function checkExtensionCompatibility( File $old, $new ) {
+	public static function checkExtensionCompatibility( File $old, $new ) {
 		$oldMime = $old->getMimeType();
 		$n = strrpos( $new, '.' );
 		$newExt = self::normalizeExtension( $n ? substr( $new, $n + 1 ) : '' );
-		$mimeMagic = MimeMagic::singleton();
+		$mimeMagic = MediaWiki\MediaWikiServices::getInstance()->getMimeAnalyzer();
 
 		return $mimeMagic->isMatchingExtension( $newExt, $oldMime );
 	}
@@ -253,8 +274,10 @@ abstract class File {
 	 * Upgrade the database row if there is one
 	 * Called by ImagePage
 	 * STUB
+	 *
+	 * @stable to override
 	 */
-	function upgradeRow() {
+	public function upgradeRow() {
 	}
 
 	/**
@@ -262,13 +285,13 @@ abstract class File {
 	 * a two-part name, set the minor type to 'unknown'.
 	 *
 	 * @param string $mime "text/html" etc
-	 * @return array ("text", "html") etc
+	 * @return string[] ("text", "html") etc
 	 */
 	public static function splitMime( $mime ) {
 		if ( strpos( $mime, '/' ) !== false ) {
 			return explode( '/', $mime, 2 );
 		} else {
-			return array( $mime, 'unknown' );
+			return [ $mime, 'unknown' ];
 		}
 	}
 
@@ -286,10 +309,11 @@ abstract class File {
 	/**
 	 * Return the name of this file
 	 *
+	 * @stable to override
 	 * @return string
 	 */
 	public function getName() {
-		if ( !isset( $this->name ) ) {
+		if ( $this->name === null ) {
 			$this->assertRepoDefined();
 			$this->name = $this->repo->getNameFromTitle( $this->title );
 		}
@@ -300,9 +324,10 @@ abstract class File {
 	/**
 	 * Get the file extension, e.g. "svg"
 	 *
+	 * @stable to override
 	 * @return string
 	 */
-	function getExtension() {
+	public function getExtension() {
 		if ( !isset( $this->extension ) ) {
 			$n = strrpos( $this->getName(), '.' );
 			$this->extension = self::normalizeExtension(
@@ -336,6 +361,7 @@ abstract class File {
 
 	/**
 	 * Return the URL of the file
+	 * @stable to override
 	 *
 	 * @return string
 	 */
@@ -350,9 +376,21 @@ abstract class File {
 	}
 
 	/**
+	 * Get short description URL for a files based on the page ID
+	 * @stable to override
+	 *
+	 * @return string|null
+	 * @since 1.27
+	 */
+	public function getDescriptionShortUrl() {
+		return null;
+	}
+
+	/**
 	 * Return a fully-qualified URL to the file.
 	 * Upload URL paths _may or may not_ be fully qualified, so
 	 * we check. Local paths are assumed to belong on $wgServer.
+	 * @stable to override
 	 *
 	 * @return string
 	 */
@@ -361,6 +399,7 @@ abstract class File {
 	}
 
 	/**
+	 * @stable to override
 	 * @return string
 	 */
 	public function getCanonicalUrl() {
@@ -370,18 +409,18 @@ abstract class File {
 	/**
 	 * @return string
 	 */
-	function getViewURL() {
+	public function getViewURL() {
 		if ( $this->mustRender() ) {
 			if ( $this->canRender() ) {
 				return $this->createThumb( $this->getWidth() );
 			} else {
 				wfDebug( __METHOD__ . ': supposed to render ' . $this->getName() .
-					' (' . $this->getMimeType() . "), but can't!\n" );
+					' (' . $this->getMimeType() . "), but can't!" );
 
-				return $this->getURL(); #hm... return NULL?
+				return $this->getUrl(); # hm... return NULL?
 			}
 		} else {
-			return $this->getURL();
+			return $this->getUrl();
 		}
 	}
 
@@ -396,6 +435,7 @@ abstract class File {
 	 * Most callers don't check the return value, but ForeignAPIFile::getPath
 	 * returns false.
 	 *
+	 * @stable to override
 	 * @return string|bool ForeignAPIFile::getPath can return false
 	 */
 	public function getPath() {
@@ -417,7 +457,13 @@ abstract class File {
 	public function getLocalRefPath() {
 		$this->assertRepoDefined();
 		if ( !isset( $this->fsFile ) ) {
+			$starttime = microtime( true );
 			$this->fsFile = $this->repo->getLocalReference( $this->getPath() );
+
+			$statTiming = microtime( true ) - $starttime;
+			MediaWikiServices::getInstance()->getStatsdDataFactory()->timing(
+				'media.thumbnail.generate.fetchoriginal', 1000 * $statTiming );
+
 			if ( !$this->fsFile ) {
 				$this->fsFile = false; // null => false; cache negative hits
 			}
@@ -435,6 +481,7 @@ abstract class File {
 	 * STUB
 	 * Overridden by LocalFile, UnregisteredLocalFile
 	 *
+	 * @stable to override
 	 * @param int $page
 	 * @return int|bool
 	 */
@@ -449,6 +496,7 @@ abstract class File {
 	 * STUB
 	 * Overridden by LocalFile, UnregisteredLocalFile
 	 *
+	 * @stable to override
 	 * @param int $page
 	 * @return bool|int False on failure
 	 */
@@ -457,9 +505,94 @@ abstract class File {
 	}
 
 	/**
+	 * Return the smallest bucket from $wgThumbnailBuckets which is at least
+	 * $wgThumbnailMinimumBucketDistance larger than $desiredWidth. The returned bucket, if any,
+	 * will always be bigger than $desiredWidth.
+	 *
+	 * @param int $desiredWidth
+	 * @param int $page
+	 * @return bool|int
+	 */
+	public function getThumbnailBucket( $desiredWidth, $page = 1 ) {
+		global $wgThumbnailBuckets, $wgThumbnailMinimumBucketDistance;
+
+		$imageWidth = $this->getWidth( $page );
+
+		if ( $imageWidth === false ) {
+			return false;
+		}
+
+		if ( $desiredWidth > $imageWidth ) {
+			return false;
+		}
+
+		if ( !$wgThumbnailBuckets ) {
+			return false;
+		}
+
+		$sortedBuckets = $wgThumbnailBuckets;
+
+		sort( $sortedBuckets );
+
+		foreach ( $sortedBuckets as $bucket ) {
+			if ( $bucket >= $imageWidth ) {
+				return false;
+			}
+
+			if ( $bucket - $wgThumbnailMinimumBucketDistance > $desiredWidth ) {
+				return $bucket;
+			}
+		}
+
+		// Image is bigger than any available bucket
+		return false;
+	}
+
+	/**
+	 * Get the width and height to display image at.
+	 *
+	 * @param int $maxWidth Max width to display at
+	 * @param int $maxHeight Max height to display at
+	 * @param int $page
+	 * @throws MWException
+	 * @return array Array (width, height)
+	 * @since 1.35
+	 */
+	public function getDisplayWidthHeight( $maxWidth, $maxHeight, $page = 1 ) {
+		if ( !$maxWidth || !$maxHeight ) {
+			// should never happen
+			throw new MWException( 'Using a choice from $wgImageLimits that is 0x0' );
+		}
+
+		$width = $this->getWidth( $page );
+		$height = $this->getHeight( $page );
+		if ( !$width || !$height ) {
+			return [ 0, 0 ];
+		}
+
+		// Calculate the thumbnail size.
+		if ( $width <= $maxWidth && $height <= $maxHeight ) {
+			// Vectorized image, do nothing.
+		} elseif ( $width / $height >= $maxWidth / $maxHeight ) {
+			# The limiting factor is the width, not the height.
+			$height = round( $height * $maxWidth / $width );
+			$width = $maxWidth;
+			// Note that $height <= $maxHeight now.
+		} else {
+			$newwidth = floor( $width * $maxHeight / $height );
+			$height = round( $height * $newwidth / $width );
+			$width = $newwidth;
+			// Note that $height <= $maxHeight now, but might not be identical
+			// because of rounding.
+		}
+		return [ $width, $height ];
+	}
+
+	/**
 	 * Returns ID or name of user who uploaded the file
 	 * STUB
 	 *
+	 * @stable to override
 	 * @param string $type 'text' or 'id'
 	 * @return string|int
 	 */
@@ -470,7 +603,8 @@ abstract class File {
 	/**
 	 * Get the duration of a media file in seconds
 	 *
-	 * @return int
+	 * @stable to override
+	 * @return float|int
 	 */
 	public function getLength() {
 		$handler = $this->getHandler();
@@ -503,7 +637,7 @@ abstract class File {
 	 * format does not support that sort of thing, returns
 	 * an empty array.
 	 *
-	 * @return Array
+	 * @return string[]
 	 * @since 1.23
 	 */
 	public function getAvailableLanguages() {
@@ -511,15 +645,34 @@ abstract class File {
 		if ( $handler ) {
 			return $handler->getAvailableLanguages( $this );
 		} else {
-			return array();
+			return [];
 		}
+	}
+
+	/**
+	 * Get the language code from the available languages for this file that matches the language
+	 * requested by the user
+	 *
+	 * @param string $userPreferredLanguage
+	 * @return string|null
+	 */
+	public function getMatchedLanguage( $userPreferredLanguage ) {
+		$handler = $this->getHandler();
+		if ( $handler ) {
+			return $handler->getMatchedLanguage(
+				$userPreferredLanguage,
+				$handler->getAvailableLanguages( $this )
+			);
+		}
+
+		return null;
 	}
 
 	/**
 	 * In files that support multiple language, what is the default language
 	 * to use if none specified.
 	 *
-	 * @return String lang code, or null if filetype doesn't support multiple languages.
+	 * @return string|null Lang code, or null if filetype doesn't support multiple languages.
 	 * @since 1.23
 	 */
 	public function getDefaultRenderLanguage() {
@@ -536,7 +689,7 @@ abstract class File {
 	 *
 	 * Currently used to add a warning to the image description page
 	 *
-	 * @return bool false if the main image is both animated
+	 * @return bool False if the main image is both animated
 	 *   and the thumbnail is not. In all other cases must return
 	 *   true. If image is not renderable whatsoever, should
 	 *   return true.
@@ -548,27 +701,23 @@ abstract class File {
 			// one would not expect it to be animated
 			// so true.
 			return true;
-		} else {
-			if ( $this->allowInlineDisplay()
-				&& $handler->isAnimatedImage( $this )
-				&& !$handler->canAnimateThumbnail( $this )
-			) {
-				// Image is animated, but thumbnail isn't.
-				// This is unexpected to the user.
-				return false;
-			} else {
-				// Image is not animated, so one would
-				// not expect thumb to be
-				return true;
-			}
 		}
+
+		return !$this->allowInlineDisplay()
+			// Image is not animated, so one would
+			// not expect thumb to be
+			|| !$handler->isAnimatedImage( $this )
+			// Image is animated, but thumbnail isn't.
+			// This is unexpected to the user.
+			|| $handler->canAnimateThumbnail( $this );
 	}
 
 	/**
 	 * Get handler-specific metadata
 	 * Overridden by LocalFile, UnregisteredLocalFile
 	 * STUB
-	 * @return bool|array
+	 * @stable to override
+	 * @return string|false
 	 */
 	public function getMetadata() {
 		return false;
@@ -615,6 +764,7 @@ abstract class File {
 	 * Return the bit depth of the file
 	 * Overridden by LocalFile
 	 * STUB
+	 * @stable to override
 	 * @return int
 	 */
 	public function getBitDepth() {
@@ -625,20 +775,22 @@ abstract class File {
 	 * Return the size of the image file, in bytes
 	 * Overridden by LocalFile, UnregisteredLocalFile
 	 * STUB
-	 * @return bool
+	 * @stable to override
+	 * @return int|false
 	 */
 	public function getSize() {
 		return false;
 	}
 
 	/**
-	 * Returns the mime type of the file.
+	 * Returns the MIME type of the file.
 	 * Overridden by LocalFile, UnregisteredLocalFile
 	 * STUB
 	 *
+	 * @stable to override
 	 * @return string
 	 */
-	function getMimeType() {
+	public function getMimeType() {
 		return 'unknown/unknown';
 	}
 
@@ -647,9 +799,10 @@ abstract class File {
 	 * Use the value returned by this function with the MEDIATYPE_xxx constants.
 	 * Overridden by LocalFile,
 	 * STUB
+	 * @stable to override
 	 * @return string
 	 */
-	function getMediaType() {
+	public function getMediaType() {
 		return MEDIATYPE_UNKNOWN;
 	}
 
@@ -665,9 +818,9 @@ abstract class File {
 	 *
 	 * @return bool
 	 */
-	function canRender() {
+	public function canRender() {
 		if ( !isset( $this->canRender ) ) {
-			$this->canRender = $this->getHandler() && $this->handler->canRender( $this );
+			$this->canRender = $this->getHandler() && $this->handler->canRender( $this ) && $this->exists();
 		}
 
 		return $this->canRender;
@@ -689,9 +842,10 @@ abstract class File {
 	 * supported by all browsers, i.e. JPEG; GIF and PNG. It will
 	 * also return true for any non-image formats.
 	 *
+	 * @stable to override
 	 * @return bool
 	 */
-	function mustRender() {
+	public function mustRender() {
 		return $this->getHandler() && $this->handler->mustRender( $this );
 	}
 
@@ -700,7 +854,7 @@ abstract class File {
 	 *
 	 * @return bool
 	 */
-	function allowInlineDisplay() {
+	public function allowInlineDisplay() {
 		return $this->canRender();
 	}
 
@@ -717,7 +871,7 @@ abstract class File {
 	 *
 	 * @return bool
 	 */
-	function isSafeFile() {
+	public function isSafeFile() {
 		if ( !isset( $this->isSafeFile ) ) {
 			$this->isSafeFile = $this->getIsSafeFileUncached();
 		}
@@ -751,17 +905,16 @@ abstract class File {
 
 		$type = $this->getMediaType();
 		$mime = $this->getMimeType();
-		#wfDebug( "LocalFile::isSafeFile: type= $type, mime= $mime\n" );
 
 		if ( !$type || $type === MEDIATYPE_UNKNOWN ) {
-			return false; #unknown type, not trusted
+			return false; # unknown type, not trusted
 		}
 		if ( in_array( $type, $wgTrustedMediaFormats ) ) {
 			return true;
 		}
 
 		if ( $mime === "unknown/unknown" ) {
-			return false; #unknown type, not trusted
+			return false; # unknown type, not trusted
 		}
 		if ( in_array( $mime, $wgTrustedMediaFormats ) ) {
 			return true;
@@ -783,10 +936,23 @@ abstract class File {
 	 *
 	 * @return bool
 	 */
-	function isTrustedFile() {
-		#this could be implemented to check a flag in the database,
-		#look for signatures, etc
+	protected function isTrustedFile() {
+		# this could be implemented to check a flag in the database,
+		# look for signatures, etc
 		return false;
+	}
+
+	/**
+	 * Load any lazy-loaded file object fields from source
+	 *
+	 * This is only useful when setting $flags
+	 *
+	 * Overridden by LocalFile to actually query the DB
+	 *
+	 * @stable to override
+	 * @param int $flags Bitfield of File::READ_* constants
+	 */
+	public function load( $flags = 0 ) {
 	}
 
 	/**
@@ -794,6 +960,7 @@ abstract class File {
 	 *
 	 * Overridden by LocalFile to avoid unnecessary stat calls.
 	 *
+	 * @stable to override
 	 * @return bool Whether file exists in the repository.
 	 */
 	public function exists() {
@@ -804,6 +971,7 @@ abstract class File {
 	 * Returns true if file exists in the repository and can be included in a page.
 	 * It would be unsafe to include private images, making public thumbnails inadvertently
 	 *
+	 * @stable to override
 	 * @return bool Whether file exists in the repository and is includable.
 	 */
 	public function isVisible() {
@@ -813,13 +981,13 @@ abstract class File {
 	/**
 	 * @return string
 	 */
-	function getTransformScript() {
+	private function getTransformScript() {
 		if ( !isset( $this->transformScript ) ) {
 			$this->transformScript = false;
 			if ( $this->repo ) {
 				$script = $this->repo->getThumbScriptUrl();
 				if ( $script ) {
-					$this->transformScript = wfAppendQuery( $script, array( 'f' => $this->getName() ) );
+					$this->transformScript = wfAppendQuery( $script, [ 'f' => $this->getName() ] );
 				}
 			}
 		}
@@ -832,16 +1000,18 @@ abstract class File {
 	 *
 	 * @param array $handlerParams
 	 *
-	 * @return string
+	 * @return ThumbnailImage|MediaTransformOutput|bool False on failure
 	 */
-	function getUnscaledThumb( $handlerParams = array() ) {
+	public function getUnscaledThumb( $handlerParams = [] ) {
 		$hp =& $handlerParams;
-		$page = isset( $hp['page'] ) ? $hp['page'] : false;
+		$page = $hp['page'] ?? false;
 		$width = $this->getWidth( $page );
 		if ( !$width ) {
 			return $this->iconThumb();
 		}
 		$hp['width'] = $width;
+		// be sure to ignore any height specification as well (T64258)
+		unset( $hp['height'] );
 
 		return $this->transform( $hp );
 	}
@@ -850,10 +1020,11 @@ abstract class File {
 	 * Return the file name of a thumbnail with the specified parameters.
 	 * Use File::THUMB_FULL_NAME to always get a name like "<params>-<source>".
 	 * Otherwise, the format may be "<params>-<source>" or "<params>-thumbnail.<ext>".
+	 * @stable to override
 	 *
-	 * @param array $params handler-specific parameters
+	 * @param array $params Handler-specific parameters
 	 * @param int $flags Bitfield that supports THUMB_* constants
-	 * @return string
+	 * @return string|null
 	 */
 	public function thumbName( $params, $flags = 0 ) {
 		$name = ( $this->repo && !( $flags & self::THUMB_FULL_NAME ) )
@@ -865,21 +1036,29 @@ abstract class File {
 
 	/**
 	 * Generate a thumbnail file name from a name and specified parameters
+	 * @stable to override
 	 *
 	 * @param string $name
 	 * @param array $params Parameters which will be passed to MediaHandler::makeParamString
-	 * @return string
+	 * @return string|null
 	 */
 	public function generateThumbName( $name, $params ) {
 		if ( !$this->getHandler() ) {
 			return null;
 		}
 		$extension = $this->getExtension();
-		list( $thumbExt, ) = $this->handler->getThumbType(
+		list( $thumbExt, ) = $this->getHandler()->getThumbType(
 			$extension, $this->getMimeType(), $params );
-		$thumbName = $this->handler->makeParamString( $params ) . '-' . $name;
-		if ( $thumbExt != $extension ) {
-			$thumbName .= ".$thumbExt";
+		$thumbName = $this->getHandler()->makeParamString( $params );
+
+		if ( $this->repo->supportsSha1URLs() ) {
+			$thumbName .= '-' . $this->getSha1() . '.' . $thumbExt;
+		} else {
+			$thumbName .= '-' . $name;
+
+			if ( $thumbExt != $extension ) {
+				$thumbName .= ".$thumbExt";
+			}
 		}
 
 		return $thumbName;
@@ -903,7 +1082,7 @@ abstract class File {
 	 * @return string
 	 */
 	public function createThumb( $width, $height = -1 ) {
-		$params = array( 'width' => $width );
+		$params = [ 'width' => $width ];
 		if ( $height != -1 ) {
 			$params['height'] = $height;
 		}
@@ -932,29 +1111,29 @@ abstract class File {
 			return $handler->getTransform( $this, $thumbPath, $thumbUrl, $params );
 		} else {
 			return new MediaTransformError( 'thumbnail_error',
-				$params['width'], 0, wfMessage( 'thumbnail-dest-create' )->text() );
+				$params['width'], 0, wfMessage( 'thumbnail-dest-create' ) );
 		}
 	}
 
 	/**
 	 * Transform a media file
+	 * @stable to override
 	 *
-	 * @param array $params an associative array of handler-specific parameters.
+	 * @param array $params An associative array of handler-specific parameters.
 	 *   Typical keys are width, height and page.
 	 * @param int $flags A bitfield, may contain self::RENDER_NOW to force rendering
-	 * @return MediaTransformOutput|bool False on failure
+	 * @return ThumbnailImage|MediaTransformOutput|bool False on failure
 	 */
-	function transform( $params, $flags = 0 ) {
-		global $wgUseSquid, $wgIgnoreImageErrors, $wgThumbnailEpoch;
+	public function transform( $params, $flags = 0 ) {
+		global $wgThumbnailEpoch;
 
-		wfProfileIn( __METHOD__ );
 		do {
 			if ( !$this->canRender() ) {
 				$thumb = $this->iconThumb();
 				break; // not a bitmap or renderable image, don't try
 			}
 
-			// Get the descriptionUrl to embed it as comment into the thumbnail. Bug 19791.
+			// Get the descriptionUrl to embed it as comment into the thumbnail. T21791.
 			$descriptionUrl = $this->getDescriptionUrl();
 			if ( $descriptionUrl ) {
 				$params['descriptionUrl'] = wfExpandUrl( $descriptionUrl, PROTO_CANONICAL );
@@ -980,17 +1159,14 @@ abstract class File {
 			if ( $this->repo ) {
 				// Defer rendering if a 404 handler is set up...
 				if ( $this->repo->canTransformVia404() && !( $flags & self::RENDER_NOW ) ) {
-					wfDebug( __METHOD__ . " transformation deferred.\n" );
 					// XXX: Pass in the storage path even though we are not rendering anything
 					// and the path is supposed to be an FS path. This is due to getScalerType()
 					// getting called on the path and clobbering $thumb->getUrl() if it's false.
 					$thumb = $handler->getTransform( $this, $thumbPath, $thumbUrl, $params );
 					break;
 				}
-				// Clean up broken thumbnails as needed
-				$this->migrateThumbFile( $thumbName );
 				// Check if an up-to-date thumbnail already exists...
-				wfDebug( __METHOD__ . ": Doing stat for $thumbPath\n" );
+				wfDebug( __METHOD__ . ": Doing stat for $thumbPath" );
 				if ( !( $flags & self::RENDER_FORCE ) && $this->repo->fileExists( $thumbPath ) ) {
 					$timestamp = $this->repo->getFileTimestamp( $thumbPath );
 					if ( $timestamp !== false && $timestamp >= $wgThumbnailEpoch ) {
@@ -1002,66 +1178,252 @@ abstract class File {
 						break;
 					}
 				} elseif ( $flags & self::RENDER_FORCE ) {
-					wfDebug( __METHOD__ . " forcing rendering per flag File::RENDER_FORCE\n" );
+					wfDebug( __METHOD__ . " forcing rendering per flag File::RENDER_FORCE" );
+				}
+
+				// If the backend is ready-only, don't keep generating thumbnails
+				// only to return transformation errors, just return the error now.
+				if ( $this->repo->getReadOnlyReason() !== false ) {
+					$thumb = $this->transformErrorOutput( $thumbPath, $thumbUrl, $params, $flags );
+					break;
 				}
 			}
 
-			// If the backend is ready-only, don't keep generating thumbnails
-			// only to return transformation errors, just return the error now.
-			if ( $this->repo->getReadOnlyReason() !== false ) {
-				$thumb = $this->transformErrorOutput( $thumbPath, $thumbUrl, $params, $flags );
-				break;
-			}
+			$tmpFile = $this->makeTransformTmpFile( $thumbPath );
 
-			// Create a temp FS file with the same extension and the thumbnail
-			$thumbExt = FileBackend::extensionFromPath( $thumbPath );
-			$tmpFile = TempFSFile::factory( 'transform_', $thumbExt );
 			if ( !$tmpFile ) {
 				$thumb = $this->transformErrorOutput( $thumbPath, $thumbUrl, $params, $flags );
-				break;
-			}
-			$tmpThumbPath = $tmpFile->getPath(); // path of 0-byte temp file
-
-			// Actually render the thumbnail...
-			wfProfileIn( __METHOD__ . '-doTransform' );
-			$thumb = $handler->doTransform( $this, $tmpThumbPath, $thumbUrl, $params );
-			wfProfileOut( __METHOD__ . '-doTransform' );
-			$tmpFile->bind( $thumb ); // keep alive with $thumb
-
-			if ( !$thumb ) { // bad params?
-				$thumb = null;
-			} elseif ( $thumb->isError() ) { // transform error
-				$this->lastError = $thumb->toText();
-				// Ignore errors if requested
-				if ( $wgIgnoreImageErrors && !( $flags & self::RENDER_NOW ) ) {
-					$thumb = $handler->getTransform( $this, $tmpThumbPath, $thumbUrl, $params );
-				}
-			} elseif ( $this->repo && $thumb->hasFile() && !$thumb->fileIsSource() ) {
-				// Copy the thumbnail from the file system into storage...
-				$disposition = $this->getThumbDisposition( $thumbName );
-				$status = $this->repo->quickImport( $tmpThumbPath, $thumbPath, $disposition );
-				if ( $status->isOK() ) {
-					$thumb->setStoragePath( $thumbPath );
-				} else {
-					$thumb = $this->transformErrorOutput( $thumbPath, $thumbUrl, $params, $flags );
-				}
-				// Give extensions a chance to do something with this thumbnail...
-				wfRunHooks( 'FileTransformed', array( $this, $thumb, $tmpThumbPath, $thumbPath ) );
-			}
-
-			// Purge. Useful in the event of Core -> Squid connection failure or squid
-			// purge collisions from elsewhere during failure. Don't keep triggering for
-			// "thumbs" which have the main image URL though (bug 13776)
-			if ( $wgUseSquid ) {
-				if ( !$thumb || $thumb->isError() || $thumb->getUrl() != $this->getURL() ) {
-					SquidUpdate::purge( array( $thumbUrl ) );
-				}
+			} else {
+				$thumb = $this->generateAndSaveThumb( $tmpFile, $params, $flags );
 			}
 		} while ( false );
 
-		wfProfileOut( __METHOD__ );
-
 		return is_object( $thumb ) ? $thumb : false;
+	}
+
+	/**
+	 * Generates a thumbnail according to the given parameters and saves it to storage
+	 * @param TempFSFile $tmpFile Temporary file where the rendered thumbnail will be saved
+	 * @param array $transformParams
+	 * @param int $flags
+	 * @return bool|MediaTransformOutput
+	 */
+	public function generateAndSaveThumb( $tmpFile, $transformParams, $flags ) {
+		global $wgIgnoreImageErrors;
+
+		$stats = MediaWikiServices::getInstance()->getStatsdDataFactory();
+
+		$handler = $this->getHandler();
+
+		$normalisedParams = $transformParams;
+		$handler->normaliseParams( $this, $normalisedParams );
+
+		$thumbName = $this->thumbName( $normalisedParams );
+		$thumbUrl = $this->getThumbUrl( $thumbName );
+		$thumbPath = $this->getThumbPath( $thumbName ); // final thumb path
+
+		$tmpThumbPath = $tmpFile->getPath();
+
+		if ( $handler->supportsBucketing() ) {
+			$this->generateBucketsIfNeeded( $normalisedParams, $flags );
+		}
+
+		$starttime = microtime( true );
+
+		// Actually render the thumbnail...
+		$thumb = $handler->doTransform( $this, $tmpThumbPath, $thumbUrl, $transformParams );
+		$tmpFile->bind( $thumb ); // keep alive with $thumb
+
+		$statTiming = microtime( true ) - $starttime;
+		$stats->timing( 'media.thumbnail.generate.transform', 1000 * $statTiming );
+
+		if ( !$thumb ) { // bad params?
+			$thumb = false;
+		} elseif ( $thumb->isError() ) { // transform error
+			/** @var MediaTransformError $thumb */
+			'@phan-var MediaTransformError $thumb';
+			$this->lastError = $thumb->toText();
+			// Ignore errors if requested
+			if ( $wgIgnoreImageErrors && !( $flags & self::RENDER_NOW ) ) {
+				$thumb = $handler->getTransform( $this, $tmpThumbPath, $thumbUrl, $transformParams );
+			}
+		} elseif ( $this->repo && $thumb->hasFile() && !$thumb->fileIsSource() ) {
+			// Copy the thumbnail from the file system into storage...
+
+			$starttime = microtime( true );
+
+			$disposition = $this->getThumbDisposition( $thumbName );
+			$status = $this->repo->quickImport( $tmpThumbPath, $thumbPath, $disposition );
+			if ( $status->isOK() ) {
+				$thumb->setStoragePath( $thumbPath );
+			} else {
+				$thumb = $this->transformErrorOutput( $thumbPath, $thumbUrl, $transformParams, $flags );
+			}
+
+			$statTiming = microtime( true ) - $starttime;
+			$stats->timing( 'media.thumbnail.generate.store', 1000 * $statTiming );
+
+			// Give extensions a chance to do something with this thumbnail...
+			$this->getHookRunner()->onFileTransformed( $this, $thumb, $tmpThumbPath, $thumbPath );
+		}
+
+		return $thumb;
+	}
+
+	/**
+	 * Generates chained bucketed thumbnails if needed
+	 * @param array $params
+	 * @param int $flags
+	 * @return bool Whether at least one bucket was generated
+	 */
+	protected function generateBucketsIfNeeded( $params, $flags = 0 ) {
+		if ( !$this->repo
+			|| !isset( $params['physicalWidth'] )
+			|| !isset( $params['physicalHeight'] )
+		) {
+			return false;
+		}
+
+		$bucket = $this->getThumbnailBucket( $params['physicalWidth'] );
+
+		if ( !$bucket || $bucket == $params['physicalWidth'] ) {
+			return false;
+		}
+
+		$bucketPath = $this->getBucketThumbPath( $bucket );
+
+		if ( $this->repo->fileExists( $bucketPath ) ) {
+			return false;
+		}
+
+		$starttime = microtime( true );
+
+		$params['physicalWidth'] = $bucket;
+		$params['width'] = $bucket;
+
+		$params = $this->getHandler()->sanitizeParamsForBucketing( $params );
+
+		$tmpFile = $this->makeTransformTmpFile( $bucketPath );
+
+		if ( !$tmpFile ) {
+			return false;
+		}
+
+		$thumb = $this->generateAndSaveThumb( $tmpFile, $params, $flags );
+
+		$buckettime = microtime( true ) - $starttime;
+
+		if ( !$thumb || $thumb->isError() ) {
+			return false;
+		}
+
+		$this->tmpBucketedThumbCache[$bucket] = $tmpFile->getPath();
+		// For the caching to work, we need to make the tmp file survive as long as
+		// this object exists
+		$tmpFile->bind( $this );
+
+		MediaWikiServices::getInstance()->getStatsdDataFactory()->timing(
+			'media.thumbnail.generate.bucket', 1000 * $buckettime );
+
+		return true;
+	}
+
+	/**
+	 * Returns the most appropriate source image for the thumbnail, given a target thumbnail size
+	 * @param array $params
+	 * @return array Source path and width/height of the source
+	 */
+	public function getThumbnailSource( $params ) {
+		if ( $this->repo
+			&& $this->getHandler()->supportsBucketing()
+			&& isset( $params['physicalWidth'] )
+			&& $bucket = $this->getThumbnailBucket( $params['physicalWidth'] )
+		) {
+			if ( $this->getWidth() != 0 ) {
+				$bucketHeight = round( $this->getHeight() * ( $bucket / $this->getWidth() ) );
+			} else {
+				$bucketHeight = 0;
+			}
+
+			// Try to avoid reading from storage if the file was generated by this script
+			if ( isset( $this->tmpBucketedThumbCache[$bucket] ) ) {
+				$tmpPath = $this->tmpBucketedThumbCache[$bucket];
+
+				if ( file_exists( $tmpPath ) ) {
+					return [
+						'path' => $tmpPath,
+						'width' => $bucket,
+						'height' => $bucketHeight
+					];
+				}
+			}
+
+			$bucketPath = $this->getBucketThumbPath( $bucket );
+
+			if ( $this->repo->fileExists( $bucketPath ) ) {
+				$fsFile = $this->repo->getLocalReference( $bucketPath );
+
+				if ( $fsFile ) {
+					return [
+						'path' => $fsFile->getPath(),
+						'width' => $bucket,
+						'height' => $bucketHeight
+					];
+				}
+			}
+		}
+
+		// Thumbnailing a very large file could result in network saturation if
+		// everyone does it at once.
+		if ( $this->getSize() >= 1e7 ) { // 10MB
+			$work = new PoolCounterWorkViaCallback( 'GetLocalFileCopy', sha1( $this->getName() ),
+				[
+					'doWork' => function () {
+						return $this->getLocalRefPath();
+					}
+				]
+			);
+			$srcPath = $work->execute();
+		} else {
+			$srcPath = $this->getLocalRefPath();
+		}
+
+		// Original file
+		return [
+			'path' => $srcPath,
+			'width' => $this->getWidth(),
+			'height' => $this->getHeight()
+		];
+	}
+
+	/**
+	 * Returns the repo path of the thumb for a given bucket
+	 * @param int $bucket
+	 * @return string
+	 */
+	protected function getBucketThumbPath( $bucket ) {
+		$thumbName = $this->getBucketThumbName( $bucket );
+		return $this->getThumbPath( $thumbName );
+	}
+
+	/**
+	 * Returns the name of the thumb for a given bucket
+	 * @param int $bucket
+	 * @return string
+	 */
+	protected function getBucketThumbName( $bucket ) {
+		return $this->thumbName( [ 'physicalWidth' => $bucket ] );
+	}
+
+	/**
+	 * Creates a temp FS file with the same extension and the thumbnail
+	 * @param string $thumbPath Thumbnail path
+	 * @return TempFSFile|null
+	 */
+	protected function makeTransformTmpFile( $thumbPath ) {
+		$thumbExt = FileBackend::extensionFromPath( $thumbPath );
+		return MediaWikiServices::getInstance()->getTempFSFileFactory()
+			->newTempFSFile( 'transform_', $thumbExt );
 	}
 
 	/**
@@ -1069,7 +1431,7 @@ abstract class File {
 	 * @param string $dispositionType Type of disposition (either "attachment" or "inline")
 	 * @return string Content-Disposition header value
 	 */
-	function getThumbDisposition( $thumbName, $dispositionType = 'inline' ) {
+	public function getThumbDisposition( $thumbName, $dispositionType = 'inline' ) {
 		$fileName = $this->name; // file name to suggest
 		$thumbExt = FileBackend::extensionFromPath( $thumbName );
 		if ( $thumbExt != '' && $thumbExt !== $this->getExtension() ) {
@@ -1082,9 +1444,10 @@ abstract class File {
 	/**
 	 * Hook into transform() to allow migration of thumbnail files
 	 * STUB
-	 * Overridden by LocalFile
+	 * @stable to override
+	 * @param string $thumbName
 	 */
-	function migrateThumbFile( $thumbName ) {
+	protected function migrateThumbFile( $thumbName ) {
 	}
 
 	/**
@@ -1093,7 +1456,7 @@ abstract class File {
 	 * @return MediaHandler|bool Registered MediaHandler for file's MIME type
 	 *   or false if none found
 	 */
-	function getHandler() {
+	public function getHandler() {
 		if ( !isset( $this->handler ) ) {
 			$this->handler = MediaHandler::getHandler( $this->getMimeType() );
 		}
@@ -1106,17 +1469,17 @@ abstract class File {
 	 *
 	 * @return ThumbnailImage
 	 */
-	function iconThumb() {
-		global $wgStylePath, $wgStyleDirectory;
+	public function iconThumb() {
+		global $wgResourceBasePath, $IP;
+		$assetsPath = "$wgResourceBasePath/resources/assets/file-type-icons/";
+		$assetsDirectory = "$IP/resources/assets/file-type-icons/";
 
-		$try = array( 'fileicon-' . $this->getExtension() . '.png', 'fileicon.png' );
+		$try = [ 'fileicon-' . $this->getExtension() . '.png', 'fileicon.png' ];
 		foreach ( $try as $icon ) {
-			$path = '/common/images/icons/' . $icon;
-			$filepath = $wgStyleDirectory . $path;
-			if ( file_exists( $filepath ) ) { // always FS
-				$params = array( 'width' => 120, 'height' => 120 );
+			if ( file_exists( $assetsDirectory . $icon ) ) { // always FS
+				$params = [ 'width' => 120, 'height' => 120 ];
 
-				return new ThumbnailImage( $this, $wgStylePath . $path, false, $params );
+				return new ThumbnailImage( $this, $assetsPath . $icon, false, $params );
 			}
 		}
 
@@ -1126,8 +1489,9 @@ abstract class File {
 	/**
 	 * Get last thumbnailing error.
 	 * Largely obsolete.
+	 * @return string
 	 */
-	function getLastError() {
+	public function getLastError() {
 		return $this->lastError;
 	}
 
@@ -1135,20 +1499,22 @@ abstract class File {
 	 * Get all thumbnail names previously generated for this file
 	 * STUB
 	 * Overridden by LocalFile
-	 * @return array
+	 * @stable to override
+	 * @return string[]
 	 */
-	function getThumbnails() {
-		return array();
+	protected function getThumbnails() {
+		return [];
 	}
 
 	/**
 	 * Purge shared caches such as thumbnails and DB data caching
 	 * STUB
 	 * Overridden by LocalFile
+	 * @stable to override
 	 * @param array $options Options, which include:
 	 *   'forThumbRefresh' : The purging is only to refresh thumbnails
 	 */
-	function purgeCache( $options = array() ) {
+	public function purgeCache( $options = [] ) {
 	}
 
 	/**
@@ -1156,11 +1522,12 @@ abstract class File {
 	 * pages using the file. Use when modifying file history
 	 * but not the current data.
 	 */
-	function purgeDescription() {
+	public function purgeDescription() {
 		$title = $this->getTitle();
 		if ( $title ) {
 			$title->invalidateCache();
-			$title->purgeSquid();
+			$hcu = MediaWikiServices::getInstance()->getHtmlCacheUpdater();
+			$hcu->purgeTitleUrls( $title, $hcu::PURGE_INTENT_TXROUND_REFLECTED );
 		}
 	}
 
@@ -1168,16 +1535,19 @@ abstract class File {
 	 * Purge metadata and all affected pages when the file is created,
 	 * deleted, or majorly updated.
 	 */
-	function purgeEverything() {
+	public function purgeEverything() {
 		// Delete thumbnails and refresh file metadata cache
 		$this->purgeCache();
 		$this->purgeDescription();
-
 		// Purge cache of all pages using this file
 		$title = $this->getTitle();
 		if ( $title ) {
-			$update = new HTMLCacheUpdate( $title, 'imagelinks' );
-			$update->doUpdate();
+			$job = HTMLCacheUpdateJob::newForBacklinks(
+				$title,
+				'imagelinks',
+				[ 'causeAction' => 'file-purge' ]
+			);
+			JobQueueGroup::singleton()->lazyPush( $job );
 		}
 	}
 
@@ -1185,15 +1555,16 @@ abstract class File {
 	 * Return a fragment of the history of file.
 	 *
 	 * STUB
-	 * @param int $limit Limit of rows to return
-	 * @param string $start timestamp Only revisions older than $start will be returned
-	 * @param string $end timestamp Only revisions newer than $end will be returned
+	 * @stable to override
+	 * @param int|null $limit Limit of rows to return
+	 * @param string|int|null $start Only revisions older than $start will be returned
+	 * @param string|int|null $end Only revisions newer than $end will be returned
 	 * @param bool $inc Include the endpoints of the time range
 	 *
-	 * @return array
+	 * @return File[]
 	 */
-	function getHistory( $limit = null, $start = null, $end = null, $inc = true ) {
-		return array();
+	public function getHistory( $limit = null, $start = null, $end = null, $inc = true ) {
+		return [];
 	}
 
 	/**
@@ -1202,6 +1573,7 @@ abstract class File {
 	 * database row.
 	 *
 	 * STUB
+	 * @stable to override
 	 * Overridden in LocalFile
 	 * @return bool
 	 */
@@ -1214,6 +1586,7 @@ abstract class File {
 	 * Always call this function after using nextHistoryLine() to free db resources
 	 * STUB
 	 * Overridden in LocalFile.
+	 * @stable to override
 	 */
 	public function resetHistory() {
 	}
@@ -1225,8 +1598,8 @@ abstract class File {
 	 *
 	 * @return string
 	 */
-	function getHashPath() {
-		if ( !isset( $this->hashPath ) ) {
+	public function getHashPath() {
+		if ( $this->hashPath === null ) {
 			$this->assertRepoDefined();
 			$this->hashPath = $this->repo->getHashPath( $this->getName() );
 		}
@@ -1236,25 +1609,27 @@ abstract class File {
 
 	/**
 	 * Get the path of the file relative to the public zone root.
-	 * This function is overriden in OldLocalFile to be like getArchiveRel().
+	 * This function is overridden in OldLocalFile to be like getArchiveRel().
 	 *
+	 * @stable to override
 	 * @return string
 	 */
-	function getRel() {
+	public function getRel() {
 		return $this->getHashPath() . $this->getName();
 	}
 
 	/**
 	 * Get the path of an archived file relative to the public zone root
+	 * @stable to override
 	 *
-	 * @param bool|string $suffix if not false, the name of an archived thumbnail file
+	 * @param bool|string $suffix If not false, the name of an archived thumbnail file
 	 *
 	 * @return string
 	 */
-	function getArchiveRel( $suffix = false ) {
+	public function getArchiveRel( $suffix = false ) {
 		$path = 'archive/' . $this->getHashPath();
 		if ( $suffix === false ) {
-			$path = substr( $path, 0, -1 );
+			$path = rtrim( $path, '/' );
 		} else {
 			$path .= $suffix;
 		}
@@ -1265,11 +1640,12 @@ abstract class File {
 	/**
 	 * Get the path, relative to the thumbnail zone root, of the
 	 * thumbnail directory or a particular file if $suffix is specified
+	 * @stable to override
 	 *
-	 * @param bool|string $suffix if not false, the name of a thumbnail file
+	 * @param bool|string $suffix If not false, the name of a thumbnail file
 	 * @return string
 	 */
-	function getThumbRel( $suffix = false ) {
+	public function getThumbRel( $suffix = false ) {
 		$path = $this->getRel();
 		if ( $suffix !== false ) {
 			$path .= '/' . $suffix;
@@ -1280,11 +1656,12 @@ abstract class File {
 
 	/**
 	 * Get urlencoded path of the file relative to the public zone root.
-	 * This function is overriden in OldLocalFile to be like getArchiveUrl().
+	 * This function is overridden in OldLocalFile to be like getArchiveUrl().
+	 * @stable to override
 	 *
 	 * @return string
 	 */
-	function getUrlRel() {
+	public function getUrlRel() {
 		return $this->getHashPath() . rawurlencode( $this->getName() );
 	}
 
@@ -1292,16 +1669,14 @@ abstract class File {
 	 * Get the path, relative to the thumbnail zone root, for an archived file's thumbs directory
 	 * or a specific thumb if the $suffix is given.
 	 *
-	 * @param string $archiveName the timestamped name of an archived image
-	 * @param bool|string $suffix if not false, the name of a thumbnail file
+	 * @param string $archiveName The timestamped name of an archived image
+	 * @param bool|string $suffix If not false, the name of a thumbnail file
 	 * @return string
 	 */
-	function getArchiveThumbRel( $archiveName, $suffix = false ) {
-		$path = 'archive/' . $this->getHashPath() . $archiveName . "/";
-		if ( $suffix === false ) {
-			$path = substr( $path, 0, -1 );
-		} else {
-			$path .= $suffix;
+	private function getArchiveThumbRel( $archiveName, $suffix = false ) {
+		$path = $this->getArchiveRel( $archiveName );
+		if ( $suffix !== false ) {
+			$path .= '/' . $suffix;
 		}
 
 		return $path;
@@ -1310,10 +1685,10 @@ abstract class File {
 	/**
 	 * Get the path of the archived file.
 	 *
-	 * @param bool|string $suffix if not false, the name of an archived file.
+	 * @param bool|string $suffix If not false, the name of an archived file.
 	 * @return string
 	 */
-	function getArchivePath( $suffix = false ) {
+	public function getArchivePath( $suffix = false ) {
 		$this->assertRepoDefined();
 
 		return $this->repo->getZonePath( 'public' ) . '/' . $this->getArchiveRel( $suffix );
@@ -1322,11 +1697,11 @@ abstract class File {
 	/**
 	 * Get the path of an archived file's thumbs, or a particular thumb if $suffix is specified
 	 *
-	 * @param string $archiveName the timestamped name of an archived image
-	 * @param bool|string $suffix if not false, the name of a thumbnail file
+	 * @param string $archiveName The timestamped name of an archived image
+	 * @param bool|string $suffix If not false, the name of a thumbnail file
 	 * @return string
 	 */
-	function getArchiveThumbPath( $archiveName, $suffix = false ) {
+	public function getArchiveThumbPath( $archiveName, $suffix = false ) {
 		$this->assertRepoDefined();
 
 		return $this->repo->getZonePath( 'thumb' ) . '/' .
@@ -1335,11 +1710,12 @@ abstract class File {
 
 	/**
 	 * Get the path of the thumbnail directory, or a particular file if $suffix is specified
+	 * @stable to override
 	 *
 	 * @param bool|string $suffix If not false, the name of a thumbnail file
 	 * @return string
 	 */
-	function getThumbPath( $suffix = false ) {
+	public function getThumbPath( $suffix = false ) {
 		$this->assertRepoDefined();
 
 		return $this->repo->getZonePath( 'thumb' ) . '/' . $this->getThumbRel( $suffix );
@@ -1351,7 +1727,7 @@ abstract class File {
 	 * @param bool|string $suffix If not false, the name of a media file
 	 * @return string
 	 */
-	function getTranscodedPath( $suffix = false ) {
+	public function getTranscodedPath( $suffix = false ) {
 		$this->assertRepoDefined();
 
 		return $this->repo->getZonePath( 'transcoded' ) . '/' . $this->getThumbRel( $suffix );
@@ -1359,16 +1735,17 @@ abstract class File {
 
 	/**
 	 * Get the URL of the archive directory, or a particular file if $suffix is specified
+	 * @stable to override
 	 *
 	 * @param bool|string $suffix If not false, the name of an archived file
 	 * @return string
 	 */
-	function getArchiveUrl( $suffix = false ) {
+	public function getArchiveUrl( $suffix = false ) {
 		$this->assertRepoDefined();
 		$ext = $this->getExtension();
 		$path = $this->repo->getZoneUrl( 'public', $ext ) . '/archive/' . $this->getHashPath();
 		if ( $suffix === false ) {
-			$path = substr( $path, 0, -1 );
+			$path = rtrim( $path, '/' );
 		} else {
 			$path .= rawurlencode( $suffix );
 		}
@@ -1378,20 +1755,19 @@ abstract class File {
 
 	/**
 	 * Get the URL of the archived file's thumbs, or a particular thumb if $suffix is specified
+	 * @stable to override
 	 *
-	 * @param string $archiveName the timestamped name of an archived image
+	 * @param string $archiveName The timestamped name of an archived image
 	 * @param bool|string $suffix If not false, the name of a thumbnail file
 	 * @return string
 	 */
-	function getArchiveThumbUrl( $archiveName, $suffix = false ) {
+	public function getArchiveThumbUrl( $archiveName, $suffix = false ) {
 		$this->assertRepoDefined();
 		$ext = $this->getExtension();
 		$path = $this->repo->getZoneUrl( 'thumb', $ext ) . '/archive/' .
-			$this->getHashPath() . rawurlencode( $archiveName ) . "/";
-		if ( $suffix === false ) {
-			$path = substr( $path, 0, -1 );
-		} else {
-			$path .= rawurlencode( $suffix );
+			$this->getHashPath() . rawurlencode( $archiveName );
+		if ( $suffix !== false ) {
+			$path .= '/' . rawurlencode( $suffix );
 		}
 
 		return $path;
@@ -1400,11 +1776,11 @@ abstract class File {
 	/**
 	 * Get the URL of the zone directory, or a particular file if $suffix is specified
 	 *
-	 * @param string $zone name of requested zone
+	 * @param string $zone Name of requested zone
 	 * @param bool|string $suffix If not false, the name of a file in zone
-	 * @return string path
+	 * @return string Path
 	 */
-	function getZoneUrl( $zone, $suffix = false ) {
+	private function getZoneUrl( $zone, $suffix = false ) {
 		$this->assertRepoDefined();
 		$ext = $this->getExtension();
 		$path = $this->repo->getZoneUrl( $zone, $ext ) . '/' . $this->getUrlRel();
@@ -1417,11 +1793,12 @@ abstract class File {
 
 	/**
 	 * Get the URL of the thumbnail directory, or a particular file if $suffix is specified
+	 * @stable to override
 	 *
-	 * @param bool|string $suffix if not false, the name of a thumbnail file
-	 * @return string path
+	 * @param bool|string $suffix If not false, the name of a thumbnail file
+	 * @return string Path
 	 */
-	function getThumbUrl( $suffix = false ) {
+	public function getThumbUrl( $suffix = false ) {
 		return $this->getZoneUrl( 'thumb', $suffix );
 	}
 
@@ -1429,19 +1806,20 @@ abstract class File {
 	 * Get the URL of the transcoded directory, or a particular file if $suffix is specified
 	 *
 	 * @param bool|string $suffix If not false, the name of a media file
-	 * @return string path
+	 * @return string Path
 	 */
-	function getTranscodedUrl( $suffix = false ) {
+	public function getTranscodedUrl( $suffix = false ) {
 		return $this->getZoneUrl( 'transcoded', $suffix );
 	}
 
 	/**
 	 * Get the public zone virtual URL for a current version source file
+	 * @stable to override
 	 *
 	 * @param bool|string $suffix If not false, the name of a thumbnail file
 	 * @return string
 	 */
-	function getVirtualUrl( $suffix = false ) {
+	public function getVirtualUrl( $suffix = false ) {
 		$this->assertRepoDefined();
 		$path = $this->repo->getVirtualUrl() . '/public/' . $this->getUrlRel();
 		if ( $suffix !== false ) {
@@ -1453,15 +1831,16 @@ abstract class File {
 
 	/**
 	 * Get the public zone virtual URL for an archived version source file
+	 * @stable to override
 	 *
 	 * @param bool|string $suffix If not false, the name of a thumbnail file
 	 * @return string
 	 */
-	function getArchiveVirtualUrl( $suffix = false ) {
+	public function getArchiveVirtualUrl( $suffix = false ) {
 		$this->assertRepoDefined();
 		$path = $this->repo->getVirtualUrl() . '/public/archive/' . $this->getHashPath();
 		if ( $suffix === false ) {
-			$path = substr( $path, 0, -1 );
+			$path = rtrim( $path, '/' );
 		} else {
 			$path .= rawurlencode( $suffix );
 		}
@@ -1471,11 +1850,12 @@ abstract class File {
 
 	/**
 	 * Get the virtual URL for a thumbnail file or directory
+	 * @stable to override
 	 *
 	 * @param bool|string $suffix If not false, the name of a thumbnail file
 	 * @return string
 	 */
-	function getThumbVirtualUrl( $suffix = false ) {
+	public function getThumbVirtualUrl( $suffix = false ) {
 		$this->assertRepoDefined();
 		$path = $this->repo->getVirtualUrl() . '/thumb/' . $this->getUrlRel();
 		if ( $suffix !== false ) {
@@ -1488,7 +1868,7 @@ abstract class File {
 	/**
 	 * @return bool
 	 */
-	function isHashed() {
+	protected function isHashed() {
 		$this->assertRepoDefined();
 
 		return (bool)$this->repo->getHashLevels();
@@ -1497,16 +1877,18 @@ abstract class File {
 	/**
 	 * @throws MWException
 	 */
-	function readOnlyError() {
-		throw new MWException( get_class( $this ) . ': write operations are not supported' );
+	protected function readOnlyError() {
+		throw new MWException( static::class . ': write operations are not supported' );
 	}
 
 	/**
 	 * Record a file upload in the upload log and the image table
+	 * @stable to override
 	 * STUB
 	 * Overridden by LocalFile
-	 * @param $oldver
-	 * @param $desc
+	 * @deprecated since 1.35
+	 * @param string $oldver
+	 * @param string $desc
 	 * @param string $license
 	 * @param string $copyStatus
 	 * @param string $source
@@ -1516,15 +1898,16 @@ abstract class File {
 	 * @return bool
 	 * @throws MWException
 	 */
-	function recordUpload( $oldver, $desc, $license = '', $copyStatus = '', $source = '',
+	public function recordUpload( $oldver, $desc, $license = '', $copyStatus = '', $source = '',
 		$watch = false, $timestamp = false, User $user = null
 	) {
+		wfDeprecated( __METHOD__, '1.35' );
 		$this->readOnlyError();
 	}
 
 	/**
 	 * Move or copy a file to its public location. If a file exists at the
-	 * destination, move it to an archive. Returns a FileRepoStatus object with
+	 * destination, move it to an archive. Returns a Status object with
 	 * the archive name in the "value" member on success.
 	 *
 	 * The archive name should be passed through to recordUpload for database
@@ -1533,29 +1916,31 @@ abstract class File {
 	 * Options to $options include:
 	 *   - headers : name/value map of HTTP headers to use in response to GET/HEAD requests
 	 *
-	 * @param string $srcPath local filesystem path to the source image
+	 * @param string|FSFile $src Local filesystem path to the source image
 	 * @param int $flags A bitwise combination of:
 	 *   File::DELETE_SOURCE    Delete the source file, i.e. move rather than copy
 	 * @param array $options Optional additional parameters
-	 * @return FileRepoStatus object. On success, the value member contains the
+	 * @return Status On success, the value member contains the
 	 *   archive name, or an empty string if it was a new file.
 	 *
 	 * STUB
 	 * Overridden by LocalFile
+	 * @stable to override
 	 */
-	function publish( $srcPath, $flags = 0, array $options = array() ) {
+	public function publish( $src, $flags = 0, array $options = [] ) {
 		$this->readOnlyError();
 	}
 
 	/**
+	 * @param bool|IContextSource $context Context to use (optional)
 	 * @return bool
 	 */
-	function formatMetadata() {
+	public function formatMetadata( $context = false ) {
 		if ( !$this->getHandler() ) {
 			return false;
 		}
 
-		return $this->getHandler()->formatMetadata( $this, $this->getMetadata() );
+		return $this->getHandler()->formatMetadata( $this, $context );
 	}
 
 	/**
@@ -1563,7 +1948,7 @@ abstract class File {
 	 *
 	 * @return bool
 	 */
-	function isLocal() {
+	public function isLocal() {
 		return $this->repo && $this->repo->isLocal();
 	}
 
@@ -1572,16 +1957,17 @@ abstract class File {
 	 *
 	 * @return string
 	 */
-	function getRepoName() {
+	public function getRepoName() {
 		return $this->repo ? $this->repo->getName() : 'unknown';
 	}
 
 	/**
 	 * Returns the repository
+	 * @stable to override
 	 *
-	 * @return FileRepo|LocalRepo|bool
+	 * @return FileRepo|bool
 	 */
-	function getRepo() {
+	public function getRepo() {
 		return $this->repo;
 	}
 
@@ -1589,9 +1975,10 @@ abstract class File {
 	 * Returns true if the image is an old version
 	 * STUB
 	 *
+	 * @stable to override
 	 * @return bool
 	 */
-	function isOld() {
+	public function isOld() {
 		return false;
 	}
 
@@ -1599,19 +1986,21 @@ abstract class File {
 	 * Is this file a "deleted" file in a private archive?
 	 * STUB
 	 *
-	 * @param int $field one of DELETED_* bitfield constants
+	 * @stable to override
+	 * @param int $field One of DELETED_* bitfield constants
 	 * @return bool
 	 */
-	function isDeleted( $field ) {
+	public function isDeleted( $field ) {
 		return false;
 	}
 
 	/**
 	 * Return the deletion bitfield
 	 * STUB
+	 * @stable to override
 	 * @return int
 	 */
-	function getVisibility() {
+	public function getVisibility() {
 		return 0;
 	}
 
@@ -1620,7 +2009,7 @@ abstract class File {
 	 *
 	 * @return bool
 	 */
-	function wasDeleted() {
+	public function wasDeleted() {
 		$title = $this->getTitle();
 
 		return $title && $title->isDeletedQuick();
@@ -1635,15 +2024,18 @@ abstract class File {
 	 * Cache purging is done; checks for validity
 	 * and logging are caller's responsibility
 	 *
+	 * @stable to override
 	 * @param Title $target New file name
-	 * @return FileRepoStatus object.
+	 * @return Status
 	 */
-	function move( $target ) {
+	public function move( $target ) {
 		$this->readOnlyError();
 	}
 
 	/**
 	 * Delete all versions of the file.
+	 *
+	 * @deprecated since 1.35, use deleteFile instead
 	 *
 	 * Moves the files into an archive directory (or deletes them)
 	 * and removes the database rows.
@@ -1652,11 +2044,36 @@ abstract class File {
 	 *
 	 * @param string $reason
 	 * @param bool $suppress Hide content from sysops?
-	 * @return bool on success, false on some kind of failure
+	 * @param User|null $user
+	 * @return Status
 	 * STUB
 	 * Overridden by LocalFile
+	 * @stable to override
 	 */
-	function delete( $reason, $suppress = false ) {
+	public function delete( $reason, $suppress = false, $user = null ) {
+		wfDeprecated( __METHOD__, '1.35' );
+		$this->readOnlyError();
+	}
+
+	/**
+	 * Delete all versions of the file.
+	 *
+	 * @since 1.35
+	 *
+	 * Moves the files into an archive directory (or deletes them)
+	 * and removes the database rows.
+	 *
+	 * Cache purging is done; logging is caller's responsibility.
+	 *
+	 * @param string $reason
+	 * @param User $user
+	 * @param bool $suppress Hide content from sysops?
+	 * @return Status
+	 * STUB
+	 * Overridden by LocalFile
+	 * @stable to override
+	 */
+	public function deleteFile( $reason, User $user, $suppress = false ) {
 		$this->readOnlyError();
 	}
 
@@ -1666,15 +2083,15 @@ abstract class File {
 	 *
 	 * May throw database exceptions on error.
 	 *
-	 * @param array $versions set of record ids of deleted items to restore,
+	 * @param array $versions Set of record ids of deleted items to restore,
 	 *   or empty to restore all revisions.
-	 * @param bool $unsuppress remove restrictions on content upon restoration?
-	 * @return int|bool the number of file revisions restored if successful,
-	 *   or false on failure
+	 * @param bool $unsuppress Remove restrictions on content upon restoration?
+	 * @return Status
 	 * STUB
 	 * Overridden by LocalFile
+	 * @stable to override
 	 */
-	function restore( $versions = array(), $unsuppress = false ) {
+	public function restore( $versions = [], $unsuppress = false ) {
 		$this->readOnlyError();
 	}
 
@@ -1683,9 +2100,10 @@ abstract class File {
 	 * e.g. DJVU or PDF. Note that this may be true even if the file in
 	 * question only has a single page.
 	 *
+	 * @stable to override
 	 * @return bool
 	 */
-	function isMultipage() {
+	public function isMultipage() {
 		return $this->getHandler() && $this->handler->isMultiPage( $this );
 	}
 
@@ -1693,9 +2111,10 @@ abstract class File {
 	 * Returns the number of pages of a multipage document, or false for
 	 * documents which aren't multipage documents
 	 *
-	 * @return bool|int
+	 * @stable to override
+	 * @return int|false
 	 */
-	function pageCount() {
+	public function pageCount() {
 		if ( !isset( $this->pageCount ) ) {
 			if ( $this->getHandler() && $this->handler->isMultiPage( $this ) ) {
 				$this->pageCount = $this->handler->pageCount( $this );
@@ -1716,37 +2135,42 @@ abstract class File {
 	 *
 	 * @return int
 	 */
-	static function scaleHeight( $srcWidth, $srcHeight, $dstWidth ) {
+	public static function scaleHeight( $srcWidth, $srcHeight, $dstWidth ) {
 		// Exact integer multiply followed by division
 		if ( $srcWidth == 0 ) {
 			return 0;
 		} else {
-			return round( $srcHeight * $dstWidth / $srcWidth );
+			return (int)round( $srcHeight * $dstWidth / $srcWidth );
 		}
 	}
 
 	/**
 	 * Get an image size array like that returned by getImageSize(), or false if it
-	 * can't be determined.
+	 * can't be determined. Loads the image size directly from the file ignoring caches.
 	 *
-	 * @param string $fileName The filename
-	 * @return array
+	 * @note Use getWidth()/getHeight() instead of this method unless you have a
+	 *  a good reason. This method skips all caches.
+	 *
+	 * @stable to override
+	 * @param string $filePath The path to the file (e.g. From getLocalRefPath() )
+	 * @return array|false The width, followed by height, with optionally more things after
 	 */
-	function getImageSize( $fileName ) {
+	protected function getImageSize( $filePath ) {
 		if ( !$this->getHandler() ) {
 			return false;
 		}
 
-		return $this->handler->getImageSize( $this, $fileName );
+		return $this->getHandler()->getImageSize( $this, $filePath );
 	}
 
 	/**
 	 * Get the URL of the image description page. May return false if it is
 	 * unknown or not applicable.
 	 *
-	 * @return string
+	 * @stable to override
+	 * @return string|bool
 	 */
-	function getDescriptionUrl() {
+	public function getDescriptionUrl() {
 		if ( $this->repo ) {
 			return $this->repo->getDescriptionUrl( $this->getName() );
 		} else {
@@ -1756,81 +2180,97 @@ abstract class File {
 
 	/**
 	 * Get the HTML text of the description page, if available
+	 * @stable to override
 	 *
-	 * @param bool|Language $lang Optional language to fetch description in
-	 * @return string
+	 * @param Language|null $lang Optional language to fetch description in
+	 * @return string|false
 	 */
-	function getDescriptionText( $lang = false ) {
-		global $wgMemc, $wgLang;
+	public function getDescriptionText( Language $lang = null ) {
+		global $wgLang;
+
 		if ( !$this->repo || !$this->repo->fetchDescription ) {
 			return false;
 		}
-		if ( !$lang ) {
-			$lang = $wgLang;
-		}
+
+		$lang = $lang ?? $wgLang;
+
 		$renderUrl = $this->repo->getDescriptionRenderUrl( $this->getName(), $lang->getCode() );
 		if ( $renderUrl ) {
-			if ( $this->repo->descriptionCacheExpiry > 0 ) {
-				wfDebug( "Attempting to get the description from cache..." );
-				$key = $this->repo->getLocalCacheKey(
-					'RemoteFileDescription',
-					'url',
-					$lang->getCode(),
-					$this->getName()
-				);
-				$obj = $wgMemc->get( $key );
-				if ( $obj ) {
-					wfDebug( "success!\n" );
+			$cache = MediaWikiServices::getInstance()->getMainWANObjectCache();
+			$key = $this->repo->getLocalCacheKey(
+				'RemoteFileDescription',
+				$lang->getCode(),
+				md5( $this->getName() )
+			);
+			$fname = __METHOD__;
 
-					return $obj;
+			return $cache->getWithSetCallback(
+				$key,
+				$this->repo->descriptionCacheExpiry ?: $cache::TTL_UNCACHEABLE,
+				function ( $oldValue, &$ttl, array &$setOpts ) use ( $renderUrl, $fname ) {
+					wfDebug( "Fetching shared description from $renderUrl" );
+					$res = MediaWikiServices::getInstance()->getHttpRequestFactory()->
+						get( $renderUrl, [], $fname );
+					if ( !$res ) {
+						$ttl = WANObjectCache::TTL_UNCACHEABLE;
+					}
+
+					return $res;
 				}
-				wfDebug( "miss\n" );
-			}
-			wfDebug( "Fetching shared description from $renderUrl\n" );
-			$res = Http::get( $renderUrl );
-			if ( $res && $this->repo->descriptionCacheExpiry > 0 ) {
-				$wgMemc->set( $key, $res, $this->repo->descriptionCacheExpiry );
-			}
-
-			return $res;
-		} else {
-			return false;
+			);
 		}
+
+		return false;
 	}
 
 	/**
 	 * Get description of file revision
 	 * STUB
 	 *
+	 * @stable to override
 	 * @param int $audience One of:
 	 *   File::FOR_PUBLIC       to be displayed to all users
 	 *   File::FOR_THIS_USER    to be displayed to the given user
 	 *   File::RAW              get the description regardless of permissions
-	 * @param User $user User object to check for, only if FOR_THIS_USER is
+	 * @param User|null $user User object to check for, only if FOR_THIS_USER is
 	 *   passed to the $audience parameter
-	 * @return string
+	 * @return null|string
 	 */
-	function getDescription( $audience = self::FOR_PUBLIC, User $user = null ) {
+	public function getDescription( $audience = self::FOR_PUBLIC, User $user = null ) {
 		return null;
 	}
 
 	/**
 	 * Get the 14-character timestamp of the file upload
 	 *
+	 * @stable to override
 	 * @return string|bool TS_MW timestamp or false on failure
 	 */
-	function getTimestamp() {
+	public function getTimestamp() {
 		$this->assertRepoDefined();
 
 		return $this->repo->getFileTimestamp( $this->getPath() );
 	}
 
 	/**
+	 * Returns the timestamp (in TS_MW format) of the last change of the description page.
+	 * Returns false if the file does not have a description page, or retrieving the timestamp
+	 * would be expensive.
+	 * @since 1.25
+	 * @stable to override
+	 * @return string|bool
+	 */
+	public function getDescriptionTouched() {
+		return false;
+	}
+
+	/**
 	 * Get the SHA-1 base 36 hash of the file
 	 *
+	 * @stable to override
 	 * @return string
 	 */
-	function getSha1() {
+	public function getSha1() {
 		$this->assertRepoDefined();
 
 		return $this->repo->getFileSha1( $this->getPath() );
@@ -1839,9 +2279,9 @@ abstract class File {
 	/**
 	 * Get the deletion archive key, "<sha1>.<ext>"
 	 *
-	 * @return string
+	 * @return string|false
 	 */
-	function getStorageKey() {
+	public function getStorageKey() {
 		$hash = $this->getSha1();
 		if ( !$hash ) {
 			return false;
@@ -1856,68 +2296,45 @@ abstract class File {
 	 * Determine if the current user is allowed to view a particular
 	 * field of this file, if it's marked as deleted.
 	 * STUB
+	 * @stable to override
 	 * @param int $field
-	 * @param User $user User object to check, or null to use $wgUser
+	 * @param User|null $user User object to check, or null to use $wgUser (deprecated since 1.35)
 	 * @return bool
 	 */
-	function userCan( $field, User $user = null ) {
+	public function userCan( $field, User $user = null ) {
+		if ( !$user ) {
+			wfDeprecated( __METHOD__ . ' without passing a $user parameter', '1.35' );
+		}
 		return true;
 	}
 
 	/**
-	 * Get an associative array containing information about a file in the local filesystem.
-	 *
-	 * @param string $path absolute local filesystem path
-	 * @param string|bool $ext The file extension, or true to extract it from
-	 *   the filename. Set it to false to ignore the extension.
-	 *
-	 * @return array
-	 * @deprecated since 1.19
+	 * @return string[] HTTP header name/value map to use for HEAD/GET request responses
+	 * @since 1.30
 	 */
-	static function getPropsFromPath( $path, $ext = true ) {
-		wfDebug( __METHOD__ . ": Getting file info for $path\n" );
-		wfDeprecated( __METHOD__, '1.19' );
-
-		$fsFile = new FSFile( $path );
-
-		return $fsFile->getProps();
-	}
-
-	/**
-	 * Get a SHA-1 hash of a file in the local filesystem, in base-36 lower case
-	 * encoding, zero padded to 31 digits.
-	 *
-	 * 160 log 2 / log 36 = 30.95, so the 160-bit hash fills 31 digits in base 36
-	 * fairly neatly.
-	 *
-	 * @param $path string
-	 * @return bool|string False on failure
-	 * @deprecated since 1.19
-	 */
-	static function sha1Base36( $path ) {
-		wfDeprecated( __METHOD__, '1.19' );
-
-		$fsFile = new FSFile( $path );
-
-		return $fsFile->getSha1Base36();
-	}
-
-	/**
-	 * @return array HTTP header name/value map to use for HEAD/GET request responses
-	 */
-	function getStreamHeaders() {
+	public function getContentHeaders() {
 		$handler = $this->getHandler();
 		if ( $handler ) {
-			return $handler->getStreamHeaders( $this->getMetadata() );
-		} else {
-			return array();
+			$metadata = $this->getMetadata();
+
+			if ( is_string( $metadata ) ) {
+				$metadata = AtEase::quietCall( 'unserialize', $metadata );
+			}
+
+			if ( !is_array( $metadata ) ) {
+				$metadata = [];
+			}
+
+			return $handler->getContentHeaders( $metadata );
 		}
+
+		return [];
 	}
 
 	/**
 	 * @return string
 	 */
-	function getLongDesc() {
+	public function getLongDesc() {
 		$handler = $this->getHandler();
 		if ( $handler ) {
 			return $handler->getLongDesc( $this );
@@ -1929,7 +2346,7 @@ abstract class File {
 	/**
 	 * @return string
 	 */
-	function getShortDesc() {
+	public function getShortDesc() {
 		$handler = $this->getHandler();
 		if ( $handler ) {
 			return $handler->getShortDesc( $this );
@@ -1941,7 +2358,7 @@ abstract class File {
 	/**
 	 * @return string
 	 */
-	function getDimensionsString() {
+	public function getDimensionsString() {
 		$handler = $this->getHandler();
 		if ( $handler ) {
 			return $handler->getDimensionsString( $this );
@@ -1953,14 +2370,14 @@ abstract class File {
 	/**
 	 * @return string
 	 */
-	function getRedirected() {
+	public function getRedirected() {
 		return $this->redirected;
 	}
 
 	/**
 	 * @return Title|null
 	 */
-	function getRedirectedTitle() {
+	protected function getRedirectedTitle() {
 		if ( $this->redirected ) {
 			if ( !$this->redirectTitle ) {
 				$this->redirectTitle = Title::makeTitle( NS_FILE, $this->redirected );
@@ -1976,19 +2393,21 @@ abstract class File {
 	 * @param string $from
 	 * @return void
 	 */
-	function redirectedFrom( $from ) {
+	public function redirectedFrom( $from ) {
 		$this->redirected = $from;
 	}
 
 	/**
+	 * @stable to override
 	 * @return bool
 	 */
-	function isMissing() {
+	public function isMissing() {
 		return false;
 	}
 
 	/**
 	 * Check if this file object is small and can be cached
+	 * @stable to override
 	 * @return bool
 	 */
 	public function isCacheable() {
@@ -2013,5 +2432,24 @@ abstract class File {
 		if ( !( $this->title instanceof Title ) ) {
 			throw new MWException( "A Title object is not set for this File.\n" );
 		}
+	}
+
+	/**
+	 * True if creating thumbnails from the file is large or otherwise resource-intensive.
+	 * @return bool
+	 */
+	public function isExpensiveToThumbnail() {
+		$handler = $this->getHandler();
+		return $handler ? $handler->isExpensiveToThumbnail( $this ) : false;
+	}
+
+	/**
+	 * Whether the thumbnails created on the same server as this code is running.
+	 * @since 1.25
+	 * @stable to override
+	 * @return bool
+	 */
+	public function isTransformedLocally() {
+		return true;
 	}
 }

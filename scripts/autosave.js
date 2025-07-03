@@ -8,11 +8,15 @@ var lastSaveString = "";
 
 function Autosave(value){
     if(autosaveDiv == null){
-        $(value).html("<div id='" + $(this.value).attr("id") + "auto' style='color:#222222;text-shadow:1px 1px 0px #FFFFFF;padding:5px;background:#EAEAEA;border:1px solid #AAAAAA;display:none; right:25px;position:absolute;'><b>Saving</b></div>" + $(value).html());
+        if($("#" + $(this.value).attr("id") + "auto").length == 0){
+            $(value).html("<div id='" + $(this.value).attr("id") + "auto' style='color:#222222;text-shadow:1px 1px 0px #FFFFFF;padding:5px;background:#EAEAEA;border:1px solid #AAAAAA;display:none; right:25px;position:absolute;'><b><en>Saving</en><fr>Sauvegarde</fr></b></div>" + $(value).html());
+        }
     }
     else{
         $.each($(autosaveDiv), function(index, val){
-            $(val).html("<div class='" + $(this.value).attr("id") + "auto' style='color:#222222;text-shadow:1px 1px 0px #FFFFFF;padding:5px;background:#EAEAEA;border:1px solid #AAAAAA;display:none;'><b>Saving</b></div>");
+            if($("." + $(this.value).attr("id") + "auto").length == 0){
+                $(val).html("<div class='" + $(this.value).attr("id") + "auto' style='color:#222222;text-shadow:1px 1px 0px #FFFFFF;padding:5px;background:#EAEAEA;border:1px solid #AAAAAA;display:none;'><b><en>Saving</en><fr>Sauvegarde</fr></b></div>");
+            }
         });
     }
     this.value = value;
@@ -30,9 +34,9 @@ function Autosave(value){
         this.auto.css("opacity", 100);
         this.auto.css("display", "inline");
         //$('#submit_throbber').css('display', 'inline-block');
-        this.auto.html("<b>Saving</b>&nbsp;<img width='16' height='16' src='../skins/Throbber.gif' />");
+        this.auto.html("<b><en>Saving</en><fr>Sauvegarde</fr></b>&nbsp;<img width='16' height='16' src='../skins/Throbber.gif' />");
         if(dataStr == lastSaveString){
-            obj.auto.html("<b>Saved</b>");
+            obj.auto.html("<b><en>Saved</en><fr>Enregistré</fr></b>");
             obj.auto.fadeOut(2500);
             $(button).removeAttr('disabled');
             //$('#submit_throbber').css('display', 'none');
@@ -58,7 +62,7 @@ function Autosave(value){
                     }
                 }
                 lastSaveString = dataStr;
-                obj.auto.html("<b>Saved</b>");
+                obj.auto.html("<b><en>Saved</en><fr>Enregistré</fr></b>");
                 obj.auto.fadeOut(2500);
                 $(button).removeAttr('disabled');
                 $('#submit_throbber').css('display', 'none');

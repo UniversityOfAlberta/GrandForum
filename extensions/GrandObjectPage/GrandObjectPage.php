@@ -5,13 +5,18 @@
     autoload_register('GrandObjectPage/ProjectPage');
     
     require_once("Backbone/BackbonePage.php");
-    require_once("ProductSummary.php");
+    
+    if($config->getValue("productsEnabled")){
+        require_once("ProductSummary.php");
+    }
     
     if($config->getValue("profilesEnabled")){
         require_once("PersonPage.php");
-        require_once("ProjectPage.php");
-        require_once("ThemePage.php");
-        require_once("MilestonesLog.php");
+        if($config->getValue("projectsEnabled")){
+            require_once("ProjectPage.php");
+            require_once("ThemePage.php");
+            require_once("MilestonesLog.php");
+        }
     }
     else{
         // Profiles are disabled
@@ -21,21 +26,22 @@
     require_once("ManagePeople/ManagePeople.php");
     if($config->getValue("productsEnabled")){
         require_once("ManageProducts/ManageProducts.php");
+        require_once("Products/Products.php");
     }
-    
-    require_once("ManagePeopleLog.php");
-    require_once("Products/Products.php");
-    
+    if($config->getValue('networkName') != "AVOID"){
+        require_once("ManagePeopleLog.php");
+    }
     if($config->getValue("contributionsEnabled")){
         require_once("Contributions/Contributions.php");
     }
-    if($config->getValue('networkName') == "FES" ||
+    if($config->getValue('networkType') == "CFREF" ||
        $config->getValue('networkName') == "NETWORK"){
-        // Only show this for FES (for now)
+        // Only show this for CFREF (for now)
         require_once("Collaborations/Collaboration.php");
         require_once("Projections.php");
+        require_once("CRDCCodes.php");
     }
-    if($config->getValue("productsEnabled")){
+    if($config->getValue("productsEnabled") && isExtensionEnabled('Bibliography')){
         require_once("Bibliography/Bibliography.php");
     }
     if(isExtensionEnabled("Postings")){
@@ -55,20 +61,24 @@
         require_once("CRM/CRM.php");
         require_once("LIMS/LIMS.php");
     }
+
+    if(isExtensionEnabled("PMM")){
+        require_once("LIMSPmm/LIMSPmm.php");
+    }
     //require_once("AddMultimediaPage.php");
     
     $wgHooks['AlternateEdit'][] = 'noEdit';
-    $wgHooks['UnknownAction'][] = 'noCreate';
+    UnknownAction::createAction('noCreate');
     
     function noEdit($editpage){
         global $wgArticle;
-        wfRunHooks('ArticleViewHeader', array($wgArticle, "", ""));
+        Hooks::run('ArticleViewHeader', array($wgArticle, "", ""));
         return true;
     }
     
     function noCreate($action, $article){
         if($action == "createFromTemplate"){
-            wfRunHooks('ArticleViewHeader', array($article, "", "")); 
+            Hooks::run('ArticleViewHeader', array($article, "", "")); 
         }
         return true;
     }

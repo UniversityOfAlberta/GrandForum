@@ -13,7 +13,7 @@ function runReviewerAssignments($par) {
 
 class ReviewerAssignments extends SpecialPage {
     
-    function ReviewerAssignments(){
+    function __construct(){
         SpecialPage::__construct("ReviewerAssignments", null, false, 'runReviewerAssignments');
     }
     

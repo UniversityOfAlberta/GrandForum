@@ -24,6 +24,7 @@ class RFPApplicationTable extends SpecialPage{
 
     function execute($par){
         global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle, $wgMessage;
+        $this->getOutput()->setPageTitle("RFP Application Table");
         RFPApplicationTable::generateHTML($wgOut);
     }
     
@@ -90,7 +91,7 @@ class RFPApplicationTable extends SpecialPage{
     
     static function createSubTabs(&$tabs){
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle, $special_evals;
-        if(self::userCanExecute($wgUser)){
+        if((new self)->userCanExecute($wgUser)){
             $selected = @($wgTitle->getText() == "RFPApplicationTable") ? "selected" : false;
             $tabs["Manager"]['subtabs'][] = TabUtils::createSubTab("RFP Applications", "$wgServer$wgScriptPath/index.php/Special:RFPApplicationTable", $selected);
         }

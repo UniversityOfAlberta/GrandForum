@@ -4,8 +4,8 @@ class SubReportSection extends AbstractReportSection {
     
     var $subReport;
     
-    function SubReportSection(){
-        $this->AbstractReportSection();
+    function __construct(){
+        parent::__construct();
         $this->subReport = null;
     }
     

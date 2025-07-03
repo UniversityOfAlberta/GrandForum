@@ -3,6 +3,8 @@
 $publicPresent = false;
 $egAlwaysAllow = array();
 
+use MediaWiki\MediaWikiServices;
+
   /** 
    * Run any initialization code needed by the extension.
    */
@@ -26,6 +28,7 @@ function createRoleNamespaces(){
         $nsId = max($nsId, $row['nsId']);
     }
     foreach($wgAllRoles as $role){
+        $role = str_replace(" ", "_", $role);
         if(!isset($namespaces[strtoupper($role)])){
             $nsId += 2;
             DBFunctions::insert('mw_an_extranamespaces',
@@ -93,7 +96,7 @@ function parsePublicSections($title, $text){
 function checkLoggedIn($title, $article, $output, $user, $request, $mediaWiki){
     global $config, $wgUser;
     if(!$user->isLoggedIn()){
-        if(in_array($_SERVER['REMOTE_ADDR'], $config->getValue('ipWhitelist')) &&
+        if((count($config->getValue('ipWhitelist')) == 0 || in_array($_SERVER['REMOTE_ADDR'], $config->getValue('ipWhitelist'))) &&
            isset($_GET['apiKey']) && 
            in_array($_GET['apiKey'], $config->getValue('apiKeys')) &&
            strpos(@$_GET['action'], 'api.') === 0 && $_SERVER['REQUEST_METHOD'] == "GET"){
@@ -102,6 +105,26 @@ function checkLoggedIn($title, $article, $output, $user, $request, $mediaWiki){
             return true;
         }
     }
+}
+
+/**
+ * Updates the database when a user logs in
+ * @param Title &$title
+ * @param mixed $unused
+ * @param OutputPage $output
+ * @param User $user
+ * @param WebRequest $request
+ * @param MediaWiki $mediaWiki
+ */
+function touchUser(Title &$title, $unused, OutputPage $output, User $user, WebRequest $request, MediaWiki $mediaWiki){
+    global $wgUser;
+	if(!$request->wasPosted() && $wgUser->isLoggedIn()){
+	    $timestamp = date('YmdHis');
+        DBFunctions::update('mw_user',
+                            array('user_touched' => $timestamp),
+                            array('user_id' => $wgUser->getId()));
+        DBFunctions::commit();
+	}
 }
 
 function onUserCanExecute($special, $subpage){
@@ -124,7 +147,7 @@ function onUserCanExecute($special, $subpage){
  * action do not change during a single request.
  */
 function onUserCan(&$title, &$user, $action, &$result) {
-    GrandAccess::setupGrandAccess($user, $user->getRights());
+    //GrandAccess::setupGrandAccess($user, $user->getRights());
     $ret = onUserCan2($title, $user, $action, $result);
     return $ret;
 }
@@ -145,8 +168,8 @@ function onUserCan2(&$title, &$user, $action, &$result) {
   // Check public sections of wiki page
   if(!$user->isLoggedIn() && $title->getNamespace() >= 0 && $action == 'read'){
       $article = WikiPage::factory($title);
-      if($article != null){
-          $text = $article->getText();
+      if($article != null && $article->getContent() != null){
+          $text = $article->getContent()->getText();
           if(strstr($text, "[public]") !== false && strstr($text, "[/public]") !== false){
             $result = true;
             return true;
@@ -206,7 +229,7 @@ function onUserCan2(&$title, &$user, $action, &$result) {
 	}
 	
 	//Check to see if the title is for an uploaded file, and if the user has permission to view that file.
-	if ($egAnProtectUploads && $title->getNamespace() == NS_IMAGE){
+	if ($egAnProtectUploads && $title->getNamespace() == NS_FILE){
 	  require_once('UploadProtection.php');
 	  
 	  $uploadNS = UploadProtection::getNsForImageTitle($title);
@@ -369,7 +392,7 @@ function isPublicNS($nsId) {
   if ($nsId == -1) //-1 is a placeholder for a public page that is not in a public namespace
     return true;
   
-	$dbr =& wfGetDB( DB_READ );
+	$dbr = wfGetDB( DB_REPLICA );
 	$result = $dbr->select("${egAnnokiTablePrefix}extranamespaces", "public", array("nsId" => $nsId) );
 
 	if (!($row = $dbr->fetchRow($result)) || ($row[0] == 0)) {
@@ -456,7 +479,7 @@ function updatePermissionsByPageID($pageID, $permissions) {
   if ($pageID == 0) { //TODO error?
     return;
   }
-  $dbw =& wfGetDB( DB_MASTER );
+  $dbw = wfGetDB( DB_MASTER );
   $dbw->delete("${egAnnokiTablePrefix}pagepermissions", array("page_id" => $pageID));
   
   $newPermissions = array();
@@ -476,7 +499,7 @@ function updatePermissionsByPageID($pageID, $permissions) {
 function getExtraPermissions($title) {
   global $egAnnokiTablePrefix;
 
-	$dbr =& wfGetDB( DB_READ );
+	$dbr = wfGetDB( DB_REPLICA );
 	$result = $dbr->select("${egAnnokiTablePrefix}pagepermissions", "group_id", array("page_id" => $title->getArticleID()) );
 	$extraPerm = array();
 	while ($row = $dbr->fetchRow($result)) {
@@ -498,6 +521,7 @@ function preventUnauthorizedTransclusionsOnSave( $editPage, $text, $section, &$e
 //Always returns true (to continue hook processing)
 //Adapted from PageSecurity extension (regex for transclusions)
 function performActionOnTransclusion(&$text, &$error, $isSave){
+    global $wgUser;
   $pattern = '@{{(.+?)(\|.*?)?}}@is';
   $offset = 0;
   while (preg_match($pattern, $text, $matches, PREG_OFFSET_CAPTURE, $offset)) {
@@ -505,7 +529,7 @@ function performActionOnTransclusion(&$text, &$error, $isSave){
     $transclusion_text = trim($matches[1][0]);
     $transclusion_title = Title::newFromDBkey($transclusion_text);
 
-    if ($transclusion_title !== null && !$transclusion_title->userCanRead()) {
+    if ($transclusion_title !== null && !MediaWikiServices::getInstance()->getPermissionManager()->userCan('read', $wgUser, $transclusion_title)) {
       if ($isSave){
 	$error = '<p class="error">You do not have permission to access transcluded article '.$transclusion_text.'.</p>';
 	return true;
@@ -520,6 +544,21 @@ function performActionOnTransclusion(&$text, &$error, $isSave){
   }
 
   return true;
+}
+
+function logout($action, $article){
+    global $wgUser, $wgServer, $wgScriptPath;
+    if($action == "logout" && $wgUser->isLoggedIn()){
+        $wgUser->logout();
+        if(isset($_GET['returnto'])){
+            redirect($_GET['returnto']);
+        }
+        else{
+            redirect("$wgServer$wgScriptPath");
+        }
+        return false;
+    }
+    return true;
 }
 
 ?>

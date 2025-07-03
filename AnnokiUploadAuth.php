@@ -14,8 +14,10 @@
 
 define( 'MW_NO_OUTPUT_COMPRESSION', 1 );
 require_once( dirname( __FILE__ ) . '/includes/WebStart.php' );
-wfProfileIn( 'AnnokiUploadAuth.php' );
+
 require_once( dirname( __FILE__ ) . '/includes/StreamFile.php' );
+
+use MediaWiki\MediaWikiServices;
 
 $perms = User::getGroupPermissions( array( '*' ) );
 if ( in_array( 'read', $perms, true ) ) {
@@ -48,7 +50,7 @@ if( preg_match( '!\d+px-(.*)!i', $name, $m ) )
 	$name = $m[1];
 wfDebugLog( 'AnnokiUploadAuth', "\$name is {$name}" );
 
-$title = Title::makeTitleSafe( NS_IMAGE, $name );
+$title = Title::makeTitleSafe( NS_FILE, $name );
 if( !$title instanceof Title ) {
 	wfDebugLog( 'AnnokiUploadAuth', "Unable to construct a valid Title from `{$name}`" );
 	wfForbidden();
@@ -61,10 +63,9 @@ if ($egAnProtectUploads){
   //Check to see if the file is not current (from the archive).
   if (strpos($filename, "$realUpload/archive/") === 0) {
     $match = substr(strstr($filename, '!'),1);
-    $unarchivedTitle =  Title::makeTitleSafe( NS_IMAGE, $match);
+    $unarchivedTitle =  Title::makeTitleSafe( NS_FILE, $match);
   }
-  str_replace("File:", "", $unarchivedTitle);
-  if (!$unarchivedTitle->userCanRead() || !$wgUser->isLoggedIn()){
+  if (!MediaWikiServices::getInstance()->getPermissionManager()->userCan('read', $wgUser, $unarchivedTitle) || !$wgUser->isLoggedIn()){
     wfDebugLog( 'AnnokiUploadAuth', 'User does not have access to '.$unarchivedTitle->getPrefixedText());
     $errorFile = 'extensions/AccessControls/images/errorFile.gif';
     StreamFile::stream($errorFile, array( 'Cache-Control: private', 'Vary: Cookie' ));
@@ -84,7 +85,7 @@ if( !$wgUser->getId() && ( !is_array( $wgWhitelistRead ) || !in_array( $title, $
 	$sql = "SELECT * 
 		FROM $upTable
 		WHERE upload_name = '$title_tmp'";
-	$dbr = wfGetDB(DB_SLAVE);
+	$dbr = wfGetDB(DB_REPLICA);
 	$result = $dbr->query($sql);
 	$rows = array();
 	while($row = $dbr->fetchRow($result)){
@@ -111,7 +112,6 @@ if( is_dir( $filename ) ) {
 // Stream the requested file
 wfDebugLog( 'AnnokiUploadAuth', "Streaming `{$filename}`" );
 StreamFile::stream($filename, array( 'Cache-Control: private', 'Vary: Cookie' ));
-wfLogProfilingData();
 
 /**
  * Issue a standard HTTP 403 Forbidden header and a basic
@@ -129,7 +129,6 @@ function wfForbidden($error = 'You need to log in to access files on this server
 </body>
 </html>
 ENDS;
-	wfLogProfilingData();
 	exit();
 }
 
@@ -150,7 +149,6 @@ this case.
 </body>
 </html>
 ENDS;
-	wfLogProfilingData();
 	exit;
 }
 

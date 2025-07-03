@@ -1,11 +1,11 @@
 <?php
 
-$wgHooks['UnknownAction'][] = 'PublicUniversityMapTab::getPublicUniversityMapData';
+UnknownAction::createAction('PublicUniversityMapTab::getPublicUniversityMapData');
 
 class PublicUniversityMapTab extends AbstractTab {
 	
-	function PublicUniversityMapTab(){
-        parent::AbstractTab("University Map");
+	function __construct(){
+        parent::__construct("University Map");
     }
 
     function generateBody(){

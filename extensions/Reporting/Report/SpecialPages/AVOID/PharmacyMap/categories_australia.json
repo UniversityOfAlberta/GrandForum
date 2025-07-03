@@ -1,0 +1,615 @@
+[
+    {
+        "id": "Activity",
+        "text": "Activity",
+        "class": "testing",
+        "code": "CFN-ACT",
+        "description": "",
+        "descriptionFr": "",
+        "tags": [],
+        "children": [
+            {
+                "text": "Indoor Activity",
+                "code": "CFN-ACT-SP-IND",
+                "description": "",
+                "descriptionFr": "",
+                "tags": [],
+                "children": [
+                    {
+                        "text": "Table Tennis",
+                        "value": 90,
+                        "code": "CFN-ACT-SP-IND-TABLETENNIS",
+                        "description": "",
+                        "descriptionFr": "",
+                        "note": ""
+                    },
+                    {
+                        "text": "Bowls",
+                        "value": 90,
+                        "code": "CFN-ACT-SP-IND-BOWLS",
+                        "description": "",
+                        "descriptionFr": "",
+                        "note": ""
+                    },
+                    {
+                        "text": "Dance",
+                        "value": 90,
+                        "code": "CFN-ACT-SP-IND-DANCE",
+                        "description": "",
+                        "descriptionFr": "",
+                        "note": ""
+                    },
+                    {
+                        "text": "Yoga",
+                        "value": 90,
+                        "code": "CFN-ACT-SP-IND-YOGA",
+                        "description": "",
+                        "descriptionFr": "",
+                        "note": ""
+                    },
+                    {
+                        "text": "Tai Chi",
+                        "value": 90,
+                        "code": "CFN-ACT-SP-IND-TAICHI",
+                        "description": "",
+                        "descriptionFr": "",
+                        "note": ""
+                    },
+                    {
+                        "text": "Chi Ball",
+                        "value": 90,
+                        "code": "CFN-ACT-SP-IND-CHIBALL",
+                        "description": "",
+                        "descriptionFr": "",
+                        "note": ""
+                    },
+                    {
+                        "text": "Martial Arts",
+                        "value": 90,
+                        "code": "CFN-ACT-SP-IND-MARTIALARTS",
+                        "description": "",
+                        "descriptionFr": "",
+                        "note": ""
+                    },
+                    {
+                        "text": "Movement",
+                        "value": 90,
+                        "code": "CFN-ACT-SP-IND-MOVEMENT",
+                        "description": "",
+                        "descriptionFr": "",
+                        "note": ""
+                    },
+                    {
+                        "text": "Aquarobics",
+                        "value": 90,
+                        "code": "CFN-ACT-SP-IND-AQUAROBICS",
+                        "description": "",
+                        "descriptionFr": "",
+                        "note": ""
+                    },
+                    {
+                        "text": "Pickleball",
+                        "value": 90,
+                        "code": "CFN-ACT-SP-IND-PICKLE",
+                        "description": "",
+                        "descriptionFr": "",
+                        "note": ""
+                    }
+                ]
+            },
+            {
+                "text": "Exercise",
+                "value": 113,
+                "code": "CFN-ACT-EX",
+                "description": "",
+                "descriptionFr": "",
+                "tags": [],
+                "children": [
+                    {
+                        "text": "Strength for Life Tier 2",
+                        "value": 114,
+                        "code": "CFN-ACT-EX-COTA",
+                        "description": "",
+                        "descriptionFr": "",
+                        "tags": []
+                    },
+                    {
+                        "text": "Other Exercise Programs",
+                        "value": 115,
+                        "code": "CFN-ACT-EX-OTHER",
+                        "description": "",
+                        "descriptionFr": "",
+                        "tags": []
+                    }
+                ]
+            },
+            {
+                "text": "Fitness",
+                "value": 113,
+                "code": "CFN-ACT-FIT",
+                "description": "",
+                "descriptionFr": "",
+                "tags": [],
+                "children": [
+                    {
+                        "text": "Indoor Fitness",
+                        "value": 114,
+                        "code": "CFN-ACT-FIT-IND",
+                        "description": "",
+                        "descriptionFr": "",
+                        "tags": []
+                    },
+                    {
+                        "text": "Outdoor Fitness Equipment",
+                        "value": 114,
+                        "code": "CFN-ACT-FIT-OUT",
+                        "description": "",
+                        "descriptionFr": "",
+                        "tags": []
+                    }
+                ]
+            },
+            {
+                "text": "Walking",
+                "value": 113,
+                "code": "CFN-ACT-WALK",
+                "description": "",
+                "descriptionFr": "",
+                "tags": []
+            },
+            {
+                "text": "Outdoor Activity",
+                "value": 113,
+                "code": "CFN-ACT-OUT",
+                "description": "",
+                "descriptionFr": "",
+                "tags": [],
+                "children": [
+                     {
+                        "text": "Hockey",
+                        "value": 114,
+                        "code": "CFN-ACT-OUT-HOCKEY",
+                        "description": "",
+                        "descriptionFr": "",
+                        "tags": []
+                    },
+                    {
+                        "text": "Golf",
+                        "value": 114,
+                        "code": "CFN-ACT-OUT-GOLF",
+                        "description": "",
+                        "descriptionFr": "",
+                        "tags": []
+                    },
+                    {
+                        "text": "Lawn Bowls",
+                        "value": 114,
+                        "code": "CFN-ACT-OUT-BOWLS",
+                        "description": "",
+                        "descriptionFr": "",
+                        "tags": []
+                    },
+                    {
+                        "text": "Cricket",
+                        "value": 114,
+                        "code": "CFN-ACT-OUT-CRICKET",
+                        "description": "",
+                        "descriptionFr": "",
+                        "tags": []
+                    },
+                    {
+                        "text": "Croquet",
+                        "value": 114,
+                        "code": "CFN-ACT-OUT-CROQUET",
+                        "description": "",
+                        "descriptionFr": "",
+                        "tags": []
+                    },
+                    {
+                        "text": "Dragon Boating",
+                        "value": 114,
+                        "code": "CFN-ACT-OUT-DRAGON",
+                        "description": "",
+                        "descriptionFr": "",
+                        "tags": []
+                    }
+                ]
+            },
+            {
+                "text": "Gardening",
+                "value": 113,
+                "code": "CFN-ACT-GARD",
+                "description": "",
+                "descriptionFr": "",
+                "tags": [],
+                "children": [
+                     {
+                        "text": "Community Gardens",
+                        "value": 114,
+                        "code": "CFN-ACT-GARD-COMM",
+                        "description": "",
+                        "descriptionFr": "",
+                        "tags": []
+                    },
+                    {
+                        "text": "Other Garden Groups",
+                        "value": 114,
+                        "code": "CFN-ACT-GARD-OTHER",
+                        "description": "",
+                        "descriptionFr": "",
+                        "tags": []
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "text": "Aged Care Wellness Centres",
+        "code": "CFN-CARE",
+        "description": "",
+        "descriptionFr": "",
+        "tags": []
+    },
+    {
+        "text": "Interact",
+        "code": "CFN-INT",
+        "description": "",
+        "descriptionFr": "",
+        "tags": [],
+        "children": [
+            {
+                "text": "Crafts",
+                "value": 88,
+                "code": "CFN-INT-CRAFT",
+                "description": "",
+                "descriptionFr": "",
+                "tags": [],
+                "note": ""
+            },
+            {
+                "text": "Games",
+                "value": 88,
+                "code": "CFN-INT-GAMES",
+                "description": "",
+                "descriptionFr": "",
+                "note": ""
+            },
+            {
+                "text": "Interest Clubs",
+                "value": 88,
+                "code": "CFN-INT-CLUBS",
+                "description": "",
+                "descriptionFr": "",
+                "note": ""
+            },
+            {
+                "text": "Repair It",
+                "value": 88,
+                "code": "CFN-INT-REPAIR",
+                "description": "",
+                "descriptionFr": "",
+                "note": ""
+            },
+            {
+                "text": "Friendship Groups/Social Clubs",
+                "value": 88,
+                "code": "CFN-INT-SOC",
+                "description": "",
+                "descriptionFr": "",
+                "note": ""
+            },
+            {
+                "text": "Language",
+                "value": 88,
+                "code": "CFN-INT-LANG",
+                "description": "",
+                "descriptionFr": "",
+                "note": ""
+            },
+            {
+                "text": "Choir",
+                "value": 88,
+                "code": "CFN-INT-CHOIR",
+                "description": "",
+                "descriptionFr": "",
+                "note": ""
+            },
+            {
+                "text": "Arts",
+                "value": 88,
+                "code": "CFN-INT-ARTS",
+                "description": "",
+                "descriptionFr": "",
+                "note": ""
+            },
+            {
+                "text": "Volunteering",
+                "value": 88,
+                "code": "CFN-INT-VOLUNTEERING",
+                "description": "",
+                "descriptionFr": "",
+                "note": ""
+            },
+            {
+                "text": "Animals",
+                "value": 88,
+                "code": "CFN-INT-ANIMALS",
+                "description": "",
+                "descriptionFr": "",
+                "note": ""
+            },
+            {
+                "text": "Men's Shed",
+                "value": 88,
+                "code": "CFN-INT-MEN",
+                "description": "",
+                "descriptionFr": "",
+                "note": ""
+            },
+            {
+                "text": "Woodworking",
+                "value": 88,
+                "code": "CFN-INT-WOOD",
+                "description": "",
+                "descriptionFr": "",
+                "note": ""
+            },
+            {
+                "text": "Ukelele",
+                "value": 88,
+                "code": "CFN-INT-UKELELE",
+                "description": "",
+                "descriptionFr": "",
+                "note": ""
+            }
+        ]
+    },
+    {
+        "text": "Community Spaces",
+        "code": "CFN-COMM",
+        "description": "",
+        "descriptionFr": "",
+        "tags": [],
+        "children": [
+            {
+                "text": "Water",
+                "value": 92,
+                "code": "CFN-COMM-WATER",
+                "description": "",
+                "descriptionFr": "",
+                "tags": [],
+                "note": ""
+            },
+            {
+                "text": "Museum",
+                "value": 92,
+                "code": "CFN-COMM-MUSEUM",
+                "description": "",
+                "descriptionFr": "",
+                "tags": [],
+                "note": ""
+            },
+            {
+                "text": "Library",
+                "value": 92,
+                "code": "CFN-COMM-LIBRARY",
+                "description": "",
+                "descriptionFr": "",
+                "tags": [],
+                "note": ""
+            }
+        ]
+    },
+    {
+        "text": "Vaccination",
+        "value": 88,
+        "code": "CFN-VAC",
+        "description": "",
+        "descriptionFr": "",
+        "tags": []
+    },
+    {
+        "text": "Diet and Nutrition",
+        "code": "CFN-DIET",
+        "description": "",
+        "descriptionFr": "",
+        "tags": [],
+        "children": [
+            {
+                "text": "Food Bank",
+                "value": 92,
+                "code": "CFN-DIET-FREE",
+                "description": "",
+                "descriptionFr": "",
+                "tags": [],
+                "note": ""
+            },
+            {
+                "text": "Meal Programs",
+                "value": 92,
+                "code": "CFN-DIET-MEAL",
+                "description": "",
+                "descriptionFr": "",
+                "tags": []
+            },
+            {
+                "text": "Classes",
+                "value": 92,
+                "code": "CFN-DIET-CLASS",
+                "description": "",
+                "descriptionFr": "",
+                "tags": []
+            }
+        ]
+    },
+    {
+        "text": "Legal, Finance and Planning",
+        "code": "CFN-FINLGL",
+        "description": "",
+        "descriptionFr": "",
+        "tags": [],
+        "children": [
+            {
+                "text": "Legal Services",
+                "value": 121,
+                "code": "CFN-FINLGL-SERVICES",
+                "description": "",
+                "descriptionFr": ""
+            },
+            {
+                "text": "Social Services",
+                "value": 100,
+                "code": "CFN-FINLGL-SOCIAL",
+                "description": "",
+                "descriptionFr": ""
+            },
+            {
+                "text": "Aged Rights Services",
+                "value": 42,
+                "code": "CFN-FINLGL-RIGHTS",
+                "description": "",
+                "descriptionFr": ""
+            },
+            {
+                "text": "Financial",
+                "value": 42,
+                "code": "CFN-FINLGL-FINANCIAL",
+                "description": "",
+                "descriptionFr": ""
+            }
+        ]
+    },
+    {
+        "text": "Chronic Conditions",
+        "code": "CFN-CHRONIC",
+        "description": "",
+        "descriptionFr": "",
+        "children": [
+            {
+                "text": "Dementia",
+                "value": 42,
+                "code": "CFN-CHRONIC-DEMENTIA",
+                "description": "",
+                "descriptionFr": "",
+                "tags": [],
+                "note": ""
+            },
+            {
+                "text": "Chronic Pain",
+                "value": 100,
+                "code": "CFN-CHRONIC-PAIN",
+                "description": "",
+                "descriptionFr": "",
+                "tags": [],
+                "note": ""
+            },
+            {
+                "text": "Diabetes",
+                "value": 42,
+                "code": "CFN-CHRONIC-DIABETES",
+                "description": "",
+                "descriptionFr": "",
+                "tags": [],
+                "note": ""
+            },
+            {
+                "text": "Heart Disease",
+                "value": 121,
+                "code": "CFN-CHRONIC-HEART",
+                "description": "",
+                "descriptionFr": "",
+                "tags": [],
+                "note": ""
+            },
+            {
+                "text": "Kidney and Bladder Disease",
+                "value": 121,
+                "code": "CFN-CHRONIC-KIDNEY",
+                "description": "",
+                "descriptionFr": "",
+                "tags": [],
+                "note": ""
+            },
+            {
+                "text": "Lung Disease",
+                "value": 42,
+                "code": "CFN-CHRONIC-LUNG",
+                "description": "",
+                "descriptionFr": "",
+                "tags": [],
+                "note": ""
+            },
+            {
+                "text": "Health Coaching",
+                "value": 42,
+                "code": "CFN-CHRONIC-COACH",
+                "description": "",
+                "descriptionFr": "",
+                "tags": [],
+                "note": ""
+            }
+        ]
+    },
+    {
+        "text": "Mental Health",
+        "code": "CFN-MH",
+        "description": "",
+        "descriptionFr": "",
+        "tags": [],
+        "children": [
+            {
+                "text": "Services",
+                "value": 121,
+                "code": "CFN-MH-SERVICES",
+                "description": "",
+                "descriptionFr": "",
+                "note": ""
+            },
+            {
+                "text": "Meditation",
+                "value": 121,
+                "code": "CFN-MH-MEDITATION",
+                "description": "",
+                "descriptionFr": "",
+                "note": ""
+            },
+            {
+                "text": "Support Groups",
+                "value": 100,
+                "code": "CFN-MH-SUPPORT",
+                "description": "",
+                "descriptionFr": "",
+                "note": ""
+            },
+            {
+                "text": "Mindfulness and Resilience Online",
+                "value": 42,
+                "code": "CFN-MH-MINDFULNESS",
+                "description": "",
+                "descriptionFr": "",
+                "note": ""
+            }
+        ]
+    },
+    {
+        "text": "Digital Guidance",
+        "value": 43,
+        "code": "CFN-DIGITAL",
+        "description": "",
+        "descriptionFr": ""
+    },
+    {
+        "text": "Healthy Ageing Platforms",
+        "value": 44,
+        "code": "CFN-PLATFORM",
+        "description": "",
+        "descriptionFr": ""
+    },
+    {
+        "text": "Find Aged Care Provider",
+        "value": 45,
+        "code": "CFN-PROVIDER",
+        "description": "",
+        "descriptionFr": ""
+    }
+]

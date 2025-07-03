@@ -30,25 +30,23 @@
  */
 class TextContentHandler extends ContentHandler {
 
-	// @codingStandardsIgnoreStart bug 57585
-	public function __construct( $modelId = CONTENT_MODEL_TEXT,
-		$formats = array( CONTENT_FORMAT_TEXT ) ) {
+	public function __construct( $modelId = CONTENT_MODEL_TEXT, $formats = [ CONTENT_FORMAT_TEXT ] ) {
 		parent::__construct( $modelId, $formats );
 	}
-	// @codingStandardsIgnoreEnd
 
 	/**
 	 * Returns the content's text as-is.
 	 *
 	 * @param Content $content
-	 * @param string $format The serialization format to check
+	 * @param string|null $format The serialization format to check
 	 *
 	 * @return mixed
 	 */
 	public function serializeContent( Content $content, $format = null ) {
 		$this->checkFormat( $format );
 
-		return $content->getNativeData();
+		// @phan-suppress-next-line PhanUndeclaredMethod
+		return $content->getText();
 	}
 
 	/**
@@ -60,9 +58,9 @@ class TextContentHandler extends ContentHandler {
 	 *
 	 * This text-based implementation uses wfMerge().
 	 *
-	 * @param Content|string $oldContent The page's previous content.
-	 * @param Content|string $myContent One of the page's conflicting contents.
-	 * @param Content|string $yourContent One of the page's conflicting contents.
+	 * @param Content $oldContent The page's previous content.
+	 * @param Content $myContent One of the page's conflicting contents.
+	 * @param Content $yourContent One of the page's conflicting contents.
 	 *
 	 * @return Content|bool
 	 */
@@ -93,19 +91,33 @@ class TextContentHandler extends ContentHandler {
 	}
 
 	/**
+	 * Returns the name of the associated Content class, to
+	 * be used when creating new objects. Override expected
+	 * by subclasses.
+	 *
+	 * @since 1.24
+	 *
+	 * @return string
+	 */
+	protected function getContentClass() {
+		return TextContent::class;
+	}
+
+	/**
 	 * Unserializes a Content object of the type supported by this ContentHandler.
 	 *
 	 * @since 1.21
 	 *
 	 * @param string $text Serialized form of the content
-	 * @param string $format The format used for serialization
+	 * @param string|null $format The format used for serialization
 	 *
 	 * @return Content The TextContent object wrapping $text
 	 */
 	public function unserializeContent( $text, $format = null ) {
 		$this->checkFormat( $format );
 
-		return new TextContent( $text );
+		$class = $this->getContentClass();
+		return new $class( $text );
 	}
 
 	/**
@@ -116,7 +128,36 @@ class TextContentHandler extends ContentHandler {
 	 * @return Content A new TextContent object with empty text.
 	 */
 	public function makeEmptyContent() {
-		return new TextContent( '' );
+		$class = $this->getContentClass();
+		return new $class( '' );
+	}
+
+	/**
+	 * @see ContentHandler::supportsDirectEditing
+	 *
+	 * @return bool Default is true for TextContent and derivatives.
+	 */
+	public function supportsDirectEditing() {
+		return true;
+	}
+
+	public function getFieldsForSearchIndex( SearchEngine $engine ) {
+		$fields = parent::getFieldsForSearchIndex( $engine );
+		$fields['language'] =
+			$engine->makeSearchFieldMapping( 'language', SearchIndexField::INDEX_TYPE_KEYWORD );
+
+		return $fields;
+	}
+
+	public function getDataForSearchIndex(
+		WikiPage $page,
+		ParserOutput $output,
+		SearchEngine $engine
+	) {
+		$fields = parent::getDataForSearchIndex( $page, $output, $engine );
+		$fields['language'] =
+			$this->getPageLanguage( $page->getTitle(), $page->getContent() )->getCode();
+		return $fields;
 	}
 
 }

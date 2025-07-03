@@ -67,8 +67,16 @@
             <td class="field"><%= HTML.Select(this, 'status', {options: this.model.getPossibleStatus()}) %></td>
         </tr>
     <% } %>
-    <tr id="date">
-        <td class="label"><% if(category == 'Grants'){ %> Start <% } %>Date<% if(networkName == "FES"){ %> Published<% } %>:</td>
+    <tr>
+        <td class="label">
+            <% if(category == 'Grants' || type == 'Conference/Symposium/Workshop Contribution'){ %>
+                Start Date:
+            <% } else if(networkType == "CFREF"){ %>
+                Date Published:
+            <% } else { %>
+                Date:
+            <% } %>
+        </td>
         <td class="field"><%= HTML.DatePicker(this, 'date', {format: 'yy-mm-dd'}) %></td>
         <td valign="top" rowspan="<%= _.size(this.model.getPossibleFields()) + 1 %>" style="width:100%;">
             <div id="projects">
@@ -91,7 +99,7 @@
                     <% } else if(val.type == "Integer"){ %>
                         <%= HTML.TextBox(this, 'data.' + index, {style: "width:100px;", class: "integer"}) %>
                     <% } else if(val.type == "Radio"){ %>
-                        <%= HTML.Radio(this, 'data.' + index, {size: 30, options: val.options}) %>
+                        <div style="white-space:nowrap;"><%= HTML.Radio(this, 'data.' + index, {size: 30, options: val.options}) %></div>
                     <% } else if(val.type == "Check"){ %>
                         <%= HTML.CheckBox(this, 'data.' + index, {size: 30, value: "Yes"}) %>
                     <% } else if(val.type == "Select"){ %>

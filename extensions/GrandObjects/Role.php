@@ -43,7 +43,7 @@ class Role extends BackboneModel {
 	}
 	
 	// Constructor
-	function Role($data){
+	function __construct($data){
 		if(count($data) > 0){
 			$this->id = $data[0]['id'];
 			$this->user = $data[0]['user_id'];
@@ -104,6 +104,7 @@ class Role extends BackboneModel {
                     DBFunctions::insert('grand_role_projects',
                                         array('role_id' => $this->getId(),
                                               'project_id' => $p->getId()));
+                    DBFunctions::commit();
                     Cache::delete("project{$p->getId()}_people*", true);
                 }
             }
@@ -143,6 +144,7 @@ class Role extends BackboneModel {
 	        DBFunctions::insert('grand_role_projects',
 	                            array('role_id' => $this->getId(),
 	                                  'project_id' => $p->getId()));
+	        DBFunctions::commit();
             Cache::delete("project{$p->getId()}_people*", true);
 	    }
 	    Role::$cache = array();

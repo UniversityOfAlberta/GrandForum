@@ -4,11 +4,11 @@ class LIMSTaskAPI extends RESTAPI {
     
     function doGET(){
         if($this->getParam('id') != ""){
-            $task = LIMSTask::newFromId($this->getParam('id'));
+            $task = LIMSTaskPmm::newFromId($this->getParam('id'));
             return $task->toJSON();
         }
         else{
-            $opportunity = LIMSOpportunity::newFromId($this->getParam('opportunity_id'));
+            $opportunity = LIMSOpportunityPmm::newFromId($this->getParam('opportunity_id'));
             $tasks = new Collection($opportunity->getTasks());
             return $tasks->toJSON();
         }
@@ -16,8 +16,8 @@ class LIMSTaskAPI extends RESTAPI {
     
     function doPOST(){
         $me = Person::newFromWgUser();
-        if(LIMSTask::isAllowedToCreate()){
-            $task = new LIMSTask(array());
+        if(LIMSTaskPmm::isAllowedToCreate()){
+            $task = new LIMSTaskPmm(array());
             $task->opportunity = $this->POST('opportunity');
             $task->assignee = $this->POST('assignee')->id;
             $task->task = $this->POST('task');
@@ -33,7 +33,7 @@ class LIMSTaskAPI extends RESTAPI {
     }
     
     function doPUT(){
-        $task = LIMSTask::newFromId($this->getParam('id'));
+        $task = LIMSTaskPmm::newFromId($this->getParam('id'));
         if($task->isAllowedToEdit()){
             $task->assignee = $this->POST('assignee')->id;
             $task->task = $this->POST('task');
@@ -49,7 +49,7 @@ class LIMSTaskAPI extends RESTAPI {
     }
     
     function doDELETE(){
-        $task = LIMSTask::newFromId($this->getParam('id'));
+        $task = LIMSTaskPmm::newFromId($this->getParam('id'));
         if($task->isAllowedToEdit()){
             $task->delete();
             return $task->toJSON();

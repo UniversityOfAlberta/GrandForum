@@ -1,7 +1,8 @@
 function setProgress(id, percent){
     if($("#" + id).hasClass('selectedReportTab')){
+        $("#reportProgressBar").attr("data-percent", percent);
         $("#reportProgressBar").width(percent + "%");
-        $("#reportProgressLabel").html("<span class='en'>Section Progress</span><span class='fr'>Complétion de la section</span> (" + percent + "%)");
+        $("#reportProgressLabel").html("<en>Section Progress</en><fr>Complétion de la section</fr> (" + percent + "%)");
         if(percent == 100 && buttonClicked){
             $("#saveDialog").dialog({
                 width: 'auto',

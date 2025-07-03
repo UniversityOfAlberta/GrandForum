@@ -1,5 +1,7 @@
 .htaccess
-Classes/dompdf/lib/fonts/log.htmasdf
+.DS_Store
+Classes/dompdf/lib/fonts/log.htm
+Classes/securimage/database/securimage.sq3
 behat/behat.yml
 behat/bin/behat
 behat/bin/selenium.jar
@@ -15,6 +17,7 @@ images/*
 Classes/dompdf/lib/fonts/log.htm
 Classes/dompdf/lib/fonts/*.afm.php
 extensions/Cache/cache/
+test.tmp
 Path.php
 Credentials.php
 phpdoc.dist.xml
@@ -27,13 +30,17 @@ config/config_agewell.php
 config/config_glyconet.php
 data/review-feedback
 docs/_build/
+/EducationModules/
+/EducationResources/
 extensions/AnnokiControl/query_log.txt
 maintenance/expert/
 maintenance/templates/bin
 maintenance/templates/composer.*
 maintenance/templates/files/
 maintenance/templates/vendor/
+maintenance/avoid_stuff/
 maintenance/alloc.csv
+maintenance/reminders.json
 npm-debug.log
 symfony/bin
 symfony/behat.yml
@@ -46,6 +53,8 @@ symfony/screenshots
 symfony/vendor
 symfony/phantomjs.log
 symfony/phantomjs.pid
+symfony/selenium.log
+symfony/selenium.pid
 extensions/MailingList/Newsletter/cache/*.html
 extensions/GrandObjects/facultyMap.php
 extensions/GlobalSearch/ExpertSearch/kf_error_log
@@ -70,3 +79,5 @@ extensions/GlobalSearch/ExpertSearch/CommunityBasedEF/conf/queryConf/klSmooth.su
 extensions/GlobalSearch/ExpertSearch/CommunityBasedEF/conf/queryConf/query.ldf
 extensions/GlobalSearch/ExpertSearch/CommunityBasedEF/conf/queryConf/query.trectext
 extensions/GlobalSearch/ExpertSearch/CommunityBasedEF/output/
+extensions/Reporting/Report/SpecialPages/AVOID/PharmacyMap/programs*.csv
+vendor/dompdf/dompdf/lib/fonts/

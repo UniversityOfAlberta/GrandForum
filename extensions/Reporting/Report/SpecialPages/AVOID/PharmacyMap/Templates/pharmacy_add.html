@@ -1,0 +1,92 @@
+<en>
+    <p>
+    This page is for CAPS members to add their own local pharmacy to our national map, if their pharmacy is currently providing Mifepristone.  To add your pharmacy, fill in each box below and click the "Add Pharmacy" button. 
+    </p>
+    <p>
+    </p>
+</en>
+<fr>
+    <p>
+Cette page s'adresse aux membres de CAPS pour ajouter leur propre pharmacie locale à notre carte nationale, si leur pharmacie fournit actuellement Mifepristone. Pour ajouter votre pharmacie, remplissez chaque case ci-dessous et cliquez sur le bouton "Ajouter une pharmacie".
+    </p>
+</fr>
+<br />
+<table>
+     <tbody>
+	    <tr>
+            <td align=right>
+                <en>Name of Pharmacy</en>
+                <fr>Nom de la Pharmacie:</fr>
+            </td>
+            <td> 
+                <input type="text" id="name" style="width:399px" />
+            </td>
+            <td align=right>
+                <en>Phone Number:</en>
+                <fr>Numéro de Téléphone</fr>
+            </td>
+            <td> 
+                <input type="text" id="phone" style="width:399px" />
+            </td>
+        </tr>
+	    <tr>   
+            <td align=right>
+                <en>Address</en>
+                <fr>Adresse</fr>
+            </td>
+            <td> 
+                <input type="text" id="lat" style="width:399px" />
+            </td>
+            <td align=right>
+                <en>Hours of Operation:</en>
+                <fr>Heures</fr>
+            </td>
+            <td> 
+                <input type="time" id="timefrom" style="width:100px" /> To 
+                <input type="time" id="timeto" style="width:100px" />
+            </td>
+        </tr>
+	    <tr>
+            <td align=right>Province:</td>
+            <td>
+                    <% if(wgLang == 'en'){ %>
+                            <%= HTML.Select(this, "province", {options: 
+                                                                    ["Alberta", 
+                                                                     "British Columbia", 
+                                                                     "Manitoba",
+                                                                     "New Brunswick",
+                                                                     "New foundland and Labrador",
+                                                                     "Northwest Territories",
+                                                                     "Nova Scotia",
+                                                                     "Nunavut",
+                                                                     "Ontario",
+                                                                     "Prince Edward Island",
+                                                                     "Quebec",
+                                                                     "Saskatchewan",
+                                                                     "Yukon"]}) %>
+                        <% } else if(wgLang == 'fr'){ %>
+                            <%= HTML.Select(this, "province", {options: 
+                                                                    ["Alberta", 
+                                                                     "Colombie-Britannique", 
+                                                                     "Manitoba",
+                                                                     "Nouveau-Brunswick",
+                                                                     "Terre-Neuve-et-Labrador",
+                                                                     "(territoires du) Nord-Ouest",
+                                                                     "Nouvelle-Écosse",
+                                                                     "Nunavut",
+                                                                     "Ontario",
+                                                                     "l'île du Prince-Édouard",
+                                                                     "Québec",
+                                                                     "Saskatchewan",
+                                                                     "Yukon"]}) %>
+                    <% } %>
+            </td>
+        </tr>
+     </tbody>
+</table>
+<div style="margin-bottom:3em; float:right">
+            <button id="addPharmacy"><en>Add Community</en><fr>Ajouter une Pharmacie</fr></button>
+</div>
+<div id="map-container">
+    <div id="map"></div>
+</div>

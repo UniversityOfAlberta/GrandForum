@@ -9,10 +9,10 @@ $myQueryableTableStructures[NI_PUBLIC_PROFILE_STRUCTURE] =
 
 class MyQueryableTable extends QueryableTable {
 
-    function MyQueryableTable($structure, $matrix){
+    function __construct($structure, $matrix){
         global $myQueryableTableStructures;
         $this->id = "myqueryabletable".QueryableTable::$idCounter;
-        $this->QueryableTable();
+        parent::__construct();
         if(is_array($structure)){
             $this->structure = $structure;
         }

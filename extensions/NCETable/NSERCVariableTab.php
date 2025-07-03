@@ -8,7 +8,7 @@ class NSERCVariableTab extends AbstractTab {
     var $year = "";
     var $phase = "";
 
-    function NSERCVariableTab($label, $from, $to, $year, $phase=""){
+    function __construct($label, $from, $to, $year, $phase=""){
         global $wgOut;
         
         $this->label = $label;
@@ -17,7 +17,8 @@ class NSERCVariableTab extends AbstractTab {
         $this->year = $year;
         $this->phase = $phase;
 
-        parent::AbstractTab($label);
+        parent::__construct($label);
+        $wgOut->setPageTitle("Evaluation Tables: NCE");
         $this->id = "{$this->id}_{$phase}";
     }
     
@@ -72,7 +73,7 @@ function showDiv(div_id, details_div_id){
         global $wgServer, $wgScriptPath;
         $label = $this->label;
         $lastYear = $this->year - 1;
-        $url = "$wgServer$wgScriptPath/index.php/Special:NCETable?tab={$lastYear}-{$this->year}&year=tabs_{$this->year}_{$label}_{$phase}&summary=grand";
+        $url = "$wgServer$wgScriptPath/index.php/Special:NCETable?tab={$lastYear}-{$this->year}_{$phase}&year=tabs_{$this->year}_{$label}_{$phase}&summary=grand";
         $this->html .=<<<EOF
             <table class='toc' summary='Contents'>
             <tr><td>
@@ -240,16 +241,16 @@ EOF;
                 $inkind += $inki;
                 
                 if($inki > 0){
-                    $a += $part['contribution']->getKindFor($part['partner'], "equi");
-                    $b += $part['contribution']->getKindFor($part['partner'], "mate");
-                    $c += $part['contribution']->getKindFor($part['partner'], "logi");
-                    $d += $part['contribution']->getKindFor($part['partner'], "srvc");
-                    $e += $part['contribution']->getKindFor($part['partner'], "faci");
-                    $f += $part['contribution']->getKindFor($part['partner'], "sifi");
-                    $g += $part['contribution']->getKindFor($part['partner'], "mngr");
-                    $h += $part['contribution']->getKindFor($part['partner'], "trvl");
-                    $i += $part['contribution']->getKindFor($part['partner'], "othe");
-                    $other[] = $part['contribution']->getKindFor($part['partner'], "inkind_other");
+                    @$a += $part['contribution']->getKindFor($part['partner'], "equi");
+                    @$b += $part['contribution']->getKindFor($part['partner'], "mate");
+                    @$c += $part['contribution']->getKindFor($part['partner'], "logi");
+                    @$d += $part['contribution']->getKindFor($part['partner'], "srvc");
+                    @$e += $part['contribution']->getKindFor($part['partner'], "faci");
+                    @$f += $part['contribution']->getKindFor($part['partner'], "sifi");
+                    @$g += $part['contribution']->getKindFor($part['partner'], "mngr");
+                    @$h += $part['contribution']->getKindFor($part['partner'], "trvl");
+                    @$i += $part['contribution']->getKindFor($part['partner'], "othe");
+                    @$other[] = $part['contribution']->getKindFor($part['partner'], "inkind_other");
                 }
             }
             $totalInkind += $inkind;
@@ -553,7 +554,9 @@ EOF;
                             "Professional End User" => "Professional End Users",
                             "Other"=>"Other");
 
-        $nations = array("Canadian"=>array(array(),array()), "Foreign"=>array(array(),array()), "Unknown"=>array(array(),array()));
+        $nations = array("Canadian"=>array(array(),array()), 
+                         "Foreign"=>array(array(),array()), 
+                         "Unknown"=>array(array(),array()));
 
         $hqp_table = array();
         foreach($positions as $key=>$val){
@@ -614,6 +617,7 @@ EOF;
                 $inner_tbl .= "<tr><td>{$gender}</td><td></td><td></td></tr>";
                 $total_nat = array(array(), array());
                 foreach($nations as $label => $counts){
+                    if($label != "Canadian" && $label != "Foreign" && $label != "Unknown"){ continue; }
                     
                     $lnk_id = "lnk_" .$pos. "_" .$gender. "_". $label;
                     $div_id = "div_" .$pos. "_" .$gender. "_". $label;
@@ -687,7 +691,8 @@ EOF;
 
                 $lnk_id = "lnk_thes_" .$pos. "_" .$gender. "_total";
                 $div_id = "div_thes_" .$pos. "_" .$gender. "_total";
-                $num_total_nat_thes = count($total_nat[1]);
+
+                $num_total_nat_thes = @count($total_nat[1]);
                 $total_nat_thes_details = Dashboard::paperDetails($total_nat[1]);
 
                 $total_gen[0] = @array_merge($total_gen[0], $total_nat[0]); // += $total_nat[0];
@@ -727,7 +732,7 @@ EOF;
             $lnk_id = str_replace("/", "_", str_replace(" ", "_", $lnk_id));
             $div_id = str_replace("/", "_", str_replace(" ", "_", $div_id));
             
-            $num_total_gen_thes = count($total_gen[1]);
+            $num_total_gen_thes = @count($total_gen[1]);
             $total_gen_thes_details = Dashboard::paperDetails($total_gen[1]);
             if($num_total_gen_thes > 0){
                 $inner_tbl .=<<<EOF
@@ -776,7 +781,7 @@ EOF;
         $html .= "</td><td>";
         $lnk_id = "lnk_thes_total";
         $div_id = "div_thes_total";
-        $num_total_thes = count($total[1]);
+        $num_total_thes = @count($total[1]);
         $total_thes_details = Dashboard::paperDetails($total[1]);
         if($num_total_thes > 0){
             $html .=<<<EOF

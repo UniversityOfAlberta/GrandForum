@@ -4,8 +4,8 @@ class SimilarUserValidation extends UIValidation {
 
     var $duplicatePeople;
 
-    function SimilarUserValidation($neg=false, $warning=false) {
-        parent::UIValidation($neg, $warning);
+    function __construct($neg=false, $warning=false) {
+        parent::__construct($neg, $warning);
     }
     
     function validateFn($value){
@@ -21,7 +21,7 @@ class SimilarUserValidation extends UIValidation {
                 $this->duplicatePeople[] = $person;
             }
         }
-        return (count($this->duplicatePeople) == 0);
+        return (empty($this->duplicatePeople));
     }
     
     function failMessage($name){

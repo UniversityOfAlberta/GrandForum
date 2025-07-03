@@ -47,7 +47,7 @@ class CommonCV // {{{
    * Default constructor. Reads a CV from a given filename
    * @param filename The filename to read from
    */
-  public function CommonCV($filename) // {{{
+  public function __construct($filename) // {{{
   {
     global $CCV_CONST;
     $this->constants = $CCV_CONST;

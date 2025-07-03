@@ -1,0 +1,44 @@
+<td valign="top" style="width:40px" id="row_<%= output.id %>">
+	<h3 style="margin-top:0;">
+	    <span style="display:none;"><%= output.PublicName %></span>
+	    <% if(me.isLoggedIn()){ %>
+		    <% if(!bookmarked){ %>
+                <a href="#" id="bkmark" data-index="1"><img id="bkmarked_<%= output.id %>" class="bkmark_img" src="<%= wgServer+wgScriptPath%>/skins/bookmark-plus.svg"></a> 
+		    <% }else{ %>
+			    <a href="#" id="bkmark" data-index="1"><img id="bkmark_<%= output.id %>" class="bkmark_img" src="<%= wgServer+wgScriptPath%>/skins/bookmark-star-fill.svg"></a> 
+		    <% } %>
+		<% } %>
+		<%= output.PublicName %>
+	</h3>
+    <%= output.AgencyDescription %>
+    <br /><br />
+    <a style="cursor: pointer;" onClick="$(this).hide();$(this).siblings('div').slideDown();">Show more information</a>
+    <div style="display:none;">
+        <% if(output.Eligibility != ""){ %>
+            <b>Eligibility:</b> <%= output.Eligibility %><br />
+        <% } %>
+        <% if(output.ParentAgency != ""){ %>
+            <b>Organization:</b> <%= output.ParentAgency %><br />
+        <% } %>
+        <% if(output.PhysicalAddress1 != ""){ %>
+            <b>Address:</b> <%= output.PhysicalAddress1 %><br />
+        <% } %>
+        <% if(output.MailingAddressCity != ""){ %>
+            <b>City/Suburb:</b> <%= output.MailingAddressCity %><br />
+        <% } %>
+        <% if(output.PhysicalAddressPostalCode != ""){ %>
+            <b>Postal Code:</b> <%= output.PhysicalAddressPostalCode %><br />
+        <% } %>
+        <% if (output.EmailAddressMain != ""){ %>
+            <b>Email:</b> <a href='mailto:<%= output.EmailAddressMain %>'><%= output.EmailAddressMain %></a><br />
+        <% } %>
+        <% if ( output.PhoneNumbers.length != 0 && output.PhoneNumbers[0].Phone != ""){ %>
+            <b>Phone:</b> <%= output.PhoneNumbers[0].Phone %><br />
+        <% } %>
+        <% if (output.WebsiteAddress != "" && output.WebsiteAddress != "http://"){ %>
+            <b>Website:</b> <a class='programWebsite' href='<%=output.WebsiteAddress %>' target='_blank'><%=output.WebsiteAddress%></a><br />
+        <% } %>
+	<a style="cursor: pointer;" onClick="$(this).parent().slideUp();$(this).parent().siblings('a').show();">Show less</a>
+
+    </div>
+</td>

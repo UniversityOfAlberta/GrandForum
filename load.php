@@ -1,6 +1,7 @@
 <?php
 /**
- * This file is the entry point for the resource loader.
+ * The web entry point for ResourceLoader, which serves static CSS/JavaScript
+ * via ResourceLoaderModule subclasses.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,34 +19,39 @@
  * http://www.gnu.org/copyleft/gpl.html
  *
  * @file
+ * @ingroup entrypoint
+ * @ingroup ResourceLoader
  * @author Roan Kattouw
  * @author Trevor Parscal
  */
-exit;
-// Bail if PHP is too low
-if ( !function_exists( 'version_compare' ) || version_compare( phpversion(), '5.3.2' ) < 0 ) {
-	// We need to use dirname( __FILE__ ) here cause __DIR__ is PHP5.3+
-	require dirname( __FILE__ ) . '/includes/PHPVersionError.php';
-	wfPHPVersionError( 'load.php' );
-}
+
+use MediaWiki\MediaWikiServices;
+
+// This endpoint is supposed to be independent of request cookies and other
+// details of the session. Enforce this constraint with respect to session use.
+define( 'MW_NO_SESSION', 1 );
+
+define( 'MW_ENTRY_POINT', 'load' );
 
 require __DIR__ . '/includes/WebStart.php';
 
-wfProfileIn( 'load.php' );
+wfLoadMain();
 
-// URL safety checks
-if ( !$wgRequest->checkUrlExtension() ) {
-	return;
+function wfLoadMain() {
+	global $wgRequest;
+
+	// Disable ChronologyProtector so that we don't wait for unrelated MediaWiki
+	// writes when getting database connections for ResourceLoader. (T192611)
+	MediaWikiServices::getInstance()->getDBLoadBalancerFactory()->disableChronologyProtection();
+
+	$resourceLoader = MediaWikiServices::getInstance()->getResourceLoader();
+	$context = new ResourceLoaderContext( $resourceLoader, $wgRequest );
+
+	// Respond to ResourceLoader request
+	$resourceLoader->respond( $context );
+
+	Profiler::instance()->setAllowOutput();
+
+	$mediawiki = new MediaWiki();
+	$mediawiki->doPostOutputShutdown();
 }
-
-// Respond to resource loading request
-$resourceLoader = new ResourceLoader();
-$resourceLoader->respond( new ResourceLoaderContext( $resourceLoader, $wgRequest ) );
-
-wfProfileOut( 'load.php' );
-wfLogProfilingData();
-
-// Shut down the database.  foo()->bar() syntax is not supported in PHP4, and this file
-// needs to *parse* in PHP4, although we'll never get down here to worry about = vs =&
-$lb = wfGetLBFactory();
-$lb->shutdown();

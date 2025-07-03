@@ -15,7 +15,7 @@ class Messages {
     var $infoIndex = 0;
     var $purpleIndex = 0;
     
-    function Messages(){
+    function __construct(){
         if(isset($_COOKIE['errors'])){
             $this->errors = unserialize($_COOKIE['errors']);
         }
@@ -31,7 +31,7 @@ class Messages {
         if(isset($_COOKIE['purpleInfo'])){
             $this->info = unserialize($_COOKIE['purpleInfo']);
         }
-        $this->clearCookies();
+        //$this->clearCookies();
     }
     
     // Adds a (red) error message
@@ -42,7 +42,7 @@ class Messages {
         else{
             $this->errors[$this->errorIndex++] = $message;
         }
-        @setcookie('errors', serialize($this->errors), time()+3600);
+        @setcookie('errors', serialize($this->errors), time()+3600, "/");
     }
     
     // Adds a (yellow) warning message
@@ -53,7 +53,7 @@ class Messages {
         else{
             $this->warnings[$this->warningIndex++] = $message;
         }
-        @setcookie('warnings', serialize($this->warnings), time()+3600);
+        @setcookie('warnings', serialize($this->warnings), time()+3600, "/");
     }
     
     // Adds a (green) success message
@@ -64,7 +64,7 @@ class Messages {
         else{
             $this->success[$this->successIndex++] = $message;
         }
-        @setcookie('success', serialize($this->success), time()+3600);
+        @setcookie('success', serialize($this->success), time()+3600, "/");
     }
     
     // Adds a (blue) info message
@@ -89,11 +89,11 @@ class Messages {
     
     // Clears the message cookies
     function clearCookies(){
-        @setcookie('errors', serialize(array()), time()-3600);
-        @setcookie('warnings', serialize(array()), time()-3600);
-        @setcookie('success', serialize(array()), time()-3600);
-        @setcookie('info', serialize(array()), time()-3600);
-        @setcookie('purpleInfo', serialize(array()), time()-3600);
+        @setcookie('errors', serialize(array()), time()-3600, "/");
+        @setcookie('warnings', serialize(array()), time()-3600, "/");
+        @setcookie('success', serialize(array()), time()-360000, "/");
+        @setcookie('info', serialize(array()), time()-3600, "/");
+        @setcookie('purpleInfo', serialize(array()), time()-3600, "/");
     }
     
     // Empties all error messages

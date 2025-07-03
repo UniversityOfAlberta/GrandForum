@@ -18,16 +18,31 @@ class CheckboxReportItem extends AbstractReportItem {
 		        $checked = "checked='checked'";
 		    }
 		    $option = str_replace("'", "&#39;", $option);
-		    $items[] = "<div style='display:table;padding-top:2px;'><input style='vertical-align:top;' type='checkbox' name='{$this->getPostId()}[]' value='{$option}' $checked />&nbsp;<div style='display:table-cell;'>{$labels[$key]}</div></div>";
+		    $items[] = "<div style='display:table;padding-top:2px;'><input style='vertical-align:top;transform-origin:top;' type='checkbox' name='{$this->getPostId()}[]' value='{$option}' $checked />&nbsp;<div style='display:table-cell;'>{$labels[$key]}</div></div>";
 		}
 
         $output = "";
         $orientation = $this->getAttr('orientation', 'vertical');
-        if($orientation == 'vertical'){
+        $descriptions = explode("|", $this->getAttr('descriptions', ''));
+        if($orientation == 'vertical' && count($descriptions) != count($items)){
             $output = implode("\n", $items);
         }
-        else if($orientation == 'horizontal'){
+        else if($orientation == 'horizontal' && count($descriptions) != count($items)){
             $output = implode("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", $items);
+        }
+        else if($orientation == 'vertical' && count($descriptions) == count($items)){
+            $output = "<table class='wikitable'>";
+            foreach($items as $i => $item){
+                $output .= @"<tr><td style='white-space:nowrap;'><b>{$item}</b></td><td>{$descriptions[$i]}</td></tr>";
+            }
+            $output .= "</table>";
+        }
+        else if($orientation == 'horizontal' && count($descriptions) == count($items)){
+            $width = 1/count($descriptions)*100;
+            $output = "<table class='wikitable'>";
+            $output .= "<tr><th style='width:$width%'><center>".implode("</center></th><th style='width:$width%;'><center>", $items)."</center></th></tr>";
+            $output .= "<tr><td class='small' valign='top'>".implode("</td><td class='small' valign='top'>", $descriptions)."</td></tr>";
+            $output .= "</table>";
         }
         $output = "<input type='hidden' name='{$this->getPostId()}[]' value='' />".$output;
         if($limit > 0){

@@ -1,7 +1,7 @@
 <?php
 
 require_once("InactiveUsers.php");
-if($config->getValue("networkName") == "FES"){
+if($config->getValue('networkType') == "CFREF"){
     require_once("FESPeopleTable.php");
 }
 autoload_register('IndexTables');
@@ -56,8 +56,8 @@ class IndexTable {
                     $hubsSubTab['dropdown'][] = TabUtils::createSubTab($project->getName(), "{$project->getUrl()}", "$selected");
                 }
             }
+            $tabs['Main']['subtabs'][] = $hubsSubTab;
         }
-        $tabs['Main']['subtabs'][] = $hubsSubTab;
         if(count($themes) > 0){
             $selected = (($wgTitle->getNSText() == $config->getValue('networkName') && 
                          (strstr($wgTitle->getText(), Inflect::pluralize($config->getValue('projectThemes',1))) !== false)) ||
@@ -81,10 +81,10 @@ class IndexTable {
             $project = Project::newFromHistoricName(str_replace("_", " ", $wgTitle->getNSText()));
             $selected = ((($project != null && $project->getType() != "Administrative" && $project->getType() != "Innovation Hub") || $wgTitle->getText() == "Projects" || $wgTitle->getText() == "CompletedProjects" || $wgTitle->getText() == "ProposedProjects") && 
                          !($me->isMemberOf($project) || $me->isThemeLeaderOf($project) || $me->isThemeCoordinatorOf($project) || ($project != null && $me->isMemberOf($project->getParent())))) ? "selected" : "";
-            $projectTab = TabUtils::createSubTab("Projects", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:Projects", "$selected");
+            $projectTab = TabUtils::createSubTab(Inflect::pluralize($config->getValue('projectTerm')), "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:Projects", "$selected");
             
             if($config->getValue('networkName') == "GlycoNet"){
-                $projectTab = TabUtils::createSubTab("Projects", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:Projects", "$selected");
+                $projectTab = TabUtils::createSubTab(Inflect::pluralize($config->getValue('projectTerm')), "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:Projects", "$selected");
                 $projectTab['dropdown'][0] = TabUtils::createSubTab("NCE", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:Projects", $selected);
                 $projectTab['dropdown'][1] = TabUtils::createSubTab("SSF", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:Projects", $selected);
                 
@@ -96,7 +96,7 @@ class IndexTable {
                 }
             }
             else{
-                $projectTab = TabUtils::createSubTab("Projects", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:Projects", "$selected");
+                $projectTab = TabUtils::createSubTab(Inflect::pluralize($config->getValue('projectTerm')), "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:Projects", "$selected");
                 $projectTab['dropdown'][] = TabUtils::createSubTab("Current", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:Projects", $selected);
                 if(Project::areThereDeletedProjects()){
                     $projectTab['dropdown'][] = TabUtils::createSubTab("Completed", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:CompletedProjects", $selected);
@@ -105,6 +105,7 @@ class IndexTable {
                     $projectTab['dropdown'][] = TabUtils::createSubTab("Proposed", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ProposedProjects", $selected);
                 }
             }
+            $tabs['Main']['subtabs'][] = $projectTab;
         }
         
         $lastRole = "";
@@ -130,8 +131,10 @@ class IndexTable {
         $roles = array_filter(array_unique($roles));
         foreach($roles as $role){
             if(($role != HQP || $me->isLoggedIn()) && !isset($aliases[$role]) && Person::peopleWithRoleExists($role)){
+                $def = (isset($config->getValue('roleDefs')[$role])) ? $config->getValue('roleDefs')[$role] : $role;
+                $def = ($role != $def) ? " ($def)" : "";
                 $selected = ($lastRole === NI || $wgTitle->getText() == "ALL {$role}" || ($wgTitle->getNSText() == $role && !($me->isRole($role) && $wgTitle->getText() == $me->getName()))) ? "selected" : "";
-                $peopleSubTab['dropdown'][] = TabUtils::createSubTab(str_replace("Member", "Members", $role), "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_{$role}", "$selected");
+                $peopleSubTab['dropdown'][] = TabUtils::createSubTab(str_replace("Member", "Members", "{$role}{$def}"), "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_{$role}", "$selected");
             }
         }
         
@@ -149,9 +152,6 @@ class IndexTable {
             }
         }
         
-        if($config->getValue('projectsEnabled')){
-            $tabs['Main']['subtabs'][] = $projectTab;
-        }
         $tabs['Main']['subtabs'][] = $peopleSubTab;
         
         $selected = ($wgTitle->getText() == "Products" || 
@@ -177,7 +177,7 @@ class IndexTable {
         return true;
     }
 
-    function userCanExecute(&$title, &$user, $action, &$result){
+    static function userCanExecute(&$title, &$user, $action, &$result){
         global $wgOut, $wgServer, $wgScriptPath, $config;
         if($config->getValue('guestLockdown') && !$user->isLoggedIn()){
             $result = false;
@@ -201,7 +201,7 @@ class IndexTable {
         return true;
     }
 
-    function generateTable($out, $parseroutput){
+    static function generateTable($out, $parseroutput){
         global $wgTitle, $wgOut, $wgUser, $config, $wgRoles, $wgAllRoles;
         $me = Person::newFromWgUser();
         if($wgTitle != null && str_replace("_", " ", $wgTitle->getNsText()) == "{$config->getValue('networkName')}" && !$wgOut->isDisabled()){
@@ -211,6 +211,7 @@ class IndexTable {
                 $wgOut->loginToUse();
                 $wgOut->output();
                 $wgOut->disable();
+                exit;
                 return true;
             }
             $wgOut->addScript("<script type='text/javascript'>
@@ -234,15 +235,15 @@ class IndexTable {
                     }
                     break;
                 case 'Projects':
-                    $wgOut->setPageTitle("Current Projects");
+                    $wgOut->setPageTitle("Current ".Inflect::pluralize($config->getValue('projectTerm')));
                     self::generateProjectsTable('Active', 'Research');
                     break;
                 case 'CompletedProjects':
-                    $wgOut->setPageTitle("Completed Projects");
+                    $wgOut->setPageTitle("Completed ".Inflect::pluralize($config->getValue('projectTerm')));
                     self::generateProjectsTable('Ended', 'Research');
                     break;
                 case 'ProposedProjects':
-                    $wgOut->setPageTitle("Proposed Projects");
+                    $wgOut->setPageTitle("Proposed ".Inflect::pluralize($config->getValue('projectTerm')));
                     self::generateProjectsTable('Proposed', 'Research');
                     break;
                 case 'AdminProjects':
@@ -308,7 +309,7 @@ class IndexTable {
      * Consists of the following columns
      * Identifier | Name 
      */
-    private function generateProjectsTable($status, $type="Research"){
+    private static function generateProjectsTable($status, $type="Research"){
         global $wgScriptPath, $wgServer, $wgOut, $wgUser, $config;
         $me = Person::newFromId($wgUser->getId());
         $themesHeader = "";
@@ -399,7 +400,7 @@ class IndexTable {
      * Consists of the following columns
      * Theme | Name 
      */
-    private function generateThemesTable($phase=1){
+    private static function generateThemesTable($phase=1){
         global $wgScriptPath, $wgServer, $config, $wgOut;
         $wgOut->addHTML(
 "<table class='indexTable' style='display:none;' frame='box' rules='all'>
@@ -443,7 +444,7 @@ class IndexTable {
     /**
      * Generates the Table of Admin Projects
      */
-    private function generateAdminTable($phase=1){
+    private static function generateAdminTable($phase=1){
         global $wgScriptPath, $wgServer, $config, $wgOut;
         $me = Person::newFromWgUser();
         $activityPlans = "";
@@ -525,13 +526,14 @@ class IndexTable {
      * Researchers, or Highly-Qualified People, depending on parameter
      * table.
      */
-    private function generatePersonTable($table){
+    private static function generatePersonTable($table){
         global $config, $wgOut;
         $me = Person::newFromWgUser();
         $tabbedPage = new TabbedPage("people");
         $visibility = true;
         header("HTTP/1.0: 200");
         $tabbedPage->addTab(new PeopleTableTab($table, $visibility, false));
+        $tabbedPage->addTab(new PeopleTableTab($table, $visibility, "6 months"));
         if($table != "Candidate"){
             $tabbedPage->addTab(new PeopleTableTab($table, $visibility, true));
             if($me->isRoleAtLeast(STAFF)){
@@ -562,7 +564,7 @@ class IndexTable {
     /**
      * Generates the Table for the Network Investigators
      */
-    private function generateNITable(){
+    private static function generateNITable(){
         global $config;
         $me = Person::newFromWgUser();
         $tabbedPage = new TabbedPage("people");
@@ -572,7 +574,7 @@ class IndexTable {
         return true;
     }
 
-    function generateMaterialsTable(){
+    static function generateMaterialsTable(){
         global $wgServer, $wgScriptPath, $wgOut;
         $wgOut->addHTML("<table class='indexTable' style='display:none;' frame='box' rules='all'>
 <thead><tr><th>Date</th><th style='min-width:300px;'>Title</th><th>Type</th><th>People</th><th>Projects</th></tr></thead><tbody>");
@@ -608,7 +610,7 @@ class IndexTable {
         return true;
     }
 
-    function generateFormsTable(){
+    static function generateFormsTable(){
         global $wgServer, $wgScriptPath, $wgOut;
         $wgOut->addHTML("<table class='indexTable' style='display:none;' frame='box' rules='all'>
 <thead><tr><th>Date</th><th style='min-width:300px;'>Title</th><th>Person</th><th>Institution</th><th>Project</th></tr></thead><tbody>");

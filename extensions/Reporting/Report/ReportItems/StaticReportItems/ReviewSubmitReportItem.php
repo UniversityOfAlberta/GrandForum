@@ -22,6 +22,7 @@ class ReviewSubmitReportItem extends StaticReportItem {
                 $projectGet = "&project={$this->getReport()->project->getAcronym()}";
             }
 		}
+		$personId = (isset($_GET['person'])) ? "&person=".urlencode($_GET['person']) : "";
 		$year = "";
         if(isset($_GET['reportingYear']) && isset($_GET['ticket'])){
             $year = "&reportingYear={$_GET['reportingYear']}&ticket={$_GET['ticket']}";
@@ -54,7 +55,7 @@ class ReviewSubmitReportItem extends StaticReportItem {
                         $('#generate_error').css('display', 'none');
                         $('#generate_throbber').css('display', 'inline-block');
 		                $.ajax({
-		                        url : '$wgServer$wgScriptPath/index.php/Special:Report?report={$this->getReport()->xmlName}{$projectGet}{$year}&generatePDF', 
+		                        url : '$wgServer$wgScriptPath/index.php/Special:Report?report={$this->getReport()->xmlName}{$projectGet}{$personId}{$year}&generatePDF', 
 		                        success : function(data){
                                         //var data = jQuery.parseJSON(response);
                                         for(index in data){

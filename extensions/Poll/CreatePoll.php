@@ -37,12 +37,13 @@ $FORM_TEXT = "<fieldset id='q1'>
 
 class CreatePoll extends SpecialPage{
 
-    function CreatePoll() {
+    function __construct() {
         SpecialPage::__construct("CreatePoll", HQP.'+', true, 'runCreatePoll');
     }
 
     function execute($par){
         global $wgOut, $wgUser, $wgScriptPath, $wgServer, $wgTitle, $wgArticle, $wgMessage;
+        $this->getOutput()->setPageTitle("Create Poll");
         if(isset($_POST['submit'])){
             $name = $_POST['name'];
             $noName = false;

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Theme Report" reportType="RP_THEME_REPORT_{GET(id)}" pdfType="RP_THEME_REPORT_{GET(id)}" year="0" personId="0" ajax="true" disabled="false">
+    <ReportSection id="cover" type="HeaderReportSection" name="Cover" pagebreak="true">
+        <!-- Year -->
+        <Static>
+            <![CDATA[
+                {set(year, {substr({GET(id)}, 0, 4)})}
+            ]]>
+        </Static>
+        
+        <!-- Month -->
+        <If if="{contains({GET(id)},R1)}">
+            <![CDATA[
+                {set(month, March)}
+            ]]>
+        </If>
+        <ElseIf if="{contains({GET(id)},R2)}">
+            <![CDATA[
+                {set(month, July)}
+            ]]>
+        </ElseIf>
+        <ElseIf if="{contains({GET(id)},R3)}">
+            <![CDATA[
+                {set(month, November)}
+            ]]>
+        </ElseIf>
+        <Static>
+            <![CDATA[
+                <div style='margin-top: 23em;'>
+                    <div style='font-size: 1.75em; font-weight: bold; text-align: center;'>
+                        <span style='font-size: 0.75em; font-weight: normal;'>{get(month)} {get(year)}</span><br />
+                        &nbsp;<br />
+                        {$theme_name} Theme Report<br />
+                        {$theme_full_name}
+                        &nbsp;<br />
+                        &nbsp;<br />
+                        &nbsp;<br />
+                        &nbsp;<br />
+                        <span style='font-size: 0.75em;'>www.torontomu.ca/bridging-divides</span>
+                        &nbsp;<br />
+                        &nbsp;<br />
+                        &nbsp;<br />
+                        &nbsp;<br />
+                        &nbsp;<br />
+                    </div>
+                </div>
+            ]]>
+        </Static>
+    </ReportSection>
+    <ReportSection id="report" type="NextPrevReportSection" name="Theme Report" title="{$theme_name} {replace(Q,R,{replace(_,:,{GET(id)})})} Report" pagebreak="false">
+        <!-- Start the Report -->
+        <ReportItem id="description" type="Textarea" blobItem="DESCRIPTION" rich="true">
+            <![CDATA[
+                <h3>1. Description of work and next steps</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="edi" type="Textarea" blobItem="EDI" rich="true">
+            <![CDATA[
+                <h3>2. Equity, diversity, and inclusion update</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="challenges" type="Textarea" blobItem="CHALLENGES" rich="true">
+            <![CDATA[
+                <h3>3. Identified or anticipated challenges (if any)</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="adjustments" type="Textarea" blobItem="ADJUSTMENTS" rich="true">
+            <![CDATA[
+                <h3>4. Milestones adjustments</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="ktee" type="Textarea" blobItem="KTEE" rich="true">
+            <![CDATA[
+                <h3>5. Knowledge mobilization and community engagement</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="findings" type="Textarea" blobItem="FINDINGS" rich="true">
+            <![CDATA[
+                <h3>6. Preliminary findings</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+</Report>

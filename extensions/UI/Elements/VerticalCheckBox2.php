@@ -2,8 +2,8 @@
 
 class VerticalCheckBox2 extends CheckBox {
     
-    function VerticalCheckBox2($id, $name, $value, $options, $validations=VALIDATE_NOTHING){
-        parent::CheckBox($id, $name, $value, $options, $validations);
+    function __construct($id, $name, $value, $options, $validations=VALIDATE_NOTHING){
+        parent::__construct($id, $name, $value, $options, $validations);
     }
     
     function render(){
@@ -22,7 +22,7 @@ class VerticalCheckBox2 extends CheckBox {
                     }
                 }
             }
-            $html .= "<input {$this->renderAttr()} id='{$this->id}_{$option}' type='checkbox' name='{$this->id}[]' value='{$key}' $checked/>{$label}<br />";
+            $html .= "<input {$this->renderAttr()} id='{$this->id}_{$option}' style='vertical-align:middle;' type='checkbox' name='{$this->id}[]' value='{$key}' $checked/><span style='vertical-align:middle; margin-left:0.5em;'>{$label}</span><br />";
         }
         return $html;
     }

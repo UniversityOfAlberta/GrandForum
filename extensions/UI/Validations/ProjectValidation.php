@@ -2,8 +2,8 @@
 
 class ProjectValidation extends UIValidation {
 
-    function ProjectValidation($neg=false) {
-        parent::UIValidation($neg);
+    function __construct($neg=false) {
+        parent::__construct($neg);
     }
     
     function validateFn($value){

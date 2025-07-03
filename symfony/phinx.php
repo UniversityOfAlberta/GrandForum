@@ -1,5 +1,5 @@
 <?php
-require_once('../config/Config.php');
+require_once('../config/ForumConfig.php');
 
 return array(
     "paths" => array(
@@ -7,7 +7,7 @@ return array(
     ),
     "environments" => array(
         "default_migration_table" => "phinxlog",
-        "default_database" => "dev",
+        "default_environment" => "dev",
         "dev" => array(
             "adapter" => $config->getValue('dbType'),
             "host" => $config->getValue('dbServer'),

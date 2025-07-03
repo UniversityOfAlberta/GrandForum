@@ -5,8 +5,8 @@ class PersonProfileTab extends AbstractEditableTab {
     var $person;
     var $visibility;
 
-    function PersonProfileTab($person, $visibility){
-        parent::AbstractEditableTab("Bio");
+    function __construct($person, $visibility){
+        parent::__construct("Bio");
         $this->person = $person;
         $this->visibility = $visibility;
     }
@@ -37,14 +37,15 @@ class PersonProfileTab extends AbstractEditableTab {
         $this->html .= $this->showFundedProjects($this->person, $this->visibility);
         $this->html .= $this->showTable($this->person, $this->visibility);
         $extra = array();
-        if($this->person->isRole(NI) || 
-           $this->person->isRole(HQP) || 
-           $this->person->isRole(EXTERNAL)){
+        if(($this->person->isRole(NI) || 
+            $this->person->isRole(HQP) || 
+            $this->person->isRole(EXTERNAL)) && isExtensionEnabled("Visualizations")){
             // Only show the word cloud for 'researchers'
             $extra[] = $this->showCloud($this->person, $this->visibility);
         }
-        $extra[] = $this->showDoughnut($this->person, $this->visibility);
-        $extra[] = $this->showTwitter($this->person, $this->visibility);
+        if(isExtensionEnabled("Visualizations")){
+            $extra[] = $this->showDoughnut($this->person, $this->visibility);
+        }
         
         // Delete extra widgets which have no content
         foreach($extra as $key => $e){
@@ -75,7 +76,9 @@ class PersonProfileTab extends AbstractEditableTab {
                 }
             }, 33);
             $(document).ready(function(){
-                $('div#bio [name=submit]').clone().appendTo($('#profileText'));
+                if($('#person_products').length > 0 || $('#funded_projects') > 0){
+                    $('div#bio [name=submit]').clone().appendTo($('#profileText'));
+                }
             });
         </script>";
         $this->showCCV($this->person, $this->visibility);
@@ -106,6 +109,7 @@ class PersonProfileTab extends AbstractEditableTab {
         
         $this->person->publicProfile = @$_POST['public_profile'];
         $this->person->privateProfile = @$_POST['private_profile'];
+        $this->person->pronouns = @$_POST['pronouns'];
         $this->person->update();
         if(isset($_POST['crdc'])){
             $this->person->setCRDC($_POST['crdc']);
@@ -282,7 +286,7 @@ class PersonProfileTab extends AbstractEditableTab {
 
             if($config->getValue('ecrEnabled')){
                 if($person->getEarlyCareerResearcher() == "Yes"){
-                    $this->html .= "<li>FES ECR</li>";
+                    $this->html .= "<li>{$config->getValue('networkName')} ECR</li>";
                 }
             }
             $agencies = "";
@@ -299,26 +303,6 @@ class PersonProfileTab extends AbstractEditableTab {
             $this->html .= "</ul>";
         }
         $this->html .= "</div>";
-    }
-    
-    /**
-     * Displays the twitter widget for this user
-     */
-    function showTwitter($person, $visibility){
-        $html = "";
-        if($person->getTwitter() != ""){
-            $twitter = str_replace("@", "", $person->getTwitter());
-            $html = <<<EOF
-                <br />
-                <div id='twitter' style='display: block; width: 100%; text-align: right; overflow: hidden; position:relative;'>
-                    <div>
-                        <a class="twitter-timeline" width="100%" height="400" href="https://twitter.com/{$twitter}" data-screen-name="{$twitter}" data-widget-id="553303321864196097">Tweets by @{$twitter}</a>
-                        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-                    </div>
-                </div>
-EOF;
-        }
-        return $html;
     }
     
     function showEditProfile($person, $visibility){
@@ -486,12 +470,12 @@ EOF;
         $html = "";
         $projects = $person->getProjects(true);
         if(count($projects) > 0){
-            $html .= "<h2>{$config->getValue('networkName')} Funded Projects</h2><ul>";
+            $html .= "<div id='funded_projects'><h2>{$config->getValue('networkName')} Funded ".Inflect::pluralize($config->getValue('projectTerm'))."</h2><ul>";
             foreach($projects as $project){
                 $completed = ($project->getStatus() == "Ended") ? " (completed)" : "";
                 $html .= "<li><a class='projectUrl' data-projectId='{$project->getId()}' href='{$project->getUrl()}'>{$project->getFullName()} ({$project->getName()})</a>{$completed}</li>";
             }
-            $html .= "</ul>";
+            $html .= "</ul></div>";
         }
         return $html;
     }
@@ -506,7 +490,7 @@ EOF;
         $products = $person->getPapers("all", false, 'both', true, "Public");
         $string = "";
         if(count($products) > 0){
-            $string = "<h2>".Inflect::pluralize($config->getValue('productsTerm'))."</h2>";
+            $string = "<div id='person_products'><h2>".Inflect::pluralize($config->getValue('productsTerm'))."</h2>";
             $string .= "<button id='showOnlyAuthor' type='button' style='margin-bottom: 0.25em;'>Show only Author</button>
             <table id='personProducts' rules='all' frame='box'>
                 <thead>
@@ -550,7 +534,7 @@ EOF;
                 $string .= "</tr>";
             }
             $string .= "</tbody>
-                </table>
+                </table></div>
                 <script type='text/javascript'>
                     var personProducts = $('#personProducts').dataTable({
                         order: [[ 2, 'desc' ]],
@@ -680,25 +664,43 @@ EOF;
                 });
             </script>
 EOF;
-        $this->html .= $this->showChord($person, $visibility);
+        if(isExtensionEnabled("Visualizations")){
+            $this->html .= $this->showChord($person, $visibility);
+        }
         $this->html .= "</div>";
     }
     
     function showEditContact($person, $visibility){
-        global $wgOut, $wgUser, $config, $wgServer, $wgScriptPath;
+        global $wgOut, $wgUser, $config, $wgServer, $wgScriptPath, $countries;
         $university = $person->getUniversity();
         $nationality = "";
         $me = Person::newFromWgUser();
         if($visibility['isMe'] || $visibility['isSupervisor']){
             $nationality = "";
-            if($config->getValue("nationalityEnabled")){
-                $nationalityField = new SelectBox("nationality", "Nationality", $person->getNationality(), array("" => "---", 
-                                                                                                                 "Canadian" => "Canadian/Landed Immigrant", 
-                                                                                                                 "Foreign"));
-                $nationality = "<tr>
-                    <td class='label'>Nationality:</td>
-                    <td class='value'>{$nationalityField->render()}</td>
-                </tr>";
+            if($config->getValue("nationalityEnabled") && ($person->isMe() || $me->isRoleAtLeast(STAFF))){
+                if($config->getValue("nationalityAll")){
+                    $nationalityField = new SelectBox("nationality", "Nationality", $person->getNationality(), array_merge(array(""), array_values($countries)));
+                    $nationality = "<tr>
+                        <td class='label'>Nationality:
+                            <small style='margin-top: -1em; display: block; font-weight:normal;'>Only visible to Staff</small>
+                        </td>
+                        <td class='value'>
+                            {$nationalityField->render()}
+                            <script type='text/javascript'>$(document).ready(function(){ $('#nationality').chosen(); });</script>
+                        </td>
+                    </tr>";
+                }
+                else{
+                    $nationalityField = new SelectBox("nationality", "Nationality", $person->getNationality(), array("" => "---", 
+                                                                                                                     "Canadian" => "Canadian/Landed Immigrant", 
+                                                                                                                     "Foreign"));
+                    $nationality = "<tr>
+                        <td class='label'>Nationality:
+                            <small style='margin-top: -1em; display: block; font-weight:normal;'>Only visible to Staff</small>
+                        </td>
+                        <td class='value'>{$nationalityField->render()}</td>
+                    </tr>";
+                }
             }
             $gender = "";
             if($config->getValue("genderEnabled") && ($person->isMe() || $me->isRoleAtLeast(STAFF))){
@@ -710,9 +712,18 @@ EOF;
                                                                                              "Two-spirit",
                                                                                              "Not disclosed"));
                 $gender = "<tr>
-                    <td class='label'>Gender:</td>
+                    <td class='label'>Gender:
+                        <small style='margin-top: -1em; display: block; font-weight:normal;'>Only visible to Staff</small>
+                    </td>
                     <td class='value'>{$genderField->render()}</td>
                 </tr>";
+                if($config->getValue('networkName') != 'FES'){
+                    $pronounsField = new ComboBox("pronouns", "Pronouns", $person->getPronouns(), array("", "she/her", "he/him", "they/them"));
+                    $gender .= "<tr>
+                    <td class='label'>Pronouns:</td>
+                    <td class='value'>{$pronounsField->render()}</td>
+                </tr>";
+                }
             }
             
             $stakeholderCategories = $config->getValue('stakeholderCategories');
@@ -721,7 +732,7 @@ EOF;
                 $stakeholderCategories = array_merge(array("" => "---"), $stakeholderCategories);
                 $stakeholderField = new SelectBox("stakeholder", "Stakeholder", $person->getStakeholder(), $stakeholderCategories);
                 $stakeholder = "<tr>
-                    <td class='label'>Stakeholder Category:</td>
+                    <td class='label'>{$config->getValue('stakeholderCategoryTerm')}:</td>
                     <td class='value'>{$stakeholderField->render()}</td>
                 </tr>";
             }
@@ -737,7 +748,7 @@ EOF;
                                     "Yes, I am a Canada Excellence Research Chair (CERC) or equivalent",
                                     "Yes, I am a Canada 150 Research Chair (C150) or equivalent");
                 $crcField = new SelectBox("crc_rank", "CRC Rank", @$crcObj['rank'], $crcOptions);
-                $crc = "<tr>
+                $crc = @"<tr>
                             <td colspan='2'>
                                 <fieldset>
                                     <legend>Are you currently a CRC, CERC, C150 (or equivalent)?</legend>
@@ -783,7 +794,7 @@ EOF;
                 $ecr = "<tr>
                             <td colspan='2'>
                                 <fieldset>
-                                    <legend>Was your first appointment as a professor within 5 years of the beginning of your FES research?</legend>
+                                    <legend>Was your first appointment as a professor within 5 years of the beginning of your {$config->getValue('networkName')} research?</legend>
                                     {$ecrField->render()}
                                     <small>CFREF defines an Early Career Researcher as a researcher who has five or less experience since their first research appointment, minus eligible leaves</small>
                                 </fieldset>
@@ -815,7 +826,7 @@ EOF;
                         </tr>";
             }
         }
-        if($config->getValue("networkName") == "FES"){
+        if($config->getValue('networkType') == "CFREF"){
             $this->html .= "<b>Please add your name, middle name, and last name as per your employment records</b>";
         }
         $this->html .= "<table>
@@ -832,11 +843,14 @@ EOF;
                                 <td class='value'><input type='text' name='last_name' value='".str_replace("'", "&#39;", $person->getLastName())."'></td>
                             </tr>
                             <tr>
-                                <td class='label'>Aliases:<br /><small>Can be used for alternate names<br />to help match ".strtolower($config->getValue('productsTerm'))." authors</small></td>
+                                <td class='label'>Aliases:
+                                    <small style='margin-top:-1em; display: block; font-weight:normal;'>Can be used for alternate names</small>
+                                    <small style='margin-top:-1em; display: block; font-weight:normal;'>to help match ".strtolower($config->getValue('productsTerm'))." authors</small>
+                                </td>
                                 <td class='value' style='max-width: 0;'><input type='text' name='aliases' value='".str_replace("'", "&#39;", implode(";", $person->getAliases()))."' /></td>
                             </tr>";
                    
-        if($me->isRoleAtLeast(STAFF) && $config->getValue('networkName') == 'FES'){
+        if($me->isRoleAtLeast(STAFF) && $config->getValue('networkType') == 'CFREF'){
             $this->html .= "<tr>
                                 <td align='right'><b>Employee Id:</b></td>
                                 <td><input size='10' type='text' name='employeeId' value='".str_replace("'", "&#39;", $person->getEmployeeId())."'></td>
@@ -844,7 +858,7 @@ EOF;
         }
         $this->html .= "    <tr>
                                 <td class='label'>Email:</td>";
-        if(!isExtensionEnabled("Shibboleth") || $me->isRoleAtLeast(MANAGER)){
+        if((!isExtensionEnabled("Shibboleth") && !isExtensionEnabled("OpenIDConnect")) || $me->isRoleAtLeast(MANAGER)){
             $this->html .= "<td class='value'><input size='30' type='text' name='email' value='".str_replace("'", "&#39;", $person->getEmail())."' /></td>";
         }
         else{
@@ -860,7 +874,7 @@ EOF;
                             {$mitacs}";
         
         $roles = $person->getRoles();
-        if($me->isRoleAtLeast(STAFF)){
+        if($me->isRoleAtLeast(STAFF) && $config->getValue("roleTitlesEnabled")){
             $this->html .= "<tr>
                                 <td><b>Role Titles:</b></td>
                                 <td><table>";

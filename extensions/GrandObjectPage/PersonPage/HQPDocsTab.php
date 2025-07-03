@@ -5,8 +5,8 @@ class HQPDocsTab extends AbstractEditableTab {
     var $person;
     var $visibility;
 
-    function HQPDocsTab($person, $visibility){
-        parent::AbstractEditableTab("HQP Docs");
+    function __construct($person, $visibility){
+        parent::__construct("HQP Docs");
         $this->person = $person;
         $this->visibility = $visibility;
     }

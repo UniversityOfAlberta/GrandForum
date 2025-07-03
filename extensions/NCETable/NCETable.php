@@ -11,11 +11,6 @@ $wgSpecialPageGroups['NCETable'] = 'report-reviewing';
 
 $wgHooks['SubLevelTabs'][] = 'NCETable::createSubTabs';
 
-function runNCETable($par) {
-    global $wgScriptPath, $wgOut, $wgUser, $wgTitle, $_tokusers;
-    NCETable::show();
-}
-
 // Ideally these would be inside the class and be used.
 $_pdata;
 $_pdata_loaded = false;
@@ -24,18 +19,19 @@ $_projects;
 class NCETable extends SpecialPage {
 
     function __construct() {
-        SpecialPage::__construct("NCETable", STAFF.'+', true, 'runNCETable');
+        SpecialPage::__construct("NCETable", STAFF.'+', true);
     }
     
-    static function show(){
+    function execute($par){
+        require_once('NSERCTab.php');
+        require_once('NSERCVariableTab.php');
         global $wgOut, $wgUser, $wgServer, $wgScriptPath, $config;
-        
         $wgOut->addScript("<style>
             .custom-title {
                 display: none;
             }
         </style>");
-        
+        $this->getOutput()->setPageTitle("NCE Table");
         $startYear = $config->getValue("projectPhaseDates");
         $startYear = substr($startYear[1], 0, 4);
         $endYear = date('Y') - 1;

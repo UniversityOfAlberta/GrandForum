@@ -34,8 +34,8 @@ class PersonMetrics extends AbstractMigration
               ->create();
               
         $table = $this->table("grand_gs_citations", array("id" => false, 'primary_key' => array('user_id', 'year')));
-        $table->addColumn('user_id', 'integer')
-              ->addColumn('year', 'string', array('limit' => 4))
+        $table->addColumn('user_id', 'integer', array('default' => 0, 'null' => false))
+              ->addColumn('year', 'string', array('limit' => 4, 'default' => 0, 'null' => false))
               ->addColumn('count', 'integer')
               ->addColumn('change_date', 'timestamp', array('default'=>'CURRENT_TIMESTAMP'))
               ->create();

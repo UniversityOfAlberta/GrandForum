@@ -2,8 +2,8 @@
 
 class AdminUniversityMapTab extends AbstractTab {
 	
-	function AdminUniversityMapTab(){
-        parent::AbstractTab("University Map");
+	function __construct(){
+        parent::__construct("University Map");
     }
 
     function generateBody(){

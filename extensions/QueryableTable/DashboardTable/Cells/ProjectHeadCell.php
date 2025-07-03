@@ -2,7 +2,7 @@
 
 class ProjectHeadCell extends HeadCell {
     
-    function ProjectHeadCell($cellType, $params, $cellValue, $rowN, $colN, $table){
+    function __construct($cellType, $params, $cellValue, $rowN, $colN, $table){
         if(isset($params[0])){
             $this->value = $params[0];
         }

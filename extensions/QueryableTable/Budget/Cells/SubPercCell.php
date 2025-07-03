@@ -4,7 +4,7 @@ class SubPercCell extends PercCell{
     
     var $target = -1;
     
-    function SubPercCell($cellType, $params, $cellValue, $rowN, $colN, $table){
+    function __construct($cellType, $params, $cellValue, $rowN, $colN, $table){
         $value = "";
         if(isset($params[0])){
             $this->target = intval($params[0]);

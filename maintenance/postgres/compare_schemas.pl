@@ -395,7 +395,6 @@ ss_active_users  bigint INTEGER
 ss_good_articles bigint INTEGER
 ss_total_edits   bigint INTEGER
 ss_total_pages   bigint INTEGER
-ss_total_views   bigint INTEGER
 ss_users         bigint INTEGER
 
 ## True IP - keep an eye on these, coders tend to make textual assumptions
@@ -565,4 +564,3 @@ __DATA__
 OLD: searchindex          ## We use tsearch2 directly on the page table instead
 RENAME: user mwuser       ## Reserved word causing lots of problems
 RENAME: text pagecontent  ## Reserved word
-XFILE: ../archives/patch-profiling.sql

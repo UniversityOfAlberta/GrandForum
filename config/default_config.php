@@ -7,8 +7,14 @@
     // The name of the Network
     $config->setValue("networkName", "NETWORK");
     
+    // The full name of the Network
+    $config->setValue("networkFullName", "Forum Network");
+    
     // The name of the Site
     $config->setValue("siteName", "{$config->getValue("networkName")} Forum");
+    
+    // Value for wgServer
+    $config->setValue("server", "");
     
     // The path for the Forum
     $config->setValue("path", "");
@@ -40,6 +46,9 @@
     // ORCID Secret Key
     $config->setValue("orcidSecret", "");
     
+    // Fitbit Client ID
+    $config->setValue("fitbitId", "");
+    
     // Scopus Api Id
     $config->setValue("scopusApi", "");
     
@@ -49,8 +58,14 @@
     // API Key for gscholar-rss
     $config->setValue("gscholar-api", "");
     
+    // Default Language
+    $config->setValue("defaultLang", "en");
+    
     // Localization Cache Directory
     $config->setValue("localizationCache", "");
+    
+    // The location of the encryption key
+    $config->setValue("encryptionKey", "");
     
     // Default Mailing List Admins
     $config->setValue("listAdmins", array());
@@ -61,8 +76,20 @@
     // Support Email Address
     $config->setValue("supportEmail", "");
     
+    // Password Sender Email Address (if empty, it uses Support Email Address)
+    $config->setValue("passwordSender", "");
+    
+    // Other Email Address (usually network contact)
+    $config->setValue("otherEmail", "");
+    
+    // Whether or not to set override the mail envelope (-f in mail)
+    $config->setValue("setMailEnvelope", true);
+    
     // Network Website
     $config->setValue("networkSite", "");
+    
+    // The link that clicking the logo goes to
+    $config->setValue("logoUrl", "");
     
     // Shibboleth Logout URL
     $config->setValue("shibLogoutUrl", "");
@@ -71,7 +98,10 @@
     $config->setValue("shibDefaultRole", "");
     
     // Whether to auto create a user from single sign on
-    $config->setValue('shibCreateUser', false);
+    $config->setValue("shibCreateUser", false);
+    
+    // The type of network (NCE, CFREF)
+    $config->setValue("networkType", "NCE");
     
     // Skin
     $config->setValue("skin", "cavendish");
@@ -100,6 +130,9 @@
     // Highlight color for fonts
     $config->setValue("highlightFontColor", "#FFFFFF");
     
+    // Header border color
+    $config->setValue("headerBorderColor", "rgba(0,0,0,0.10)");
+    
     // Border color for the #bodyContent div
     $config->setValue("mainBorderColor", "#555555");
     
@@ -108,6 +141,9 @@
     
     // Global Message (ie. maintenance message)
     $config->setValue("globalMessage", "");
+    
+    // The terminology for projects 
+    $config->setValue("projectTerm", "Project");
     
     // The terminology for project themes 
     $config->setValue("projectThemes", "Theme");
@@ -124,8 +160,14 @@
     // The terminology to use for "Sub-Role"
     $config->setValue("subRoleTerm", "Sub-Role");
     
+    // Enable Role titles
+    $config->setValue("roleTitlesEnabled", true);
+    
     // The terminology to use for "Department"
     $config->setValue("deptsTerm", "Department");
+    
+    // The terminology to use for "Stakeholder Category"
+    $config->setValue('stakeholderCategoryTerm', "Stakeholder Category");
     
     // Whether to split the dept (Faculty / Dept)
     $config->setValue("splitDept", false);
@@ -138,7 +180,7 @@
     
     $config->setValue("hqpRegisterEmailWhitelist", array(".ca"));
     
-    // Whether to prevent access to certain pages when a guess
+    // Whether to prevent access to certain pages when a guest
     // This is mostly a facade since it doesn't actually prevent access from the data, it just hides the links to the pages.
     $config->setValue("guestLockdown", false);
     
@@ -156,6 +198,9 @@
     
     // Whether or not the Nationality field is enabled
     $config->setValue("nationalityEnabled", true);
+    
+    // Whether or not to show all countries, or only 'Canadian'
+    $config->setValue("nationalityAll", false);
     
     // Whether or not Early Career Research is enabled
     $config->setValue("ecrEnabled", false);
@@ -187,6 +232,9 @@
     // Whether or not Profiles should be enabled
     $config->setValue("profilesEnabled", true);
     
+    // Whether or not gamification should be enabled
+    $config->setValue("gamificationEnabled", false);
+
     // The List of CRDC Codes (code => full text) 
     $config->setValue("crdcCodes", array());
     
@@ -195,6 +243,9 @@
     
     // A whitelist of ip addresses so that certain ips can still get past the login wall
     $config->setValue("ipWhitelist", array());
+    
+    // Whether or not to show the sidebar (it will still be visible when not logged in)
+    $config->setValue("showSideBar", true);
     
     // Whether or not to show the Upload File in the sidebar
     $config->setValue("showUploadFile", true);
@@ -208,6 +259,9 @@
     // Whether or not to enable projects
     $config->setValue("projectsEnabled", true);
 
+    // Description section mapping
+    $config->setValue("projectSectionMap", false);
+    
     // Whether or not projects have 'long descriptions'
     $config->setValue("projectLongDescription", true);
     
@@ -232,6 +286,8 @@
     // Which extensions to enable
     $config->setValue("extensions", array(
         //'Shibboleth',
+        //'GoogleLogin',
+        //'OpenIDConnect',
         'AccessControl',
         'Cache',
         'Messages',
@@ -241,6 +297,7 @@
         'UI',
         'Notification',
         'GrandObjectPage',
+        'Bibliography',
         //'Twitter',
         'MailingList',
         'AddMember',
@@ -267,7 +324,7 @@
         //'Postings',
         //'CRM',
         //'RSSAlerts',
-        //'EventRegistration'
+        //'EventRegistration',
     ));
     
     $config->setValue("reportingExtras", array('CreatePDF'              => false,
@@ -441,9 +498,17 @@
     /* Other */
     $config->setValue("analyticsCode", "");
     
+    $config->setValue("211Key", "");
+    
+    $config->setValue("geoapifyAPI", "");
+    
     $config->setValue("googleAPI", "");
     
     $config->setValue("reCaptchaSiteKey", "");
     
     $config->setValue("reCaptchaSecretKey", "");
+    
+    $config->setValue("googleLoginAppId", "");
+    
+    $config->setValue("googleLoginSecret", "");
 ?>

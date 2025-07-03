@@ -2,7 +2,7 @@
 
 class ImportDOIAPI extends API{
 
-    function ImportDOIAPI(){
+    function __construct(){
         $this->addPost("doi", true, "The doi reference", "10.1000/182");
     }
 

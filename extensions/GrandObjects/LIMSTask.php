@@ -37,7 +37,7 @@ class LIMSTask extends BackboneModel {
 	    return $tasks;
 	}
 	
-	function LIMSTask($data){
+	function __construct($data){
 	    if(count($data) > 0){
 		    $this->id = $data[0]['id'];
 		    $this->opportunity = $data[0]['opportunity'];

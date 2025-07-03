@@ -33,7 +33,7 @@ Feature: Project/Theme Leaders
         | "TL.User1" | "TL.Pass1" |
         | "TC.User1" | "TC.Pass1" |
         
-    Scenario Outline: Leader tries to update the Project Page of a Project that has a challenge which is led by Leader
+    Scenario Outline: Leader tries to update long description of a Project that has a challenge which is led by Leader
         Given I am logged in as <user> using password <pass>
         And I go to "index.php/Phase2Project3:Main"
         And I click "Description"
@@ -49,7 +49,7 @@ Feature: Project/Theme Leaders
         | "TL.User1" | "TL.Pass1" | "TL.User1 was here (long)" |
         | "TC.User1" | "TC.Pass1" | "TC.User1 was here (long)" |
         
-    Scenario Outline: Leader tries to update the Project Page of a Project that has a challenge which is led by Leader
+    Scenario Outline: LLeader tries to short description of a Project that has a challenge which is led by Leader
         Given I am logged in as <user> using password <pass>
         And I go to "index.php/Phase2Project3:Main"
         And I press "Edit Main"

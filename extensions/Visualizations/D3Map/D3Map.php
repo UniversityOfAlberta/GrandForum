@@ -10,9 +10,9 @@ class D3Map extends Visualization {
     var $long = -100;
     var $zoom = 4;
     
-    function D3Map($url){
+    function __construct($url){
         $this->url = $url;
-        self::Visualization();
+        parent::__construct();
     }
     
     static function init(){

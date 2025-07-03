@@ -1,0 +1,534 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Projects Table" reportType="RP_PROJECT_TABLE" personId="0" year="0" ajax="true">
+    <Permissions>
+        <Role role="STAFF+">
+            <SectionPermission id="projects" permissions="rw" />
+            <SectionPermission id="table" permissions="rw" />
+        </Role>
+    </Permissions>
+    <Script>
+        <![CDATA[
+            <script type="text/javascript">
+                $(window).resize(function(){
+                    try {
+                        table.columns.adjust().draw();
+                    } catch(error){
+                    
+                    }
+                });
+            </script>
+        ]]>
+    </Script>
+    <ReportSection id="projects" tooltip="Projects" name="Projects" blobSection="PROJECTS" type="EditableReportSection" renderpdf="false">
+        <ReportItemSet id="projects" type="AllProjects">
+            <ReportItemSet id="toggle" type="ToggleHeader" title="{$project_name} - {$project_full_name}">
+                <!-- Project Lifecycle -->
+                <ReportItem id="pdf" type="PDFReportItem" reportType="LOI" buttonName="Download LOI">
+                    <![CDATA[
+                        {$item}
+                    ]]>
+                </ReportItem>
+                <Static>
+                    <![CDATA[
+                        <div style='display:flex;'>
+                        <div>
+                        <h2>Project Lifecycle</h2>
+                        <table class="wikitable">
+                    ]]>
+                </Static>
+                <ReportItem id="duration" type="Select" blobItem="DURATION" labels="1 year|2 years|3 years|4 years|5 years" options="1|2|3|4|5" default="5">
+                    <![CDATA[
+                        <tr><td class="label">Duration:</td><td id='duration{$project_id}'>{$item}</td></tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="loi_submitted" type="Calendar" blobItem="LOI_SUBMITTED" width="75px">
+                    <![CDATA[
+                        <tr><td class="label">LOI Submitted:</td><td>{$item}</td></tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="committee1_approved" type="Calendar" blobItem="COMMITTEE1_APPROVED" width="75px">
+                    <![CDATA[
+                        <tr><td class="label">Committee 1 Approved:</td><td>{$item}</td></tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="committee2_approved" type="Calendar" blobItem="COMMITTEE2_APPROVED" width="75px">
+                    <![CDATA[
+                        <tr><td class="label">Committee 2 Approved:</td><td>{$item}</td></tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="nserc_submitted" type="Calendar" blobItem="NSERC_SUBMITTED" width="75px">
+                    <![CDATA[
+                        <tr><td class="label">NSERC Alliance Submitted:</td><td>{$item}</td></tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="nserc_resubmitted" type="Calendar" blobItem="NSERC_RESUBMITTED" width="75px">
+                    <![CDATA[
+                        <tr><td class="label">NSERC Alliance Resubmitted:</td><td>{$item}</td></tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="nserc_rejected" type="Calendar" blobItem="NSERC_REJECTED" width="75px">
+                    <![CDATA[
+                        <tr><td class="label">NSERC Alliance Rejected:</td><td>{$item}</td></tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="nserc_approved" type="Calendar" blobItem="NSERC_APPROVED" width="75px">
+                    <![CDATA[
+                        <tr><td class="label">NSERC Alliance Approved:</td><td>{$item}</td></tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="project_end" type="Calendar" blobItem="PROJECT_END" width="75px">
+                    <![CDATA[
+                        <tr><td class="label">Project End:</td><td>{$item}</td></tr>
+                    ]]>
+                </ReportItem>
+                <Static>
+                    <![CDATA[
+                        </table>
+                        </div>
+                    ]]>
+                </Static>
+                
+                <!-- Project Members -->
+                <Static>
+                    <![CDATA[
+                        <div style='margin-left:25px;'>
+                        <h2>Project Members</h2>
+                        <h3>Project Lead</h3>
+                        <ul>
+                    ]]>
+                </Static>
+                <ReportItemSet id="leads" type="ProjectLeaders">
+                    <Static>
+                        <![CDATA[
+                            <li><a href="{$user_url}">{$user_name}</a></li>
+                        ]]>
+                    </Static>
+                </ReportItemSet>
+                <Static>
+                    <![CDATA[
+                        </ul>
+                        <h3>Research Team</h3>
+                        <ul>
+                    ]]>
+                </Static>
+                <ReportItemSet id="members" type="ProjectPeopleNoLeaders" startDate="0000-00-00" endDate="9999-12-31">
+                    <Static>
+                        <![CDATA[
+                            <li><a href="{$user_url}">{$user_name}</a></li>
+                        ]]>
+                    </Static>
+                </ReportItemSet>
+                <Static>
+                    <![CDATA[
+                        </ul>
+                        </div>
+                        </div>
+                    ]]>
+                </Static>
+                
+                <!-- Budget -->
+                <Static>
+                    <![CDATA[
+                        <h2>Budget</h2>
+                    ]]>
+                </Static>
+                <ReportItem type="MultiText" blobType="BLOB_ARRAY" blobItem="BUDGET" multiple="true"
+                            indices="partner|year1|year2|year3|year4|year5|comments" 
+                            labels="Partner/Source|Year 1|Year 2|Year 3|Year 4|Year 5|Comments" 
+                            types="CICPartners|Text|Text|Text|Text|Text|Textarea"
+                            sizes="400|50|50|50|50|50|250">
+                    <![CDATA[
+                        <div id='budget{$project_id}'>
+                            {$item}
+                        </div>
+                    ]]>
+                </ReportItem>
+                <Static>
+                    <![CDATA[
+                        <script type="text/javascript">
+                            $('#duration{$project_id} select').on("input", function(){
+                                var n = $('#duration{$project_id} select > option:selected').val();
+                                $('#budget{$project_id} tr > *').show();
+                                for(i=5;i>n;i--){
+                                    $('#budget{$project_id} tr > *:nth-child(' + (i+1) + ')').hide();
+                                }
+                            }).trigger("input");
+                        </script>
+                        <br />
+                    ]]>
+                </Static>
+            </ReportItemSet>
+        </ReportItemSet>
+    </ReportSection>
+    <ReportSection id="table" tooltip="Projects" name="Table" blobSection="TABLE" type="ReportSection" renderpdf="false">
+        <Static>
+            <![CDATA[
+                {set(globalTotal1, 0)}
+                {set(globalTotal2, 0)}
+                {set(globalTotal3, 0)}
+                {set(globalTotal4, 0)}
+                {set(globalTotal5, 0)}
+            ]]>
+        </Static>
+        <Static>
+            <![CDATA[
+                <style>
+                    table.project_dates td {
+	                    padding: 1px 5px !important;
+                    }
+                </style>
+                <table id="project_table" class='wikitable' frame='box' rules='all' style='font-size:0.9em; line-height:1.25em;'>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th style='min-width:250px;'>Project Title</th>
+                            <th>Duration</th>
+                            <th style='white-space:nowrap;'>Project Lifecycle</th>
+                            <th style='white-space:nowrap;'>Project Lead</th>
+                            <th style='white-space:nowrap;'>Research Team</th>
+                            <th style='white-space:nowrap; min-width:250px;'>Partners</th>
+                            <th style='white-space:nowrap;'>2019/20</th>
+                            <th style='white-space:nowrap;'>2020/21</th>
+                            <th style='white-space:nowrap;'>2021/22</th>
+                            <th style='white-space:nowrap;'>2022/23</th>
+                            <th style='white-space:nowrap;'>2023/24</th>
+                            <th style='white-space:nowrap;'>2024/25</th>
+                            <th style='white-space:nowrap;'>2025/26</th>
+                            <th style='white-space:nowrap;'>2026/27</th>
+                            <th style='white-space:nowrap;'>2027/28</th>
+                            <th style='white-space:nowrap;'>2028/29</th>
+                            <th style='white-space:nowrap;'>Total</th>
+                            <th>Comments</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            ]]>
+        </Static>
+        <ReportItemSet id="projects" type="AllProjects">
+            <Static>
+                <![CDATA[
+                    {set(total1, 0)}
+                    {set(total2, 0)}
+                    {set(total3, 0)}
+                    {set(total4, 0)}
+                    {set(total5, 0)}
+                ]]>
+            </Static>
+            <For from="0" to="{getArrayCount(RP_PROJECT_TABLE,PROJECTS,BUDGET,0,0,{$project_id})}">
+                <Static>
+                    <![CDATA[
+                        {set(total1, {add({get(total1)},{getArray(RP_PROJECT_TABLE,PROJECTS,BUDGET,0,0,{$project_id},{$i}|year1)})})}
+                        {set(total2, {add({get(total2)},{getArray(RP_PROJECT_TABLE,PROJECTS,BUDGET,0,0,{$project_id},{$i}|year2)})})}
+                        {set(total3, {add({get(total3)},{getArray(RP_PROJECT_TABLE,PROJECTS,BUDGET,0,0,{$project_id},{$i}|year3)})})}
+                        {set(total4, {add({get(total4)},{getArray(RP_PROJECT_TABLE,PROJECTS,BUDGET,0,0,{$project_id},{$i}|year4)})})}
+                        {set(total5, {add({get(total5)},{getArray(RP_PROJECT_TABLE,PROJECTS,BUDGET,0,0,{$project_id},{$i}|year5)})})}
+                        {set(i, {$i})}
+                    ]]>
+                </Static>
+                <If if="{&lt;({$i},{getArrayCount(RP_PROJECT_TABLE,PROJECTS,BUDGET,0,0,{$project_id})})}">
+                    <![CDATA[
+                        <tr>
+                    ]]>
+                </If>
+                <Else>
+                    <![CDATA[
+                        <tr style='border-bottom: 3px solid #CCC;'>
+                    ]]>
+                </Else>
+                <Static>
+                    <![CDATA[
+                            <td><a href="{$project_url}">{$project_name}</a></td>
+                            <td>{$project_full_name}</td>
+                            <td>{getText(RP_PROJECT_TABLE,PROJECTS,DURATION,0,0,{$project_id})}</td>
+                            <td>
+                                <table cellspacing="0" cellpadding="0" class="project_dates">
+                                    <tr>
+                                        <td style='white-space:nowrap;border:none;'>LOI Submitted</td>
+                                        <td style='border:none;white-space:nowrap;'>{getText(RP_PROJECT_TABLE,PROJECTS,LOI_SUBMITTED,0,0,{$project_id})}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style='white-space:nowrap;border:none;'>Committee 1 Approved</td>
+                                        <td style='border:none;white-space:nowrap;'>{getText(RP_PROJECT_TABLE,PROJECTS,COMMITTEE1_APPROVED,0,0,{$project_id})}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style='white-space:nowrap;border:none;'>Committee 2 Approved</td>
+                                        <td style='border:none;white-space:nowrap;'>{getText(RP_PROJECT_TABLE,PROJECTS,COMMITTEE2_APPROVED,0,0,{$project_id})}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style='white-space:nowrap;border:none;'>NSERC Alliance Submitted</td>
+                                        <td style='border:none;white-space:nowrap;'>{getText(RP_PROJECT_TABLE,PROJECTS,NSERC_SUBMITTED,0,0,{$project_id})}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style='white-space:nowrap;border:none;'>NSERC Alliance Resubmitted&nbsp;</td>
+                                        <td style='border:none;white-space:nowrap;'>{getText(RP_PROJECT_TABLE,PROJECTS,NSERC_RESUBMITTED,0,0,{$project_id})}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style='white-space:nowrap;border:none;'>NSERC Alliance Rejected</td>
+                                        <td style='border:none;white-space:nowrap;'>{getText(RP_PROJECT_TABLE,PROJECTS,NSERC_REJECTED,0,0,{$project_id})}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style='white-space:nowrap;border:none;'>NSERC Alliance Approved</td>
+                                        <td style='border:none;white-space:nowrap;'>{getText(RP_PROJECT_TABLE,PROJECTS,NSERC_APPROVED,0,0,{$project_id})}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style='white-space:nowrap;border:none;'>Project End</td>
+                                        <td style='border:none;white-space:nowrap;'>{getText(RP_PROJECT_TABLE,PROJECTS,PROJECT_END,0,0,{$project_id})}</td>
+                                    </tr>
+                                </table>
+                            </td>
+                            <td style='white-space:nowrap;'>
+                    ]]>
+                </Static>
+                <ReportItemSet id="leads" type="ProjectLeaders">
+                    <Static>
+                        <![CDATA[
+                            <a href="{$user_url}">{$user_name}</a><br />
+                        ]]>
+                    </Static>
+                </ReportItemSet>
+                <Static>
+                    <![CDATA[
+                        </td>
+                        <td style='white-space:nowrap;'>
+                    ]]>
+                </Static>
+                <ReportItemSet id="members" type="ProjectPeopleNoLeaders" startDate="0000-00-00" endDate="9999-12-31">
+                    <Static>
+                        <![CDATA[
+                            <a href="{$user_url}">{$user_name}</a><br />
+                        ]]>
+                    </Static>
+                </ReportItemSet>
+                <Static>
+                    <![CDATA[
+                        </td>
+                    ]]>
+                </Static>
+                
+                <!-- Project Budget Cells -->
+                <If if="{&lt;({$i},{getArrayCount(RP_PROJECT_TABLE,PROJECTS,BUDGET,0,0,{$project_id})})}">
+                    <!-- Partner row -->
+                    <Static>
+                        <![CDATA[
+                            {set(year, 1)}
+                            <td>{getArray(RP_PROJECT_TABLE,PROJECTS,BUDGET,0,0,{$project_id},{get(i)}|partner)}</td>
+                        ]]>
+                    </Static>
+                    <For from="2020" to="{max({substr({$project_start}, 0, 4)}, 2019)}">
+                        <Static>
+                            <![CDATA[
+                                <td class='year{get(year)}'></td>
+                                {set(year, {add({get(year)}, 1)})}
+                            ]]>
+                        </Static>
+                    </For>
+                    <Static>
+                        <![CDATA[
+                            <td align='right' class='year{get(year)}'>{number_format({getArray(RP_PROJECT_TABLE,PROJECTS,BUDGET,0,0,{$project_id},{get(i)}|year1)},2)}</td>
+                            <td align='right' class='year{add({get(year)}, 1)}'>{number_format({getArray(RP_PROJECT_TABLE,PROJECTS,BUDGET,0,0,{$project_id},{get(i)}|year2)},2)}</td>
+                            <td align='right' class='year{add({get(year)}, 2)}'>{number_format({getArray(RP_PROJECT_TABLE,PROJECTS,BUDGET,0,0,{$project_id},{get(i)}|year3)},2)}</td>
+                            <td align='right' class='year{add({get(year)}, 3)}'>{number_format({getArray(RP_PROJECT_TABLE,PROJECTS,BUDGET,0,0,{$project_id},{get(i)}|year4)},2)}</td>
+                            <td align='right' class='year{add({get(year)}, 4)}'>{number_format({getArray(RP_PROJECT_TABLE,PROJECTS,BUDGET,0,0,{$project_id},{get(i)}|year5)},2)}</td>
+                            {set(year, {add({get(year)}, 5)})}
+                        ]]>
+                    </Static>
+                    <For from="{add({max({substr({$project_start}, 0, 4)}, 2019)}, 5)}" to="2028">
+                        <Static>
+                            <![CDATA[
+                                <td class='year{get(year)}'></td>
+                                {set(year, {add({get(year)}, 1)})}
+                            ]]>
+                        </Static>
+                    </For>
+                    <Static>
+                        <![CDATA[
+                            <td align='right' class='year_total' style='background: #EEEEEE;'><b>{number_format({add({getArray(RP_PROJECT_TABLE,PROJECTS,BUDGET,0,0,{$project_id},{get(i)}|year1)},
+                                                                                                  {getArray(RP_PROJECT_TABLE,PROJECTS,BUDGET,0,0,{$project_id},{get(i)}|year2)},
+                                                                                                  {getArray(RP_PROJECT_TABLE,PROJECTS,BUDGET,0,0,{$project_id},{get(i)}|year3)},
+                                                                                                  {getArray(RP_PROJECT_TABLE,PROJECTS,BUDGET,0,0,{$project_id},{get(i)}|year4)},
+                                                                                                  {getArray(RP_PROJECT_TABLE,PROJECTS,BUDGET,0,0,{$project_id},{get(i)}|year5)})},2)}</b></td>
+                            <td>{getArray(RP_PROJECT_TABLE,PROJECTS,BUDGET,0,0,{$project_id},{get(i)}|comment)}</td>
+                        ]]>
+                    </Static>
+                </If>
+                <Else>
+                    <!-- Totals -->
+                    <Static>
+                        <![CDATA[
+                            <td></td>
+                        ]]>
+                    </Static>
+                    <For from="2020" to="{max({substr({$project_start}, 0, 4)}, 2019)}">
+                        <Static>
+                            <![CDATA[
+                                <td style='background: #EEEEEE;' align='right'></td>
+                            ]]>
+                        </Static>
+                    </For>
+                    <Static>
+                        <![CDATA[
+                            <td style='background: #EEEEEE;' align='right'><b>{number_format({get(total1)},2)}</b></td>
+                            <td style='background: #EEEEEE;' align='right'><b>{number_format({get(total2)},2)}</b></td>
+                            <td style='background: #EEEEEE;' align='right'><b>{number_format({get(total3)},2)}</b></td>
+                            <td style='background: #EEEEEE;' align='right'><b>{number_format({get(total4)},2)}</b></td>
+                            <td style='background: #EEEEEE;' align='right'><b>{number_format({get(total5)},2)}</b></td>
+                        ]]>
+                    </Static>
+                    <For from="{add({max({substr({$project_start}, 0, 4)}, 2019)}, 5)}" to="2028">
+                        <Static>
+                            <![CDATA[
+                                <td style='background: #EEEEEE;' align='right'></td>
+                            ]]>
+                        </Static>
+                    </For>
+                    <Static>
+                        <![CDATA[
+                            <td style='background: #EEEEEE;' align='right'><b>{number_format({add({get(total1)},
+                                                                     {get(total2)},
+                                                                     {get(total3)},
+                                                                     {get(total4)},
+                                                                     {get(total5)})},2)}</b></td>
+                            <td></td>
+                        ]]>
+                    </Static>
+                </Else>
+                <Static>
+                    <![CDATA[
+                        </tr>
+                    ]]>
+                </Static>
+            </For>
+        </ReportItemSet>
+        <Static>
+            <![CDATA[
+                    </tbody>
+                    <tfoot>
+                        <tr style='font-weight:bold; background: #555; color: white;'>
+                            <td colspan='7' align='right'>Grand Total:</td>
+                            <td class='year1_total' align='right' style='padding-left:10px;'>0.00</td>
+                            <td class='year2_total' align='right' style='padding-left:10px;'>0.00</td>
+                            <td class='year3_total' align='right' style='padding-left:10px;'>0.00</td>
+                            <td class='year4_total' align='right' style='padding-left:10px;'>0.00</td>
+                            <td class='year5_total' align='right' style='padding-left:10px;'>0.00</td>
+                            <td class='year6_total' align='right' style='padding-left:10px;'>0.00</td>
+                            <td class='year7_total' align='right' style='padding-left:10px;'>0.00</td>
+                            <td class='year8_total' align='right' style='padding-left:10px;'>0.00</td>
+                            <td class='year9_total' align='right' style='padding-left:10px;'>0.00</td>
+                            <td class='year10_total' align='right' style='padding-left:10px;'>0.00</td>
+                            <td class='total' align='right' style='background: #333; padding-left:10px;'>0.00</td>
+                            <td></td>
+                        </tr>
+                    </tfoot>
+                </table>
+                <script type="text/javascript">
+                    $("#reportHeader").hide();
+                    $("#reportHeader").next().hide();
+                    
+                    $('#project_table thead tr')
+                        .clone(true)
+                        .addClass('filters')
+                        .appendTo('#project_table thead');
+                    
+                    table = $("#project_table").DataTable({
+                        autoWidth: true,
+                        orderCellsTop: true,
+                        iDisplayLength: -1,
+                        order: [[ 1, "asc" ]],
+                        columnDefs: [
+                           { type: 'natural', targets: [0,7,8,9,10,11,12,13,14,15,16,17] }
+                        ],
+                        aLengthMenu: [[-1], ['All']],
+                        drawCallback: function() {
+                            for(y=1;y<=10;y++){
+                                $(".year" + y + "_total").text(number_format(_.reduce($('.year' + y), function(sum, el){ return sum + (!_.isNaN(parseFloat($(el).text().replace(',', ''))) ? parseFloat($(el).text().replace(',', '')) : 0 ); }, 0)));
+                            }
+                            $(".total").text(number_format(_.reduce($('.year_total'), function(sum, el){ return sum + (!_.isNaN(parseFloat($(el).text().replace(',', ''))) ? parseFloat($(el).text().replace(',', '')) : 0 ); }, 0)));
+                            $("#project_table tfoot").hide();
+                        },
+                        scrollX: true,
+                        //scrollY: ($(window).height() - $("#bodyContent").position().top - 217) + "px",
+                        initComplete: function () {
+                            var api = this.api();
+                 
+                            // For each column
+                            api
+                                .columns()
+                                .eq(0)
+                                .each(function (colIdx) {
+                                    // Set the header cell to contain the input element
+                                    var cell = $('.filters th').eq(
+                                        $(api.column(colIdx).header()).index()
+                                    );
+                                    var title = $(cell).text();
+                                    $(cell).html('<input type="text" placeholder="' + title + '" style="width:100%;" />');
+                 
+                                    // On every keypress in this input
+                                    $(
+                                        'input',
+                                        $('.filters th').eq($(api.column(colIdx).header()).index())
+                                    )
+                                        .off('keyup change')
+                                        .on('change', function (e) {
+                                            // Get the search value
+                                            $(this).attr('title', $(this).val());
+                 
+                                            cursorPosition = this.selectionStart;
+                                            // Search the column for that value
+                                            api
+                                                .column(colIdx)
+                                                .search(this.value, false, false)
+                                                .draw();
+                                        })
+                                        .on('keyup', function (e) {
+                                            e.stopPropagation();
+                 
+                                            $(this).trigger('change');
+                                            $(this)
+                                                .focus()[0]
+                                                .setSelectionRange(cursorPosition, cursorPosition);
+                                        });
+                                });
+                        },
+                        rowsGroup: [0,1,2,3,4,5],
+                        dom: 'Blfrtip',
+                        buttons: [
+                            'excel'
+                        ]
+                    });
+                    
+                    $(".dataTables_scrollHead").css("top", $("#topheader").outerHeight() + $("#header").outerHeight() + $("#submenu").outerHeight() + 1)
+                                               .css("z-index", "1000");
+                    $("#project_table_paginate").hide();
+                    var status = "";
+                    $("#bodyContent").scroll(function(){
+                        if($("#bodyContent").scrollTop() >= 62){
+                            $(".dataTables_scrollHead").css("position", "fixed")
+                                                       .css("width", $(".dataTables_scrollBody").width());
+                            $(".dataTables_scrollBody").css("top", 62);
+                            $(".dataTables_scrollFoot").css("position", "relative")
+                                                       .css("top", 60);
+                            $("#project_table_info").css("margin-top", 60);
+                            if(status != "sticky"){
+                                status = "sticky";
+                                $(".dataTables_scrollBody").trigger("scroll");
+                            }
+                        }
+                        else{
+                            $(".dataTables_scrollHead").css("position", "static")
+                                                       .css("width", "100%");
+                            $(".dataTables_scrollBody").css("top", 0);
+                            $(".dataTables_scrollFoot").css("position", "static");
+                            $("#project_table_info").css("margin-top", 0);
+                            if(status != "static"){
+                                status = "static";
+                                $(".dataTables_scrollBody").trigger("scroll");
+                            }
+                        }
+                    });
+                    
+                    table.columns.adjust().draw();
+                </script>
+            ]]>
+        </Static>
+    </ReportSection>
+</Report>

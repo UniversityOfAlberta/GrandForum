@@ -22,7 +22,7 @@ class DropFundedCni extends AbstractMigration
      */
     public function up()
     {
-        $this->dropTable('grand_funded_cni');
+        $this->table('grand_funded_cni')->drop()->save();
     }
 
     /**

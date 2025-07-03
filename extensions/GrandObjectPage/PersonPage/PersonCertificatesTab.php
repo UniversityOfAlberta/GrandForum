@@ -9,8 +9,8 @@ class PersonCertificatesTab extends AbstractEditableTab {
     var $person;
     var $visibility;
 
-    function PersonCertificatesTab($person, $visibility){
-        parent::AbstractEditableTab("Training Certificates");
+    function __construct($person, $visibility){
+        parent::__construct("Training Certificates");
         $this->person = $person;
         $this->visibility = $visibility;
     }
@@ -88,7 +88,7 @@ class PersonCertificatesTab extends AbstractEditableTab {
         if(isset($_FILES["file_{$blob}"]) && $_FILES["file_{$blob}"]['name'] != ""){
             $name = $_FILES["file_{$blob}"]['name'];
             $size = $_FILES["file_{$blob}"]['size'];
-            $magic = MimeMagic::singleton();
+            $magic = MediaWiki\MediaWikiServices::getInstance()->getMimeAnalyzer();
             $mime = $magic->guessMimeType($_FILES["file_{$blob}"]['tmp_name'], false);
             
             $contents = base64_encode(file_get_contents($_FILES["file_{$blob}"]['tmp_name']));

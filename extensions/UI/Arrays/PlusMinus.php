@@ -2,8 +2,8 @@
 
 class PlusMinus extends UIElementArray {
     
-    function FieldSet($id){
-        parent::UIElementArray($id);
+    function __construct($id){
+        parent::__construct($id);
     }
     
     function render(){

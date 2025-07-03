@@ -5,10 +5,10 @@ class NSERCTab extends AbstractTab {
     var $year = "";
     var $phase = "";
     
-    function NSERCTab($year, $phase=""){
+    function __construct($year, $phase=""){
         global $wgOut;
         $lastYear = $year - 1;
-        parent::AbstractTab("{$lastYear}/{$year}");
+        parent::__construct("{$lastYear}/{$year}");
         $this->year = $year;
         $this->phase = $phase;
         $this->id = str_replace(" ", "", "{$this->id}_{$phase}");

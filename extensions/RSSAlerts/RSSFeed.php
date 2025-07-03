@@ -23,7 +23,7 @@ class RSSFeed extends BackboneModel {
         return new RSSFeed($data);
     }
 
-    function RSSFeed($data=null){
+    function __construct($data=null){
         if(count($data) > 0){
             $this->id = $data[0]['id'];
             $this->url = $data[0]['url'];

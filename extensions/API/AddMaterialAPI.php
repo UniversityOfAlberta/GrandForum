@@ -5,7 +5,7 @@ class AddMaterialAPI extends API{
     var $errors = "";
     var $typeSet = false;
 
-    function AddMaterialAPI(){
+    function __construct(){
         $this->addPOST("id", false, "The id of the Material(only required if updating)","5");
         $this->addPOST("type", false, "The type of Material this is.  If set, this overides the inferred type based on the uploaded file", "video");
         $this->addPOST("title", true, "The title of the Material","My Material");

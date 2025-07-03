@@ -2,8 +2,8 @@
 
 class MergeProjectTab extends ProjectTab {
 
-    function MergeProjectTab(){
-        parent::ProjectTab("Merge");
+    function __construct(){
+        ProjectTab::__construct("Merge");
     }
     
     static function createForm(){

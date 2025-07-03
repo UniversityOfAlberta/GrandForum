@@ -21,230 +21,153 @@
  * @ingroup Parser
  */
 
+use MediaWiki\Logger\LoggerFactory;
+use MediaWiki\MediaWikiServices;
+
 /**
  * @ingroup Parser
  */
-interface Preprocessor {
+abstract class Preprocessor {
+
+	public const CACHE_VERSION = 1;
+
 	/**
-	 * Create a new preprocessor object based on an initialised Parser object
-	 *
-	 * @param $parser Parser
+	 * @var Parser
 	 */
-	function __construct( $parser );
+	public $parser;
+
+	/**
+	 * @var array Brace matching rules.
+	 */
+	protected $rules = [
+		'{' => [
+			'end' => '}',
+			'names' => [
+				2 => 'template',
+				3 => 'tplarg',
+			],
+			'min' => 2,
+			'max' => 3,
+		],
+		'[' => [
+			'end' => ']',
+			'names' => [ 2 => null ],
+			'min' => 2,
+			'max' => 2,
+		],
+		'-{' => [
+			'end' => '}-',
+			'names' => [ 2 => null ],
+			'min' => 2,
+			'max' => 2,
+		],
+	];
+
+	/**
+	 * Store a document tree in the cache.
+	 *
+	 * @param string $text
+	 * @param int $flags
+	 * @param string $tree
+	 */
+	protected function cacheSetTree( $text, $flags, $tree ) {
+		$config = RequestContext::getMain()->getConfig();
+
+		$length = strlen( $text );
+		$threshold = $config->get( 'PreprocessorCacheThreshold' );
+		if ( $threshold === false || $length < $threshold || $length > 1e6 ) {
+			return;
+		}
+
+		$cache = MediaWikiServices::getInstance()->getMainWANObjectCache();
+		$key = $cache->makeKey(
+			// @phan-suppress-next-line PhanUndeclaredConstantOfClass
+			defined( 'static::CACHE_PREFIX' ) ? static::CACHE_PREFIX : static::class,
+			md5( $text ),
+			$flags
+		);
+		$value = sprintf( "%08d", static::CACHE_VERSION ) . $tree;
+
+		$cache->set( $key, $value, 86400 );
+
+		LoggerFactory::getInstance( 'Preprocessor' )
+			->info( "Cached preprocessor output (key: $key)" );
+	}
+
+	/**
+	 * Attempt to load a precomputed document tree for some given wikitext
+	 * from the cache.
+	 *
+	 * @param string $text
+	 * @param int $flags
+	 * @return PPNode_Hash_Tree|bool
+	 */
+	protected function cacheGetTree( $text, $flags ) {
+		$config = RequestContext::getMain()->getConfig();
+
+		$length = strlen( $text );
+		$threshold = $config->get( 'PreprocessorCacheThreshold' );
+		if ( $threshold === false || $length < $threshold || $length > 1e6 ) {
+			return false;
+		}
+
+		$cache = MediaWikiServices::getInstance()->getMainWANObjectCache();
+
+		$key = $cache->makeKey(
+			// @phan-suppress-next-line PhanUndeclaredConstantOfClass
+			defined( 'static::CACHE_PREFIX' ) ? static::CACHE_PREFIX : static::class,
+			md5( $text ),
+			$flags
+		);
+
+		$value = $cache->get( $key );
+		if ( !$value ) {
+			return false;
+		}
+
+		$version = intval( substr( $value, 0, 8 ) );
+		if ( $version !== static::CACHE_VERSION ) {
+			return false;
+		}
+
+		LoggerFactory::getInstance( 'Preprocessor' )
+			->info( "Loaded preprocessor output from cache (key: $key)" );
+
+		return substr( $value, 8 );
+	}
 
 	/**
 	 * Create a new top-level frame for expansion of a page
 	 *
 	 * @return PPFrame
 	 */
-	function newFrame();
+	abstract public function newFrame();
 
 	/**
-	 * Create a new custom frame for programmatic use of parameter replacement as used in some extensions
+	 * Create a new custom frame for programmatic use of parameter replacement
+	 * as used in some extensions.
 	 *
-	 * @param $args array
+	 * @param array $args
 	 *
 	 * @return PPFrame
 	 */
-	function newCustomFrame( $args );
+	abstract public function newCustomFrame( $args );
 
 	/**
-	 * Create a new custom node for programmatic use of parameter replacement as used in some extensions
+	 * Create a new custom node for programmatic use of parameter replacement
+	 * as used in some extensions.
 	 *
-	 * @param $values
+	 * @param array $values
 	 */
-	function newPartNodeArray( $values );
+	abstract public function newPartNodeArray( $values );
 
 	/**
 	 * Preprocess text to a PPNode
 	 *
-	 * @param $text
-	 * @param $flags
+	 * @param string $text
+	 * @param int $flags
 	 *
 	 * @return PPNode
 	 */
-	function preprocessToObj( $text, $flags = 0 );
-}
-
-/**
- * @ingroup Parser
- */
-interface PPFrame {
-	const NO_ARGS = 1;
-	const NO_TEMPLATES = 2;
-	const STRIP_COMMENTS = 4;
-	const NO_IGNORE = 8;
-	const RECOVER_COMMENTS = 16;
-
-	const RECOVER_ORIG = 27; // = 1|2|8|16 no constant expression support in PHP yet
-
-	/** This constant exists when $indexOffset is supported in newChild() */
-	const SUPPORTS_INDEX_OFFSET = 1;
-
-	/**
-	 * Create a child frame
-	 *
-	 * @param array $args
-	 * @param Title $title
-	 * @param int $indexOffset A number subtracted from the index attributes of the arguments
-	 *
-	 * @return PPFrame
-	 */
-	function newChild( $args = false, $title = false, $indexOffset = 0 );
-
-	/**
-	 * Expand a document tree node
-	 */
-	function expand( $root, $flags = 0 );
-
-	/**
-	 * Implode with flags for expand()
-	 */
-	function implodeWithFlags( $sep, $flags /*, ... */ );
-
-	/**
-	 * Implode with no flags specified
-	 */
-	function implode( $sep /*, ... */ );
-
-	/**
-	 * Makes an object that, when expand()ed, will be the same as one obtained
-	 * with implode()
-	 */
-	function virtualImplode( $sep /*, ... */ );
-
-	/**
-	 * Virtual implode with brackets
-	 */
-	function virtualBracketedImplode( $start, $sep, $end /*, ... */ );
-
-	/**
-	 * Returns true if there are no arguments in this frame
-	 *
-	 * @return bool
-	 */
-	function isEmpty();
-
-	/**
-	 * Returns all arguments of this frame
-	 */
-	function getArguments();
-
-	/**
-	 * Returns all numbered arguments of this frame
-	 */
-	function getNumberedArguments();
-
-	/**
-	 * Returns all named arguments of this frame
-	 */
-	function getNamedArguments();
-
-	/**
-	 * Get an argument to this frame by name
-	 */
-	function getArgument( $name );
-
-	/**
-	 * Returns true if the infinite loop check is OK, false if a loop is detected
-	 *
-	 * @param $title
-	 *
-	 * @return bool
-	 */
-	function loopCheck( $title );
-
-	/**
-	 * Return true if the frame is a template frame
-	 */
-	function isTemplate();
-
-	/**
-	 * Get a title of frame
-	 *
-	 * @return Title
-	 */
-	function getTitle();
-}
-
-/**
- * There are three types of nodes:
- *     * Tree nodes, which have a name and contain other nodes as children
- *     * Array nodes, which also contain other nodes but aren't considered part of a tree
- *     * Leaf nodes, which contain the actual data
- *
- * This interface provides access to the tree structure and to the contents of array nodes,
- * but it does not provide access to the internal structure of leaf nodes. Access to leaf
- * data is provided via two means:
- *     * PPFrame::expand(), which provides expanded text
- *     * The PPNode::split*() functions, which provide metadata about certain types of tree node
- * @ingroup Parser
- */
-interface PPNode {
-	/**
-	 * Get an array-type node containing the children of this node.
-	 * Returns false if this is not a tree node.
-	 */
-	function getChildren();
-
-	/**
-	 * Get the first child of a tree node. False if there isn't one.
-	 *
-	 * @return PPNode
-	 */
-	function getFirstChild();
-
-	/**
-	 * Get the next sibling of any node. False if there isn't one
-	 */
-	function getNextSibling();
-
-	/**
-	 * Get all children of this tree node which have a given name.
-	 * Returns an array-type node, or false if this is not a tree node.
-	 */
-	function getChildrenOfType( $type );
-
-	/**
-	 * Returns the length of the array, or false if this is not an array-type node
-	 */
-	function getLength();
-
-	/**
-	 * Returns an item of an array-type node
-	 */
-	function item( $i );
-
-	/**
-	 * Get the name of this node. The following names are defined here:
-	 *
-	 *    h             A heading node.
-	 *    template      A double-brace node.
-	 *    tplarg        A triple-brace node.
-	 *    title         The first argument to a template or tplarg node.
-	 *    part          Subsequent arguments to a template or tplarg node.
-	 *    #nodelist     An array-type node
-	 *
-	 * The subclass may define various other names for tree and leaf nodes.
-	 */
-	function getName();
-
-	/**
-	 * Split a "<part>" node into an associative array containing:
-	 *    name          PPNode name
-	 *    index         String index
-	 *    value         PPNode value
-	 */
-	function splitArg();
-
-	/**
-	 * Split an "<ext>" node into an associative array containing name, attr, inner and close
-	 * All values in the resulting array are PPNodes. Inner and close are optional.
-	 */
-	function splitExt();
-
-	/**
-	 * Split an "<h>" node
-	 */
-	function splitHeading();
+	abstract public function preprocessToObj( $text, $flags = 0 );
 }

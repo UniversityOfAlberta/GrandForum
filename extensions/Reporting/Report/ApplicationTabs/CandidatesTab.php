@@ -2,8 +2,8 @@
 
 class CandidatesTab extends AbstractTab {
 
-    function CandidatesTab(){
-        parent::AbstractTab("HQP Candidates");
+    function __construct(){
+        parent::__construct("HQP Candidates");
     }
 
     function generateBody(){

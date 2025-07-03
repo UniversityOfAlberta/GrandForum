@@ -11,11 +11,12 @@ autoload_register('AddMember/Validations');
 
 class AddMember extends SpecialPage{
 
-    function AddMember() {
+    function __construct() {
         parent::__construct("AddMember", NI.'+', true);
     }
 
     function execute($par){
+        $this->getOutput()->setPageTitle("Add Member");
         global $config, $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle, $wgMessage;
         $user = Person::newFromId($wgUser->getId());
         if(isset($_GET['action']) && $_GET['action'] == "view" && $user->isRoleAtLeast(STAFF)){
@@ -44,19 +45,19 @@ class AddMember extends SpecialPage{
         else{
             $form = self::createForm();
             $status = $form->validate();
-            if($form->getElementById("hqp_position_field0")->value == "" &&
-               $form->getElementById("position_field0")->value == ""){
+            if($form->getElementById("hqp_position_field0")->exists() && $form->getElementById("hqp_position_field0")->value == "" &&
+               $form->getElementById("position_field0")->exists() && $form->getElementById("position_field0")->value == ""){
                 $wgMessage->addError("The field 'Position' must not be empty");
-                $status = false;   
+                $status = false;
             }
             if($status){
                 $form->getElementById('first_name_field')->setPOST('wpFirstName');
                 $form->getElementById('middle_name_field')->setPOST('wpMiddleName');
                 $form->getElementById('last_name_field')->setPOST('wpLastName');
                 $form->getElementById('email_field')->setPOST('wpEmail');
-                $_POST['wpSendEmail'] = (count(@$_POST['sendEmail_field']) > 0) ? implode("", $_POST['sendEmail_field']) : "false";
+                $_POST['wpSendEmail'] = (is_array(@$_POST['sendEmail_field']) && count(@$_POST['sendEmail_field']) > 0) ? implode("", $_POST['sendEmail_field']) : "false";
                 $form->getElementById('role_field')->setPOST('wpUserType');
-                if($user->isRoleAtLeast(STAFF) || $config->getValue('networkName') == "FES"){
+                if($user->isRoleAtLeast(STAFF) || $config->getValue('networkType') == "CFREF"){
                     $form->getElementById('subrole_field')->setPOST('wpUserSubType');
                 }
                 $form->getElementById('project_field')->setPOST('wpNS');
@@ -130,11 +131,12 @@ class AddMember extends SpecialPage{
                         <thead><tr bgcolor='#F2F2F2'>
                             <th>Requesting User</th>
                             <th>User Name</th>
+                            <th>Email</th>
                             <th>Timestamp</th>
                             <th>Staff</th>
                             <th>Roles</th>
                             <th>".Inflect::pluralize($config->getValue('subRoleTerm'))."</th>
-                            <th>Projects</th>
+                            <th>".Inflect::pluralize($config->getValue('projectTerm'))."</th>
                             <th>Relation</th>
                             <th>Institution</th>
                             <th>Candidate</th>
@@ -147,10 +149,11 @@ class AddMember extends SpecialPage{
                         <thead><tr bgcolor='#F2F2F2'>
                             <th>Requesting User</th>
                             <th>User Name</th>
+                            <th>Email</th>
                             <th>Timestamp</th>
                             <th>Roles</th>
                             <th>".Inflect::pluralize($config->getValue('subRoleTerm'))."</th>
-                            <th>Projects</th>
+                            <th>".Inflect::pluralize($config->getValue('projectTerm'))."</th>
                             <th>Relation</th>
                             <th>Institution</th>
                             {$hqpType}
@@ -194,10 +197,12 @@ class AddMember extends SpecialPage{
                         </td>");
             if($history && $request->isCreated()){
                 $user = Person::newFromName($request->getName());
-                $wgOut->addHTML("<td align='left'><a target='_blank' href='{$user->getUrl()}'>{$request->getName()}</a></td>");
+                $wgOut->addHTML("<td align='left'><a target='_blank' href='{$user->getUrl()}'>{$request->getName()}</a></td>
+                                 <td align='left'>{$request->getEmail()}</td>");
             }
             else{
-                $wgOut->addHTML("<td align='left'>{$request->getName()}<br />{$request->getEmail()}</td>");
+                $wgOut->addHTML("<td align='left'>{$request->getName()}</td>
+                                 <td align='left'>{$request->getEmail()}</td>");
             } 
             $wgOut->addHTML("<td>".str_replace(" ", "<br />", $request->getLastModified())."</td>");
             if($history){
@@ -266,7 +271,7 @@ class AddMember extends SpecialPage{
                                                 'buttons': [
                                                     'excel', 'pdf'
                                                 ]
-                                            }).fnSort([[2,'desc']]);
+                                            }).fnSort([[3,'desc']]);
                                             $('#requests').css('display', 'table');
                                          </script>");
     }
@@ -319,17 +324,31 @@ class AddMember extends SpecialPage{
         }
         $roleOptions = array();
         foreach($me->getAllowedRoles() as $role){
-            $roleOptions[$config->getValue('roleDefs', $role)] = $role;
+            $text = "";
+            if($role == HQP){
+                $text = " <i> (Students, Technicians, etc.)</i>";
+            }
+            else if($role == EXTERNAL){
+                $text = " <i> (A researcher external to the network)</i>";
+            }
+            else if($role == CI){
+                $text = " <i> (The principal investigator on a project)</i>";
+            }
+            else if($role == AR){
+                $text = " <i> (An affiliated researcher in the network)</i>";
+            }
+            else if($role == PL){
+                $text = " <i> (The person who manages or leads a project)</i>";
+            }
+            $roleOptions[$config->getValue('roleDefs', $role).$text] = $role;
         }
         ksort($roleOptions);
         $rolesLabel = new Label("role_label", "Roles", "The roles the new user should belong to", $roleValidations);
-        $rolesLabel->attr('style', 'width:160px;');
         $rolesField = new VerticalCheckBox("role_field", "Roles", array(), $roleOptions, $roleValidations);
         $rolesRow = new FormTableRow("role_row");
         $rolesRow->append($rolesLabel)->append($rolesField);
         
         $subRolesLabel = new Label("subrole_label", Inflect::pluralize($config->getValue('subRoleTerm')), "The ".strtolower(Inflect::pluralize($config->getValue('subRoleTerm')))." the new user should belong to", VALIDATE_NOTHING);
-        $subRolesLabel->attr('style', 'width:160px;');
         $subRolesField = new VerticalCheckBox("subrole_field", Inflect::pluralize($config->getValue('subRoleTerm')), array(), array_flip($config->getValue('subRoles')), VALIDATE_NOTHING);
         $subRolesRow = new FormTableRow("subrole_row");
         $subRolesRow->attr('id', "subrole_row");
@@ -355,8 +374,8 @@ class AddMember extends SpecialPage{
             $candRow->attr('style', 'display:none;');
         }
                
-        $projectsLabel = new Label("project_label", "Associated Projects", "The projects the user is a member of", VALIDATE_NOTHING);
-        $projectsField = new ProjectList("project_field", "Associated Projects", array(), $projects, VALIDATE_NOTHING);
+        $projectsLabel = new Label("project_label", "Associated ".Inflect::pluralize($config->getValue('projectTerm')), "The projects the user is a member of", VALIDATE_NOTHING);
+        $projectsField = new ProjectList("project_field", "Associated ".Inflect::pluralize($config->getValue('projectTerm')), array(), $projects, VALIDATE_NOTHING);
         $projectsRow = new FormTableRow("project_row");
         $projectsRow->append($projectsLabel)->append($projectsField);
         
@@ -369,6 +388,9 @@ class AddMember extends SpecialPage{
         $nationalityRow = new FormTableRow("nationality_row");
         $nationalityRow->append($nationalityLabel)->append($nationalityField);
         $nationalityRow->attr('id', 'nationality_row');
+        if(!$config->getValue('nationalityEnabled')){
+            $nationalityRow->attr('style', 'display:none;');
+        }
         
         $employmentLabel1 = new Label("employment_label1", "Please select institution type of employment (if applicable)", "", VALIDATE_NOTHING);
         $employmentLabel1->colspan = 2;
@@ -424,7 +446,7 @@ class AddMember extends SpecialPage{
                   ->append($sendEmailRow)
                   ->append($linkedInRow)
                   ->append($rolesRow);
-        if($me->isRoleAtLeast(STAFF) || $config->getValue('networkName') == "FES"){
+        if($me->isRoleAtLeast(STAFF) || $config->getValue('networkType') == "CFREF"){
             $formTable->append($subRolesRow);
         }
         
@@ -520,22 +542,22 @@ class AddMember extends SpecialPage{
                 $deptDeptRow->attr('id', "dept_dept_row$i");
             }
             
-            $hqpPositionLabel = new Label("hqp_position_label$i", "Position", "The academic title of this user", VALIDATE_NOT_NULL);
+            $hqpPositionLabel = new Label("hqp_position_label$i", "Position", "The academic title of this user (only required for HQP)", $validation);
             $hqpPositionField = new SelectBox("hqp_position_field$i", "Position", "", $hqpPositions, VALIDATE_NOTHING);
             $hqpPositionField->attr("style", "width: 260px;");
             $hqpPositionRow = new FormTableRow("hqp_position_row$i");
             $hqpPositionRow->append($hqpPositionLabel)->append($hqpPositionField);
             $hqpPositionRow->attr('id', "hqp_position_row$i");
             
-            $positionLabel = new Label("position_label$i", "Position", "The title of this user", VALIDATE_NOT_NULL);
+            $positionLabel = new Label("position_label$i", "Position", "The title of this user", $validation);
             $positionField = new ComboBox("position_field$i", "Position", "", $positions, VALIDATE_NOTHING);
             $positionField->attr("style", "width: 250px;");
             $positionRow = new FormTableRow("position_row$i");
             $positionRow->append($positionLabel)->append($positionField);
             $positionRow->attr('id', "position_row$i");
             
-            $startLabel = new Label("start_label$i", "Start Date", "When the member's role, project, institution should take effect", VALIDATE_NOTHING);
-            $startField = new CalendarField("start_field$i", "Start Date", date('Y-m-d'), VALIDATE_NOTHING);
+            $startLabel = new Label("start_label$i", "Start Date", "When the member's role, project, institution should take effect", VALIDATE_NOT_NULL);
+            $startField = new CalendarField("start_field$i", "Start Date", date('Y-m-d'), VALIDATE_NOT_NULL);
             $startRow = new FormTableRow("start_row$i");
             $startRow->append($startLabel)->append($startField);
             $startRow->attr('id', "start_row$i");
@@ -568,7 +590,7 @@ class AddMember extends SpecialPage{
                   ->append($recruitmentRow)
                   ->append($recRow)
                   ->append($recCountryRow);
-        if($config->getValue('networkName') == "FES"){
+        if($config->getValue('networkType') == "CFREF"){
             $formTable->append($fundedRow);
         }
         $formTable->append($employmentRow1)
@@ -579,10 +601,28 @@ class AddMember extends SpecialPage{
         if(!$me->isRoleAtLeast(STAFF)){
             $formTable->getElementById("cand_row")->attr('style', 'display:none;');
         }
-        if(!$config->getValue('alumniEnabled') && $config->getValue('networkName') == "FES"){
+        if(!$config->getValue('alumniEnabled') && $config->getValue('networkType') == "CFREF"){
             $formTable->getElementById("recruitment_row")->attr('style', 'display:none;');
             $formTable->getElementById("rec_row")->attr('style', 'display:none;');
             $formTable->getElementById("rec_country_row")->attr('style', 'display:none;');
+        }
+        
+        if($config->getValue("networkName") == "AVOID"){
+            $formTable->getElementById("nationality_row")->remove();
+            $formTable->getElementById("employment_row1")->remove();
+            $formTable->getElementById("employment_row2")->remove();
+            for($i = 0; $i < 3; $i++){
+                $formTable->getElementById("program_label{$i}")->remove();
+                $formTable->getElementById("university_row{$i}")->remove();
+                $formTable->getElementById("dept_row{$i}")->remove();
+                $formTable->getElementById("position_row{$i}")->remove();
+                $formTable->getElementById("hqp_position_row{$i}")->remove();
+                $formTable->getElementById("start_row$i")->remove();
+                $formTable->getElementById("end_row$i")->remove();
+                $formTable->getElementById("recruitment_row")->attr('style', 'display:none;');
+                $formTable->getElementById("rec_row")->attr('style', 'display:none;');
+                $formTable->getElementById("rec_country_row")->attr('style', 'display:none;');
+            }
         }
         
         $formContainer->append($formTable);
@@ -610,7 +650,7 @@ class AddMember extends SpecialPage{
                 });
                 if(found){
                     // HQP
-                    if(networkName == 'FES'){
+                    if(networkType == 'CFREF'){
                         $('#subrole_row').show();
                     }
                     
@@ -648,7 +688,7 @@ class AddMember extends SpecialPage{
                 }
                 else{
                     // Not HQP
-                    if(networkName == 'FES'){
+                    if(networkType == 'CFREF'){
                         $('#subrole_row').hide();
                     }
                     

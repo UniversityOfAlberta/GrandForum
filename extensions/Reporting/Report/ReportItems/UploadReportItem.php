@@ -25,6 +25,7 @@ class UploadReportItem extends AbstractReportItem {
         if(isset($_GET['project'])){
             $projectGet = "&project={$_GET['project']}";
         }
+        $personId = (isset($_GET['person'])) ? "&person=".urlencode($_GET['person']) : "";
         $year = "";
         if(isset($_GET['reportingYear']) && isset($_GET['ticket'])){
             $year = "&reportingYear={$_GET['reportingYear']}&ticket={$_GET['ticket']}";
@@ -45,7 +46,7 @@ class UploadReportItem extends AbstractReportItem {
                             </script>";
         $html .= "<div>";
         
-        $html .= "<div id='budgetDiv'><iframe id='fileFrame{$this->getPostId()}' class='uploadFrame' frameborder='0' style='border-width:0;height:65px;width:100%;min-height:65px;' scrolling='none' src='../index.php/Special:Report?report={$report->xmlName}&section=".urlencode($section->name)."&fileUploadForm={$this->getPostId()}{$projectGet}{$year}{$candidate}{$id}'></iframe></div>";
+        $html .= "<div id='budgetDiv'><iframe id='fileFrame{$this->getPostId()}' class='uploadFrame' frameborder='0' style='border-width:0;height:65px;width:100%;min-height:65px;' scrolling='none' src='../index.php/Special:Report?report={$report->xmlName}&section=".urlencode($section->getPostId())."&fileUploadForm={$this->getPostId()}{$projectGet}{$personId}{$year}{$candidate}{$id}'></iframe></div>";
         $html .= "</div>";
         
         $item = $this->processCData($html);
@@ -70,6 +71,7 @@ class UploadReportItem extends AbstractReportItem {
                 if(isset($_GET['reportingYear']) && isset($_GET['ticket'])){
                     $year = "&reportingYear={$_GET['reportingYear']}&ticket={$_GET['ticket']}";
                 }
+                $personId = (isset($_GET['person'])) ? "&person=".urlencode($_GET['person']) : "";
                 
                 $report = $this->getReport();
                 $section = $this->getSection();
@@ -77,7 +79,7 @@ class UploadReportItem extends AbstractReportItem {
                 $deleteHTML .= "<script type='text/javascript'>
                     $('#delete{$this->getPostId()}').click(function(){
                         if(confirm('Are you sure you want to delete this upload?')){
-                            $.get('$wgServer$wgScriptPath/index.php/Special:Report?report={$report->xmlName}&section=".urlencode($section->name)."&delete={$this->getMD5()}{$projectGet}{$year}', function(){
+                            $.get('$wgServer$wgScriptPath/index.php/Special:Report?report={$report->xmlName}&section=".urlencode($section->getPostId())."&delete={$this->getMD5()}{$projectGet}{$personId}{$year}', function(){
                                 $('#upload{$this->getPostId()}').hide();
                             });
                         };
@@ -101,6 +103,7 @@ class UploadReportItem extends AbstractReportItem {
         if(isset($_GET['project'])){
             $projectGet = "&project={$_GET['project']}";
         }
+        $personId = (isset($_GET['person'])) ? "&person=".urlencode($_GET['person']) : "";
         $year = "";
         if(isset($_GET['reportingYear']) && isset($_GET['ticket'])){
             $year = "&reportingYear={$_GET['reportingYear']}&ticket={$_GET['ticket']}";
@@ -152,10 +155,10 @@ class UploadReportItem extends AbstractReportItem {
                         }";
                         
                         if($wgLang->getCode() == "en"){
-		                    echo ".fr { display: none !important; }";
+		                    echo "fr, .fr { display: none !important; }";
 		                }
 		                else if($wgLang->getCode() == "fr"){
-		                    echo ".en { display: none !important; }";
+		                    echo "en, .en { display: none !important; }";
 		                }
                         
                         echo "
@@ -182,7 +185,7 @@ class UploadReportItem extends AbstractReportItem {
         }
         $fileSizeMessage = ($this->getAttr("showMaxFileSize", "true") === "true") ? "<span class='en'>Max File Size</span><span class='fr'>Taille maximale du fichier</span>: {$this->getAttr('fileSize', 1)} MB" : "";
 
-        echo "          <form action='$wgServer$wgScriptPath/index.php/Special:Report?report={$report->xmlName}&section=".urlencode($section->name)."&fileUploadForm={$this->getPostId()}{$projectGet}{$year}{$candidate}{$id}' method='post' enctype='multipart/form-data'>
+        echo "          <form action='$wgServer$wgScriptPath/index.php/Special:Report?report={$report->xmlName}&section=".urlencode($section->getPostId())."&fileUploadForm={$this->getPostId()}{$projectGet}{$personId}{$year}{$candidate}{$id}' method='post' enctype='multipart/form-data'>
                             <input type='file' name='file' accept='{$this->getAttr('mimeType')}' />
                             <button type='submit' name='upload' value='Upload'><span class='en'>Upload</span><span class='fr'>Télécharger</span></button> {$fileSizeMessage}<br />
                             <small><i><b><span class='en'>NOTE</span><span class='fr'>NB</span>:</b> <span class='en'>Uploading a new file replaces the old one</span><span class='fr'>Téléchargé un nouveau fichier remplace l’ancien</span></i></small>
@@ -191,9 +194,9 @@ class UploadReportItem extends AbstractReportItem {
         if($data !== null && $data !== ""){
             $json = json_decode($data);
             $name = $json->name;
-            $downloadText = ($me->isLoggedIn()) ? "<a href='{$this->getDownloadLink()}'><span class='en'>Download</span><span class='fr'>Télécharger</span> <b>{$name}</b></a>&nbsp;" : "<b>File Uploaded</b>&nbsp;";
+            $downloadText = ($me->isLoggedIn()) ? "<a href='{$this->getDownloadLink()}'><en>Download</en><fr>Télécharger</fr> <b>{$name}</b></a>&nbsp;" : "<b>File Uploaded</b>&nbsp;";
             echo "<br />{$downloadText}
-                        <button id='delete' type='button' class='button'><span class='en'>Delete</span><span class='fr'>Supprimer</span></button>";
+                        <button id='delete' type='button' class='button'><en>Delete</en><fr>Supprimer</fr></button>";
         }
         else{
             if($this->getAttr('mimeType') == "application/pdf"){
@@ -213,7 +216,7 @@ class UploadReportItem extends AbstractReportItem {
                     
                     $('#delete').click(function(){
                         if(confirm('Are you sure you want to delete this upload?')){
-                            $.get('$wgServer$wgScriptPath/index.php/Special:Report?report={$report->xmlName}&section=".urlencode($section->name)."&delete={$this->getMD5()}{$projectGet}{$year}{$candidate}{$id}', function(){
+                            $.get('$wgServer$wgScriptPath/index.php/Special:Report?report={$report->xmlName}&section=".urlencode($section->getPostId())."&delete={$this->getMD5()}{$projectGet}{$year}{$candidate}{$id}', function(){
                                 parent.updateProgress();
                                 window.location = window.location;
                             });
@@ -239,7 +242,7 @@ class UploadReportItem extends AbstractReportItem {
                 $finalExt = '';
             }
             if($this->getAttr('fileSize', 1)*1024*1024 >= $_FILES['file']['size']){
-                $magic = MimeMagic::singleton();
+                $magic = MediaWiki\MediaWikiServices::getInstance()->getMimeAnalyzer();
                 $mime = $magic->guessMimeType($_FILES['file']['tmp_name'], false);
                 if(UploadBase::checkFileExtension($finalExt, $wgFileExtensions)){
                     $contents = base64_encode(file_get_contents($_FILES['file']['tmp_name']));

@@ -1,0 +1,305 @@
+/* Any custom styles should go here */
+
+span#infinity {
+    margin: 5px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+span#infinity:hover {
+    cursor: pointer;
+}
+
+div.ui-dialog-content {
+    padding: 0 !important;
+}
+
+div.ui-dialog-buttonpane {
+    margin: 0 !important;
+    padding: 0.5em 1em 0.5em !important;
+}
+
+table.wikitable {
+    border: hidden !important;
+    margin: 0;
+    padding: 0;
+}
+
+table.wikitable tr.even {
+    background: #FFFFFF;
+}
+
+table.wikitable tr.odd {
+    background: #F2F2F2;
+}
+
+table.wikitable tr.deleted {
+    background: #FEB8B8;
+}
+
+#map-container {
+    height:500px;
+    width:100%;
+    /*display: table-row;*/
+    position: relative;
+}
+
+#map {
+    float:right;
+    width:100%;
+    height:100%;
+    border-radius:15px;
+    bottom: 30px;
+}
+
+#currentView {
+    height: 100%;
+    width: 100%;
+    /*display: table;*/
+}
+
+@media print {
+   #map{
+        min-height:300px;
+   }
+   #map-container {
+        min-height:300px;
+   }
+}
+
+#backbone_main {
+    height: 100%;
+}
+
+#mw-content-text {
+    height: 100%;
+}
+
+#footer {
+    display: none;
+}
+
+#pageTitle {
+    display: none;
+}
+
+.hide{
+  opacity:0;
+}
+
+#button3, #button2{
+  -webkit-transition: -webkit-transform 2s; /* Safari */
+    transition: transform 2s;
+}
+#button1{
+  z-index:10;
+  -webkit-transition: opacity 2s; /* Safari */
+  transition: opacity 2s;
+}
+
+.animateToRight{
+  -webkit-transform: translate(100px); /* Safari */
+    transform: translate(100px);
+}
+.animateToLeft{
+    -webkit-transform: translate(-100px); /* Safari */
+    transform: translate(-100px);
+}
+
+#treemap-container {
+    padding: 0 0 1em 0 !important;
+}
+
+#treemap {
+  display: flex;
+  width: 100%;
+  height: auto;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+input[type=button] {
+  width: 30%;
+  height: 88%;
+  margin: 5px;
+}
+
+.main-button {
+  font-family: 'Raleway', sans-serif;
+  font-size: 28px;
+  font-weight: 800;
+  font-size: 200%;
+  position: relative;
+  background: none;
+  color: rosybrown;
+  border: 0.2em solid rosybrown;
+  padding: 0.5em 1em;
+  transition: all .1s ease;
+}
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -60px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.tooltip .tooltiptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
+
+.category{
+    margin: 0;
+    width: 100%;
+    text-align:center;
+    font-weight: bold;
+    line-height: 1em;
+    padding: 0.6em;
+    white-space: nowrap;
+    box-sizing: border-box;
+}
+
+.note_small{
+    font-size: 0.6em !important;
+    width:300px;
+}
+
+#listTable {
+  table-layout: fixed;
+  width: 100% !important;
+}
+#listTable td{
+  width: auto !important;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+#listTable th{
+  width: auto !important;
+  white-space: normal;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+#map-container {
+    height: 700px;
+}
+
+#map {
+    float:right;
+    width:100%;
+    height:100%;
+    border-radius:15px;
+    bottom: 30px;
+}
+
+#db_powered{
+    width: 100%; 
+    margin-top: 1em;
+    text-align: center;
+    font-size: 1.25em;
+    user-select: none;
+}
+
+@media only screen and (max-width: 767px) {
+    #map-container {
+        height: calc(50vh);
+    }
+}
+
+#load_map {
+   text-align:center;
+   display:none;
+
+}
+
+table#listTable.dataTable tbody tr:hover {
+  background-color: #fff;
+  cursor: pointer;
+}
+
+table#listTable.dataTable tbody tr:hover > .sorting_1 {
+  background-color: #fff;
+  cursor: pointer;
+}
+
+#neweventbtn {
+    color: white;
+    position: absolute;
+    top: 0.5em;
+    right: 0.5em;
+    line-height: 1em;
+    font-size: 0.5em;
+}
+
+#editeventbtn {
+    position: absolute;
+    top: 0.5em;
+    right: 1em;
+}
+
+#aae {
+    display: none;
+    position: absolute;
+    top: 0.5em;
+    left: 0.5em;
+    height: 2em;
+}
+
+#askHeader {
+    position: relative;
+    margin-bottom: 0.5em;
+}
+@media only screen and (max-width: 767px) {
+    #events {
+        flex-wrap: wrap;
+    }
+}
+
+.program-header {
+	padding-bottom: 1em;
+}
+
+.expert_announce {
+    font-size: 1.2em;
+    padding: 0.5em;
+}
+
+.program-button{
+    display:none;
+}
+
+.event {
+    position: relative;
+    border: 2px solid #005f9d;
+    margin-bottom: 1em;
+    border-radius: 1em;
+}

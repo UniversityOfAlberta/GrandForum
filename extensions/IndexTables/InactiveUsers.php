@@ -12,12 +12,13 @@ function runInactiveUsers($par){
 
 class InactiveUsers extends SpecialPage {
 
-    function InactiveUsers() {
+    function __construct() {
 		SpecialPage::__construct("InactiveUsers", HQP.'+', true, 'runInactiveUsers');
 	}
 
     function execute($par){
 		global $wgServer, $wgScriptPath, $wgUser, $wgOut, $config;
+		$this->getOutput()->setPageTitle("Inactive Users");
 		$text = "";
 		$data = Person::getAllPeople(INACTIVE);
 

@@ -28,23 +28,22 @@
  * @ingroup Language
  */
 class LanguageFi extends Language {
-
 	/**
 	 * Convert from the nominative form of a noun to some other case
 	 * Invoked with {{grammar:case|word}}
 	 *
-	 * @param $word string
-	 * @param $case string
+	 * @param string $word
+	 * @param string $case
 	 * @return string
 	 */
-	function convertGrammar( $word, $case ) {
+	public function convertGrammar( $word, $case ) {
 		global $wgGrammarForms;
 		if ( isset( $wgGrammarForms['fi'][$case][$word] ) ) {
 			return $wgGrammarForms['fi'][$case][$word];
 		}
 
-		# These rules are not perfect, but they are currently only used for site names so it doesn't
-		# matter if they are wrong sometimes. Just add a special case for your site name if necessary.
+		# These rules don't cover the whole language.
+		# They are used only for site names.
 
 		# wovel harmony flag
 		$aou = preg_match( '/[aou][^äöy]*$/i', $word );
@@ -74,8 +73,7 @@ class LanguageFi extends Language {
 				break;
 			case 'illative':
 				# Double the last letter and add 'n'
-				# mb_substr has a compatibility function in GlobalFunctions.php
-				$word = $word . mb_substr( $word, -1 ) . 'n';
+				$word .= mb_substr( $word, -1 ) . 'n';
 				break;
 			case 'inessive':
 				$word .= ( $aou ? 'ssa' : 'ssä' );
@@ -85,22 +83,26 @@ class LanguageFi extends Language {
 	}
 
 	/**
-	 * @param $str string
-	 * @param $forContent bool
+	 * @param string $str
+	 * @param User|null $user User object to use timezone from or null for $wgUser
+	 * @param int $now Current timestamp, for formatting relative block durations
 	 * @return string
 	 */
-	function translateBlockExpiry( $str, $forContent = false ) {
+	public function translateBlockExpiry( $str, User $user = null, $now = 0 ) {
 		/*
 			'ago', 'now', 'today', 'this', 'next',
-			'first', 'third', 'fourth', 'fifth', 'sixth', 'seventh', 'eighth', 'ninth', 'tenth', 'eleventh', 'twelfth',
+			'first', 'third', 'fourth', 'fifth', 'sixth', 'seventh', 'eighth', 'ninth',
+				'tenth', 'eleventh', 'twelfth',
 			'tomorrow', 'yesterday'
 
-			$months = 'january:tammikuu,february:helmikuu,march:maaliskuu,april:huhtikuu,may:toukokuu,june:kesäkuu,' .
-				'july:heinäkuu,august:elokuu,september:syyskuu,october:lokakuu,november:marraskuu,december:joulukuu,' .
-				'jan:tammikuu,feb:helmikuu,mar:maaliskuu,apr:huhtikuu,jun:kesäkuu,jul:heinäkuu,aug:elokuu,sep:syyskuu,'.
-				'oct:lokakuu,nov:marraskuu,dec:joulukuu,sept:syyskuu';
+			$months = 'january:tammikuu,february:helmikuu,march:maaliskuu,april:huhtikuu,' .
+				'may:toukokuu,june:kesäkuu,july:heinäkuu,august:elokuu,september:syyskuu,' .
+				'october:lokakuu,november:marraskuu,december:joulukuu,' .
+				'jan:tammikuu,feb:helmikuu,mar:maaliskuu,apr:huhtikuu,jun:kesäkuu,' .
+				'jul:heinäkuu,aug:elokuu,sep:syyskuu,oct:lokakuu,nov:marraskuu,' .
+				dec:joulukuu,sept:syyskuu';
 		*/
-		$weekds = array(
+		$weekds = [
 			'monday' => 'maanantai',
 			'tuesday' => 'tiistai',
 			'wednesday' => 'keskiviikko',
@@ -142,15 +144,16 @@ class LanguageFi extends Language {
 			'month' => 'kuukausi',
 			'years' => 'vuotta',
 			'year' => 'vuosi',
-			'infinite' => 'ikuisesti',
-			'indefinite' => 'ikuisesti'
-		);
+			'infinite' => 'ikuinen',
+			'indefinite' => 'ikuinen',
+			'infinity' => 'ikuinen'
+		];
 
 		$final = '';
-		$tokens = explode ( ' ', $str );
+		$tokens = explode( ' ', $str );
 		foreach ( $tokens as $item ) {
 			if ( !is_numeric( $item ) ) {
-				if ( count ( explode( '-', $item ) ) == 3 && strlen( $item ) == 10 ) {
+				if ( count( explode( '-', $item ) ) == 3 && strlen( $item ) == 10 ) {
 					list( $yyyy, $mm, $dd ) = explode( '-', $item );
 					$final .= ' ' . $this->date( "{$yyyy}{$mm}{$dd}000000" );
 					continue;
@@ -164,6 +167,6 @@ class LanguageFi extends Language {
 			$final .= ' ' . $item;
 		}
 
-		return htmlspecialchars( trim( $final ) );
+		return trim( $final );
 	}
 }

@@ -1,7 +1,10 @@
 <?php
+use MediaWiki\MediaWikiServices;
+
 require_once("AddMember.php");
 
 $wgHooks['AddNewAccount'][] = 'UserCreate::afterCreateUser';
+$wgHooks['SpecialPasswordResetOnSubmit'][] = 'UserCreate::afterPasswordReset';
 
 $notificationFunctions[] = 'UserCreate::createNotification';
 
@@ -24,7 +27,7 @@ class UserCreate {
         }
     }
     
-    function afterCreateUser($wgUser, $byEmail=true){
+    static function afterCreateUser($wgUser, $byEmail=true){
         global $wgLocalTZoffset, $wgOut;
         $mUserType = $_POST['wpUserType'];
         $id = $wgUser->getId();
@@ -107,6 +110,21 @@ class UserCreate {
         $person = Person::newFromId($wgUser->getId());
         MailingList::subscribeAll($person);
         return true;
+    }
+    
+    static function afterPasswordReset($users, $data, &$error){ 
+        foreach($users as $user){
+            $person = Person::newFromUser($user);
+            if(!$person->isAuthenticated()){
+                $passwd = PasswordFactory::generateRandomPasswordString();
+                DBFunctions::update('mw_user',
+                                    array('user_password' => MediaWikiServices::getInstance()->getPasswordFactory()->newFromPlaintext($passwd)->toString(),
+                                          'user_email_token' => EQ(COL('NULL')),
+                                          'user_email_token_expires' => EQ(COL('NULL'))),
+                                    array('user_id' => EQ($user->getId())));
+                DBFunctions::commit();
+	        }
+        }
     }
     
     static function addNewUserPage($wgUser){

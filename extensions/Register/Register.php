@@ -33,7 +33,13 @@ class Register extends SpecialPage{
                     $parseroutput->mText .= "<h2>New Applicant Registration</h2><p>If you are applying for the first time, please complete the <a href='$wgServer$wgScriptPath/index.php/Special:Register'>registration form</a>.</p>";
                 }
                 else if($config->getValue('networkName') == "ELITE"){
-                    $parseroutput->mText .= "<h2><span class='en'>Registration</span><span class='fr'>Inscription</span></h2><p><span class='en'>If you are applying for the first time, please complete the <a href='$wgServer$wgScriptPath/index.php/Special:Register'>registration form</a>.</span><span class='fr'>Si c’est la première fois que vous soumettez une demande, veuillez compléter le <a href='$wgServer$wgScriptPath/index.php/Special:Register'>formulaire d’inscription</a>.</span></p>";
+                    $parseroutput->mText .= "<h2><en>Registration</en><fr>Inscription</fr></h2><p><en>If you are applying for the first time, please complete the <a href='$wgServer$wgScriptPath/index.php/Special:Register'>registration form</a>.</en><fr>Si c’est la première fois que vous soumettez une demande, veuillez compléter le <a href='$wgServer$wgScriptPath/index.php/Special:Register'>formulaire d’inscription</a>.</fr></p>";
+                }
+                else if($config->getValue('networkName') == "AVOID"){
+                    // Do Nothing
+                }
+                else if($config->getValue('networkName') == "IDeaS" || $config->getValue('networkName') == "Voyant"){
+                    $parseroutput->mText .= "<h2>Forum Registration</h2><p>If you would like to apply to become a member in {$config->getValue('networkName')} then please fill out the <a href='$wgServer$wgScriptPath/index.php/Special:Register'>registration form</a>.</p>";
                 }
                 else{
                     $parseroutput->mText .= "<h2>HQP Registration</h2><p>If you would like to apply to become an HQP in {$config->getValue('networkName')} then please fill out the <a href='$wgServer$wgScriptPath/index.php/Special:Register'>registration form</a>.</p>";
@@ -46,7 +52,7 @@ class Register extends SpecialPage{
         return true;
     }
 
-    function Register() {
+    function __construct() {
         SpecialPage::__construct("Register", null, false);
     }
     
@@ -57,6 +63,10 @@ class Register extends SpecialPage{
     function execute($par){
         global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle, $wgMessage;
         $me = Person::newFromWgUser();
+        $this->getOutput()->setPageTitle("Registration");
+        if(isset($_GET['embed'])){
+            $wgOut->addHTML("<style>h1 { display: none; }</style>");
+        }
         if($me->isLoggedIn()){
             $wgOut->clearHTML();
             $wgOut->setPageTitle("Account already exists");
@@ -73,41 +83,233 @@ class Register extends SpecialPage{
     }
     
     function createForm(){
-        global $config;
+        global $config, $wgLang;
         $formContainer = new FormContainer("form_container");
         $formTable = new FormTable("form_table");
         
-        $firstNameLabel = new Label("first_name_label", "<span class='en'>First Name</span><span class='fr'>Prénom</span>", "The first name of the user (cannot contain spaces)", VALIDATE_NOT_NULL);
-        $firstNameField = new TextField("first_name_field", "First Name", "", VALIDATE_NOSPACES);
+        $firstNameLabel = new Label("first_name_label", "<en>First Name</en><fr>Prénom</fr>", "<en>The first name of the user</en><fr>Prénom de l’utilisateur</fr>", VALIDATE_NOT_NULL);
+        $firstNameField = new TextField("first_name_field", "First Name", "", VALIDATE_NOT_NULL);
         $firstNameRow = new FormTableRow("first_name_row");
         $firstNameRow->append($firstNameLabel)->append($firstNameField->attr('size', 20));
         
-        $lastNameLabel = new Label("last_name_label", "<span class='en'>Last Name</span><span class='fr'>Nom</span>", "The last name of the user (cannot contain spaces)", VALIDATE_NOT_NULL);
-        $lastNameField = new TextField("last_name_field", "Last Name", "", VALIDATE_NOSPACES);
+        $lastNameLabel = new Label("last_name_label", "<en>Last Name</en><fr>Nom de famille</fr>", "<en>The last name of the user</en><fr>Nom de famille de l’utilisateur</fr>", VALIDATE_NOT_NULL);
+        $lastNameField = new TextField("last_name_field", "Last Name", "", VALIDATE_NOT_NULL);
         $lastNameRow = new FormTableRow("last_name_row");
         $lastNameRow->append($lastNameLabel)->append($lastNameField->attr('size', 20));
-        $lastNameField->registerValidation(new UniqueUserValidation(VALIDATION_POSITIVE, VALIDATION_ERROR));
         
-        $emailLabel = new Label("email_label", "<span class='en'>Email</span><span class='fr'>Courriel</span>", "The email address of the user", VALIDATE_NOT_NULL);
+        $userNameLabel = new Label("user_name_label", "<en>Username</en><fr>Nom d’usager</fr>", "<en>The username</en><fr>Nom d’usager</fr>", VALIDATE_NOT_NULL);
+        $userNameField = new TextField("user_name_field", "Last Name", "", VALIDATE_NOT_NULL);
+        $userNameRow = new FormTableRow("user_name_row");
+        $userNameRow->append($userNameLabel)->append($userNameField->attr('size', 20));
+        $userNameField->registerValidation(new UniqueUserValidation(VALIDATION_POSITIVE, VALIDATION_ERROR));
+        
+        $emailLabel = new Label("email_label", "<en>Email</en><fr>Adresse courriel</fr>", "<en>The email address of the user</en><fr>Adresse courriel de l’utilisateur</fr>", VALIDATE_NOT_NULL);
         $emailField = new EmailField("email_field", "Email", "", VALIDATE_NOT_NULL);
+        $emailField->registerValidation(new UniqueEmailValidation(VALIDATION_POSITIVE, VALIDATION_ERROR));
         $emailRow = new FormTableRow("email_row");
-        $emailRow->append($emailLabel)->append($emailField);
+        $emailRow->append($emailLabel)->append($emailField->attr('size', 20));
         
-        $captchaLabel = new Label("captcha_label", "<span class='en'>Enter Code</span><span class='fr'>Entrez le code</span>", "Enter the code you see in the image", VALIDATE_NOT_NULL);
-        $captchaField = new Captcha("captcha_field", "Captcha", "", VALIDATE_NOT_NULL);
+        $passwordLabel = new Label("password_label", "<en>Password</en><fr>Mot de passe</fr>", "<en>The password of the user</en><fr>Mot de passe de l’utilisateur</fr>", VALIDATE_NOT_NULL);
+        $passwordField = new PasswordField("password_field", "Password", "", VALIDATE_NOT_NULL);
+        $passwordRow = new FormTableRow("password_row");
+        $passwordRow->append($passwordLabel)->append($passwordField);
+        
+        $password2Label = new Label("password2_label", "<en>Password (again)</en><fr>Mot de passe (confirmation)</fr>", "<en>The password of the user</en><fr>Mot de passe de l’utilisateur</fr>", VALIDATE_NOT_NULL);
+        $password2Field = new PasswordField("password2_field", "Password (again)", "", VALIDATE_NOT_NULL);
+        $password2Row = new FormTableRow("password2_row");
+        $password2Row->append($password2Label)->append($password2Field);
+        
+        // These next fields for are for AVOID
+        $phoneLabel = new Label("phone_label", "<en>Phone Number</en><fr>Numéro de téléphone</fr>", 
+                                               "<en>Phone Number</en><fr>Numéro de téléphone</fr>", VALIDATE_NOT_NULL);
+        $phoneField = new TextField("phone_field", "<en>Phone Number", "", VALIDATE_NOT_NULL);
+        $phoneRow = new FormTableRow("phone_row");
+        $phoneRow->append($phoneLabel)->append($phoneField->attr('size', 10));
+        
+        $ageOfLovedOneLabel = new Label("age_of_loved_one_label", "<en>or Age of loved one</en><fr>ou Âge de l'être cher</fr>", 
+                                                                  "<en>or Age of loved one</en><fr>ou Âge de l'être cher</fr>", VALIDATE_NOTHING);
+        $ageOfLovedOneField = new TextField("age_of_loved_one_field", "Age of loved one", "", VALIDATE_NOTHING);
+        $ageOfLovedOneRow = new FormTableRow("age_of_loved_one_row");
+        $ageOfLovedOneRow->append($ageOfLovedOneLabel)->append($ageOfLovedOneField->attr('size', 3));
+        
+        $ageLabel = new Label("age_label", "<en>Guest User Age</en><fr>Âge de l'utilisateur invité</fr>", 
+                                           "<en>Guest User Age</en><fr>Âge de l'utilisateur invité</fr>", VALIDATE_NOTHING);
+        $ageField = new TextField("age_field", "Guest User Age", "", VALIDATE_NOTHING);
+        $ageRow = new FormTableRow("age_row");
+        $ageRow->append($ageLabel)->append($ageField->attr('size', 3));
+        
+        $practiceLabel = new Label("practice_label", "<en>Practice</en><fr>Pratique</fr>", "<en>Practice</en><fr>Pratique</fr>", VALIDATE_NOT_NULL);
+        $practiceField = new TextField("practice_field", "Practice", "", VALIDATE_NOT_NULL);
+        $practiceRow = new FormTableRow("practice_row");
+        $practiceRow->append($practiceLabel)->append($practiceField->attr('size', 20));
+        
+        $roleLabel = new Label("role_label", "Role", "The role of the user", VALIDATE_NOT_NULL);
+        $roleField = new TextField("role_field", "Role", "", VALIDATE_NOT_NULL);
+        $roleRow = new FormTableRow("role_row");
+        $roleRow->append($roleLabel)->append($roleField->attr('size', 20));
+        
+        $hearLabel = new Label("hear_label", "<en>How did you hear about the AVOID Frailty program?</en><fr>Comment avez-vous entendu parler du programme Proactif?</fr><span style='color:red;font-weight:bold;'>*</span>", 
+                                             "<en>How did you hear about the AVOID Frailty program?</en><fr>Comment avez-vous entendu parler du programme Proactif?</fr>", VALIDATE_NOTHING);
+        $hearLabel->colspan = 2;
+        $hearLabel->colon = "";
+        $hearLabel->attr('class', 'label tooltip left-align');
+        $hearLabel->attr('style', 'white-space: normal;');
+        $hearRow1 = new FormTableRow("hear_row1");
+        $hearRow1->append($hearLabel);
+        $hearField = new SelectBox("hear_field", "Hear", "", 
+                                   array("", 
+                                         "Canadian Frailty Network website" => 
+                                            showLanguage("Canadian Frailty Network website", 
+                                                         "Site Internet du Réseau canadien des soins aux personnes fragilisées"), 
+                                         "Poster, flyer, or pamphlet at community venue" => 
+                                            showLanguage("Poster, flyer, or pamphlet at community venue",
+                                                         "Affiche, dépliant ou brochure dans un lieu communautaire"),
+                                         "Newspaper" =>
+                                            showLanguage("Newspaper", 
+                                                         "Journal"), 
+                                         "Magazine or Newsletter" =>
+                                            showLanguage("Magazine or Newsletter", 
+                                                         "Magazine ou bulletin d'information"),
+                                         "Healthcare practitioner" =>
+                                            showLanguage("Healthcare practitioner",
+                                                         "Fournisseur de soins de santé"), 
+                                         "Social media" =>
+                                            showLanguage("Social media",
+                                                         "Médias sociaux"), 
+                                         "Word of mouth" =>
+                                            showLanguage("Word of mouth",
+                                                         "Bouche-à-oreille"), 
+                                         "Event" => 
+                                            showLanguage("Event",
+                                                         "Evénement"), 
+                                         "Radio" =>
+                                            showLanguage("Radio",
+                                                         "À la radio"), 
+                                         "Mail" => 
+                                            showLanguage("Mail",
+                                                         "Courrier"), 
+                                         "Television" =>
+                                            showLanguage("Television",
+                                                         "Télévision"),
+                                         "Bus ad" => 
+                                            showLanguage("Bus ad",
+                                                         "Annonce de bus"),
+                                         "Other" => 
+                                            showLanguage("Other",
+                                                         "Autre")), VALIDATE_NOT_NULL);
+        $hearField->colspan = 2;
+        $hearRow2 = new FormTableRow("hear_row2");
+        $hearRow2->append($hearField);
+        
+        $hearLocationLabel = new Label("hear_label", "<en>If you remember the location, please specify</en><fr>si vous vous souvenez de l’endroit, veuillez l’indiquer</fr>", 
+                                                     "<en>If you remember the location, please specify</en><fr>si vous vous souvenez de l’endroit, veuillez l’indiquer</fr>", VALIDATE_NOTHING);
+        $hearLocationLabel->colspan = 2;
+        $hearLocationLabel->attr('class', 'tooltip left-align');
+        $hearRow3 = new FormTableRow("hear_row3");
+        $hearRow3->append($hearLocationLabel);
+        $hearLocationField = new TextField("hear_location_specify", "Hear", "", VALIDATE_NOTHING);
+        $hearLocationField->colspan = 2;
+        $hearRow4 = new FormTableRow("hear_row4");
+        $hearRow4->append($hearLocationField);
+        
+        $hearPlatformLabel = new Label("hear_label", "<en>Please specify platform</en><fr>veuillez indiquer la plateforme</fr>", 
+                                                     "<en>Please specify platform</en><fr>veuillez indiquer la plateforme</fr>", VALIDATE_NOTHING);
+        $hearPlatformLabel->colspan = 2;
+        $hearPlatformLabel->attr('class', 'tooltip left-align');
+        $hearRow5 = new FormTableRow("hear_row5");
+        $hearRow5->append($hearPlatformLabel);
+        $hearPlatformField = new VerticalRadioBox("hear_platform_specify", "Hear", "", array("Facebook", "Twitter", "LinkedIn", "Other"), VALIDATE_NOTHING);
+        $hearPlatformField->colspan = 2;
+        $hearRow6 = new FormTableRow("hear_row6");
+        $hearRow6->append($hearPlatformField);
+        
+        $hearPlatformOtherLabel = new Label("hear_label", "<en>Specify</en><fr>Précisez</fr>", "<en>Specify</en><fr>Précisez</fr>", VALIDATE_NOTHING);
+        $hearPlatformOtherLabel->colspan = 2;
+        $hearPlatformOtherLabel->attr('class', 'tooltip left-align');
+        $hearRow7 = new FormTableRow("hear_row7");
+        $hearRow7->append($hearPlatformOtherLabel);
+        $hearPlatformOtherField = new TextField("hear_platform_other_specify", "Hear", "", VALIDATE_NOTHING);
+        $hearPlatformOtherField->colspan = 2;
+        $hearRow8 = new FormTableRow("hear_row8");
+        $hearRow8->append($hearPlatformOtherField);
+        
+        $hearOtherLabel = new Label("hear_label", "<en>Please specify</en><fr>Précisez</fr>", "<en>Please specify</en><fr>Précisez</fr>", VALIDATE_NOTHING);
+        $hearOtherLabel->colspan = 2;
+        $hearOtherLabel->attr('class', 'tooltip left-align');
+        $hearRow9 = new FormTableRow("hear_row9");
+        $hearRow9->append($hearOtherLabel);
+        $hearOtherField = new TextField("hear_other_specify", "Hear", "", VALIDATE_NOTHING);
+        $hearOtherField->colspan = 2;
+        $hearRow10 = new FormTableRow("hear_row10");
+        $hearRow10->append($hearOtherField);
+        
+        $handbookLabel = new Label("handbook_label", "<br />We have an AVOID Frailty Handbook that will explain the program,  help you navigate the website, and troubleshoot any problems you run into. How would you like to receive it?", "", VALIDATE_NOTHING);
+        $handbookLabel->colspan = 2;
+        $handbookLabel->colon = "";
+        $handbookLabel->attr('class', 'label tooltip left-align');
+        $handbookLabel->attr('style', 'max-width: 700px; white-space: normal;');
+        $handbookRow1 = new FormTableRow("handbook_row1");
+        $handbookRow1->append($handbookLabel);
+        $handbookField = new VerticalCheckBox("handbook_field", "Handbook", array(), 
+                                   array("Electronically via email",
+                                         "Paper copy in the mail",
+                                         "I do not want the handbook"), VALIDATE_NOTHING);
+        $handbookField->colspan = 2;
+        $handbookRow2 = new FormTableRow("handbook_row2");
+        $handbookRow2->append($handbookField);
+        
+        $handbookAddressLabel = new Label("handbook_address_label", "Please Specify Mailing Address", "Address", VALIDATE_NOTHING);
+        $handbookAddressLabel->colspan = 2;
+        $handbookAddressLabel->attr('class', 'tooltip left-align');
+        $handbookRow3 = new FormTableRow("handbook_row3");
+        $handbookRow3->append($handbookAddressLabel);
+        $handbookAddressField = new TextField("handbook_address_specify", "Address", "", VALIDATE_NOTHING);
+        $handbookAddressField->colspan = 2;
+        $handbookRow4 = new FormTableRow("handbook_row4");
+        $handbookRow4->append($handbookAddressField);
+        
+        $recommendLabel = new Label("recommend_label", "<br />Was this program recommended by a Queen's Family Health Team Community Service Worker?", "", VALIDATE_NOTHING);
+        $recommendLabel->colspan = 2;
+        $recommendLabel->colon = "";
+        $recommendLabel->attr('class', 'label tooltip left-align');
+        $recommendLabel->attr('style', 'max-width: 700px; white-space: normal;');
+        $recommendRow1 = new FormTableRow("recommend_row1");
+        $recommendRow1->append($recommendLabel);
+        $recommendField = new VerticalRadioBox("recommend_field", "Recommend", array(), 
+                                   array("Yes",
+                                         "No"), VALIDATE_NOTHING);
+        $recommendField->colspan = 2;
+        $recommendRow2 = new FormTableRow("recommend_row2");
+        $recommendRow2->append($recommendField);
+        
+        // End AVOID Fields
+        
+        $typeLabel = new Label("type_label", "<en>Please select your role</en><fr>Veuillez sélectionner votre rôle</fr>", "The role of user", VALIDATE_NOT_NULL);
+        $typeField = new VerticalRadioBox("type_field", "Role", HQP, array(HQP => "<en>Candidate (ELITE Program Intern, PhD Fellowship Candidate)</en>
+                                                                                   <fr>Candidat-e (Stagiaire du Programme ELITE, Candidat-e de bourse doctorale)</fr>", 
+                                                                           EXTERNAL => "<en>Host (ELITE Program Internship Host, PhD Fellowship Supervisor)</en>
+                                                                                        <fr>Responsable (Responsable de stage du Programme ELITE, Superviseur-e de candidat-e de bourse doctorale)</fr>"), VALIDATE_NOT_NULL);
+        $typeRow = new FormTableRow("type_row");
+        $typeRow->append($typeLabel)->append($typeField);
+        
+        $captchaField = new Captcha("captcha_field", "Captcha", "", VALIDATE_NOTHING);
+        $captchaField->colspan = 2;
         $captchaRow = new FormTableRow("captcha_row");
-        $captchaRow->append($captchaLabel)->append($captchaField);
+        $captchaRow->append($captchaField);
         
-        $submitCell = new EmptyElement();
         $submitField = new SubmitButton("submit", "Submit Request", "Submit Request", VALIDATE_NOTHING);
-        $submitField->buttonText = "<span class='en'>Submit Request</span>
-                                    <span class='fr'>Soumettre la demande</span>";
+        $submitField->colspan = 2;
+        $submitField->buttonText = "<en>Submit Request</en>
+                                    <fr>Soumettre la demande</fr>";
         $submitRow = new FormTableRow("submit_row");
-        $submitRow->append($submitCell)->append($submitField);
+        $submitRow->append($submitField);
         
         $formTable->append($firstNameRow)
                   ->append($lastNameRow)
-                  ->append($emailRow);
+                  ->append($userNameRow)
+                  ->append($emailRow)
+                  ->append($passwordRow)
+                  ->append($password2Row);
         if($config->getValue('networkName') == 'ELITE'){
             $typeLabel = new Label("type_label", "<span class='en'>Please select your role</span><span class='fr'>Veuillez sélectionner votre rôle</span>", "The role of user", VALIDATE_NOT_NULL);
             $typeField = new VerticalRadioBox("type_field", "Role", HQP, array(HQP => "<span class='en'>Candidate (ELITE Program Intern, PhD Fellowship Candidate)</span>
@@ -127,7 +329,44 @@ class Register extends SpecialPage{
             $typeRow->append($typeLabel)->append($typeField);
             $formTable->append($typeRow);
         }
-        $formTable->append($captchaRow)
+        if($config->getValue('networkName') == 'AVOID'){
+            $formTable->append($phoneRow);
+            if(isset($_GET['role']) && $_GET['role'] == "Partner"){
+                $formTable->append($ageRow);
+                $formTable->append($ageOfLovedOneRow);
+            }
+            if(isset($_GET['role']) && $_GET['role'] == "Clinician"){
+                $formTable->append($practiceRow);
+                $formTable->append($roleRow);
+            }
+            $emptyRow = new FormTableRow("");
+            $emptyRow->append(new EmptyElement());
+            $formTable->append($emptyRow)
+                      ->append($hearRow1)
+                      ->append($hearRow2)
+                      ->append($hearRow3)
+                      ->append($hearRow4)
+                      ->append($hearRow5)
+                      ->append($hearRow6)
+                      ->append($hearRow7)
+                      ->append($hearRow8)
+                      ->append($hearRow9)
+                      ->append($hearRow10);
+            if($wgLang->getCode() == "en"){
+                $formTable->append($handbookRow1)
+                          ->append($handbookRow2)
+                          ->append($handbookRow3)
+                          ->append($handbookRow4);
+            }
+            if($config->getValue("siteName") == "AVOID Frailty: Program for Healthy Aging"){
+                $formTable->append($recommendRow1)
+                          ->append($recommendRow2);
+            }
+        }
+        $emptyRow = new FormTableRow("");
+        $emptyRow->append(new EmptyElement());
+        $formTable->append($emptyRow)
+                  ->append($captchaRow)
                   ->append($submitRow);
         
         $formContainer->append($formTable);
@@ -135,7 +374,7 @@ class Register extends SpecialPage{
     }
     
      function generateFormHTML($wgOut){
-        global $wgServer, $wgScriptPath, $wgRoles, $config, $wgLang;
+        global $wgServer, $wgScriptPath, $wgRoles, $config;
         $user = Person::newFromWgUser();
         if($config->getValue('networkName') == "ADA" || $config->getValue('networkName') == "CFN"){
             $wgOut->setPageTitle("Member Registration");
@@ -158,16 +397,39 @@ class Register extends SpecialPage{
             Applicants may register using their institutional email address only. For permission to use a non .ca email address, please contact <a href='mailto:mtsfunding@yorku.ca'>mtsfunding@yorku.ca</a>.<br /><br />");
         }
         else if($config->getValue('networkName') == 'ELITE'){
-            if($wgLang->getCode() == 'en'){
-                $wgOut->setPageTitle("Member Registration");
-            }
-            else{
-                $wgOut->setPageTitle("Inscription des membres");
-            }
-            $wgOut->addHTML("<span class='en'>Your registration with {$config->getValue('networkName')} Program Application Portal will grant you access. You will receive a registration email within a few minutes after submission of your information. If you do not receive the registration email in your main inbox, please check your spam or junk mail folder. If you did not receive the email, please contact <a href='mailto:{$config->getValue('supportEmail')}'>{$config->getValue('supportEmail')}</a>.</span>
-                            <span class='fr'>
+            $wgOut->setPageTitle(showLanguage("Member Registration", "Inscription des membres"));
+            $wgOut->addHTML("<en>Your registration with {$config->getValue('networkName')} Program Application Portal will grant you access. You will receive a registration email within a few minutes after submission of your information. If you do not receive the registration email in your main inbox, please check your spam or junk mail folder. If you did not receive the email, please contact <a href='mailto:{$config->getValue('supportEmail')}'>{$config->getValue('supportEmail')}</a>.</en>
+                            <fr>
                                 Votre inscription au portail du formulaire de demande pour le Programme ELITE vous donnera accès au portail. Vous recevrez un courriel d'inscription quelques minutes après la soumission de vos informations. Si vous ne recevez pas le courriel d'inscription dans votre boîte de réception principale, veuillez vérifier votre dossier de courriels indésirables. Si vous n'avez pas reçu le courriel, veuillez contacter <a href='mailto:{$config->getValue('supportEmail')}'>{$config->getValue('supportEmail')}</a>.
-                            </span><br /><br />");
+                            </fr><br /><br />");
+        }
+        else if($config->getValUE("networkName") == "AVOID"){
+            $role = (isset($_GET['role']) && ($_GET['role'] == "Partner" || $_GET['role'] == "Clinician")) ? $_GET['role'] : CI; // Member
+            $frRole = $role;
+            if($role == CI){
+                $wgOut->setPageTitle(showLanguage("Member Registration", "Inscription - Membre"));
+                $frRole = "Membre";
+            }
+            else if($role == "Partner"){
+                $wgOut->setPageTitle(showLanguage("Care Partner/Guest Registration", "Inscription – Partenaire/Invité"));
+                $frRole = "Partenaire";
+            }
+            else if($role == "Clinician"){
+                $wgOut->setPageTitle(showLanguage("Clinician Registration", "Inscription - Clinicien"));
+            }
+            $wgOut->addHTML("<div class='program-body'>");
+            if(!isset($_GET['embed'])){
+                $wgOut->addHTML("<en>By registering with {$config->getValue('networkName')} you will be granted the role of {$role}.  You may need to check your spam/junk mail for the registration email if it doesn't show up after a few minutes.  If you still don't get the email, please contact <a href='mailto:{$config->getValue('supportEmail')}'>{$config->getValue('supportEmail')}</a>.</en>
+                                 <fr>En vous inscrivant au site Internet Proactif, vous obtenez le statut de {$frRole}. Consultez vos pourriels si vous ne recevez pas le courriel de confirmation d’inscription dans les prochaines minutes. Si vous n’avez toujours rien reçu, veuillez écrire aux adresses suivantes: <a href='mailto:{$config->getValue('supportEmail')}'>{$config->getValue('supportEmail')}</a>.</fr>
+                                 <br /><br />
+                                 <en>If completing the online registration or healthy aging assessment presents any challenges for you (such as vision problems, or an unsteady hand), program administration can complete it on your behalf over the phone. Please call 613-549-6666. Ex. 2834 to organize this.</en>
+                                 <fr>Si vous avez de la difficulté à remplir le questionnaire (par exemple, si vous avez des problèmes de vision ou que vos mains tremblent), nous pouvons le remplir pour vous. Pour organiser une rencontre téléphonique d’assistance, appelez au 418-663-5313, poste 12218.</fr>
+                                 <br /><br />");
+            }
+        }
+        else if($config->getValue('networkName') == 'IDeaS' || $config->getValue('networkName') == "Voyant"){
+            $wgOut->setPageTitle("Forum Registration");
+            $wgOut->addHTML("By registering with {$config->getValue('networkName')} you will be granted the role of Member.  You may need to check your spam/junk mail for the registration email if it doesn't show up after a few minutes.  If you still don't get the email, please contact <a href='mailto:{$config->getValue('supportEmail')}'>{$config->getValue('supportEmail')}</a>.<br /><br />");
         }
         else{
             $wgOut->addHTML("By registering with {$config->getValue('networkName')} you will be granted the role of HQP-Candidate.  You may need to check your spam/junk mail for the registration email if it doesn't show up after a few minutes.  If you still don't get the email, please contact <a href='mailto:{$config->getValue('supportEmail')}'>{$config->getValue('supportEmail')}</a>.<br /><br />");
@@ -175,25 +437,107 @@ class Register extends SpecialPage{
         if(count($config->getValue('hqpRegisterEmailWhitelist')) > 0){
             $wgOut->addHTML("<i><b>Note:</b> Email address must match one of the following: ".implode(", ", $config->getValue('hqpRegisterEmailWhitelist'))."</i><br /><br />");
         }
-        $wgOut->addHTML("<form action='$wgScriptPath/index.php/Special:Register' method='post'>\n");
+        $getRole = (isset($_GET['role']) && ($_GET['role'] == "Partner" || $_GET['role'] == "Clinician")) ? "&role={$_GET['role']}" : "";
+        $embed = (isset($_GET['embed'])) ? "&embed&newTab" : "";
+        $wgOut->addHTML("<form action='$wgScriptPath/index.php/Special:Register?arg{$getRole}{$embed}' method='post'>\n");
         $form = self::createForm();
         $wgOut->addHTML($form->render());
         $wgOut->addHTML("</form>");
+        if($config->getValUE("networkName") == "AVOID"){
+            $wgOut->addHTML("</div>");
+        }
+        $wgOut->addHTML("<script type='text/javascript'>
+            $('[name=first_name_field], [name=last_name_field]').on('input', function(){
+                var username = $('[name=first_name_field]').val() + '.' + $('[name=last_name_field]').val();
+                username = username.replaceAll(' ', '')
+                                   .replaceAll(\"'\", '');
+                username = username.charAt(0).toUpperCase() + username.slice(1);
+                if(!$('[name=user_name_field]').hasClass('changed')){
+                    $('[name=user_name_field]').val(username);
+                }
+            });
+            $('[name=user_name_field]').on('input', function(){
+                var username = $('[name=user_name_field]').val();
+                username = username.charAt(0).toUpperCase() + username.slice(1);
+                $('[name=user_name_field]').val(username);
+                $('[name=user_name_field]').addClass('changed');
+            });
+            $('#side').hide();
+            $('#outerHeader').css('left', 0);
+            $('#bodyContent').css('left', 0);
+            
+            // How did you hear about us?
+            $('#hear_row3, #hear_row4').hide();
+            $('#hear_row5, #hear_row6').hide();
+            $('#hear_row7, #hear_row8').hide();
+            $('#hear_row9, #hear_row10').hide();
+            
+            function specifyFrail(){
+                if($(\"select[name='hear_field\").val() == 'Poster, flyer, or pamphlet at community venue'){
+                    $('#hear_row3, #hear_row4').show();
+                    $('#hear_row5, #hear_row6').hide();
+                    $('#hear_row7, #hear_row8').hide();
+                    $('#hear_row9, #hear_row10').hide();
+                }
+                else if($(\"select[name='hear_field\").val() == 'Social media'){
+                    $('#hear_row3, #hear_row4').hide();
+                    $('#hear_row5, #hear_row6').show();
+                    $('#hear_row7, #hear_row8').hide();
+                    $('#hear_row9, #hear_row10').hide();
+                }
+                else if($(\"select[name='hear_field\").val() == 'Other'){
+                    $('#hear_row3, #hear_row4').hide();
+                    $('#hear_row5, #hear_row6').hide();
+                    $('#hear_row7, #hear_row8').hide();
+                    $('#hear_row9, #hear_row10').show();
+                }
+                else{ 
+                    $('#hear_row3, #hear_row4').hide();
+                    $('#hear_row5, #hear_row6').hide();
+                    $('#hear_row7, #hear_row8').hide();
+                    $('#hear_row9, #hear_row10').hide();
+                }
+                
+                if($(\"input:radio[name='hear_platform_specify']\").is(':visible') && 
+                   $(\"input:radio[name='hear_platform_specify']:checked\").val() == 'Other'){
+                    $('#hear_row7, #hear_row8').show();
+                }
+                else{ 
+                    $('#hear_row7, #hear_row8').hide();
+                }
+                
+                if($(\"input[name='handbook_field[]'][value='Paper copy in the mail']\").is(':checked')){
+                    $('#handbook_row3, #handbook_row4').show();
+                }
+                else{
+                    $('#handbook_row3, #handbook_row4').hide();
+                } 
+            }
+            
+            $(\"select[name='hear_field']\").change(specifyFrail);
+            $(\"input:radio[name='hear_platform_specify']\").change(specifyFrail);
+            $(\"input[name='handbook_field[]']\").change(specifyFrail);
+            specifyFrail();
+            
+        </script>");
     }
     
     function handleSubmit($wgOut){
-        global $wgServer, $wgScriptPath, $wgMessage, $wgGroupPermissions, $config;
+        global $wgServer, $wgScriptPath, $wgMessage, $wgGroupPermissions, $config, $wgUser;
         $form = self::createForm();
         $status = $form->validate();
         if($status){
             $form->getElementById('first_name_field')->setPOST('wpFirstName');
             $form->getElementById('last_name_field')->setPOST('wpLastName');
+            $form->getElementById('user_name_field')->setPOST('wpName');
             $form->getElementById('email_field')->setPOST('wpEmail');
+            $form->getElementById('password_field')->setPOST('wpPassword');
+            $form->getElementById('password2_field')->setPOST('wpPassword2');
             
             $_POST['wpFirstName'] = ucfirst($_POST['wpFirstName']);
             $_POST['wpLastName'] = ucfirst($_POST['wpLastName']);
             $_POST['wpRealName'] = "{$_POST['wpFirstName']} {$_POST['wpLastName']}";
-            $_POST['wpName'] = ucfirst(str_replace("&#39;", "", strtolower($_POST['wpFirstName']))).".".ucfirst(str_replace("&#39;", "", strtolower($_POST['wpLastName'])));
+            $_POST['candidate'] = "1";
             if($config->getValue('networkName') == "ADA" || 
                $config->getValue('networkName') == "CFN" ||
                $config->getValue('networkName') == "MtS"){
@@ -209,17 +553,36 @@ class Register extends SpecialPage{
                     $_POST['wpUserType'] = HQP;
                 }
             }
+            else if($config->getValue('networkName') == "AVOID"){
+                if(isset($_GET['role']) && ($_GET['role'] == "Partner" || $_GET['role'] == "Clinician")){
+                    $_POST['wpUserType'] = "Provider";
+                }
+                else{
+                    $_POST['wpUserType'] = CI;
+                }
+                $_POST['candidate'] = "0";
+            }
+            else if($config->getValue('networkName') == "IDeaS" || $config->getValue('networkName') == "Voyant"){
+                $_POST['wpUserType'] = CI;
+                $_POST['candidate'] = "0";
+            }
             else{
                 $_POST['wpUserType'] = HQP;
             }
             $_POST['wpSendMail'] = "true";
-            $_POST['candidate'] = "1";
             
             $splitEmail = explode("@", $_POST['wpEmail']);
             $domain = @$splitEmail[1];
-            
-            if(!preg_match("/^[À-Ÿa-zA-Z\-]+\.[À-Ÿa-zA-Z\-]+$/", $_POST['wpName'])){
-                $wgMessage->addError("This User Name is not in the format 'FirstName.LastName'");
+            $_POST['wpName'] = ucfirst($_POST['wpName']);
+            $emptyUser = new User();
+            if(strlen($_POST['wpName']) < 4){
+                $wgMessage->addError("This User Name must be atleast 4 characters long.");
+            }
+            else if(!preg_match("/[À-Ÿa-zA-Z]+/", $_POST['wpName'])){
+                $wgMessage->addError("This User Name must include atleast 1 alphabet character.");
+            }
+            else if(!preg_match("/^[À-Ÿa-zA-Z\-\.0-9]+$/", $_POST['wpName'])){
+                $wgMessage->addError("This User Name must only inlcude alphanumeric characters, periods and dashes.");
             }
             else if($_POST['wpFirstName'] == $_POST['wpLastName']){
                 // Help filter out spam bots
@@ -229,16 +592,50 @@ class Register extends SpecialPage{
                     !preg_match("/".str_replace('.', '\.', implode("|", $config->getValue('hqpRegisterEmailWhitelist')))."/i", $domain)){
                 $wgMessage->addError("Email address must match one of the following: ".implode(", ", $config->getValue('hqpRegisterEmailWhitelist')));
             }
+            else if(!$emptyUser->isValidPassword($_POST['wpPassword'])){
+                $wgMessage->addError("The password you entered is not valid");
+            }
+            else if($_POST['wpPassword'] != $_POST['wpPassword2']){
+                $wgMessage->addError("Both passwords do not match");
+            }
             else{
+                $_POST['wpExtra'] = array();
+                if($config->getValue("networkName") == "AVOID"){
+                    $_POST['wpExtra']['phone'] = @$_POST['phone_field'];
+                    $_POST['wpExtra']['ageOfLovedOne'] = @$_POST['age_of_loved_one_field'];
+                    $_POST['wpExtra']['ageField'] = @$_POST['age_field'];
+                    $_POST['wpExtra']['practiceField'] = @$_POST['practice_field'];
+                    $_POST['wpExtra']['roleField'] = @$_POST['role_field'];
+                    // How did you hear about us?
+                    $_POST['wpExtra']['hearField'] = @$_POST['hear_field'];
+                    $_POST['wpExtra']['hearLocationSpecify'] = @$_POST['hear_location_specify'];
+                    $_POST['wpExtra']['hearPlatformSpecify'] = @$_POST['hear_platform_specify'];
+                    $_POST['wpExtra']['hearPlatformOtherSpecify'] = @$_POST['hear_platform_other_specify'];
+                    $_POST['wpExtra']['hearProgramOtherSpecify'] = @$_POST['hear_other_specify'];
+                    // Handbook
+                    $_POST['wpExtra']['handbook'] = @$_POST['handbook_field'];
+                    $_POST['wpExtra']['handbookAddress'] = @$_POST['handbook_address_specify'];
+                    // Recommended
+                    $_POST['wpExtra']['recommended'] = @$_POST['recommend_field'];
+                }
+                
                 $wgGroupPermissions['*']['createaccount'] = true;
                 GrandAccess::$alreadyDone = array();
+                $wgUser = User::newFromId(1);
                 $result = APIRequest::doAction('CreateUser', false);
+                $wgUser = User::newFromId(0);
                 $wgGroupPermissions['*']['createaccount'] = false;
                 GrandAccess::$alreadyDone = array();
                 if($result){
                     $form->reset();
-                    $wgMessage->addSuccess("A randomly generated password for <b>{$_POST['wpName']}</b> has been sent to <b>{$_POST['wpEmail']}</b>");
-                    redirect("$wgServer$wgScriptPath");
+                    $wgMessage->addSuccess("A confirmation email for <b>{$_POST['wpName']}</b> has been sent to <b>{$_POST['wpEmail']}</b>");
+                    if(!isset($_GET['embed'])){
+                        redirect("$wgServer$wgScriptPath");
+                    }
+                    else{
+                        $wgOut->addHTML("<div class='program-body'><a class='button' href='$wgServer$wgScriptPath' target='_blank'>Click Here to login</a></div>");
+                        return;
+                    }
                 }
             }
         }
@@ -248,7 +645,7 @@ class Register extends SpecialPage{
 
 $wgSpecialPages['HQPRegister'] = 'HQPRegister'; # Let MediaWiki know about the special page.
 class HQPRegister extends SpecialPage{
-    function HQPRegister() {
+    function __construct() {
         SpecialPage::__construct("HQPRegister", null, false);
     }
     

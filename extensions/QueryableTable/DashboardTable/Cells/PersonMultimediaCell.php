@@ -2,7 +2,7 @@
 
     class PersonMultimediaCell extends DashboardCell {
         
-        function PersonMultimediaCell($cellType, $params, $cellValue, $rowN, $colN, $table){
+        function __construct($cellType, $params, $cellValue, $rowN, $colN, $table){
             $this->label = "Multimedia";
         
             $start = "0000";

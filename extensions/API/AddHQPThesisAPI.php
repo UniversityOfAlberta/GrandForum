@@ -2,7 +2,7 @@
 
 class AddHQPThesisAPI extends API{
 
-    function AddHQPThesisAPI(){
+    function __construct(){
         $this->addPOST("id",true,"The id of the moved on", 13);
         $this->addPOST("name",true,"The User Name of the user","UserName");
         $this->addPOST("thesis",true,"The id of the thesis","231");

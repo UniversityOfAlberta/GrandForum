@@ -1,0 +1,20 @@
+[
+    {
+        "id": "PeerCoachingBC",
+        "title": "Self-Management BC (including Peer Coaching program)",
+        "category": "Get Support",
+        "tags": []
+    },
+    {
+        "id": "CommunityConnectorsBC",
+        "title": "Seniors' Community Connectors-Social Prescribing",
+        "category": "Get Support",
+        "tags": []
+    },
+    {
+        "id": "FallsPreventionBC",
+        "title": "Falls Prevention Program",
+        "category": "Get Support",
+        "tags": []
+    }
+]

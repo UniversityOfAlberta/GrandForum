@@ -13,7 +13,7 @@ function runHQPRegisterTable($par) {
 
 class HQPRegisterTable extends SpecialPage{
 
-    function HQPRegisterTable() {
+    function __construct() {
         SpecialPage::__construct("HQPRegisterTable", null, false, 'runHQPRegisterTable');
     }
     
@@ -24,6 +24,7 @@ class HQPRegisterTable extends SpecialPage{
 
     function execute($par){
         global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle, $wgMessage;
+        $this->getOutput()->setPageTitle("HQP Registration Table");
         HQPRegisterTable::generateHTML($wgOut);
     }
     
@@ -133,7 +134,7 @@ class HQPRegisterTable extends SpecialPage{
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle, $special_evals;
         $person = Person::newFromWgUser();
         
-        if(self::userCanExecute($wgUser)){
+        if((new self)->userCanExecute($wgUser)){
             $selected = @($wgTitle->getText() == "HQPRegisterTable") ? "selected" : false;
             $tabs["Manager"]['subtabs'][] = TabUtils::createSubTab("HQP Registration Table", "$wgServer$wgScriptPath/index.php/Special:HQPRegisterTable", $selected);
         }

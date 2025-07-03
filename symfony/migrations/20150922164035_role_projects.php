@@ -24,8 +24,8 @@ class RoleProjects extends AbstractMigration
     {
         $table = $this->table('grand_role_projects', array('id' => false, 'primary_key' => array('role_id', 'project_id')));
         if(!$table->exists()){
-            $table->addColumn('role_id', 'integer')
-                  ->addColumn('project_id', 'integer')
+            $table->addColumn('role_id', 'integer', array('default' => 0, 'null' => false))
+                  ->addColumn('project_id', 'integer', array('default' => 0, 'null' => false))
                   ->create();
         }
         

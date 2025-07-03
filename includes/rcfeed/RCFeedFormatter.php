@@ -22,6 +22,7 @@
 /**
  * Interface for RC feed formatters
  *
+ * @stable for implementing
  * @since 1.22
  */
 interface RCFeedFormatter {
@@ -32,7 +33,8 @@ interface RCFeedFormatter {
 	 * @param RecentChange $rc The RecentChange object showing what sort
 	 *                         of event has taken place.
 	 * @param string|null $actionComment
-	 * @return string The text to send.
+	 * @return string|null The text to send.  If the formatter returns null,
+	 *  the line will not be sent.
 	 */
 	public function getLine( array $feed, RecentChange $rc, $actionComment );
 }

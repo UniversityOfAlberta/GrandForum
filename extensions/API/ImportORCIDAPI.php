@@ -2,7 +2,7 @@
 
 class ImportORCIDAPI extends API{
 
-    function ImportORCIDAPI(){
+    function __construct(){
         
     }
 

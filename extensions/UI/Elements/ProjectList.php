@@ -2,8 +2,8 @@
 
 class ProjectList extends MultiColumnVerticalCheckBox {
     
-    function ProjectList($id, $name, $value, $options, $validations=VALIDATE_NOTHING){
-        parent::MultiColumnVerticalCheckBox($id, $name, $value, $options, $validations);
+    function __construct($id, $name, $value, $options, $validations=VALIDATE_NOTHING){
+        parent::__construct($id, $name, $value, $options, $validations);
         $this->attr('expand', false);
         $this->attr('reasons', true);
     }
@@ -22,7 +22,7 @@ class ProjectList extends MultiColumnVerticalCheckBox {
                 if($theme->getAcronym() == "Not Specified" || $theme->getAcronym() == ""){
                     $otherThemes[] = $project;
                 } else {
-                    $themes["{$theme->getName()} ({$theme->getAcronym()})"][] = $project;
+                    $themes["{$theme->getAcronym()} - {$theme->getName()}"][] = $project;
                 }
             }
         }

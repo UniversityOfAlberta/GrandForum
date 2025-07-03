@@ -4,9 +4,7 @@ class EULAReportItem extends AbstractReportItem {
 
     function save(){
         if(isset($_POST[$this->getPostId()])){
-            if($this->getBlobValue() == "" || $this->getBlobValue() != "Yes"){
-                $this->setBlobValue($_POST[$this->getPostId()]);
-            }
+            $this->setBlobValue($_POST[$this->getPostId()]);
         }
         return array();
     }

@@ -1,5 +1,7 @@
 <?php
 
+use MediaWiki\MediaWikiServices;
+
 $dir = dirname(__FILE__) . '/';
 $wgSpecialPages['AnnokiControl'] = 'AnnokiControl'; # Let MediaWiki know about the special page.
 $wgExtensionMessagesFiles['AnnokiControl'] = $dir . 'AnnokiControl.i18n.php';
@@ -7,28 +9,29 @@ $wgSpecialPageGroups['AnnokiControl'] = 'other';
  
 class AnnokiControl extends SpecialPage {
 
-  function AnnokiControl() {
+  function __construct() {
     SpecialPage::__construct("AnnokiControl", STAFF.'+', true);
   }
 
-  function onMessagesPreLoad($title, &$message) {
+  static function onMessagesPreLoad($title, &$message) {
+    global $wgServer, $wgScriptPath;
     switch(strtolower($title)){
         case "mediawarning": 
             $message = "";
             break;
         case "passwordreset-emailtext-ip":
-            $message = 'A new password has been requested for {{SITENAME}} ($4). A temporary password has been made for the following user:
-
-$2
-                        
-Your temporary password will expire in {{PLURAL:$5|one day|$5 days}}.';
+            $message = "A new password has been requested for {{SITENAME}} (<a href='{$wgServer}{$wgScriptPath}'>{$wgServer}{$wgScriptPath}</a>). A temporary password has been made for the following user:<br />
+<br />
+$2<br />
+<br />                  
+Your temporary password will expire in {{PLURAL:$5|one day|$5 days}}.";
             break;
         case "passwordremindertext":
-            $message = 'A new password has been requested for {{SITENAME}} ($4). A temporary password for user
-"$2" has been created and was set to "$3".  Your temporary password will expire in {{PLURAL:$5|one day|$5 days}}.';
+            $message = "A new password has been requested for {{SITENAME}} (<a href='{$wgServer}{$wgScriptPath}'>{$wgServer}{$wgScriptPath}</a>). A temporary password for user
+\"$2\" has been created and was set to \"$3\".  Your temporary password will expire in {{PLURAL:$5|one day|$5 days}}.";
             break;
         case "createaccount-text":
-            $message = 'An account has been created for your e-mail address on {{SITENAME}} ($4) named "$2"';
+            $message = "An account has been created for your e-mail address on {{SITENAME}} (<a href='{$wgServer}{$wgScriptPath}'>{$wgServer}{$wgScriptPath}</a>) named \"$2\"";
             if(!isExtensionEnabled('Shibboleth')){
                 $message .= ', with password "$3".
 You should log in and change your password now.';
@@ -36,19 +39,35 @@ You should log in and change your password now.';
             else{
                 $message .= '.';
             }
+            $message .= "";
             break;
         case "readonlytext":
             $message = '$1';
+            break;
+        case "confirmemail_body":
+            $message = "<p>An account has been created for your e-mail address on {{SITENAME}} (<a href='{$wgServer}{$wgScriptPath}'>{$wgServer}{$wgScriptPath}</a>) named \"$2\"</p>
+
+                        <p>To confirm that this account really does belong to you and activate email features on {{SITENAME}}, open this link in your browser:</p>
+
+                        <p><a href='$3'>$3</a></p>
+
+                        <p><b>This confirmation code will expire at $4.</b></p>";
+            break;
+        case "passwordreset-emailelement":
+            $message = "<u>Username:</u> <b>$1</b><br />
+                        <br />
+                        <u>Temporary Password:</u> <b>$2</b>";
             break;
     }
     return true;
   }
   
   static function onUserGetLanguageObject($user, &$code){
+      global $wgLang, $wgLanguageCode;
         if(@$_GET['lang'] == 'fr' || @$_GET['lang'] == 'en'){
-            if($user->isLoggedIn()){
+            if($user->isLoggedIn() && $user->getOption("language") != $_GET['lang']){
                 $user->setOption("language", $_GET['lang']);
-                $user->saveSettings();
+                MediaWikiServices::getInstance()->getUserOptionsManager()->saveOptions( $user );
                 DBFunctions::commit();
             }
             else{
@@ -58,14 +77,21 @@ You should log in and change your password now.';
                 $code = $_GET['lang'];
             }
         }
+        else if($user->isLoggedIn()){
+            $code = $user->getOption('language');
+        }
         else if(!$user->isLoggedIn() && isset($_COOKIE['lang'])){
             $code = $_COOKIE['lang'];
+        }
+        else {
+            $code = $wgLanguageCode;
         }
         return true;
     }
   
   function execute( $par ) {
     global $wgOut, $egAnnokiExtensions, $wgEmergencyContact;
+    $this->getOutput()->setPageTitle("Annoki Control");
     $newHTML = "<div><table class='wikitable sortable' border=1 cellpadding=5>
     <thead>
         <tr><th>Extension</th><th>Installation Status</th><th>Extension Status</th><th>Memory Usage (MB)</th><th>Execution Time (ms)</th></tr>

@@ -1,8 +1,7 @@
 <?php
 /** Kirmanjki (Kırmancki)
  *
- * See MessagesQqq.php for message documentation incl. usage of parameters
- * To improve a translation please visit http://translatewiki.net
+ * To improve a translation please visit https://translatewiki.net
  *
  * @ingroup Language
  * @file
@@ -11,7 +10,7 @@
 
 $fallback = 'tr';
 
-$namespaceNames = array(
+$namespaceNames = [
 	NS_MEDIA            => 'Medya',
 	NS_SPECIAL          => 'Xısusi',
 	NS_TALK             => 'Werênayış',
@@ -28,9 +27,9 @@ $namespaceNames = array(
 	NS_HELP_TALK        => 'Peşti_werênayış',
 	NS_CATEGORY         => 'Kategoriye',
 	NS_CATEGORY_TALK    => 'Kategori_werênayış',
-);
+];
 
-$namespaceAliases = array(
+$namespaceAliases = [
 	// Turkish namespace names.
 	'Medya'              => NS_MEDIA,
 	'Özel'               => NS_SPECIAL,
@@ -47,5 +46,4 @@ $namespaceAliases = array(
 	'Yardım_tartışma'    => NS_HELP_TALK,
 	'Kategori'           => NS_CATEGORY,
 	'Kategori_tartışma'  => NS_CATEGORY_TALK,
-);
-
+];

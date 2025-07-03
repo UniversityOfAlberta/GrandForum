@@ -23,8 +23,8 @@ class ContributionEdits extends AbstractMigration
     public function up()
     {
         $table = $this->table('grand_contribution_edits', array('id' => false, 'primary_key' => array('id', 'user_id')));
-        $table->addColumn('id', 'integer')
-              ->addColumn('user_id', 'integer')
+        $table->addColumn('id', 'integer', array('default' => 0, 'null' => false))
+              ->addColumn('user_id', 'integer', array('default' => 0, 'null' => false))
               ->save();
     }
 

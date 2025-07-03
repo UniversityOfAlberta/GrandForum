@@ -50,7 +50,11 @@ PostingsView = Backbone.View.extend({
         this.$el.html(this.template(this.model.toJSON()));
         this.$("table#postings").DataTable({
             "autoWidth": true,
-            "order": [[ 0, "desc" ]]
+            "order": [[ 0, "desc" ]],
+            'dom': 'Blfrtip',
+            'buttons': [
+                'excel'
+            ]
         });
         return this.$el;
     }

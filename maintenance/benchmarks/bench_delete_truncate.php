@@ -21,7 +21,10 @@
  * @ingroup Benchmark
  */
 
-require_once __DIR__ . '/Benchmarker.php';
+require_once __DIR__ . '/../includes/Benchmarker.php';
+
+use Wikimedia\Rdbms\IDatabase;
+use Wikimedia\Rdbms\IMaintainableDatabase;
 
 /**
  * Maintenance script that benchmarks SQL DELETE vs SQL TRUNCATE.
@@ -29,61 +32,59 @@ require_once __DIR__ . '/Benchmarker.php';
  * @ingroup Benchmark
  */
 class BenchmarkDeleteTruncate extends Benchmarker {
+	protected $defaultCount = 10;
 
 	public function __construct() {
 		parent::__construct();
-		$this->mDescription = "Benchmarks SQL DELETE vs SQL TRUNCATE.";
+		$this->addDescription( 'Benchmarks SQL DELETE vs SQL TRUNCATE.' );
 	}
 
 	public function execute() {
-		$dbw = wfGetDB( DB_MASTER );
+		$dbw = $this->getDB( DB_MASTER );
 
 		$test = $dbw->tableName( 'test' );
 		$dbw->query( "CREATE TABLE IF NOT EXISTS /*_*/$test (
   test_id int unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT,
   text varbinary(255) NOT NULL
-);" );
+);", __METHOD__ );
 
-		$this->insertData( $dbw );
+		$this->bench( [
+			'Delete' => [
+				'setup' => function () use ( $dbw ) {
+					$this->insertData( $dbw );
+				},
+				'function' => function () use ( $dbw ) {
+					$this->delete( $dbw );
+				}
+			],
+			'Truncate' => [
+				'setup' => function () use ( $dbw ) {
+					$this->insertData( $dbw );
+				},
+				'function' => function () use ( $dbw ) {
+					$this->truncate( $dbw );
+				}
+			]
+		] );
 
-		$start = microtime( true );
-
-		$this->delete( $dbw );
-
-		$end = microtime( true );
-
-		echo "Delete: " . sprintf( "%6.3fms", ( $end - $start ) * 1000 );
-		echo "\r\n";
-
-		$this->insertData( $dbw );
-
-		$start = microtime( true );
-
-		$this->truncate( $dbw );
-
-		$end = microtime( true );
-
-		echo "Truncate: " . sprintf( "%6.3fms", ( $end - $start ) * 1000 );
-		echo "\r\n";
-
-		$dbw->dropTable( 'test' );
+		$dbw->dropTable( 'test', __METHOD__ );
 	}
 
 	/**
-	 * @param $dbw DatabaseBase
+	 * @param IDatabase $dbw
 	 * @return void
 	 */
 	private function insertData( $dbw ) {
 		$range = range( 0, 1024 );
-		$data = array();
-		foreach( $range as $r ) {
-			$data[] = array( 'text' => $r );
+		$data = [];
+		foreach ( $range as $r ) {
+			$data[] = [ 'text' => $r ];
 		}
 		$dbw->insert( 'test', $data, __METHOD__ );
 	}
 
 	/**
-	 * @param $dbw DatabaseBase
+	 * @param IDatabase $dbw
 	 * @return void
 	 */
 	private function delete( $dbw ) {
@@ -91,14 +92,14 @@ class BenchmarkDeleteTruncate extends Benchmarker {
 	}
 
 	/**
-	 * @param $dbw DatabaseBase
+	 * @param IMaintainableDatabase $dbw
 	 * @return void
 	 */
 	private function truncate( $dbw ) {
 		$test = $dbw->tableName( 'test' );
-		$dbw->query( "TRUNCATE TABLE $test" );
+		$dbw->query( "TRUNCATE TABLE $test", __METHOD__ );
 	}
 }
 
-$maintClass = "BenchmarkDeleteTruncate";
+$maintClass = BenchmarkDeleteTruncate::class;
 require_once RUN_MAINTENANCE_IF_MAIN;

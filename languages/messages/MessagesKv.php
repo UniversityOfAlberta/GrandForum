@@ -1,8 +1,7 @@
 <?php
 /** Komi (коми)
  *
- * See MessagesQqq.php for message documentation incl. usage of parameters
- * To improve a translation please visit http://translatewiki.net
+ * To improve a translation please visit https://translatewiki.net
  *
  * @ingroup Language
  * @file
@@ -14,7 +13,7 @@
 
 $fallback = 'ru';
 
-$namespaceNames = array(
+$namespaceNames = [
 	NS_SPECIAL          => 'Отсасян',
 	NS_TALK             => 'Сёрнитанiн',
 	NS_USER             => 'Пырысь',
@@ -25,9 +24,9 @@ $namespaceNames = array(
 	NS_MEDIAWIKI_TALK   => 'МедиаВики_донъялӧм',
 	NS_TEMPLATE         => 'Шаблон',
 	NS_TEMPLATE_TALK    => 'Шаблон_донъялӧм',
-);
+];
 
-$namespaceAliases = array(
+$namespaceAliases = [
 	// Backward compat. Fallbacks from 'ru'.
 	'Медиа'                              => NS_MEDIA,
 	'Служебная'                          => NS_SPECIAL,
@@ -44,5 +43,4 @@ $namespaceAliases = array(
 	'Обсуждение_справки'                 => NS_HELP_TALK,
 	'Категория'                          => NS_CATEGORY,
 	'Обсуждение_категории'               => NS_CATEGORY_TALK
-);
-
+];

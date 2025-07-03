@@ -1,9 +1,11 @@
 <?php
 
-$wgHooks['UnknownAction'][] = 'ProjectVisualizationsTab::getProjectTimelineData';
-$wgHooks['UnknownAction'][] = 'ProjectVisualizationsTab::getProjectDoughnutData';
-$wgHooks['UnknownAction'][] = 'ProjectVisualizationsTab::getProjectChordData';
-$wgHooks['UnknownAction'][] = 'ProjectVisualizationsTab::getProjectWordleData';
+autoload_register('GrandObjectPage/ProjectPage');
+
+UnknownAction::createAction('ProjectVisualizationsTab::getProjectTimelineData');
+UnknownAction::createAction('ProjectVisualizationsTab::getProjectDoughnutData');
+UnknownAction::createAction('ProjectVisualizationsTab::getProjectChordData');
+UnknownAction::createAction('ProjectVisualizationsTab::getProjectWordleData');
 
 $wgHooks['ArticleViewHeader'][] = 'ProjectPage::processPage';
 $wgHooks['TopLevelTabs'][] = 'ProjectPage::createTab';
@@ -11,7 +13,7 @@ $wgHooks['SubLevelTabs'][] = 'ProjectPage::createSubTabs';
 
 class ProjectPage {
 
-    function processPage($article, $outputDone, $pcache){
+    static function processPage($article, $outputDone, $pcache){
         global $wgOut, $wgTitle, $wgUser, $wgRoles, $wgServer, $wgScriptPath, $config;
         $me = Person::newFromId($wgUser->getId());
         if(!$wgOut->isDisabled()){
@@ -45,9 +47,7 @@ class ProjectPage {
                         !($project->isSubProject() && ($me->isThemeLeaderOf($project->getParent()) || 
                                                        $me->isThemeCoordinatorOf($project->getParent())))){
                     TabUtils::clearActions();
-                    $wgOut->clearHTML();
-                    $wgOut->permissionRequired('');
-                    $wgOut->output();
+                    permissionError();
                     exit;
                 }
                 return true;
@@ -56,6 +56,9 @@ class ProjectPage {
             // Project Exists and it is the right Namespace
             if($project != null && $project->getName() != null){
                 if($config->getValue('guestLockdown') && !$wgUser->isLoggedIn()){
+                    permissionError();
+                }
+                if($project->getStatus() == 'Proposed' && !$me->isMemberOf($project) && !$me->isRoleAtLeast(STAFF)){
                     permissionError();
                 }
                 $isLead = false;
@@ -102,22 +105,25 @@ class ProjectPage {
                 /*if(!$project->isSubProject() && $project->getPhase() > 1 && $project->getStatus() != 'Proposed'){
                     $tabbedPage->addTab(new ProjectSubprojectsTab($project, $visibility));
                 }*/
-                if($config->getValue('networkName') == "FES"){
+                if($config->getValue('networkType') == "CFREF"){
                     $tabbedPage->addTab(new ProjectFESMilestonesTab($project, $visibility));
                 }
-                else if((strstr($project->getName(), "GIS-") === false)){
+                else if($config->getValue('networkName') != "CIC" && (strstr($project->getName(), "GIS-") === false) && $config->getValue('networkName') != "I-CONNECTS"){
                     $tabbedPage->addTab(new ProjectMilestonesTab($project, $visibility));
                 }
                 if($project->getStatus() != 'Proposed'){
                     $tabbedPage->addTab(new ProjectDashboardTab($project, $visibility));
                 }
-                if($project->getType() != 'Administrative' && !$me->isSubRole('NOBUDGET') && (strstr($project->getName(), "GIS-") === false)){
+                if($project->getType() != 'Administrative' && !$me->isSubRole('NOBUDGET') && $config->getValue('networkName') != "CIC" && (strstr($project->getName(), "GIS-") === false)&& $config->getValue('networkName') != "I-CONNECTS"){
                     $tabbedPage->addTab(new ProjectBudgetTab($project, $visibility));
                 }
                 if(strstr($project->getName(), "GIS-") !== false){
                     $tabbedPage->addTab(new ProjectKPI2Tab($project, $visibility));
                     $tabbedPage->addTab(new ProjectKPITab($project, $visibility));
                     //$tabbedPage->addTab(new ProjectKPISummaryTab($project, $visibility));
+                }
+                if(isExtensionEnabled("PMM")){
+                    $tabbedPage->addTab(new ProjectLIMSPmmTab($project, $visibility));
                 }
                 if($project->getStatus() != 'Proposed' && $project->getType() != 'Administrative'){
                     $tabbedPage->addTab(new ProjectVisualizationsTab($project, $visibility));
@@ -131,9 +137,11 @@ class ProjectPage {
                 if($visibility['isLead'] && isExtensionEnabled('Reporting')){
                     $tabbedPage->addTab(new ProjectSummaryTab($project, $visibility));
                 }
-                if($config->getValue('networkName') == "FES"){
+                if($config->getValue('networkType') == "CFREF"){
                     $tabbedPage->addTab(new ProjectFESProjectionsTab($project, $visibility));
-                    $tabbedPage->addTab(new ProjectEdiTab($project, $visibility));
+                    if($config->getValue('networkName') == "FES"){
+                        $tabbedPage->addTab(new ProjectEdiTab($project, $visibility));
+                    }
                     $tabbedPage->addTab(new ProjectFESReportTab($project, $visibility));
                 }
                 $tabbedPage->showPage();
@@ -152,9 +160,9 @@ class ProjectPage {
                         $wgOut->addHTML("<a href='{$prev->getUrl()}' class='button' style='width:35px;'>Prev</a>&nbsp;<a href='{$next->getUrl()}' class='button' style='width:35px;'>Next</a>");
                     }
                 }
-                
                 $wgOut->output();
                 $wgOut->disable();
+                exit;
             }
         }
         return true;

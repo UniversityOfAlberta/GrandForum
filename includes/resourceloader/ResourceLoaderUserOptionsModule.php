@@ -1,7 +1,5 @@
 <?php
 /**
- * Resource loader module for user preference customizations.
- *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -23,44 +21,48 @@
  */
 
 /**
- * Module for user preference customizations
+ * Module for per-user private data that is transmitted on all HTML web responses.
+ *
+ * It is send to the browser from the HTML <head>. See OutputPage.
+ *
+ * @ingroup ResourceLoader
+ * @internal
  */
 class ResourceLoaderUserOptionsModule extends ResourceLoaderModule {
-
-	/* Protected Members */
-
-	protected $modifiedTime = array();
-
 	protected $origin = self::ORIGIN_CORE_INDIVIDUAL;
 
-	protected $targets = array( 'desktop', 'mobile' );
-
-	/* Methods */
+	protected $targets = [ 'desktop', 'mobile' ];
 
 	/**
-	 * @param $context ResourceLoaderContext
-	 * @return array|int|Mixed
+	 * @param ResourceLoaderContext|null $context
+	 * @return string[] List of module names
 	 */
-	public function getModifiedTime( ResourceLoaderContext $context ) {
-		$hash = $context->getHash();
-		if ( !isset( $this->modifiedTime[$hash] ) ) {
-			global $wgUser;
-			$this->modifiedTime[$hash] = wfTimestamp( TS_UNIX, $wgUser->getTouched() );
-		}
-
-		return $this->modifiedTime[$hash];
+	public function getDependencies( ResourceLoaderContext $context = null ) {
+		return [ 'user.defaults' ];
 	}
 
 	/**
-	 * @param $context ResourceLoaderContext
-	 * @return string
+	 * @param ResourceLoaderContext $context
+	 * @return string JavaScript code
 	 */
 	public function getScript( ResourceLoaderContext $context ) {
-		global $wgUser;
-		return Xml::encodeJsCall( 'mw.user.options.set',
-			array( $wgUser->getOptions() ),
-			ResourceLoader::inDebugMode()
-		);
+		$user = $context->getUserObj();
+
+		$tokens = [
+			'patrolToken' => $user->getEditToken( 'patrol' ),
+			'watchToken' => $user->getEditToken( 'watch' ),
+			'csrfToken' => $user->getEditToken(),
+		];
+		$script = 'mw.user.tokens.set(' . $context->encodeJson( $tokens ) . ');';
+
+		$options = $user->getOptions( User::GETOPTIONS_EXCLUDE_DEFAULTS );
+		// Optimisation: Only output this function call if the user has non-default settings.
+		if ( $options ) {
+			$script .= 'mw.user.options.set(' . $context->encodeJson( $options ) . ');';
+		}
+
+		// Use FILTER_NOMIN annotation to prevent needless minification and caching (T84960).
+		return ResourceLoader::FILTER_NOMIN . $script;
 	}
 
 	/**

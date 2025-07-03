@@ -1,8 +1,7 @@
 <?php
 /** Bavarian (Boarisch)
  *
- * See MessagesQqq.php for message documentation incl. usage of parameters
- * To improve a translation please visit http://translatewiki.net
+ * To improve a translation please visit https://translatewiki.net
  *
  * @ingroup Language
  * @file
@@ -11,7 +10,7 @@
 
 $fallback = 'de';
 
-$namespaceNames = array(
+$namespaceNames = [
 	NS_MEDIA            => 'Media',
 	NS_SPECIAL          => 'Spezial',
 	NS_TALK             => 'Dischkrian',
@@ -28,9 +27,9 @@ $namespaceNames = array(
 	NS_HELP_TALK        => 'Huif_Dischkrian',
 	NS_CATEGORY         => 'Kategorie',
 	NS_CATEGORY_TALK    => 'Kategorie_Dischkrian',
-);
+];
 
-$namespaceAliases = array(
+$namespaceAliases = [
 	# German namespaces
 	'Medium'               => NS_MEDIA,
 	'Diskussion'           => NS_TALK,
@@ -44,5 +43,7 @@ $namespaceAliases = array(
 	'Hilfe'                => NS_HELP,
 	'Hilfe_Diskussion'     => NS_HELP_TALK,
 	'Kategorie_Diskussion' => NS_CATEGORY_TALK,
-);
+];
 
+// Remove German aliases
+$namespaceGenderAliases = [];

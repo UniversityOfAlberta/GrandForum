@@ -14,7 +14,6 @@
 # If you customize your file layout, set $IP to the directory that contains
 # the other MediaWiki files. It will be used as a base to locate files.
 if(PHP_SAPI != 'cli'){
-    session_start();
     if(phpversion() < 5.4){
         error_reporting(E_ALL);
     }
@@ -26,10 +25,10 @@ if(PHP_SAPI != 'cli'){
     header('Cache-Control: no-cache, no-store, must-revalidate');
     header('Pragma: no-cache');
     header('Expires: 0');
-}
-
-if(!isset($_GET['embed'])){
-    header('X-Frame-Options: SAMEORIGIN');
+    
+    if(!isset($_GET['embed'])){
+        header('X-Frame-Options: SAMEORIGIN');
+    }
 }
 
 date_default_timezone_set('America/Edmonton');
@@ -53,12 +52,15 @@ define("EOT", "9999-01-01"); // End of Time
 $path = array( $IP, "$IP/includes", "$IP/languages" );
 set_include_path( implode( PATH_SEPARATOR, $path ) . PATH_SEPARATOR . get_include_path() );
 
+require_once("Classes/countries.php");
 require_once( "$IP/includes/DefaultSettings.php" );
-require_once( "$IP/config/Config.php" );
+require_once( "$IP/config/ForumConfig.php" );
 
 ## Path settings
 $wgSitename         = $config->getValue("siteName");
+$wgServer           = $config->getValue("server");
 $wgScriptPath       = $config->getValue("path");
+$wgArticlePath      = "{$wgScriptPath}/index.php/$1";
 
 ## Database settings
 $wgDBtype           = $config->getValue("dbType");
@@ -113,13 +115,20 @@ $wgEnableEmail      = true;
 $wgEnableUserEmail  = true; # UPO
 
 $wgEmergencyContact = $config->getValue('supportEmail');
-$wgPasswordSender = $config->getValue('supportEmail');
+if($config->getValue('passwordSender') != ""){
+    $wgPasswordSender = $config->getValue('passwordSender');
+}
+else{
+    $wgPasswordSender = @explode(",", $config->getValue('supportEmail'))[0];
+}
 
 $wgEnotifUserTalk = true; # UPO
 $wgEnotifWatchlist = true; # UPO
 $wgEmailAuthentication = true;
 $wgEnableParserLimitReporting = false;
-$wgAdditionalMailParams = "-f {$config->getValue('supportEmail')}";
+if($config->getValue('setMailEnvelope')){
+    $wgAdditionalMailParams = "-f {$config->getValue('supportEmail')}";
+}
 
 if(TESTING){
     $wgEnableEmail      = false;
@@ -128,6 +137,8 @@ if(TESTING){
     $wgEnotifUserTalk = false; # UPO
     $wgEnotifWatchlist = false; # UPO
 }
+
+$wgAllowHTMLEmail = true;
 
 # MySQL specific settings
 $wgDBprefix         = "mw_";
@@ -139,14 +150,6 @@ $wgDBTableOptions   = "ENGINE=InnoDB, DEFAULT CHARSET=binary";
 $wgDBmysql5 = true;
 
 ## Shared memory settings
-define('CACHE_APC', 'apc_shared');
-if(!TESTING){
-    if(extension_loaded('apc') && ini_get('apc.enabled')){
-        $wgMainCacheType = CACHE_APC;
-        $wgMessageCacheType = CACHE_APC;
-        $wgParserCacheType = CACHE_APC;
-    }
-}
 $wgDisableCounters = true;
 $wgJobRunRate = 0.01;
 $wgSessionsInObjectCache = true;
@@ -186,7 +189,7 @@ $wgUseTeX           = false;
 
 $wgLocalInterwiki   = strtolower( $wgSitename );
 
-$wgLanguageCode = "en";
+$wgLanguageCode = $config->getValue('defaultLang');
 
 ## Please edit Credentials.php to configure $wgSecretKey.
 #$wgSecretKey = "";
@@ -476,16 +479,20 @@ function currentTimeStamp(){
     return date('Y-m-d H:i:s', time());
 }
 
+function cleanDate($date){
+    $date = ($date <= 0) ? "0000-00-00" : $date;
+    $date = (strlen($date) <= 4) ? "$date-01-01" : $date;
+    return $date;
+}
+
 /**
  * Returns a HTML comment with the elapsed time since request.
  * This method has no side effects.
  * @return string
  */
 function wfReportTimeOld() {
-	global $wgRequestTime, $wgShowHostnames;
-
-	$now = wfTime();
-	$elapsed = $now - $wgRequestTime;
+	global $wgRequest, $wgShowHostnames;
+	$elapsed = $wgRequest->getElapsedTime();
     $mem = memory_get_peak_usage(true);
     $bytes = array(1 => 'B', 2 => 'KiB', 3 => 'MiB', 4 => 'GiB');
     $ind = 1;
@@ -493,8 +500,7 @@ function wfReportTimeOld() {
 	    $mem = $mem / 1024;
 	    $ind++;
     }
-	
-
+    
 	return $wgShowHostnames
 		? sprintf( "<!-- Served by %s in %01.3f secs (%01.1f %s used). -->", wfHostname(), $elapsed, $mem, $bytes[$ind] )
 		: sprintf( "<!-- Served in %01.3f secs (%01.1f %s used). -->", $elapsed, $mem, $bytes[$ind] );
@@ -580,6 +586,51 @@ function recursive_implode($glue, $array, $include_keys = false, $trim_all = tru
 	$trim_all and $glued_string = preg_replace("/(\s)/ixsm", '', $glued_string);
 
 	return (string) $glued_string;
+}
+
+function avg($a){
+    return array_sum($a)/max(count($a),1);
+}
+
+// https://www.designcise.com/web/tutorial/how-to-calculate-the-median-of-an-array-of-numbers-in-php
+function median($a){
+    // 1: sort array in ascending order
+    sort($a);
+
+    $totalArrElems = count($a);
+    $middleIndex = $totalArrElems / 2;
+
+    // 2.1: if odd, return middle element
+    if ($totalArrElems % 2 !== 0) {
+        return $a[floor($middleIndex)];
+    }
+
+    // 2.2: if even, return average of two middle elements
+    return ($a[$middleIndex - 1] + $a[$middleIndex]) / 2;
+}
+
+// https://learnetutorials.com/php/programs/calculate-standard-deviation
+function stdev($a){
+    $count = count($a);
+    $v = 0;
+    $avg = array_sum($a) / $count;
+    foreach ($a as $i) {
+        $v += pow(($i - $avg), 2);
+    }
+    $stdev = sqrt($v / $count);
+    if(is_nan($stdev)){
+        return 0;
+    }
+    return $stdev;
+}
+
+function showLanguage($english, $french){
+    global $wgLang;
+    return ($wgLang->getCode() == 'en') ? $english : $french;
+}
+
+if(file_exists($config->getValue("encryptionKey"))){
+    $_SERVER['ENC_KEY'] = file_get_contents($config->getValue("encryptionKey"));
 }
 
 function encrypt($plaintext, $ignoreError=false){

@@ -198,6 +198,7 @@ Person = Backbone.Model.extend({
         keywords: '',
         publicProfile: '',
         privateProfile: '',
+        extra: {},
         url: '',
         candidate: false
     }
@@ -524,6 +525,31 @@ PersonRoleString = Backbone.Model.extend({
     defaults: {
         id: "", // personId
         roleString: ""
+    }
+
+});
+
+
+/**
+ * PersonRoleString Model
+ */
+PersonClipboard = Backbone.Model.extend({
+
+    initialize: function(){
+
+    },
+
+    url: function(){
+        return wgServer + wgScriptPath + '/index.php?action=api.clipboard';
+    },
+
+    defaults: function(){
+        return {
+            id: null,
+            user_id: "",
+            objs: [],
+            date: ""
+        }
     }
 
 });

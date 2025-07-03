@@ -2,7 +2,7 @@
 
     class ProjectMultimediaCell extends DashboardCell {
         
-        function ProjectMultimediaCell($cellType, $params, $cellValue, $rowN, $colN, $table){
+        function __construct($cellType, $params, $cellValue, $rowN, $colN, $table){
             $this->label = "Multimedia";
         
             $start = "0000";

@@ -1,8 +1,10 @@
 <?php
 
+use MediaWiki\MediaWikiServices;
+
 class CreateUserAPI extends API{
 
-    function CreateUserAPI(){
+    function __construct(){
         $this->addPOST("wpName",true,"The User Name of the user to add","UserName");
         $this->addPOST("wpPassword",false,"The Password of the user to add","Password");
         $this->addPOST("wpEmail",false,"The User's email address","me@email.com");
@@ -13,6 +15,7 @@ class CreateUserAPI extends API{
         $this->addPOST("wpUserType",true,"The User Roles, must be in the form \"Role1, Role2, ...\"","HQP, RMC");
         $this->addPOST("wpUserSubType",false,"The User Roles, must be in the form \"Role1, Role2, ...\"","HQP, RMC");
         $this->addPOST("wpNS",false,"The list of projects that the user is a part of.  Must be in the form \"Project1, Project2, ...\"","MEOW, NAVEL");
+        $this->addPOST("wpExtra",false,"","");
         $this->addPOST("wpSendMail",false,"Whether or not to send an email to the user or not.  This value should be either 'true' or 'false'.  If this parameter is not included, it is assumed that not email should be sent","true");
         $this->addPOST("candidate",false,"Whether or not to make this user a candidate", "1");
         $this->addPOST("id",false,"The id of the creation request(You probably should not touch this parameter unless you know exactly what you are doing)", "15");
@@ -42,11 +45,12 @@ class CreateUserAPI extends API{
             $_POST['wpUserType'][] = $role;
         }
         
-        $oldWPSubType = $_POST['wpUserSubType'];
-        $subroles = explode(", ", $_POST['wpUserSubType']);
-        unset($_POST['wpUserSubType']);
-        foreach($subroles as $subrole){
-            $_POST['wpUserSubType'][] = $subrole;
+        if(isset($_POST['wpUserSubType'])){
+            $subroles = explode(", ", $_POST['wpUserSubType']);
+            unset($_POST['wpUserSubType']);
+            foreach($subroles as $subrole){
+                $_POST['wpUserSubType'][] = $subrole;
+            }
         }
         
         if(!$me->isLoggedIn()){
@@ -77,48 +81,30 @@ class CreateUserAPI extends API{
             }
             $wgRequest->setVal('wpName', $_POST['wpName']);
             // Actually create a new user
-            $oldWgEnableEmail = $wgEnableEmail;
-            $wgEnableEmail = true;
-            if(isset($_POST['wpSendMail']) && $wgEnableEmail){
-                if($_POST['wpSendMail'] === "true"){
-                    $wgRequest->setVal('wpEmail', $_POST['wpEmail']);
-                    $wgRequest->setVal('wpCreateaccountMail', true);
-                }
-                else {
-                    $wgEmailAuthentication = false;
-                    $wgEnableUserEmail = false;
-                    $wgEnableEmail = false;
-                    $wgRequest->setVal('wpCreateaccount', true);
-                    $_POST['wpPassword'] = User::randomPassword();
-                    $_POST['wpRetype'] = $_POST['wpPassword'];
-                }
-            }
-            else{
-                $wgRequest->setVal('wpEmail', $_POST['wpEmail']);
-                $wgRequest->setVal('wpCreateaccount', true);
-                $_POST['wpPassword'] = User::randomPassword();
-                $_POST['wpRetype'] = $_POST['wpPassword'];
-            }
-            $wgRequest->setSessionData('wsCreateaccountToken', 'true');
-            $wgRequest->setVal('wpCreateaccountToken', 'true');
-            $wgRequest->setVal('type', 'signup');
-            if(isset($_POST['wpPassword'])){
-                $wgRequest->setVal('wpRetype', $_POST['wpPassword']);
-                $wgRequest->setVal('wpPassword', $_POST['wpPassword']);
-            }
+            DBFunctions::delete('mw_actor',
+                                array('actor_name' => EQ($_POST['wpName'])));
             $creator = self::getCreator($me);
-            LoginForm::setCreateaccountToken();
-            $wgRequest->setSessionData('wpCreateaccountToken', LoginForm::getCreateaccountToken());
-            $wgRequest->setVal('wpCreateaccountToken', LoginForm::getCreateaccountToken());
-            $specialUserLogin = new LoginForm($wgRequest);
-            
-            $specialUserLogin->getUser()->mRights = null;
-            $specialUserLogin->getUser()->mEffectiveGroups = null;
             GrandAccess::$alreadyDone = array();
-            $tmpUser = User::newFromName($_POST['wpName']);
-            if($tmpUser->getID() == 0 && ($specialUserLogin->execute('signup') != false || $_POST['wpSendMail'] == true)){
-                $wgEnableEmail = $oldWgEnableEmail;
-                
+            $passwd = (isset($_POST['wpPassword'])) ? $_POST['wpPassword'] : PasswordFactory::generateRandomPasswordString();
+            $tmpUser = User::createNew($_POST['wpName'], array('real_name' => $_POST['wpRealName'], 
+                                                               'email' => $_POST['wpEmail']));
+            if($tmpUser != null){
+                if(isset($_POST['wpPassword'])){
+                    DBFunctions::update('mw_user',
+                                        array('user_password' => MediaWikiServices::getInstance()->getPasswordFactory()->newFromPlaintext($passwd)->toString()),
+                                        array('user_id' => EQ($tmpUser->getId())));
+                    $tmpUser->sendConfirmationMail();
+                }
+                else{
+                    DBFunctions::update('mw_user',
+                                        array('user_newpassword' => MediaWikiServices::getInstance()->getPasswordFactory()->newFromPlaintext($passwd)->toString(),
+                                              'user_newpass_time' => date('YmdHis')),
+                                        array('user_id' => EQ($tmpUser->getId())));
+                    if(isset($_POST['wpSendMail']) && $_POST['wpSendMail'] === "true"){
+                        $this->sendNewAccountEmail($tmpUser, $creator->getUser(), $passwd);
+                    }
+                }
+                UserCreate::afterCreateUser($tmpUser);
                 Person::$cache = array();
                 Person::$namesCache = array();
                 Person::$aliasCache = array();
@@ -133,15 +119,16 @@ class CreateUserAPI extends API{
                     DBFunctions::update('mw_user',
                                         array('first_name' => @$_POST['wpFirstName'],
                                               'middle_name' => @$_POST['wpMiddleName'],
-                                              'last_name' => @$_POST['wpLastName']),
+                                              'last_name' => @$_POST['wpLastName'],
+                                              'user_extra' => @json_encode($_POST['wpExtra'])),
                                         array('user_id' => $person->getId()));
                     
-                    $universities = explode("\n", str_replace("\r", "", $_POST['university']));
-                    $faculties = explode("\n", str_replace("\r", "", $_POST['faculty']));
-                    $departments = explode("\n", str_replace("\r", "", $_POST['department']));
-                    $positions = explode("\n", str_replace("\r", "", $_POST['position']));
-                    $startDates = explode("\n", str_replace("\r", "", $_POST['start_date']));
-                    $endDates = explode("\n", str_replace("\r", "", $_POST['end_date']));
+                    $universities = explode("\n", str_replace("\r", "", @$_POST['university']));
+                    $faculties = explode("\n", str_replace("\r", "", @$_POST['faculty']));
+                    $departments = explode("\n", str_replace("\r", "", @$_POST['department']));
+                    $positions = explode("\n", str_replace("\r", "", @$_POST['position']));
+                    $startDates = explode("\n", str_replace("\r", "", @$_POST['start_date']));
+                    $endDates = explode("\n", str_replace("\r", "", @$_POST['end_date']));
                     $earliestStartDate = "";
                     $latestEndDate = "";
                     foreach($universities as $i => $university){
@@ -170,7 +157,7 @@ class CreateUserAPI extends API{
                                               'end_date' => $latestEndDate),
                                         array('user_id' => $person->getId()));
                                         
-                    if($_POST['employment'] != ""){
+                    if(isset($_POST['employment']) && $_POST['employment'] != ""){
                         $_POST['id'] = "";
                         $_POST['user'] = $person->getName();
                         $_POST['studies'] = "";
@@ -182,7 +169,7 @@ class CreateUserAPI extends API{
                         APIRequest::doAction('AddHQPMovedOn', true);
                     }
                     
-                    if($_POST['relation'] != ""){
+                    if(isset($_POST['relation']) && $_POST['relation'] != ""){
                         $relation = explode(":", $_POST['relation']);
                         $user1 = Person::newFromName($relation[0]);
                         DBFunctions::insert('grand_relations',
@@ -193,7 +180,7 @@ class CreateUserAPI extends API{
                                                   'end_date' => $latestEndDate));
                     }
                     
-                    if($_POST['recruitment'] != ""){
+                    if(isset($_POST['recruitment']) && $_POST['recruitment'] != ""){
                         DBFunctions::insert('grand_alumni',
                                             array('user_id' => $person->getId(),
                                                   'recruited' => $_POST['recruitment'],
@@ -238,7 +225,6 @@ class CreateUserAPI extends API{
                 }
             }
             else{
-                $wgEnableEmail = $oldWgEnableEmail;
                 if($doEcho){
                     echo "User not created successfully.\n";
                 }
@@ -261,6 +247,34 @@ class CreateUserAPI extends API{
         }
     }
     
+    /**
+     * Note: From TemporaryPasswordPrimaryAuthenticationProvider.php
+	 * Send an email about the new account creation and the temporary password.
+	 * @param User $user The new user account
+	 * @param User $creatingUser The user who created the account (can be anonymous)
+	 * @param string $password The temporary password
+	 * @return \Status
+	 */
+	protected function sendNewAccountEmail( User $user, User $creatingUser, $password ) {
+		$ip = $creatingUser->getRequest()->getIP();
+		// @codeCoverageIgnoreStart
+		if ( !$ip ) {
+			return \Status::newFatal( 'badipaddress' );
+		}
+		// @codeCoverageIgnoreEnd
+
+		$mainPageUrl = \Title::newMainPage()->getCanonicalURL();
+		$userLanguage = $user->getOption( 'language' );
+		$subjectMessage = wfMessage( 'createaccount-title' )->inLanguage( $userLanguage );
+		$bodyMessage = wfMessage( 'createaccount-text', $ip, $user->getName(), $password,
+			'<' . $mainPageUrl . '>', round( 7*24*3600 / 86400 ) )
+			->inLanguage( $userLanguage );
+
+		$status = $user->sendMail( $subjectMessage->text(), $bodyMessage->text() );
+
+		return $status;
+	}
+    
     // Returns the creator of the role request.  
     // If the creator cannot be determined, then 'me' is returned
     function getCreator($me){
@@ -280,3 +294,4 @@ class CreateUserAPI extends API{
     }
 }
 ?>
+

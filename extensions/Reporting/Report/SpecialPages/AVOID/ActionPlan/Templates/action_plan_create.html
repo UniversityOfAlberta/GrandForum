@@ -1,0 +1,295 @@
+<div class="actionPlanSection">
+    <h3 style="margin-top:0.5em;">
+        <en>What is a broader goal that you’d like to start working on?</en>
+        <fr>Y a-t-il un objectif plus général sur lequel vous aimeriez commencer à travailler maintenant?</fr>
+    </h3>
+    <%= HTML.TextArea(this, 'goals', {style: 'height: 200px;width:100%;'}) %>
+</div>
+
+<div class="actionPlanSection">
+    <h3 style="margin-top:0.5em;">
+        <en>What are the barriers or challenges to meeting that goal?</en>
+        <fr>Selon vous, quels sont les obstacles ou les défis à relever pour atteindre cet objectif?</fr>
+    </h3>
+    <%= HTML.TextArea(this, 'barriers', {style: 'height: 200px;width:100%;'}) %>
+</div>
+
+<div class="actionPlanSection">
+    <h4 style="margin-top:0;">
+        <en>Goals to Action</en>
+        <fr>Passez à l’action</fr>
+    </h4>
+    <p>
+        <en>Think about one thing you can realistically expect to accomplish within the next week related to your goal.</en>
+        <fr>Réfléchissez à une chose que vous pouvez raisonnablement espérer accomplir au cours de la semaine prochaine en rapport avec votre objectif.</fr>
+    </p>
+    <en>It should be:</en><fr>Votre plan d’action doit:</fr>
+    <ul>
+        <li>
+            <en>Something you want to do</en>
+            <fr>Représenter ce que vous voulez faire;</fr>
+        </li>
+        <li>
+            <en>Help you solve a problem or reach a goal</en>
+            <fr>Vous aider à résoudre un problème ou à atteindre un objectif;</fr>
+        </li>
+        <li>
+            <en>Be actionable</en>
+            <fr>Être réalisable (p. ex. remplacer l’eau par le jus, plutôt que perdre du poids);</fr>
+        </li>
+        <li>
+            <en>Answer what? How much? When? How often?</en>
+            <fr>Répondez à ces questions : Quoi? Dans quelle mesure? À quel moment? Et à quelle fréquence?</fr>
+        </li>
+    </ul>
+
+    <% if(me.get('extra').fitbit != undefined && me.get('extra').fitbit != '' && new Date().getTime()/1000 < me.get('extra').fitbit_expires){ %>
+        <h4>Type of Plan</h4>
+        <p>If you are using your fitbit to monitor, choose fitbit monitoring. If you are tracking your daily goal yourself by logging into the AVOID program, choose manual monitoring</p>
+        <%= HTML.Select(this, 'type', {options: [ActionPlan.MANUAL, ActionPlan.FITBIT]}) %>
+    <% } %>
+</div>
+
+<div class="actionPlanSection">
+    <div class="manual">
+        <h3 style="margin-top:0.5em;">
+            <en>My Action Plan This Week</en>
+            <fr>Mon plan d’action cette semaine</fr>
+        </h3>
+        <div style="box-sizing: border-box; width: 100%; background: #fae6cb; border: none !important; border-radius: 0 0 14px 14px; padding: 14px !important;">
+            <div>
+                <b>
+                    <en>This week I will:</en>
+                    <fr>Cette semaine, je prendrai les actions suivantes :</fr>    
+                </b><br />
+                <%= HTML.TextArea(this, 'plan', {class: 'defaultTextarea', placeholder: showLanguage(wgLang, "what", "quoi"), style: 'height: 100px;width:100%;'}) %>
+            </div>
+            
+            <div style="margin-top: 0.5em;">
+                <b>
+                    <en>How much:</en>
+                    <fr>Durée :</fr>
+                </b><br />
+                <%= HTML.TextBox(this, 'time', {placeholder: showLanguage(wgLang, "time", "temps")}) %>
+            </div>
+            
+            <div style="margin-top: 0.5em;">
+                <b>
+                    <en>When:</en>
+                    <fr>À quel moment de la journée :</fr>
+                </b><br />
+                <%= HTML.TextBox(this, 'when', {placeholder: showLanguage(wgLang, "time of day", "Quand pendant la journée")}) %>
+            </div>
+            
+            <div style="margin-top: 0.5em;">
+                <b>
+                    <en>How often:</en>
+                    <fr>À quelle fréquence :</fr>
+                </b><br />
+                <table class='wikitable' style="width: 100%;margin-top:0;margin-bottom:0;">
+                    <tr>
+                        <th style='width: 14.2%;line-height:1em;'><en>Mon</en><fr>Lun</fr><br /><small><%= new Date(actionPlanDate.replace(/-/g, "/")).toLocaleString(wgLang + '-US', { month: 'short', day: 'numeric'}) %></small></th>
+                        <th style='width: 14.2%;line-height:1em;'><en>Tue</en><fr>Mar</fr><br /><small><%= new Date(new Date(actionPlanDate.replace(/-/g, "/")).getTime() + 1*60*60*24*1000).toLocaleString(wgLang + '-US', { month: 'short', day: 'numeric'}) %></small></th>
+                        <th style='width: 14.2%;line-height:1em;'><en>Wed</en><fr>Mer</fr><br /><small><%= new Date(new Date(actionPlanDate.replace(/-/g, "/")).getTime() + 2*60*60*24*1000).toLocaleString(wgLang + '-US', { month: 'short', day: 'numeric'}) %></small></th>
+                        <th style='width: 14.2%;line-height:1em;'><en>Thu</en><fr>Jeu</fr><br /><small><%= new Date(new Date(actionPlanDate.replace(/-/g, "/")).getTime() + 3*60*60*24*1000).toLocaleString(wgLang + '-US', { month: 'short', day: 'numeric'}) %></small></th>
+                        <th style='width: 14.2%;line-height:1em;'><en>Fri</en><fr>Ven</fr><br /><small><%= new Date(new Date(actionPlanDate.replace(/-/g, "/")).getTime() + 4*60*60*24*1000).toLocaleString(wgLang + '-US', { month: 'short', day: 'numeric'}) %></small></th>
+                        <th style='width: 14.2%;line-height:1em;'><en>Sat</en><fr>Sam</fr><br /><small><%= new Date(new Date(actionPlanDate.replace(/-/g, "/")).getTime() + 5*60*60*24*1000).toLocaleString(wgLang + '-US', { month: 'short', day: 'numeric'}) %></small></th>
+                        <th style='width: 14.2%;line-height:1em;'><en>Sun</en><fr>Dim</fr><br /><small><%= new Date(new Date(actionPlanDate.replace(/-/g, "/")).getTime() + 6*60*60*24*1000).toLocaleString(wgLang + '-US', { month: 'short', day: 'numeric'}) %></small></th>
+                     </tr>
+                     <tr>
+                        <td class='checkCell' align='center'><%= HTML.CheckBox(this, 'dates.Mon', {value: 1}) %></td>
+                        <td class='checkCell' align='center'><%= HTML.CheckBox(this, 'dates.Tue', {value: 1}) %></td>
+                        <td class='checkCell' align='center'><%= HTML.CheckBox(this, 'dates.Wed', {value: 1}) %></td>
+                        <td class='checkCell' align='center'><%= HTML.CheckBox(this, 'dates.Thu', {value: 1}) %></td>
+                        <td class='checkCell' align='center'><%= HTML.CheckBox(this, 'dates.Fri', {value: 1}) %></td>
+                        <td class='checkCell' align='center'><%= HTML.CheckBox(this, 'dates.Sat', {value: 1}) %></td>
+                        <td class='checkCell' align='center'><%= HTML.CheckBox(this, 'dates.Sun', {value: 1}) %></td>
+                     </tr>
+                </table>
+            </div>
+            
+            <div style="margin-top: 0.5em;">
+                <b>
+                    <en>Confidence Level:</en>
+                    <fr>Niveau de confiance :</fr>
+                </b><br />
+                <div class="slider" style="max-width: 20em; width: 100%; margin-bottom: 2em;">
+                    <%= HTML.Range(this, 'confidence', {min: 0, max: 10, step: 1, list: "confidenceList", style: "max-width: 20em; width: 100%; padding:0;"}) %>
+                    <div style="display: flex; position: relative; font-size: 0.75em; padding: 0 14px 5px 5px; line-height: 1em; white-space: nowrap;">
+                        <div style="width: 10%;">0</div>
+                        <div style="width: 10%;">1</div>
+                        <div style="width: 10%;">2</div>
+                        <div style="width: 10%;">3</div>
+                        <div style="width: 10%;">4</div>
+                        <div style="width: 10%;">5</div>
+                        <div style="width: 10%;">6</div>
+                        <div style="width: 10%;">7</div>
+                        <div style="width: 10%;">8</div>
+                        <div style="width: 10%;">9</div>
+                        <div style="width: 0; position: absolute; right: 18px;">10</div>
+                    </div>
+                    <div style="padding: 5px 5px; font-size: 0.85em; line-height: 1em; 100%; position: relative;">
+                        <div style="position: absolute; left: 5px;">
+                            <en>Not at<br />all sure</en>
+                            <fr>Pas du tout<br />certaine ou certain</fr>
+                        </div>
+                        <div style="position: absolute; right: 0; text-align: right;">
+                            <en>Absolutely<br />sure</en>
+                            <fr>Complètement<br />certaine ou certain</fr>
+                        </div>
+                    </div>
+                </div>
+                <div class="warning confidenceWarning" style="display:none;">
+                    <en>If your confidence level is below 7, there is a strong chance that you will not complete your action plan this week. You may want to edit your plan so that you have a confidence level of at least a 7.</en>
+                    <fr>Si vous répondez 7 ou plus, votre plan d’action est probablement raisonnable. Si votre réponse est inférieure à 7, vous devriez revoir votre plan.</fr>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="actionPlanSection">
+    <div class="fitbit">
+        <h4 style="margin-top:0;">My Action Plan This Week</h4>
+        <p>Enter your <b><i>daily</i></b> amount in the relevant field(s) below.</p>
+        <div class="modules fitbitFields" style="width: 100%;">
+            <div style="width: 300px;">
+                <span class="AVOID A">A</span><span style="vertical-align: text-bottom;">ctivity</span>
+                <p><%= HTML.TextBox(this, 'fitbit.steps', {style: 'width: 4em;'}) %> steps</p>
+                <p><%= HTML.TextBox(this, 'fitbit.distance', {style: 'width: 4em;'}) %> distance (km)</p>
+                <p><%= HTML.TextBox(this, 'fitbit.activity', {style: 'width: 4em;'}) %> mins of activity <span style="vertical-align: top; font-size: 0.75em;" title="Activity is considered to be any time when your heart rate is above sedentary.">&#9432;</span></p>
+            </div>
+            <div style="width: 300px;">
+                <span class="AVOID D">D</span><span style="vertical-align: text-bottom;">iet & Nutrition</span>
+                <p><%= HTML.TextBox(this, 'fitbit.water', {style: 'width: 4em;'}) %> mL of water</p>
+                <p><%= HTML.TextBox(this, 'fitbit.protein', {style: 'width: 4em;'}) %> g of protein</p>
+                <p><%= HTML.TextBox(this, 'fitbit.fibre', {style: 'width: 4em;'}) %> g of fibre</p>
+            </div>
+            <div style="width: 300px;">
+                <span class="AVOID S">S</span><span style="vertical-align: text-bottom;">leep</span>
+                <p><%= HTML.TextBox(this, 'fitbit.sleep', {style: 'width: 4em;'}) %> hrs of sleep</p>
+            </div>
+        </div>
+        <h4 style="margin-top:0; margin-bottom: 0;">Confidence Level:</h4>
+        <div class="slider" style="max-width: 20em; width: 100%; margin-bottom: 2.5em;">
+            <%= HTML.Range(this, 'confidence', {min: 0, max: 10, step: 1, list: "confidenceList", style: "max-width: 20em; width: 100%; padding:0;"}) %>
+            <div style="display: flex; position: relative; font-size: 0.75em; padding: 0 14px 5px 5px; line-height: 1em; white-space: nowrap;">
+                <div style="width: 10%;">0</div>
+                <div style="width: 10%;">1</div>
+                <div style="width: 10%;">2</div>
+                <div style="width: 10%;">3</div>
+                <div style="width: 10%;">4</div>
+                <div style="width: 10%;">5</div>
+                <div style="width: 10%;">6</div>
+                <div style="width: 10%;">7</div>
+                <div style="width: 10%;">8</div>
+                <div style="width: 10%;">9</div>
+                <div style="width: 0; position: absolute; right: 18px;">10</div>
+            </div>
+            <div style="padding: 5px 5px; font-size: 0.85em; line-height: 1em; 100%; position: relative;">
+                <div style="position: absolute; left: 5px;">Not at<br />all sure</div>
+                <div style="position: absolute; right: 0; text-align: right;">Absolutely<br />sure</div>
+            </div>
+        </div>
+        <div class="warning confidenceWarning" style="display:none;">
+            If your confidence level is below 7, there is a strong chance that you will not complete your action plan this week. You may want to edit your plan so that you have a confidence level of at least a 7.
+        </div>
+        <div class="actionPlanWarning warning"></div>
+    </div>
+</div>
+
+<div class="actionPlanSection">
+    <div class="manual">
+        <h4 style="margin-top:0;">
+            <en>What AVOID component(s) does your action plan address? Choose all that apply.</en>
+            <fr>Quels sont les domaines de Proactif dans lesquels votre plan d’action s’inscrit? Sélectionnez tous ceux qui s’appliquent.</fr>
+        </h4>
+        <table>
+            <tr>
+                <td valign="top"><%= HTML.CheckBox(this, 'components.A', {value: 1}) %></td>
+                <td style="padding-top: 5px; padding-left:5px;">
+                    <b>
+                        <en>Activity</en>
+                        <fr>Activité physique</fr>
+                    </b> - 
+                    <en>something that involves moving your body, including walking</en>
+                    <fr>lorsque vous bougez, par exemple lorsque vous marchez</fr>
+                </td>
+            </tr>
+            <tr>
+                <td valign="top"><%= HTML.CheckBox(this, 'components.V', {value: 1}) %></td>
+                <td style="padding-top: 5px; padding-left:5px;">
+                    <b>
+                        <en>Vaccinate</en>
+                        <fr>Vaccination</fr>
+                    </b>
+                </td>
+            </tr>
+            <tr>
+                <td valign="top"><%= HTML.CheckBox(this, 'components.O', {value: 1}) %></td>
+                <td style="padding-top: 5px; padding-left:5px;">
+                    <b>
+                        <en>Optimize Medication</en>
+                        <fr>Optimisation de la médication</fr>
+                    </b>
+                </td>
+            </tr>
+            <tr>
+                <td valign="top"><%= HTML.CheckBox(this, 'components.I', {value: 1}) %></td>
+                <td style="padding-top: 5px; padding-left:5px;">
+                    <b>
+                        <en>Interact</en>
+                        <fr>Vie sociale</fr>
+                    </b> - 
+                    <en>this could be meeting new people, trying something new, reducing isolation or loneliness</en>
+                    <fr>ce pourrait être de rencontrer de nouvelles personnes, d’essayer de nouvelles choses, dans le but de réduire l’isolement et la solitude</fr>
+                </td>
+            </tr>
+            <tr>
+                <td valign="top"><%= HTML.CheckBox(this, 'components.D', {value: 1}) %></td>
+                <td style="padding-top: 5px; padding-left:5px;">
+                    <b>
+                        <en>Diet & Nutrition</en>
+                        <fr>Alimentation</fr>
+                    </b> - 
+                    <en>anything related to the food and drink you consume, or your oral health</en>
+                    <fr>tout ce que vous buvez ou mangez, ou tout ce qui a lien à votre hygiène buccale</fr>
+                </td>
+            </tr>
+            <tr>
+                <td valign="top"><%= HTML.CheckBox(this, 'components.S', {value: 1}) %></td>
+                <td style="padding-top: 5px; padding-left:5px;">
+                    <b>
+                        <en>Sleep</en>
+                        <fr>Sommeil</fr>
+                    </b> - 
+                    <en>something you are doing specifically to improve your sleep</en>
+                    <fr>toute action prise pour améliorer votre sommeil</fr>
+                </td>
+            </tr>
+            <tr>
+                <td valign="top"><%= HTML.CheckBox(this, 'components.F', {value: 1}) %></td>
+                <td style="padding-top: 5px; padding-left:5px;">
+                    <b>
+                        <en>Falls Prevention</en>
+                        <fr>Prévention des chutes</fr>
+                    </b> - 
+                    <en>something you are doing specifically to reduce your risk of falling</en>
+                    <fr>toute action prise pour réduire votre risque de chute</fr>
+                </td>
+            </tr>
+            <tr>
+                <td valign="top"><%= HTML.CheckBox(this, 'components.B', {value: 1}) %></td>
+                <td style="padding-top: 5px; padding-left:5px;">
+                    <b>
+                        <en>Brain Health</en>
+                        <fr>Santé du cerveau</fr>
+                    </b> - 
+                    <en>something you are doing specifically to improve your cognitive well-being</en>
+                    <fr>quelque chose que vous faites spécifiquement pour améliorer votre bien-être cognitif</fr>
+                </td>
+            </tr>
+        </table>
+        <div class="actionPlanWarning warning"></div>
+    </div>
+</div>

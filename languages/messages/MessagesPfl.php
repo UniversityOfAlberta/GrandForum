@@ -1,8 +1,7 @@
 <?php
 /** Pälzisch (Pälzisch)
  *
- * See MessagesQqq.php for message documentation incl. usage of parameters
- * To improve a translation please visit http://translatewiki.net
+ * To improve a translation please visit https://translatewiki.net
  *
  * @ingroup Language
  * @file
@@ -17,7 +16,7 @@
 
 $fallback = 'de';
 
-$namespaceNames = array(
+$namespaceNames = [
 	NS_MEDIA            => 'Medium',
 	NS_SPECIAL          => 'Schbezial',
 	NS_TALK             => 'Babble',
@@ -34,9 +33,9 @@ $namespaceNames = array(
 	NS_HELP_TALK        => 'Hilf_Dischbediere',
 	NS_CATEGORY         => 'Sachgrubb',
 	NS_CATEGORY_TALK    => 'Sachgrubb_Dischbediere',
-);
+];
 
-$namespaceAliases = array(
+$namespaceAliases = [
 	# German namespaces
 	'Medium'                 => NS_MEDIA,
 	'Spezial'                => NS_SPECIAL,
@@ -57,5 +56,7 @@ $namespaceAliases = array(
 	'Kategorie_Diskussion'   => NS_CATEGORY_TALK,
 	'Kadegorie'              => NS_CATEGORY,
 	'Kadegorie_Dischbediere' => NS_CATEGORY_TALK,
-);
+];
 
+// Remove German aliases
+$namespaceGenderAliases = [];

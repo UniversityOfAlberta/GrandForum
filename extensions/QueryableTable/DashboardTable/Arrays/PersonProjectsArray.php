@@ -2,7 +2,7 @@
 
     class PersonProjectsArray extends GroupByArray {
         
-        function PersonProjectsArray($table, $params){
+        function __construct($table, $params){
             $start = "0000-00-00";
             $end = "2100-00-00";
             if(count($params) > 1){

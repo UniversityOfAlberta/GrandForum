@@ -2,8 +2,8 @@
 
 class NothingValidation extends UIValidation {
 
-    function NothingValidation($neg=false) {
-        parent::UIValidation(false);
+    function __construct($neg=false) {
+        parent::__construct(false);
     }
     
     function validateFn($value){
