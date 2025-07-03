@@ -889,13 +889,13 @@ class Paper extends BackboneModel{
                             $mNames = str_replace(".", "", implode(" ", $mNames));
                         }
                     }
-                    if((mb_strlen($last) == 1 || strtoupper($last) == $last) && strlen($first) > 1){
+                    if((mb_strlen($last) == 1 || strtoupper(unaccentChars($last)) == unaccentChars($last)) && mb_strlen($first) > 1){
                         // Simple check to see if last/first name format is reversed
                         $tmpLast = $last;
                         $last = $first;
                         $first = $tmpLast;
                     }
-                    if(mb_strlen($first) > 1 && strtoupper($first) == $first){
+                    if(mb_strlen($first) > 1 && strtoupper(unaccentChars($first)) == unaccentChars($first)){
                         // The first name is probably just initials
                         $firstTmp = $first;
                         $first = $firstTmp[0];
