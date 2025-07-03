@@ -40,6 +40,7 @@ if($future == "02-15" ||
 
                 The Bridging Divides Team";
     sendMail("Project Reports Due", $message, "bd-leaders@forum.bridgingdivides.ca");
+    sendMail("Project Reports Due", $message, "bd-staff@forum.bridgingdivides.ca");
 }
 
 // Project Reports (30 days)
@@ -56,6 +57,7 @@ if($future2 == "02-15" ||
 
                 The Bridging Divides Team";
     sendMail("Project Reports Due", $message, "bd-leaders@forum.bridgingdivides.ca");
+    sendMail("Project Reports Due", $message, "bd-staff@forum.bridgingdivides.ca");
 }
 
 // Project Reports (-4 days)
@@ -73,6 +75,7 @@ if($future3 == "02-15" ||
 
                 The Bridging Divides Team";
     sendMail("Project Reports Due", $message, "bd-leaders@forum.bridgingdivides.ca");
+    sendMail("Project Reports Due", $message, "bd-staff@forum.bridgingdivides.ca");
 }
 
 // Theme Reports
@@ -89,6 +92,7 @@ if($future == "03-15" ||
 
                 The Bridging Divides Team";
     sendMail("Theme Reports Due", $message, "bd-themeleaders@forum.bridgingdivides.ca");
+    sendMail("Theme Reports Due", $message, "bd-staff@forum.bridgingdivides.ca");
 }
 
 function getBlobValue($item, $person){
