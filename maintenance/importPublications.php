@@ -6,6 +6,7 @@ global $wgUser;
 function fixAuthors($pub, $authors){
     $pub->authors = array();
     foreach($authors as $author){
+        $p = new LimitedPerson(array());
         if($author->author->id != ""){
             $p = Person::newFromAlexId($author->author->id);
         }
