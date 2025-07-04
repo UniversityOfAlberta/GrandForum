@@ -1558,7 +1558,7 @@
          </Activity>
     </Activities>
     
-    <Contributions category="Contribution" citationFormat="{%Authors} {(%YYYY).} {%Title.} {&lt;i>%Venue&lt;/i>}{, %Volume}{(%Issue)}{:%Pages.} {%Publisher}" visible="false">
+    <Contributions category="Contribution" citationFormat="{%Authors} {(%Range).} {%Title.} {&lt;i>%Venue&lt;/i>}{, %Volume}{(%Issue)}{:%Pages.} {%Publisher}" visible="false">
         <Contribution type="Teaching/Pedagogy">
              <data>
              </data>
