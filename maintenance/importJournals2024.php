@@ -26,22 +26,20 @@
     
     $alreadyDone = array();
     $toBeInserted = array();
-    foreach($journalsCSV as $journal){
+    foreach($journalsCSV as $key => $journal){
         $csv = str_getcsv($journal);
         if(count($csv) <= 1) break;
         $title = $csv[0];
+        $short_title = $title;
+        $iso_abbrev = $short_title;
+        
         $issn = str_replace("n/a", "", $csv[1]);
         $eissn = str_replace("n/a", "", $csv[2]);
-
-        $short_title = $csv[0];
-        $iso_abbrev = $short_title;
-        $title = $csv[0];
         $impact = $csv[3];
-        $half_life = trim(ltrim($csv[5], '>'));
         $eigenfactor = $csv[4];
+        $half_life = trim(ltrim($csv[5], '>'));
         $conns = explode(";", $csv[6]);
-        
-        if($impact == "N/A" || $title == "Name" || $csv[6] == ""){
+        if(strtoupper($impact) == "N/A" || $title == "Name" || $key == 0 || $csv[6] == ""){
             continue;
         }
         
