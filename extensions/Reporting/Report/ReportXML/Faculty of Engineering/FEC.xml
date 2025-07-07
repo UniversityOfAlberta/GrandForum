@@ -561,7 +561,7 @@
                                             Contribution|
                                             Contribution|
                                             Contribution|
-                                            Contribution" 
+                                            Contribution\|Dissemination" 
                                      array2="Journal Paper\|Preprint|
                                              Conference Paper|
                                              Book\|Book Chapter|
@@ -571,7 +571,7 @@
                                              Teaching/Pedagogy|
                                              Research/Professional Practice|
                                              Technical Committee/Board|
-                                             Other"
+                                             Other\|Blog post\|Dictionary entry\|Encyclopedia entry\|Report\|Talk, interview, podcast or speech\|Website\|Magazine/Newspaper Article"
                                      array3="Refereed Journals|
                                              Conference Proceedings|
                                              Books; Chapters in Books|
@@ -615,7 +615,7 @@
             <Static>
                 <![CDATA[
                     <div style='position:relative; margin-bottom: 3em;'>
-                    <a class="button" style="position:absolute;top:4px;right:0;" target="_blank" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts#/{urlencode({getExtra(value)})}">Manage {pluralize({getExtra(value)})}</a>
+                    <a class="button" style="position:absolute;top:4px;right:0;" target="_blank" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts#/{urlencode({split_on_first(|, {getExtra(value)})})}">Manage {pluralize({split_on_first(|, {getExtra(value)})})}</a>
                     <h3>({alpha({$index})}) {getExtra(value3)}</h3>
                     
                     {getExtra(value4)}

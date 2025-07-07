@@ -226,6 +226,7 @@ class ReportItemCallback {
             "strtolower" => "strtolower",
             "strtoupper" => "strtoupper",
             "substr" => "substr",
+            "split_on_first" => "split_on_first",
             "alpha" => "alpha",
             "nl2br" => "nl2br",
             "strip_html" => "strip_html",
@@ -1932,6 +1933,10 @@ class ReportItemCallback {
     
     function substr($string, $offset, $length=null){
         return @substr($string, $offset, $length);
+    }
+    
+    function split_on_first($split, $string){
+        return @explode($split, $string)[0];
     }
     
     function alpha($str){

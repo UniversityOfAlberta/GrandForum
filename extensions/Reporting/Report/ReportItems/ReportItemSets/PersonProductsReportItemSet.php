@@ -84,7 +84,7 @@ class PersonProductsReportItemSet extends ReportItemSet {
         if(is_array($products)){
             foreach($products as $prod){
                 $type = explode(":", $prod->getType());
-                if((implode("", $productType) == "" || in_array($type[0], $productType)) &&
+                if((implode("", $productType) == "" || in_array($type[0], $productType) || in_array(str_replace(",", "&#44;", $type[0]), $productType)) &&
                    ($peerReviewed == "" || ($prod->getData('peer_reviewed') == $peerReviewed || ($prod->getData('peer_reviewed') == "" && $peerReviewed == "No"))) &&
                    ($status == "" || ($prod->getStatus() == $status))){
                     $reportedYear = $prod->getReportedForPerson($this->personId);
