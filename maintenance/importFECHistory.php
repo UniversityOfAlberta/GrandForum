@@ -31,15 +31,16 @@
             $assistant = $csv[3];
             $associate = $csv[4];
             $professor = $csv[5];
-            $fso2 = $csv[6];
-            $fso3 = $csv[7];
-            $fso4 = $csv[8];
-            $ats1 = $csv[9];
-            $ats2 = $csv[10];
-            $ats3 = $csv[11];
-            $probation1 = $csv[12];
-            $probation2 = $csv[13];
-            $tenure = $csv[14];
+            $fso1 = $csv[6];
+            $fso2 = $csv[7];
+            $fso3 = $csv[8];
+            $fso4 = $csv[9];
+            $ats1 = $csv[10];
+            $ats2 = $csv[11];
+            $ats3 = $csv[12];
+            $probation1 = $csv[13];
+            $probation2 = $csv[14];
+            $tenure = $csv[15];
             
             $person = Person::newFromEmployeeId($emplid);
             if($person instanceof FullPerson && $person->getId() != 0){
