@@ -3469,6 +3469,9 @@ class Person extends BackboneModel {
 }
 
 Person::$studentPositions['grad'] = array_merge(Person::$studentPositions['msc'], Person::$studentPositions['phd']);
+Person::$studentPositions['engpdf'] = array_filter(Person::$studentPositions['pdf'], function($var){ return $var != "research associate"; } );
+Person::$studentPositions['engtech'] = Person::$studentPositions['tech'];
+Person::$studentPositions['engtech'][] = "research associate";
 
 class FullPerson extends Person {
     

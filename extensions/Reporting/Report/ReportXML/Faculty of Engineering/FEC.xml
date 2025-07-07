@@ -368,7 +368,7 @@
             ]]>
         </Static>
         <ReportItemSet id="hqps" type="String" 
-                                 array="phd|msc|pdf|ugrad|tech|visiting|other|committee"
+                                 array="phd|msc|engpdf|ugrad|engtech|visiting|other|committee"
                                  array2="Trainee Name|Student Name|Student Name|Student Name|Trainee Name|Student Name|Student Name|Student Name"
                                  labels="(a) Doctoral Students|(b) Master's Students|(c) Postdoctoral Fellows|(d) Undergraduate Students|(e) Research/Technical Assistants and Associates|(f) Visiting Students|(g) Other Trainees|(h) Student Supervisory Committee Membership">
             <Static>
@@ -379,7 +379,7 @@
             </Static>
             <If if="{or({==({getExtra(value)},phd)},
                         {==({getExtra(value)},msc)},
-                        {==({getExtra(value)},pdf)},
+                        {==({getExtra(value)},engpdf)},
                         {==({getExtra(value)},visiting)})}">
                 <![CDATA[
                     {set(colspan,6)}
@@ -392,7 +392,7 @@
                     {set(rowspan,2)}
                 ]]>
             </ElseIf>
-            <ElseIf if="{==({getExtra(value)},tech)}">
+            <ElseIf if="{==({getExtra(value)},engtech)}">
                 <![CDATA[
                     {set(colspan,4)}
                     {set(rowspan,1)}
@@ -561,7 +561,7 @@
                                             Contribution|
                                             Contribution|
                                             Contribution|
-                                            Contribution" 
+                                            Contribution\|Dissemination" 
                                      array2="Journal Paper\|Preprint|
                                              Conference Paper|
                                              Book\|Book Chapter|
@@ -571,7 +571,7 @@
                                              Teaching/Pedagogy|
                                              Research/Professional Practice|
                                              Technical Committee/Board|
-                                             Other"
+                                             Other\|Blog post\|Dictionary entry\|Encyclopedia entry\|Report\|Talk, interview, podcast or speech\|Website\|Magazine/Newspaper Article"
                                      array3="Refereed Journals|
                                              Conference Proceedings|
                                              Books; Chapters in Books|
