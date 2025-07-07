@@ -345,17 +345,17 @@
                 <style>
                     .phd .program               { display: none; }
                     .msc .program               { display: none; }
-                    .pdf .program               { display: none; }
+                    .engpdf .program               { display: none; }
                     .visiting .program          { display: none; }
                     
                     .ugrad .admitted            { display: none; }
                     .ugrad .degree              { display: none; }
                     .ugrad .completed           { display: none; }
                     
-                    .tech .program              { display: none; }
-                    .tech .degree               { display: none; }
-                    .tech .completed            { display: none; }
-                    .tech .scholarships         { display: none; }
+                    .engtech .program              { display: none; }
+                    .engtech .degree               { display: none; }
+                    .engtech .completed            { display: none; }
+                    .engtech .scholarships         { display: none; }
                     
                     .other .program             { display: none; }
                     .other .degree              { display: none; }
