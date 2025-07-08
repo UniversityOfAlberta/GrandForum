@@ -485,7 +485,7 @@ class ReportItemCallback {
                                           AND c.term_string = '{$course->term_string}'
                                           AND c.subject = '{$course->subject}'
                                           AND c.catalog = '{$course->catalog}'
-                                          AND (c.component = 'LAB' OR c.component = 'SEM' OR c.component = 'IND' OR c.component = 'LCL')
+                                          AND c.component != 'LEC'
                                           AND uc.percentage != '0'");
         }
         return @$data[0]['total'];
