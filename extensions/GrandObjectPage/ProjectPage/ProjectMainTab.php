@@ -583,7 +583,7 @@ class ProjectMainTab extends AbstractEditableTab {
                     $this->html .= "<h3><span class='mw-headline'>{$value[0]}</span></h3>";
                 }
                 if(!$edit){
-                    $this->html .= $text;
+                    $this->html .= "<div id='description{$key}'>$text</div>";
                 }
                 else{
                     if(isset($value['select'])){

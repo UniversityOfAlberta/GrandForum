@@ -141,6 +141,7 @@ class APIRequest{
 		
 		$this->addAction("Hidden", "fitbit", "AvoidFitbitAPI");
 		$this->addAction("Hidden", "aiSearch", "AISearchAPI");
+		$this->addAction("Hidden", "geocode", "GeoCodeAPI");
 		$this->addAction("User Accounts", "callAvoidResourcesApi", "AvoidResourcesAPI");
 		$this->addAction("User Accounts", "DownloadWordHtmlApi", "DownloadWordHtmlAPI");
 	}
