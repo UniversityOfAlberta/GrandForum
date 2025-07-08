@@ -872,9 +872,16 @@
             ]]>
         </Static>
         <ReportItemSet id="awards" type="PersonProductsReportItemSet" category="Award" includeHQP="false" start="{$start_date}" end="{$end_date}">
+            <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="false" showIF="false" optional="true" encrypt="true">
+                <![CDATA[
+                    <tr>
+                        <td>
+                            {$item}
+                        </td>
+                ]]>
+            </ReportItem>
             <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}">
                 <![CDATA[
-                    <tr><td>{$product_citation}</td>
                         <td align='center'>{$product_type}</td>
                         <td align='center'>{$award_scope}</td>
                         <td align='center'>{$product_year}</td>

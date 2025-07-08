@@ -239,10 +239,10 @@ class AnnotateProductReportItem extends AbstractReportItem {
         $data = (array)json_decode($this->getBlobValue());
 
         $dom = new SmartDomDocument();
-        $dom->loadHTML($html);
+        $dom->loadHTML("<span>$html</span>");
         $spans = $dom->getElementsByTagName("span");
         foreach($spans as $span){
-            if($span->getAttribute('class') == 'citation_author'){
+            if(strstr($span->getAttribute('class'), 'citation_author') !== false){
                 $name = $span->nodeValue;
                 if(isset($data[$name])){
                     switch($data[$name]->type){

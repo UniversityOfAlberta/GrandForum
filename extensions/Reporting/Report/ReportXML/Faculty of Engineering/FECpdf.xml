@@ -573,7 +573,7 @@
                     <ul>
                 ]]>
             </Static>
-            <ReportItemSet id="products{$index}" type="PersonProductsReportItemSet" category="{getExtra(value)}" productType="{getExtra(value2)}" useProductYear="true" includeHQP="false" peerReviewed="{getExtra(value5)}" start="{$start_date}" end="{$end_date}">
+            <ReportItemSet id="products{$index}" type="PersonProductsReportItemSet" category="{getExtra(value)}" productType="{getExtra(value2)}" useProductYear="true" includeHQP="false" peerReviewed="{getExtra(value5)}" start="{$start_date}" end="{$end_date}" includeContributors="true">
                 <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" isTopAnchor="false">
                     <![CDATA[
                         <li style="page-break-inside: avoid;">
@@ -789,12 +789,19 @@
                             <th>Year</th>
                         </tr>
                     </thead>
+                    <tbody>
             ]]>
         </Static>
         <ReportItemSet id="awards" type="PersonProductsReportItemSet" category="Award" includeHQP="false" start="{$start_date}" end="{$end_date}">
             <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}">
                 <![CDATA[
-                    <tr><td>{$item}{$product_citation}</td>
+                    <tr>
+                        <td>{$item}
+                ]]>
+            </ReportItem>
+            <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="false" showIF="false" optional="true" encrypt="true">
+                <![CDATA[
+                        {$item}</td>
                         <td align='center'>{$product_type}</td>
                         <td align='center'>{$award_scope}</td>
                         <td align='center'>{$product_year}</td>
@@ -804,6 +811,7 @@
         </ReportItemSet>
         <Static>
             <![CDATA[
+                    </tbody>
                 </table>
             ]]>
         </Static>
