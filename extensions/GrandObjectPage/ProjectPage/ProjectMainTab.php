@@ -586,7 +586,18 @@ class ProjectMainTab extends AbstractEditableTab {
                     $this->html .= $text;
                 }
                 else{
-                    if(!isset($value[2])){
+                    if(isset($value['select'])){
+                        $select = new SelectBox("description{$key}", "{$value[0]}", $text, $value['select'], VALIDATE_NOTHING);
+                        $this->html .= $select->render();
+                    }
+                    else if(isset($value['text'])){
+                        $textField = new TextField("description{$key}", "{$value[0]}", $text, VALIDATE_NOTHING);
+                        if(is_numeric($value['text'])){
+                            $textField->attr('size', $value['text']);
+                        }
+                        $this->html .= $textField->render();
+                    }
+                    else{
                         $this->html .= "<textarea name='description{$key}' style='height:{$height}px;width:auto;'>{$text}</textarea>
                             <script type='text/javascript'>
                                 $('textarea[name=description{$key}]').tinymce({
@@ -606,10 +617,6 @@ class ProjectMainTab extends AbstractEditableTab {
                                     }
                                 });
                             </script>";
-                    }
-                    else{
-                        $select = new SelectBox("description{$key}", "{$value[0]}", $text, $value[2], VALIDATE_NOTHING);
-                        $this->html .= $select->render();
                     }
                 }
             }
