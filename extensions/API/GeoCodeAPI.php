@@ -34,7 +34,7 @@ class GeoCodeAPI extends API{
 	}
 	
 	function isLoginRequired(){
-		return true;
+		return false;
 	}
 }
 ?>
