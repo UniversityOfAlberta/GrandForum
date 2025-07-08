@@ -586,25 +586,31 @@ class ProjectMainTab extends AbstractEditableTab {
                     $this->html .= $text;
                 }
                 else{
-                    $this->html .= "<textarea name='description{$key}' style='height:{$height}px;width:auto;'>{$text}</textarea>
-                    <script type='text/javascript'>
-                        $('textarea[name=description{$key}]').tinymce({
-                            theme: 'modern',
-                            relative_urls : false,
-                            convert_urls: false,
-                            menubar: false,
-                            plugins: 'link image charmap lists table paste wordcount',
-                            toolbar: [
-                                'undo redo | bold italic underline | link charmap | table | bullist numlist outdent indent | alignleft aligncenter alignright alignjustify'
-                            ],
-                            paste_postprocess: function(plugin, args) {
-                                var p = $('p', args.node);
-                                p.each(function(i, el){
-                                    $(el).css('line-height', 'inherit');
+                    if(!isset($value[2])){
+                        $this->html .= "<textarea name='description{$key}' style='height:{$height}px;width:auto;'>{$text}</textarea>
+                            <script type='text/javascript'>
+                                $('textarea[name=description{$key}]').tinymce({
+                                    theme: 'modern',
+                                    relative_urls : false,
+                                    convert_urls: false,
+                                    menubar: false,
+                                    plugins: 'link image charmap lists table paste wordcount',
+                                    toolbar: [
+                                        'undo redo | bold italic underline | link charmap | table | bullist numlist outdent indent | alignleft aligncenter alignright alignjustify'
+                                    ],
+                                    paste_postprocess: function(plugin, args) {
+                                        var p = $('p', args.node);
+                                        p.each(function(i, el){
+                                            $(el).css('line-height', 'inherit');
+                                        });
+                                    }
                                 });
-                            }
-                        });
-                    </script>";
+                            </script>";
+                    }
+                    else{
+                        $select = new SelectBox("description{$key}", "{$value[0]}", $text, $value[2], VALIDATE_NOTHING);
+                        $this->html .= $select->render();
+                    }
                 }
             }
         }
