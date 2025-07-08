@@ -568,7 +568,9 @@ class Register extends SpecialPage{
                 }
                 $_POST['candidate'] = "0";
             }
-            else if($config->getValue('networkName') == "IDeaS" || $config->getValue('networkName') == "Voyant"){
+            else if($config->getValue('networkName') == "IDeaS" || 
+                    $config->getValue('networkName') == "Voyant" || 
+                    $config->getValue('networkName') == "REKH"){
                 $_POST['wpUserType'] = CI;
                 $_POST['candidate'] = "0";
             }
