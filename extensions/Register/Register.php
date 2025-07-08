@@ -41,6 +41,9 @@ class Register extends SpecialPage{
                 else if($config->getValue('networkName') == "IDeaS" || $config->getValue('networkName') == "Voyant"){
                     $parseroutput->mText .= "<h2>Forum Registration</h2><p>If you would like to apply to become a member in {$config->getValue('networkName')} then please fill out the <a href='$wgServer$wgScriptPath/index.php/Special:Register'>registration form</a>.</p>";
                 }
+                else if($config->getValue('networkName') == "REKH"){
+                    $parseroutput->mText .= "<h2>Member Registration</h2><p>If you would like to apply to become a member in {$config->getValue('networkName')} then please fill out the <a href='$wgServer$wgScriptPath/index.php/Special:Register'>registration form</a>.</p>";
+                }
                 else{
                     $parseroutput->mText .= "<h2>HQP Registration</h2><p>If you would like to apply to become an HQP in {$config->getValue('networkName')} then please fill out the <a href='$wgServer$wgScriptPath/index.php/Special:Register'>registration form</a>.</p>";
                 }
@@ -430,6 +433,9 @@ class Register extends SpecialPage{
         else if($config->getValue('networkName') == 'IDeaS' || $config->getValue('networkName') == "Voyant"){
             $wgOut->setPageTitle("Forum Registration");
             $wgOut->addHTML("By registering with {$config->getValue('networkName')} you will be granted the role of Member.  You may need to check your spam/junk mail for the registration email if it doesn't show up after a few minutes.  If you still don't get the email, please contact <a href='mailto:{$config->getValue('supportEmail')}'>{$config->getValue('supportEmail')}</a>.<br /><br />");
+        }
+        else if($config->getValue('networkName') == 'REKH'){
+            $wgOut->addHTML("Register yourself to become part of the REKH network in which you will be able to register your business, access services, etc");
         }
         else{
             $wgOut->addHTML("By registering with {$config->getValue('networkName')} you will be granted the role of HQP-Candidate.  You may need to check your spam/junk mail for the registration email if it doesn't show up after a few minutes.  If you still don't get the email, please contact <a href='mailto:{$config->getValue('supportEmail')}'>{$config->getValue('supportEmail')}</a>.<br /><br />");
