@@ -226,6 +226,9 @@
     // Whether or not wiki features are enabled
     $config->setValue("wikiEnabled", true);
     
+    // Whether or not to show the wordcloud for everyone (otherwise only researcher types)
+    $config->setValue("wordCloudForEveryone", false);
+    
     // Whether or not Manage Products should be enabled
     $config->setValue("productsEnabled", true);
     
