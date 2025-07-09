@@ -81,7 +81,7 @@ class LIMSTaskPmm extends BackboneModel
             foreach($files as $file){
                 $file['data'] = '';
                 $file['url'] = "{$wgServer}{$wgScriptPath}/index.php?action=api.limstaskpmm/{$this->id}/files/{$file['id']}";
-                $this->files[] = $file;
+                $this->files[$file['assignee']] = $file;
             }
         // $this->status = $data[0]['status'];
         }
@@ -294,12 +294,23 @@ class LIMSTaskPmm extends BackboneModel
         $me = Person::newFromWgUser();
         if ($this->isAllowedToEdit()) {
             $data = array();
+            $existingFiles = array();
             foreach(DBFunctions::select(
                 array('grand_pmm_task'=>'t', 'grand_pmm_task_assginees'=>'a'),
                 array('*'),
                 array('a.task_id' => $this->id, 't.id' => $this->id),
             ) as $row) {
                 $data[$row['assignee']] = $row;
+
+               if (!empty($row['filename'])) {
+                    $existingFiles[$row['assignee']] = (object)[
+                        'filename' => $row['filename'],
+                        'type'     => $row['type'],
+                        'data'     => $row['data'],
+                        'delete'   => false,
+                        'url'      => $row['url'] ?? null,
+                    ];
+                }
             }
 
             
@@ -333,14 +344,24 @@ class LIMSTaskPmm extends BackboneModel
             foreach($this->assignees as $assignee){
                 $assigneeId = (isset($assignee->id)) ? $assignee->id : $assignee;
 
+                $insertData = [
+                    'task_id'  => $this->id,
+                    'assignee' => $assigneeId,
+                    'status'   => @$this->statuses[$assigneeId]
+                ];
+                $filesArr = (array)$this->files;
+                $toDelete = isset($filesArr[$assigneeId]->delete) && $filesArr[$assigneeId]->delete;
+                $toUpdate = isset($filesArr[$assigneeId]->data) && $filesArr[$assigneeId]->data !== '';
+                $hasExisting = isset($existingFiles[$assigneeId]);
+                if (!$toDelete && !$toUpdate && $hasExisting) {
+                    $old = $existingFiles[$assigneeId];
+                    $insertData['filename'] = $old->filename;
+                    $insertData['type']     = $old->type;
+                    $insertData['data']     = $old->data;
+                }
                 DBFunctions::insert(
                     'grand_pmm_task_assginees',
-                    array(
-                        'task_id' => $this->id,
-                        'assignee' => $assigneeId,
-                        'status' => @$this->statuses[$assigneeId]
-                    )
-                );
+                    $insertData);
             }
             $this->uploadFiles();
             $assignees = $this->getAssignees();

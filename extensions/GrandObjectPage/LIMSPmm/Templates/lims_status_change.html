@@ -34,19 +34,25 @@ if (assignees && assignees.length > 0) {
                         <% } %> 
                     </td>
                     <td valign="top" height>
-                        <% if (isLeaderAllowedToEdit || (me.get('id') == assigneeId && (currentStatus == 'Assigned' || currentStatus == 'Done'))) { %> 
-                    
-                            <% if (currentStatus !== 'Closed') { %>
-                                <%= HTML.File(this, 'files.' + assigneeId) %>   
-                                <% } %>
-                    
-                           
-                    
-                        <% } else { %>
-                            <% if (currentStatus !== 'Closed') { %>
-                                <span>No document allowed</span>
-                            <% } %>
+                      <% 
+                        var fileObj  = (files && files[assigneeId]) || {};
+                        var filename = fileObj.filename || '';
+                        var toDelete = fileObj.delete || false;
+                      %>
+                      <% if (isLeaderAllowedToEdit || ( me.get('id') == assigneeId && ( currentStatus == 'Assigned' || currentStatus == 'Done' ) ) ) { %>
+                        <% if (currentStatus !== 'Closed') { %>
+                           <% if (filename && !toDelete) { %>
+                                <%= filename %>
+                                  <span class="delete-icon deleteFile" data-assignee="<%= assigneeId %>">×</span>
+                           <% } else {%>
+                                <%= HTML.File(this, 'files.' + assigneeId) %>
+                          <% } %>
                         <% } %>
+                      <% } else { %>
+                        <% if (currentStatus !== 'Closed') { %>
+                          <span>No document allowed</span>
+                        <% } %>
+                      <% } %>
                     </td>
                     
                     <td valign="top" height>
