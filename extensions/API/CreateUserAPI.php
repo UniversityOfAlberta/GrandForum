@@ -122,6 +122,9 @@ class CreateUserAPI extends API{
                         DBFunctions::update('mw_user',
                                         array('full' => 1),
                                         array('user_id' => $person->getId()));
+                        DBFunctions::insert('grand_personal_fec_info',
+                                            array('user_id' => $person->getId(),
+                                                  'faculty' => getFaculty()));
                     }
                     // Clear cache again
                     Person::$cache = array();
