@@ -25,7 +25,10 @@ class GeoCodeAPI extends API{
                 curl_setopt($ch, CURLOPT_URL, $url);
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
                 $result = curl_exec($ch);
-                Cache::store("geocode_{$_GET['address']}", $result);
+                $json = json_decode($result);
+                if(!isset($json->error)){
+                    Cache::store("geocode_{$_GET['address']}", $result);
+                }
             }
             header('Content-Type: application/json');
             echo $result;
