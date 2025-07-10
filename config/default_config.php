@@ -226,6 +226,9 @@
     // Whether or not wiki features are enabled
     $config->setValue("wikiEnabled", true);
     
+    // Whether or not the projectWiki are public
+    $config->setValue("wikiPublic", false);
+    
     // Whether or not to show the wordcloud for everyone (otherwise only researcher types)
     $config->setValue("wordCloudForEveryone", false);
     

@@ -224,6 +224,10 @@ $wgGroupPermissions['sysop']['editwidgets'] = true;
 
 require_once("$IP/extensions/AnnokiControl/AnnokiControl.php");
 
+if($config->getValue('wikiPublic')){
+    $egAnProtectUploads = false;
+}
+
 $wgRestrictDisplayTitle = false;
 $wgLocalTZoffset = date_default_timezone_set("MST") / 60;
 $wgRawHtml = true;

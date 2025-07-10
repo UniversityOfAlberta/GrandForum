@@ -109,6 +109,9 @@ class ProjectMainTab extends AbstractEditableTab {
         
         $this->showPeople();
         $this->showDescription();
+        if($config->getValue('wikiPublic')){
+            $this->showWikiFiles();
+        }
         $this->html .= $this->showTable();
         if($me->isRoleAtLeast(STAFF) && $config->getValue('networkType') == "CFREF"){
             $this->html .= "<span class='pdfnodisplay'><a class='button' href='{$this->project->getUrl()}?generatePDF' style='margin-top:2px;'>Download PDF</a></span>";
@@ -628,6 +631,23 @@ class ProjectMainTab extends AbstractEditableTab {
                 $this->html .= "<h2>Research Project</h2>";
                 $this->html .= "<a href='{$researchProject->getUrl()}'>{$researchProject->getName()}</a><br />";
             }
+        }
+    }
+    
+    function showWikiFiles(){
+        global $wgServer, $wgScriptPath;
+        $pages = $this->project->getFiles();
+        if(count($pages)){
+            $this->html .= "<h2>Documents</h2>
+                            <ul>";
+            foreach($pages as $page){
+                $img = $page->getPage()->getFile();
+                if($img->exists()){
+                    $image = new ImagePage($page->getTitle());
+                    $this->html .= "<li><a href='$wgServer{$img->getUrl()}'>".str_replace($this->project->getName(), "", $page->getTitle()->getText())."</a></li>\n";
+                }
+            }
+            $this->html .= "</ul>";
         }
     }
     
