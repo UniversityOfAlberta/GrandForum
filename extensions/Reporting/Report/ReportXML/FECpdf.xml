@@ -200,7 +200,7 @@
         <If if="{!=({getArray(RP_FEC,FEC_COURSES,FEC_PROJECT_COURSES,0,{$user_id},0,projectCourses)},)}">
             <Static>
                 <![CDATA[
-                    <h3>Project Courses</h3>
+                    <h3>Additional / Project Courses</h3>
                     <table class="wikitable" frame="box" rules="all" width="100%">
                 ]]>
             </Static>
@@ -1000,6 +1000,21 @@
                     </ReportItemSet>
                 </If>
             </ReportItemSet>
+        </If>
+        
+        <!-- Professional Development -->
+        <If id="professional" if="{!contains({$my_roles},Faculty)}">
+            <ReportItem id="profbookmark" type="BookmarkReportItem" title="Professional Development">
+                <![CDATA[
+                    <h2>Professional Development</h2>
+                ]]>
+            </ReportItem>
+            <ReportItem id="professional" type="Textarea" blobSection="FEC_PROFESSIONAL" blobItem="FEC_PROFESSIONAL" blobType="BLOB_TEXT" rich="true" encrypt="true">
+                <![CDATA[
+                    
+                    {$item}
+                ]]>
+            </ReportItem>
         </If>
         
         <!-- Additional Info -->

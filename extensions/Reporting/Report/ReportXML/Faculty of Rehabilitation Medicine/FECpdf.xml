@@ -258,15 +258,6 @@
             </If>
         </ReportItemSet>
         
-        <If id="professional" if="{!contains({$my_roles},Faculty)}" after="services">
-            <ReportItem id="professional" type="Textarea" blobSection="FEC_PROFESSIONAL" blobItem="FEC_PROFESSIONAL" blobType="BLOB_TEXT" rich="true" encrypt="true">
-                <![CDATA[
-                    <h2>Professional Development</h2>
-                    {$item}
-                ]]>
-            </ReportItem>
-        </If>
-        
         <ReportItem id="admin" after="sabbatical" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="ADMIN" blobSection="FEC_ADDITIONAL_INFO" />
         
         <!-- Only Used to Mark Products as Submitted -->
@@ -279,7 +270,7 @@
                 <ul>
             ]]>
         </Static>
-        <For from="1" to="4">
+        <For from="1" to="10">
             <Static>
                 <![CDATA[
                     {set(md5, {getBlobMD5(RP_FEC,FEC_ADDITIONAL_INFO,FILE{getExtra()},0,{$user_id},0)})}

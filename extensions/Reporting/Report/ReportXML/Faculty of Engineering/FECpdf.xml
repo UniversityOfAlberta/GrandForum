@@ -233,17 +233,17 @@
                 <style>
                     .phd .program               { display: none; }
                     .msc .program               { display: none; }
-                    .pdf .program               { display: none; }
+                    .engpdf .program               { display: none; }
                     .visiting .program          { display: none; }
                     
                     .ugrad .admitted            { display: none; }
                     .ugrad .degree              { display: none; }
                     .ugrad .completed           { display: none; }
                     
-                    .tech .program              { display: none; }
-                    .tech .degree               { display: none; }
-                    .tech .completed            { display: none; }
-                    .tech .scholarships         { display: none; }
+                    .engtech .program              { display: none; }
+                    .engtech .degree               { display: none; }
+                    .engtech .completed            { display: none; }
+                    .engtech .scholarships         { display: none; }
                     
                     .other .program             { display: none; }
                     .other .degree              { display: none; }
@@ -256,7 +256,7 @@
             ]]>
         </Static>
         <ReportItemSet id="hqps" type="String" 
-                                 array="phd|msc|pdf|ugrad|tech|visiting|other|committee"
+                                 array="phd|msc|engpdf|ugrad|engtech|visiting|other|committee"
                                  array2="Trainee Name|Student Name|Student Name|Student Name|Trainee Name|Student Name|Student Name|Student Name"
                                  labels="(a) Doctoral Students|(b) Master's Students|(c) Postdoctoral Fellows|(d) Undergraduate Students|(e) Research/Technical Assistants and Associates|(f) Visiting Students|(g) Other Trainees|(h) Student Supervisory Committee Membership">
             <Static>
@@ -266,7 +266,7 @@
             </Static>
             <If if="{or({==({getExtra(value)},phd)},
                         {==({getExtra(value)},msc)},
-                        {==({getExtra(value)},pdf)},
+                        {==({getExtra(value)},engpdf)},
                         {==({getExtra(value)},visiting)})}">
                 <![CDATA[
                     {set(colspan,6)}
@@ -279,7 +279,7 @@
                     {set(rowspan,2)}
                 ]]>
             </ElseIf>
-            <ElseIf if="{==({getExtra(value)},tech)}">
+            <ElseIf if="{==({getExtra(value)},engtech)}">
                 <![CDATA[
                     {set(colspan,4)}
                     {set(rowspan,1)}
@@ -473,17 +473,17 @@
                                             Contribution|
                                             Contribution|
                                             Contribution|
-                                            Contribution" 
-                                     array2="Journal Paper|
+                                            Contribution\|Dissemination" 
+                                     array2="Journal Paper\|Preprint|
                                              Conference Paper|
                                              Book\|Book Chapter|
                                              |
-                                             Journal Paper\|Journal Abstract\|White Paper\|Tech Report\|Manual|
+                                             Journal Paper\|Journal Abstract\|White Paper\|Tech Report\|Manual\|Preprint|
                                              |
                                              Teaching|
                                              Research|
                                              Technical Committee/Board|
-                                             Other"
+                                             Other\|Blog post\|Dictionary entry\|Encyclopedia entry\|Report\|Talk, interview, podcast or speech\|Website\|Magazine/Newspaper Article"
                                      array3="Refereed Journals|
                                              Conference Proceedings|
                                              Books; Chapters in Books|
@@ -573,7 +573,7 @@
                     <ul>
                 ]]>
             </Static>
-            <ReportItemSet id="products{$index}" type="PersonProductsReportItemSet" category="{getExtra(value)}" productType="{getExtra(value2)}" useProductYear="true" includeHQP="false" peerReviewed="{getExtra(value5)}" start="{$start_date}" end="{$end_date}">
+            <ReportItemSet id="products{$index}" type="PersonProductsReportItemSet" category="{getExtra(value)}" productType="{getExtra(value2)}" useProductYear="true" includeHQP="false" peerReviewed="{getExtra(value5)}" start="{$start_date}" end="{$end_date}" includeContributors="true">
                 <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" isTopAnchor="false">
                     <![CDATA[
                         <li style="page-break-inside: avoid;">
@@ -789,12 +789,19 @@
                             <th>Year</th>
                         </tr>
                     </thead>
+                    <tbody>
             ]]>
         </Static>
         <ReportItemSet id="awards" type="PersonProductsReportItemSet" category="Award" includeHQP="false" start="{$start_date}" end="{$end_date}">
             <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}">
                 <![CDATA[
-                    <tr><td>{$item}{$product_citation}</td>
+                    <tr>
+                        <td>{$item}
+                ]]>
+            </ReportItem>
+            <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="false" showIF="false" optional="true" encrypt="true">
+                <![CDATA[
+                        {$item}</td>
                         <td align='center'>{$product_type}</td>
                         <td align='center'>{$award_scope}</td>
                         <td align='center'>{$product_year}</td>
@@ -804,6 +811,7 @@
         </ReportItemSet>
         <Static>
             <![CDATA[
+                    </tbody>
                 </table>
             ]]>
         </Static>
@@ -886,7 +894,8 @@
                                     <th>Chart</th>
                                 </tr>
                                 {course_eval(false)}
-                            </table>
+                            </table><br /><br />
+                            {course_eval_summary(false)}
                             <div class='pagebreak'></div>
                         ]]>
                     </If>
@@ -951,7 +960,7 @@
                 <ul>
             ]]>
         </Static>
-        <For from="1" to="4">
+        <For from="1" to="10">
             <Static>
                 <![CDATA[
                     {set(md5, {getBlobMD5(RP_FEC,FEC_ADDITIONAL_INFORMATION,FILE{getExtra()},0,{$user_id},0)})}

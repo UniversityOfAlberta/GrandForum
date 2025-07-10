@@ -9,6 +9,7 @@
             <SectionPermission id="awards" permissions="rw" />
             <SectionPermission id="grants" permissions="rw" />
             <SectionPermission id="services" permissions="rw" />
+            <SectionPermission id="professional" permissions="-" />
             <SectionPermission id="supplementary" permissions="rw" />
             <SectionPermission id="edi" permissions="rw" />
             <SectionPermission id="additionalInfo" permissions="rw" />
@@ -27,6 +28,7 @@
             <SectionPermission id="awards" permissions="rw" />
             <SectionPermission id="grants" permissions="rw" />
             <SectionPermission id="services" permissions="rw" />
+            <SectionPermission id="professional" permissions="rw" />
             <SectionPermission id="supplementary" permissions="rw" />
             <SectionPermission id="edi" permissions="rw" />
             <SectionPermission id="additionalInfo" permissions="rw" />
@@ -45,6 +47,7 @@
             <SectionPermission id="awards" permissions="rw" />
             <SectionPermission id="grants" permissions="rw" />
             <SectionPermission id="services" permissions="rw" />
+            <SectionPermission id="professional" permissions="rw" />
             <SectionPermission id="supplementary" permissions="rw" />
             <SectionPermission id="edi" permissions="rw" />
             <SectionPermission id="additionalInfo" permissions="rw" />
@@ -63,6 +66,7 @@
             <SectionPermission id="awards" permissions="" />
             <SectionPermission id="grants" permissions="" />
             <SectionPermission id="services" permissions="" />
+            <SectionPermission id="professional" permissions="" />
             <SectionPermission id="supplementary" permissions="" />
             <SectionPermission id="edi" permissions="" />
             <SectionPermission id="additionalInfo" permissions="" />
@@ -81,6 +85,7 @@
             <SectionPermission id="awards" permissions="-" />
             <SectionPermission id="grants" permissions="-" />
             <SectionPermission id="services" permissions="-" />
+            <SectionPermission id="professional" permissions="-" />
             <SectionPermission id="supplementary" permissions="-" />
             <SectionPermission id="edi" permissions="-" />
             <SectionPermission id="additionalInfo" permissions="-" />
@@ -1044,10 +1049,17 @@
             </ReportItemSet>
         </ReportItemSet>
     </ReportSection>
-    <ReportSection id="supplementary" tooltip="Supplementary Professional Activities" name="SPA" title="Supplementary Professional Activities &lt;span class='clicktooltip' title='Type the information related to supplementary professional activities (refer to Article 8 of the Faculty Agreement or to Article 8 of the FSO Agreement). Include category/type of client or affiliation, nature of service performed, estimate of total time devoted, and names and nature of any continuing contractual arrangements with outside organizations. Refer to Article 8 of the &lt;a target=&quot;_blank&quot; href=&quot;https://www.ualberta.ca/human-resources-health-safety-environment/media-library/my-employment/agreements/university-aasua-2018-2020-collective-agreement-schedule-a-academic-faculty-members.pdf&quot;>Faculty Agreement&lt;/a> or to Article 8 of the &lt;a target=&quot;_blank&quot; href=&quot;https://www.ualberta.ca/human-resources-health-safety-environment/media-library/my-employment/agreements/university-aasua-2018-2020-collective-agreement-schedule-b-faculty-service-officers.pdf&quot;>FSO Agreement&lt;/a> and to the &lt;a target=&quot;_blank&quot; href=&quot;https://drive.google.com/file/d/0ByVePqUFqXRESEpMZXUxeGJWWGc/view&quot;>SPA Guidelines&lt;/a>.'>&#9432;&lt;/span>" blobSection="FEC_ADDITIONAL_INFO" type="EditableReportSection">
+    <ReportSection id="professional" type="EditableReportSection" blobSection="FEC_PROFESSIONAL" name="Professional Development" title="Professional Development">
+        <ReportItem id="professional" type="Textarea" blobItem="FEC_PROFESSIONAL" blobType="BLOB_TEXT" rich="true" encrypt="true">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="supplementary" tooltip="Supplementary Professional Activities" name="SPA" title="Supplementary Professional Activities &lt;span class='clicktooltip' title='Type the information related to supplementary professional activities (refer to Article 3 of the Faculty Agreement or to Article 3 of the FSO Agreement). Include category/type of client or affiliation, nature of service performed, estimate of total time devoted, and names and nature of any continuing contractual arrangements with outside organizations. Refer to Article A3 of the &lt;a target=&quot;_blank&quot; href=&quot;https://www.ualberta.ca/en/human-resources-health-safety-environment/media-library/my-employment/agreements/schedule-a-academic-faculty-members-2020-2024.pdf&quot;>Faculty Agreement&lt;/a> or to Article B3 of the &lt;a target=&quot;_blank&quot; href=&quot;https://www.ualberta.ca/en/human-resources-health-safety-environment/media-library/my-employment/agreements/schedule-b-faculty-service-officer-2020-2024.pdf&quot;>FSO Agreement&lt;/a> or to Article D3 of the &lt;a target=&quot;_blank&quot; href=&quot;https://www.ualberta.ca/en/human-resources-health-safety-environment/media-library/my-employment/agreements/schedule-d-academic-teaching-staff-2020-2024.pdf&quot;>ATS Agreement&lt;/a>.'>&#9432;&lt;/span>" blobSection="FEC_ADDITIONAL_INFO" type="EditableReportSection">
         <Instructions>
             <![CDATA[
-                <p>Type the information related to supplementary professional activities (refer to Article 8 of the Faculty Agreement or to Article 8 of the FSO Agreement). Include category/type of client or affiliation, nature of service performed, estimate of total time devoted, and names and nature of any continuing contractual arrangements with outside organizations. Refer to Article 8 of the <a href='https://www.ualberta.ca/human-resources-health-safety-environment/media-library/my-employment/agreements/university-aasua-2018-2020-collective-agreement-schedule-a-academic-faculty-members.pdf' target='_blank'>Faculty Agreement</a> or to Article 8 of the <a href='https://www.ualberta.ca/human-resources-health-safety-environment/media-library/my-employment/agreements/university-aasua-2018-2020-collective-agreement-schedule-b-faculty-service-officers.pdf' target='_blank'>FSO Agreement</a> and to the <a href='https://drive.google.com/file/d/0ByVePqUFqXRESEpMZXUxeGJWWGc/view' target='_blank'>SPA Guidelines</a>.</p>
+                <p>Type the information related to supplementary professional activities (refer to Article 3 of the Faculty Agreement or to Article 3 of the FSO Agreement). Include category/type of client or affiliation, nature of service performed, estimate of total time devoted, and names and nature of any continuing contractual arrangements with outside organizations. Refer to Article A3 of the <a href='https://www.ualberta.ca/en/human-resources-health-safety-environment/media-library/my-employment/agreements/schedule-a-academic-faculty-members-2020-2024.pdf' target='_blank'>Faculty Agreement</a> or to Article B3 of the <a href='https://www.ualberta.ca/en/human-resources-health-safety-environment/media-library/my-employment/agreements/schedule-b-faculty-service-officer-2020-2024.pdf' target='_blank'>FSO Agreement</a> or to Article D3 of the <a href='https://www.ualberta.ca/en/human-resources-health-safety-environment/media-library/my-employment/agreements/schedule-d-academic-teaching-staff-2020-2024.pdf' target='_blank'>ATS Agreement</a>.</p>
             ]]>
         </Instructions>
         <ReportItem id="spa_level" type="SelectReportItem" blobItem="FEC_SPA_LEVEL" blobType="BLOB_TEXT" options="None|Minor SPA|Major SPA" encrypt="true">

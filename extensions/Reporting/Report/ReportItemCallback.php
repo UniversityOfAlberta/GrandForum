@@ -228,6 +228,7 @@ class ReportItemCallback {
             "strtolower" => "strtolower",
             "strtoupper" => "strtoupper",
             "substr" => "substr",
+            "split_on_first" => "split_on_first",
             "alpha" => "alpha",
             "nl2br" => "nl2br",
             "strip_html" => "strip_html",
@@ -486,7 +487,7 @@ class ReportItemCallback {
                                           AND c.term_string = '{$course->term_string}'
                                           AND c.subject = '{$course->subject}'
                                           AND c.catalog = '{$course->catalog}'
-                                          AND (c.component = 'LAB' OR c.component = 'SEM' OR c.component = 'IND')
+                                          AND c.component != 'LEC'
                                           AND uc.percentage != '0'");
         }
         return @$data[0]['total'];
@@ -1265,7 +1266,7 @@ class ReportItemCallback {
         $products = $person->getPapersAuthored("Activity", $start_date, $end_date, false, true, true);
         $count = 0;
         foreach($products as $product){
-            if(($product->getType() == $type || $type == "") && 
+            if(($product->getType() == $type || strstr($product->getType(), $type) !== false || $type == "") && 
                ($product->getData('position') == $position || $position == "")){
                 $count++;
             }
@@ -1954,6 +1955,10 @@ class ReportItemCallback {
     
     function substr($string, $offset, $length=null){
         return @substr($string, $offset, $length);
+    }
+    
+    function split_on_first($split, $string){
+        return @explode($split, $string)[0];
     }
     
     function alpha($str){

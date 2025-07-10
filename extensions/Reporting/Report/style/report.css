@@ -121,6 +121,10 @@
     font-weight: normal; 
 }
 
+#optionsDiv {
+    display: none;
+}
+
 #reportMain {
     width: 100%;
     display: table-cell;

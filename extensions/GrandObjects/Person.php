@@ -38,6 +38,7 @@ class Person extends BackboneModel {
                                                       "graduate student - master&#39;s thesis",
                                                       "graduate student - master&#39;s",
                                                       "meng",
+                                                      "mscpt",
                                                       "graduate student - master of engineering"),
                                      'msc-thesis' => array("msc",
                                                            "m.sc.",
@@ -72,6 +73,7 @@ class Person extends BackboneModel {
                                                       "staff"),
                                      'ugrad' => array("bsc",
                                                       "b.sc.",
+                                                      "b.a.",
                                                       "bsc student",
                                                       "b.sc. student",
                                                       "bsc thesis",
@@ -711,7 +713,7 @@ class Person extends BackboneModel {
     
     function inFaculty(){
         $this->getFecPersonalInfo();
-        return ($this->faculty == getFaculty() || $this->faculty == "All");
+        return @($this->faculty == getFaculty() || $this->faculty == "All");
     }
     
     function isTAEligible($date=null){
@@ -3219,6 +3221,9 @@ class Person extends BackboneModel {
 }
 
 Person::$studentPositions['grad'] = array_merge(Person::$studentPositions['msc'], Person::$studentPositions['phd']);
+Person::$studentPositions['engpdf'] = array_filter(Person::$studentPositions['pdf'], function($var){ return $var != "research associate"; } );
+Person::$studentPositions['engtech'] = Person::$studentPositions['tech'];
+Person::$studentPositions['engtech'][] = "research associate";
 
 class FullPerson extends Person {
     

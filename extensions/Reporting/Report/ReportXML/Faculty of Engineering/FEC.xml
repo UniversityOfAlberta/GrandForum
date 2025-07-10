@@ -345,17 +345,17 @@
                 <style>
                     .phd .program               { display: none; }
                     .msc .program               { display: none; }
-                    .pdf .program               { display: none; }
+                    .engpdf .program               { display: none; }
                     .visiting .program          { display: none; }
                     
                     .ugrad .admitted            { display: none; }
                     .ugrad .degree              { display: none; }
                     .ugrad .completed           { display: none; }
                     
-                    .tech .program              { display: none; }
-                    .tech .degree               { display: none; }
-                    .tech .completed            { display: none; }
-                    .tech .scholarships         { display: none; }
+                    .engtech .program              { display: none; }
+                    .engtech .degree               { display: none; }
+                    .engtech .completed            { display: none; }
+                    .engtech .scholarships         { display: none; }
                     
                     .other .program             { display: none; }
                     .other .degree              { display: none; }
@@ -368,7 +368,7 @@
             ]]>
         </Static>
         <ReportItemSet id="hqps" type="String" 
-                                 array="phd|msc|pdf|ugrad|tech|visiting|other|committee"
+                                 array="phd|msc|engpdf|ugrad|engtech|visiting|other|committee"
                                  array2="Trainee Name|Student Name|Student Name|Student Name|Trainee Name|Student Name|Student Name|Student Name"
                                  labels="(a) Doctoral Students|(b) Master's Students|(c) Postdoctoral Fellows|(d) Undergraduate Students|(e) Research/Technical Assistants and Associates|(f) Visiting Students|(g) Other Trainees|(h) Student Supervisory Committee Membership">
             <Static>
@@ -379,7 +379,7 @@
             </Static>
             <If if="{or({==({getExtra(value)},phd)},
                         {==({getExtra(value)},msc)},
-                        {==({getExtra(value)},pdf)},
+                        {==({getExtra(value)},engpdf)},
                         {==({getExtra(value)},visiting)})}">
                 <![CDATA[
                     {set(colspan,6)}
@@ -392,7 +392,7 @@
                     {set(rowspan,2)}
                 ]]>
             </ElseIf>
-            <ElseIf if="{==({getExtra(value)},tech)}">
+            <ElseIf if="{==({getExtra(value)},engtech)}">
                 <![CDATA[
                     {set(colspan,4)}
                     {set(rowspan,1)}
@@ -566,17 +566,17 @@
                                             Contribution|
                                             Contribution|
                                             Contribution|
-                                            Contribution" 
-                                     array2="Journal Paper|
+                                            Contribution\|Dissemination" 
+                                     array2="Journal Paper\|Preprint|
                                              Conference Paper|
                                              Book\|Book Chapter|
                                              |
-                                             Journal Paper\|Journal Abstract\|White Paper\|Tech Report\|Manual|
+                                             Journal Paper\|Journal Abstract\|White Paper\|Tech Report\|Manual\|Preprint|
                                              |
                                              Teaching/Pedagogy|
                                              Research/Professional Practice|
                                              Technical Committee/Board|
-                                             Other"
+                                             Other\|Blog post\|Dictionary entry\|Encyclopedia entry\|Report\|Talk, interview, podcast or speech\|Website\|Magazine/Newspaper Article"
                                      array3="Refereed Journals|
                                              Conference Proceedings|
                                              Books; Chapters in Books|
@@ -620,7 +620,7 @@
             <Static>
                 <![CDATA[
                     <div style='position:relative; margin-bottom: 3em;'>
-                    <a class="button" style="position:absolute;top:4px;right:0;" target="_blank" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts#/{urlencode({getExtra(value)})}">Manage {pluralize({getExtra(value)})}</a>
+                    <a class="button" style="position:absolute;top:4px;right:0;" target="_blank" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts#/{urlencode({split_on_first(|, {getExtra(value)})})}">Manage {pluralize({split_on_first(|, {getExtra(value)})})}</a>
                     <h3>({alpha({$index})}) {getExtra(value3)}</h3>
                     
                     {getExtra(value4)}
@@ -877,9 +877,16 @@
             ]]>
         </Static>
         <ReportItemSet id="awards" type="PersonProductsReportItemSet" category="Award" includeHQP="false" start="{$start_date}" end="{$end_date}">
+            <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="false" showIF="false" optional="true" encrypt="true">
+                <![CDATA[
+                    <tr>
+                        <td>
+                            {$item}
+                        </td>
+                ]]>
+            </ReportItem>
             <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}">
                 <![CDATA[
-                    <tr><td>{$product_citation}</td>
                         <td align='center'>{$product_type}</td>
                         <td align='center'>{$award_scope}</td>
                         <td align='center'>{$product_year}</td>
@@ -940,20 +947,21 @@
                     <If if="{!=({course_eval(false)}, )}">
                         <![CDATA[
                             <h3>{get(term)} / {$course_subject} {$course_number} / {$course_comp} - {$course_section}</h3>
-                            <b>{$course_eval_n}</b> respondents out of <b>{$course_enroll}</b> enrolled (<b>{round({multiply({divide({$course_eval_n},{$course_enroll})},100)},1)}%</b>)
+                            <b>{$course_eval_responses}</b> respondents out of <b>{$course_eval_enrolled}</b> enrolled (<b>{round({multiply({divide({$course_eval_responses},{$course_eval_enrolled})},100)},1)}%</b>)
                             <table class='wikitable' frame='box' rules='all' style='width:100%;'>
                                 <tr>
                                     <th style='width: 1%;'>Q#</th>
                                     <th style='width: 1%;'>QText</th>
-                                    <th style='width: 1%;'>R1</th>
-                                    <th style='width: 1%;'>R2</th>
-                                    <th style='width: 1%;'>R3</th>
-                                    <th style='width: 1%;'>R4</th>
-                                    <th style='width: 1%;'>R5</th>
+                                    <th style='width: 1%;'>SD</th>
+                                    <th style='width: 1%;'>D</th>
+                                    <th style='width: 1%;'>N</th>
+                                    <th style='width: 1%;'>A</th>
+                                    <th style='width: 1%;'>SA</th>
                                     <th>Chart</th>
                                 </tr>
                                 {course_eval(false)}
-                            </table>
+                            </table><br /><br />
+                            {course_eval_summary(false)}
                             <div class='pagebreak'></div>
                         ]]>
                     </If>
@@ -991,7 +999,7 @@
                 <p>Uploaded documents will be appended at the end of the submitted annual report pdf</p>
             ]]>
         </Static>
-        <For from="1" to="4">
+        <For from="1" to="10">
             <ReportItem id="file{getExtra()}_label" type="Text" blobItem="FILE{getExtra()}_LABEL" blobType="BLOB_TEXT" width="350px" placeholder="Type a label..." encrypt="true">
                 <![CDATA[
                     <div class='files' id='file{getExtra()}'>
