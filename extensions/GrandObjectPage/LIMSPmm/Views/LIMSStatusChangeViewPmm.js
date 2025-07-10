@@ -4,7 +4,8 @@ LIMSStatusChangeViewPmm = Backbone.View.extend({
     
     events: {
         'click #updateStatusButton': 'updateStatus', // Button to update status
-        'click #cancelButton': 'closeDialog' // Button to cancel
+        'click #cancelButton': 'closeDialog', // Button to cancel
+        'click .deleteFile': 'deleteTaskFile' // Button to delete a file
     },
 
     initialize: function(options) {
@@ -39,6 +40,18 @@ LIMSStatusChangeViewPmm = Backbone.View.extend({
     },
     
 
+    deleteTaskFile: function(e){
+        var fileId = $(e.currentTarget).data('assignee').toString();
+        var files = this.model.get('files') || {};
+
+        if (files[fileId]) {
+            files[fileId].delete = true;
+            files[fileId].data = '';
+        }
+
+        this.model.set('files', files);
+        this.render();
+    },
 
     render: function() {
 

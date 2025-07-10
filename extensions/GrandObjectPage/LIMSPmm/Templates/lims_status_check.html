@@ -18,16 +18,10 @@ if (assignees && assignees.length > 0) {
                     <td valign="top">
                         <% 
                         var assigneeId = (assignee.id != undefined) ? assignee.id : assignee; 
-                        var currentStatus = statuses[assigneeId]; // Get current status for the assignee
-                        var docUrl = null;
-                        var filename = null;
-                        files.forEach(function(file) {
-                            if (file.assignee == assigneeId) {
-                                filename = file.filename;
-                                docUrl = file.url;
-                            }
-                        });
-
+                        var currentStatus = statuses[assigneeId];
+                        var fileObj = files[assigneeId] || {};
+                        var filename = fileObj.filename;
+                        var docUrl = fileObj.url;
                         %>
                         <%= currentStatus %>
                     </td>
