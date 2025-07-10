@@ -43,7 +43,7 @@ LIMSStatusChangeViewPmm = Backbone.View.extend({
     deleteTaskFile: function(e){
         var fileId = $(e.currentTarget).data('assignee').toString();
         var files = this.model.get('files') || {};
-        console.log('Deleting file with ID:', fileId, 'from files:', files);
+
         if (files[fileId]) {
             files[fileId].delete = true;
             files[fileId].data = '';
