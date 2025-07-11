@@ -11,6 +11,7 @@ LIMSTaskEditViewPmm = Backbone.View.extend({
         this.project = options.project;
         this.model.saving = false;
         this.listenTo(this.model, "sync", this.render);
+        this.listenTo(this.model, "change:assignees", this.assigneesChanged);
         this.selectTemplate();
         this.model.startTracking();
 
@@ -43,7 +44,67 @@ LIMSTaskEditViewPmm = Backbone.View.extend({
         "click #deleteTask": "deleteTask",
         "click #changeStatusButton": "changeStatus"
     },
-    
+
+    assigneesChanged: function () {
+        var assIds   = _.pluck(this.model.get('assignees') || [], 'id');
+        var $sel     = this.$('select[name=reviewer_id]');
+        var members  = this.project.members;
+
+        // if no assignees then disable reviewer
+        if (assIds.length === 0) {
+            this.model.unset('reviewer', {silent: true});
+            $sel.prop('disabled', true).val('').empty()
+                .trigger('chosen:updated');
+            return;
+        }
+
+        // get the available reviewers
+        var availIds = members.pluck('id').filter(function (id) {
+            return !_.contains(assIds, id);
+        });
+
+        $sel.empty();
+        _.each(availIds, function (id) {
+            var p = members.get(id);
+            $sel.append(
+                $('<option/>').val(id).text(p.get('fullName'))
+            );
+        });
+
+        // If everyone is an assignee then no reviewer.
+        if (availIds.length === 0) { 
+            this.model.unset('reviewer', {silent: true});
+            $sel.prop('disabled', true).val('').trigger('chosen:updated');
+            return;
+        } else {
+            $sel.prop('disabled', false);
+        }
+
+        // get existing reviewer if any
+        var curObj = this.model.get('reviewer') || {};
+        var curId  = curObj.id;
+
+        // check if reviewer is still valid 
+        var keep = curId && !_.contains(assIds, curId) && _.contains(availIds, curId);
+
+        if (keep) {
+            $sel.val(curId).trigger('chosen:updated');
+            return;
+        }
+
+        // assign a new random reviewer
+        var newId  = _.sample(availIds);
+        var person = members.get(newId);
+
+        this.model.set('reviewer', {
+            id:   newId,
+            name: person.get('fullName'),
+            url:  person.get('url') || person.get('profileUrl')
+        });
+
+        $sel.val(newId).trigger('chosen:updated');
+    },
+
     deleteTask: function(){
         this.model.toDelete = true;
         this.model.trigger("change:toDelete");
@@ -113,6 +174,7 @@ LIMSTaskEditViewPmm = Backbone.View.extend({
             _.defer(function(){
                 this.$('select[name=assignees]').show().chosen();
                 this.$('select[name=reviewer_id]').show().chosen();
+                this.assigneesChanged();
             }.bind(this));
         }
         this.editDialog = this.$('#changeStatusDialog');

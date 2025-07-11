@@ -59,14 +59,20 @@
     </td>
 
      <td valign="top">
-         <%= HTML.Select(this, 'reviewer.id', {
-             style: 'width:200px; display: none',
-             options:
-                _.map(this.project.members.toJSON(), function(person) {
-                    return {option: person.fullName, value: person.id};
-                }),
-         }) %>
-     </td>
+    <%
+        var assigneeIds = _.pluck(this.model.get('assignees') || [], 'id');
+        var reviewerId  = (this.model.get('reviewer') || {}).id;
+    %>
+
+    <%= HTML.Select(this, 'reviewer.id', {
+            style: 'width:200px; display: none',
+            disabled: true,
+            options: _.chain(this.project.members.toJSON())
+                    .reject(function (p) { return _.contains(assigneeIds, p.id); })
+                    .map(function (p)   { return {option:p.fullName, value:p.id}; })
+                    .value()
+    }) %>
+    </td>
 
     <td valign="top" style="white-space:nowrap; width:40%">
         <%= HTML.TextArea(this, 'details', {style: "height: 63px;width:100%;box-sizing:border-box;margin:0;"}) %>
