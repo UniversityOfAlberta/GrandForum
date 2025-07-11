@@ -249,10 +249,10 @@ ManagePeopleRowView = Backbone.View.extend({
         }
         
         // Sanity Check: Department different than Faculty Member
-        /*if (me.get('department') != null && this.model.get('department') != null &&
+        if (me.get('department') != null && this.model.get('department') != null &&
             me.get('department').trim().toLowerCase().replace(" and ", " & ") != this.model.get('department').trim().toLowerCase().replace(" and ", " & ")){
-            this.$(".hqpError ul").append("<li>This HQP may not be your student</li>");
-        }*/
+            this.$(".hqpInfo ul").append("<li>This HQP's department is different than yours</li>");
+        }
                 
         this.renderRelationType();
         if(this.parent.table != null){
