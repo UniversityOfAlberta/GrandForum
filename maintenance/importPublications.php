@@ -69,6 +69,10 @@ foreach($people as $person){
         $alex = json_decode(file_get_contents("https://api.openalex.org/works?filter=author.{$query},from_publication_date:".REPORTING_CYCLE_START.
                                               "&sort=publication_year:desc&per-page=100&mailto=dwt@ualberta.ca"));
         foreach($alex->results as $result){
+            if($result->type == "preprint"){
+                // Skip preprints
+                continue;
+            }
             $doi = trim($result->doi);
             $title = trim($result->title);
             $authors = $result->authorships;
