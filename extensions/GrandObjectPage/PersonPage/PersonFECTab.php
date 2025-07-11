@@ -219,7 +219,7 @@ class PersonFECTab extends AbstractEditableTab {
                     $('input.calendar:not(.initialized)').datepicker({dateFormat: 'yy-mm-dd', 
                                                     changeYear: true, 
                                                     changeMonth: true, 
-                                                    yearRange: '1900:".(date('Y')+3)."',
+                                                    yearRange: '1900:".(date('Y')+5)."',
                                                     onChangeMonthYear: function (year, month, inst) {
                                                         var curDate = $(this).datepicker('getDate');
                                                         if (curDate == null)
