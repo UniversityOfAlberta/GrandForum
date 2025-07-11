@@ -21,5 +21,18 @@
     <div id="changeStatusDialog"></div>
 </td>
 <td>
+    <% 
+    if (reviewer) {
+        %>
+            <div><a href="<%= reviewer.url %>"><%= reviewer.name %></a></div>
+        <% 
+    } else {
+        %>
+        <div>No Assignees</div>
+        <%
+    }
+    %>
+</td>
+<td>
     <%= details %>
 </td>

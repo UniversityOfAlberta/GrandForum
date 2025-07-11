@@ -13,6 +13,7 @@ class LIMSTaskPmm extends BackboneModel
     var $id;
     var $opportunity;
     var $assignees;
+    var $reviewer;
     var $task;
     var $dueDate;
     var $comments;
@@ -48,7 +49,7 @@ class LIMSTaskPmm extends BackboneModel
     }
 
    
-     function getAssignees()
+    function getAssignees()
     {
         $data = DBFunctions::select(
             array('grand_pmm_task_assginees'),
@@ -73,6 +74,7 @@ class LIMSTaskPmm extends BackboneModel
             $this->opportunity = $data[0]['opportunity'];
             // $this->assignee = $data[0]['assignee'];
             $this->task = $data[0]['task'];
+            $this->reviewer = $data[0]['reviewer'];
             $this->dueDate = $data[0]['due_date'];
             $this->comments = $data[0]['comments'];
             $files = DBFunctions::select(array('grand_pmm_task_assginees'),
@@ -192,11 +194,21 @@ class LIMSTaskPmm extends BackboneModel
                     'url' => $person->getUrl()
                 );
             }
+            $reviewerData = null;
+            if ($this->reviewer !== null) {
+                $rev = Person::newFromId($this->reviewer);
+                $reviewerData = [
+                    'id'   => $rev->getId(),
+                    'name' => $rev->getNameForForms(),
+                    'url'  => $rev->getUrl()
+                ];
+            }
 
             $json = array(
                 'id' => $this->getId(),
                 'opportunity' => $this->getOpportunity()->getId(),
                 'assignees' => $assignees,
+                'reviewer' => $reviewerData,
                 'task' => $this->getTask(),
                 'dueDate' => $this->getDueDate(),
                 'details' => $this->getComments(),
@@ -219,6 +231,7 @@ class LIMSTaskPmm extends BackboneModel
                 array(
                     'opportunity' => $this->opportunity,
                     // 'assignee' => $this->assignee,
+                    'reviewer' => $this->reviewer,
                     'task' => $this->task,
                     'due_date' => $this->dueDate,
                     'comments' => $this->comments,
@@ -329,6 +342,7 @@ class LIMSTaskPmm extends BackboneModel
                 array(
                     'opportunity' => $this->opportunity,
                       // 'assignee' => $this->assignee,
+                    'reviewer' => $this->reviewer,
                     'task' => $this->task,
                     'due_date' => $this->dueDate,
                     'comments' => $this->comments,
