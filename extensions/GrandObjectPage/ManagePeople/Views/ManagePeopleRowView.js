@@ -163,7 +163,9 @@ ManagePeopleRowView = Backbone.View.extend({
             if(relations.length == 0){
                 // Sanity Check: No Relations with this person, show the 'Remove' icon and show warning
                 this.$(".delete-icon").show();
-                this.$(".hqpError ul").append("<li class='orphanError'>You don't have any relationships with this HQP</li>");
+                if(!_.contains(allowedRoles, STAFF)){
+                    this.$(".hqpError ul").append("<li class='orphanError'>You don't have any relationships with this HQP</li>");
+                }
             }
             else{
                 // This will probably already be hidden, but just incase
