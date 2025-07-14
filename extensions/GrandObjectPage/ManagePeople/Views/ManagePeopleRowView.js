@@ -164,7 +164,8 @@ ManagePeopleRowView = Backbone.View.extend({
                 // Sanity Check: No Relations with this person, show the 'Remove' icon and show warning
                 this.$(".delete-icon").show();
                 if(!_.contains(allowedRoles, STAFF)){
-                    this.$(".hqpError ul").append("<li class='orphanError'>You don't have any relationships with this HQP</li>");
+                    this.$(".hqpError ul li.noRelsError").remove();
+                    this.$(".hqpError ul").append("<li class='noRelsError'>You don't have any relationships with this HQP</li>");
                 }
             }
             else{
