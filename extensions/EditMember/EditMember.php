@@ -86,7 +86,7 @@ class EditMember extends SpecialPage{
             // The Form has been entered
             $person = @Person::newFromName(str_replace(" ", ".", $_POST['name']));
             
-            if($me->isRoleAtLeast(MANAGER)){
+            if($me->isRoleAtLeast(STAFF)){
                 // Sub-Role Changes
                 $subRoles = @$_POST['sub_wpNS'];
                 if(!is_array($subRoles)){
