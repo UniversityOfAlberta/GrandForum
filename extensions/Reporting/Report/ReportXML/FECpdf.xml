@@ -33,8 +33,8 @@
                                 {if("{getFecPersonalInfo(dateAtsec1)}" != "", <tr><td><span class='header'>Date of ATS I:&nbsp;</span></td><td><b>{getFecPersonalInfo(dateAtsec1)}</b></td></tr>)}
                                 {if("{getFecPersonalInfo(dateAtsec2)}" != "", <tr><td><span class='header'>Date of ATS II:&nbsp;</span></td><td><b>{getFecPersonalInfo(dateAtsec2)}</b></td></tr>)}
                                 {if("{getFecPersonalInfo(dateAtsec3)}" != "", <tr><td><span class='header'>Date of ATS III:&nbsp;</span></td><td><b>{getFecPersonalInfo(dateAtsec3)}</b></td></tr>)}
-                                {if("{getFecPersonalInfo(dateOfProbation1)}" != "" && strstr("{$user_case_number}", "A") !== false, <tr><td><span class='header'>Date of Probation 1:&nbsp;</span></td><td><b>{getFecPersonalInfo(dateOfProbation1)}</b></td></tr>)}
-                                {if("{getFecPersonalInfo(dateOfProbation2)}" != "" && strstr("{$user_case_number}", "A") !== false, <tr><td><span class='header'>Date of Probation 2:&nbsp;</span></td><td><b>{getFecPersonalInfo(dateOfProbation2)}</b></td></tr>)}
+                                {if("{getFecPersonalInfo(dateOfProbation1)}" != "", <tr><td><span class='header'>Date of Probation 1:&nbsp;</span></td><td><b>{getFecPersonalInfo(dateOfProbation1)}</b></td></tr>)}
+                                {if("{getFecPersonalInfo(dateOfProbation2)}" != "", <tr><td><span class='header'>Date of Probation 2:&nbsp;</span></td><td><b>{getFecPersonalInfo(dateOfProbation2)}</b></td></tr>)}
                                 {if("{getFecPersonalInfo(dateOfRetirement)}" != "", <tr><td><span class='header'>Date of Retirement:&nbsp;</span></td><td><b>{getFecPersonalInfo(dateOfRetirement)}</b></td></tr>)}
                             </table>
                         </td>
