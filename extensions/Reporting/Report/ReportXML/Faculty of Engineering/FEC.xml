@@ -991,6 +991,7 @@
     <ReportSection id="attachments" tooltip="Documents Upload" name="Attachments" title="APPENDIX D: OTHER ATTACHMENTS" blobSection="FEC_ADDITIONAL_INFORMATION" type="EditableReportSection">
         <Static>
             <![CDATA[
+                <p>This section is for attachments <b>other than your publications</b>.  If your department chair has requested a copy of your publications, please email PDFs of your publications to the chair’s assistant;  please do not upload them here.</p>
                 <p>Uploaded documents will be appended at the end of the submitted annual report pdf</p>
             ]]>
         </Static>
