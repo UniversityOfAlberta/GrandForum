@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report pdfFiles="FECpdf" extends="../FEC">
+    <ReportSection id="review" />
+    <ReportSection id="submit" />
+</Report>
