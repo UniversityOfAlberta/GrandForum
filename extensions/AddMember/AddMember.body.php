@@ -22,10 +22,11 @@ class UserCreate {
                         continue;
                     }
                     //Add Role to DB
+                    $start_date = (isset($_POST['startDate'])) ? $_POST['startDate'] : EQ(COL('CURRENT_TIMESTAMP'));
                     DBFunctions::insert('grand_roles',
                                         array('user_id' => $id,
                                               'role' => $role,
-                                              'start_date' => EQ(COL('CURRENT_TIMESTAMP'))));
+                                              'start_date' => $start_date));
                 }
             }
         }
