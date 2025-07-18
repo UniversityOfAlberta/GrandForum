@@ -33,8 +33,8 @@
                                 {if("{getFecPersonalInfo(dateAtsec1)}" != "", <tr><td><span class='header'>Date of ATS I:&nbsp;</span></td><td><b>{getFecPersonalInfo(dateAtsec1)}</b></td></tr>)}
                                 {if("{getFecPersonalInfo(dateAtsec2)}" != "", <tr><td><span class='header'>Date of ATS II:&nbsp;</span></td><td><b>{getFecPersonalInfo(dateAtsec2)}</b></td></tr>)}
                                 {if("{getFecPersonalInfo(dateAtsec3)}" != "", <tr><td><span class='header'>Date of ATS III:&nbsp;</span></td><td><b>{getFecPersonalInfo(dateAtsec3)}</b></td></tr>)}
-                                {if("{getFecPersonalInfo(dateOfProbation1)}" != "", <tr><td><span class='header'>Date of Probation 1:&nbsp;</span></td><td><b>{getFecPersonalInfo(dateOfProbation1)}</b></td></tr>)}
-                                {if("{getFecPersonalInfo(dateOfProbation2)}" != "", <tr><td><span class='header'>Date of Probation 2:&nbsp;</span></td><td><b>{getFecPersonalInfo(dateOfProbation2)}</b></td></tr>)}
+                                {if("{getFecPersonalInfo(dateOfProbation1)}" != "" && "{getFecPersonalInfo(dateOfAssociate)}" == "" && "{getFecPersonalInfo(dateOfProfessor)}" == "", <tr><td><span class='header'>Date of Probation 1:&nbsp;</span></td><td><b>{getFecPersonalInfo(dateOfProbation1)}</b></td></tr>)}
+                                {if("{getFecPersonalInfo(dateOfProbation2)}" != "" && "{getFecPersonalInfo(dateOfAssociate)}" == "" && "{getFecPersonalInfo(dateOfProfessor)}" == "", <tr><td><span class='header'>Date of Probation 2:&nbsp;</span></td><td><b>{getFecPersonalInfo(dateOfProbation2)}</b></td></tr>)}
                                 {if("{getFecPersonalInfo(dateOfRetirement)}" != "", <tr><td><span class='header'>Date of Retirement:&nbsp;</span></td><td><b>{getFecPersonalInfo(dateOfRetirement)}</b></td></tr>)}
                             </table>
                         </td>
@@ -353,7 +353,7 @@
                     </Static>
                     <ReportItemSet type="String" array="Journal Paper|
                                                         Conference Paper\|Workshop Paper|
-                                                        Bachelors Thesis\|Book\|Book Chapter\|Collections Paper\|Edited Book\|Masters Thesis\|Misc\|Other\|PHD Thesis\|Journal Abstract\|White Paper\|Tech Report\|Poster\|Manual">
+                                                        Bachelors Thesis\|Book\|Book Chapter\|Collections Paper\|Edited Book\|Masters Thesis\|Misc\|Other\|PHD Thesis\|Journal Abstract\|White Paper\|Tech Report\|Poster\|Manual\|Preprint">
                         <ReportItemSet id="products{$index}" type="PersonProductsReportItemSet" category="Publication" productType="{getExtra()}" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END" peerReviewed="Yes">
                             <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" blobSection="FEC_PRODUCTS">
                                 <![CDATA[
@@ -382,7 +382,7 @@
                     </Static>
                     <ReportItemSet type="String" array="Journal Paper|
                                                         Conference Paper\|Workshop Paper|
-                                                        Bachelors Thesis\|Book\|Book Chapter\|Collections Paper\|Edited Book\|Masters Thesis\|Misc\|Other\|PHD Thesis\|Journal Abstract\|White Paper\|Tech Report\|Poster\|Manual">
+                                                        Bachelors Thesis\|Book\|Book Chapter\|Collections Paper\|Edited Book\|Masters Thesis\|Misc\|Other\|PHD Thesis\|Journal Abstract\|White Paper\|Tech Report\|Poster\|Manual\|Preprint">
                         <ReportItemSet id="products{$index}" type="PersonProductsReportItemSet" category="Publication" productType="{getExtra()}" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END" peerReviewed="Yes">
                             <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" isTopAnchor="false" blobSection="FEC_PRODUCTS">
                                 <![CDATA[
@@ -410,7 +410,7 @@
                     </Static>
                     <ReportItemSet type="String" array="Journal Paper|
                                                         Conference Paper\|Workshop Paper|
-                                                        Bachelors Thesis\|Book\|Book Chapter\|Collections Paper\|Edited Book\|Masters Thesis\|Misc\|Other\|PHD Thesis\|Journal Abstract\|White Paper\|Tech Report\|Poster\|Manual">
+                                                        Bachelors Thesis\|Book\|Book Chapter\|Collections Paper\|Edited Book\|Masters Thesis\|Misc\|Other\|PHD Thesis\|Journal Abstract\|White Paper\|Tech Report\|Poster\|Manual\|Preprint">
                         <ReportItemSet id="products{$index}" type="PersonProductsReportItemSet" category="Publication" productType="{getExtra()}" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END" peerReviewed="No">
                             <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" blobSection="FEC_PRODUCTS">
                                 <![CDATA[
@@ -439,7 +439,7 @@
                     <!-- Footnotes -->
                     <ReportItemSet type="String" array="Journal Paper|
                                                         Conference Paper\|Workshop Paper|
-                                                        Bachelors Thesis\|Book\|Book Chapter\|Collections Paper\|Edited Book\|Masters Thesis\|Misc\|Other\|PHD Thesis\|Journal Abstract\|White Paper\|Tech Report\|Poster\|Manual">
+                                                        Bachelors Thesis\|Book\|Book Chapter\|Collections Paper\|Edited Book\|Masters Thesis\|Misc\|Other\|PHD Thesis\|Journal Abstract\|White Paper\|Tech Report\|Poster\|Manual\|Preprint">
                         <ReportItemSet id="products{$index}" type="PersonProductsReportItemSet" category="Publication" productType="{getExtra()}" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END" peerReviewed="No">
                             <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" isTopAnchor="false" blobSection="FEC_PRODUCTS">
                                 <![CDATA[

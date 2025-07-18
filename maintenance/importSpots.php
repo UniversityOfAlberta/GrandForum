@@ -35,12 +35,12 @@
         $enrolled = $spot[10];
         $responses = $spot[11];
         $qId = $spot[12];
-        $qText = $spot[13];
-        $rsp1 = (int)$spot[14];
-        $rsp2 = (int)$spot[15];
-        $rsp3 = (int)$spot[16];
-        $rsp4 = (int)$spot[17];
-        $rsp5 = (int)$spot[18];
+        $qText = $spot[15];
+        $rsp1 = (int)$spot[16];
+        $rsp2 = (int)$spot[17];
+        $rsp3 = (int)$spot[18];
+        $rsp4 = (int)$spot[19];
+        $rsp5 = (int)$spot[20];
         
         $uniqueQs[$qId] = $qText;
         

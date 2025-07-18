@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report pdfFiles="Letters/23" extends="Letters/Base">
+    <ReportSection id="letter" title="Application for Promotion - Promotion not Recommended">
+        <ReportItem id="from">
+            <![CDATA[
+                {getText({$report_type}, TABLE, CHAIR, {$user_id}, 1, 0)}
+            ]]>
+        </ReportItem>
+        <ReportItem id="body">
+            <![CDATA[
+                <p>This is to inform you that I do not support and will not be recommending to the Faculty Evaluation Committee (FEC) your application for promotion to the rank of Professor. My recommendation is based on the following rationale:</p>
+                <p>{getText({$report_type}, TABLE, COMMENT, {$user_id}, 1, 0)}</p>
+                
+                <p>Under Article A6.17.1 of Schedule A, you have the right to appear before FEC and contest the recommendation. It is advisable that you consult the Association of Academic Staff University of Alberta (AASUA) for advice.</p>
+                
+                <p>Please be advised that the date for your case has been scheduled for December 2 - 6 in {getText({$report_type}, TABLE, LOCATION, {$user_id}, 1, 0)}.</p>
+                
+                Should you decide to contest the recommendation, the following information is to be included in your written submission to the FEC Chair, Eleni Stroulia by {getText({$report_type}, TABLE, FOLLOWUP_DATE, {$user_id}, 1, 0)}, with a copy to your Department Chair:
+                <ul style='margin-left: 1em;'>
+                    <li>a statement advising FEC whether or not you will be appearing in person before FEC to present your case;</li>
+                    <li>any material in response to the Department Chair’s [Dean’s] recommendation and any other material relevant to your case;</li>
+                    <li>a list of names of persons who will attend the FEC hearing as your witnesses.</li>
+                </ul>
+                
+                <p>Materials submitted to the FEC Chair and Department Chair should be submitted electronically, if feasible.</p>
+                
+                <p>If you have any procedural questions, please contact the FEC Administrator, Lakhan Khara, at sciea@ualberta.ca.</p>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+</Report>

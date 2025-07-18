@@ -27,7 +27,12 @@ PageRouter = Backbone.Router.extend({
 var pageRouter = new PageRouter;
 
 pageRouter.on('route:defaultRoute', function (actions) {
-    main.set('title', 'HQP Management');
+    if(_.contains(allowedRoles, STAFF)){
+        main.set('title', 'People Management');
+    }
+    else{
+        main.set('title', 'HQP Management');
+    }
     this.closeCurrentView();
     var people = new People();
     people.roles = ['managed'];

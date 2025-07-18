@@ -146,7 +146,7 @@ ManagePeopleRowView = Backbone.View.extend({
             var end = ""; this.model.get('end');
             var position = this.model.get('position');
             
-            // Sanity Check 3: Contains Orphaned relationships
+            // Sanity Check: Contains Orphaned relationships
             var foundOrphan = false;
             relations.each(function(relation){
                 if(relation.get('university') == 0 || uniIds.indexOf(relation.get('university')) == -1){
@@ -161,8 +161,12 @@ ManagePeopleRowView = Backbone.View.extend({
             
             var latestRel = null;
             if(relations.length == 0){
-                // No Relations with this person, so the 'Remove' icon
+                // Sanity Check: No Relations with this person, show the 'Remove' icon and show warning
                 this.$(".delete-icon").show();
+                if(!_.contains(allowedRoles, STAFF)){
+                    this.$(".hqpError ul li.noRelsError").remove();
+                    this.$(".hqpError ul").append("<li class='noRelsError'>You don't have any relationships with this HQP</li>");
+                }
             }
             else{
                 // This will probably already be hidden, but just incase
@@ -233,7 +237,7 @@ ManagePeopleRowView = Backbone.View.extend({
         });
         this.el.innerHTML = this.template(this.model.toJSON());
         
-        // Sanity Check 1: Incomplete Student Data Check - highlights students with empty dataset
+        // Sanity Check: Incomplete Student Data Check - highlights students with empty dataset
         if(_.size(_.filter([this.model.get('university'),
                             this.model.get('position'),
                             this.model.get('department')],
@@ -247,10 +251,10 @@ ManagePeopleRowView = Backbone.View.extend({
             this.$(".hqpError ul").append("<li>Basic Info is incomplete</li>");
         }
         
-        // Sanity Check 2: Department different than Faculty Member
+        // Sanity Check: Department different than Faculty Member
         if (me.get('department') != null && this.model.get('department') != null &&
             me.get('department').trim().toLowerCase().replace(" and ", " & ") != this.model.get('department').trim().toLowerCase().replace(" and ", " & ")){
-            this.$(".hqpError ul").append("<li>This HQP may not be your student</li>");
+            this.$(".hqpInfo ul").append("<li>This HQP's department is different than yours</li>");
         }
                 
         this.renderRelationType();

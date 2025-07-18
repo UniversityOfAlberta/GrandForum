@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report pdfFiles="Letters/7" extends="Letters/Base">
+    <ReportSection id="letter" title="End of First Probationary Period - 2nd Probation Awarded">
+        <ReportItem id="body">
+            <![CDATA[
+                <p>I am pleased to inform you that the FEC Committee supports your Department Chair’s recommendation that you be granted a second probationary period. Pursuant to Article A5.03.2(a) [A5.03.4(a)] of Schedule A, this decision is final and binding.</p>
+                
+                <p>In accordance with the provisions of Article A5.02.8 of Schedule A, your second probationary appointment will be for the two-year period July 1, {$next_year} to June 30, {add({$next_year},2)}. Your appointment will be governed by the Common Agreement and Schedule A, as amended from time to time</p>
+                
+                <p>Under Article A6.03.9 of Schedule A, the standards for the award of tenure and concurrent designation as associate professor applicable to you shall not be changed unless you have agreed to the change. I encourage you to remain familiar with the standards for tenure and promotion of the Faculty and understand the expectations of your Department Chair.</p>
+                <p>{getText({$report_type}, TABLE, COMMENT, {$user_id}, 1, 0)}</p>
+                
+                <p>Thank you for your contributions to the University and I wish you great success during the coming year.</p>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+</Report>

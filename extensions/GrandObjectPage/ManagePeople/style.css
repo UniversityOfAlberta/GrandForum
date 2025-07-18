@@ -44,6 +44,13 @@ table.wikitable tr.deleted {
     color: #FF6600;
 }
 
+.relInfo,.hqpInfo {
+    text-align: left;
+    font-size: 12px;
+    white-space: initial;
+    color: #2f9edf;
+}
+
 .orphansLabel {
     text-align: center; 
     font-size: 26px; 

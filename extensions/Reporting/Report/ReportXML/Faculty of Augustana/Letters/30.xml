@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report pdfFiles="Letters/30" extends="Letters/Base">
+    <ReportSection id="letter" title="Incrementation - Recommendation of ≥ 1.0">
+        <ReportItem id="from">
+            <![CDATA[
+                {getText({$report_type}, TABLE, CHAIR, {$user_id}, 1, 0)}
+            ]]>
+        </ReportItem>
+        <ReportItem id="body">
+            <![CDATA[
+                <p>Based on my review of your performance, your annual report and our meeting to discuss my review on {getText({$report_type}, TABLE, FOLLOWUP_DATE, {$user_id}, 1, 0)}, I am writing to advise you that I will be making a recommendation to the Faculty Evaluation Committee (FEC) for incrementation of {getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)}.</p>
+                
+                <p>As per the requirements of Article A6 14.1 of Schedule A, please accept this as notification that the Faculty Evaluation Committee meetings will be held December 2 - December 6. Shortly after the completion of this meeting, you will be notified of the FEC’s incrementation award</p>
+                
+                <p>Thank you for your contributions to the University and I wish you great success during the coming year.</p>
+            ]]>
+        </ReportItem>
+        <ReportItem id="footer">
+            <![CDATA[
+                
+            ]]>
+        </ReportItem>
+    </ReportSection>
+</Report>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report pdfFiles="Letters/45" extends="Letters/Base">
+    <ReportSection id="letter" title="Sabbatical Application - Not Recommended or Approved">
+        <ReportItem id="body">
+            <![CDATA[
+                {set(length, {getText(RP_SABBATICAL, SABBATICAL, LENGTH, 0, {$user_id}, 0)})}
+                {set(start6, {getText(RP_SABBATICAL, SABBATICAL, START6, 0, {$user_id}, 0)})}
+                {set(start12, {getText(RP_SABBATICAL, SABBATICAL, START12, 0, {$user_id}, 0)})}
+                
+                {set(end6, {date_format({strtotime({get(start6)} + 6 months - 1 day)})})}
+                {set(end12, {date_format({strtotime({get(start12)} + 12 months - 1 day)})})}
+                <p>
+                    This is to inform you that your application for a {replace(months, month, {get(length)})} sabbatical from 
+                        {if("{get(length)}" == "6 months", {get(start6)})}
+                        {if("{get(length)}" == "12 months", {date_format({strtotime({get(start12)})})})} 
+                    to 
+                        {if("{get(length)}" == "6 months", {get(end6)})}
+                        {if("{get(length)}" == "12 months", {get(end12)})}
+                    was not recommended for approval by the FEC. The FEC had the following concerns:
+                </p>
+                <p>{getText({$report_type}, TABLE, COMMENTS, {$user_id}, 1, 0)}</p>
+            
+                <p>Your application has been denied as it was found not to be meritorious and of mutual advantage to you and the University. Should you choose to apply for a sabbatical again, I encourage you to address the concerns identified by the FEC. Sabbatical applications are to be submitted by {getText({$report_type}, TABLE, FOLLOWUP_DATE, {$user_id}, 1, 0)}.</p>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+</Report>

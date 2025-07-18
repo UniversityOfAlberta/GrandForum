@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report pdfFiles="Letters/31" extends="Letters/Base">
+    <ReportSection id="letter" title="Incrementation - Incrementation Awarded as Recommended">
+        <ReportItem id="from">
+            <![CDATA[
+                FEC Chair
+            ]]>
+        </ReportItem>
+        <ReportItem id="body">
+            <![CDATA[
+                <p>I am writing to inform you that the Faculty Evaluation Committee (FEC) has accepted the recommendation of your Department Chair and awarded you {getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)} increment in recognition of your achievements during the {$last_year}/{substr({$this_year},2,2)} period under review. The award takes effect on July 1, {$next_year}.</p>
+
+                <p>Thank you for your contributions to the University, and I wish you great success during the coming year.</p>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+</Report>

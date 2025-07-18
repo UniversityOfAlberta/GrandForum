@@ -130,7 +130,7 @@
         </Instructions>
         <Static id="top">
             <![CDATA[
-                <b>Period: {time2date(CYCLE_START, F Y)} to {time2date(CYCLE_END, F Y)}</b><p style="font-size:0.8em;line-height:1.5em;">A staff member is required to submit an annual report covering the staff member's activities during the previous year; see <a href='https://www.ualberta.ca/human-resources-health-safety-environment/media-library/my-employment/agreements/university-aasua-2018-2020-collective-agreement-schedule-a-academic-faculty-members.pdf' target='_blank'>Faculty Agreement</a> or <a href='https://www.ualberta.ca/human-resources-health-safety-environment/media-library/my-employment/agreements/university-aasua-2018-2020-collective-agreement-schedule-b-faculty-service-officers.pdf' target='_blank'>FSO Agreement</a>. The information submitted will be used in arriving at decisions regarding salaries, tenure, and promotion.</p>
+                <b>Period: {time2date(CYCLE_START, F Y)} to {time2date(CYCLE_END, F Y)}</b><p style="font-size:0.8em;line-height:1.5em;">A staff member is required to submit an annual report covering the staff member's activities during the previous year; see <a href='https://www.ualberta.ca/en/human-resources-health-safety-environment/media-library/my-employment/agreements/schedule-a-academic-faculty-members-2020-2024.pdf' target='_blank'>Faculty Agreement</a> or <a href='https://www.ualberta.ca/en/human-resources-health-safety-environment/media-library/my-employment/agreements/schedule-b-faculty-service-officer-2020-2024.pdf' target='_blank'>FSO Agreement</a> or <a href='https://www.ualberta.ca/en/human-resources-health-safety-environment/media-library/my-employment/agreements/schedule-d-academic-teaching-staff-2020-2024.pdf' target='_blank'>ATS Agreement</a>. The information submitted will be used in arriving at decisions regarding salaries, tenure, and promotion.</p>
                 <div style='display:inline-block;width:59%;'>
                     <table class='wikitable'>
                         <tr><td><b>Name:</b></td><td>{$user_name}</td></tr>
@@ -158,8 +158,8 @@
                         {if("{getFecPersonalInfo(dateAtsec1)}" != "", <tr><td><b>Date of ATS I:&nbsp;</b></td><td>{getFecPersonalInfo(dateAtsec1)}</td></tr>)}
                         {if("{getFecPersonalInfo(dateAtsec2)}" != "", <tr><td><b>Date of ATS II:&nbsp;</b></td><td>{getFecPersonalInfo(dateAtsec2)}</td></tr>)}
                         {if("{getFecPersonalInfo(dateAtsec3)}" != "", <tr><td><b>Date of ATS III:&nbsp;</b></td><td>{getFecPersonalInfo(dateAtsec3)}</td></tr>)}
-                        {if("{getFecPersonalInfo(dateOfProbation1)}" != "", <tr><td><b>Date of Probation 1:&nbsp;</b></td><td>{getFecPersonalInfo(dateOfProbation1)}</td></tr>)}
-                        {if("{getFecPersonalInfo(dateOfProbation2)}" != "", <tr><td><b>Date of Probation 2:&nbsp;</b></td><td>{getFecPersonalInfo(dateOfProbation2)}</td></tr>)}
+                        {if("{getFecPersonalInfo(dateOfProbation1)}" != "" && "{getFecPersonalInfo(dateOfAssociate)}" == "" && "{getFecPersonalInfo(dateOfProfessor)}" == "", <tr><td><b>Date of Probation 1:&nbsp;</b></td><td>{getFecPersonalInfo(dateOfProbation1)}</td></tr>)}
+                        {if("{getFecPersonalInfo(dateOfProbation2)}" != "" && "{getFecPersonalInfo(dateOfAssociate)}" == "" && "{getFecPersonalInfo(dateOfProfessor)}" == "", <tr><td><b>Date of Probation 2:&nbsp;</b></td><td>{getFecPersonalInfo(dateOfProbation2)}</td></tr>)}
                         {if("{getFecPersonalInfo(dateOfRetirement)}" != "", <tr><td><b>Date of Retirement:&nbsp;</b></td><td>{getFecPersonalInfo(dateOfRetirement)}</td></tr>)}
                     </table>
                 </div>
@@ -597,7 +597,7 @@
         </Static>
         <ReportItemSet type="String" array="Journal Paper|
                                             Conference Paper\|Workshop Paper|
-                                            Bachelors Thesis\|Book\|Book Chapter\|Collections Paper\|Edited Book\|Masters Thesis\|Misc\|Other\|PHD Thesis\|Journal Abstract\|White Paper\|Tech Report\|Poster\|Manual">
+                                            Bachelors Thesis\|Book\|Book Chapter\|Collections Paper\|Edited Book\|Masters Thesis\|Misc\|Other\|PHD Thesis\|Journal Abstract\|White Paper\|Tech Report\|Poster\|Manual\|Preprint">
             <ReportItemSet id="products{$index}" type="PersonProductsReportItemSet" category="Publication" productType="{getExtra()}" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END" peerReviewed="Yes">
                 <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" optional="true" encrypt="true">
                     <![CDATA[
@@ -634,7 +634,7 @@
         </Static>
         <ReportItemSet type="String" array="Journal Paper|
                                          Conference Paper\|Workshop Paper|
-                                         Bachelors Thesis\|Book\|Book Chapter\|Collections Paper\|Edited Book\|Masters Thesis\|Misc\|Other\|PHD Thesis\|Journal Abstract\|White Paper\|Tech Report\|Poster\|Manual">
+                                         Bachelors Thesis\|Book\|Book Chapter\|Collections Paper\|Edited Book\|Masters Thesis\|Misc\|Other\|PHD Thesis\|Journal Abstract\|White Paper\|Tech Report\|Poster\|Manual\|Preprint">
             <ReportItemSet id="products{$index}" type="PersonProductsReportItemSet" category="Publication" productType="{getExtra()}" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END" peerReviewed="No">
                 <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" optional="true" encrypt="true">
                     <![CDATA[
