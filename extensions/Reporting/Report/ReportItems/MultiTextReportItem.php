@@ -474,17 +474,7 @@ EOF;
             foreach($values as $vals){
                 $innerVals = $vals;
                 $text = implode(", ", $innerVals);
-                
-                $text = str_replace("<p>", "", "{$text}");
-                $text = str_replace("</p>", "", "{$text}");
-                $text = str_replace("<", "&lt;", $text);
-                $text = str_replace("&lt;b>", "<b>", $text);
-                $text = str_replace("&lt;u>", "<u>", $text);
-                $text = str_replace("&lt;i>", "<i>", $text);
-                $text = str_replace("&lt;/b>", "</b>", $text);
-                $text = str_replace("&lt;/u>", "</u>", $text);
-                $text = str_replace("&lt;/i>", "</i>", $text);
-                
+                $text = TextareaReportItem::cleanHTML($text);
                 $innerValues[] = nl2br($text);
             }
             $item .= implode("<br /><br />", $innerValues);
@@ -551,15 +541,7 @@ EOF;
                     foreach($indices as $j => $index){
                         if(@is_string($value[$index])){
                             $text = @$value[$index];
-                            $text = str_replace("<p>", "", "{$text}");
-                            $text = str_replace("</p>", "", "{$text}");
-                            $text = str_replace("<", "&lt;", $text);
-                            $text = str_replace("&lt;b>", "<b>", $text);
-                            $text = str_replace("&lt;u>", "<u>", $text);
-                            $text = str_replace("&lt;i>", "<i>", $text);
-                            $text = str_replace("&lt;/b>", "</b>", $text);
-                            $text = str_replace("&lt;/u>", "</u>", $text);
-                            $text = str_replace("&lt;/i>", "</i>", $text);
+                            $text = TextareaReportItem::cleanHTML($text);
                         }
                         if($isVertical){
                             $item .= "<tr><td align='right'><b>{$labels[$j]}:</b></td>";

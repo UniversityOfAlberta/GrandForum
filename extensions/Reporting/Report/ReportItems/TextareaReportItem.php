@@ -133,6 +133,19 @@ class TextareaReportItem extends AbstractReportItem {
         return $height;
     }
     
+    static function cleanHTML($text){
+        $text = str_replace("<p>", "", "{$text}");
+        $text = str_replace("</p>", "", "{$text}");
+        $text = str_replace("<", "&lt;", $text);
+        $text = str_replace("&lt;b>", "<b>", $text);
+        $text = str_replace("&lt;u>", "<u>", $text);
+        $text = str_replace("&lt;i>", "<i>", $text);
+        $text = str_replace("&lt;/b>", "</b>", $text);
+        $text = str_replace("&lt;/u>", "</u>", $text);
+        $text = str_replace("&lt;/i>", "</i>", $text);
+        return $text;
+    }
+    
     function getHTML(){
         $value = $this->getBlobValue();
         $rows = $this->getAttr('rows', 5);
@@ -300,15 +313,7 @@ EOF;
             $html .= "<div class='tinymce'>$blobValue</div>";
         }
         else{
-            $blobValue = str_replace("<p>", "", "{$blobValue}");
-            $blobValue = str_replace("</p>", "", "{$blobValue}");
-            $blobValue = str_replace("<", "&lt;", $blobValue);
-            $blobValue = str_replace("&lt;b>", "<b>", $blobValue);
-            $blobValue = str_replace("&lt;u>", "<u>", $blobValue);
-            $blobValue = str_replace("&lt;i>", "<i>", $blobValue);
-            $blobValue = str_replace("&lt;/b>", "</b>", $blobValue);
-            $blobValue = str_replace("&lt;/u>", "</u>", $blobValue);
-            $blobValue = str_replace("&lt;/i>", "</i>", $blobValue);
+            $blobValue = TextareaReportItem::cleanHTML($blobValue);
             $html .= nl2br($blobValue);
         }
         return $html;
