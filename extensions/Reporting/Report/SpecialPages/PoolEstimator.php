@@ -15,7 +15,7 @@ class PoolEstimator extends SpecialPage {
     
     function userCanExecute($user){
         $me = Person::newFromUser($user);
-        return ($me->isRole(DEAN) || $me->isRole(DEANEA) || $me->isRole(VDEAN) || $me->isRoleAtLeast(STAFF) || $me->isRoleAtLeast(HR));
+        return ($me->isRole(DEAN) || $me->isRole(DEANEA) || $me->isRole(VDEAN) || $me->isRoleAtLeast(STAFF) || $me->isRole(HR));
     }
     
     function isAtCap($person){
