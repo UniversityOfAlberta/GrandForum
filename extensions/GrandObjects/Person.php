@@ -2965,11 +2965,21 @@ class Person extends BackboneModel {
                 foreach($paper->getExclusions() as $exclusion){
                     if($exclusion->getId() == $this->getId()){
                         // This Person doesn't want to be associated with this Product
-                        $skip = true;
+                        unset($papersArray[$key]);
+                        break;
                     }
                 }
-                if($skip){ 
-                    unset($papersArray[$key]);
+            }
+        }
+        if($includeContributors && !$includeHQP){
+            // Get rid of HQP outputs (maybe a bit slow since 
+            $hqpPubs = $this->getPapersAuthored($category, $startRange, $endRange, true, $networkRelated, $useReported, $onlyUseStartDate, true, false);
+            foreach($papersArray as $key => $paper){
+                foreach($hqpPubs as $pub){
+                    if($pub->getId() == $paper->getId()){
+                        unset($papersArray[$key]);
+                        break;
+                    }
                 }
             }
         }
