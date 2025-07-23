@@ -2971,7 +2971,7 @@ class Person extends BackboneModel {
                 }
             }
         }
-        if($includeContributors && !$includeHQP){
+        /*if($includeContributors && !$includeHQP){
             // Get rid of HQP outputs (maybe a bit slow since 
             $hqpPubs = $this->getPapersAuthored($category, $startRange, $endRange, true, $networkRelated, $useReported, $onlyUseStartDate, true, false);
             foreach($papersArray as $key => $paper){
@@ -2982,7 +2982,7 @@ class Person extends BackboneModel {
                     }
                 }
             }
-        }
+        }*/
         return $papersArray;
     }
     
