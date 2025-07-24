@@ -536,11 +536,11 @@ class ReportItemCallback {
                 <td style='background: white;'>
                     <table padding='0' cellspacing='0' style='width:100%;'>
                         <tr>
-                            <td style='background:#b33100; width: ".(($r1/$count)*100)."%; height:1em; padding:0;'></td>
-                            <td style='background:#d55e00; width: ".(($r2/$count)*100)."%; height:1em; padding:0;'></td>
-                            <td style='background:#0072b2; width: ".(($r3/$count)*100)."%; height:1em; padding:0;'></td>
-                            <td style='background:#009e73; width: ".(($r4/$count)*100)."%; height:1em; padding:0;'></td>
-                            <td style='background:#00662b; width: ".(($r5/$count)*100)."%; height:1em; padding:0;'></td>
+                            <td style='background:#e84236; width: ".(($r1/$count)*100)."%; height:1em; padding:0;'></td>
+                            <td style='background:#fe6d00; width: ".(($r2/$count)*100)."%; height:1em; padding:0;'></td>
+                            <td style='background:#43e0f4; width: ".(($r3/$count)*100)."%; height:1em; padding:0;'></td>
+                            <td style='background:#01c886; width: ".(($r4/$count)*100)."%; height:1em; padding:0;'></td>
+                            <td style='background:#2ea743; width: ".(($r5/$count)*100)."%; height:1em; padding:0;'></td>
                         </tr>
                     </table>
                 </td>
@@ -669,9 +669,9 @@ class ReportItemCallback {
                 switch($i){
                     case 0: $color = "#e84236"; break;
                     case 1: $color = "#fe6d00"; break;
-                    case 2: $color = "#f9c001"; break;
-                    case 3: $color = "#01c0bb"; break;
-                    case 4: $color = "#2fa954"; break;
+                    case 2: $color = "#43e0f4"; break;
+                    case 3: $color = "#01c886"; break;
+                    case 4: $color = "#2ea743"; break;
                 }
                 $top = 1*$dpi;
                 $marginTop = ((($vote/$max)*$height) <= 1) ? "-1.25em" : 0;
