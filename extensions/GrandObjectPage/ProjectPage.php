@@ -193,7 +193,7 @@ class ProjectPage {
             }
 
             foreach($myProjects as $key => $project){
-                if($project->isSubProject() || $project->getStatus() != "Active"){
+                if($project->getStatus() != "Active"){
                     unset($myProjects[$key]);
                 }
             }
