@@ -2879,7 +2879,7 @@ class Person extends BackboneModel {
      * @param string $useReported Whether to use reported years.  If false, it will not, if set to a year then it uses that year
      * @return array Returns an array of Paper(s) authored/co-authored by this Person during the specified dates
      */
-    function getPapersAuthored($category="all", $startRange = CYCLE_START, $endRange = CYCLE_START_ACTUAL, $includeHQP=false, $networkRelated=true, $useReported=false, $onlyUseStartDate=false, $exclude=true, $includeContributors=false){
+    function getPapersAuthored($category="all", $startRange = CYCLE_START, $endRange = CYCLE_START_ACTUAL, $includeHQP=false, $networkRelated=true, $useReported=false, $onlyUseStartDate=false, $exclude=true, $includeContributors=false, $onlyContributors=false){
         global $config;
         self::generateAuthorshipCache($this->id);
         $processed = array();
@@ -2903,7 +2903,7 @@ class Person extends BackboneModel {
             }
         }
         
-        if(isset(self::$authorshipCache[$this->id])){
+        if(isset(self::$authorshipCache[$this->id]) && !$onlyContributors){
             foreach(self::$authorshipCache[$this->id] as $id){
                 if(!isset($processed[$id])){
                     $processed[$id] = true;
@@ -2911,7 +2911,7 @@ class Person extends BackboneModel {
                 }
             }
         }
-        if($includeContributors && isset(self::$contributorCache[$this->id])){
+        if(($includeContributors && isset(self::$contributorCache[$this->id])) || $onlyContributors){
             foreach(self::$contributorCache[$this->id] as $id){
                 if(!isset($processed[$id])){
                     $processed[$id] = true;
@@ -2971,9 +2971,9 @@ class Person extends BackboneModel {
                 }
             }
         }
-        /*if($includeContributors && !$includeHQP){
-            // Get rid of HQP outputs (maybe a bit slow since 
-            $hqpPubs = $this->getPapersAuthored($category, $startRange, $endRange, true, $networkRelated, $useReported, $onlyUseStartDate, true, false);
+        if($onlyContributors){
+            // Get rid of HQP outputs
+            $hqpPubs = $this->getPapersAuthored($category, $startRange, $endRange, true, $networkRelated, $useReported, $onlyUseStartDate);
             foreach($papersArray as $key => $paper){
                 foreach($hqpPubs as $pub){
                     if($pub->getId() == $paper->getId()){
@@ -2982,7 +2982,7 @@ class Person extends BackboneModel {
                     }
                 }
             }
-        }*/
+        }
         return $papersArray;
     }
     

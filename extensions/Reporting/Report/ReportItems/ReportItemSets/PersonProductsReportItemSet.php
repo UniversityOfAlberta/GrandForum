@@ -13,6 +13,7 @@ class PersonProductsReportItemSet extends ReportItemSet {
         $useProductYear = (strtolower($this->getAttr("useProductYear", "false")) == "true");
         $onlyUseStartDate = (strtolower($this->getAttr("onlyUseStartDate", "false")) == "true");
         $includeContributors = (strtolower($this->getAttr("includeContributors", "false")) == "true");
+        $onlyContributors = (strtolower($this->getAttr("onlyContributors", "false")) == "true");
         $start_date = $this->getAttr("start", REPORTING_CYCLE_START);
         $end_date = $this->getAttr("end", REPORTING_CYCLE_END_ACTUAL);
         $includeHQP = (strtolower($this->getAttr("includeHQP", "true")) == "true");
@@ -42,7 +43,7 @@ class PersonProductsReportItemSet extends ReportItemSet {
                     }
                 }
             }
-            $products = array_merge($products, $person->getPapersAuthored($cat, $start_date, $end_date, $includeHQP, true, false, $onlyUseStartDate, true, $includeContributors));
+            $products = array_merge($products, $person->getPapersAuthored($cat, $start_date, $end_date, $includeHQP, true, false, $onlyUseStartDate, true, $includeContributors, $onlyContributors));
             if($onlyHQP){
                 foreach($products as $key => $product){
                     if($person->isAuthorOf($product)){

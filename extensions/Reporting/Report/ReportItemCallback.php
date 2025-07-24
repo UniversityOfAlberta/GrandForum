@@ -1223,7 +1223,7 @@ class ReportItemCallback {
         return $count;
     }
 
-    function getUserPublicationCount($start_date, $end_date, $case='Publication', $includeContributors=false){
+    function getUserPublicationCount($start_date, $end_date, $case='Publication', $includeContributors=false, $onlyContributors=false){
         $year = substr($start_date, 0, 4);
         $person = Person::newFromId($this->reportItem->personId);
         $category = "";
@@ -1322,7 +1322,7 @@ class ReportItemCallback {
         if(count($histories) > 0){
             return $histories[0]->getValue();
         }
-        $products = $person->getPapersAuthored($category, $start_date, $end_date, false, true, true, false, true, $includeContributors);
+        $products = $person->getPapersAuthored($category, $start_date, $end_date, false, true, true, false, true, $includeContributors, $onlyContributors);
         $count = 0;
         $types = explode("|", $type);
         foreach($products as $product){
@@ -1473,8 +1473,12 @@ class ReportItemCallback {
         return $product->getStatus();
     }
     
-    function getProductAuthors(){
+    function getProductAuthors($highlight=false){
         $product = Paper::newFromId($this->reportItem->productId);
+        if($highlight){
+            // Return formatted names
+            return $product->formatCitation(array("{%authors}"), false, false, false, $this->reportItem->personId, false);
+        }
         $authors = $product->getAuthors();
         $array = array();
         foreach($authors as $author){
@@ -1483,8 +1487,12 @@ class ReportItemCallback {
         return implode("; ", $array);
     }
     
-    function getProductContributors(){
+    function getProductContributors($highlight=false){
         $product = Paper::newFromId($this->reportItem->productId);
+        if($highlight){
+            // Return formatted names
+            return $product->formatCitation(array("{%contributors}"), false, false, false, $this->reportItem->personId, false);
+        }
         $authors = $product->getContributors();
         $array = array();
         foreach($authors as $author){
