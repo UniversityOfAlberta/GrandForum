@@ -162,8 +162,8 @@
                         </td>
                         <td align='center'>{$user_fellow_count}</td>
                         
-                        <td align='center'>{getUserPublicationCount(CYCLE_START, CYCLE_END, First Author)}</td>
-                        <td align='center'>{getUserPublicationCount(CYCLE_START, CYCLE_END, Co-Author)}</td>
+                        <td align='center'>{getUserPublicationCount(CYCLE_START, CYCLE_END, First Author Publication)}</td>
+                        <td align='center'>{getUserPublicationCount(CYCLE_START, CYCLE_END, Co-Author Publication)}</td>
                         <td align='center'>{getUserPublicationCount(CYCLE_START, CYCLE_END, Not Refereed)}</td>
                         <td align='center'>{getUserPublicationCount(CYCLE_START, CYCLE_END, Conference Presentation)}</td>
                         <td align='center'>

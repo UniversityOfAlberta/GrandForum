@@ -1252,6 +1252,8 @@ class ReportItemCallback {
                 $type = "Conference Paper";
                 $histories = $person->getProductHistories($year, "Refereed");
                 break;
+            case "First Author Publication":
+            case "Co-Author Publication":
             case "Publication":
                 $category = "Publication";
                 $type = "*";
@@ -1341,12 +1343,12 @@ class ReportItemCallback {
                             $count++;
                         }
                     }
-                    else if($case == "First Author"){
+                    else if($case == "First Author" || $case == "First Author Publication"){
                         if($product->getData('peer_reviewed') == "Yes" && $person->isPrimaryAuthorOf($product)){
                             $count++;
                         }
                     }
-                    else if($case == "Co-Author"){
+                    else if($case == "Co-Author" || $case == "Co-Author Publication"){
                         if($product->getData('peer_reviewed') == "Yes" && !$person->isPrimaryAuthorOf($product)){
                             $count++;
                         }
