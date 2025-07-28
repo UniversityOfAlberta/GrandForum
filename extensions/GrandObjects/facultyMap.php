@@ -52,6 +52,14 @@ $facultyMap = array(
         "Finance", "Finance Dept",
         "Marketing, Business Economics & Law", "Marketg Bus Econ & Law",
         "Strategy, Entrepreneurship & Management", "StrategyEntrepreneur&Mgmt"
+    ),
+    "Augustana" => array(
+        "Fine Arts and Humanities",
+        "Science",
+        "Social Sciences"
+    ),
+    "Kinesiology" => array(
+        "Kinesiology"
     )
 );
 
@@ -107,6 +115,14 @@ $facultyMapSimple = array(
         "FIN" => "Finance",
         "MBEL" => "Marketing, Business Economics & Law",
         "SEM" => "Strategy, Entrepreneurship & Management"
+    ),
+    "Augustana" => array(
+        "Fine Arts and Humanities",
+        "Science",
+        "Social Sciences"
+    ),
+    "Kinesiology" => array(
+        "Kinesiology"
     )
 );
 ?>

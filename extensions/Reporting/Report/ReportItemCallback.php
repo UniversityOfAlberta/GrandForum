@@ -501,7 +501,7 @@ class ReportItemCallback {
         return ($course->totEnrl/max(1,$course->capEnrl))*100;
     }
     
-    function getCourseEval($allSections=true){
+    function getCourseEval($allSections=true){        
         $person = Person::newFromId($this->reportItem->personId);
         $course = Course::newFromId($this->reportItem->projectId);
         $evals = $person->getCourseEval($course->getId(), $allSections);
@@ -1911,7 +1911,10 @@ class ReportItemCallback {
     }
     
     function count($val){
-        return count($val);
+        if(is_array($val)){
+            return count($val);
+        }
+        return 0;
     }
     
     function concat(){

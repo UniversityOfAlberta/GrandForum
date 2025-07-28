@@ -85,6 +85,7 @@ foreach($people as $person){
                 if(!$pubByTitle->exists() &&
                    !$pubByDoi->exists()){
                     $_POST['doi'] = $doi;
+                    $_POST['owner'] = $person->getId();
                     $api = new ImportDOIAPI();
                     $res = $api->doAction();
                 }

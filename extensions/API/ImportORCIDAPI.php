@@ -61,6 +61,21 @@ class ImportORCIDAPI extends API{
         
     }
     
+    function updateOwners($product){
+        $me = Person::newFromWgUser();
+        $owner = ($me->getId() == 1 && isset($_POST['owner'])) ? $_POST['owner'] : $me->getId();
+        $data = DBFunctions::select(array('grand_product_owners'),
+                                    array('*'),
+                                    array('product_id' => $product->getId(),
+                                          'user_id' => $owner));
+        if(count($data) == 0){
+            DBFunctions::insert('grand_product_owners',
+                                array('product_id' => $product->getId(),
+                                      'user_id' => $owner));
+            DBFunctions::commit();
+        }
+    }
+    
     function createProduct($work, $category, $type, $overwrite=false){
         global $config;
         $title = $work->title->title->value;
@@ -69,9 +84,13 @@ class ImportORCIDAPI extends API{
         
         $checkBibProduct = Product::newFromOrcid($orcid);
         $checkProduct = Product::newFromTitle($title);
-        if((!$overwrite && $checkProduct->exists()) ||
-           (!$overwrite && $checkBibProduct->exists())){
-            return null;
+        if(!$overwrite && $checkProduct->exists()){
+            $this->updateOwners($checkProduct);
+            return $checkProduct;
+        }
+        else if(!$overwrite && $checkBibProduct->exists()){
+            $this->updateOwners($checkBibProduct);
+            return $checkBibProduct;
         }
         if(@trim($orcid) != "" && $checkBibProduct->getId() != 0){
             // Make sure that this entry was not already entered
@@ -173,6 +192,7 @@ class ImportORCIDAPI extends API{
         }
         if($status){
             $product = Product::newFromId($product->getId());
+            $this->updateOwners($product);
             return $product;
         }
         else{
