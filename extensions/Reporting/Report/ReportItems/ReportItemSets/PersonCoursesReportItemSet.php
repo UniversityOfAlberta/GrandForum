@@ -12,7 +12,7 @@ class PersonCoursesReportItemSet extends ReportItemSet {
         $exclude13Week = (strtolower($this->getAttr('exclude13Week', 'false')) == "true");
         $component = $this->getAttr('component', '');
         if($term == ''){
-            $courses = $person->getCourses($start, $end);
+            $courses = $person->getCoursesDuring($start, $end);
         }
         else{
             $courses = $person->getCourses();

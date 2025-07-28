@@ -110,8 +110,10 @@
             </Static>
             <ReportItemSet type="PersonCourses" unique="true">
                 <Static>
-                    {set(nStudents, {add({get(nStudents)}, {getCourseAllLectureEnroll()})})}
-                    {set(nCourses, {add({get(nCourses)}, 1)})}
+                    <![CDATA[
+                        {set(nStudents, {add({get(nStudents)}, {getCourseAllLectureEnroll()})})}
+                        {set(nCourses, {add({get(nCourses)}, 1)})}
+                    ]]>
                 </Static>
                 <ReportItemSet type="CourseSections">
                     <If if="{!=({course_eval(false)}, )}">
