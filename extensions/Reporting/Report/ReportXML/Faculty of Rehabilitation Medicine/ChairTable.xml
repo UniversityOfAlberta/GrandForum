@@ -115,9 +115,11 @@
                 </Static>
                 <ReportItemSet type="CourseSections">
                     <If if="{!=({course_eval(false)}, )}">
-                        <![CDATA[
-                            {set(nSpots, {add({get(nSpots)}, 1)})}
-                        ]]>
+                        <Static>
+                            <![CDATA[
+                                {set(nSpots, {add({get(nSpots)}, 1)})}
+                            ]]>
+                        </Static>
                     </If>
                 </ReportItemSet>
             </ReportItemSet>
