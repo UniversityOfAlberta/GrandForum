@@ -2715,6 +2715,7 @@ class Person extends BackboneModel {
             
             if(@implode($hqpTypes) != "committee" && 
                $hqpTypes != "committee" && 
+               $hqpTypes != $position && 
                !@in_array(strtolower($position), $hqpTypes) && 
                !(@implode($hqpTypes) != "other" && $hqpTypes != "other" && !in_array(strtolower($position), $merged))){
                 continue;
@@ -2911,7 +2912,7 @@ class Person extends BackboneModel {
                 }
             }
         }
-        if(($includeContributors && isset(self::$contributorCache[$this->id])) || $onlyContributors){
+        if(($includeContributors || $onlyContributors) && isset(self::$contributorCache[$this->id])){
             foreach(self::$contributorCache[$this->id] as $id){
                 if(!isset($processed[$id])){
                     $processed[$id] = true;
@@ -3299,7 +3300,7 @@ class Person extends BackboneModel {
 
     function getCourseEval($course_id, $allSections=false){
         $me = Person::newFromWgUser();
-        if($this->isMe() || $me->isRoleAtLeast(ADMIN)){
+        if($this->isMe() || $me->isRoleAtLeast(ADMIN) || ($me->isRole(CHAIR) || $me->isRole(EA))){
             $qTexts = array();
             $enrolled = array();
             $responses = array();
