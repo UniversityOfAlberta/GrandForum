@@ -50,15 +50,7 @@ class ToggleHeaderReportItemSet extends ReportItemSet {
     }
     
     function renderForPDF(){
-        global $wgOut;
-        $level = $this->getAttr('level', '3');
-        $title = $this->getAttr('title', "");
-        $wgOut->addHTML("<h$level>{$title}</h$level>
-                        <div id='{$this->id}_{$this->projectId}_{$this->milestoneId}_{$this->personId}'>");
-        foreach($this->items as $item){
-            $item->renderForPDF();
-        }
-        $wgOut->addHTML("</div>");
+        // Do nothing
     }
 }
 
