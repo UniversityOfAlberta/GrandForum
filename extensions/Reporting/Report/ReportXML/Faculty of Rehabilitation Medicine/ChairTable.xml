@@ -846,22 +846,22 @@
                         <td align='center'>{occurrences({getArray(RP_FEC, FEC_COURSES, FEC_PROJECT_COURSES, 0, {$user_id}, 0, projectCourses)}, Array)}</td>
                         
                         <td align='center'>
-                            {add({getHQPCount(Graduate Student - Master's Thesis, all, Supervisor)},
-                                 {getHQPCount(Graduate Student - Master's Thesis, all, Co-Supervisor)})}
+                            {add({getHQPCount(msc-thesis, all, Supervisor)},
+                                 {getHQPCount(msc-thesis, all, Co-Supervisor)})}
                         </td>
-                        <td align='center'>{getHQPCount(Graduate Student - Master's Thesis, all, Supervisory-Committee member)}</td>
+                        <td align='center'>{getHQPCount(msc-thesis, all, Supervisory-Committee member)}</td>
                         <td align='center'>
-                            {add({getHQPCount(Graduate Student - Master's Thesis, all, Examining-Committee member)},
-                                 {getHQPCount(Graduate Student - Master's Thesis, all, Examining-Committee chair)})}
+                            {add({getHQPCount(msc-thesis, all, Examining-Committee member)},
+                                 {getHQPCount(msc-thesis, all, Examining-Committee chair)})}
                         </td>
                         <td align='center'>
-                            {add({getHQPCount(Graduate Student - Doctoral, all, Supervisor)},
-                                 {getHQPCount(Graduate Student - Doctoral, all, Co-Supervisor)})}
+                            {add({getHQPCount(phd, all, Supervisor)},
+                                 {getHQPCount(phd, all, Co-Supervisor)})}
                         </td>
-                        <td align='center'>{getHQPCount(Graduate Student - Doctoral, all, Supervisory-Committee member)}</td>
+                        <td align='center'>{getHQPCount(phd, all, Supervisory-Committee member)}</td>
                         <td align='center'>
-                            {add({getHQPCount(Graduate Student - Doctoral, all, Examining-Committee member)},
-                                 {getHQPCount(Graduate Student - Doctoral, all, Examining-Committee chair)})}
+                            {add({getHQPCount(phd, all, Examining-Committee member)},
+                                 {getHQPCount(phd, all, Examining-Committee chair)})}
                         </td>
                         <td align='center'>{$user_fellow_count}</td>
                         
