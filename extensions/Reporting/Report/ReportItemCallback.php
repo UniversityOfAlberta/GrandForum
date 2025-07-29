@@ -1338,6 +1338,18 @@ class ReportItemCallback {
                     }
                 }
                 if($reportedYear == "" || $reportedYear == $year){
+                    // Double check for exclusions
+                    $skip = false;
+                    foreach($product->getExclusions() as $exclusion){
+                        if($exclusion->getId() == $person->getId()){
+                            $skip = true;
+                        }
+                    }
+                    if($skip){
+                        continue;
+                    }
+                    
+                    // Now a few extra checks, if they pass then count the product
                     if($case == "Publication"){
                         if($product->getData('peer_reviewed') == "Yes"){
                             $count++;
