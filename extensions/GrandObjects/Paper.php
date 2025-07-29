@@ -759,8 +759,8 @@ class Paper extends BackboneModel{
     /**
      * Returns whether or not the logged in Person is allowed to view this Product
      */
-    function canView(){
-        $me = Person::newFromWgUser();
+    function canView($me=null){
+        $me = ($me != null) ? $me : Person::newFromWgUser();
         if($this->getCategory() == "Publication" && ($this->getAccessId() == $me->getId() || $this->getAccessId() == 0)){
             return true; // Product is a publication and is either Public or is marked Private by the logged in user
         }

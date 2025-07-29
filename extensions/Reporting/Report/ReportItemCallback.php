@@ -1328,6 +1328,19 @@ class ReportItemCallback {
         $count = 0;
         $types = explode("|", $type);
         foreach($products as $product){
+            // Double check for permissions
+            if(!$product->canView($person)){
+                continue;
+            }
+            
+            // Double check for exclusions
+            foreach($product->getExclusions() as $exclusion){
+                if($exclusion->getId() == $person->getId()){
+                    continue 2;
+                }
+            }
+            
+            // Now check for the type
             if(in_array($product->getType(), $types) || implode($types) == "*"){
                 $reportedYear = $product->getReportedForPerson($this->reportItem->personId);
                 if($reportedYear == "" && $product->getType() != "Patent"){
@@ -1338,17 +1351,6 @@ class ReportItemCallback {
                     }
                 }
                 if($reportedYear == "" || $reportedYear == $year){
-                    // Double check for exclusions
-                    $skip = false;
-                    foreach($product->getExclusions() as $exclusion){
-                        if($exclusion->getId() == $person->getId()){
-                            $skip = true;
-                        }
-                    }
-                    if($skip){
-                        continue;
-                    }
-                    
                     // Now a few extra checks, if they pass then count the product
                     if($case == "Publication"){
                         if($product->getData('peer_reviewed') == "Yes"){
