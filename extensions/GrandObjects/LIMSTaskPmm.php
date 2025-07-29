@@ -51,7 +51,7 @@ class LIMSTaskPmm extends BackboneModel
      function getAssignees()
     {
         $data = DBFunctions::select(
-            array('grand_pmm_task_assginees'),
+            array('grand_pmm_task_assignees'),
             array('*'),
             array('task_id' => $this->id)
         );
@@ -75,7 +75,7 @@ class LIMSTaskPmm extends BackboneModel
             $this->task = $data[0]['task'];
             $this->dueDate = $data[0]['due_date'];
             $this->comments = $data[0]['comments'];
-            $files = DBFunctions::select(array('grand_pmm_task_assginees'),
+            $files = DBFunctions::select(array('grand_pmm_task_assignees'),
                                          array('id', 'filename', 'type', 'assignee'),
                                          array('task_id' => $this->id));
             foreach($files as $file){
@@ -97,7 +97,7 @@ class LIMSTaskPmm extends BackboneModel
     }
     function getFile($id){
         if($this->isAllowedToView()){
-            $file = DBFunctions::select(array('grand_pmm_task_assginees'),
+            $file = DBFunctions::select(array('grand_pmm_task_assignees'),
                                         array('*'),
                                         array('id' => $id,
                                               'task_id' => $this->id));
@@ -147,7 +147,7 @@ class LIMSTaskPmm extends BackboneModel
     function getStatuses()
     {
         $data = DBFunctions::select(
-            array('grand_pmm_task_assginees'),
+            array('grand_pmm_task_assignees'),
             array('*'),
             array('task_id' => $this->id)
         );
@@ -230,7 +230,7 @@ class LIMSTaskPmm extends BackboneModel
                 $assigneeId = (isset($assignee->id)) ? $assignee->id : $assignee;
 
                 DBFunctions::insert(
-                    'grand_pmm_task_assginees',
+                    'grand_pmm_task_assignees',
                     array(
                         'task_id' => $this->id,
                         'assignee' => $assigneeId,
@@ -271,7 +271,7 @@ class LIMSTaskPmm extends BackboneModel
         
         foreach($this->files as $assigneeId => $file){
             if(isset($file->data) && $file->data != ''){
-                DBFunctions::update('grand_pmm_task_assginees',
+                DBFunctions::update('grand_pmm_task_assignees',
                                     array('filename' => $file->filename,
                                           'type' => $file->type,
                                           'data' => $file->data),
@@ -279,7 +279,7 @@ class LIMSTaskPmm extends BackboneModel
                                         'assignee'=>$assigneeId));
             }
             else if(isset($file->delete) && $file->delete == true){
-                DBFunctions::update('grand_pmm_task_assginees',
+                DBFunctions::update('grand_pmm_task_assignees',
                                     array('filename' => NULL,
                                           'type' => NULL,
                                           'data' => NULL),
@@ -296,7 +296,7 @@ class LIMSTaskPmm extends BackboneModel
             $data = array();
             $existingFiles = array();
             foreach(DBFunctions::select(
-                array('grand_pmm_task'=>'t', 'grand_pmm_task_assginees'=>'a'),
+                array('grand_pmm_task'=>'t', 'grand_pmm_task_assignees'=>'a'),
                 array('*'),
                 array('a.task_id' => $this->id, 't.id' => $this->id),
             ) as $row) {
@@ -338,7 +338,7 @@ class LIMSTaskPmm extends BackboneModel
             );
 
             DBFunctions::delete(
-                'grand_pmm_task_assginees',
+                'grand_pmm_task_assignees',
                 array('task_id' => $this->id)
             );
             foreach($this->assignees as $assignee){
@@ -360,7 +360,7 @@ class LIMSTaskPmm extends BackboneModel
                     $insertData['data']     = $old->data;
                 }
                 DBFunctions::insert(
-                    'grand_pmm_task_assginees',
+                    'grand_pmm_task_assignees',
                     $insertData);
             }
             $this->uploadFiles();
