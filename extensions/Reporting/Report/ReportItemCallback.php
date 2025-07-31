@@ -2439,6 +2439,10 @@ class ReportItemCallback {
         return $this->reportItem->getReport()->name;
     }
     
+    function getSectionName(){
+        return htmlentities($this->reportItem->getSection()->name);
+    }
+    
     function getReportXMLName(){
         return $this->reportItem->getReport()->xmlName;
     }
