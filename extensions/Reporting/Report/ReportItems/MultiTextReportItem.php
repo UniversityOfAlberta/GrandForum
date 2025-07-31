@@ -473,7 +473,9 @@ EOF;
             $showLabels = (strtolower($this->getAttr("showLabels", "false")) == "true");
             foreach($values as $vals){
                 $innerVals = $vals;
-                $innerValues[] = nl2br(implode(", ", $innerVals));
+                $text = implode(", ", $innerVals);
+                $text = TextareaReportItem::cleanHTML($text);
+                $innerValues[] = nl2br($text);
             }
             $item .= implode("<br /><br />", $innerValues);
         }
@@ -537,6 +539,10 @@ EOF;
                         $item .= "<td style='width:1px;' valign='top'><b style='display: block;margin:".($fontSize/2)."px 0 0 0;'>•</b></td>";
                     }
                     foreach($indices as $j => $index){
+                        if(@is_string($value[$index])){
+                            $text = @$value[$index];
+                            $text = TextareaReportItem::cleanHTML($text);
+                        }
                         if($isVertical){
                             $item .= "<tr><td align='right'><b>{$labels[$j]}:</b></td>";
                         }
@@ -544,7 +550,7 @@ EOF;
                         if(strstr(strtolower(@$types[$j]), "select(") !== false || 
                            strstr(strtolower(@$types[$j]), "combobox(") !== false || 
                            strstr(strtolower(@$types[$j]), "radio(") !== false){
-                           $item .= @"<td align='center' valign='top' style='padding:0 3px 0 3px; {$size}'>{$value[$index]}</td>";
+                           $item .= @"<td align='center' valign='top' style='padding:0 3px 0 3px; {$size}'>{$text}</td>";
                         }
                         else if(strstr(strtolower(@$types[$j]), "checkbox") !== false){
                             $item .= @"<td align='center' valign='top' style='padding:0 3px 0 3px; {$size}'>".implode(";", $value[$index])."</td>";
@@ -555,7 +561,7 @@ EOF;
                         else if(strtolower(@$types[$j]) == "integer" || strtolower(@$types[$j]) == "centerinteger" || 
                                 strtolower(@$types[$j]) == "number"  || strtolower(@$types[$j]) == "centernumber"){
                             $align = (strtolower(@$types[$j]) == "centerinteger" || strtolower(@$types[$j]) == "centernumber") ? "center" : "right";
-                            $item .= @"<td align='{$align}' valign='top' style='padding:0 3px 0 3px; {$size}'>{$value[$index]}</td>";
+                            $item .= @"<td align='{$align}' valign='top' style='padding:0 3px 0 3px; {$size}'>{$text}</td>";
                         }
                         else if(strtolower(@$types[$j]) == "checkbox"){
                             $check = "";
@@ -565,10 +571,10 @@ EOF;
                             $item .= @"<td align='center' valign='top' style='padding:0 3px 0 3px; {$size}'>{$check}</td>";
                         }
                         else if(strtolower(@$types[$j]) == "textarea"){
-                            $item .= @"<td valign='top' style='padding:0 3px 0 3px; {$size}'>".nl2br($value[$index])."</td>";
+                            $item .= @"<td valign='top' style='padding:0 3px 0 3px; {$size}'>".nl2br($text)."</td>";
                         }
                         else{
-                            $item .= @"<td valign='top' style='padding:0 3px 0 3px; {$size}'>{$value[$index]}</td>";
+                            $item .= @"<td valign='top' style='padding:0 3px 0 3px; {$size}'>{$text}</td>";
                         }
                         if($isVertical){
                             $item .= "</tr>";

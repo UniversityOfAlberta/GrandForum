@@ -15,6 +15,7 @@ class PersonProductsReportItemSet extends ReportItemSet {
         $start_date = $this->getAttr("start", CYCLE_START);
         $end_date = $this->getAttr("end", CYCLE_END);
         $includeContributors = (strtolower($this->getAttr("includeContributors", "false")) == "true");
+        $onlyContributors = (strtolower($this->getAttr("onlyContributors", "false")) == "true");
         $includeHQP = (strtolower($this->getAttr("includeHQP", "true")) == "true");
         $onlyHQP = (strtolower($this->getAttr("onlyHQP", "false")) == "true");
         $me = Person::newFromWgUser();
@@ -42,7 +43,7 @@ class PersonProductsReportItemSet extends ReportItemSet {
                     }
                 }
             }
-            $products = array_merge($products, $person->getPapersAuthored($cat, $start_date, $end_date, $includeHQP, true, false, $onlyUseStartDate, true, $includeContributors));
+            $products = array_merge($products, $person->getPapersAuthored($cat, $start_date, $end_date, $includeHQP, true, false, $onlyUseStartDate, true, $includeContributors, $onlyContributors));
             if($onlyHQP){
                 foreach($products as $key => $product){
                     if($person->isAuthorOf($product)){

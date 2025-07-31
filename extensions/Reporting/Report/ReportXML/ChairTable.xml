@@ -1252,10 +1252,18 @@
             ]]>
         </Static>
     </ReportSection>
-    <ReportSection id="recommendations" tooltip="Recommendation for Academic Staff Member" name="Recommendations" title="" blobSection="FEC_REVIEW" type="EditableReportSection" pagebreak="false" disabled="true">
-        <Static id="vars">
+    <ReportSection id="recommendations" tooltip="Recommendation for Academic Staff Member" name="Recommendations" title="Recommendation" blobSection="FEC_REVIEW" type="EditableReportSection" pagebreak="false" disabled="true">
+        <Static>
             <![CDATA[
-                {set(title, Recommendation)}
+                <style>
+                    #reportHeader, #reportMain form > hr {
+                        display: none;
+                    }
+                    
+                    #pdfBody h1:first-of-type {
+                        display: none;
+                    }
+                </style>
             ]]>
         </Static>
         <ReportItemSet id="header" type="PersonReportItemSet" userId="{GET(userId)}">
@@ -1270,7 +1278,7 @@
                 </Static>
                 <Static>
                     <![CDATA[
-                        <h1 style="margin-top:0;padding-top:0;">{get(title)} for {$user_name}</h1>
+                        <h1 style="margin-top:0;padding-top:0;">{$section_title} for {$user_name}</h1>
                         <script type="text/javascript">
                             $("#reportMain form.autosave").attr("action", $("#reportMain form.autosave").attr("action") + "&userId={GET(userId)}");
                         </script>
@@ -1499,27 +1507,9 @@
             </Else>
         </ReportItemSet>
     </ReportSection>
-    <ReportSection id="deans_advice" tooltip="Dean's Advice for Academic Staff Member" name="Dean Advice" blobSection="FEC_DEAN_ADVICE" copy="recommendations">
-        <ReportItem id="vars">
-            <![CDATA[
-                {set(title, Dean's Advice)}
-            ]]>
-        </ReportItem>
-    </ReportSection>
-    <ReportSection id="deans_decision" tooltip="Dean's Decision for Academic Staff Member" name="Dean Decision" blobSection="FEC_DEAN_DECISION" copy="recommendations">
-        <ReportItem id="vars">
-            <![CDATA[
-                {set(title, Dean's Decision)}
-            ]]>
-        </ReportItem>
-    </ReportSection>
-    <ReportSection id="chairs_advice" tooltip="Chair's Advice for Academic Staff Member" name="Chair Advice" blobSection="FEC_CHAIR_ADVICE" copy="recommendations">
-        <ReportItem id="vars">
-            <![CDATA[
-                {set(title, Chair's Advice)}
-            ]]>
-        </ReportItem>
-    </ReportSection>
+    <ReportSection id="deans_advice" tooltip="Dean's Advice for Academic Staff Member" name="Dean Advice" title="Dean's Advice" blobSection="FEC_DEAN_ADVICE" pagebreak="false" disabled="true" copy="recommendations" />
+    <ReportSection id="deans_decision" tooltip="Dean's Decision for Academic Staff Member" name="Dean Decision" title="Dean's Decision" blobSection="FEC_DEAN_DECISION" pagebreak="false" disabled="true" copy="recommendations" />
+    <ReportSection id="chairs_advice" tooltip="Chair's Advice for Academic Staff Member" name="Chair Advice" title="Chair's Advice" blobSection="FEC_CHAIR_ADVICE" pagebreak="false" disabled="true" copy="recommendations" />
     <ReportSection id="dept_hqp" tooltip="HQP Inconsistencies" name="HQP Inconsistencies" title="{$my_dept} HQP Inconsistencies" blobSection="BLOB_NONE" type="ReportSection">
         <Static>
             <![CDATA[

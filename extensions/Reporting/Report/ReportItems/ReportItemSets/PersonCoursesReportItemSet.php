@@ -12,7 +12,7 @@ class PersonCoursesReportItemSet extends ReportItemSet {
         $exclude13Week = (strtolower($this->getAttr('exclude13Week', 'false')) == "true");
         $component = $this->getAttr('component', '');
         if($term == ''){
-            $courses = $person->getCourses($start, $end);
+            $courses = $person->getCoursesDuring($start, $end);
         }
         else{
             $courses = $person->getCourses();
@@ -22,7 +22,7 @@ class PersonCoursesReportItemSet extends ReportItemSet {
             foreach($courses as $course){
                 if(($term == '' || strstr($term, $course->term_string) !== false) &&
                    ($component == '' || $component == $course->component)){
-                    if($unique && isset($alreadyDone[$course->subject.$course->catalog])){
+                    if($unique && isset($alreadyDone[$course->term_string.$course->subject.$course->catalog])){
                         continue;
                     }
                     if($exclude13Week && strstr($course->term_string, "Spring") !== false && strstr($course->catalog, "A") !== false){
@@ -32,7 +32,7 @@ class PersonCoursesReportItemSet extends ReportItemSet {
                     $tuple['project_id'] = $course->id;
                     $tuple['extra'] = $course->toArray();
                     $data[] = $tuple;
-                    $alreadyDone[$course->subject.$course->catalog] = $tuple;
+                    $alreadyDone[$course->term_string.$course->subject.$course->catalog] = $tuple;
                 }
             }
         }

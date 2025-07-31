@@ -143,16 +143,16 @@ class Paper extends BackboneModel{
         }
         $me = Person::newFromWgUser();
         $ids = array_clean($ids);
-        $sql = "SELECT *
-                FROM grand_products
-                WHERE id IN (".implode(",", $ids).")
-                AND (access = 'Public' OR (access = 'Forum' AND ".intVal($me->isLoggedIn())."))";
+        $sql = "SELECT p.*
+                FROM grand_products p LEFT JOIN grand_product_owners o ON (p.id = o.product_id AND o.user_id = '{$me->getId()}')
+                WHERE p.id IN (".implode(",", $ids).")
+                AND (p.access = 'Public' OR (p.access = 'Forum' AND ".intVal($me->isLoggedIn())."))";
         if(!$onlyPublic){
             $me = Person::newFromWgUser();
-            $sql .= "\nAND (access_id = '{$me->getId()}' OR created_by = '{$me->getId()}' OR access_id = '0')";
+            $sql .= "\nAND (p.access_id = '{$me->getId()}' OR p.created_by = '{$me->getId()}' OR p.access_id = '0' OR o.user_id = '{$me->getId()}')";
         }
         else{
-            $sql .= "\nAND access_id = '0'";
+            $sql .= "\nAND p.access_id = '0'";
         }
         $data = DBFunctions::execSQL($sql);
         $papers = array();
@@ -373,15 +373,16 @@ class Paper extends BackboneModel{
             return self::$dataCache["me".$category.$grand];
         }
         $me = Person::newFromWgUser();
-        $sql = "SELECT *
-             FROM grand_products WHERE
-            (access_id = '{$me->getId()}'
-            OR created_by = '{$me->getId()}')
+        $sql = "SELECT p.*
+             FROM grand_products p LEFT JOIN grand_product_owners o ON (p.id = o.product_id AND o.user_id = '{$me->getId()}') WHERE
+            (p.access_id = '{$me->getId()}'
+            OR p.created_by = '{$me->getId()}'
+            OR o.user_id = '{$me->getId()}')
             ";
         if($category != "all"){
-            $sql .= "\nAND `category` = '$category'";
+            $sql .= "\nAND p.`category` = '$category'";
         }
-        $sql .= "\nORDER BY `type`, `title`";
+        $sql .= "\nORDER BY p.`type`, p.`title`";
         $data = DBFunctions::execSQL($sql);
         $papers = array();
         foreach($data as $row){
@@ -681,8 +682,8 @@ class Paper extends BackboneModel{
     /**
      * Returns whether or not the logged in Person is allowed to view this Product
      */
-    function canView(){
-        $me = Person::newFromWgUser();
+    function canView($me=null){
+        $me = ($me != null) ? $me : Person::newFromWgUser();
         if($this->getCategory() == "Publication" && ($this->getAccessId() == $me->getId() || $this->getAccessId() == 0)){
             return true; // Product is a publication and is either Public or is marked Private by the logged in user
         }
@@ -1404,7 +1405,8 @@ class Paper extends BackboneModel{
         if($highlightOnlyMyHQP !== false && is_numeric($highlightOnlyMyHQP)){
             $me = Person::newFromId($highlightOnlyMyHQP);
         }
-        if(strstr(strtolower($matches[0]), "authors") !== false){
+        if(strstr(strtolower($matches[0]), "authors") !== false || 
+           strstr(strtolower($matches[0]), "contributors") !== false){
             $date = $this->getDate();
             if($date == ZOT){
                 $date = $this->getAcceptanceDate();
@@ -1415,7 +1417,8 @@ class Paper extends BackboneModel{
             $nextYear = date('Y-m-d', $nextYear);
             
             $lead = $this->getData('lead');
-            foreach($this->getAuthors() as $a){
+            $auths = (strstr(strtolower($matches[0]), "authors") !== false) ? $this->getAuthors() : $this->getContributors();
+            foreach($auths as $a){
                 $isLead = ($lead != null && ($lead->fullname == $a->getNameForForms() || (isset($lead->id) && $lead->id == $a->getId()))) ? "*" : "";
                 if($a->getId()){
                     $ccid = "";
@@ -1595,6 +1598,7 @@ class Paper extends BackboneModel{
             $match1 = str_ireplace("%articleno", $articleno, $match1);
             $match1 = str_ireplace("%pages",     $pages,     $match1);
             $match1 = str_ireplace("%authors",   $authors,   $match1);
+            $match1 = str_ireplace("%contributors",$authors,   $match1);
             $match1 = str_ireplace("%publisher", $publisher, $match1);
             $match1 = str_ireplace("%editor",    $editor,    $match1);
             $match1 = str_ireplace("%venue",     $venue,     $match1);
@@ -1626,6 +1630,7 @@ class Paper extends BackboneModel{
             $match2 = str_ireplace("%articleno", "", $match2);
             $match2 = str_ireplace("%pages",     "", $match2);
             $match2 = str_ireplace("%authors",   "", $match2);
+            $match2 = str_ireplace("%contributors","", $match2);
             $match2 = str_ireplace("%publisher", "", $match2);
             $match2 = str_ireplace("%editor",    "", $match2);
             $match2 = str_ireplace("%venue",     "", $match2);

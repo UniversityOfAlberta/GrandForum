@@ -2566,6 +2566,7 @@ class Person extends BackboneModel {
             
             if(@implode($hqpTypes) != "committee" && 
                $hqpTypes != "committee" && 
+               $hqpTypes != $position && 
                !@in_array(strtolower($position), $hqpTypes) && 
                !(@implode($hqpTypes) != "other" && $hqpTypes != "other" && !in_array(strtolower($position), $merged))){
                 continue;
@@ -2730,7 +2731,7 @@ class Person extends BackboneModel {
      * @param string $useReported Whether to use reported years.  If false, it will not, if set to a year then it uses that year
      * @return array Returns an array of Paper(s) authored/co-authored by this Person during the specified dates
      */
-    function getPapersAuthored($category="all", $startRange = CYCLE_START, $endRange = CYCLE_END, $includeHQP=false, $networkRelated=true, $useReported=false, $onlyUseStartDate=false, $exclude=true, $includeContributors=false){
+    function getPapersAuthored($category="all", $startRange = CYCLE_START, $endRange = CYCLE_END, $includeHQP=false, $networkRelated=true, $useReported=false, $onlyUseStartDate=false, $exclude=true, $includeContributors=false, $onlyContributors=false){
         global $config;
         self::generateAuthorshipCache($this->id);
         $processed = array();
@@ -2754,7 +2755,7 @@ class Person extends BackboneModel {
             }
         }
         
-        if(isset(self::$authorshipCache[$this->id])){
+        if(isset(self::$authorshipCache[$this->id]) && !$onlyContributors){
             foreach(self::$authorshipCache[$this->id] as $id){
                 if(!isset($processed[$id])){
                     $processed[$id] = true;
@@ -2762,7 +2763,7 @@ class Person extends BackboneModel {
                 }
             }
         }
-        if($includeContributors && isset(self::$contributorCache[$this->id])){
+        if(($includeContributors || $onlyContributors) && isset(self::$contributorCache[$this->id])){
             foreach(self::$contributorCache[$this->id] as $id){
                 if(!isset($processed[$id])){
                     $processed[$id] = true;
@@ -2816,11 +2817,21 @@ class Person extends BackboneModel {
                 foreach($paper->getExclusions() as $exclusion){
                     if($exclusion->getId() == $this->getId()){
                         // This Person doesn't want to be associated with this Product
-                        $skip = true;
+                        unset($papersArray[$key]);
+                        break;
                     }
                 }
-                if($skip){ 
-                    unset($papersArray[$key]);
+            }
+        }
+        if($onlyContributors){
+            // Get rid of HQP outputs
+            $hqpPubs = $this->getPapersAuthored($category, $startRange, $endRange, true, $networkRelated, $useReported, $onlyUseStartDate);
+            foreach($papersArray as $key => $paper){
+                foreach($hqpPubs as $pub){
+                    if($pub->getId() == $paper->getId()){
+                        unset($papersArray[$key]);
+                        break;
+                    }
                 }
             }
         }
@@ -3042,7 +3053,7 @@ class Person extends BackboneModel {
 
     function getCourseEval($course_id, $allSections=false){
         $me = Person::newFromWgUser();
-        if($this->isMe() || $me->isRoleAtLeast(ADMIN)){
+        if($this->isMe() || $me->isRoleAtLeast(ADMIN) || ($me->isRole(CHAIR) || $me->isRole(EA))){
             $qTexts = array();
             $enrolled = array();
             $responses = array();

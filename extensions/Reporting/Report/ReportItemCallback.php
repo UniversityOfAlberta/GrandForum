@@ -503,7 +503,7 @@ class ReportItemCallback {
         return ($course->totEnrl/max(1,$course->capEnrl))*100;
     }
     
-    function getCourseEval($allSections=true){
+    function getCourseEval($allSections=true){        
         $person = Person::newFromId($this->reportItem->personId);
         $course = Course::newFromId($this->reportItem->projectId);
         $evals = $person->getCourseEval($course->getId(), $allSections);
@@ -538,11 +538,11 @@ class ReportItemCallback {
                 <td style='background: white;'>
                     <table padding='0' cellspacing='0' style='width:100%;'>
                         <tr>
-                            <td style='background:#b33100; width: ".(($r1/$count)*100)."%; height:1em; padding:0;'></td>
-                            <td style='background:#d55e00; width: ".(($r2/$count)*100)."%; height:1em; padding:0;'></td>
-                            <td style='background:#0072b2; width: ".(($r3/$count)*100)."%; height:1em; padding:0;'></td>
-                            <td style='background:#009e73; width: ".(($r4/$count)*100)."%; height:1em; padding:0;'></td>
-                            <td style='background:#00662b; width: ".(($r5/$count)*100)."%; height:1em; padding:0;'></td>
+                            <td style='background:#e84236; width: ".(($r1/$count)*100)."%; height:1em; padding:0;'></td>
+                            <td style='background:#fe6d00; width: ".(($r2/$count)*100)."%; height:1em; padding:0;'></td>
+                            <td style='background:#43e0f4; width: ".(($r3/$count)*100)."%; height:1em; padding:0;'></td>
+                            <td style='background:#01c886; width: ".(($r4/$count)*100)."%; height:1em; padding:0;'></td>
+                            <td style='background:#2ea743; width: ".(($r5/$count)*100)."%; height:1em; padding:0;'></td>
                         </tr>
                     </table>
                 </td>
@@ -690,9 +690,9 @@ class ReportItemCallback {
                 switch($i){
                     case 0: $color = "#e84236"; break;
                     case 1: $color = "#fe6d00"; break;
-                    case 2: $color = "#f9c001"; break;
-                    case 3: $color = "#01c0bb"; break;
-                    case 4: $color = "#2fa954"; break;
+                    case 2: $color = "#43e0f4"; break;
+                    case 3: $color = "#01c886"; break;
+                    case 4: $color = "#2ea743"; break;
                 }
                 $bartop = 1*$dpi;
                 $marginTop = ((($vote/$max)*$height) <= 1) ? "-1.25em" : 0;
@@ -1274,7 +1274,7 @@ class ReportItemCallback {
         return $count;
     }
 
-    function getUserPublicationCount($start_date, $end_date, $case='Publication', $includeContributors=false){
+    function getUserPublicationCount($start_date, $end_date, $case='Publication', $includeContributors=false, $onlyContributors=false){
         $year = substr($start_date, 0, 4);
         $person = Person::newFromId($this->reportItem->personId);
         $category = "";
@@ -1299,6 +1299,8 @@ class ReportItemCallback {
                 $category = "Publication";
                 $type = "Conference Paper";
                 break;
+            case "First Author Publication":
+            case "Co-Author Publication":
             case "Publication":
                 $category = "Publication";
                 $type = "*";
@@ -1353,10 +1355,23 @@ class ReportItemCallback {
                 break;
         }
         
-        $products = $person->getPapersAuthored($category, $start_date, $end_date, false, true, true, false, true, $includeContributors);
+        $products = $person->getPapersAuthored($category, $start_date, $end_date, false, true, true, false, true, $includeContributors, $onlyContributors);
         $count = 0;
         $types = explode("|", $type);
         foreach($products as $product){
+            // Double check for permissions
+            if(!$product->canView($person)){
+                continue;
+            }
+            
+            // Double check for exclusions
+            foreach($product->getExclusions() as $exclusion){
+                if($exclusion->getId() == $person->getId()){
+                    continue 2;
+                }
+            }
+            
+            // Now check for the type
             if(in_array($product->getType(), $types) || implode($types) == "*"){
                 $reportedYear = $product->getReportedForPerson($this->reportItem->personId);
                 if($reportedYear == "" && $product->getType() != "Patent"){
@@ -1367,17 +1382,18 @@ class ReportItemCallback {
                     }
                 }
                 if($reportedYear == "" || $reportedYear == $year){
+                    // Now a few extra checks, if they pass then count the product
                     if($case == "Publication"){
                         if($product->getData('peer_reviewed') == "Yes"){
                             $count++;
                         }
                     }
-                    else if($case == "First Author"){
+                    else if($case == "First Author" || $case == "First Author Publication"){
                         if($product->getData('peer_reviewed') == "Yes" && $person->isPrimaryAuthorOf($product)){
                             $count++;
                         }
                     }
-                    else if($case == "Co-Author"){
+                    else if($case == "Co-Author" || $case == "Co-Author Publication"){
                         if($product->getData('peer_reviewed') == "Yes" && !$person->isPrimaryAuthorOf($product)){
                             $count++;
                         }
@@ -1488,8 +1504,12 @@ class ReportItemCallback {
         return $product->getStatus();
     }
     
-    function getProductAuthors(){
+    function getProductAuthors($highlight=false){
         $product = Paper::newFromId($this->reportItem->productId);
+        if($highlight){
+            // Return formatted names
+            return $product->formatCitation(array("{%authors}"), false, false, false, $this->reportItem->personId, false);
+        }
         $authors = $product->getAuthors();
         $array = array();
         foreach($authors as $author){
@@ -1498,8 +1518,12 @@ class ReportItemCallback {
         return implode("; ", $array);
     }
     
-    function getProductContributors(){
+    function getProductContributors($highlight=false){
         $product = Paper::newFromId($this->reportItem->productId);
+        if($highlight){
+            // Return formatted names
+            return $product->formatCitation(array("{%contributors}"), false, false, false, $this->reportItem->personId, false);
+        }
         $authors = $product->getContributors();
         $array = array();
         foreach($authors as $author){
@@ -1925,7 +1949,10 @@ class ReportItemCallback {
     }
     
     function count($val){
-        return count($val);
+        if(is_array($val)){
+            return count($val);
+        }
+        return 0;
     }
     
     function concat(){
@@ -2142,16 +2169,16 @@ class ReportItemCallback {
         return htmlentities($this->reportItem->getSection()->title);
     }
     
+    function getSectionName(){
+        return htmlentities($this->reportItem->getSection()->name);
+    }
+    
     function getReportName(){
         return $this->reportItem->getReport()->name;
     }
     
     function getReportXMLName(){
         return $this->reportItem->getReport()->xmlName;
-    }
-    
-    function getSectionName(){
-        return $this->reportItem->getSection()->name;
     }
     
     function getReportType(){

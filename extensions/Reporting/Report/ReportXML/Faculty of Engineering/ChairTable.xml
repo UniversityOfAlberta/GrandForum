@@ -240,26 +240,8 @@
             </Else>
         </ReportItemSet>
     </ReportSection>
-    <ReportSection id="deans_advice" tooltip="Dean's Advice for Academic Staff Member" name="Dean Advice" blobSection="FEC_DEAN_ADVICE" copy="recommendations">
-        <ReportItem id="vars">
-            <![CDATA[
-                {set(title, Dean's Advice)}
-            ]]>
-        </ReportItem>
-    </ReportSection>
-    <ReportSection id="deans_decision" tooltip="Dean's Decision for Academic Staff Member" name="Dean Decision" blobSection="FEC_DEAN_DECISION" copy="recommendations">
-        <ReportItem id="vars">
-            <![CDATA[
-                {set(title, Dean's Decision)}
-            ]]>
-        </ReportItem>
-    </ReportSection>
-    <ReportSection id="chairs_advice" tooltip="Chair's Advice for Academic Staff Member" name="Chair Advice" blobSection="FEC_CHAIR_ADVICE" copy="recommendations">
-        <ReportItem id="vars">
-            <![CDATA[
-                {set(title, Chair's Advice)}
-            ]]>
-        </ReportItem>
-    </ReportSection>
+    <ReportSection id="deans_advice" copy="recommendations" />
+    <ReportSection id="deans_decision" copy="recommendations" />
+    <ReportSection id="chairs_advice" copy="recommendations" />
     <ReportSection id="sabbatical" delete="true" />
 </Report>
