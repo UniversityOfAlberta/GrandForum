@@ -3,20 +3,20 @@
     <Permissions>
         <Role role="Staff+">
             <SectionPermission id="report" permissions="rw" />
-            <SectionPermission id="publications" permissions="--" />
-            <SectionPermission id="people" permissions="--" />
+            <SectionPermission id="publications" permissions="rw" />
+            <SectionPermission id="people" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
         <Role role="PL">
             <SectionPermission id="report" permissions="rw" />
-            <SectionPermission id="publications" permissions="--" />
-            <SectionPermission id="people" permissions="--" />
+            <SectionPermission id="publications" permissions="rw" />
+            <SectionPermission id="people" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
         <Role role="PS">
             <SectionPermission id="report" permissions="rw" />
-            <SectionPermission id="publications" permissions="--" />
-            <SectionPermission id="people" permissions="--" />
+            <SectionPermission id="publications" permissions="rw" />
+            <SectionPermission id="people" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
         <Project />
@@ -215,7 +215,11 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="people" type="EditableReportSection" name="People" title="People" blobSection="PEOPLE">
-        
+        <ReportItem id="publications" type="ManagePeopleReportItem">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
     </ReportSection>
     <ReportSection id="submit" tooltip="PDF generation and submission" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <ReportItem id="review" type="SimpleReviewSubmitReportItem" emails="{$my_email},{$project_theme_lead_emails}" />
