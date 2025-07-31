@@ -66,6 +66,7 @@ ManagePeopleEditUniversitiesView = Backbone.View.extend({
         }
         this.stopListening();
         this.undelegateEvents();
+        clearInterval(this.interval);
     },
     
     saveAll: function(refresh){

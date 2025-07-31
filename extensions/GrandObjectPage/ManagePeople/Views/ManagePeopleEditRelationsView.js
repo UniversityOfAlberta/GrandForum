@@ -22,7 +22,7 @@ ManagePeopleEditRelationsView = Backbone.View.extend({
         
         var dims = {w:0, h:0};
         // Reposition the dialog when the window is resized or the dialog is resized
-        setInterval(function(){
+        this.interval = setInterval(function(){
 	        if(this.$el.width() != dims.w || this.$el.height() != dims.h){
 	            this.$el.dialog("option","position", {
                     my: "center center",
@@ -49,6 +49,7 @@ ManagePeopleEditRelationsView = Backbone.View.extend({
         });
         this.stopListening();
         this.undelegateEvents();
+        clearInterval(this.interval);
     },
     
     disassociate: function(){
