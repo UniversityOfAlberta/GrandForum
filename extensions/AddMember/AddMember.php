@@ -111,7 +111,25 @@ class AddMember extends SpecialPage{
                 }
             }
             AddMember::generateFormHTML($wgOut);
-            return;
+        }
+        if(isset($_GET['embed'])){
+            $wgOut->addHTML("<script type='text/javascript'>
+                $('#bodyContent h1').hide();
+                parent.enableAddButton();
+                if($('#wgMessages div.success').text() != ''){
+                    parent.closeAddHQP();
+                }
+                $('input[name=end_field]').parent().append('<span id=\"infinity\" style=\"font-weight:bold;font-size:18px;cursor:pointer;\" class=\"highlights-text\" title=\"Continuing\">&#8734;</span>');
+                $('#infinity').click(function(){
+                    $('input[name=end_field]').val('0000-00-00').change();
+                });
+                
+                $('form').submit(function(){
+                    _.defer(function(){
+                        $('input[name=ignore_warnings]').prop('disabled', true);
+                    });
+                });
+            </script>");
         }
     }
     
@@ -635,8 +653,9 @@ class AddMember extends SpecialPage{
         if($user->isRoleAtLeast(STAFF)){
             $wgOut->addHTML("<b><a href='$wgServer$wgScriptPath/index.php/Special:AddMember?action=view'>View Requests</a></b><br /><br />");
         }
+        $embed = isset($_GET['embed']) ? "?embed" : "";
         $wgOut->addHTML("Adding a member to the forum will allow them to access content relevant to the user roles and projects which are selected below.  By selecting projects, the user will be automatically added to the projects on the forum, and subscribed to the project mailing lists.  The new user's email must be provided as it will be used to send a randomly generated password to the user.  After pressing the 'Submit Request' button, an administrator will be able to accept the request.  If there is a problem in the request (ie. there was an obvious typo in the name), then you may be contacted by the administrator about the request.<br /><br />");
-        $wgOut->addHTML("<form action='$wgScriptPath/index.php/Special:AddMember' method='post'>\n");
+        $wgOut->addHTML("<form action='$wgScriptPath/index.php/Special:AddMember{$embed}' method='post'>\n");
         
         $form = self::createForm();
         $wgOut->addHTML($form->render());
@@ -746,7 +765,12 @@ class AddMember extends SpecialPage{
                     $('#subrole_field_ExtFunded').prop('checked', false);
                 }
             }).change();
-            $('#reluser_field').chosen();
+            var relUserInterval = setInterval(function(){
+                if($('#reluser_field').is(':visible')){
+                    $('#reluser_field').chosen();
+                    clearInterval(relUserInterval);
+                }
+            }, 100);
         </script>");
         $wgOut->addHTML("</form>");
     }

@@ -4,6 +4,7 @@ ManagePeopleView = Backbone.View.extend({
     subViews: new Array(),
     allPeople: null,
     people: null,
+    addNewMemberDialog: null,
     addExistingMemberDialog: null,
 
     initialize: function(){
@@ -77,6 +78,10 @@ ManagePeopleView = Backbone.View.extend({
 	    this.$("#listTable_length").empty();
     },
     
+    addNewMember: function(){
+        this.addNewMemberDialog.dialog('open');
+    },
+    
     addExistingMember: function(){
         this.$("#selectExistingMember").empty();
         this.addExistingMemberDialog.dialog('open');
@@ -88,6 +93,7 @@ ManagePeopleView = Backbone.View.extend({
     },
     
     events: {
+        "click #addNewMember": "addNewMember",
         "click #addExistingMember": "addExistingMember"
     },
     
@@ -95,6 +101,50 @@ ManagePeopleView = Backbone.View.extend({
         this.$el.empty();
         this.$el.html(this.template());
         this.addRows();
+        enableAddButton = function() {}; // just set this to an empty function for now
+        this.addNewMemberDialog = this.$("#addNewMemberDialog").dialog({
+	        autoOpen: false,
+	        modal: true,
+	        show: 'fade',
+	        resizable: false,
+	        draggable: false,
+	        width: "960px",
+	        height: $(window).height()*0.8,
+	        position: {
+                my: "center center",
+                at: "center center"
+            },
+	        open: function(){
+	            $("html").css("overflow", "hidden");
+	        },
+	        beforeClose: function(){
+	            $("html").css("overflow", "auto");
+	        },
+	        buttons: {
+	            "Add": function(e){
+	                var addButton = e.currentTarget;
+	                enableAddButton = function(){ // Used by child frame
+	                    $(addButton).prop('disabled', false);
+	                }
+	                closeAddHQP = function(){ // Used by child frame
+	                    this.addNewMemberDialog.dialog('close');
+	                    clearSuccess();
+	                    addSuccess("User Creation Request Submitted. Once an Admin sees this request, the user will be accepted, or if there is a problem they will email you.");
+	                    this.model.fetch();
+	                }.bind(this);
+	                $(addButton).prop('disabled', true);
+	                if(document.getElementById('addNewMemberFrame').contentWindow.$('form input[name=ignore_warnings]').length > 0){
+	                    document.getElementById('addNewMemberFrame').contentWindow.$('form input[name=ignore_warnings]').click();
+	                }
+                    else{ 
+                        document.getElementById('addNewMemberFrame').contentWindow.$('form button[name=submit]').click();
+                    }
+	            }.bind(this),
+	            "Cancel": function(){
+	                this.addNewMemberDialog.dialog('close');
+	            }.bind(this)
+	        }
+	    });
         this.addExistingMemberDialog = this.$("#addExistingMemberDialog").dialog({
 	        autoOpen: false,
 	        modal: true,

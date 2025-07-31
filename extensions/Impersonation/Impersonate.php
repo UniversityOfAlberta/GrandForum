@@ -129,7 +129,7 @@ function startImpersonate($wgUser){
     if(!$wgUser->isLoggedIn()){
         return true;
     }
-    if(isset($_GET['embed']) && $_GET['embed'] != "false"){
+    if(isset($_GET['embed']) && $_GET['embed'] != "false" && strstr(@$_SERVER['HTTP_REFERER'], "{$wgServer}{$wgScriptPath}") === false){
         $wgUser->setId(0);
         return true;
     }

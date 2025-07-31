@@ -15,10 +15,15 @@
 </div>
 <p>
     <% if(isExtensionEnabled('AddMember')){ %>
-        <a id="addNewMember" class="button" href="<%= wgServer + wgScriptPath + '/index.php/Special:AddMember' %>" title="Creates a new member">Add New Member</a>
+        <button id="addNewMember" title="Creates a new member" type="button" title="Creates a new member">Add New Member</button>
     <% } %>
     <button id="addExistingMember" title="Adds an existing member to the list below" type="button">Edit Existing Member</button>
 </p>
+<% if(isExtensionEnabled('AddMember')){ %>
+    <div id="addNewMemberDialog" style="display:none; overflow-y:auto;" title="Add New Member">
+        <iframe id="addNewMemberFrame" style="width:100%; height: 100%;" frameborder="0" onload="this.contentWindow.$('form button[name=submit]').hide()" src="<%= wgServer + wgScriptPath %>/index.php/Special:AddMember?embed"></iframe>
+    </div>
+<% } %>
 <div id="addExistingMemberDialog" style="display:none; overflow:visible;" title="Edit Existing Member">
     <p>Select the person you would like to show up in your table and then press "Add".</p>
     <p><select id="selectExistingMember" name="select"></select></p>
