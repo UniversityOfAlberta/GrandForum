@@ -174,12 +174,12 @@
                 $person->getFecPersonalInfo();
                 
                 // key: Term + Class Nbr + Component + Sect + Employee Id
-                $key = $term . $classNbr . $component . $sect . $employeeID;
+                $key = $term . $classNbr . $component . $sect;
                 
                 // Skip
-                if (isset($grandCourses[$key])){
+                /*if (isset($grandCourses[$key])){
                     continue;
-                }
+                }*/
                 if(!($role == "PI" || // Primary Instructor
                      $role == "CO" || // Co-Instructor
                      ($role == "TA" && $person->faculty == "Rehabilitation Medicine") || // Teaching Assistant (Rehab Medicine only)
