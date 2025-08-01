@@ -38,7 +38,7 @@ LIMSStatusChangeViewPmm = Backbone.View.extend({
         this.template = _.template($(
             '#lims_status_change_template').html());
     },
-    
+
 
     deleteTaskFile: function(e){
         var fileId = $(e.currentTarget).data('assignee').toString();
@@ -54,9 +54,37 @@ LIMSStatusChangeViewPmm = Backbone.View.extend({
     },
 
     render: function() {
+        var templateData = this.model.toJSON();
+        var allMembers = this.project.members;
 
-          
-        this.$el.html(this.template(this.model.toJSON())); 
+        var cleanAssignees = _.map(templateData.assignees, function(assignee) {
+            var assigneeId = assignee.id || assignee;
+            var member = allMembers.get(assigneeId);
+            if (member) {
+                return { id: member.get('id'), name: member.get('fullName') };
+            }
+            return null;
+        }).filter(Boolean);
+
+        var peopleList = allMembers.map(function(member) {
+            return { value: member.get('id'), option: member.get('fullName') };
+        });
+        peopleList.unshift({ value: '', option: 'None' });
+
+        if (templateData.reviewers) {
+            _.each(templateData.reviewers, function(reviewerId, assigneeId) {
+                if (reviewerId && _.isObject(reviewerId)) {
+                    reviewerId = reviewerId.id
+                }
+                if (reviewerId != null) {
+                    templateData.reviewers[assigneeId] = reviewerId.toString();
+                }
+            });
+        }
+        templateData.assignees = cleanAssignees;
+        templateData.peopleList = peopleList;
+        
+        this.$el.html(this.template(templateData)); 
         return this.$el;
     },
 

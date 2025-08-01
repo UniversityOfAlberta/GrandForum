@@ -9,6 +9,7 @@ if (assignees && assignees.length > 0) {
                 <th>Assignee</th>
                 <th>Status</th>
                 <th>Document</th>
+                <th>Reviewer</th>
             </tr>
         </thead>
         <tbody> 
@@ -22,6 +23,7 @@ if (assignees && assignees.length > 0) {
                         var fileObj = files[assigneeId] || {};
                         var filename = fileObj.filename;
                         var docUrl = fileObj.url;
+                        var reviewerObj = reviewers[assigneeId] || {};
                         %>
                         <%= currentStatus %>
                     </td>
@@ -32,9 +34,14 @@ if (assignees && assignees.length > 0) {
                             No document
                         <% } %>
                     </td>
-                    
+                    <td valign="top">
+                        <% if (reviewerObj.name) { %>
+                            <%= reviewerObj.name %>
+                        <% } else { %>
+                            —
+                        <% } %>
+                    </td>
                 </tr>
-                
             <% }.bind(this)); %>
         </tbody>
     </table>

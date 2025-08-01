@@ -9,6 +9,7 @@ if (assignees && assignees.length > 0) {
                 <th>Assignee</th>
                 <th>Status</th>
                 <th>Document</th>
+                <th>Reviewer</th>
                 <th>Comments</th>
             </tr>
         </thead>
@@ -41,18 +42,37 @@ if (assignees && assignees.length > 0) {
                       %>
                       <% if (isLeaderAllowedToEdit || ( me.get('id') == assigneeId && ( currentStatus == 'Assigned' || currentStatus == 'Done' ) ) ) { %>
                         <% if (currentStatus !== 'Closed') { %>
-                           <% if (filename && !toDelete) { %>
+                        <% if (filename && !toDelete) { %>
                                 <%= filename %>
                                   <span class="delete-icon deleteFile" data-assignee="<%= assigneeId %>">×</span>
                            <% } else {%>
-                                <%= HTML.File(this, 'files.' + assigneeId) %>
-                          <% } %>
+                            <%= HTML.File(this, 'files.' + assigneeId) %>
                         <% } %>
+                      <% } %>
                       <% } else { %>
                         <% if (currentStatus !== 'Closed') { %>
                           <span>No document allowed</span>
                         <% } %>
-                      <% } %>
+                        <% } %>
+                    </td>
+                    <td valign="top">
+                        <%
+                        var selectedReviewerId = reviewers[assigneeId] || null;
+                        var reviewerMember = _.find(peopleList, function(p) { return p.value == selectedReviewerId; });
+                        var reviewerName = reviewerMember ? reviewerMember.option : "Not Assigned";
+                        %>
+                        <% if (isLeaderAllowedToEdit) { %>
+                            <%
+                            var reviewerOptions = peopleList.filter(function(person) {
+                                return person.value != assigneeId;
+                            });
+                            %>
+                            <%= HTML.Select(this, 'reviewers.' + assigneeId, {
+                                options: reviewerOptions
+                            }) %>
+                        <% } else { %>
+                            <%= reviewerName %>
+                        <% } %>
                     </td>
                     
                     <td valign="top" height>
