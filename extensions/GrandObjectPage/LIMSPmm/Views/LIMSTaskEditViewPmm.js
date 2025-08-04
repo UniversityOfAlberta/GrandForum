@@ -70,7 +70,11 @@ LIMSTaskEditViewPmm = Backbone.View.extend({
 
             if (availablePool.length > 0) {
                 var randomReviewer = _.sample(availablePool);
-                reviewers[assigneeId] = randomReviewer.id;
+                reviewers[assigneeId] =  {
+                    id: randomReviewer.id,
+                    name: randomReviewer.fullName,
+                    url: randomReviewer.url|| ''
+                };
                 preferredReviewerPool = _.reject(preferredReviewerPool, p => p.id == randomReviewer.id);
             }
         });
@@ -80,7 +84,7 @@ LIMSTaskEditViewPmm = Backbone.View.extend({
     changeStatus: function(){
         // Create a model for the status change dialog
         var view = new LIMSStatusChangeViewPmm({el: this.editDialog, model: this.model, isDialog: true, project: this.project});
-        
+
         this.editDialog.view = view;
         $('body').append(this.editDialog);
 

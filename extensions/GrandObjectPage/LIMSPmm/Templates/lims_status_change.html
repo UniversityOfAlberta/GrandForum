@@ -57,9 +57,12 @@ if (assignees && assignees.length > 0) {
                     </td>
                     <td valign="top">
                         <%
-                        var selectedReviewerId = reviewers[assigneeId] || null;
-                        var reviewerMember = _.find(peopleList, function(p) { return p.value == selectedReviewerId; });
-                        var reviewerName = reviewerMember ? reviewerMember.option : "Not Assigned";
+                            var selectedReviewerId = reviewers[assigneeId] || null;
+                            var peopleList = this.project.members.map(function(member) {
+                                return { value: member.get('id'), option: member.get('fullName') };
+                            });
+                            var reviewerMember = _.find(peopleList, function(p) { return p.value == selectedReviewerId; });
+                            var reviewerName = reviewerMember ? reviewerMember.option : "Not Assigned";
                         %>
                         <% if (isLeaderAllowedToEdit) { %>
                             <%
@@ -67,14 +70,14 @@ if (assignees && assignees.length > 0) {
                                 return person.value != assigneeId;
                             });
                             %>
-                            <%= HTML.Select(this, 'reviewers.' + assigneeId, {
+                            <%= HTML.Select(this, 'reviewers.' + assigneeId + '.id', {
                                 options: reviewerOptions
                             }) %>
                         <% } else { %>
                             <%= reviewerName %>
                         <% } %>
                     </td>
-                    
+
                     <td valign="top" height>
                         <% if (isLeaderAllowedToEdit || (me.get('id') == assigneeId && (currentStatus == 'Assigned' || currentStatus == 'Done'))) { %> 
                             <%= HTML.TextArea(this, 'comments.' + assigneeId, {placeholder: "Enter your comments here", style: "height: 75px;width:100%;box-sizing:border-box;margin:0;"}) %>                        <% } %> 

@@ -255,8 +255,8 @@ class LIMSTaskPmm extends BackboneModel
             foreach ($this->assignees as $assignee) {
                 $assigneeId = (isset($assignee->id)) ? $assignee->id : $assignee;
                 $reviewerValue = null;
-                if (isset($this->reviewers[$assigneeId]) && $this->reviewers[$assigneeId] !== '' && $this->reviewers[$assigneeId] !== null) {
-                    $reviewerValue = (int)$this->reviewers[$assigneeId];
+                if (isset($this->reviewers[$assigneeId]) && $this->reviewers[$assigneeId] !== null) {
+                    $reviewerValue = (int)$this->reviewers[$assigneeId]->id ?? null;
                 }
                 DBFunctions::insert(
                     'grand_pmm_task_assignees',
@@ -375,13 +375,9 @@ class LIMSTaskPmm extends BackboneModel
             foreach ($this->assignees as $assignee) {
                 $assigneeId = (isset($assignee->id)) ? $assignee->id : $assignee;
 
-                $reviewerValue = null;
-                $reviewerFromFrontend = $this->reviewers[$assigneeId] ?? null;
-                if ($reviewerFromFrontend !== null && $reviewerFromFrontend !== '') {
-                    $reviewerValue = (int)$reviewerFromFrontend;
-                } else {
-                    $reviewerValue = $oldAssigneeReviewers[$assigneeId] ?? null;
-                }
+                $selectedReviewer = $this->reviewers[$assigneeId] ?? null;
+                $reviewerValue = (int)$selectedReviewer->id ?? null;
+
 
                 $insertData = [
                     'task_id'  => $this->id,
@@ -404,16 +400,16 @@ class LIMSTaskPmm extends BackboneModel
                     $insertData);
             }
             $this->uploadFiles();
-            $assignees = $this->getAssignees();
+            $assignees = $this->getAssignees();            
             foreach ($assignees as $assignee) {
-      
-                
                 $comment = @$_POST['comments'][$assignee->id];
 
                 // If assignee is an object, you can get their email like this:
                 // (Note: Adjust this based on how you retrieve the email or other relevant information)
                 // Create the notification for each assignee
-                if ( @$data[$assignee->id]['status'] != 'Closed' && $this->statuses[$assignee->id] == 'Closed') {
+                $oldStatus = isset($data[$assignee->id]['status']) ? $data[$assignee->id]['status'] : null;
+                $newStatus = isset($this->statuses[$assignee->id]) ? $this->statuses[$assignee->id] : null;
+                if ($oldStatus != 'Closed' && $newStatus == 'Closed') {
                     Notification::addNotification($me, $assignee, "Thank You for Completing <b>{$this->task}</b>!",
                     "Hello <b>{$assignee->getNameForForms()}</b>, thank you for completing <b>{$this->task}</b> on I-CONNECTS.
                     We truly appreciate your effort and timely contribution.
