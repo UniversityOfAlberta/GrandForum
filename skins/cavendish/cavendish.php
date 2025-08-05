@@ -907,7 +907,7 @@ class CavendishTemplate extends QuickTemplate {
 	            }
 	        }
 	        echo "</div>";
-            echo "<a id='status_help_faq' name='question_mark_16x32' class='menuTooltip' title='FAQ' href='$wgServer$wgScriptPath/index.php/Help:Contents'><img src='$wgServer$wgScriptPath/skins/icons/white/question_mark_16x32.png' alt='FAQ' style='height: 16px;' />&nbsp;&nbsp;<span class='en'>FAQ</span><span class='fr'>FAQ</span></a>";
+            echo "<a id='status_help_faq' name='question_mark_16x32' class='menuTooltip' title='FAQ' href='$wgServer$wgScriptPath/index.php/Help:Contents'><img src='$wgServer$wgScriptPath/skins/icons/white/question_mark_16x32.png' alt='FAQ' style='height: 16px;' /></a>";
             if(count($config->getValue("socialLinks")) > 0){
 	            echo "<a id='share' style='cursor:pointer;' name='share_32x32' class='menuTooltipHTML'><img src='$wgServer$wgScriptPath/skins/icons/white/share_32x32.png' style='height: 16px;' />&nbsp;▼</a>";
 	        }
@@ -916,11 +916,13 @@ class CavendishTemplate extends QuickTemplate {
 		        
 		        $notificationAnimation = "";
 		        $notificationText = "";
+		        $notificationExtra = "";
 		        if(count($notifications) > 0){
 		            $notificationAnimation = "animation: shake 2s; animation-iteration-count: infinite;";
 		            $notificationText = " (".count($notifications).")";
+		            $notificationExtra = "<div style='background:red; position: absolute; top:5px; right: 5px; height: 7px; width: 7px; border-radius: 7px; text-decoration: none;'>&nbsp;</div>";
 		        }
-		        echo "<a id='status_notifications' name='mail_32x24' class='menuTooltip' title='Notifications$notificationText' href='$wgServer$wgScriptPath/index.php?action=viewNotifications'><img src='$wgServer$wgScriptPath/skins/icons/white/mail_32x24.png' alt='Notifications' style='$notificationAnimation;height:12px;' /></a>";
+		        echo "<a id='status_notifications' name='mail_32x24' class='menuTooltip' style='position:relative;' title='Notifications$notificationText' href='$wgServer$wgScriptPath/index.php?action=viewNotifications'><img src='$wgServer$wgScriptPath/skins/icons/white/bell.png' alt='Notifications' style='$notificationAnimation;height:18px;' />{$notificationExtra}</a>";
 		        echo "<a id='status_profile' class='menuTooltip' title='Profile' href='{$p->getUrl()}'>{$p->getNameForForms()}</a>";
 		        echo "<a id='status_profile_photo' class='menuTooltip' title='Profile' href='{$p->getUrl()}'><img class='photo' src='{$p->getPhoto()}' alt='Profile' /></a>";
 		        if(!$wgImpersonating && !$wgDelegating){
