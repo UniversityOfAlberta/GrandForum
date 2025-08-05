@@ -651,7 +651,7 @@ class AddMember extends SpecialPage{
         global $wgUser, $wgServer, $wgScriptPath, $wgRoles;
         $user = Person::newFromId($wgUser->getId());
         if($user->isRoleAtLeast(STAFF)){
-            $wgOut->addHTML("<b><a href='$wgServer$wgScriptPath/index.php/Special:AddMember?action=view'>View Requests</a></b><br /><br />");
+            $wgOut->addHTML("<b><a href='$wgServer$wgScriptPath/index.php/Special:AddMember?action=view' target='_top'>View Requests</a></b><br /><br />");
         }
         $embed = isset($_GET['embed']) ? "?embed" : "";
         $wgOut->addHTML("Adding a member to the forum will allow them to access content relevant to the user roles and projects which are selected below.  By selecting projects, the user will be automatically added to the projects on the forum, and subscribed to the project mailing lists.  The new user's email must be provided as it will be used to send a randomly generated password to the user.  After pressing the 'Submit Request' button, an administrator will be able to accept the request.  If there is a problem in the request (ie. there was an obvious typo in the name), then you may be contacted by the administrator about the request.<br /><br />");
