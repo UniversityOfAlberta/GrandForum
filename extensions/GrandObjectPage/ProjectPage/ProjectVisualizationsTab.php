@@ -477,7 +477,17 @@ class ProjectVisualizationsTab extends AbstractTab {
 	    global $wgServer, $wgScriptPath;
 	    if($action == "getProjectWordleData"){
 	        $project = Project::newFromId($_GET['project']);
-	        $description = strip_tags($project->getDescription())."\n";
+	        $description = $project->getDescription();
+	        if(is_string($description)){
+	            $description = strip_tags($project->getDescription());
+	        }
+	        else {
+	            $newDesc = "";
+	            foreach($description as $key => $desc){
+	                $newDesc .= strip_tags($desc)."\n";
+	            }
+	            $description = $newDesc;
+	        }
 	        foreach($project->getAllPeople() as $person){
 	            $description .= strip_tags($person->getProfile())."\n";
 	        }
