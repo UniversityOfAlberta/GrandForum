@@ -173,7 +173,7 @@ ManageProductsView = Backbone.View.extend({
     
     addRows: function(){
         var searchStr = "";
-        var order = [this.projects.length + 3, 'desc'];
+        var order = [this.projects.length + 4, 'desc'];
         if(publicationsFrozen){
             order = [0, 'desc']
         }

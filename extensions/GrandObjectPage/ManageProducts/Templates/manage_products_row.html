@@ -26,6 +26,19 @@
         <span style="display:none;">-<%= access_id %></span><%= HTML.CheckBox(this, 'access_id', {value: me.get('id'), default: 0}) %>
     </td>
 <% } %>
+<td align="center">
+    
+    <% if(access_id != 0){ %>
+        <span style="display:none;">Private</span>
+        <img src="<%= wgServer + wgScriptPath %>/skins/icons/glyphicons_052_eye_close.png" style="height: 19px;" title="Private" />
+    <% } else if(access == "Public"){ %>
+        <span style="display:none;">Public</span>
+        <img src="<%= wgServer + wgScriptPath %>/skins/icons/glyphicons_051_eye_open.png" style="height: 14px;" title="Public" />
+    <% } else { %>
+        <span style="display:none;">Forum Only</span>
+        <img src="<%= wgServer + wgScriptPath %>/skins/icons/glyphicons_051_eye_half.png" style="height: 14px;" title="Forum Only" />
+    <% } %>
+</td>
 <td>
     <%= date %>
 </td>
