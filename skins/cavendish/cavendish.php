@@ -778,12 +778,17 @@ class CavendishTemplate extends QuickTemplate {
                 eventer(messageEvent,function(e) {
                     if(e.data.projectUrl != undefined){
                         $("a.projectUrl").attr('href', function(el){ return e.data.projectUrl + jQuery(this).attr('data-projectId')});
-                        $("a.projectUrl").attr('target', '_parent');
+                        $("a.projectUrl").attr('target', '_top');
                     }
                 }, false);
 		        
 		        $(document).ready(function(){
-		            $("a").attr("target", "");
+		            $("a").each(function(){
+		                if($(this).attr("target") != "_top" && 
+		                   $(this).attr("target") != "_parent"){
+		                    $(this).attr("target", "");
+		                }
+		            });
 		            var height = $("#bodyContent").height();
 		            // Inform the parent about what iframe height should be
 		            setInterval(function(){
