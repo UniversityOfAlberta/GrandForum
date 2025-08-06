@@ -299,9 +299,65 @@ class ApplicationsTable extends SpecialPage{
         $exp->setBlobSection("INFORMATION");
         $exp->setId("lived_experience");
         
+        $ind = new IntegerReportItem();
+        $ind->setBlobType(BLOB_TEXT);
+        $ind->setBlobItem("AGENCIES_AGENCIES");
+        $ind->setBlobSection("INFORMATION");
+        $ind->setId("indigenous_agencies");
+        
+        $srv = new IntegerReportItem();
+        $srv->setBlobType(BLOB_TEXT);
+        $srv->setBlobItem("SERVICE_AGENCIES");
+        $srv->setBlobSection("INFORMATION");
+        $srv->setId("service_agencies");
+        
+        $gov = new IntegerReportItem();
+        $gov->setBlobType(BLOB_TEXT);
+        $gov->setBlobItem("MUNICIPAL_GOVERNMENTS");
+        $gov->setBlobSection("INFORMATION");
+        $gov->setId("municipal_governments");
+        
+        $res = new IntegerReportItem();
+        $res->setBlobType(BLOB_TEXT);
+        $res->setBlobItem("RESEARCH_PERSONNEL");
+        $res->setBlobSection("INFORMATION");
+        $res->setId("research_personnel");
+        
+        $pdf = new IntegerReportItem();
+        $pdf->setBlobType(BLOB_TEXT);
+        $pdf->setBlobItem("PDF");
+        $pdf->setBlobSection("INFORMATION");
+        $pdf->setId("pdf");
+        
+        $msc = new IntegerReportItem();
+        $msc->setBlobType(BLOB_TEXT);
+        $msc->setBlobItem("MASTERS");
+        $msc->setBlobSection("INFORMATION");
+        $msc->setId("masters");
+        
+        $phd = new IntegerReportItem();
+        $phd->setBlobType(BLOB_TEXT);
+        $phd->setBlobItem("PHD");
+        $phd->setBlobSection("INFORMATION");
+        $phd->setId("phd");
+        
+        $ugrad = new IntegerReportItem();
+        $ugrad->setBlobType(BLOB_TEXT);
+        $ugrad->setBlobItem("UGRAD");
+        $ugrad->setBlobSection("INFORMATION");
+        $ugrad->setId("ugrad");
+        
         $tabbedPage = new InnerTabbedPage("reports");
         for($year=date('Y'); $year >= 2021; $year--){
-            $tab = new ApplicationTab(RP_PROGRESS, null, $year, "{$year}", array("Lived Experience" => $exp));                                           
+            $tab = new ApplicationTab(RP_PROGRESS, null, $year, "{$year}", array("Lived Experience" => $exp,
+                                                                                 "Indigenous Agencies" => $ind,
+                                                                                 "Service Agencies" => $srv,
+                                                                                 "Municipal Governments" => $gov,
+                                                                                 "Research Personnel" => $res,
+                                                                                 "PDF" => $pdf,
+                                                                                 "Masters" => $msc,
+                                                                                 "PhD" => $phd,
+                                                                                 "Ugrad" => $ugrad));
             $tabbedPage->addTab($tab);
         }
         $wgOut->addHTML($tabbedPage->showPage());
@@ -316,9 +372,65 @@ class ApplicationsTable extends SpecialPage{
         $exp->setBlobSection("INFORMATION");
         $exp->setId("lived_experience");
         
+        $ind = new IntegerReportItem();
+        $ind->setBlobType(BLOB_TEXT);
+        $ind->setBlobItem("AGENCIES_AGENCIES");
+        $ind->setBlobSection("INFORMATION");
+        $ind->setId("indigenous_agencies");
+        
+        $srv = new IntegerReportItem();
+        $srv->setBlobType(BLOB_TEXT);
+        $srv->setBlobItem("SERVICE_AGENCIES");
+        $srv->setBlobSection("INFORMATION");
+        $srv->setId("service_agencies");
+        
+        $gov = new IntegerReportItem();
+        $gov->setBlobType(BLOB_TEXT);
+        $gov->setBlobItem("MUNICIPAL_GOVERNMENTS");
+        $gov->setBlobSection("INFORMATION");
+        $gov->setId("municipal_governments");
+        
+        $res = new IntegerReportItem();
+        $res->setBlobType(BLOB_TEXT);
+        $res->setBlobItem("RESEARCH_PERSONNEL");
+        $res->setBlobSection("INFORMATION");
+        $res->setId("research_personnel");
+        
+        $pdf = new IntegerReportItem();
+        $pdf->setBlobType(BLOB_TEXT);
+        $pdf->setBlobItem("PDF");
+        $pdf->setBlobSection("INFORMATION");
+        $pdf->setId("pdf");
+        
+        $msc = new IntegerReportItem();
+        $msc->setBlobType(BLOB_TEXT);
+        $msc->setBlobItem("MASTERS");
+        $msc->setBlobSection("INFORMATION");
+        $msc->setId("masters");
+        
+        $phd = new IntegerReportItem();
+        $phd->setBlobType(BLOB_TEXT);
+        $phd->setBlobItem("PHD");
+        $phd->setBlobSection("INFORMATION");
+        $phd->setId("phd");
+        
+        $ugrad = new IntegerReportItem();
+        $ugrad->setBlobType(BLOB_TEXT);
+        $ugrad->setBlobItem("UGRAD");
+        $ugrad->setBlobSection("INFORMATION");
+        $ugrad->setId("ugrad");
+        
         $tabbedPage = new InnerTabbedPage("reports");
         for($year=date('Y'); $year >= 2021; $year--){
-            $tab = new ApplicationTab('RP_COMPLETION', null, $year, "{$year}", array("Lived Experience" => $exp));
+            $tab = new ApplicationTab('RP_COMPLETION', null, $year, "{$year}", array("Lived Experience" => $exp,
+                                                                                     "Indigenous Agencies" => $ind,
+                                                                                     "Service Agencies" => $srv,
+                                                                                     "Municipal Governments" => $gov,
+                                                                                     "Research Personnel" => $res,
+                                                                                     "PDF" => $pdf,
+                                                                                     "Masters" => $msc,
+                                                                                     "PhD" => $phd,
+                                                                                     "Ugrad" => $ugrad));
             $tab->addExtra($this->completionReportSummary($year));
                                                       
             $tabbedPage->addTab($tab);
