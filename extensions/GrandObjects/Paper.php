@@ -1388,7 +1388,9 @@ class Paper extends BackboneModel{
         $match = strtolower($matches[0]);
         if(strstr($match, "authors") !== false){
             $authors = array();
+            $lead = $this->getData('lead');
             foreach($this->getAuthors() as $a){
+                $isLead = ($lead != null && ($lead->fullname == $a->getNameForForms() || (isset($lead->id) && $lead->id == $a->getId()))) ? "*" : "";
                 if($a->getId()){
                     $name = $a->getNameForProduct();
                     if($a->isRoleOn(HQP, $this->getDate()) || $a->wasLastRole(HQP)){
@@ -1403,13 +1405,13 @@ class Paper extends BackboneModel{
                         $name = "<b>{$a->getNameForProduct()}</b>";
                     }
                     if($hyperlink){
-                        $authors[] = "<a target='_blank' href='{$a->getUrl()}'><b>{$name}</b></a>";
+                        $authors[] = "<a target='_blank' href='{$a->getUrl()}'><b>{$name}{$isLead}</b></a>";
                     }
                     else{
-                        $authors[] = "{$name}";
+                        $authors[] = "{$name}{$isLead}";
                     }
                 } else {
-                    $authors[] = $a->getNameForProduct();
+                    $authors[] = "{$a->getNameForProduct()}{$isLead}";
                 }
             }
             $authors = implode(", ", $authors);
@@ -1874,7 +1876,7 @@ class Paper extends BackboneModel{
                 $authors[] = array('id' => $author->getId(),
                                    'name' => $author->getNameForProduct(),
                                    'email' => $author->getEmail(),
-                                   'fullname' => $author->getNameForForms(),
+                                   'fullname' => str_replace("<span class='noshow'>&quot;</span>", "\"", $author->getNameForForms()),
                                    'url' => $author->getUrl());
             }
             if(is_array($this->getProjects())){

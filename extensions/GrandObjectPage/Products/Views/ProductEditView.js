@@ -98,21 +98,138 @@ ProductEditView = Backbone.View.extend({
     },
     
     renderAuthorsWidget: function(){
-        var left = _.pluck(this.model.get('authors'), 'fullname');
-        var right = _.difference(this.allPeople.pluck('fullName'), left);
-        var objs = [];
+        var objs = {};
+        var availableTags = {};
         this.allPeople.each(function(p){
+            var fullname = p.get('fullName');
+            if(p.get('email') != ""){
+                fullname += " (" + p.get('email').split('@')[0] + ")";
+            }
+            objs[fullname] = {id: p.get('id'),
+                              name: p.get('name'),
+                              fullname: fullname};
             objs[p.get('fullName')] = {id: p.get('id'),
                                        name: p.get('name'),
-                                       fullname: p.get('fullName')};
+                                       fullname: fullname};
+            availableTags[fullname] = fullname;
         });
-        var html = HTML.Switcheroo(this, 'authors.fullname', {name: this.model.getAuthorsLabel().toLowerCase(),
-                                                          'left': left,
-                                                          'right': right,
-                                                          'objs': objs
-                                                          });
+        availableTags = _.values(availableTags);
+        var delimiter = ';';
+        var tagLimit = 1000;
+        var placeholderText = (tagLimit == 1) ? 'Enter ' + this.model.getAuthorsLabel().toLowerCase() + ' here...'
+                                              : 'Enter ' + this.model.getAuthorsLabel().pluralize().toLowerCase() + ' here...';
+        var html = HTML.TagIt(this, 'authors.fullname', {
+            values: _.pluck(this.model.get('authors'), 'fullname'),
+            strictValues: false, 
+            objs: objs,
+            options: {
+                placeholderText: placeholderText,
+                allowSpaces: true,
+                allowDuplicates: false,
+                removeConfirmation: false,
+                singleFieldDelimiter: delimiter,
+                splitOn: delimiter,
+                tagLimit: tagLimit,
+                availableTags: availableTags,
+                afterTagAdded: function(event, ui){
+                    var authors = this.model.get('authors');
+                    var index = $("li.tagit-choice", event.target).length-1;
+                    var author = authors[index];
+                    var lead = this.model.get('data')['lead'];
+
+                    // Lead Author
+                    if(lead != null && (lead.fullname == author.fullname || (lead.id == author.id && author.id != undefined))){
+                        $(".tagit-label", ui.tag).after("<span>*</span>");
+                    }
+                    
+                    // UofA Author
+                    if(objs[ui.tagLabel] != undefined){
+                        ui.tag[0].style.setProperty('background', highlightColor, 'important');
+                        ui.tag.children("a").children("span")[0].style.setProperty("color", "white", 'important');
+                        ui.tag.children("span")[0].style.setProperty("color", "white", 'important');
+                        if(ui.tag.children("span").length > 1){
+                            ui.tag.children("span")[1].style.setProperty("color", "white", 'important');
+                        }
+                    }
+                }.bind(this),
+                tagSource: function(search, showChoices) {
+                    if(search.term.length < 2){ showChoices(); return; }
+                    var filter = search.term.toLowerCase();
+                    var choices = $.grep(this.options.availableTags, function(element) {
+                        return (element.toLowerCase().match(filter) !== null);
+                    });
+                    showChoices(this._subtractArray(choices, this.assignedTags()));
+                }
+            }
+        });
         this.$("#productAuthors").html(html);
-        createSwitcheroos();
+        if(tagLimit > 1){
+            this.$("#productAuthors").append("<p><i>Drag to re-order each " + this.model.getAuthorsLabel().toLowerCase() + "</i></p>");
+        }
+        this.$("#productAuthors").append("<p><i>Right-Click " + this.model.getAuthorsLabel().toLowerCase() + " to toggle between non-" + networkName + " and " + networkName + " member (if they are known).</i></p>");
+        this.$("#productAuthors").append("<p><i>If the lead " + this.model.getAuthorsLabel().toLowerCase() + " is defined, you can indicate them by double-clicking on their name.</i></p>");
+        this.$("#productAuthors").append("<p><i>Colour Background: " + this.model.getAuthorsLabel().toLowerCase() + " is <b>known</b> to " + networkName + ".<br />" + 
+                                         "   <i>White Background: " + this.model.getAuthorsLabel().toLowerCase() + " is <b>not known</b> to " + networkName + ".</i></p>");
+        
+        // Ordering authors
+        this.$("#productAuthors .tagit").sortable({
+            stop: function(event,ui) {
+                $('input[name=authors_fullname]').val(
+                    $(".tagit-label",$(this))
+                        .clone()
+                        .text(function(index,text){ return (index == 0) ? text : delimiter + text; })
+                        .text()
+                ).change();
+            }
+        });
+        
+        // Setting UofA/Non-UofA
+        this.$el.on('contextmenu', "#productAuthors .tagit-choice", function(e){
+            e.preventDefault();
+            var origText = $(".tagit-label",$(this)).text();
+            var newText = $(".tagit-label",$(this)).text();
+            if($(".tagit-label",$(this)).text().includes('"')){
+                newText = newText.replace(/"/g, '');
+            }
+            else{
+                newText = '"' + newText + '"';
+            }
+            var assignedTags = $('div[name=authors_fullname] ul.tagit').tagit('assignedTags');
+            $('div[name=authors_fullname] ul.tagit').tagit('removeAll');
+            _.each(assignedTags, function(tag){
+                if(tag == origText){
+                    tag = newText;
+                }
+                $('div[name=authors_fullname] ul.tagit').tagit('createTag', tag);
+            });
+        });
+        
+        // Setting lead author
+        this.$el.on('dblclick', "#productAuthors .tagit-choice", function(e){
+            var el = $(".tagit-label", e.currentTarget);
+            var index = $("ul[name=authors_fullname] li").index(e.currentTarget);
+            var authors = this.model.get('authors');
+            var author = authors[index];
+            var data = this.model.get('data');
+            var lead = data['lead'];
+            if(lead == null || (lead.fullname != author.fullname && (lead.id != author.id || author.id == undefined))){
+                data['lead'] = author;
+            }
+            else{
+                data['lead'] = null;
+            }
+            this.model.set('data', data);
+            var assignedTags = $('div[name=authors_fullname] ul.tagit').tagit('assignedTags');
+            $('div[name=authors_fullname] ul.tagit').tagit('removeAll');
+            _.each(assignedTags, function(tag){
+                $('div[name=authors_fullname] ul.tagit').tagit('createTag', tag);
+            });
+        }.bind(this));
+        
+        // Mouse over
+        this.$el.on('mouseover', 'div[name=authors_fullname] li.tagit-choice', function(){
+            $(this).css('cursor', 'move');
+        });
     },
     
     renderAuthors: function(){
