@@ -144,7 +144,7 @@ ProductEditView = Backbone.View.extend({
                     
                     // UofA Author
                     if(objs[ui.tagLabel] != undefined){
-                        ui.tag[0].style.setProperty('background', highlightColor, 'important');
+                        ui.tag[0].style.setProperty('background', hyperlinkColor, 'important');
                         ui.tag.children("a").children("span")[0].style.setProperty("color", "white", 'important');
                         ui.tag.children("span")[0].style.setProperty("color", "white", 'important');
                         if(ui.tag.children("span").length > 1){
