@@ -920,7 +920,7 @@ class CavendishTemplate extends QuickTemplate {
 		        if(count($notifications) > 0){
 		            $notificationAnimation = "animation: shake 2s; animation-iteration-count: infinite;";
 		            $notificationText = " (".count($notifications).")";
-		            $notificationExtra = "<div style='background:#F33; position: absolute; top:5px; right: 5px; height: 7px; width: 7px; border-radius: 7px; text-decoration: none;'>&nbsp;</div>";
+		            $notificationExtra = "<div style='background:#F33; position: absolute; top:5px; right: 5px; height: 7px; width: 7px; border-radius: 7px; border: 2px solid {$config->getValue('topHeaderColor')}; text-decoration: none;'>&nbsp;</div>";
 		        }
 		        echo "<a id='status_notifications' name='mail_32x24' class='menuTooltip' style='position:relative;' title='Notifications$notificationText' href='$wgServer$wgScriptPath/index.php?action=viewNotifications'><img src='$wgServer$wgScriptPath/skins/icons/white/bell.png' alt='Notifications' style='$notificationAnimation;height:18px;' />{$notificationExtra}</a>";
 		        echo "<a id='status_profile' class='menuTooltip' title='Profile' href='{$p->getUrl()}'>{$p->getNameForForms()}</a>";
