@@ -38,7 +38,7 @@ LIMSStatusChangeViewPmm = Backbone.View.extend({
         this.template = _.template($(
             '#lims_status_change_template').html());
     },
-    
+
 
     deleteTaskFile: function(e){
         var fileId = $(e.currentTarget).data('assignee').toString();
@@ -54,8 +54,6 @@ LIMSStatusChangeViewPmm = Backbone.View.extend({
     },
 
     render: function() {
-
-          
         this.$el.html(this.template(this.model.toJSON())); 
         return this.$el;
     },

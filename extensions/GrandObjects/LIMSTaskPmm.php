@@ -18,6 +18,7 @@ class LIMSTaskPmm extends BackboneModel
     var $comments;
     var $statuses;
     var $files;
+    var $reviewers;
 
     static function newFromId($id)
     {
@@ -63,11 +64,36 @@ class LIMSTaskPmm extends BackboneModel
         return $assignees;
     }
 
-   
+    function getReviewers()
+    {
+        $data = DBFunctions::select(
+            array('grand_pmm_task_assignees'),
+            array('assignee', 'reviewer'),
+            array('task_id' => $this->id)
+        );
+        $reviewers = array();
+        foreach ($data as $row) {
+            $reviewerId = $row['reviewer'];
+            if ($reviewerId) {
+                $reviewerPerson = Person::newFromId($reviewerId);
+                $reviewers[$row['assignee']] = array(
+                    'id' => $reviewerPerson->getId(),
+                    'name' => $reviewerPerson->getNameForForms(),
+                    'url' => $reviewerPerson->getUrl()
+                );
+            } else {
+                $reviewers[$row['assignee']] = null;
+            }
+        }
+        return $reviewers;
+    }
+
 
     function __construct($data)
     {
         global $wgServer, $wgScriptPath;
+        $this->files = []; 
+
         if (count($data) > 0) {
             $this->id = $data[0]['id'];
             $this->opportunity = $data[0]['opportunity'];
@@ -202,7 +228,8 @@ class LIMSTaskPmm extends BackboneModel
                 'details' => $this->getComments(),
                 'statuses' => $this->getStatuses(),
                 'isAllowedToEdit' => $this->isAllowedToEdit(),
-                'files' => $this->getFiles()
+                'files' => $this->getFiles(),
+                'reviewers' => $this->getReviewers()
             );
             return $json;
         }
@@ -226,15 +253,20 @@ class LIMSTaskPmm extends BackboneModel
                 )
             );
             $this->id = DBFunctions::insertId();
-            foreach($this->assignees as $assignee){
+            $this->reviewers = isset($this->reviewers) ? (array)$this->reviewers : [];
+            foreach ($this->assignees as $assignee) {
                 $assigneeId = (isset($assignee->id)) ? $assignee->id : $assignee;
-
+                $reviewerValue = null;
+                if (isset($this->reviewers[$assigneeId]) && $this->reviewers[$assigneeId] !== null) {
+                    $reviewerValue = (int)$this->reviewers[$assigneeId]->id ?? null;
+                }
                 DBFunctions::insert(
                     'grand_pmm_task_assignees',
                     array(
                         'task_id' => $this->id,
                         'assignee' => $assigneeId,
-                        'status' => @$this->statuses[$assigneeId]
+                        'status' => @$this->statuses[$assigneeId],
+                        'reviewer' => $reviewerValue
                     )
                 );
             }
@@ -295,14 +327,15 @@ class LIMSTaskPmm extends BackboneModel
         if ($this->isAllowedToEdit()) {
             $data = array();
             $existingFiles = array();
-            foreach(DBFunctions::select(
+            $oldAssigneeReviewers = array();
+            foreach (DBFunctions::select(
                 array('grand_pmm_task'=>'t', 'grand_pmm_task_assignees'=>'a'),
                 array('*'),
                 array('a.task_id' => $this->id, 't.id' => $this->id),
             ) as $row) {
                 $data[$row['assignee']] = $row;
-
-               if (!empty($row['filename'])) {
+                $oldAssigneeReviewers[$row['assignee']] = $row['reviewer'];
+                if (!empty($row['filename'])) {
                     $existingFiles[$row['assignee']] = (object)[
                         'filename' => $row['filename'],
                         'type'     => $row['type'],
@@ -328,11 +361,9 @@ class LIMSTaskPmm extends BackboneModel
                 'grand_pmm_task',
                 array(
                     'opportunity' => $this->opportunity,
-                      // 'assignee' => $this->assignee,
                     'task' => $this->task,
                     'due_date' => $this->dueDate,
                     'comments' => $this->comments,
-                    // 'status' => $this->status
                 ),
                 array('id' => $this->id)
             );
@@ -341,13 +372,20 @@ class LIMSTaskPmm extends BackboneModel
                 'grand_pmm_task_assignees',
                 array('task_id' => $this->id)
             );
-            foreach($this->assignees as $assignee){
+
+            $this->reviewers = isset($this->reviewers) ? (array)$this->reviewers : [];
+            foreach ($this->assignees as $assignee) {
                 $assigneeId = (isset($assignee->id)) ? $assignee->id : $assignee;
+
+                $selectedReviewer = $this->reviewers[$assigneeId] ?? null;
+                $reviewerValue = (int)$selectedReviewer->id ?? null;
+
 
                 $insertData = [
                     'task_id'  => $this->id,
                     'assignee' => $assigneeId,
-                    'status'   => @$this->statuses[$assigneeId]
+                    'status'   => @$this->statuses[$assigneeId],
+                    'reviewer' => $reviewerValue
                 ];
                 $filesArr = (array)$this->files;
                 $toDelete = isset($filesArr[$assigneeId]->delete) && $filesArr[$assigneeId]->delete;
@@ -364,16 +402,16 @@ class LIMSTaskPmm extends BackboneModel
                     $insertData);
             }
             $this->uploadFiles();
-            $assignees = $this->getAssignees();
+            $assignees = $this->getAssignees();            
             foreach ($assignees as $assignee) {
-      
-                
                 $comment = @$_POST['comments'][$assignee->id];
 
                 // If assignee is an object, you can get their email like this:
                 // (Note: Adjust this based on how you retrieve the email or other relevant information)
                 // Create the notification for each assignee
-                if ( @$data[$assignee->id]['status'] != 'Closed' && $this->statuses[$assignee->id] == 'Closed') {
+                $oldStatus = isset($data[$assignee->id]['status']) ? $data[$assignee->id]['status'] : null;
+                $newStatus = isset($this->statuses[$assignee->id]) ? $this->statuses[$assignee->id] : null;
+                if ($oldStatus != 'Closed' && $newStatus == 'Closed') {
                     Notification::addNotification($me, $assignee, "Thank You for Completing <b>{$this->task}</b>!",
                     "Hello <b>{$assignee->getNameForForms()}</b>, thank you for completing <b>{$this->task}</b> on I-CONNECTS.
                     We truly appreciate your effort and timely contribution.
