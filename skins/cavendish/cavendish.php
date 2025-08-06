@@ -909,7 +909,7 @@ class CavendishTemplate extends QuickTemplate {
 	        echo "</div>";
             echo "<a id='status_help_faq' name='question_mark_16x32' class='menuTooltip' title='FAQ' href='$wgServer$wgScriptPath/index.php/Help:Contents'><img src='$wgServer$wgScriptPath/skins/icons/white/question_mark_16x32.png' alt='FAQ' style='height: 16px;' /></a>";
             if(count($config->getValue("socialLinks")) > 0){
-	            echo "<a id='share' style='cursor:pointer;' name='share_32x32' class='menuTooltipHTML'><img src='$wgServer$wgScriptPath/skins/icons/white/share_32x32.png' style='height: 16px;' />&nbsp;▼</a>";
+	            echo "<a id='share' style='cursor:pointer;' name='share_32x32' class='menuTooltipHTML'><img src='$wgServer$wgScriptPath/skins/icons/white/share_32x32.png' style='height: 16px;' /></a>";
 	        }
 	        if($wgUser->isLoggedIn()){
 		        $p = Person::newFromId($wgUser->getId());
