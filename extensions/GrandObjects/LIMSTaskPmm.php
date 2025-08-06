@@ -92,6 +92,8 @@ class LIMSTaskPmm extends BackboneModel
     function __construct($data)
     {
         global $wgServer, $wgScriptPath;
+        $this->files = []; 
+
         if (count($data) > 0) {
             $this->id = $data[0]['id'];
             $this->opportunity = $data[0]['opportunity'];
