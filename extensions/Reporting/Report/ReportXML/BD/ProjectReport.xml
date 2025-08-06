@@ -207,14 +207,14 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="publications" type="EditableReportSection" name="Outputs" title="Outputs" blobSection="OUTPUTS">
+    <ReportSection id="publications" type="ReportSection" name="Outputs" title="Outputs">
         <ReportItem id="publications" type="ManageProductsReportItem">
             <![CDATA[
                 {$item}
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="people" type="EditableReportSection" name="People" title="People" blobSection="PEOPLE">
+    <ReportSection id="people" type="ReportSection" name="People" title="People">
         <ReportItem id="publications" type="ManagePeopleReportItem">
             <![CDATA[
                 {$item}
