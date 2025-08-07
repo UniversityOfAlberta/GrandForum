@@ -19,7 +19,7 @@ class PersonProductAPI extends RESTAPI {
                 $onlyPublic = false;
                 $showManaged = true;
             }
-            if($this->getParam(3) == "all" && $me->isRoleAtLeast(ADMIN) && $me->getId() == $person->getId()){
+            if($this->getParam(3) == "all" && $me->isRoleAtLeast(STAFF) && $me->getId() == $person->getId()){
                 $showAll = true;
                 $onlyPublic = false;
             }
