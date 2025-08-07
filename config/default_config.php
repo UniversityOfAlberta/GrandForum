@@ -253,6 +253,9 @@
     // Whether or not to show the sidebar (it will still be visible when not logged in)
     $config->setValue("showSideBar", true);
     
+    // Whether or not to show Add Member in the sidebar
+    $config->setValue("showAddMember", true);
+    
     // Whether or not to show the Upload File in the sidebar
     $config->setValue("showUploadFile", true);
     
