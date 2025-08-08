@@ -36,7 +36,14 @@ foreach($people as $person){
     if($orcid != ""){
         echo $person->getName()." ... \n";
         $query = "orcid:{$orcid}";
-        $alex = json_decode(file_get_contents("https://api.openalex.org/works?filter=author.{$query},from_publication_date:".date('Y-m-d', time() - 3600*24*365*2).
+        $date = date('Y-m-d');
+        foreach($person->getRoles(true) as $role){
+            $startDate = $role->getStartDate();
+            if($startDate < $date){
+                $date = substr($startDate,0, 10);
+            }
+        }
+        $alex = json_decode(file_get_contents("https://api.openalex.org/works?filter=author.{$query},from_publication_date:$date".
                                               "&sort=publication_year:desc&per-page=100&mailto=dwt@ualberta.ca"));
         foreach($alex->results as $result){
             $doi = trim($result->doi);
