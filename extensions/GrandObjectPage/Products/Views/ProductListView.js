@@ -11,6 +11,19 @@ ProductListView = Backbone.View.extend({
         this.template = _.template($('#product_list_template').html());
     },
     
+    events: {
+        "click #filtersButton": "showFilters"
+    },
+    
+    showFilters: function(){
+        if(this.$("#filtersButton").text() == "Show Filters"){ 
+            this.$("#filtersButton").text("Hide Filters");
+        } else {
+            this.$("#filtersButton").text("Show Filters"); 
+        }
+        this.$("#filters").slideToggle();
+    },
+    
     processData: function(start){
         var addCol = function(row, contents){
             if(typeof contents != 'undefined'){
@@ -144,6 +157,21 @@ ProductListView = Backbone.View.extend({
         return fields;
     },
     
+    addDateRangeFilter: function(id){
+        $.fn.dataTable.ext.search.push(function(settings, data, dataIndex){
+            var min = $("input[data-index=" + id + "].min").val();
+            var max = $("input[data-index=" + id + "].max").val();
+            var date = data[id];
+            if ((min == "" && max == "") ||
+                (min == "" && date <= max) ||
+                (min <= date && max == "") ||
+                (min <= date && date <= max)) {
+                return true;
+            }
+            return false;
+        });
+    },
+    
     render: function(){
         this.$el.empty();
         this.$el.css('display', 'none');
@@ -158,6 +186,7 @@ ProductListView = Backbone.View.extend({
         }
         this.$el.html(this.template(templateData));
         var showButton = this.$("#showButton").detach();
+        var filtersButton = this.$("#filtersButton").detach();
         var throbber = this.$(".throbber").detach();
         var data = this.processData(0);
         var targets = [ 4, 5, 6 ];
@@ -170,6 +199,23 @@ ProductListView = Backbone.View.extend({
         if(typeof data[0] != 'undefined'){
             targets.push(data[0].length-1);
         }
+        
+        this.$("#leftSearchTable tr").empty();
+        this.$("#rightSearchTable tr").empty();
+        this.$('#listTable thead tr th').each(function(i, el){
+            if($(el).css("display") != "none"){
+                var title = $(el).text();
+                var input = '<input type="text" data-index="' + i + '" />';
+                if(title.indexOf("Date") !== -1){
+                    input = '<input class="min" type="datepicker" value="" format="yy-mm-dd" style="width:6em;" data-index="' + i + '" />&nbsp;&nbsp;&nbsp;to&nbsp;&nbsp;&nbsp;<input class="max" type="datepicker" value="" format="yy-mm-dd" style="width:6em;" data-index="' + i + '" />';
+                    this.$("#rightSearchTable").append("<tr><td class='label'>" + title + ":</td><td>" + input + "</td></tr>");
+                }
+                else{
+                    this.$("#leftSearchTable").append("<tr><td class='label'>" + title + ":</td><td>" + input + "</td></tr>");
+                }
+            }
+        }.bind(this));
+        
         this.table = this.$('#listTable').DataTable({'iDisplayLength': 100,
 	                                    'aaSorting': [[0,'desc'], [1,'asc']],
 	                                    'autoWidth': false,
@@ -188,7 +234,24 @@ ProductListView = Backbone.View.extend({
                                         'buttons': [
                                             'excel', 'pdf'
                                         ]});
+        var table = this.table;      
+        this.$('#filters #leftSearchTable').on('keyup change', 'input', function () {
+            table
+                .column($(this).data('index'))
+                .search(this.value)
+                .draw();
+        });
+        
+        this.addDateRangeFilter(0);
+        this.addDateRangeFilter(1);
+        this.addDateRangeFilter(2);
+        
+        this.$('#filters').on('keyup change', 'input', function () {
+            this.table.draw();
+        }.bind(this));
+        
 	    this.$("#listTable_length").append(showButton);
+	    this.$("#listTable_length").append(filtersButton);
 	    this.$("#listTable_length").append(throbber);
         this.$el.css('display', 'block');
         return this.$el;

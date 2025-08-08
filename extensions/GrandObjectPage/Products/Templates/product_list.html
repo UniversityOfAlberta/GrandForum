@@ -1,7 +1,23 @@
 <% if(projectsEnabled && showNonNetwork){ %>
-    <a id='showButton' class='button' style='margin-left:20px;' href='<%= url %>'>View <%= name %></a>
+    <a id='showButton' class='button' style='margin-left:1em;' href='<%= url %>'>View <%= name %></a>
 <% } %>
+<button id='filtersButton' type='button' style='margin-left:1em;'>Show Filters</button>
 <span class="throbber" style="margin-left: 20px;"></span>
+<div id="filters" style="margin-bottom: 0.5em; display:none;">
+    <fieldset>
+        <legend>Filters</legend>
+        <div style="display: inline-block; vertical-align: top; margin-right: 1em;">
+            <table id='leftSearchTable'>
+                <tr />
+            </table>
+        </div>
+        <div style="display: inline-block; vertical-align: top;">
+            <table id='rightSearchTable'>
+                <tr />
+            </table>
+        </div>
+    </fieldset>
+</div>
 <table id='listTable' frame='box' rules='all'>
     <thead>
         <tr>
