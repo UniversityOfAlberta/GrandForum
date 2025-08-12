@@ -126,23 +126,25 @@
                 <b>Budget Guidelines:</b>
                 <ul>
                     <li>Projects can request up to $150,000 for 12 months.</li>
-                    <li>Projects require a 1:1.5 match with Partner funding; greater matching will be viewed more favorably; 50% of matching must be cash (for a $100,000 request, matching should be $150,000 with at least $75,000 cash and $75,000 in-kind – please see <a href='https://drive.google.com/file/d/1htIEuiU1weYrAB5g1DX4JTOKD3oM9KPX/view' target='_blank'><b>Appendix A</b></a>). Partner funding must be SSF eligible; in particular, other Canadian Federal funding is ineligible for matching</li>
+                    <li>Partner matching of 1:1.5 is required. 50% of matching must be in cash (for a $150,000 request, matching should be $225,000 with at least $112,500 cash and $112,500 in-kind – please see Appendix A). Partner funding must be SSF eligible; in particular, other Canadian Federal funding is ineligible for matching.</li>
+                    <li>The project budget should clearly show the co-contribution of partner funds in alignment with SSF and eligible project expenses (Refer to <a href='https://drive.google.com/file/d/1rSRuurBSOkgnt3wqWEigrFoHNrHrN5dW/view' target='_blank'>Eligible Costs and Activities</a>).</li>
                     <li>The maximum salary for Graduate Students is $30,000/year and for Postdoctoral Fellows is $55,000/year.</li>
                     <li>Trainee support should be limited to co-op students and should be listed in the technician line item.</li>
-                    <li>Equipment is capped at $2,000/project.</li>
+                    <li>Equipment is capped at $5,000/project.</li>
                     <li>Travel
                         <ul>
-                            <li>Conference travel is capped at $3,000/year/NI/project. Note: Travel to the Annual General Meeting/Symposium is compulsory and will NOT be fully funded centrally through GlycoNet, as such, some travel funds should be kept for this purpose.</li>
-                            <li>Travel and accommodation for trainees to visit collaborating labs should be included in project budgets.</li>
+                            <li>The intra-project travel budget applies only to projects involving two or more funded NIs, and is conditional upon the necessity of such travel for achieving project outcomes.</li>
+                            <li>Travel budget is dedicated to attending the GlycoNet Symposium and AGM and is capped at $3,000/year/NI/project. Note: Travel to the Annual General Meeting/Symposium is compulsory and will NOT be fully funded centrally through GlycoNet, as such, travel funds should be budgeted for this purpose.</li>
                         </ul>
                     </li>
-                    <li>Work with <b><a href='https://canadianglycomics.ca/integrated-services/' target='_blank'>GlycoNet Integrated Services</a></b>. Network investigators will receive a 20% discount on requested services. A quote can be provided upon request by <a href='mailto:coreservices@glyconet.ca'>coreservices@glyconet.ca</a></li>
+                    <li>Work with <b><a href='https://canadianglycomics.ca/integrated-services/' target='_blank'>GlycoNet Integrated Services</a></b>. A quote can be provided upon request by <a href='mailto:coreservices@glyconet.ca'>coreservices@glyconet.ca</a></li>
                     <li>All partner contributions need to be supported by a letter from the partner institution (see below)
                         <ul>
+                            <li><b>Please note that Federal funding is ineligible for matching.</b></li>
                             <li>Based on federal funding guidelines, teaching assistantship support cannot be counted as matching. Similarly, student and PDF fellowships from federal sources cannot be counted as matching. Therefore, please do not include these as a partner contribution in your budget. Research fellowships provided by universities or non-federal agencies should be listed as matching and a supporting letter documenting support is needed.</li>
                         </ul>
                     </li>
-                    <li>Up to $5,000 of the requested budget can be used to reimburse expenses associated with development of a commercialization plan. These expenses should be budgeted under “Animal Work or Other Services”.</li>
+                    <li>Up to $5,000 of the requested budget can be used to reimburse expenses associated with development of a commercialization plan. These expenses should be budgeted under “Services and Animal Work”.</li>
                 </ul>
 
                 <p>Questions on eligibility of matching can be directed to GlycoNet Administrative Centre (<a href='mailto:info@glyconet.ca'>info@glyconet.ca</a> cc: <a href='mailto:vsharko@glyconet.ca'>vsharko@glyconet.ca</a>).</p>
@@ -157,7 +159,8 @@
             <![CDATA[
                 <h3>Budget Justification</h3>
                 <ul>
-                    <li>Provide concise, but sufficient, justification for expenses. Benefit rates for employees should be clearly stipulated.</li>
+                    <li>Provide concise, but sufficient, justification for expenses <b>(in accordance with the submitted budget)</b>. Benefit rates for employees should be clearly stipulated. The budget justification should be detailed enough to clearly explain why and for what each expense is needed, but concise enough not to overwhelm with unnecessary information.
+                    <li><b>Justify expenses listed in the budget spreadsheet. The justifications must correspond to the budget line items in the spreadsheet.</b></li>
                     <li>The project leader is responsible for generating a single budget justification document containing information from all NI groups.</li>
                 </ul>
                 {$item}
