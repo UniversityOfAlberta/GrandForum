@@ -91,7 +91,7 @@ class Report extends AbstractReport{
             $tabs["Proposals"]['subtabs'][] = TabUtils::createSubTab("Kickstart", "{$url}KickstartReport", $selected);
         }
         
-        if($person->isSubRole("Trans2024")){
+        if($person->isSubRole("Trans2025")){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "TranslationalReport")) ? "selected" : false;
             $tabs["Proposals"]['subtabs'][] = TabUtils::createSubTab("Translational", "{$url}TranslationalReport", $selected);
         }
