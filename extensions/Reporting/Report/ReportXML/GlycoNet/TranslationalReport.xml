@@ -103,8 +103,8 @@
                     <li>The application must be uploaded as a single PDF file to the GlycoNet Forum (after completing the application template, convert it to PDF format).</li>
                     <li>Please ensure that each section of the document is filled out carefully. All sections are obligatory to complete. Partially filled proposals will not be considered.</li>
                     <li>Use Times Roman/Times New Roman 11 for the text format</li>
-                    <li>Download the <a href="{$wgServer}{$wgScriptPath}/data/2024 Translational Grant Application Template.docx"><b>Application Template</b></a></li>
-                    <li>Use <a href="{$wgServer}{$wgScriptPath}/data/2024-2025 Translational Grant Application Instructions.pdf" target='_blank'><b>Application Instructions</b></a> to complete the application</li>
+                    <li>Download the <a href="{$wgServer}{$wgScriptPath}/data/2025 Translational Grant Application Template.docx"><b>Application Template</b></a></li>
+                    <li>Use <a href="{$wgServer}{$wgScriptPath}/data/2025-2026 Translational Grant Application Instructions.pdf" target='_blank'><b>Application Instructions</b></a> to complete the application</li>
                 </ul>
                 <h3>Application Upload</h3>
                 {$item}
@@ -148,7 +148,7 @@
                 <p>Questions on eligibility of matching can be directed to GlycoNet Administrative Centre (<a href='mailto:info@glyconet.ca'>info@glyconet.ca</a> cc: <a href='mailto:vsharko@glyconet.ca'>vsharko@glyconet.ca</a>).</p>
             ]]>
         </Static>
-        <ReportItem id="upload" type="BudgetReportItem" blobType="BLOB_EXCEL" blobItem="CAT_BUD_UPLOAD" structure="" template="GlycoNet Budget Template revised for year 1.xlsx">
+        <ReportItem id="upload" type="BudgetReportItem" blobType="BLOB_EXCEL" blobItem="CAT_BUD_UPLOAD" structure="" template="GlycoNet Budget Template_Translational Grant 2025.xlsx">
             <![CDATA[
                 {$item}
             ]]>
@@ -168,7 +168,7 @@
         <ReportItem id="upload" type="UploadReportItem" blobType="BLOB_EXCEL" blobItem="CAT_MIL_UPLOAD" mimeType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel">
             <![CDATA[
                 <p>
-                    Please download the following <a href="{$wgServer}{$wgScriptPath}/data/GlycoNet Milestones Template (for Translational).xls"><b>Milestone Template</b></a> and upload it below.
+                    Please download the following <a href="{$wgServer}{$wgScriptPath}/data/GlycoNet Milestones Template Translational Grant 2025.xls"><b>Milestone Template</b></a> and upload it below.
                 </p>
                 <h3>Milestones Upload</h3>
                 {$item}
