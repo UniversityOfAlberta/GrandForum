@@ -220,13 +220,4 @@ LIMSContactEditViewPmm = Backbone.View.extend({
         this.changeDetails();
         return this.$el;
     },
-
-    afterRender: function(){
-        _.defer(function(){
-            if(this.model.get('opportunities').length == 0){
-                this.addOpportunity();
-            }
-        }.bind(this));
-    }
-
 });
