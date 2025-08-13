@@ -420,9 +420,16 @@ class ProjectMainTab extends AbstractEditableTab {
     }
 
     function showPeople(){
-        global $wgUser, $wgServer, $wgScriptPath, $config;
+        global $wgUser, $wgServer, $wgScriptPath, $config, $wgOut;
         $me = Person::newFromWgUser();
         $edit = (isset($_POST['edit']) && $this->canEdit() && !isset($this->visibility['overrideEdit']));
+        $managePeople = new ManagePeople();
+        $managePeople->loadTemplates();
+        $managePeople->loadModels();
+        $managePeople->loadHelpers();
+        $managePeople->loadViews();
+        $wgOut->addScript("<link href='$wgServer$wgScriptPath/extensions/GrandObjectPage/ManagePeople/style.css' type='text/css' rel='stylesheet' />");
+        $this->html .= "<div id='rolesDialog'></div>";
         if(!$edit){
             if(isset($_GET['generatePDF'])){ $this->html .= "\n<div style='font-size: smaller;display:table;width:100%;'>"; }
             else { $this->html .= "\n<div style='display:flex;flex-wrap:wrap;width:100%;'>"; }
@@ -451,6 +458,58 @@ class ProjectMainTab extends AbstractEditableTab {
             $this->finishRoleRow();
             $this->html .= "</div>";
         }
+        $this->html .= "<script type='text/javascript'>
+            $('.editRoles').click(function(){
+                var rolesDialog = $('#rolesDialog').dialog({
+	                autoOpen: false,
+	                modal: true,
+	                show: 'fade',
+	                resizable: false,
+	                draggable: false,
+	                width: 800,
+	                position: {
+                        my: 'center bottom',
+                        at: 'center center'
+                    },
+	                open: function(){
+	                    $('html').css('overflow', 'hidden');
+	                },
+	                beforeClose: function(){
+	                    $('html').css('overflow', 'auto');
+	                    editRoles.stopListening();
+	                    editRoles.undelegateEvents();
+	                    clearInterval(editRoles.interval);
+	                    editRoles.interval = null;
+	                },
+	                buttons: {
+	                    '+': { 
+	                        text: 'Add Role', 
+	                        click: function(e){
+	                            editRoles.addRole();
+	                        }, 
+	                        style: 'float: left;'
+	                    },
+	                    'Save': function(e){
+	                        var requests = editRoles.saveAll();
+                            rolesDialog.dialog('close');
+                            $.when.apply($, requests).then(function(){
+                                $('#rolesDialog').remove();
+                                $.get(document.location.origin + document.location.pathname + '?showTab={$this->id}', function(response){ $('#{$this->id}').html(response); });
+                            });
+	                    },
+	                    'Cancel': function(){
+	                        rolesDialog.dialog('close');
+	                    }
+	                }
+	            });
+	            rolesDialog.empty();
+                rolesDialog.dialog('open');
+                
+                var id = $(this).data('id');
+                var model = new Person({id: id});
+                var editRoles = new ManagePeopleEditRolesView({model: model.roles, person: model, el: $('#rolesDialog')});
+	        });
+        </script>";
     }
     
     function showRole($role, $text=null, $past=false, $returnOnly=false, $offset="0"){
@@ -543,7 +602,8 @@ class ProjectMainTab extends AbstractEditableTab {
                     if(count($people) >= $limit && $i == ceil(count($people)/2)){
                         $this->html .= "</ul></td><td valign='top'><ul style='padding-left:1em;margin-left:0;margin-right:0;'>";
                     }
-                    $this->html .= "<li><a href='{$p->getUrl()}'>{$p->getReversedName()}</a></li>\n";
+                    $editText = ($this->canEdit()) ? "<span class='editRoles edit-icon' title='Edit Roles' style='vertical-align:top;margin-top:2px;margin-left:0.5em;' data-id='{$p->getId()}'></span>" : "";
+                    $this->html .= "<li><a href='{$p->getUrl()}'>{$p->getReversedName()}</a>{$editText}</li>\n";
                     $i++;
                 }
             }

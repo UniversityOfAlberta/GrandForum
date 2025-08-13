@@ -27,7 +27,7 @@
             <SectionPermission id="submit" permissions="--" />
         </If>
     </Permissions>
-    <ReportSection id="report" type="EditableReportSection" name="Project Report" title="{$project_name}: {$project_full_name}">
+    <ReportSection id="report" type="EditableReportSection" name="Project Report" title="{$project_name}: {$project_full_name}" saveText="Save as Draft">
         <!-- Variables -->
         <Static>
             {set(year,    {substr({GET(id)}, 0, 4)})}
@@ -204,6 +204,48 @@
                 <h3>7. Preliminary findings</h3>
                 <p>Have there been any significant preliminary findings or results from your research in the past 4 months? Please provide a brief summary of key insights, trends, or outcomes observed so far.</p>
                 {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="awards" type="Radio" blobItem="AWARDS" options="Yes|No">
+            <![CDATA[
+                <h3>8. Did you or anyone on your project team receive any awards or recognitions?</h3>
+                <div id='awards'>{$item}</div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="awards_yes" type="Textarea" blobItem="AWARDS_YES" rich="true">
+            <![CDATA[
+                <div id='awards_yes' style='display:none;'>{$item}</div>
+                <script type='text/javascript'>
+                    $('#awards input').change(function(){
+                        if($('#awards input:checked').val() == "Yes"){
+                            $('#awards_yes').slideDown();
+                        }
+                        else {
+                            $('#awards_yes').slideUp();
+                        }
+                    }).change();
+                </script>
+            ]]>
+        </ReportItem>
+        <ReportItem id="grants" type="Radio" blobItem="GRANTS" options="Yes|No">
+            <![CDATA[
+                <h3>9. Did you or anyone on your project team receive any new grants from SSHRC, NSERC, CFI, or any other granting bodies?</h3>
+                <div id='grants'>{$item}</div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="grants_yes" type="Textarea" blobItem="GRANTS_YES" rich="true">
+            <![CDATA[
+                <div id='grants_yes' style='display:none;'>{$item}</div>
+                <script type='text/javascript'>
+                    $('#grants input').change(function(){
+                        if($('#grants input:checked').val() == "Yes"){
+                            $('#grants_yes').slideDown();
+                        }
+                        else {
+                            $('#grants_yes').slideUp();
+                        }
+                    }).change();
+                </script>
             ]]>
         </ReportItem>
     </ReportSection>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="Project Report" reportType="RP_PROJECT_REPORT_{GET(id)}" pdfType="RP_PROJECT_REPORT_{GET(id)}" year="0" personId="0" ajax="true" disabled="false">
-    <ReportSection id="report" type="NextPrevReportSection" name="Project Report" title="{$project_full_name} ({$project_name})&lt;br /&gt;{replace(Q,R,{replace(_,:,{GET(id)})})} Report" pagebreak="false">
+    <ReportSection id="report" type="NextPrevReportSection" name="Project Report" title="{$project_full_name} ({$project_name})&lt;br /&gt;{replace(Q,R,{replace(_,:,{GET(id)})})} Report">
         <!-- Team Information -->
         <Static>
             <![CDATA[
@@ -54,5 +54,64 @@
                 {$item}
             ]]>
         </ReportItem>
+        
+        <ReportItem id="awards" type="Radio" blobItem="AWARDS" options="Yes|No">
+            <![CDATA[
+                <h3>8. Did you or anyone on your project team receive any awards or recognitions?</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="awards_yes" type="Textarea" blobItem="AWARDS_YES" rich="true">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="grants" type="Radio" blobItem="GRANTS" options="Yes|No">
+            <![CDATA[
+                <h3>9. Did you or anyone on your project team receive any new grants from SSHRC, NSERC, CFI, or any other granting bodies?</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="grants_yes" type="Textarea" blobItem="GRANTS_YES" rich="true">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="publications" type="ReportSection" name="Outputs" title="Outputs" pagebreak="false">
+        <Static>
+            <![CDATA[
+                <table class='wikitable small' frame='box' rules='all' style='width:100%;'>
+                    <thead>
+                        <tr>
+                            <th>Type</th>
+                            <th>Title</th>
+                            <th>Date</th>
+                            <th>Link</th>
+                            <th>Citation</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            ]]>
+        </Static>
+        <ReportItemSet type="ProjectProducts" start="{projectReportStartDate({GET(id)})}" end="{projectReportEndDate({GET(id)})}">
+            <Static>
+                <![CDATA[
+                    <tr>
+                        <td>{$product_type}</td>
+                        <td valign='top'>{$product_title}</td>
+                        <td style='white-space: nowrap;'>{date_format({strtotime({$product_date})}, M Y)}</td>
+                        <td>{if("{getProductData(url)}" != "", <a class='externalLink' href='{getProductData(url)}'>Link</a>)}</td>
+                        <td valign='top'>{$product_citation}</td>
+                    </tr>
+                ]]>
+            </Static>
+        </ReportItemSet>
+        <Static>
+            <![CDATA[
+                    </tbody>
+                </table>
+            ]]>
+        </Static>
     </ReportSection>
 </Report>

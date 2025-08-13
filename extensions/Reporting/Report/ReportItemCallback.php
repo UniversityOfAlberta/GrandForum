@@ -212,8 +212,12 @@ class ReportItemCallback {
             // Products
             "product_id" => "getProductId",
             "product_title" => "getProductTitle",
+            "product_category" => "getProductCategory",
+            "product_type" => "getProductType",
             "product_url" => "getProductUrl",
+            "product_citation" => "getProductCitation",
             "product_authors" => "getProductAuthors",
+            "product_date" => "getProductDate",
             "getProductData" => "getProductData",
             // Contribution
             "contribution_id" => "getContributionId",
@@ -230,6 +234,8 @@ class ReportItemCallback {
             // BD
             "themeSurveyStats" => "getThemeSurveyStats",
             "projectSurveyStats" => "getProjectSurveyStats",
+            "projectReportStartDate" => "getProjectReportStartDate",
+            "projectReportEndDate" => "getProjectReportEndDate",
             // Other
             "wgUserId" => "getWgUserId",
             "wgServer" => "getWgServer",
@@ -238,6 +244,8 @@ class ReportItemCallback {
             "GET" => "getGet",
             "networkName" => "getNetworkName",
             "networkFullName" => "getNetworkFullName",
+            "strtotime" => "strtotime",
+            "date_format" => "date_format",
             "id" => "getId",
             "name" => "getName",
             "i" => "getI",
@@ -1872,18 +1880,39 @@ class ReportItemCallback {
         return $product->getTitle();
     }
     
+    function getProductCategory(){
+        $product = Paper::newFromId($this->reportItem->productId);
+        return $product->getCategory();
+    }
+    
+    function getProductType(){
+        $product = Paper::newFromId($this->reportItem->productId);
+        return $product->getType();
+    }
+    
     function getProductUrl(){
         $product = Paper::newFromId($this->reportItem->productId);
         return $product->getUrl();
     }
     
-    function getProductAuthors(){
+    function getProductCitation(){
+        $product = Paper::newFromId($this->reportItem->productId);
+        return $product->getCitation(false, false, false, false);
+    }
+    
+    function getProductAuthors($highlight=false){
         $product = Paper::newFromId($this->reportItem->productId);
         $names = array();
         foreach($product->getAuthors() as $author){
-            $names[] = $author->getNameForProduct();
+            $name = $author->getNameForProduct();
+            $names[] = ($highlight && $author->getId() != 0) ? "<b>{$name}</b>" : $name; 
         }
         return implode(", ", $names);
+    }
+    
+    function getProductDate(){
+        $product = Paper::newFromId($this->reportItem->productId);
+        return $product->getDate();
     }
     
     function getProductData($field){
@@ -1955,6 +1984,14 @@ class ReportItemCallback {
         return str_replace("\n", "", SurveyTab::getHTML("", $project, null));
     }
     
+    function getProjectReportStartDate($quarter){
+        return Report::quarterToStartDate($quarter);
+    }
+    
+    function getProjectReportEndDate($quarter){
+        return Report::quarterToEndDate($quarter);
+    }
+    
     function getWgUserId(){
         global $wgUser;
         return $wgUser->getId();
@@ -1993,6 +2030,16 @@ class ReportItemCallback {
     function getNetworkFullName(){
         global $config;
         return $config->getValue('networkFullName');
+    }
+    
+    function strtotime($date){
+        $date = str_replace("&#44;", ",", $date);
+        return strtotime($date);
+    }
+    
+    function date_format($time, $format='F j, Y'){
+        $format = str_replace("#COMMA", ",", $format);
+        return date($format, $time);
     }
     
     function getId(){

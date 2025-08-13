@@ -28,6 +28,48 @@ class Report extends AbstractReport{
         return true;
     }
     
+    static function quarterToStartDate($quarter){
+        $year = substr($quarter,0,4);
+        $q = substr($quarter,5,2);
+        switch($q){
+            default:
+            case "Q1":
+                $start = ($year-1)."-11-15";
+                break;
+            case "Q2":
+                $start = ($year)."-02-15";
+                break;
+            case "Q3":
+                $start = ($year)."-06-15";
+                break;
+            case "Q4": // Old
+                $start = ($year)."-09-15";
+                break;
+        }
+        return $start;
+    }
+    
+    static function quarterToEndDate($quarter){
+        $year = substr($quarter,0,4);
+        $q = substr($quarter,5,2);
+        switch($q){
+            default:
+            case "Q1":
+                $end = ($year)."-02-15";
+                break;
+            case "Q2":
+                $end = ($year)."-06-15";
+                break;
+            case "Q3":
+                $end = ($year)."-09-15";
+                break;
+            case "Q4": // Old
+                $end = ($year)."-12-15";
+                break;
+        }
+        return $end;
+    }
+    
     /**
      * CURRENT:
      *  R1: Feb 15, 2024

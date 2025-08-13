@@ -69,6 +69,7 @@ ManagePeopleEditRolesView = Backbone.View.extend({
         }).fail(function(){
             addError("Roles could not be saved");
         });
+        return requests;
     },
     
     addRole: function(){

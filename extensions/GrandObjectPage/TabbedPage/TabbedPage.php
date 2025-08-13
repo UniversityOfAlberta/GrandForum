@@ -41,6 +41,11 @@ class TabbedPage {
         $i = 0;
 
         foreach($this->tabs as $tab){
+            if(isset($_GET['showTab']) && $_GET['showTab'] == $tab->id){
+                $tab->generatebody();
+                echo $tab->html;
+                exit;
+            }
             if($tab instanceof AbstractEditableTab && $tab->canEdit()){
                 if(isset($_POST['submit']) && 
                    ($_POST['submit'] == "Save {$tab->name}" || ($tab instanceof AbstractInlineEditableTab && $_POST['submit'] == "{$tab->name}"))){
