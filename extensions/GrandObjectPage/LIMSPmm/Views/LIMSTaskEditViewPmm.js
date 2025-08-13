@@ -12,9 +12,33 @@ LIMSTaskEditViewPmm = Backbone.View.extend({
         this.model.saving = false;
         this.listenTo(this.model, "sync", this.render);
         this.listenTo(this.model, "change:assignees", this.handleAssigneeChange);
+        this.prepareDisplayState();
         this.selectTemplate();
         this.model.startTracking();
+    },
 
+    prepareDisplayState: function() {
+        var primaryData = this.model.toJSON();
+        var isEveryoneAssigned = _.some(primaryData.assignees, function(a) { return (a.id || a) == -1; });
+        var displayAssignees = isEveryoneAssigned ? this.project.members.toJSON() : primaryData.assignees;
+
+        var displayStatuses = {}, displayFiles = {}, displayReviewers = {}, displayComments = {};
+
+        displayAssignees.forEach(function(assignee) {
+            var assigneeId = assignee.id.toString();
+            displayStatuses[assigneeId]  = primaryData.statuses[assigneeId]  || '';
+            displayFiles[assigneeId]     = _.clone(primaryData.files[assigneeId]) || {};
+            displayReviewers[assigneeId] = primaryData.reviewers[assigneeId] || {};
+            displayComments[assigneeId]  = primaryData.comments[assigneeId]  || '';
+        }, this);
+
+        this.model.set({
+            displayAssignees: displayAssignees,
+            displayStatuses: displayStatuses,
+            displayFiles: displayFiles,
+            displayReviewers: displayReviewers,
+            displayComments: displayComments
+        });
     },
     
     selectTemplate: function(){
@@ -50,35 +74,52 @@ LIMSTaskEditViewPmm = Backbone.View.extend({
         this.model.trigger("change:toDelete");
     },
     handleAssigneeChange: function(model, newAssigneeIds) {
-        var previousAssigneeIds = (this.model.previous('assignees') || []).map(a => a.id || a);
-        var newlyAddedIds = _.difference(newAssigneeIds, previousAssigneeIds);
-        if (newlyAddedIds.length === 0) {
-            return;
+        var previousAssigneeIds = (this.model.previous('assignees') || []).map(a => a.id || a).map(Number);
+        var newlyAddedIds = _.difference(newAssigneeIds.map(a => a.id || a).map(Number), previousAssigneeIds);
+        var fullAssigneeObjects = _.map(newAssigneeIds, function(item) {
+            var assigneeId;
+            if (_.isObject(item) && item.id) {
+                assigneeId = item.id;
+            } else {
+                assigneeId = item;
+            }
+            if (assigneeId == -1) {
+                return { id: -1, name: "Everyone", url: "" };
+            }
+            var userObject = this.project.members.get(assigneeId);
+            return userObject ? {
+                id: userObject.get('id'),
+                name: userObject.get('fullName'),
+                url: userObject.get('url') || ''
+            } : { id: assigneeId, name: "Unknown", url: "" };
+        }, this);
+        this.model.set('assignees', fullAssigneeObjects, {silent: true});
+
+        if (newlyAddedIds.length > 0) {
+            var reviewers = _.clone(this.model.get('reviewers')) || {};
+            var allPossibleReviewers = this.project.members.toJSON();
+            var alreadyAssignedReviewerIds = _.values(reviewers).map(r => r ? (r.id || r) : null).filter(Boolean);
+            var preferredReviewerPool = _.reject(allPossibleReviewers, member => _.contains(alreadyAssignedReviewerIds, member.id));
+
+            newlyAddedIds.forEach(function(assigneeId) {
+                if (assigneeId == -1) { return; }
+                var availablePool = _.reject(preferredReviewerPool, member => member.id == assigneeId);
+                if (availablePool.length === 0) {
+                    availablePool = _.reject(allPossibleReviewers, member => member.id == assigneeId);
+                }
+                if (availablePool.length > 0) {
+                    var randomReviewer = _.sample(availablePool);
+                    reviewers[assigneeId] = {
+                        id: randomReviewer.id,
+                        name: randomReviewer.fullName,
+                        url: randomReviewer.url || ''
+                    };
+                    preferredReviewerPool = _.reject(preferredReviewerPool, p => p.id == randomReviewer.id);
+                }
+            });
+            this.model.set('reviewers', reviewers);
         }
-
-        var reviewers = _.clone(this.model.get('reviewers')) || {};
-        var allPossibleReviewers = this.project.members.toJSON();
-        var alreadyAssignedReviewerIds = _.values(reviewers).map(r => r ? (r.id || r) : null).filter(Boolean);
-        var preferredReviewerPool = _.reject(allPossibleReviewers, member => _.contains(alreadyAssignedReviewerIds, member.id));
-
-        newlyAddedIds.forEach(function(assigneeId) {
-            var availablePool = _.reject(preferredReviewerPool, member => member.id == assigneeId);
-            
-            if (availablePool.length === 0) {
-                availablePool = _.reject(allPossibleReviewers, member => member.id == assigneeId);
-            }
-
-            if (availablePool.length > 0) {
-                var randomReviewer = _.sample(availablePool);
-                reviewers[assigneeId] =  {
-                    id: randomReviewer.id,
-                    name: randomReviewer.fullName,
-                    url: randomReviewer.url|| ''
-                };
-                preferredReviewerPool = _.reject(preferredReviewerPool, p => p.id == randomReviewer.id);
-            }
-        });
-        this.model.set('reviewers', reviewers);
+        this.prepareDisplayState();
     },
 
     changeStatus: function(){

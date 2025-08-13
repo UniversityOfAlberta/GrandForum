@@ -2,14 +2,19 @@
     <td valign="top"><span id="deleteTask" class="delete-icon" style="margin: 7px 5px 0 5px;" title="Delete Task"></span></td>
     <td valign="top"><%= HTML.TextBox(this, 'task', {placeholder: 'Enter Task...', style: "width:100%;box-sizing:border-box;margin:0;"}) %></td>
     <% if(isLeaderAllowedToEdit){ %>
+        <%
+        var memberOptions =  _.map(this.project.members.toJSON(), function(person) {
+            return {option: person.fullName, value: person.id};
+        })
+        var allOptions = [
+            {option: 'Everyone', value: -1}
+        ].concat(memberOptions);
+        %>
         <td valign="top">
             <%= HTML.Select(this, 'assignees', {
                 style: 'width:200px; display: none',
                 multiple: true,
-                options: 
-                    _.map(this.project.members.toJSON(), function(person) {
-                        return {option: person.fullName, value: person.id};
-                    }),
+                options: allOptions,
             }) %>
         </td>
     <% } else { %>

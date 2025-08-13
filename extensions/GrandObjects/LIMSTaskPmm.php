@@ -49,7 +49,7 @@ class LIMSTaskPmm extends BackboneModel
     }
 
    
-     function getAssignees()
+    function getAssignees()
     {
         $data = DBFunctions::select(
             array('grand_pmm_task_assignees'),
@@ -58,7 +58,15 @@ class LIMSTaskPmm extends BackboneModel
         );
         $assignees = array();
         foreach ($data as $row) {
-            $assignee = Person::newFromId($row['assignee']);
+            if ($row['assignee'] == -1) {
+                $assignee = new Person(array());
+                $assignee->id = -1;
+                $assignee->name = 'Everyone';
+                $assignee->realname = 'Everyone';
+                $assignee->email = '';
+            } else {
+                $assignee = Person::newFromId($row['assignee']);
+            }
             $assignees[] = $assignee;
         }
         return $assignees;
@@ -256,19 +264,30 @@ class LIMSTaskPmm extends BackboneModel
             $this->reviewers = isset($this->reviewers) ? (array)$this->reviewers : [];
             foreach ($this->assignees as $assignee) {
                 $assigneeId = (isset($assignee->id)) ? $assignee->id : $assignee;
-                $reviewerValue = null;
-                if (isset($this->reviewers[$assigneeId]) && $this->reviewers[$assigneeId] !== null) {
-                    $reviewerValue = (int)$this->reviewers[$assigneeId]->id ?? null;
+                $assigneeId = (int)$assigneeId;
+                if ($assigneeId === -1) {
+                    DBFunctions::insert(
+                        'grand_pmm_task_assignees',
+                        array(
+                            'task_id' => $this->id,
+                            'assignee' => -1
+                        )
+                    );
+                } else {
+                    $selectedReviewer = $this->reviewers[$assigneeId] ?? null;
+                    $reviewerValue = (is_object($selectedReviewer) && !empty((array)$selectedReviewer) && isset($selectedReviewer->id))
+                        ? (int)$selectedReviewer->id
+                        : null;
+                    DBFunctions::insert(
+                        'grand_pmm_task_assignees',
+                        array(
+                            'task_id' => $this->id,
+                            'assignee' => $assigneeId,
+                            'status' => @$this->statuses[$assigneeId],
+                            'reviewer' => $reviewerValue
+                        )
+                    );
                 }
-                DBFunctions::insert(
-                    'grand_pmm_task_assignees',
-                    array(
-                        'task_id' => $this->id,
-                        'assignee' => $assigneeId,
-                        'status' => @$this->statuses[$assigneeId],
-                        'reviewer' => $reviewerValue
-                    )
-                );
             }
             $this->uploadFiles();
 
@@ -376,17 +395,21 @@ class LIMSTaskPmm extends BackboneModel
             $this->reviewers = isset($this->reviewers) ? (array)$this->reviewers : [];
             foreach ($this->assignees as $assignee) {
                 $assigneeId = (isset($assignee->id)) ? $assignee->id : $assignee;
-
-                $selectedReviewer = $this->reviewers[$assigneeId] ?? null;
-                $reviewerValue = (int)$selectedReviewer->id ?? null;
-
+                $assigneeId = (int)$assigneeId;
 
                 $insertData = [
                     'task_id'  => $this->id,
                     'assignee' => $assigneeId,
-                    'status'   => @$this->statuses[$assigneeId],
-                    'reviewer' => $reviewerValue
+                    'status'   => @$this->statuses[$assigneeId]
                 ];
+                if ($assigneeId !== -1) {
+                    $selectedReviewer = $this->reviewers[$assigneeId] ?? null;
+                    $reviewerValue = (is_object($selectedReviewer) && !empty((array)$selectedReviewer) && isset($selectedReviewer->id)) 
+                        ? (int)$selectedReviewer->id 
+                        : null;
+                    $insertData['reviewer'] = $reviewerValue;
+                }
+
                 $filesArr = (array)$this->files;
                 $toDelete = isset($filesArr[$assigneeId]->delete) && $filesArr[$assigneeId]->delete;
                 $toUpdate = isset($filesArr[$assigneeId]->data) && $filesArr[$assigneeId]->data !== '';
