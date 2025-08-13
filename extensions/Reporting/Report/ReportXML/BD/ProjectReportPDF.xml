@@ -61,22 +61,28 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="awards_yes" type="Textarea" blobItem="AWARDS_YES" rich="true">
-            <![CDATA[
-                {$item}
-            ]]>
-        </ReportItem>
+        <If if="{==({getText(RP_PROJECT_REPORT_{GET(id)}, SEC_NONE, AWARDS, 0, 0, {$project_id})}, Yes)}">
+            <ReportItem id="awards_yes" type="Textarea" blobItem="AWARDS_YES" rich="true">
+                <![CDATA[
+                    {$item}
+                ]]>
+            </ReportItem>
+        </If>
+        
         <ReportItem id="grants" type="Radio" blobItem="GRANTS" options="Yes|No">
             <![CDATA[
+                <br />
                 <h3>9. Did you or anyone on your project team receive any new grants from SSHRC, NSERC, CFI, or any other granting bodies?</h3>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="grants_yes" type="Textarea" blobItem="GRANTS_YES" rich="true">
-            <![CDATA[
-                {$item}
-            ]]>
-        </ReportItem>
+        <If if="{==({getText(RP_PROJECT_REPORT_{GET(id)}, SEC_NONE, GRANTS, 0, 0, {$project_id})}, Yes)}">
+            <ReportItem id="grants_yes" type="Textarea" blobItem="GRANTS_YES" rich="true">
+                <![CDATA[
+                    {$item}
+                ]]>
+            </ReportItem>
+        </If>
     </ReportSection>
     <ReportSection id="publications" type="ReportSection" name="Outputs" title="Outputs" pagebreak="false">
         <Static>
