@@ -10,6 +10,11 @@ LIMSContactPmm = Backbone.Model.extend({
                 this.opportunities.fetch();
             }.bind(this));
         //}
+        this.listenTo(this.opportunities, "sync", function() {
+            if (this.opportunities.length === 0) {
+                this.opportunities.add(new LIMSOpportunityPmm());
+            }
+        });
         this.opportunities.on("add", function(model){
             model.contact = this;
         }.bind(this));
