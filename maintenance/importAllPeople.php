@@ -40,7 +40,8 @@
            strstr(strtoupper($hrDept), "ALES ") === false &&
            strstr(strtoupper($hrDept), "ART ") === false &&
            strstr(strtoupper($hrDept), "REHAB ") === false &&
-           strstr(strtoupper($hrDept), "BUS ") === false){
+           strstr(strtoupper($hrDept), "BUS ") === false &&
+           strstr(strtoupper($hrDept), "AUG ") === false){
             continue;
         }
         

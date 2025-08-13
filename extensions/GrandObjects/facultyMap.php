@@ -54,7 +54,7 @@ $facultyMap = array(
         "Strategy, Entrepreneurship & Management", "StrategyEntrepreneur&Mgmt"
     ),
     "Augustana" => array(
-        "Fine Arts and Humanities",
+        "Fine Arts & Humanities",
         "Science",
         "Social Sciences"
     ),
@@ -117,7 +117,7 @@ $facultyMapSimple = array(
         "SEM" => "Strategy, Entrepreneurship & Management"
     ),
     "Augustana" => array(
-        "Fine Arts and Humanities",
+        "Fine Arts & Humanities",
         "Science",
         "Social Sciences"
     ),
