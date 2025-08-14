@@ -72,14 +72,7 @@ LIMSStatusChangeViewPmm = Backbone.View.extend({
 
             var hasMeaningfulChange = statusChanged || fileChanged || reviewerChanged || commentAdded;
             if (hasMeaningfulChange && !wasExplicitlyAssigned) {
-                var userObject = this.project.members.get(assigneeId);
-                if (userObject) {
-                    finalAssignees.push({
-                        id: userObject.get('id'),
-                        name: userObject.get('fullName'),
-                        url: userObject.get('url') || ''
-                    });
-                }
+                finalAssignees.push({id: assigneeId});
             }
 
             if (wasExplicitlyAssigned || hasMeaningfulChange) {
@@ -93,9 +86,9 @@ LIMSStatusChangeViewPmm = Backbone.View.extend({
                 final.comments[assigneeId] = data.displayComments[assigneeId];
             }
         }
-
+        final.assignees = finalAssignees;
+        // as assignes is modified, handleAssigneeChange will be called
         this.model.set(final);
-        this.model.set('assignees', finalAssignees);
         this.$el.dialog('close');
     }
 });

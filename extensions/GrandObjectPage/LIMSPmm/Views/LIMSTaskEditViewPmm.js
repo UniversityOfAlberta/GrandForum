@@ -74,14 +74,12 @@ LIMSTaskEditViewPmm = Backbone.View.extend({
         this.model.trigger("change:toDelete");
     },
     handleAssigneeChange: function(model, allAssignees) {
-        var previousAssigneeIds = (this.model.previous('assignees') || []).map(a => a.id || a).map(Number);
-        var newlyAddedIds = _.difference(allAssignees.map(a => a.id || a).map(Number), previousAssigneeIds);
         var fullAssigneeObjects = _.map(allAssignees, function(item) {
-            if (_.isObject(item) && item.name) {
-                return item;
-            } 
             var assigneeId;
-            if (_.isObject(item) && item.id) {
+            if (_.isObject(item)) {
+                if (item.name) {
+                    return item;
+                }
                 assigneeId = item.id;
             } else {
                 assigneeId = item;
@@ -98,12 +96,10 @@ LIMSTaskEditViewPmm = Backbone.View.extend({
         }, this);
         this.model.set('assignees', fullAssigneeObjects, {silent: true});
 
-        if (newlyAddedIds.length > 0) {
-            var currentReviewers = _.clone(this.model.get('reviewers')) || {};
-            var allMembers = this.project.members.toJSON();
-            var updatedReviewers = ReviewerHelper.assignReviewersToNewUsers(newlyAddedIds, currentReviewers, allMembers);
-            this.model.set('reviewers', updatedReviewers);
-        }
+        var currentReviewers = _.clone(this.model.get('reviewers')) || {};
+        var allMembers = this.project.members.toJSON();
+        var updatedReviewers = ReviewerHelper.assignReviewersToNewUsers(allAssignees, currentReviewers, allMembers);
+        this.model.set('reviewers', updatedReviewers);
         this.prepareDisplayState();
     },
 
