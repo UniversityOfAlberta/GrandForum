@@ -39,7 +39,7 @@ foreach($people as $person){
         $date = date('Y-m-d');
         foreach($person->getRoles(true) as $role){
             $startDate = $role->getStartDate();
-            if($startDate < $date){
+            if($startDate < $date && strstr($startDate, "0000-00-00") === false){
                 $date = substr($startDate,0, 10);
             }
         }
@@ -62,7 +62,7 @@ foreach($people as $person){
                     $api = new ImportDOIAPI();
                     $res = $api->doAction();
                 }
-                if(count($res['created']) > 0){
+                if(isset($res['created']) && count($res['created']) > 0){
                     $id = $res['created'][0]['id'];
                     DBFunctions::update('grand_products',
                                         array('created_by' => $person->getId()),
