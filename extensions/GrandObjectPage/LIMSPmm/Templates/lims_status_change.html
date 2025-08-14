@@ -15,54 +15,69 @@ if (displayAssignees && displayAssignees.length > 0) {
         </thead>
         <tbody>
             <% displayAssignees.forEach(function(assignee, index) { %>
+                 <% 
+                    var assigneeId = (assignee.id != undefined) ? assignee.id : assignee; 
+                    var currentStatus = displayStatuses[assigneeId];
+
+                    var isCurrentUserTheAssignee = (me.get('id') == assigneeId);
+                    
+                    var reviewer = displayReviewers[assigneeId];
+                    var isCurrentUserTheReveiwer = reviewer && (me.get('id') == reviewer.id);
+                    
+                    var allStatusOptions = ['New', 'Assigned', 'Done', 'Closed'];
+                    var assigneeStatusOptions = ['Assigned', 'Done'];
+
+                    var isStatusEditableByMember = _.contains(assigneeStatusOptions, currentStatus);
+                    var isMemberAllowedToEdit = isCurrentUserTheAssignee && isStatusEditableByMember;
+                    
+                    var canCurrentUserEdit = isLeaderAllowedToEdit || isMemberAllowedToEdit;
+                %>
                 <tr>
                     <td valign="top"><%= assignee.name %></td>
                     <td valign="top">
-                        <% 
-                        var assigneeId = (assignee.id != undefined) ? assignee.id : assignee; 
-                        var currentStatus = displayStatuses[assigneeId]; // Get current status for the assignee
-                        %>
-                        
-                        <% if (isLeaderAllowedToEdit || (me.get('id') == assigneeId && (currentStatus == 'Assigned' || currentStatus == 'Done'))) { %> 
+                        <%
+                        if (canCurrentUserEdit || isCurrentUserTheReveiwer) { 
+                        %> 
                             <%= HTML.Select(this, 'displayStatuses.' + assigneeId, { 
                                 options: 
                                     isLeaderAllowedToEdit 
-                                        ? ['New', 'Assigned', 'Done', 'Closed'] 
-                                        : ['Assigned', 'Done'] 
-                            }) %>
+                                        ? allStatusOptions 
+                                        : assigneeStatusOptions,
+                            }) 
+                        %>
                         <% } else { %> 
                             <%= currentStatus %>
                         <% } %> 
                     </td>
-                    <td valign="top" height>
-                      <% 
-                        var fileObj  = (displayFiles && displayFiles[assigneeId]) || {};
-                        var filename = fileObj.filename || '';
-                        var toDelete = fileObj.delete || false;
-                      %>
-                      <% if (isLeaderAllowedToEdit || ( me.get('id') == assigneeId && ( currentStatus == 'Assigned' || currentStatus == 'Done' ) ) ) { %>
+                    <td valign="top">
+                        <%
+                            var fileObj  = (displayFiles && displayFiles[assigneeId]) || {};
+                            var filename = fileObj.filename || '';
+                            var fileUrl  = fileObj.url || '#';
+                            var toDelete = fileObj.delete || false;
+                        %>
+
                         <% if (currentStatus !== 'Closed') { %>
-                        <% if (filename && !toDelete) { %>
-                                <%= filename %>
-                                  <span class="delete-icon deleteFile" data-assignee="<%= assigneeId %>">×</span>
-                           <% } else {%>
-                            <%= HTML.File(this, 'displayFiles.' + assigneeId) %>
-                        <% } %>
-                      <% } %>
-                      <% } else { %>
-                        <% if (currentStatus !== 'Closed') { %>
-                          <span>No document allowed</span>
-                        <% } %>
+                            <% if (canCurrentUserEdit) { %>
+                                <% if (filename && !toDelete) { %>
+                                    <a href="<%= fileUrl %>" target="_blank"><%= filename %></a>
+                                    <span class="delete-icon deleteFile" data-assignee="<%= assigneeId %>">×</span>
+                                <% } else { %>
+                                    <%= HTML.File(this, 'displayFiles.' + assigneeId) %>
+                                <% } %>
+                            <% } else if (isCurrentUserTheReveiwer && filename) { %>
+                                <a href="<%= fileUrl %>" target="_blank"><%= filename %></a>
+                            <% } else { %>
+                                <span>No document allowed</span>
+                            <% } %>
+
                         <% } %>
                     </td>
                     <td valign="top">
                         <%
-                            var selectedReviewerId = displayReviewers[assigneeId] || null;
                             var peopleList = this.project.members.map(function(member) {
                                 return { value: member.get('id'), option: member.get('fullName') };
                             });
-                            var reviewerMember = _.find(peopleList, function(p) { return p.value == selectedReviewerId; });
-                            var reviewerName = reviewerMember ? reviewerMember.option : "Not Assigned";
                         %>
                         <% if (isLeaderAllowedToEdit) { %>
                             <%
@@ -74,14 +89,14 @@ if (displayAssignees && displayAssignees.length > 0) {
                                 options: reviewerOptions
                             }) %>
                         <% } else { %>
-                            <%= reviewerName %>
+                            <%= reviewer ? reviewer.name : "Not Assigned" %>
                         <% } %>
                     </td>
 
                     <td valign="top" height>
-                        <% if (isLeaderAllowedToEdit || (me.get('id') == assigneeId && (currentStatus == 'Assigned' || currentStatus == 'Done'))) { %> 
-                            <%= HTML.TextArea(this, 'comments.' + assigneeId, {placeholder: "Enter your comments here", style: "height: 75px;width:100%;box-sizing:border-box;margin:0;"}) %>                        <% } %> 
-                           
+                        <% if (canCurrentUserEdit || isCurrentUserTheReveiwer) { %> 
+                            <%= HTML.TextArea(this, 'comments.' + assigneeId, {placeholder: "Enter your comments here", style: "height: 75px;width:100%;box-sizing:border-box;margin:0;"}) %>
+                        <% } %>   
                     </td>
                 </tr>
             <% }.bind(this)); %>
