@@ -80,7 +80,7 @@ ManagePeopleEditUniversitiesView = Backbone.View.extend({
         university.startTracking();
         university.set("university", "Unknown");
         university.set("department", "Unknown");
-        university.set("position", "Unknown");
+        university.set("position", "");
         university.set("personId", this.person.get('id'));
         this.universities.add(university);
         this.$el.scrollTop(this.el.scrollHeight);

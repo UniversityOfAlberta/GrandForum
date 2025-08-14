@@ -180,6 +180,12 @@
     
     $config->setValue("hqpRegisterEmailWhitelist", array(".ca"));
     
+    // List of Options for the "Position" field
+    $config->setValue("positionList", array());
+    
+    // List of Options for the HQP "Position" field
+    $config->setValue("hqpPositionList", array("", "Graduate Student - Master's", "Graduate Student - Doctoral", "Post-Doctoral Fellow", "Research Associate", "Research Assistant", "Technician", "Professional End User", "Summer Student", "Undergraduate Student", "Other"));
+    
     // Whether to prevent access to certain pages when a guest
     // This is mostly a facade since it doesn't actually prevent access from the data, it just hides the links to the pages.
     $config->setValue("guestLockdown", false);

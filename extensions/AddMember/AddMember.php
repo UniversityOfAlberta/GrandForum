@@ -381,8 +381,9 @@ class AddMember extends SpecialPage{
 
         $universities = array_merge(array(""), Person::getAllUniversities());
         $departments = array_merge(array(""), Person::getAllDepartments());
-        $positions = array_merge(array(""), Person::getAllPositions());
-        $hqpPositions = array("", "Graduate Student - Master's", "Graduate Student - Doctoral", "Post-Doctoral Fellow", "Research Associate", "Research Assistant", "Technician", "Professional End User", "Summer Student", "Undergraduate Student");
+        $positions = (count($config->getValue('positionList')) > 0) ? array_merge(array(""), $config->getValue('positionList')) : 
+                                                                      array_merge(array(""), Person::getAllPositions());
+        $hqpPositions = $config->getValue('hqpPositionList');
         
         $candLabel = new Label("cand_label", "Candidate?", "Whether or not this user should be a candidate (not officially in the network yet)", VALIDATE_NOTHING);
         $candField = new VerticalRadioBox("cand_field", "Roles", "No", array("0" => "No", "1" => "Yes"), VALIDATE_NOTHING);

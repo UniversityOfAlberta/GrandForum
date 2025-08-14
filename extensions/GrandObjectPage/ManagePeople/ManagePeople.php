@@ -36,11 +36,14 @@ class ManagePeople extends BackbonePage {
     }
     
     function getViews(){
-        global $wgOut;
+        global $wgOut, $config;
         $me = Person::newFromWgUser();
         $universities = new Collection(University::getAllUniversities());
         $uniNames = $universities->pluck('name');
-        $positions = large_json_encode(array_values(Person::getAllPositions()));
+        $positions = (count($config->getValue('positionList')) > 0) ? $config->getValue('positionList') : 
+                                                                      Person::getAllPositions();
+        $positions = large_json_encode($positions);
+        $hqpPositions = large_json_encode($config->getValue('hqpPositionList'));
 
         $departments = large_json_encode(array_values(Person::getAllDepartments()));
         $faculties = large_json_encode(array_values(Person::getAllFaculties()));
@@ -54,6 +57,7 @@ class ManagePeople extends BackbonePage {
         $wgOut->addScript("<script type='text/javascript'>
             var allUniversities = $organizations;
             var allPositions = $positions;
+            var hqpPositions = $hqpPositions;
             var allDepartments = $departments;
             var allFaculties = $faculties;
             
