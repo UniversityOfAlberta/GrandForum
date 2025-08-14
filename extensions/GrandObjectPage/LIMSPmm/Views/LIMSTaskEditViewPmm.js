@@ -73,10 +73,13 @@ LIMSTaskEditViewPmm = Backbone.View.extend({
         this.model.toDelete = true;
         this.model.trigger("change:toDelete");
     },
-    handleAssigneeChange: function(model, newAssigneeIds) {
+    handleAssigneeChange: function(model, allAssignees) {
         var previousAssigneeIds = (this.model.previous('assignees') || []).map(a => a.id || a).map(Number);
-        var newlyAddedIds = _.difference(newAssigneeIds.map(a => a.id || a).map(Number), previousAssigneeIds);
-        var fullAssigneeObjects = _.map(newAssigneeIds, function(item) {
+        var newlyAddedIds = _.difference(allAssignees.map(a => a.id || a).map(Number), previousAssigneeIds);
+        var fullAssigneeObjects = _.map(allAssignees, function(item) {
+            if (_.isObject(item) && item.name) {
+                return item;
+            } 
             var assigneeId;
             if (_.isObject(item) && item.id) {
                 assigneeId = item.id;
@@ -96,28 +99,10 @@ LIMSTaskEditViewPmm = Backbone.View.extend({
         this.model.set('assignees', fullAssigneeObjects, {silent: true});
 
         if (newlyAddedIds.length > 0) {
-            var reviewers = _.clone(this.model.get('reviewers')) || {};
-            var allPossibleReviewers = this.project.members.toJSON();
-            var alreadyAssignedReviewerIds = _.values(reviewers).map(r => r ? (r.id || r) : null).filter(Boolean);
-            var preferredReviewerPool = _.reject(allPossibleReviewers, member => _.contains(alreadyAssignedReviewerIds, member.id));
-
-            newlyAddedIds.forEach(function(assigneeId) {
-                if (assigneeId == -1) { return; }
-                var availablePool = _.reject(preferredReviewerPool, member => member.id == assigneeId);
-                if (availablePool.length === 0) {
-                    availablePool = _.reject(allPossibleReviewers, member => member.id == assigneeId);
-                }
-                if (availablePool.length > 0) {
-                    var randomReviewer = _.sample(availablePool);
-                    reviewers[assigneeId] = {
-                        id: randomReviewer.id,
-                        name: randomReviewer.fullName,
-                        url: randomReviewer.url || ''
-                    };
-                    preferredReviewerPool = _.reject(preferredReviewerPool, p => p.id == randomReviewer.id);
-                }
-            });
-            this.model.set('reviewers', reviewers);
+            var currentReviewers = _.clone(this.model.get('reviewers')) || {};
+            var allMembers = this.project.members.toJSON();
+            var updatedReviewers = ReviewerHelper.assignReviewersToNewUsers(newlyAddedIds, currentReviewers, allMembers);
+            this.model.set('reviewers', updatedReviewers);
         }
         this.prepareDisplayState();
     },

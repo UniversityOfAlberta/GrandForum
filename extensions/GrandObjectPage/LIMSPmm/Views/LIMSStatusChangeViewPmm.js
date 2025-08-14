@@ -94,8 +94,8 @@ LIMSStatusChangeViewPmm = Backbone.View.extend({
             }
         }
 
-        this.model.set('assignees', finalAssignees, {silent: true});
         this.model.set(final);
+        this.model.set('assignees', finalAssignees);
         this.$el.dialog('close');
     }
 });
