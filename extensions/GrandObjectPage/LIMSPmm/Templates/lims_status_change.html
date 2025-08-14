@@ -1,7 +1,7 @@
 <h3>Select New Status</h3>
 
 <% 
-if (assignees && assignees.length > 0) { 
+if (displayAssignees && displayAssignees.length > 0) { 
 %>
     <table class="wikitable">
         <thead>
@@ -14,17 +14,17 @@ if (assignees && assignees.length > 0) {
             </tr>
         </thead>
         <tbody>
-            <% assignees.forEach(function(assignee, index) { %>
+            <% displayAssignees.forEach(function(assignee, index) { %>
                 <tr>
                     <td valign="top"><%= assignee.name %></td>
                     <td valign="top">
                         <% 
                         var assigneeId = (assignee.id != undefined) ? assignee.id : assignee; 
-                        var currentStatus = statuses[assigneeId]; // Get current status for the assignee
+                        var currentStatus = displayStatuses[assigneeId]; // Get current status for the assignee
                         %>
                         
                         <% if (isLeaderAllowedToEdit || (me.get('id') == assigneeId && (currentStatus == 'Assigned' || currentStatus == 'Done'))) { %> 
-                            <%= HTML.Select(this, 'statuses.' + assigneeId, { 
+                            <%= HTML.Select(this, 'displayStatuses.' + assigneeId, { 
                                 options: 
                                     isLeaderAllowedToEdit 
                                         ? ['New', 'Assigned', 'Done', 'Closed'] 
@@ -36,7 +36,7 @@ if (assignees && assignees.length > 0) {
                     </td>
                     <td valign="top" height>
                       <% 
-                        var fileObj  = (files && files[assigneeId]) || {};
+                        var fileObj  = (displayFiles && displayFiles[assigneeId]) || {};
                         var filename = fileObj.filename || '';
                         var toDelete = fileObj.delete || false;
                       %>
@@ -46,7 +46,7 @@ if (assignees && assignees.length > 0) {
                                 <%= filename %>
                                   <span class="delete-icon deleteFile" data-assignee="<%= assigneeId %>">×</span>
                            <% } else {%>
-                            <%= HTML.File(this, 'files.' + assigneeId) %>
+                            <%= HTML.File(this, 'displayFiles.' + assigneeId) %>
                         <% } %>
                       <% } %>
                       <% } else { %>
@@ -57,7 +57,7 @@ if (assignees && assignees.length > 0) {
                     </td>
                     <td valign="top">
                         <%
-                            var selectedReviewerId = reviewers[assigneeId] || null;
+                            var selectedReviewerId = displayReviewers[assigneeId] || null;
                             var peopleList = this.project.members.map(function(member) {
                                 return { value: member.get('id'), option: member.get('fullName') };
                             });
@@ -70,7 +70,7 @@ if (assignees && assignees.length > 0) {
                                 return person.value != assigneeId;
                             });
                             %>
-                            <%= HTML.Select(this, 'reviewers.' + assigneeId + '.id', {
+                            <%= HTML.Select(this, 'displayReviewers.' + assigneeId + '.id', {
                                 options: reviewerOptions
                             }) %>
                         <% } else { %>
@@ -95,7 +95,5 @@ if (assignees && assignees.length > 0) {
 }
 %>
 
-<% if (isEditableStatus) { %>  
-    <button id="updateStatusButton">Update Status</button>
-<% } %>
-<button id="cancelButton">Cancel</button>
+
+<button id="cancelButton">Close</button>

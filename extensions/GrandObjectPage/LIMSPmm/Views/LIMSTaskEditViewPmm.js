@@ -12,9 +12,33 @@ LIMSTaskEditViewPmm = Backbone.View.extend({
         this.model.saving = false;
         this.listenTo(this.model, "sync", this.render);
         this.listenTo(this.model, "change:assignees", this.handleAssigneeChange);
+        this.prepareDisplayState();
         this.selectTemplate();
         this.model.startTracking();
+    },
 
+    prepareDisplayState: function() {
+        var primaryData = this.model.toJSON();
+        var isEveryoneAssigned = _.some(primaryData.assignees, function(a) { return (a.id || a) == -1; });
+        var displayAssignees = isEveryoneAssigned ? this.project.members.toJSON() : primaryData.assignees;
+
+        var displayStatuses = {}, displayFiles = {}, displayReviewers = {}, displayComments = {};
+
+        displayAssignees.forEach(function(assignee) {
+            var assigneeId = assignee.id.toString();
+            displayStatuses[assigneeId]  = primaryData.statuses[assigneeId]  || '';
+            displayFiles[assigneeId]     = _.clone(primaryData.files[assigneeId]) || {};
+            displayReviewers[assigneeId] = primaryData.reviewers[assigneeId] || {};
+            displayComments[assigneeId]  = primaryData.comments[assigneeId]  || '';
+        }, this);
+
+        this.model.set({
+            displayAssignees: displayAssignees,
+            displayStatuses: displayStatuses,
+            displayFiles: displayFiles,
+            displayReviewers: displayReviewers,
+            displayComments: displayComments
+        });
     },
     
     selectTemplate: function(){
@@ -49,36 +73,34 @@ LIMSTaskEditViewPmm = Backbone.View.extend({
         this.model.toDelete = true;
         this.model.trigger("change:toDelete");
     },
-    handleAssigneeChange: function(model, newAssigneeIds) {
-        var previousAssigneeIds = (this.model.previous('assignees') || []).map(a => a.id || a);
-        var newlyAddedIds = _.difference(newAssigneeIds, previousAssigneeIds);
-        if (newlyAddedIds.length === 0) {
-            return;
-        }
-
-        var reviewers = _.clone(this.model.get('reviewers')) || {};
-        var allPossibleReviewers = this.project.members.toJSON();
-        var alreadyAssignedReviewerIds = _.values(reviewers).map(r => r ? (r.id || r) : null).filter(Boolean);
-        var preferredReviewerPool = _.reject(allPossibleReviewers, member => _.contains(alreadyAssignedReviewerIds, member.id));
-
-        newlyAddedIds.forEach(function(assigneeId) {
-            var availablePool = _.reject(preferredReviewerPool, member => member.id == assigneeId);
-            
-            if (availablePool.length === 0) {
-                availablePool = _.reject(allPossibleReviewers, member => member.id == assigneeId);
+    handleAssigneeChange: function(model, allAssignees) {
+        var fullAssigneeObjects = _.map(allAssignees, function(item) {
+            var assigneeId;
+            if (_.isObject(item)) {
+                if (item.name) {
+                    return item;
+                }
+                assigneeId = item.id;
+            } else {
+                assigneeId = item;
             }
-
-            if (availablePool.length > 0) {
-                var randomReviewer = _.sample(availablePool);
-                reviewers[assigneeId] =  {
-                    id: randomReviewer.id,
-                    name: randomReviewer.fullName,
-                    url: randomReviewer.url|| ''
-                };
-                preferredReviewerPool = _.reject(preferredReviewerPool, p => p.id == randomReviewer.id);
+            if (assigneeId == -1) {
+                return { id: -1, name: "Everyone", url: "" };
             }
-        });
-        this.model.set('reviewers', reviewers);
+            var userObject = this.project.members.get(assigneeId);
+            return userObject ? {
+                id: userObject.get('id'),
+                name: userObject.get('fullName'),
+                url: userObject.get('url') || ''
+            } : { id: assigneeId, name: "Unknown", url: "" };
+        }, this);
+        this.model.set('assignees', fullAssigneeObjects, {silent: true});
+
+        var currentReviewers = _.clone(this.model.get('reviewers')) || {};
+        var allMembers = this.project.members.toJSON();
+        var updatedReviewers = ReviewerHelper.assignReviewersToNewUsers(allAssignees, currentReviewers, allMembers);
+        this.model.set('reviewers', updatedReviewers);
+        this.prepareDisplayState();
     },
 
     changeStatus: function(){

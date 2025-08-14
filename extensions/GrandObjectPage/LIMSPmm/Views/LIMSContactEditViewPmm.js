@@ -144,6 +144,11 @@ LIMSContactEditViewPmm = Backbone.View.extend({
         this.model.opportunities.each(function(model){
             model.tasks.each(function(task){
                 task.set('opportunity', model.get('id'));
+                task.unset('displayAssignees');
+                task.unset('displayStatuses');
+                task.unset('displayFiles');
+                task.unset('displayReviewers');
+                task.unset('displayComments');
                 task.saving = true;
                 if(!task.toDelete){
                     // Create or Update

@@ -3,7 +3,6 @@ LIMSStatusChangeViewPmm = Backbone.View.extend({
     project: null,
     
     events: {
-        'click #updateStatusButton': 'updateStatus', // Button to update status
         'click #cancelButton': 'closeDialog', // Button to cancel
         'click .deleteFile': 'deleteTaskFile' // Button to delete a file
     },
@@ -41,15 +40,14 @@ LIMSStatusChangeViewPmm = Backbone.View.extend({
 
 
     deleteTaskFile: function(e){
-        var fileId = $(e.currentTarget).data('assignee').toString();
-        var files = this.model.get('files') || {};
-
-        if (files[fileId]) {
-            files[fileId].delete = true;
-            files[fileId].data = '';
+        var assigneeId = $(e.currentTarget).data('assignee').toString();
+        var displayFiles = this.model.get('displayFiles') || {};
+        if (displayFiles[assigneeId]) {
+            displayFiles[assigneeId].delete = true;
+            displayFiles[assigneeId].data = '';
         }
 
-        this.model.set('files', files);
+        this.model.set('displayFiles', displayFiles);
         this.render();
     },
 
@@ -58,11 +56,39 @@ LIMSStatusChangeViewPmm = Backbone.View.extend({
         return this.$el;
     },
 
-    updateStatus: function() {
-        this.closeDialog();
-    },
 
     closeDialog: function() {
+        var final = {};
+        var data = this.model.toJSON();
+        var finalAssignees = _.clone(data.assignees);
+
+        for (var assigneeId in data.displayStatuses) {
+            var wasExplicitlyAssigned = _.some(data.assignees, function(a) { return (a.id || a).toString() === assigneeId; });
+
+            var statusChanged = data.displayStatuses[assigneeId] !== (data.statuses[assigneeId] || '');
+            var fileChanged = (data.displayFiles[assigneeId] && !_.isEmpty(data.displayFiles[assigneeId].data)) || (data.displayFiles[assigneeId] && data.displayFiles[assigneeId].delete);
+            var reviewerChanged = data.displayReviewers[assigneeId] && data.displayReviewers[assigneeId].id && !_.isEqual(data.displayReviewers[assigneeId], data.reviewers[assigneeId]);
+            var commentAdded = data.displayComments[assigneeId] && data.displayComments[assigneeId] !== '';
+
+            var hasMeaningfulChange = statusChanged || fileChanged || reviewerChanged || commentAdded;
+            if (hasMeaningfulChange && !wasExplicitlyAssigned) {
+                finalAssignees.push({id: assigneeId});
+            }
+
+            if (wasExplicitlyAssigned || hasMeaningfulChange) {
+                if (!final.statuses) final.statuses = {};
+                final.statuses[assigneeId] = data.displayStatuses[assigneeId];
+                if (!final.files) final.files = {};
+                final.files[assigneeId] = data.displayFiles[assigneeId];
+                if (!final.reviewers) final.reviewers = {};
+                final.reviewers[assigneeId] = data.displayReviewers[assigneeId];
+                if (!final.comments) final.comments = {};
+                final.comments[assigneeId] = data.displayComments[assigneeId];
+            }
+        }
+        final.assignees = finalAssignees;
+        // as assignes is modified, handleAssigneeChange will be called
+        this.model.set(final);
         this.$el.dialog('close');
     }
 });
