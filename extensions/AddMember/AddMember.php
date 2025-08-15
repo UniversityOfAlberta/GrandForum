@@ -343,20 +343,22 @@ class AddMember extends SpecialPage{
         $roleOptions = array();
         foreach($me->getAllowedRoles() as $role){
             $text = "";
-            if($role == HQP){
-                $text = " <i> (Students, Technicians, etc.)</i>";
-            }
-            else if($role == EXTERNAL){
-                $text = " <i> (A researcher external to the network)</i>";
-            }
-            else if($role == CI){
-                $text = " <i> (The principal investigator on a project)</i>";
-            }
-            else if($role == AR){
-                $text = " <i> (An affiliated researcher in the network)</i>";
-            }
-            else if($role == PL){
-                $text = " <i> (The person who manages or leads a project)</i>";
+            if($config->getValue('showFullRoleDefs')){
+                if($role == HQP){
+                    $text = " <i> (Students, Technicians, etc.)</i>";
+                }
+                else if($role == EXTERNAL){
+                    $text = " <i> (A researcher external to the network)</i>";
+                }
+                else if($role == CI){
+                    $text = " <i> (The principal investigator on a project)</i>";
+                }
+                else if($role == AR){
+                    $text = " <i> (An affiliated researcher in the network)</i>";
+                }
+                else if($role == PL){
+                    $text = " <i> (The person who manages or leads a project)</i>";
+                }
             }
             $roleOptions[$config->getValue('roleDefs', $role).$text] = $role;
         }
