@@ -155,7 +155,7 @@ class LIMSTaskPmm extends BackboneModel
         $assignees = $this->getAssignees();
         $personId = $me->getId();
         foreach($assignees as $assignee) {
-            if ($assignee->getId() == $personId) {
+            if ($assignee->getId() == $personId || $assignee->getId() == "-1") {
                 return true;
             }
         }

@@ -26,11 +26,8 @@ if (displayAssignees && displayAssignees.length > 0) {
                     
                     var allStatusOptions = ['New', 'Assigned', 'Done', 'Closed'];
                     var assigneeStatusOptions = ['Assigned', 'Done'];
-
-                    var isStatusEditableByMember = _.contains(assigneeStatusOptions, currentStatus);
-                    var isMemberAllowedToEdit = isCurrentUserTheAssignee && isStatusEditableByMember;
                     
-                    var canCurrentUserEdit = isLeaderAllowedToEdit || isMemberAllowedToEdit;
+                    var canCurrentUserEdit = isLeaderAllowedToEdit || isCurrentUserTheAssignee;
                 %>
                 <tr>
                     <td valign="top"><%= assignee.name %></td>
