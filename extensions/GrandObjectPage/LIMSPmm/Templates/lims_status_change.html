@@ -65,7 +65,7 @@ if (displayAssignees && displayAssignees.length > 0) {
                                 <% } else { %>
                                     <%= HTML.File(this, 'displayFiles.' + assigneeId) %>
                                 <% } %>
-                            <% } else if (isCurrentUserTheReveiwer && filename) { %>
+                            <% } else if (filename) { %>
                                 <a href="<%= fileUrl %>" target="_blank"><%= filename %></a>
                             <% } else { %>
                                 <span>No document allowed</span>
