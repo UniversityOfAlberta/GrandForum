@@ -22,10 +22,16 @@ if (displayAssignees && displayAssignees.length > 0) {
                     var isCurrentUserTheAssignee = (me.get('id') == assigneeId);
                     
                     var reviewer = displayReviewers[assigneeId];
-                    var isCurrentUserTheReveiwer = reviewer && (me.get('id') == reviewer.id);
+                    var isCurrentUserTheReviewer = reviewer && (me.get('id') == reviewer.id);
                     
                     var allStatusOptions = ['New', 'Assigned', 'Done', 'Closed'];
                     var assigneeStatusOptions = ['Assigned', 'Done'];
+                    var reviewerStatusOptions = [...assigneeStatusOptions, 'Closed'];
+
+                    var statusOptionsToShow = isLeaderAllowedToEdit 
+                                                ? allStatusOptions : (isCurrentUserTheReviewer
+                                                ? reviewerStatusOptions
+                                                : assigneeStatusOptions);    
                     
                     var canCurrentUserEdit = isLeaderAllowedToEdit || isCurrentUserTheAssignee;
                 %>
@@ -33,13 +39,10 @@ if (displayAssignees && displayAssignees.length > 0) {
                     <td valign="top"><%= assignee.name %></td>
                     <td valign="top">
                         <%
-                        if (canCurrentUserEdit || isCurrentUserTheReveiwer) { 
+                        if (canCurrentUserEdit || isCurrentUserTheReviewer) { 
                         %> 
                             <%= HTML.Select(this, 'displayStatuses.' + assigneeId, { 
-                                options: 
-                                    isLeaderAllowedToEdit 
-                                        ? allStatusOptions 
-                                        : assigneeStatusOptions,
+                                options: statusOptionsToShow
                             }) 
                         %>
                         <% } else { %> 
@@ -91,7 +94,7 @@ if (displayAssignees && displayAssignees.length > 0) {
                     </td>
 
                     <td valign="top" height>
-                        <% if (canCurrentUserEdit || isCurrentUserTheReveiwer) { %> 
+                        <% if (canCurrentUserEdit || isCurrentUserTheReviewer) { %> 
                             <%= HTML.TextArea(this, 'comments.' + assigneeId, {placeholder: "Enter your comments here", style: "height: 75px;width:100%;box-sizing:border-box;margin:0;"}) %>
                         <% } %>   
                     </td>
