@@ -7,7 +7,7 @@ var ReviewerHelper = {
 
     allAssignees.forEach(function(assignee) {
       var assigneeId = assignee.id || assignee;
-      if (assigneeId === -1) { return; }
+      if (assigneeId == -1) { return; }
       if (!_.isEmpty(updatedReviewers[assigneeId])) { return; }
       var availablePool = _.reject(preferredPool, member => member.id === assigneeId);
       if (availablePool.length === 0) {

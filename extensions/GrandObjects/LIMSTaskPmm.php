@@ -155,7 +155,7 @@ class LIMSTaskPmm extends BackboneModel
         $assignees = $this->getAssignees();
         $personId = $me->getId();
         foreach($assignees as $assignee) {
-            if ($assignee->getId() == $personId) {
+            if ($assignee->getId() == $personId || $assignee->getId() == "-1") {
                 return true;
             }
         }
@@ -393,38 +393,90 @@ class LIMSTaskPmm extends BackboneModel
             );
 
             $this->reviewers = isset($this->reviewers) ? (array)$this->reviewers : [];
+            $isLeader = $this->getOpportunity()->isAllowedToEdit();
+
             foreach ($this->assignees as $assignee) {
                 $assigneeId = (isset($assignee->id)) ? $assignee->id : $assignee;
                 $assigneeId = (int)$assigneeId;
+                $currentUserId = (int)$me->getId();
 
+                $isCurrentUserTheAssignee = ($currentUserId == $assigneeId);
+                $isCurrentUserTheReviewer = (isset($data[$assigneeId]['reviewer']) && $currentUserId == (int)$data[$assigneeId]['reviewer']);
+                $canUserEditThisRow = $isLeader || $isCurrentUserTheAssignee || $isCurrentUserTheReviewer;
+
+                $status = null;
+                $reviewerId = null;
+                $fileData = [];
+                if ($canUserEditThisRow) {
+                    $status = $this->statuses[$assigneeId] ?? null;
+                    if ($assigneeId !== -1) {
+                        $selectedReviewer = $this->reviewers[$assigneeId] ?? null;
+                        $reviewerId = (is_object($selectedReviewer) && !empty((array)$selectedReviewer) && isset($selectedReviewer->id)) 
+                                    ? (int)$selectedReviewer->id 
+                                    : null;
+                    }
+                    $filesArr = (array)$this->files;
+                    $toDelete = isset($filesArr[$assigneeId]->delete) && $filesArr[$assigneeId]->delete;
+                    $toUpdate = isset($filesArr[$assigneeId]->data) && $filesArr[$assigneeId]->data !== '';
+                    $hasExisting = isset($existingFiles[$assigneeId]);
+
+                    // when a new file is uploaded
+                    if($toUpdate && !$isCurrentUserTheReviewer){
+                        $updatedFile = $filesArr[$assigneeId];
+                        $fileData = [
+                            'filename' => $updatedFile->filename,
+                            'type'     => $updatedFile->type,
+                            'data'     => $updatedFile->data,
+                        ];
+                    }
+
+                    // when a file is deleted
+                    if($toDelete && !$isCurrentUserTheReviewer){
+                        $fileData = [
+                            'filename' => null,
+                            'type'     => null,
+                            'data'     => null,
+                        ];
+                    }
+
+                    // if no update or delete and then fetch the exisiting file if any
+                    if (!$toDelete && !$toUpdate && $hasExisting) {
+                        $oldFile = $existingFiles[$assigneeId];
+                        $fileData = [
+                            'filename' => $oldFile->filename,
+                            'type'     => $oldFile->type,
+                            'data'     => $oldFile->data,
+                        ];
+                    }
+                } else {
+                    // current user cannot edit so just get the old data
+                    $originalRow = $data[$assigneeId] ?? [];
+                    $status   = $originalRow['status'] ?? null;
+                    $reviewerId = $originalRow['reviewer'] ?? null;
+
+                    if (isset($existingFiles[$assigneeId])) {
+                        $oldFile = $existingFiles[$assigneeId];
+                        $fileData = [
+                            'filename' => $oldFile->filename,
+                            'type'     => $oldFile->type,
+                            'data'     => $oldFile->data,
+                        ];
+                    }
+                }
                 $insertData = [
                     'task_id'  => $this->id,
                     'assignee' => $assigneeId,
-                    'status'   => @$this->statuses[$assigneeId]
+                    'status'   => $status,
+                    'reviewer' => $reviewerId,
                 ];
-                if ($assigneeId !== -1) {
-                    $selectedReviewer = $this->reviewers[$assigneeId] ?? null;
-                    $reviewerValue = (is_object($selectedReviewer) && !empty((array)$selectedReviewer) && isset($selectedReviewer->id)) 
-                        ? (int)$selectedReviewer->id 
-                        : null;
-                    $insertData['reviewer'] = $reviewerValue;
-                }
 
-                $filesArr = (array)$this->files;
-                $toDelete = isset($filesArr[$assigneeId]->delete) && $filesArr[$assigneeId]->delete;
-                $toUpdate = isset($filesArr[$assigneeId]->data) && $filesArr[$assigneeId]->data !== '';
-                $hasExisting = isset($existingFiles[$assigneeId]);
-                if (!$toDelete && !$toUpdate && $hasExisting) {
-                    $old = $existingFiles[$assigneeId];
-                    $insertData['filename'] = $old->filename;
-                    $insertData['type']     = $old->type;
-                    $insertData['data']     = $old->data;
+                if (!empty($fileData)) {
+                    $insertData = array_merge($insertData, $fileData);
                 }
                 DBFunctions::insert(
                     'grand_pmm_task_assignees',
                     $insertData);
             }
-            $this->uploadFiles();
             $assignees = $this->getAssignees();            
             foreach ($assignees as $assignee) {
                 $comment = @$_POST['comments'][$assignee->id];

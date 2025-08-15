@@ -46,22 +46,10 @@ LIMSTaskEditViewPmm = Backbone.View.extend({
         var userRole = _.pluck(_.filter(me.get('roles'), function(el){return el.title == this.project.get("name") ||  el.role !== PL}.bind(this)), 'role');
         // Memebers can only change 'assigned' -> 'done'
         var isPLAllowed = _.intersection(userRole, [PL, STAFF, MANAGER, ADMIN]).length > 0 ;
-
-        var isMemberAllowed = !isPLAllowed && (this.model.get('status') == 'Assigned' || this.model.get('status') == 'Done');
         
-
         this.model.set('isLeaderAllowedToEdit', isPLAllowed);
-        this.model.set('isMemberAllowedToEdit', isMemberAllowed);
 
-
-        if(!this.model.get('isAllowedToEdit')){
-            // Not allowed to edit, use read-only version
-            this.template = _.template($('#lims_task_template').html());
-        }
-        else{
-            // Use Edit version
-            this.template = _.template($('#lims_task_edit_template').html());
-        }
+        this.template = _.template($('#lims_task_edit_template').html());
     },
     
     events: {
