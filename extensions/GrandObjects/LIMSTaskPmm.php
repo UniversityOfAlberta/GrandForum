@@ -398,9 +398,10 @@ class LIMSTaskPmm extends BackboneModel
             foreach ($this->assignees as $assignee) {
                 $assigneeId = (isset($assignee->id)) ? $assignee->id : $assignee;
                 $assigneeId = (int)$assigneeId;
+                $currentUserId = (int)$me->getId();
 
-                $isCurrentUserTheAssignee = ($me->getId() === $assigneeId);
-                $isCurrentUserTheReviewer = (isset($data[$assigneeId]['reviewer']) && $me->getId() === (int)$data[$assigneeId]['reviewer']);
+                $isCurrentUserTheAssignee = ($currentUserId == $assigneeId);
+                $isCurrentUserTheReviewer = (isset($data[$assigneeId]['reviewer']) && $currentUserId == (int)$data[$assigneeId]['reviewer']);
                 $canUserEditThisRow = $isLeader || $isCurrentUserTheAssignee || $isCurrentUserTheReviewer;
 
                 $status = null;
