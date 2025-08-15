@@ -569,7 +569,12 @@ class AddMember extends SpecialPage{
             $hqpPositionRow->attr('id', "hqp_position_row$i");
             
             $positionLabel = new Label("position_label$i", "Position", "The title of this user", $validation);
-            $positionField = new ComboBox("position_field$i", "Position", "", $positions, VALIDATE_NOTHING);
+            if(count($config->getValue('positionList')) > 0){
+                $positionField = new SelectBox("position_field$i", "Position", "", $positions, VALIDATE_NOTHING);
+            }
+            else{
+                $positionField = new ComboBox("position_field$i", "Position", "", $positions, VALIDATE_NOTHING);
+            }
             $positionField->attr("style", "width: 250px;");
             $positionRow = new FormTableRow("position_row$i");
             $positionRow->append($positionLabel)->append($positionField);

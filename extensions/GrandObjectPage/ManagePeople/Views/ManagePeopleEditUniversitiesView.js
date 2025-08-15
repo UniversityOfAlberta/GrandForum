@@ -162,8 +162,8 @@ ManagePeopleEditUniversitiesRowView = Backbone.View.extend({
         this.$("[name=university]").combobox();
         this.$("[name=faculty]").combobox();
         this.$("[name=department]").combobox();
-        if(!(_.where(currentRoles.toJSON(), {role: HQP}).length > 0 && 
-             _.filter(currentRoles.toJSON(), function(r){ return !(r.role == HQP || r.role == PL || r.role == PS); }).length == 0)){
+        if(positionsCombo && !(_.where(currentRoles.toJSON(), {role: HQP}).length > 0 && 
+                               _.filter(currentRoles.toJSON(), function(r){ return !(r.role == HQP || r.role == PL || r.role == PS); }).length == 0)){
             this.$("[name=position]").css('max-width', '200px').css('width', '200px');
             this.$("[name=position]").combobox();
         }
