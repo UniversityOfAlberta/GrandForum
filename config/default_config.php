@@ -247,9 +247,6 @@
     // Whether to show text in parenthesis next to certain roles on Add Member
     $config->setValue('showFullRoleDefs', true);
     
-    // An array of 'extra' fields for user profiles in the form
-    $config->setValue("profileExtras", array());
-    
     // Whether or not gamification should be enabled
     $config->setValue("gamificationEnabled", false);
 
