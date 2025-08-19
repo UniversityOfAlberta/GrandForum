@@ -14,6 +14,7 @@ class RequestUserAPI extends API{
         $this->addPOST("wpUserSubType", false, "The User Sub Roles Must be in the form \"Role1, Role2, ...\"", "HQP, RMC");
         $this->addPOST("wpNS", false, "The list of projects that the user is a part of.  Must be in the form\"Project1, Project2, ...\"", "MEOW, NAVEL");
         $this->addPOST("candidate", false, "Whether or not this person is a candidate user or not", "");
+        $this->addPOST("extra", false, "An associative array of 'extra' fields", "");
         $this->addPOST("university",false, "", "");
         $this->addPOST("department",false, "", "");
         $this->addPOST("position",false, "", "");
@@ -159,6 +160,7 @@ class RequestUserAPI extends API{
 		                          'start_date' => $startDate,
 		                          'end_date' => $endDate,
 		                          'candidate' => $candidate,
+		                          'extra' => @json_encode($_POST['extra']),
 		                          'created' => 0));
 		
 		$me = Person::newFromId($requesting_user);

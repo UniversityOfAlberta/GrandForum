@@ -32,6 +32,7 @@ class UserCreateRequest {
     var $startDate;
     var $endDate;
     var $candidate;
+    var $extra;
     var $created;
     var $ignored;
     var $lastModified;
@@ -94,6 +95,7 @@ class UserCreateRequest {
             $this->startDate = $data[0]['start_date'];
             $this->endDate = $data[0]['end_date'];
             $this->candidate = $data[0]['candidate'];
+            $this->extra = json_decode($data[0]['extra']);
             $this->created = $data[0]['created'];
             $this->ignored = $data[0]['ignore'];
             $this->lastModified = ($data[0]['last_modified']);
@@ -211,6 +213,10 @@ class UserCreateRequest {
         return $this->candidate;
     }
     
+    function getExtra(){
+        return $this->extra;
+    }
+    
     function isCreated(){
         return $this->created;
     }
@@ -238,6 +244,7 @@ class UserCreateRequest {
                                   'staff' => $user->getId(),
                                   '`ignore`' => 1),
                             array('id' => $this->id));
+        DBFunctions::commit();
     }
     
     function acceptRequest(){
@@ -248,6 +255,7 @@ class UserCreateRequest {
                                   'staff' => $user->getId(),
                                   'created' => 1),
                             array('id' => $this->id));
+        DBFunctions::commit();
     }
     
 }

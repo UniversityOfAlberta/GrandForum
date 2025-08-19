@@ -141,14 +141,18 @@ Person = Backbone.Model.extend({
     getUniversityString: function(){
         var university = new Array();
         if(this.get('position') != "" || this.get('stakeholder') != ""){
+            var subPosition = "";
+            if(this.get('extra').sub_position != ''){ 
+                subPosition = " / " + this.get('extra').sub_position;
+            }
             if(this.get('position') != "" && this.get('stakeholder') != ""){
-                university.push(this.get('stakeholder') + "/" + this.get('position'));
+                university.push(this.get('stakeholder') + "/" + this.get('position') + subPosition);
             }
             else if(this.get('stakeholder') != ""){
-                university.push(this.get('stakeholder'));
+                university.push(this.get('stakeholder') + subPosition);
             }
             else if(this.get('position') != ""){
-                university.push(this.get('position'));
+                university.push(this.get('position') + subPosition);
             }
         }
         if(this.get('department') != ''){

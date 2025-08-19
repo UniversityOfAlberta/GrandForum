@@ -84,7 +84,7 @@ class AddMember extends SpecialPage{
                         // For HQP Role
                         $form->getElementById("hqp_position_field{$i}")->setPOST("position{$i}");
                     }
-                    else{
+                    else if($form->getElementById("position_field{$i}")->exists()){
                         $form->getElementById("position_field{$i}")->setPOST("position{$i}");
                     }
                     $form->getElementById("end_field{$i}")->setPOST("end_date{$i}");
@@ -94,7 +94,7 @@ class AddMember extends SpecialPage{
                 $_POST['university'] = "{$_POST["university0"]}\n{$_POST["university1"]}\n{$_POST["university2"]}";
                 $_POST['faculty'] = "{$_POST["faculty0"]}\n{$_POST["faculty1"]}\n{$_POST["faculty2"]}";
                 $_POST['department'] = "{$_POST["department0"]}\n{$_POST["department1"]}\n{$_POST["department2"]}";
-                $_POST['position'] = "{$_POST["position0"]}\n{$_POST["position1"]}\n{$_POST["position2"]}";
+                $_POST['position'] = @"{$_POST["position0"]}\n{$_POST["position1"]}\n{$_POST["position2"]}";
                 $_POST['end_date'] = "{$_POST["end_date0"]}\n{$_POST["end_date1"]}\n{$_POST["end_date2"]}";
                 $_POST['start_date'] = "{$_POST["start_date0"]}\n{$_POST["start_date1"]}\n{$_POST["start_date2"]}";
                 
@@ -268,6 +268,9 @@ class AddMember extends SpecialPage{
                             <input type='hidden' name='start_date' value='".str_replace("'", "&#39;", $request->getStartDate())."' />
                             <input type='hidden' name='end_date' value='".str_replace("'", "&#39;", $request->getEndDate())."' />
                             <input type='hidden' name='wpSendMail' value='$wpSendMail' />");
+            foreach($request->getExtra() as $key => $value){
+                $wgOut->addHTML("<input type='hidden' name='extra[$key]' value='".str_replace("'", "&#39;", $value)."' />");
+            }
             if($history){
                 if($request->isCreated()){
                     $wgOut->addHTML("<td>Accepted</td>");
@@ -292,6 +295,65 @@ class AddMember extends SpecialPage{
                                             }).fnSort([[3,'desc']]);
                                             $('#requests').css('display', 'table');
                                          </script>");
+    }
+    
+    static function createBDPositionWidget(){
+        $bdPositionsComments = array("Research Associate" => "(paid from BD funds)",
+                                     "Affiliated Researcher" => "(do not receive BD funds)",
+                                     "Stipend Student" => "(only for those receiving BD scholarship)");
+        $bdPositions = array("Principal Investigator" => array(),
+                             "Research Associate" => array(),
+                             "Affiliated Researcher" => array(),
+                             "Administrative Staff" => array(),
+                             "Research Assistant" => array(
+                                "Undergraduate",
+                                "Masters",
+                                "PhD",
+                                "Postdoctoral Fellow"
+                             ),
+                             "CareerBoost / Steps to Success" => array(
+                                "Undergraduate",
+                                "Masters"
+                             ),
+                             "Stipend Student" => array(
+                                "Masters",
+                                "PhD"
+                             ));
+        $positionInBD = "<div id='bdPositions'>\n";
+        foreach($bdPositions as $key => $subFields){
+            $checked1 = (@$_POST['position0'] == "$key") ? "checked" : "";
+            $positionInBD .= @"<div><input type='radio' name='position0' value='{$key}' style='vertical-align:middle;' $checked1 /><span style='vertical-align:middle; margin-left:0.5em;'>{$key} {$bdPositionsComments[$key]}</span><br />\n";
+            $positionInBD .= "<div class='suboptions' style='margin-left: 2em; display:none;'>\n";
+            foreach($subFields as $subField){
+                $positionInBD .= "<input type='radio' name='extra[sub_position]' value='{$subField}' style='vertical-align:middle;' /><span style='vertical-align:middle; margin-left:0.5em;'>{$subField}</span><br />\n";
+            }
+            $positionInBD .= "</div></div>\n";
+        }
+        $positionInBD .= @"</div>
+            <script type='text/javascript'>
+                $('#bdPositions input[name=position0]').change(function(){
+                    $('#bdPositions input[name=position0]').each(function(){
+                        if($(this).is(':checked')){
+                            $(this).siblings('.suboptions').slideDown();
+                        }
+                        else{
+                            if($(this).siblings('.suboptions').is(':visible')){
+                                $('.suboptions input').prop('checked', false);
+                                $(this).siblings('.suboptions').slideUp();
+                            }
+                        }
+                    });
+                }).first().change();
+            </script>\n";
+        if(isset($_POST['extra']['sub_position'])){
+            $positionInBD .= "<script type='text/javascript'>$(\"input[name='extra[sub_position]'][value={$_POST['extra']['sub_position']}]:visible\").prop('checked', true);</script>";
+        }
+        
+        $bdPositionLabel = new Label("bdposition_label", "Position in Bridging Divides", "Position in Bridging Divides", VALIDATE_NOT_NULL);
+        $bdPositionField = new CustomElement("bdposition_field", "", "", $positionInBD);
+        $bdPositionRow = new FormTableRow("bdposition_row");
+        $bdPositionRow->append($bdPositionLabel)->append($bdPositionField);
+        return $bdPositionRow;
     }
     
     function createForm(){
@@ -335,6 +397,10 @@ class AddMember extends SpecialPage{
         $linkedInField = new TextField("linkedin_field", "LinkedIn", "", VALIDATE_NOTHING);
         $linkedInRow = new FormTableRow("linkedin_row");
         $linkedInRow->append($linkedInLabel)->append($linkedInField);
+        
+        if($config->getValue('networkName') == "BD"){
+            $bdPositionRow = self::createBDPositionWidget();
+        }
         
         $roleValidations = VALIDATE_NOT_NULL;
         if($me->isRoleAtLeast(STAFF)){
@@ -465,8 +531,11 @@ class AddMember extends SpecialPage{
                   ->append($lastNameRow)
                   ->append($emailRow)
                   ->append($sendEmailRow)
-                  ->append($linkedInRow)
-                  ->append($rolesRow);
+                  ->append($linkedInRow);
+        if($config->getValue('networkName') == "BD"){
+            $formTable->append($bdPositionRow);
+        }
+        $formTable->append($rolesRow);
         if($me->isRoleAtLeast(STAFF) || $config->getValue('networkType') == "CFREF"){
             $formTable->append($subRolesRow);
         }
@@ -648,6 +717,13 @@ class AddMember extends SpecialPage{
                 $formTable->getElementById("recruitment_row")->attr('style', 'display:none;');
                 $formTable->getElementById("rec_row")->attr('style', 'display:none;');
                 $formTable->getElementById("rec_country_row")->attr('style', 'display:none;');
+            }
+        }
+        else if($config->getValue("networkName") == "BD"){
+            for($i = 0; $i < 3; $i++){
+                $formTable->getElementById("position_row{$i}")->remove();
+                $formTable->getElementById("hqp_position_row{$i}")->remove();
+                $formTable->getElementById("dept_row{$i}")->remove();
             }
         }
         

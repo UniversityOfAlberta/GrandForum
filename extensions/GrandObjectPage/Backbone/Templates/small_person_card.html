@@ -5,7 +5,7 @@
         </div>
         <div class="card_description" style="max-width:277px;">
             <b><%= fullName %></b> <span id="roles" style="display:none;"></span><br />
-            <span id="uni"><%= position %><br />
+            <span id="uni"><%= position %><% if(extra.sub_position != ''){ %> / <%= extra.sub_position %><% } %><br />
                 <% if(department != "" && university != ""){ %>
                     <%= department %><br /><%= university %>
                 <% } else if(department != ""){ %>

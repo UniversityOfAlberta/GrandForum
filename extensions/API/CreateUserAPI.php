@@ -15,7 +15,7 @@ class CreateUserAPI extends API{
         $this->addPOST("wpUserType",true,"The User Roles, must be in the form \"Role1, Role2, ...\"","HQP, RMC");
         $this->addPOST("wpUserSubType",false,"The User Roles, must be in the form \"Role1, Role2, ...\"","HQP, RMC");
         $this->addPOST("wpNS",false,"The list of projects that the user is a part of.  Must be in the form \"Project1, Project2, ...\"","MEOW, NAVEL");
-        $this->addPOST("wpExtra",false,"","");
+        $this->addPOST("extra",false,"","");
         $this->addPOST("wpSendMail",false,"Whether or not to send an email to the user or not.  This value should be either 'true' or 'false'.  If this parameter is not included, it is assumed that not email should be sent","true");
         $this->addPOST("candidate",false,"Whether or not to make this user a candidate", "1");
         $this->addPOST("id",false,"The id of the creation request(You probably should not touch this parameter unless you know exactly what you are doing)", "15");
@@ -120,7 +120,7 @@ class CreateUserAPI extends API{
                                         array('first_name' => @$_POST['wpFirstName'],
                                               'middle_name' => @$_POST['wpMiddleName'],
                                               'last_name' => @$_POST['wpLastName'],
-                                              'user_extra' => @json_encode($_POST['wpExtra'])),
+                                              'user_extra' => @json_encode($_POST['extra'])),
                                         array('user_id' => $person->getId()));
                     
                     $universities = explode("\n", str_replace("\r", "", @$_POST['university']));
