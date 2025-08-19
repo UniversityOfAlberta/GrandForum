@@ -142,7 +142,7 @@ Person = Backbone.Model.extend({
         var university = new Array();
         if(this.get('position') != "" || this.get('stakeholder') != ""){
             var subPosition = "";
-            if(this.get('extra').sub_position != ''){ 
+            if(!_.isEmpty(this.get('extra').sub_position)){ 
                 subPosition = " / " + this.get('extra').sub_position;
             }
             if(this.get('position') != "" && this.get('stakeholder') != ""){
