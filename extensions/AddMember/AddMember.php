@@ -300,7 +300,7 @@ class AddMember extends SpecialPage{
     static function createBDPositionWidget($person=null){
         if($person != null){
             $_POST['position0'] = $person->getPosition();
-            $_POST['extra']['sub_position'] = $person->getExtra()['sub_position'];
+            $_POST['extra']['sub_position'] = (isset($person->getExtra()['sub_position'])) ? $person->getExtra()['sub_position'] : "";
         }
         $bdPositionsComments = array("Research Associate" => "(paid from BD funds)",
                                      "Affiliated Researcher" => "(do not receive BD funds)",
