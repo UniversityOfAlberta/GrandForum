@@ -297,7 +297,11 @@ class AddMember extends SpecialPage{
                                          </script>");
     }
     
-    static function createBDPositionWidget(){
+    static function createBDPositionWidget($person=null){
+        if($person != null){
+            $_POST['position0'] = $person->getPosition();
+            $_POST['extra']['sub_position'] = $person->getExtra()['sub_position'];
+        }
         $bdPositionsComments = array("Research Associate" => "(paid from BD funds)",
                                      "Affiliated Researcher" => "(do not receive BD funds)",
                                      "Stipend Student" => "(only for those receiving BD scholarship)");
@@ -346,7 +350,11 @@ class AddMember extends SpecialPage{
                 }).first().change();
             </script>\n";
         if(isset($_POST['extra']['sub_position'])){
-            $positionInBD .= "<script type='text/javascript'>$(\"input[name='extra[sub_position]'][value={$_POST['extra']['sub_position']}]:visible\").prop('checked', true);</script>";
+            $positionInBD .= "<script type='text/javascript'>
+                                $(document).ready(function(){
+                                    $(\"input[name='extra[sub_position]'][value={$_POST['extra']['sub_position']}]:visible\").prop('checked', true);
+                                })
+                              </script>";
         }
         
         $bdPositionLabel = new Label("bdposition_label", "Position in Bridging Divides", "Position in Bridging Divides", VALIDATE_NOT_NULL);

@@ -92,6 +92,7 @@ class PersonProfileTab extends AbstractEditableTab {
         $this->html .= "</td><td style='padding-right:25px;' valign='top'>";
         $this->showEditContact($this->person, $this->visibility);
         $this->html .= "</td></tr></table>";
+        $this->showEditBDPosition($this->person, $this->visibility);
         $this->html .= "<h2>Profile</h2>";
         $this->showEditProfile($this->person, $this->visibility);
     }
@@ -237,6 +238,34 @@ class PersonProfileTab extends AbstractEditableTab {
                     'date' => @$_POST['crc_date']
                 );
             }
+            
+            if(isset($_POST['position0'])){
+                // Handle BD Position
+                $posCheck = DBFunctions::execSQL("SELECT * FROM grand_positions
+                                                  WHERE position = BINARY '".DBFunctions::escape($_POST['position0'])."'");
+                                                  
+                if(count($posCheck) == 0){
+                    // Create new Position
+                    DBFunctions::insert('grand_positions',
+                                        array('position' => $_POST['position0'],
+                                              '`order`' => 10000,
+                                              '`default`' => 0));
+                    
+                }
+                
+                $position_id = "";
+                $positions = Person::getAllPositions();
+                foreach($positions as $id => $position){
+                    if($_POST['position0'] == $position){
+                        $position_id = $id;
+                    }
+                }
+                DBFunctions::update('grand_user_university',
+                                    array('position_id' => $position_id),
+                                    array('user_id' => EQ($this->person->getId())));
+                $this->person->extra['sub_position'] = (isset($_POST['extra']['sub_position'])) ? $_POST['extra']['sub_position'] : "";
+            }
+            
             $this->person->update();
             if(isset($_POST['email'])){
                 $api = new UserEmailAPI();
@@ -932,6 +961,17 @@ EOF;
                 }
             });
         </script>";
+    }
+    
+    function showEditBDPosition($person, $visibility){
+        global $config;
+        if($config->getValue('networkName') == "BD"){
+            $widget = AddMember::createBDPositionWidget($person);
+            $this->html .= "<table>{$widget->render()}</table>";
+            $this->html .= "<script type='text/javascript'>
+                $('#editUniversities').closest('tr').remove();
+            </script>";
+        }
     }
     
 }
