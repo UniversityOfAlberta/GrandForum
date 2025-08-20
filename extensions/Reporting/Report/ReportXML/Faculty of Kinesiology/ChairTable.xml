@@ -1,4 +1,30 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report extends="../ChairTable">
-    
+    <Permissions>
+        <Role role="DEAN">
+            <SectionPermission id="evaluations" permissions="rw" />
+            <SectionPermission id="dean_evaluations" permissions="rw" />
+            <SectionPermission id="recommendations" permissions="rw" />
+            <SectionPermission id="deans_advice" permissions="rw" />
+            <SectionPermission id="deans_decision" permissions="rw" />
+            <SectionPermission id="chairs_advice" permissions="" />
+            <SectionPermission id="atsec" permissions="" />
+            <SectionPermission id="dept_hqp" permissions="" />
+            <SectionPermission id="sabbatical" permissions="" />
+        </Role>
+        <Role role="DEANEA">
+            <SectionPermission id="evaluations" permissions="rw" />
+            <SectionPermission id="dean_evaluations" permissions="rw" />
+            <SectionPermission id="recommendations" permissions="rw" />
+            <SectionPermission id="deans_advice" permissions="rw" />
+            <SectionPermission id="deans_decision" permissions="rw" />
+            <SectionPermission id="chairs_advice" permissions="" />
+            <SectionPermission id="atsec" permissions="rw" />
+            <SectionPermission id="dept_hqp" permissions="" />
+            <SectionPermission id="sabbatical" permissions="" />
+        </Role>
+    </Permissions>
+    <ReportSection id="evaluations" tooltip="AR Evaluations" name="AR Evaluations" title="Annual Report Evaluations">
+        <ReportItemSet id="faculty" department="" start="{$last_year}-07-01" end="{$this_year}-07-01" excludeMe="true" />
+    </ReportSection>
 </Report>
