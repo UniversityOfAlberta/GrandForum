@@ -297,7 +297,7 @@ class PeopleTableTab extends AbstractTab {
             if($facultyHead != ""){
                 $html .= "<td align='left'>{$person->getFaculty()}</td>";
             }
-            $subPosition = (isset($person->getExtra()['sub_position'])) ? " / {$person->getExtra()['sub_position']}" : "";
+            $subPosition = (isset($person->getExtra()['sub_position']) && $person->getExtra()['sub_position'] != "") ? " / {$person->getExtra()['sub_position']}" : "";
             $html .= "<td align='left'>{$person->getDepartment()}</td>";
             $html .= "<td align='left'>{$university['position']}{$subPosition}</td>";
             $html .= "<td align='left' style='display:none;'>{$university['start']}</td>";
