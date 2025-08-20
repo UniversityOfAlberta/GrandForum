@@ -306,7 +306,9 @@ class AddMember extends SpecialPage{
                                      "Affiliated Researcher" => "(do not receive BD funds)",
                                      "Stipend Student" => "(only for those receiving BD scholarship)");
         $bdPositions = array("Principal Investigator" => array(),
-                             "Research Associate" => array(),
+                             "Research Associate" => array(
+                                "Postdoctoral Fellow",
+                                "Other"),
                              "Affiliated Researcher" => array(),
                              "Administrative Staff" => array(),
                              "Research Assistant" => array(
