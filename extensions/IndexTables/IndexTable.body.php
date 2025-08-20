@@ -124,7 +124,18 @@ class IndexTable {
             }
         }
         
-        $peopleSubTab = TabUtils::createSubTab("People");
+        if(!empty($config->getValue('positionList'))){
+            $positionSubTab = TabUtils::createSubTab("People");
+            foreach($config->getValue('positionList') as $position){
+                $selected = ($wgTitle->getText() == "ALL {$position}") ? "selected" : "";
+                $positionSubTab['dropdown'][] = TabUtils::createSubTab($position, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_{$position}", "$selected");
+            }
+            
+            $tabs['Main']['subtabs'][] = $positionSubTab;
+        }
+        
+        $peopleSubTab = (!empty($config->getValue('positionList'))) ? TabUtils::createSubTab("Project Roles") : TabUtils::createSubTab("People");
+        
         $roles = array_values($wgAllRoles);
         $roles[] = NI;
         sort($roles);
@@ -282,6 +293,12 @@ class IndexTable {
                     foreach($wgAllRoles as $role){
                         if(($role != HQP || $me->isLoggedIn()) && $wgTitle->getText() == "ALL {$role}"){//Here we can get role
                             self::generatePersonTable($role);
+                            break;
+                        }
+                    }
+                    foreach($config->getValue('positionList') as $position){
+                        if($wgTitle->getText() == "ALL {$position}"){
+                            self::generatePersonTable($position, true);
                             break;
                         }
                     }
@@ -526,24 +543,29 @@ class IndexTable {
      * Researchers, or Highly-Qualified People, depending on parameter
      * table.
      */
-    private static function generatePersonTable($table){
+    private static function generatePersonTable($table, $position=false){
         global $config, $wgOut;
         $me = Person::newFromWgUser();
         $tabbedPage = new TabbedPage("people");
         $visibility = true;
         header("HTTP/1.0: 200");
-        $tabbedPage->addTab(new PeopleTableTab($table, $visibility, false));
-        $tabbedPage->addTab(new PeopleTableTab($table, $visibility, "6 months"));
-        if($table != "Candidate"){
-            $tabbedPage->addTab(new PeopleTableTab($table, $visibility, true));
-            if($me->isRoleAtLeast(STAFF)){
-                $phaseDates = $config->getValue('projectPhaseDates');
-                for($y=date('Y', time() - 60*60*24*30*4); $y>=substr($phaseDates[1],0,4); $y--){
-                    $tabbedPage->addTab(new PeopleTableTab($table, $visibility, $y));
+        if($position){
+            $tabbedPage->addTab(new PositionTableTab($table, $visibility, false));
+        }
+        else{
+            $tabbedPage->addTab(new PeopleTableTab($table, $visibility, false));
+            $tabbedPage->addTab(new PeopleTableTab($table, $visibility, "6 months"));
+            if($table != "Candidate"){
+                $tabbedPage->addTab(new PeopleTableTab($table, $visibility, true));
+                if($me->isRoleAtLeast(STAFF)){
+                    $phaseDates = $config->getValue('projectPhaseDates');
+                    for($y=date('Y', time() - 60*60*24*30*4); $y>=substr($phaseDates[1],0,4); $y--){
+                        $tabbedPage->addTab(new PeopleTableTab($table, $visibility, $y));
+                    }
                 }
-            }
-            if($config->getValue('wikiEnabled') && ($me->isRole($table) || $me->isRoleAtLeast(ADMIN))){
-                $tabbedPage->addTab(new PeopleWikiTab($table, $visibility));
+                if($config->getValue('wikiEnabled') && ($me->isRole($table) || $me->isRoleAtLeast(ADMIN))){
+                    $tabbedPage->addTab(new PeopleWikiTab($table, $visibility));
+                }
             }
         }
         $tabbedPage->showPage();

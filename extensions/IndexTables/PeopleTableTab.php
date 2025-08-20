@@ -9,7 +9,12 @@ class PeopleTableTab extends AbstractTab {
     function __construct($table, $visibility, $past=false){
         global $config, $wgOut;
         if($table != "Candidate"){
-            $tabTitle = Inflect::pluralize($config->getValue('roleDefs', $table));
+            if(isset($config->getValue('roleDefs')[$table])){
+                $tabTitle = Inflect::pluralize($config->getValue('roleDefs', $table));
+            }
+            else{
+                $tabTitle = Inflect::pluralize($table);
+            }
         }
         else{
             $tabTitle = Inflect::pluralize($table);

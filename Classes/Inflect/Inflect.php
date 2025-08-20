@@ -123,7 +123,8 @@ class Inflect
         'nce cycle ii',
         'ssf',
         'advisory group',
-        'project staff'
+        'project staff',
+        'careerboost / steps to success'
     );
 
 	/**
