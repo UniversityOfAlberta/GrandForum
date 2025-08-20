@@ -268,8 +268,10 @@ class AddMember extends SpecialPage{
                             <input type='hidden' name='start_date' value='".str_replace("'", "&#39;", $request->getStartDate())."' />
                             <input type='hidden' name='end_date' value='".str_replace("'", "&#39;", $request->getEndDate())."' />
                             <input type='hidden' name='wpSendMail' value='$wpSendMail' />");
-            foreach($request->getExtra() as $key => $value){
-                $wgOut->addHTML("<input type='hidden' name='extra[$key]' value='".str_replace("'", "&#39;", $value)."' />");
+            if(is_array($request->getExtra())){
+                foreach($request->getExtra() as $key => $value){
+                    $wgOut->addHTML("<input type='hidden' name='extra[$key]' value='".str_replace("'", "&#39;", $value)."' />");
+                }
             }
             if($history){
                 if($request->isCreated()){
