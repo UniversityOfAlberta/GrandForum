@@ -306,7 +306,8 @@ class AddMember extends SpecialPage{
         }
         $bdPositionsComments = array("Research Associate" => "(paid from BD funds)",
                                      "Affiliated Researcher" => "(do not receive BD funds)",
-                                     "Stipend Student" => "(only for those receiving BD scholarship)");
+                                     "Stipend Student" => "(only for those receiving BD scholarship)",
+                                     "Postdoctoral Fellow" => "(Within 5 years post-PhD)");
         $bdPositions = array("Principal Investigator" => array(),
                              "Research Associate" => array(
                                 "Postdoctoral Fellow",
@@ -316,8 +317,7 @@ class AddMember extends SpecialPage{
                              "Research Assistant" => array(
                                 "Undergraduate",
                                 "Masters",
-                                "PhD",
-                                "Postdoctoral Fellow"
+                                "PhD"
                              ),
                              "CareerBoost / Steps to Success" => array(
                                 "Undergraduate",
@@ -333,7 +333,7 @@ class AddMember extends SpecialPage{
             $positionInBD .= @"<div><input type='radio' name='position0' value='{$key}' style='vertical-align:middle;' $checked1 /><span style='vertical-align:middle; margin-left:0.5em;'>{$key} {$bdPositionsComments[$key]}</span><br />\n";
             $positionInBD .= "<div class='suboptions' style='margin-left: 2em; display:none;'>\n";
             foreach($subFields as $subField){
-                $positionInBD .= "<input type='radio' name='extra[sub_position]' value='{$subField}' style='vertical-align:middle;' /><span style='vertical-align:middle; margin-left:0.5em;'>{$subField}</span><br />\n";
+                $positionInBD .= @"<input type='radio' name='extra[sub_position]' value='{$subField}' style='vertical-align:middle;' /><span style='vertical-align:middle; margin-left:0.5em;'>{$subField} {$bdPositionsComments[$subField]}</span><br />\n";
             }
             $positionInBD .= "</div></div>\n";
         }
