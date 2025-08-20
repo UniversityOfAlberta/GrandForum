@@ -103,6 +103,17 @@ class RequestUserAPI extends API{
 			    return false;
 		    }
 		}
+		if(!empty($config->getValue('positionList')) && (!isset($_POST['position']) || trim($_POST['position']) == "")){
+		    if($doEcho){
+			    echo "Position must be provided\n";
+			    exit;
+			}
+			else{
+			    $message = "Position must be provided";
+			    $wgMessage->addError($message);
+			    return false;
+		    }
+		}
 		// Finished manditory checks
 		// Add a request for a user to be created
 		$requesting_user = $me->getId();
