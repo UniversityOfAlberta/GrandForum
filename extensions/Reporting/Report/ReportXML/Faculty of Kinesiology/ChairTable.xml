@@ -8,7 +8,7 @@
             <SectionPermission id="deans_advice" permissions="rw" />
             <SectionPermission id="deans_decision" permissions="rw" />
             <SectionPermission id="chairs_advice" permissions="" />
-            <SectionPermission id="atsec" permissions="" />
+            <SectionPermission id="atsec" permissions="rw" />
             <SectionPermission id="dept_hqp" permissions="" />
             <SectionPermission id="sabbatical" permissions="" />
         </Role>
@@ -25,6 +25,203 @@
         </Role>
     </Permissions>
     <ReportSection id="evaluations" tooltip="AR Evaluations" name="AR Evaluations" title="Annual Report Evaluations">
-        <ReportItemSet id="faculty" department="" start="{$last_year}-07-01" end="{$this_year}-07-01" excludeMe="true" />
+        <ReportItemSet id="faculty" department="" start="{$last_year}-07-01" end="{$this_year}-07-01" excludeMe="true">
+            <Static>
+                <![CDATA[
+                    <tr data-fecid="{getExtra()}">
+                        <td>{getExtra()}</td>
+                        <td><a href="{$user_url}" target="_blank">{$user_name}</a></td>
+                        <td>{$user_level}</td>
+                ]]>
+            </Static>
+            <ReportItem id="previous2_download" type="PDFReportItem" reportType="FECpdf" year="{$2_years_ago}" class="" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
+                <![CDATA[
+                        <td align='center'>
+                            {$item}
+                        </td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="previous_download" type="PDFReportItem" reportType="FECpdf" year="{$last_year}" class="" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
+                <![CDATA[
+                        <td align='center'>
+                            {$item}
+                        </td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="download" type="PDFReportItem" reportType="FECpdf" class="" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' /> &lt;span>AR&lt;/span>">
+                <![CDATA[
+                        <td align='left' class='currentAR'>
+                            {$item}
+                ]]>
+            </ReportItem>
+            <ReportItem id="downloadSPOT" type="PDFReportItem" reportType="SPOTs" class="" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' /> &lt;span>SPOTs&lt;/span>">
+                <![CDATA[
+                            <span {if("{$value}" == "", class='remove')}><br />{$item}</span>
+                        </td>
+                ]]>
+            </ReportItem>
+            <If id="if_lock" if="{==({getArray(RP_FEC,FEC_SUBMIT,LOCK,0,{$user_id},0,lock)},Lock)}">
+                <ReportItem id="lock" type="Unlock" blobReport="RP_FEC" blobSection="FEC_SUBMIT" blobItem="LOCK" blobSubItem="0" personId="{$user_id}" blobType="BLOB_ARRAY" orientation="vertical" options="Lock">
+                    <![CDATA[
+                        <td style='white-space:nowrap;' align='center'>
+                            <div id='lockContainer_{$user_id}' style='display:none;'>{$item}</div>
+                            <button id='lock_{$user_id}' type="button" value="Save" name="submit">Unlock</button>
+                            <script type="text/javascript">
+                                $('#lock_{$user_id}').click(function(){
+                                    if(confirm('Are you sure you want to proceed?\n\nThis annual report will be unlocked and the faculty member will be able to edit their report again.')){
+                                        $('#lockContainer_{$user_id} input[type=checkbox]').prop('checked', false);
+                                        $('#lock_{$user_id}').prop('disabled', true);
+                                        $('#lock_{$user_id}').after("<span class='throbber'></span>");
+                                        saveAll(function(){$("#Evaluations").click();});
+                                    } else {
+                                        $('#lockContainer_{$user_id} input[type=checkbox]').prop('checked', true);
+                                    }
+                                    return false;
+                                });
+                            </script>
+                        </td>
+                    ]]>
+                </ReportItem>
+            </If>
+            <If id="if_not_lock" if="{!=({getArray(RP_FEC,FEC_SUBMIT,LOCK,0,{$user_id},0,lock)},Lock)}">
+                <![CDATA[
+                    <td align='center'>Not Locked</td>
+                ]]>
+            </If>
+            <If if="{==({getText(RP_LETTER5, TABLE, TEMPLATE, {$user_id}, 1, 0, {$last_year})},Variance)}">
+                <ReportItem id="variance_letter" type="PDFReportItem" reportType="Letters/Variance" year="{$last_year}" class="" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
+                    <![CDATA[
+                        <td align='center'>
+                            {getText(RP_LETTER5, TABLE, TEACHING, {$user_id}, 1, 0, {$last_year})}
+                            {getText(RP_LETTER5, TABLE, RESEARCH, {$user_id}, 1, 0, {$last_year})}
+                            {getText(RP_LETTER5, TABLE, SERVICE, {$user_id}, 1, 0, {$last_year})}
+                            {getText(RP_LETTER5, TABLE, ADMIN, {$user_id}, 1, 0, {$last_year})}
+                            {$item}
+                        </td>
+                    ]]>
+                </ReportItem>
+            </If>
+            <Else>
+                <![CDATA[
+                    <td></td>
+                ]]>
+            </Else>
+            <ReportItem id="recommendation" type="PDFReportItem" class="recommendationPDF downloadButton{$user_id}" reportType="ChairTable" section="Recommendations" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
+                <![CDATA[
+                        <td align='center'>
+                        {$item} <a class="viewEvaluation" style="cursor:pointer;" data-href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report={$report_xmlname}&section=Recommendations&userId={$user_id}'>Recommendation</a>
+                ]]>
+            </ReportItem>
+            <ReportItem id="submit" type="SimpleReviewSubmit" section="Recommendations" userId="{$user_id}" onlyGenerate="true" specialDownload=".downloadButton{$user_id}">
+                <![CDATA[
+                        {$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSubItem="{$user_id}" width="80px" encrypt="true">
+                <![CDATA[
+                        <td align='center' valign='middle' class='increment' style="white-space:nowrap;">{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="tenure" type="Tenure" blobItem="TENURE" blobSubItem="{$user_id}" width="200px" encrypt="true">
+                <![CDATA[
+                        <td align='center' class='tenure'>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="promotion" type="Promotion" blobItem="PROMOTION" blobSubItem="{$user_id}" width="200px" encrypt="true">
+                <![CDATA[
+                        <td align='center' class='promotion'>{$item}</td>
+                    </tr>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+    </ReportSection>
+    <ReportSection id="atsec" tooltip="ATS Evaluations" name="ATS Evaluations" title="Annual Report Evaluations">
+        <ReportItemSet id="faculty" department="" start="{$last_year}-07-01" end="{$this_year}-07-01" excludeMe="true" atsec="true">
+            <Static>
+                <![CDATA[
+                    <tr data-fecid="{getExtra()}">
+                        <td>{getExtra()}</td>
+                        <td><a href="{$user_url}" target="_blank">{$user_name}</a></td>
+                        <td>{$user_level}</td>
+                ]]>
+            </Static>
+            <ReportItem id="previous2_download" type="PDFReportItem" reportType="FECpdf" year="{$2_years_ago}" class="" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
+                <![CDATA[
+                        <td align='center'>
+                            {$item}
+                        </td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="previous_download" type="PDFReportItem" reportType="FECpdf" year="{$last_year}" class="" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
+                <![CDATA[
+                        <td align='center'>
+                            {$item}
+                        </td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="download" type="PDFReportItem" reportType="FECpdf" class="" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' /> &lt;span>AR&lt;/span>">
+                <![CDATA[
+                        <td align='left' class='currentAR'>
+                            {$item}
+                ]]>
+            </ReportItem>
+            <ReportItem id="downloadSPOT" type="PDFReportItem" reportType="SPOTs" class="" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' /> &lt;span>SPOTs&lt;/span>">
+                <![CDATA[
+                            <span {if("{$value}" == "", class='remove')}><br />{$item}</span>
+                        </td>
+                ]]>
+            </ReportItem>
+            <If id="if_lock" if="{==({getArray(RP_FEC,FEC_SUBMIT,LOCK,0,{$user_id},0,lock)},Lock)}">
+                <ReportItem id="lock" type="Unlock" blobReport="RP_FEC" blobSection="FEC_SUBMIT" blobItem="LOCK" blobSubItem="0" personId="{$user_id}" blobType="BLOB_ARRAY" orientation="vertical" options="Lock">
+                    <![CDATA[
+                        <td style='white-space:nowrap;' align='center'>
+                            <div id='lockContainer_{$user_id}' style='display:none;'>{$item}</div>
+                            <button id='lock_{$user_id}' type="button" value="Save" name="submit">Unlock</button>
+                            <script type="text/javascript">
+                                $('#lock_{$user_id}').click(function(){
+                                    if(confirm('Are you sure you want to proceed?\n\nThis annual report will be unlocked and the faculty member will be able to edit their report again.')){
+                                        $('#lockContainer_{$user_id} input[type=checkbox]').prop('checked', false);
+                                        $('#lock_{$user_id}').prop('disabled', true);
+                                        $('#lock_{$user_id}').after("<span class='throbber'></span>");
+                                        saveAll(function(){$("#ATSEC").click();});
+                                    } else {
+                                        $('#lockContainer_{$user_id} input[type=checkbox]').prop('checked', true);
+                                    }
+                                    return false;
+                                });
+                            </script>
+                        </td>
+                    ]]>
+                </ReportItem>
+            </If>
+            <If id="if_not_lock" if="{!=({getArray(RP_FEC,FEC_SUBMIT,LOCK,0,{$user_id},0,lock)},Lock)}">
+                <![CDATA[
+                    <td align='center'>Not Locked</td>
+                ]]>
+            </If>
+            <ReportItem id="recommendation" type="PDFReportItem" class="recommendationPDF downloadButton{$user_id}" reportType="ChairTable" section="Recommendations" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
+                <![CDATA[
+                        <td align='center'>
+                        {$item} <a class="viewEvaluation" style="cursor:pointer;" data-href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report={$report_xmlname}&section=Recommendations&userId={$user_id}'>Recommendation</a><br />
+                ]]>
+            </ReportItem>
+            <ReportItem id="submit" type="SimpleReviewSubmit" section="Recommendations" userId="{$user_id}" onlyGenerate="true" specialDownload=".downloadButton{$user_id}">
+                <![CDATA[
+                    {$item}
+                ]]>
+            </ReportItem>
+            <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSubItem="{$user_id}" width="80px" encrypt="true">
+                <![CDATA[
+                        </td>
+                        <td align='center' valign='middle' class='increment' style="white-space:nowrap;">{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="promotion" type="Promotion" blobItem="PROMOTION" blobSubItem="{$user_id}" width="200px" encrypt="true">
+                <![CDATA[
+                        <td align='center' class='promotion'>{$item}</td>
+                    </tr>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
     </ReportSection>
 </Report>
