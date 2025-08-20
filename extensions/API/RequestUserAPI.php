@@ -92,7 +92,7 @@ class RequestUserAPI extends API{
 			    return false;
 		    }
 		}
-		if(!$me->isRoleAtLeast(MANAGER) && (!isset($_POST['wpUserType']) || $_POST['wpUserType'] == null)){
+		if(!$me->isRoleAtLeast(STAFF) && (!isset($_POST['wpUserType']) || $_POST['wpUserType'] == null)){
 		    if($doEcho){
 			    echo "User Roles must be provided\n";
 			    exit;
