@@ -193,8 +193,8 @@ ManagePeopleEditLevelOfStudyView = Backbone.View.extend({
 
     initialize: function(options){
         this.parent = options.parent;
-        this.model.fetch();
         this.model.startTracking();
+        this.model.fetch();
         this.template = _.template($('#edit_level_of_study_template').html());
         _.each(positionList, function(levels, position){
             this.levels = this.levels.concat(levels);
@@ -226,6 +226,12 @@ ManagePeopleEditLevelOfStudyView = Backbone.View.extend({
         }.bind(this));
         if(activeLevels.length == 0){
             this.parent.$("tfoot").hide();
+            if(this.model.get('extra')['sub_position'] != ""){
+                // Reset the sub_position value to empty string
+                var extra = _.clone(this.model.get('extra'));
+                extra['sub_position'] = "";
+                this.model.set('extra', extra);
+            }
         }
         else{
             this.parent.$("tfoot").show();
