@@ -238,33 +238,6 @@ class PersonProfileTab extends AbstractEditableTab {
                 );
             }
             
-            if(isset($_POST['position0'])){
-                // Handle BD Position
-                $posCheck = DBFunctions::execSQL("SELECT * FROM grand_positions
-                                                  WHERE position = BINARY '".DBFunctions::escape($_POST['position0'])."'");
-                                                  
-                if(count($posCheck) == 0){
-                    // Create new Position
-                    DBFunctions::insert('grand_positions',
-                                        array('position' => $_POST['position0'],
-                                              '`order`' => 10000,
-                                              '`default`' => 0));
-                    
-                }
-                
-                $position_id = "";
-                $positions = Person::getAllPositions();
-                foreach($positions as $id => $position){
-                    if($_POST['position0'] == $position){
-                        $position_id = $id;
-                    }
-                }
-                DBFunctions::update('grand_user_university',
-                                    array('position_id' => $position_id),
-                                    array('user_id' => EQ($this->person->getId())));
-                $this->person->extra['sub_position'] = (isset($_POST['extra']['sub_position'])) ? $_POST['extra']['sub_position'] : "";
-            }
-            
             $this->person->update();
             if(isset($_POST['email'])){
                 $api = new UserEmailAPI();
