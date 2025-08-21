@@ -74,7 +74,9 @@ ManagePeopleEditUniversitiesView = Backbone.View.extend({
                 }
             }
         }.bind(this));
-        requests.push(this.person.save());
+        if(this.person.hasChanged()){
+            requests.push(this.person.save());
+        }
         $.when.apply($, requests).then(function(){
             addSuccess("Institutions saved");
         }).fail(function(){
@@ -192,6 +194,7 @@ ManagePeopleEditLevelOfStudyView = Backbone.View.extend({
     initialize: function(options){
         this.parent = options.parent;
         this.model.fetch();
+        this.model.startTracking();
         this.template = _.template($('#edit_level_of_study_template').html());
         _.each(positionList, function(levels, position){
             this.levels = this.levels.concat(levels);
