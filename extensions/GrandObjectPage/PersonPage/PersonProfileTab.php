@@ -92,7 +92,6 @@ class PersonProfileTab extends AbstractEditableTab {
         $this->html .= "</td><td style='padding-right:25px;' valign='top'>";
         $this->showEditContact($this->person, $this->visibility);
         $this->html .= "</td></tr></table>";
-        $this->showEditBDPosition($this->person, $this->visibility);
         $this->html .= "<h2>Profile</h2>";
         $this->showEditProfile($this->person, $this->visibility);
     }
@@ -961,17 +960,6 @@ EOF;
                 }
             });
         </script>";
-    }
-    
-    function showEditBDPosition($person, $visibility){
-        global $config;
-        if($config->getValue('networkName') == "BD"){
-            $widget = AddMember::createBDPositionWidget($person);
-            $this->html .= "<table>{$widget->render()}</table>";
-            $this->html .= "<script type='text/javascript'>
-                $('#editUniversities').closest('tr').remove();
-            </script>";
-        }
     }
     
 }

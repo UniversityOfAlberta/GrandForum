@@ -126,7 +126,7 @@ class IndexTable {
         
         if(!empty($config->getValue('positionList'))){
             $positionSubTab = TabUtils::createSubTab("People");
-            foreach($config->getValue('positionList') as $position){
+            foreach($config->getValue('positionList') as $position => $values){
                 $selected = ($wgTitle->getText() == "ALL {$position}") ? "selected" : "";
                 $positionSubTab['dropdown'][] = TabUtils::createSubTab($position, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_{$position}", "$selected");
             }

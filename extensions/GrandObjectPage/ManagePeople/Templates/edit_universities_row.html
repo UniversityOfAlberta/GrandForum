@@ -12,7 +12,13 @@
               _.filter(currentRoles.toJSON(), function(r){ return !(r.role == HQP || r.role == PL || r.role == PS); }).length == 0){ %>
             <%= HTML.Select(this, 'position', {options: hqpPositions}) %>
         <% } else { %>
-            <%= HTML.Select(this, 'position', {options: allPositions}) %>
+            <%= HTML.Select(this, 'position', {options: _.map(allPositions, function(position){
+                var bdPositionsComments = {"Research Associate": " (paid from BD funds)",
+                                           "Affiliated Researcher": " (do not receive BD funds)",
+                                           "Stipend Student": " (only for those receiving BD scholarship)"};
+                var comment = (bdPositionsComments[position] != undefined) ? bdPositionsComments[position] : "";
+                return {value: position, option: position + comment};
+            })}) %>
         <% } %>
         </td></tr>
     </table>

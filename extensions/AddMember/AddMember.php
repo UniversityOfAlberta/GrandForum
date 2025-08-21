@@ -300,6 +300,7 @@ class AddMember extends SpecialPage{
     }
     
     static function createBDPositionWidget($person=null){
+        global $config;
         if($person != null){
             $_POST['position0'] = $person->getPosition();
             $_POST['extra']['sub_position'] = (isset($person->getExtra()['sub_position'])) ? $person->getExtra()['sub_position'] : "";
@@ -308,27 +309,8 @@ class AddMember extends SpecialPage{
                                      "Affiliated Researcher" => "(do not receive BD funds)",
                                      "Stipend Student" => "(only for those receiving BD scholarship)",
                                      "Postdoctoral Fellow" => "(Within 5 years post-PhD)");
-        $bdPositions = array("Principal Investigator" => array(),
-                             "Research Associate" => array(
-                                "Postdoctoral Fellow",
-                                "Other"),
-                             "Affiliated Researcher" => array(),
-                             "Administrative Staff" => array(),
-                             "Research Assistant" => array(
-                                "Undergraduate",
-                                "Masters",
-                                "PhD"
-                             ),
-                             "CareerBoost / Steps to Success" => array(
-                                "Undergraduate",
-                                "Masters"
-                             ),
-                             "Stipend Student" => array(
-                                "Masters",
-                                "PhD"
-                             ));
         $positionInBD = "<div id='bdPositions'>\n";
-        foreach($bdPositions as $key => $subFields){
+        foreach($config->getValue('positionList') as $key => $subFields){
             $checked1 = (@$_POST['position0'] == "$key") ? "checked" : "";
             $positionInBD .= @"<div><input type='radio' name='position0' value='{$key}' style='vertical-align:middle;' $checked1 /><span style='vertical-align:middle; margin-left:0.5em;'>{$key} {$bdPositionsComments[$key]}</span><br />\n";
             $positionInBD .= "<div class='suboptions' style='margin-left: 2em; display:none;'>\n";
@@ -356,12 +338,12 @@ class AddMember extends SpecialPage{
         if(isset($_POST['extra']['sub_position'])){
             $positionInBD .= "<script type='text/javascript'>
                                 $(document).ready(function(){
-                                    $(\"input[name='extra[sub_position]'][value={$_POST['extra']['sub_position']}]:visible\").prop('checked', true);
+                                    $(\"input[name='extra[sub_position]'][value='{$_POST['extra']['sub_position']}']:visible\").prop('checked', true);
                                 })
                               </script>";
         }
         
-        $bdPositionLabel = new Label("bdposition_label", "Position in Bridging Divides", "Position in Bridging Divides", VALIDATE_NOT_NULL);
+        $bdPositionLabel = new Label("bdposition_label", "Position in {$config->getValue('networkFullName')}", "Position in {$config->getValue('networkFullName')}", VALIDATE_NOT_NULL);
         $bdPositionField = new CustomElement("bdposition_field", "", "", $positionInBD);
         $bdPositionRow = new FormTableRow("bdposition_row");
         $bdPositionRow->append($bdPositionLabel)->append($bdPositionField);
@@ -410,10 +392,6 @@ class AddMember extends SpecialPage{
         $linkedInRow = new FormTableRow("linkedin_row");
         $linkedInRow->append($linkedInLabel)->append($linkedInField);
         
-        if($config->getValue('networkName') == "BD"){
-            $bdPositionRow = self::createBDPositionWidget();
-        }
-        
         $roleValidations = VALIDATE_NOT_NULL;
         if($me->isRoleAtLeast(STAFF)){
             $roleValidations = VALIDATE_NOTHING;
@@ -461,8 +439,8 @@ class AddMember extends SpecialPage{
 
         $universities = array_merge(array(""), Person::getAllUniversities());
         $departments = array_merge(array(""), Person::getAllDepartments());
-        $positions = (count($config->getValue('positionList')) > 0) ? array_merge(array(""), $config->getValue('positionList')) : 
-                                                                      array_merge(array(""), Person::getAllPositions());
+        $positions = (!empty($config->getValue('positionList'))) ? array_merge(array(""), array_keys($config->getValue('positionList'))) : 
+                                                                   array_merge(array(""), Person::getAllPositions());
         $hqpPositions = $config->getValue('hqpPositionList');
         
         $candLabel = new Label("cand_label", "Candidate?", "Whether or not this user should be a candidate (not officially in the network yet)", VALIDATE_NOTHING);
@@ -544,8 +522,8 @@ class AddMember extends SpecialPage{
                   ->append($emailRow)
                   ->append($sendEmailRow)
                   ->append($linkedInRow);
-        if($config->getValue('networkName') == "BD"){
-            $formTable->append($bdPositionRow);
+        if(!empty($config->getValue('positionList'))){
+            $formTable->append(self::createBDPositionWidget());
         }
         $formTable->append($rolesRow);
         if($me->isRoleAtLeast(STAFF) || $config->getValue('networkType') == "CFREF"){
@@ -652,7 +630,7 @@ class AddMember extends SpecialPage{
             $hqpPositionRow->attr('id', "hqp_position_row$i");
             
             $positionLabel = new Label("position_label$i", "Position", "The title of this user", $validation);
-            if(count($config->getValue('positionList')) > 0){
+            if(!empty($config->getValue('positionList'))){
                 $positionField = new SelectBox("position_field$i", "Position", "", $positions, VALIDATE_NOTHING);
             }
             else{
@@ -731,7 +709,7 @@ class AddMember extends SpecialPage{
                 $formTable->getElementById("rec_country_row")->attr('style', 'display:none;');
             }
         }
-        else if($config->getValue("networkName") == "BD"){
+        else if(!empty($config->getValue('positionList'))){
             for($i = 0; $i < 3; $i++){
                 $formTable->getElementById("position_row{$i}")->remove();
                 $formTable->getElementById("hqp_position_row{$i}")->remove();

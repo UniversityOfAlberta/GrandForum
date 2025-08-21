@@ -180,7 +180,7 @@
     
     $config->setValue("hqpRegisterEmailWhitelist", array(".ca"));
     
-    // List of Options for the "Position" field
+    // List of Options for the "Position" field (keys are the options, values are another array of "level of study")
     $config->setValue("positionList", array());
     
     // List of Options for the HQP "Position" field

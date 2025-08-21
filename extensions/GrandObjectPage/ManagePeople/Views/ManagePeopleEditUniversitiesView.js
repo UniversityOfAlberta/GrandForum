@@ -51,6 +51,13 @@ ManagePeopleEditUniversitiesView = Backbone.View.extend({
                 dim.h2 = $(window).height();
             }
 	    }.bind(this), 100);
+	    Backbone.Subviews.add(this);
+    },
+    
+    subviewCreators: {
+        "levelOfStudy" : function() {
+            return new ManagePeopleEditLevelOfStudyView({parent: this, model: this.person});
+        }
     },
     
     saveAll: function(){
@@ -67,6 +74,7 @@ ManagePeopleEditUniversitiesView = Backbone.View.extend({
                 }
             }
         }.bind(this));
+        requests.push(this.person.save());
         $.when.apply($, requests).then(function(){
             addSuccess("Institutions saved");
         }).fail(function(){
@@ -111,6 +119,7 @@ ManagePeopleEditUniversitiesView = Backbone.View.extend({
 
 });
 
+// View for editing a University row
 ManagePeopleEditUniversitiesRowView = Backbone.View.extend({
     
     tagName: 'tr',
@@ -172,4 +181,53 @@ ManagePeopleEditUniversitiesRowView = Backbone.View.extend({
         return this.$el;
     }, 
     
+});
+
+// View for editing the Level of Study
+ManagePeopleEditLevelOfStudyView = Backbone.View.extend({
+
+    parent: null,
+    levels: [],
+
+    initialize: function(options){
+        this.parent = options.parent;
+        this.model.fetch();
+        this.template = _.template($('#edit_level_of_study_template').html());
+        _.each(positionList, function(levels, position){
+            this.levels = this.levels.concat(levels);
+        }.bind(this));
+        this.parent.universities.on("change", this.render);
+        this.levels = _.uniq(this.levels);
+        this.listenTo(this.model, "sync", this.render);
+    },
+
+    events: {},
+    
+    activeLevels: function(){
+        var activeLevels = [];
+        _.each(this.parent.universities.models, function(university){
+            if(university.get('deleted') == "true" || _.isUndefined(positionList[university.get('position')])){
+                return;
+            }
+            activeLevels = activeLevels.concat(positionList[university.get('position')]);
+        }.bind(this));
+        return activeLevels;
+    },
+    
+    render: function(){
+        this.$el.html(this.template());
+        this.$("select option").hide();
+        var activeLevels = this.activeLevels();
+        _.each(activeLevels, function(level){
+            this.$("select option:contains(" + level + ")").show();
+        }.bind(this));
+        if(activeLevels.length == 0){
+            this.parent.$("tfoot").hide();
+        }
+        else{
+            this.parent.$("tfoot").show();
+        }
+        return this.$el;
+    }
+
 });
