@@ -296,7 +296,7 @@ class IndexTable {
                             break;
                         }
                     }
-                    foreach($config->getValue('positionList') as $position){
+                    foreach($config->getValue('positionList') as $position => $values){
                         if($wgTitle->getText() == "ALL {$position}"){
                             self::generatePersonTable($position, true);
                             break;
@@ -551,6 +551,9 @@ class IndexTable {
         header("HTTP/1.0: 200");
         if($position){
             $tabbedPage->addTab(new PositionTableTab($table, $visibility, false));
+            /*for($y=date('Y', time() - 60*60*24*30*4); $y>=substr($phaseDates[1],0,4); $y--){
+                $tabbedPage->addTab(new PeopleTableTab($table, $visibility, $y));
+            }*/
         }
         else{
             $tabbedPage->addTab(new PeopleTableTab($table, $visibility, false));
