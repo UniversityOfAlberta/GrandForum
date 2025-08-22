@@ -38,7 +38,7 @@ class ProjectMainTab extends AbstractEditableTab {
         $website = $this->project->getWebsite();
         $title = "";
         if($edit){
-            if($project->isSubProject()){
+            if($project->isSubProject() && $config->getValue("showSubProject")){
                 $acronymField = new TextField("acronym", "New Identifier", $this->project->getName());
                 $title .= "<tr><td class='label'>New Identifier:</td><td class='value'>{$acronymField->render()}</td></tr>";
             }
@@ -54,7 +54,7 @@ class ProjectMainTab extends AbstractEditableTab {
         $this->html .= "    <div style='white-space:nowrap;margin-right:30px;'>
                                 <table>
                             $title";
-        if($project->getType() != "Administrative"){
+        if($project->getType() != "Administrative" && count(Theme::getAllThemes()) > 0){
             $this->showChallenge();
         }
         if($config->getValue("projectTypes")){
@@ -136,8 +136,9 @@ class ProjectMainTab extends AbstractEditableTab {
                         $image = "<img style='max-height:70px;max-width:100px;border-radius:5px;' src='{$image}' />";
                         $delete = "<input style='position:absolute;' type='checkbox' name='file_delete{$n}' value='1' />";
                     }
+                    $label = ($n === 1) ? "Logo" : "Image {$n}";
                     $this->html .= "<tr>
-                                        <td class='label'><b>Image {$n}:</b></td>
+                                        <td class='label'><b>{$label}:</b></td>
                                         <td class='value'><input type='file' style='width:300px;' accept='image/*' name='file{$n}' /></td>
                                         <td rowspan='2' style='white-space:nowrap;'>{$delete}{$image}</td>
                                     </tr>
