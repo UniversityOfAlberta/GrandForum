@@ -75,8 +75,25 @@ EOF;
         $typeRow->append(new VerticalRadioBox("{$pre}_type", "Type", "Research", array("Research", "Administrative", "Strategic", "Innovation Hub"), VALIDATE_NOT_NULL));
         
         $phaseRow = new FormTableRow("{$pre}_phase_row");
-        $phaseRow->append(new Label("{$pre}_phase_label", "Phase", "What project phase the new project belongs to", VALIDATE_NOT_NULL));
-        $phaseRow->append(new SelectBox("{$pre}_phase", "Phase", PROJECT_PHASE, array_combine(range(PROJECT_PHASE, 1, -1), range(PROJECT_PHASE, 1, -1)) + array("Research" => "Research"), VALIDATE_NOT_NULL));
+        $phaseNames = $config->getValue("projectPhaseNames") ?: [];
+        $numPhases = count($phaseNames);
+
+        if ($numPhases > 1) {
+            // normal dropdown
+            $phaseRow->append(new Label("{$pre}_phase_label", "Phase", "What project phase the new project belongs to", VALIDATE_NOT_NULL));
+            $phaseOptions = array_combine($phaseNames, $phaseNames);
+            $phaseField = new SelectBox("{$pre}_phase", "Phase", null, $phaseOptions, VALIDATE_NOT_NULL);
+            $phaseRow->append($phaseField);
+        } elseif ($numPhases === 1) {
+            // if only 1 phase then just use it as default
+            $defaultValue = reset($phaseNames);
+            $hiddenInputHTML = "<input type='hidden' name='{$pre}_phase' value='{$defaultValue}'>";
+            $phaseField = new CustomElement("{$pre}_phase_hidden", "", "", $hiddenInputHTML, VALIDATE_NOTHING);
+            $phaseRow->append($phaseField);
+            $phaseRow->hide();
+        } else {
+            $phaseRow->hide();
+        }
         
         $effectiveRow = new FormTableRow("{$pre}_effective_row");
         $effectiveRow->append(new Label("{$pre}_effective_label", "Effective Date", "When this action is to take place", VALIDATE_NOT_NULL));
@@ -95,11 +112,57 @@ EOF;
         
         $descRow = new FormTableRow("{$pre}_description_row");
         $descRow->append(new Label("{$pre}_description_label", "Overview", "The overview of the project", VALIDATE_NOTHING));
-        $descRow->append(new TextareaField("{$pre}_description", "Overview", "", VALIDATE_NOTHING));
+        $descEditorHTML = <<<EOF
+        <textarea name="{$pre}_description" style="height: 200px; width: 100%;"></textarea>
+        <script type="text/javascript">
+        $(function() {
+            $('textarea[name="{$pre}_description"]').tinymce({
+                theme: 'modern',
+                relative_urls : false,
+                convert_urls: false,
+                menubar: false,
+                plugins: 'link image charmap lists table paste wordcount',
+                toolbar: [
+                    'undo redo | bold italic underline | link charmap | table | bullist numlist outdent indent | alignleft aligncenter alignright alignjustify'
+                ],
+                paste_postprocess: function(plugin, args) {
+                    var p = $('p', args.node);
+                    p.each(function(i, el){
+                        $(el).css('line-height', 'inherit');
+                    });
+                }
+            });
+        });
+        </script>
+        EOF;
+        $descRow->append(new CustomElement("{$pre}_description", "Overview", "", $descEditorHTML, VALIDATE_NOTHING));
         
         $longDescRow = new FormTableRow("{$pre}_long_description_row");
         $longDescRow->append(new Label("{$pre}_long_description_label", "Description", "The full description of the project", VALIDATE_NOTHING));
-        $longDescRow->append(new TextareaField("{$pre}_long_description", "Description", "", VALIDATE_NOTHING));
+        $longDescEditorHTML = <<<EOF
+        <textarea name="{$pre}_long_description" style="height: 400px; width: 100%;"></textarea>
+        <script type="text/javascript">
+        $(function() {
+            $('textarea[name="{$pre}_long_description"]').tinymce({
+                theme: 'modern',
+                relative_urls : false,
+                convert_urls: false,
+                menubar: false,
+                plugins: 'link image charmap lists table paste wordcount',
+                toolbar: [
+                    'undo redo | bold italic underline | link charmap | table | bullist numlist outdent indent | alignleft aligncenter alignright alignjustify'
+                ],
+                paste_postprocess: function(plugin, args) {
+                    var p = $('p', args.node);
+                    p.each(function(i, el){
+                        $(el).css('line-height', 'inherit');
+                    });
+                }
+            });
+        });
+        </script>
+        EOF;
+        $longDescRow->append(new CustomElement("{$pre}_long_description", "Description", "", $longDescEditorHTML, VALIDATE_NOTHING));
               
         //Challenges
         $challengeFieldSet = new FieldSet("{$pre}_challenges_set", "Theme");
@@ -118,6 +181,16 @@ EOF;
         }
         if(!$config->getValue("projectStatus")){
             $statusRow->hide();
+        }
+        if(count($challenges) === 0){
+            $challengeFieldSet->hide();
+        }
+        if(!$config->getValue("projectLongDescription")){
+            $longDescRow->hide();
+        }
+        if(!$config->getValue("showSubProject")){
+            $subprojectRow->hide();
+            $subprojectDDRow->hide();
         }
 
         $table->append($acronymRow);
