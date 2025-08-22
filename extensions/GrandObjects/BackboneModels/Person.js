@@ -146,7 +146,7 @@ Person = Backbone.Model.extend({
                 subPosition = ", " + this.get('extra').sub_position;
             }
             if(_.size(positionList) > 0){
-                university.push(_.pluck(me.get('universities'), 'position').join(", ") + subPosition);
+                university.push(_.pluck(this.get('universities'), 'position').join(", ") + subPosition);
             }
             else if(this.get('position') != "" && this.get('stakeholder') != ""){
                 university.push(this.get('stakeholder') + "/" + this.get('position') + subPosition);
