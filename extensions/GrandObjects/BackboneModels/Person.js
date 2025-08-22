@@ -143,9 +143,12 @@ Person = Backbone.Model.extend({
         if(this.get('position') != "" || this.get('stakeholder') != ""){
             var subPosition = "";
             if(!_.isEmpty(this.get('extra').sub_position)){ 
-                subPosition = " / " + this.get('extra').sub_position;
+                subPosition = ", " + this.get('extra').sub_position;
             }
-            if(this.get('position') != "" && this.get('stakeholder') != ""){
+            if(_.size(positionList) > 0){
+                university.push(_.pluck(me.get('universities'), 'position').join(", ") + subPosition);
+            }
+            else if(this.get('position') != "" && this.get('stakeholder') != ""){
                 university.push(this.get('stakeholder') + "/" + this.get('position') + subPosition);
             }
             else if(this.get('stakeholder') != ""){
@@ -196,6 +199,7 @@ Person = Backbone.Model.extend({
         office: '',
         university: '',
         position: '',
+        universities: new Array(),
         roles: new Array(),
         department: '',
         faculty: '',

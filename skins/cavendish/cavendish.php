@@ -312,6 +312,7 @@ class CavendishTemplate extends QuickTemplate {
 		    networkType = "<?php echo $config->getValue('networkType'); ?>";
 		    supportEmail = "<?php echo $config->getValue('supportEmail'); ?>";
 		    otherEmail = "<?php echo $config->getValue('otherEmail'); ?>";
+		    positionList = <?php echo json_encode($config->getValue('positionList')); ?>;
 		    extensions = <?php echo json_encode($config->getValue('extensions')); ?>;
 		    iconPath = "<?php echo $config->getValue('iconPath'); ?>";
 		    iconPathHighlighted = "<?php echo $config->getValue('iconPathHighlighted'); ?>";

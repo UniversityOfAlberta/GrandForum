@@ -1038,6 +1038,7 @@ class Person extends BackboneModel {
                       'department' => $this->getDepartment(),
                       'faculty' => $this->getFaculty(),
                       'position' => $this->getPosition(),
+                      'universities' => $this->getUniversities(),
                       'roles' => $roles,
                       'keywords' => $this->getKeywords(),
                       'crdc' => $this->getCRDC(),

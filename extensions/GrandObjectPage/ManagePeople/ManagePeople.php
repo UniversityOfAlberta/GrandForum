@@ -42,7 +42,6 @@ class ManagePeople extends BackbonePage {
         $universities = new Collection(University::getAllUniversities());
         $uniNames = $universities->pluck('name');
         $positionsCombo = json_encode((count($config->getValue('positionList')) == 0));
-        $positionList = json_encode($config->getValue('positionList'));
         $positions = (count($config->getValue('positionList')) > 0) ? array_keys($config->getValue('positionList')) : 
                                                                       Person::getAllPositions();
         $positions = large_json_encode($positions);
@@ -60,7 +59,6 @@ class ManagePeople extends BackbonePage {
         $wgOut->addScript("<script type='text/javascript'>
             var allUniversities = $organizations;
             var allPositions = $positions;
-            var positionList = $positionList;
             var positionsCombo = $positionsCombo;
             var hqpPositions = $hqpPositions;
             var allDepartments = $departments;

@@ -1576,6 +1576,7 @@ select span.noshow {
     background: #ffffff;
     color: #555 !important;
     white-space: nowrap;
+    display: flex;
 }
 
 .small_card:hover, .small_card_hover {
@@ -1594,6 +1595,7 @@ select span.noshow {
 
 .large_card .card_photo {
     width: 100px;
+    min-width: 95px;
 }
 
 .large_card .card_photo img {
