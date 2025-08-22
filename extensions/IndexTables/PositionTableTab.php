@@ -97,7 +97,7 @@ class PositionTableTab extends PeopleTableTab {
             }
             $html .= "<td align='left'>".implode("<br />", array_unique(array_column($universities, 'department')))."</td>";
             $html .= "<td align='left' style='white-space:nowrap;'>".implode("<br />", array_unique(array_column($universities, 'position')))."</td>";
-            $html .= "<td align='left' style='white-space:nowrap;'>{$person->getExtra()['sub_position']}</td>";
+            $html .= @"<td align='left' style='white-space:nowrap;'>{$person->getExtra()['sub_position']}</td>";
             
             // Contact
             if($contactHeader != ''){
