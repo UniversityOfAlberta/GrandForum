@@ -20,21 +20,21 @@ div.ui-dialog-buttonpane {
     padding: 0.5em 1em 0.5em !important;
 }
 
-.ui-dialog table.wikitable {
+table.wikitable.noborder {
     border: hidden !important;
     margin: 0;
     padding: 0;
 }
 
-.ui-dialog table.wikitable tr.even {
+table.wikitable.noborder tr.even {
     background: #FFFFFF;
 }
 
-.ui-dialog table.wikitable tr.odd {
+table.wikitable.noborder tr.odd {
     background: #F2F2F2;
 }
 
-.ui-dialog table.wikitable tr.deleted {
+table.wikitable.noborder tr.deleted {
     background: #FEB8B8;
 }
 
