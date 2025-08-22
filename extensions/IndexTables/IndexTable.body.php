@@ -548,12 +548,13 @@ class IndexTable {
         $me = Person::newFromWgUser();
         $tabbedPage = new TabbedPage("people");
         $visibility = true;
+        $phaseDates = $config->getValue('projectPhaseDates');
         header("HTTP/1.0: 200");
         if($position){
             $tabbedPage->addTab(new PositionTableTab($table, $visibility, false));
-            /*for($y=date('Y', time() - 60*60*24*30*4); $y>=substr($phaseDates[1],0,4); $y--){
-                $tabbedPage->addTab(new PeopleTableTab($table, $visibility, $y));
-            }*/
+            for($y=date('Y', time() - 60*60*24*30*4); $y>=substr($phaseDates[1],0,4); $y--){
+                $tabbedPage->addTab(new PositionTableTab($table, $visibility, $y));
+            }
         }
         else{
             $tabbedPage->addTab(new PeopleTableTab($table, $visibility, false));
@@ -561,7 +562,6 @@ class IndexTable {
             if($table != "Candidate"){
                 $tabbedPage->addTab(new PeopleTableTab($table, $visibility, true));
                 if($me->isRoleAtLeast(STAFF)){
-                    $phaseDates = $config->getValue('projectPhaseDates');
                     for($y=date('Y', time() - 60*60*24*30*4); $y>=substr($phaseDates[1],0,4); $y--){
                         $tabbedPage->addTab(new PeopleTableTab($table, $visibility, $y));
                     }

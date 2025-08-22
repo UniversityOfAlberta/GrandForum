@@ -23,8 +23,12 @@ class PositionTableTab extends PeopleTableTab {
         $end = date('Y-m-d');
         
         $data = array();
+        if(is_numeric($this->past)){
+            $start = $this->past."-04-01";
+            $end = ($this->past+1)."-03-31";
+        }
         foreach(Person::getAllPeople() as $person){
-            foreach($person->getUniversities() as $uni){
+            foreach($person->getUniversitiesDuring($start, $end) as $uni){
                 if($uni['position'] == $this->table){
                     $data[] = $person;
                 }
@@ -33,8 +37,6 @@ class PositionTableTab extends PeopleTableTab {
 
         $emailHeader = "";
         $idHeader = "";
-        $epicHeader = "";
-        $hqpHeader = "";
         $contactHeader = "";
         $projectsHeader = "";
         $uniHeader = "";
@@ -50,38 +52,21 @@ class PositionTableTab extends PeopleTableTab {
         }
 
         if(!isExtensionEnabled("Shibboleth")){
-            $uniHeader = "<th style='white-space: nowrap; width:20%;'>Institution</th>";
+            $uniHeader = "<th style='white-space: nowrap; width:20%;'>Institutions</th>";
         }
-        $facultyHead = ($config->getValue("splitDept")) ? "<th style='white-space: nowrap; width:20%;'>Faculty</th>" : "";
-        $firstFacultyHead = ($config->getValue("splitDept")) ? "<th style='display:none;'>First Faculty</th>" : "";
         
         $html .= "<table class='indexTable {$this->id}' frame='box' rules='all'>
                             <thead>
                                 <tr>
-                                    <th style='white-space: nowrap; width:20%;'>Name</th>
+                                    <th style='white-space: nowrap; width:15%;'>Name</th>
                                     <th style='display:none;'>First Name</th>
                                     <th style='display:none;'>Last Name</th>
                                     {$projectsHeader}
                                     {$uniHeader}
-                                    {$facultyHead}
-                                    <th style='white-space: nowrap; width:20%;'>{$config->getValue('deptsTerm')}</th>
-                                    <th style='white-space: nowrap; width:20%;'>Title / Rank</th>
-                                    <th style='display:none;'>Start Date</th>
-                                    <th style='display:none;'>End Date</th>
-                                    <th style='display:none;'>Prev University</th>
-                                    <th style='display:none;'>Prev {$config->getValue('deptsTerm')}</th>
-                                    <th style='display:none;'>Prev Title / Rank</th>
-                                    <th style='display:none;'>Prev Start Date</th>
-                                    <th style='display:none;'>Prev End Date</th>
-                                    <th style='display:none;'>First University</th>
-                                    {$firstFacultyHead}
-                                    <th style='display:none;'>First {$config->getValue('deptsTerm')}</th>
-                                    <th style='display:none;'>First Title / Rank</th>
-                                    <th style='display:none;'>First Start Date</th>
-                                    <th style='display:none;'>First End Date</th>
-                                    {$hqpHeader}
+                                    <th style='white-space: nowrap; width:15%;'>{$config->getValue('deptsTerm')}</th>
+                                    <th style='white-space: nowrap; width:15%;'>Positions</th>
+                                    <th style='white-space: nowrap; width:15%;'>Level of Study</th>
                                     <th style='white-space: nowrap; width:40%;'>Keywords / Bio</th>
-                                    {$epicHeader}
                                     {$contactHeader}
                                     {$emailHeader}
                                     {$idHeader}
@@ -125,45 +110,17 @@ class PositionTableTab extends PeopleTableTab {
                 }
                 $html .= "<td align='left'>".implode(", ", $projs)."</td>";
             }
-            // Current University
-            $university = $person->getUniversity();
+            
+            // Universities
+            $universities = $person->getUniversitiesDuring($start, $end);
             if($uniHeader != ''){
-                $html .= "<td align='left'>{$university['university']}</td>";
+                $html .= "<td align='left'>".implode("<br />", array_unique(array_column($universities, 'university')))."</td>";
             }
-            if($facultyHead != ""){
-                $html .= "<td align='left'>{$person->getFaculty()}</td>";
-            }
-            $subPosition = (isset($person->getExtra()['sub_position']) && $person->getExtra()['sub_position'] != "") ? " / {$person->getExtra()['sub_position']}" : "";
-            $html .= "<td align='left'>{$person->getDepartment()}</td>";
-            $html .= "<td align='left'>{$university['position']}{$subPosition}</td>";
-            $html .= "<td align='left' style='display:none;'>{$university['start']}</td>";
-            $html .= "<td align='left' style='display:none;'>{$university['end']}</td>";
+            $html .= "<td align='left'>".implode("<br />", array_unique(array_column($universities, 'department')))."</td>";
+            $html .= "<td align='left'>".implode("<br />", array_unique(array_column($universities, 'position')))."</td>";
+            $html .= "<td align='left'>{$person->getExtra()['sub_position']}</td>";
             
-            // Previous University
-            $prevuniversity = $person->getPreviousUniversity();
-            $html .= "<td style='display:none;' align='left'>{$prevuniversity['university']}</td>";
-            $html .= "<td style='display:none;' align='left'>{$prevuniversity['department']}</td>";
-            $html .= "<td style='display:none;' align='left'>{$prevuniversity['position']}</td>";
-            $html .= "<td align='left' style='display:none;'>{$prevuniversity['start']}</td>";
-            $html .= "<td align='left' style='display:none;'>{$prevuniversity['end']}</td>";
-            
-            // First University
-            $firstuniversity = $person->getFirstUniversity();
-            $html .= "<td style='display:none;' align='left'>{$firstuniversity['university']}</td>";
-            if($firstFacultyHead != ""){
-                $html .= "<td style='display:none;' align='left'>{$firstuniversity['faculty']}</td>";
-            }
-            $html .= "<td style='display:none;' align='left'>{$firstuniversity['department']}</td>";
-            $html .= "<td style='display:none;' align='left'>{$firstuniversity['position']}</td>";
-            $html .= "<td align='left' style='display:none;'>{$firstuniversity['start']}</td>";
-            $html .= "<td align='left' style='display:none;'>{$firstuniversity['end']}</td>";
-            if($hqpHeader != ''){
-                $supervisors = array();
-                foreach($person->getSupervisorsDuring($start, $end) as $supervisor){
-                    $supervisors[$supervisor->id] = "<a href='{$supervisor->getUrl()}'>{$supervisor->getNameForForms()}</a>";
-                }
-                $html .= "<td>".implode("; ", $supervisors)."</td>";
-            }
+            // Keywords / Bio / Contact
             $keywords = $person->getKeywords(', ');
             $bio = strip_tags(trim($person->getProfile()));
             if($bio != ""){
@@ -173,17 +130,6 @@ class PositionTableTab extends PeopleTableTab {
                 $keywords .= "<br /><br />";
             }
             $html .= "<td align='left'>{$keywords}{$bio}</td>";
-            if($epicHeader != ''){
-                $hqpTab = new HQPEpicTab($person, array());
-                $date = $hqpTab->getBlobValue('HQP_EPIC_REP_DATE');
-                $html .= "<td align='left'>{$date}</td>";
-                $doc1 = $hqpTab->getBlobValue('HQP_EPIC_DOCS_A');
-                $html .= "<td align='center'><span style='font-size:2em;'>{$doc1}</span></td>";
-                $doc2 = $hqpTab->getBlobValue('HQP_EPIC_DOCS_COI');
-                $html .= "<td align='center'><span style='font-size:2em;'>{$doc2}</span></td>";
-                $doc3 = $hqpTab->getBlobValue('HQP_EPIC_DOCS_NDA');
-                $html .= "<td align='center'><span style='font-size:2em;'>{$doc3}</span></td>";
-            }
             if($contactHeader != ''){
                 $html .= "<td align='left'><a href='mailto:{$person->getEmail()}'>{$person->getEmail()}</a></td><td align='left'>{$person->getPhoneNumber()}</td>";
             }
@@ -201,9 +147,6 @@ class PositionTableTab extends PeopleTableTab {
                 'aLengthMenu': [[100,-1], [100,'All']], 
                 'iDisplayLength': 100, 
                 'autoWidth':false,
-                'columnDefs': [
-                    ($('.indexTable.{$this->id} th').index($('#epicHeader')) != -1) ? {'type': 'date', 'targets': $('.indexTable.{$this->id} th').index($('#epicHeader'))} : {}
-                ],
                 'dom': 'Blfrtip',
                 'buttons': [
                     'excel', 'pdf'
