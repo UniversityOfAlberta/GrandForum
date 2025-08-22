@@ -58,14 +58,13 @@ class PositionTableTab extends PeopleTableTab {
         $html .= "<table class='indexTable {$this->id}' frame='box' rules='all'>
                             <thead>
                                 <tr>
-                                    <th style='white-space: nowrap; width:15%;'>Name</th>
+                                    <th style='white-space: nowrap;'>Name</th>
                                     <th style='display:none;'>First Name</th>
                                     <th style='display:none;'>Last Name</th>
                                     {$uniHeader}
-                                    <th style='white-space: nowrap; width:15%;'>{$config->getValue('deptsTerm')}</th>
-                                    <th style='white-space: nowrap; width:15%;'>Positions</th>
-                                    <th style='white-space: nowrap; width:15%;'>Level of Study</th>
-                                    <th style='white-space: nowrap; width:40%;'>Keywords / Bio</th>
+                                    <th style='white-space: nowrap;'>{$config->getValue('deptsTerm')}</th>
+                                    <th style='white-space: nowrap;'>Positions</th>
+                                    <th style='white-space: nowrap;'>Level of Study</th>
                                     {$contactHeader}
                                     {$emailHeader}
                                     {$idHeader}
@@ -94,20 +93,11 @@ class PositionTableTab extends PeopleTableTab {
             if($uniHeader != ''){
                 $html .= "<td align='left' style='white-space:nowrap;'>".implode("<br />", array_unique(array_column($universities, 'university')))."</td>";
             }
-            $html .= "<td align='left' style='white-space:nowrap;'>".implode("<br />", array_unique(array_column($universities, 'department')))."</td>";
+            $html .= "<td align='left'>".implode("<br />", array_unique(array_column($universities, 'department')))."</td>";
             $html .= "<td align='left' style='white-space:nowrap;'>".implode("<br />", array_unique(array_column($universities, 'position')))."</td>";
             $html .= "<td align='left' style='white-space:nowrap;'>{$person->getExtra()['sub_position']}</td>";
             
-            // Keywords / Bio / Contact
-            $keywords = $person->getKeywords(', ');
-            $bio = strip_tags(trim($person->getProfile()));
-            if($bio != ""){
-                $bio = "<div style='display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden;'>{$bio}</div>";
-            }
-            if($keywords != "" && $bio != ""){
-                $keywords .= "<br /><br />";
-            }
-            $html .= "<td align='left'>{$keywords}{$bio}</td>";
+            // Contact
             if($contactHeader != ''){
                 $html .= "<td align='left'><a href='mailto:{$person->getEmail()}'>{$person->getEmail()}</a></td><td align='left'>{$person->getPhoneNumber()}</td>";
             }
