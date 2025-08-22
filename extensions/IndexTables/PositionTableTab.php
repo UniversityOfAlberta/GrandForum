@@ -54,7 +54,9 @@ class PositionTableTab extends PeopleTableTab {
         if(!isExtensionEnabled("Shibboleth")){
             $uniHeader = "<th style='white-space: nowrap; width:20%;'>Institutions</th>";
         }
-        
+        if(is_numeric($this->past)){
+            $html .= "<b>Date Range:</b> ".time2date($start, "M d, Y")." - ".time2date($end, "M d, Y");
+        }
         $html .= "<table class='indexTable {$this->id}' frame='box' rules='all'>
                             <thead>
                                 <tr>
