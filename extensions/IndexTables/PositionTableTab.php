@@ -61,7 +61,6 @@ class PositionTableTab extends PeopleTableTab {
                                     <th style='white-space: nowrap; width:15%;'>Name</th>
                                     <th style='display:none;'>First Name</th>
                                     <th style='display:none;'>Last Name</th>
-                                    {$projectsHeader}
                                     {$uniHeader}
                                     <th style='white-space: nowrap; width:15%;'>{$config->getValue('deptsTerm')}</th>
                                     <th style='white-space: nowrap; width:15%;'>Positions</th>
@@ -89,36 +88,15 @@ class PositionTableTab extends PeopleTableTab {
                     <td align='left' style='white-space: nowrap;display:none;'>
                         {$person->getLastName()}
                     </td>";       
-            if($config->getValue('projectsEnabled')){
-                $projects = array_merge($person->leadershipDuring($start, $end), $person->getProjectsDuring($start, $end));
-                $projs = array();
-                foreach($projects as $project){
-                    if(!$project->isSubProject() && !isset($projs[$project->getId()]) &&
-                        $project->getStatus() != "Proposed"){
-                        $subprojs = array();
-                        foreach($project->getSubProjects() as $subproject){
-                            if($person->isMemberOf($subproject)){
-                                $subprojs[] = "<a href='{$subproject->getUrl()}'>{$subproject->getName()}</a>";
-                            }
-                        }
-                        $subprojects = "";
-                        if(count($subprojs) > 0){
-                            $subprojects = "(".implode(", ", $subprojs).")";
-                        }
-                        $projs[$project->getId()] = "<a href='{$project->getUrl()}'>{$project->getName()}</a> $subprojects";
-                    }
-                }
-                $html .= "<td align='left'>".implode(", ", $projs)."</td>";
-            }
             
             // Universities
             $universities = $person->getUniversitiesDuring($start, $end);
             if($uniHeader != ''){
-                $html .= "<td align='left'>".implode("<br />", array_unique(array_column($universities, 'university')))."</td>";
+                $html .= "<td align='left' style='white-space:nowrap;'>".implode("<br />", array_unique(array_column($universities, 'university')))."</td>";
             }
-            $html .= "<td align='left'>".implode("<br />", array_unique(array_column($universities, 'department')))."</td>";
-            $html .= "<td align='left'>".implode("<br />", array_unique(array_column($universities, 'position')))."</td>";
-            $html .= "<td align='left'>{$person->getExtra()['sub_position']}</td>";
+            $html .= "<td align='left' style='white-space:nowrap;'>".implode("<br />", array_unique(array_column($universities, 'department')))."</td>";
+            $html .= "<td align='left' style='white-space:nowrap;'>".implode("<br />", array_unique(array_column($universities, 'position')))."</td>";
+            $html .= "<td align='left' style='white-space:nowrap;'>{$person->getExtra()['sub_position']}</td>";
             
             // Keywords / Bio / Contact
             $keywords = $person->getKeywords(', ');
