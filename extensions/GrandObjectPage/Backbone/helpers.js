@@ -493,7 +493,7 @@ HTML.Select = function(view, attr, options){
                     foundSelected = true;
                 }
                 if(typeof opt2 == 'object'){
-                    $(optgroup).append("<option " + selected + " value='" + opt2.value + "'>" + opt2.option + "</option>");
+                    $(optgroup).append("<option " + selected + " value='" + String(opt2.value).replaceAll("'", "&#39;") + "'>" + opt2.option + "</option>");
                 }
                 else{
                     $(optgroup).append("<option " + selected + ">" + opt2 + "</option>");
@@ -519,7 +519,7 @@ HTML.Select = function(view, attr, options){
                 }
             }
             if(typeof opt == 'object'){
-                $(el).append("<option " + selected + " value='" + opt.value + "'>" + opt.option + "</option>");
+                $(el).append("<option " + selected + " value='" + String(opt.value).replaceAll("'", "&#39;") + "'>" + opt.option + "</option>");
             }
             else{
                 $(el).append("<option " + selected + ">" + opt + "</option>");

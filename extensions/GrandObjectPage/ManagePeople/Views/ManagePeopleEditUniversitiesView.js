@@ -74,7 +74,7 @@ ManagePeopleEditUniversitiesView = Backbone.View.extend({
                 }
             }
         }.bind(this));
-        if(this.person.hasChanged()){
+        if(this.person.unsavedAttributes() != false){
             requests.push(this.person.save());
         }
         $.when.apply($, requests).then(function(){
@@ -193,7 +193,6 @@ ManagePeopleEditLevelOfStudyView = Backbone.View.extend({
 
     initialize: function(options){
         this.parent = options.parent;
-        this.model.startTracking();
         this.model.fetch();
         this.template = _.template($('#edit_level_of_study_template').html());
         _.each(positionList, function(levels, position){
@@ -201,7 +200,10 @@ ManagePeopleEditLevelOfStudyView = Backbone.View.extend({
         }.bind(this));
         this.parent.universities.on("change", this.render);
         this.levels = _.uniq(this.levels);
-        this.listenTo(this.model, "sync", this.render);
+        this.listenTo(this.model, "sync", function(){
+            this.model.startTracking();
+            this.render();
+        }.bind(this));
     },
 
     events: {},
@@ -226,7 +228,7 @@ ManagePeopleEditLevelOfStudyView = Backbone.View.extend({
         }.bind(this));
         if(activeLevels.length == 0){
             this.parent.$("tfoot").hide();
-            if(this.model.get('extra')['sub_position'] != ""){
+            if(this.model.get('extra')['sub_position'] != "" && _.size(positionList) != 0){
                 // Reset the sub_position value to empty string
                 var extra = _.clone(this.model.get('extra'));
                 extra['sub_position'] = "";

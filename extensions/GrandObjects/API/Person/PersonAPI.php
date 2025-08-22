@@ -77,7 +77,6 @@ class PersonAPI extends RESTAPI {
         $person->privateProfile = $this->POST('privateProfile');
         $person->nationality = $this->POST('nationality');
         $person->candidate = $this->POST('candidate');
-        $person->extra = $this->POST('extra');
         $status = $person->update();
         if(!$status){
             $this->throwError("The user <i>{$person->getName()}</i> could not be updated");

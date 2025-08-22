@@ -9,7 +9,7 @@ Feature: Project Evolution
         And I click "Create"
         And I fill in "new_acronym" with "NewProj"
         And I fill in "new_full_name" with "New Project"
-        And I fill in "new_description" with "New Project Description"
+        And I fill in TinyMCE "new_description" with "New Project Description"
         And I press "Create"
         And I go to "index.php/NewProj:Main"
         Then I should see "New Project"
