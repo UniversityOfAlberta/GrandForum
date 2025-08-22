@@ -283,6 +283,12 @@
     // Whether or not projects have 'long descriptions'
     $config->setValue("projectLongDescription", true);
     
+    // Whether to show sub-project field on project views
+    $config->setValue("showSubProject", false);
+
+    // Whether to show phase field on project views
+    $config->setValue("projectPhase", false);
+    
     // Whether or not to enable contributions
     $config->setValue("contributionsEnabled", true);
 
