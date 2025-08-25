@@ -26,7 +26,7 @@ LIMSTaskEditViewPmm = Backbone.View.extend({
 
         displayAssignees.forEach(function(assignee) {
             var assigneeId = assignee.id.toString();
-            displayStatuses[assigneeId]  = primaryData.statuses[assigneeId]  || '';
+            displayStatuses[assigneeId]  = primaryData.statuses[assigneeId]  || 'Assigned';
             displayFiles[assigneeId]     = _.clone(primaryData.files[assigneeId]) || {};
             displayReviewers[assigneeId] = primaryData.reviewers[assigneeId] || {};
             displayComments[assigneeId]  = primaryData.comments[assigneeId]  || '';
@@ -99,16 +99,6 @@ LIMSTaskEditViewPmm = Backbone.View.extend({
         }, this);
         this.model.set('assignees', fullAssigneeObjects, {silent: true});
 
-        // Set 'Assigned' as a default status
-        var currentStatuses = _.clone(this.model.get('statuses')) || {};
-
-        fullAssigneeObjects.forEach(function(assignee) {
-            var assigneeId = assignee.id.toString();
-            if (!currentStatuses[assigneeId]) {
-                currentStatuses[assigneeId] = 'Assigned';
-            }
-        });
-        this.model.set('statuses', currentStatuses);
 
         var currentReviewers = _.clone(this.model.get('reviewers')) || {};
         var allMembers = this.project.members.toJSON();
