@@ -43,7 +43,7 @@
                 <td>
                     <% if(val.type == "String"  || val.type == "Integer" || val.type == "Radio" || val.type == "Pages"){ %>
                         <%= data[index] %>
-                        <% if(index == "peer_reviewed" && data["peer_reviewed"] == "Yes" && data["peer_reviewed_ifyes"] != ""){ %>
+                        <% if(index == "peer_reviewed" && data["peer_reviewed"] == "Yes" && !_.isEmpty(data["peer_reviewed_ifyes"])){ %>
                             : <%= data["peer_reviewed_ifyes"] %>
                         <% } %>
                     <% } else if(val.type == "URL"){ %>
