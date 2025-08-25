@@ -26,18 +26,27 @@ LIMSTaskEditViewPmm = Backbone.View.extend({
 
         displayAssignees.forEach(function(assignee) {
             var assigneeId = assignee.id.toString();
-            displayStatuses[assigneeId]  = primaryData.statuses[assigneeId]  || '';
+            displayStatuses[assigneeId]  = primaryData.statuses[assigneeId]  || 'Assigned';
             displayFiles[assigneeId]     = _.clone(primaryData.files[assigneeId]) || {};
             displayReviewers[assigneeId] = primaryData.reviewers[assigneeId] || {};
             displayComments[assigneeId]  = primaryData.comments[assigneeId]  || '';
         }, this);
+
+        var statusValues = Object.values(displayStatuses);
+        var closedCount = statusValues.filter(function(s) { return s === 'Closed'; }).length;
+        var pendingReviewCount = statusValues.filter(function(s) { return s === 'Done'; }).length;
+        var accountedFor = closedCount + pendingReviewCount;
+        var assignedCount = displayAssignees.length - accountedFor;
 
         this.model.set({
             displayAssignees: displayAssignees,
             displayStatuses: displayStatuses,
             displayFiles: displayFiles,
             displayReviewers: displayReviewers,
-            displayComments: displayComments
+            displayComments: displayComments,
+            displayClosedCount: closedCount,
+            displayPendingReviewCount: pendingReviewCount,
+            displayAssignedCount: assignedCount
         });
     },
     
@@ -57,6 +66,12 @@ LIMSTaskEditViewPmm = Backbone.View.extend({
         "click #changeStatusButton": "changeStatus"
     },
     
+    updateCounts: function() {
+        this.$('.count-completed').text(this.model.get('displayClosedCount'));
+        this.$('.count-pending').text(this.model.get('displayPendingReviewCount'));
+        this.$('.count-assigned').text(this.model.get('displayAssignedCount'));
+    },
+
     deleteTask: function(){
         this.model.toDelete = true;
         this.model.trigger("change:toDelete");
@@ -84,11 +99,13 @@ LIMSTaskEditViewPmm = Backbone.View.extend({
         }, this);
         this.model.set('assignees', fullAssigneeObjects, {silent: true});
 
+
         var currentReviewers = _.clone(this.model.get('reviewers')) || {};
         var allMembers = this.project.members.toJSON();
         var updatedReviewers = ReviewerHelper.assignReviewersToNewUsers(allAssignees, currentReviewers, allMembers);
         this.model.set('reviewers', updatedReviewers);
         this.prepareDisplayState();
+        this.updateCounts();
     },
 
     changeStatus: function(){
@@ -132,7 +149,7 @@ LIMSTaskEditViewPmm = Backbone.View.extend({
                 imagemanager_insert_template : '<img src="{$url}" width="{$custom.width}" height="{$custom.height}" />',
                 setup: function(editor){
                     editor.on('change', function(e){
-                        this.model.set('comments',editor.getContent());
+                        this.model.set('details',editor.getContent());
                     }.bind(this));
                 }.bind(this)
 

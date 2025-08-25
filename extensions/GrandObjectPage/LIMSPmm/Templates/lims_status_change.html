@@ -1,5 +1,3 @@
-<h3>Select New Status</h3>
-
 <% 
 if (displayAssignees && displayAssignees.length > 0) { 
 %>
@@ -34,7 +32,10 @@ if (displayAssignees && displayAssignees.length > 0) {
                                                 : assigneeStatusOptions);    
                     
                     var canCurrentUserEdit = isLeaderAllowedToEdit || isCurrentUserTheAssignee;
+                    var shouldShowRow = isLeaderAllowedToEdit || isCurrentUserTheAssignee || isCurrentUserTheReviewer;
                 %>
+
+                <% if (shouldShowRow) { %>
                 <tr>
                     <td valign="top"><%= assignee.name %></td>
                     <td valign="top">
@@ -68,7 +69,7 @@ if (displayAssignees && displayAssignees.length > 0) {
                             <% } else if (filename) { %>
                                 <a href="<%= fileUrl %>" target="_blank"><%= filename %></a>
                             <% } else { %>
-                                <span>No document allowed</span>
+                                <span>No document</span>
                             <% } %>
 
                         <% } %>
@@ -99,6 +100,7 @@ if (displayAssignees && displayAssignees.length > 0) {
                         <% } %>   
                     </td>
                 </tr>
+                <% } %>
             <% }.bind(this)); %>
         </tbody>
     </table>
