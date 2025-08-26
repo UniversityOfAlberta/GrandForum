@@ -22,7 +22,7 @@ if (displayAssignees && displayAssignees.length > 0) {
                     var reviewer = displayReviewers[assigneeId];
                     var isCurrentUserTheReviewer = reviewer && (me.get('id') == reviewer.id);
                     
-                    var allStatusOptions = ['New', 'Assigned', 'Done', 'Closed'];
+                    var allStatusOptions = ['Assigned', 'Done', 'Closed'];
                     var assigneeStatusOptions = ['Assigned', 'Done'];
                     var reviewerStatusOptions = [...assigneeStatusOptions, 'Closed'];
 
