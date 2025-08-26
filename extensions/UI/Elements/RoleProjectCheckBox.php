@@ -32,13 +32,15 @@ class RoleProjectCheckBox extends VerticalCheckBox {
                 if($project->getStatus() == "Proposed"){
                     unset($projects[$key]);
                 }
-                else if(!$me->isRoleAtLeast(STAFF) && !$person->isMemberOfDuring($project, "0000-00-00", EOT)){
+                else if(!$me->isRoleAtLeast(STAFF) && !$me->isMemberOfDuring($project, "0000-00-00", EOT)){
                     unset($projects[$key]);
                 }
             }
             $projectsField = new ProjectList("project_field", "Associated ".Inflect::pluralize($config->getValue('projectTerm')), array(), $projects, VALIDATE_NOTHING);
             $projectsField->role = $option;
-            $html .= "<div id='{$this->id}_{$option}_projects' style='margin-left: 3px; display: none; margin-bottom: 1em;'><fieldset><legend>"."Associated ".Inflect::pluralize($config->getValue('projectTerm'))."</legend>{$projectsField->render()}</fieldset></div>";
+            if(count($projects) > 0){
+                $html .= "<div id='{$this->id}_{$option}_projects' style='margin-left: 2em; display: none; margin-bottom: 1em;'><fieldset><legend>"."Associated ".Inflect::pluralize($config->getValue('projectTerm'))."</legend>{$projectsField->render()}</fieldset></div>";
+            }
         }
         $html .= "<script type='text/javascript'>
             $(\"[name='{$this->id}[]']\").change(function(){
