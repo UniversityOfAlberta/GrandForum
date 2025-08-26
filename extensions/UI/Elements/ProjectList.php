@@ -66,7 +66,7 @@ class ProjectList extends MultiColumnVerticalCheckBox {
                 }
                 
                 $html .= "<div>
-                            <input class='{$this->id} {$already}' {$this->renderAttr()} type='checkbox' id='{$this->id}_{$proj->getName()}' name='{$this->id}[]' value='{$role}{$proj->getName()}' $checked />{$proj->getName()}";
+                            <input class='{$this->id} {$already}' {$this->renderAttr()} type='checkbox' id='".str_replace(" ", "", "{$this->id}_{$this->role}_{$proj->getName()}")."' name='{$this->id}[]' value='{$role}{$proj->getName()}' $checked />{$proj->getName()}";
                 if($checked != "" && $reasons !== false){
                     $html .="<div style='display:none; padding-left:30px;'>
                                 <fieldset><legend>Reasoning</legend>
@@ -92,7 +92,7 @@ class ProjectList extends MultiColumnVerticalCheckBox {
                         if($subchecked != ""){
                             $already = "already";
                         }
-                        $html .= "<input class='{$this->id} {$already}' {$this->renderAttr()} type='checkbox' id='{$this->id}_{$subProj->getName()}' name='{$this->id}[]' value='{$role}{$subProj->getName()}' $subchecked />{$subProj->getName()}";
+                        $html .= "<input class='{$this->id} {$already}' {$this->renderAttr()} type='checkbox' id='".str_replace(" ", "", "{$this->id}_{$this->role}_{$subProj->getName()}")."' name='{$this->id}[]' value='{$role}{$subProj->getName()}' $subchecked />{$subProj->getName()}";
                         if($subchecked != "" && $reasons !== false){
                             $html .= "<div style='display:none; padding-left:30px;'>
                                         <fieldset><legend>Reasoning</legend>
