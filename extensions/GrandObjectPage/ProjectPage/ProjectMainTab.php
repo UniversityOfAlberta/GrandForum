@@ -463,6 +463,7 @@ class ProjectMainTab extends AbstractEditableTab {
             $('.editRoles').click(function(){
                 var rolesDialog = $('#rolesDialog').dialog({
 	                autoOpen: false,
+	                title: 'Edit Roles',
 	                modal: true,
 	                show: 'fade',
 	                resizable: false,
