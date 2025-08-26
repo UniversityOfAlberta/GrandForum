@@ -1,7 +1,12 @@
-<h3>Check Current Status</h3>
-
 <% 
 if (assignees && assignees.length > 0) { 
+    var isEveryoneAssigned = assignees.some(function(a) { return a.id === -1; });
+    var displayAssignees;
+    if (isEveryoneAssigned && project && project.members) {
+        displayAssignees = project.members;
+    } else {
+        displayAssignees = assignees.filter(function(a) { return a.id !== -1; });
+    }
 %>
     <table class="wikitable" border="1" cellspacing="0" cellpadding="5">
         <thead>
@@ -13,23 +18,29 @@ if (assignees && assignees.length > 0) {
             </tr>
         </thead>
         <tbody> 
-            <% assignees.forEach(function(assignee, index) { %>
+            <% 
+            displayAssignees.forEach(function(assignee) { 
+                var assigneeId = assignee.id;
+                var reviewerObj = reviewers[assigneeId] || {};
+
+                var isCurrentUserTheAssignee = (me.get('id') === assigneeId);
+                var isCurrentUserTheReviewer = (reviewerObj && me.get('id') === reviewerObj.id);
+
+                if (isLeaderAllowedToEdit || isCurrentUserTheAssignee || isCurrentUserTheReviewer) {
+
+            %>
                 <tr>
                     <td valign="top"><%= assignee.name %></td>
                     <td valign="top">
                         <% 
-                        var assigneeId = (assignee.id != undefined) ? assignee.id : assignee; 
-                        var currentStatus = statuses[assigneeId];
+                        var currentStatus = statuses[assigneeId] || 'Assigned';
                         var fileObj = files[assigneeId] || {};
-                        var filename = fileObj.filename;
-                        var docUrl = fileObj.url;
-                        var reviewerObj = reviewers[assigneeId] || {};
                         %>
                         <%= currentStatus %>
                     </td>
                     <td valign="top">
-                        <% if (filename) { %>
-                            <a href="<%= docUrl %>" target="_blank" download>Download</a>
+                        <% if (fileObj.filename) { %>
+                            <a href="<%= fileObj.url %>" target="_blank" download>Download</a>
                         <% } else { %>
                             No document
                         <% } %>
@@ -42,7 +53,10 @@ if (assignees && assignees.length > 0) {
                         <% } %>
                     </td>
                 </tr>
-            <% }.bind(this)); %>
+            <% 
+            }
+            }); 
+            %>
         </tbody>
     </table>
 <% 

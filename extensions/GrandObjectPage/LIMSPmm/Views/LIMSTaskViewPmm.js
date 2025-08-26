@@ -1,13 +1,15 @@
 LIMSTaskViewPmm = Backbone.View.extend({
+    project: null,
 
     tagName: "tr",
 
     editDialog: null,
 
 
-    initialize: function(){
+    initialize: function(options){
+        this.project = options.project;
         this.listenTo(this.model, "sync", this.render);
-        this.template = _.template($('#lims_task_template').html());
+        this.selectTemplate();
         this.editDialog = $('<div></div>');
     },
 
@@ -15,9 +17,60 @@ LIMSTaskViewPmm = Backbone.View.extend({
         "click #checkStatus": "checkStatus"
     },
 
+    updateTaskSummary: function() {
+        var primaryData = this.model.toJSON();
+        var currentUserId = me.get('id');
+        var originalAssignees = primaryData.assignees || [];
+        
+        var isEveryoneAssigned = originalAssignees.some(function(a) { return a.id === -1; });
+        var effectiveAssignees;
+        if (isEveryoneAssigned && this.project && this.project.members) {
+            effectiveAssignees = this.project.members.toJSON();
+        } else {
+            effectiveAssignees = originalAssignees;
+        }
+        var statuses = primaryData.statuses || {};
+        var effectiveStatusValues = effectiveAssignees.map(function(assignee) {
+            return statuses[assignee.id] || 'Assigned';
+        });
+        var closedCount = effectiveStatusValues.filter(function(s) { return s === 'Closed'; }).length;
+        var pendingReviewCount = effectiveStatusValues.filter(function(s) { return s === 'Done'; }).length;
+        var accountedFor = closedCount + pendingReviewCount;
+        var assignedCount = effectiveAssignees.length - accountedFor;
+
+        var reviewersObject = primaryData.reviewers || {}; 
+        var isCurrentUserAssignee = originalAssignees.some(function(assignee) {
+            return assignee.id === currentUserId || assignee.id === -1;
+        });
+
+        var reviewerList = Object.values(reviewersObject);
+        var isCurrentUserReviewer = reviewerList.some(function(reviewer) {
+            return reviewer && reviewer.id === currentUserId;
+        });
+
+        this.model.set({
+            displayClosedCount: closedCount,
+            displayPendingReviewCount: pendingReviewCount,
+            displayAssignedCount: assignedCount,
+            isCurrentUserAssignee: isCurrentUserAssignee,
+            isCurrentUserReviewer: isCurrentUserReviewer
+        });
+    },
+
+    selectTemplate: function(){
+        // Get project role for current user
+        var userRole = _.pluck(_.filter(me.get('roles'), function(el){return el.title == this.project.get("name") ||  el.role !== PL}.bind(this)), 'role');
+        // Memebers can only change 'assigned' -> 'done'
+        var isPLAllowed = _.intersection(userRole, [PL, STAFF, MANAGER, ADMIN]).length > 0 ;
+        
+        this.model.set('isLeaderAllowedToEdit', isPLAllowed);
+
+        this.template = _.template($('#lims_task_template').html());
+    },
+
     checkStatus: function(){
         // Create a model for the status change dialog
-        var view = new LIMSStatusCheckViewPmm({el: this.editDialog, model: this.model, isDialog: true});
+        var view = new LIMSStatusCheckViewPmm({el: this.editDialog, model: this.model, isDialog: true, project: this.project});
         
         this.editDialog.view = view;
         $('body').append(this.editDialog);
@@ -39,9 +92,28 @@ LIMSTaskViewPmm = Backbone.View.extend({
         this.editDialog.dialog('open');
     },
 
+    isRowVisible: function() {
+        var isAssignee = this.model.get('isCurrentUserAssignee');
+        var isReviewer = this.model.get('isCurrentUserReviewer');
+        var isLeader = this.model.get('isLeaderAllowedToEdit');
+
+        return isAssignee || isReviewer || isLeader;
+    },
     
     render: function(){
-        this.$el.html(this.template(this.model.toJSON()));
+        this.selectTemplate();
+        this.updateTaskSummary()
+        if (this.isRowVisible()) {
+            var templateData = this.model.toJSON();
+            if (this.project) {
+                templateData.project = this.project.toJSON();
+            }
+            this.$el.html(this.template(templateData));
+            this.$el.show();
+        } else {
+            this.$el.hide();
+        }
+        
         return this.$el;
     }
 

@@ -159,7 +159,14 @@ class LIMSTaskPmm extends BackboneModel
                 return true;
             }
         }
-
+        $reviewers = $this->getReviewers();
+        $validReviewers = array_filter($reviewers);
+        if (!empty($validReviewers)) {
+            $reviewerIds = array_column($validReviewers, 'id');
+            if (in_array($personId, $reviewerIds)) {
+                return true;
+            }
+        }
         return false;
     }
 

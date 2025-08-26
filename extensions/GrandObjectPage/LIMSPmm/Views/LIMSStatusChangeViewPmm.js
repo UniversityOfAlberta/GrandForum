@@ -65,7 +65,7 @@ LIMSStatusChangeViewPmm = Backbone.View.extend({
         for (var assigneeId in data.displayStatuses) {
             var wasExplicitlyAssigned = _.some(data.assignees, function(a) { return (a.id || a).toString() === assigneeId; });
 
-            var statusChanged = data.displayStatuses[assigneeId] !== (data.statuses[assigneeId] || '');
+            var statusChanged = data.displayStatuses[assigneeId] !== (data.statuses[assigneeId] || 'Assigned');
             var fileChanged = (data.displayFiles[assigneeId] && !_.isEmpty(data.displayFiles[assigneeId].data)) || (data.displayFiles[assigneeId] && data.displayFiles[assigneeId].delete);
             var reviewerChanged = data.displayReviewers[assigneeId] && data.displayReviewers[assigneeId].id && !_.isEqual(data.displayReviewers[assigneeId], data.reviewers[assigneeId]);
             var commentAdded = data.displayComments[assigneeId] && data.displayComments[assigneeId] !== '';

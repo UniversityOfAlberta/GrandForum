@@ -1,5 +1,3 @@
-<h3>Select New Status</h3>
-
 <% 
 if (displayAssignees && displayAssignees.length > 0) { 
 %>
@@ -10,7 +8,7 @@ if (displayAssignees && displayAssignees.length > 0) {
                 <th>Status</th>
                 <th>Document</th>
                 <th>Reviewer</th>
-                <th>Comments</th>
+                <th>Email Feedback</th>
             </tr>
         </thead>
         <tbody>
@@ -24,7 +22,7 @@ if (displayAssignees && displayAssignees.length > 0) {
                     var reviewer = displayReviewers[assigneeId];
                     var isCurrentUserTheReviewer = reviewer && (me.get('id') == reviewer.id);
                     
-                    var allStatusOptions = ['New', 'Assigned', 'Done', 'Closed'];
+                    var allStatusOptions = ['Assigned', 'Done', 'Closed'];
                     var assigneeStatusOptions = ['Assigned', 'Done'];
                     var reviewerStatusOptions = [...assigneeStatusOptions, 'Closed'];
 
@@ -34,7 +32,10 @@ if (displayAssignees && displayAssignees.length > 0) {
                                                 : assigneeStatusOptions);    
                     
                     var canCurrentUserEdit = isLeaderAllowedToEdit || isCurrentUserTheAssignee;
+                    var shouldShowRow = isLeaderAllowedToEdit || isCurrentUserTheAssignee || isCurrentUserTheReviewer;
                 %>
+
+                <% if (shouldShowRow) { %>
                 <tr>
                     <td valign="top"><%= assignee.name %></td>
                     <td valign="top">
@@ -57,7 +58,7 @@ if (displayAssignees && displayAssignees.length > 0) {
                             var toDelete = fileObj.delete || false;
                         %>
 
-                        <% if (currentStatus !== 'Closed') { %>
+                        <% if (currentStatus !== 'Closed' || isLeaderAllowedToEdit) { %>
                             <% if (canCurrentUserEdit) { %>
                                 <% if (filename && !toDelete) { %>
                                     <a href="<%= fileUrl %>" target="_blank"><%= filename %></a>
@@ -68,7 +69,7 @@ if (displayAssignees && displayAssignees.length > 0) {
                             <% } else if (filename) { %>
                                 <a href="<%= fileUrl %>" target="_blank"><%= filename %></a>
                             <% } else { %>
-                                <span>No document allowed</span>
+                                <span>No document</span>
                             <% } %>
 
                         <% } %>
@@ -99,6 +100,7 @@ if (displayAssignees && displayAssignees.length > 0) {
                         <% } %>   
                     </td>
                 </tr>
+                <% } %>
             <% }.bind(this)); %>
         </tbody>
     </table>

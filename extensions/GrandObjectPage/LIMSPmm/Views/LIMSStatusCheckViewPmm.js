@@ -1,16 +1,23 @@
 LIMSStatusCheckViewPmm = Backbone.View.extend({
     tagName: 'div',
-    // project: null,
+    project: null,
     
     events: {
         'click #cancelButton': 'closeDialog' // Button to cancel
     },
 
     initialize: function(options) {
-        // this.project = options.project;
+        this.project = options.project;
         this.isDialog = options.isDialog || false;
         this.selectTemplate();
         
+        if (this.project) {
+            var members = this.project.members;
+            if (members) {
+                this.listenTo(members, 'sync', this.render);
+            }
+        }
+
         this.model.startTracking();
         this.render();
         
@@ -26,11 +33,19 @@ LIMSStatusCheckViewPmm = Backbone.View.extend({
 
 
     render: function() {
+    var templateData = this.model.toJSON();
 
-          
-        this.$el.html(this.template(this.model.toJSON())); 
-        return this.$el;
-    },
+    if (this.project) {
+        var projectDataForTemplate = this.project.toJSON();
+        if (this.project.members) {
+            projectDataForTemplate.members = this.project.members.toJSON();
+        }
+        templateData.project = projectDataForTemplate;
+    }
+
+    this.$el.html(this.template(templateData)); 
+    return this.$el;
+},
 
 
 
