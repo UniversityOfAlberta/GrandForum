@@ -58,7 +58,7 @@ if (displayAssignees && displayAssignees.length > 0) {
                             var toDelete = fileObj.delete || false;
                         %>
 
-                        <% if (currentStatus !== 'Closed') { %>
+                        <% if (currentStatus !== 'Closed' || isLeaderAllowedToEdit) { %>
                             <% if (canCurrentUserEdit) { %>
                                 <% if (filename && !toDelete) { %>
                                     <a href="<%= fileUrl %>" target="_blank"><%= filename %></a>

@@ -66,24 +66,43 @@
 
 <td valign="top" style="white-space:nowrap; padding: 5px;">
     <% if(isLeaderAllowedToEdit){ %>
-        <div>
-            <div style="font-size: 12px; line-height: 1.6; margin-bottom: 5px;">
-                <div style="display: flex; align-items: center; white-space: nowrap;">
-                    <span style="width: 10px; height: 10px; background-color: #28a745; border-radius: 50%; margin-right: 6px; flex-shrink: 0;"></span>
-                    <strong class="count-completed" style="margin-right: 4px;"><%= displayClosedCount %></strong> Completed
-                </div>
-                <div style="display: flex; align-items: center; white-space: nowrap;">
-                    <span style="width: 10px; height: 10px; background-color: #ffc107; border-radius: 50%; margin-right: 6px; flex-shrink: 0;"></span>
-                    <strong class="count-pending" style="margin-right: 4px;"><%= displayPendingReviewCount %></strong> Pending Review
-                </div>
-                <div style="display: flex; align-items: center; white-space: nowrap;">
-                    <span style="width: 10px; height: 10px; background-color: #007bff; border-radius: 50%; margin-right: 6px; flex-shrink: 0;"></span>
-                    <strong class="count-assigned" style="margin-right: 4px;"><%= displayAssignedCount %></strong> Assigned
-                </div>
+        <%
+            var allStatuses = this.model.get('statuses') || {};
+            var allAssignees = this.model.get('assignees') || [];
+            var isFullyCompleted = false;
+            if (allAssignees.length > 0) {
+                isFullyCompleted = _.every(allAssignees, function(assignee) {
+                    var assigneeId = assignee.id || assignee;
+                    return allStatuses[assigneeId] === 'Closed';
+                });
+            }
+        %>
+        <% if (isFullyCompleted) { %>
+            <div style="text-align: center; color: #28a745; font-weight: bold; border-radius: 4px;">
+                Completed
             </div>
             <button id="changeStatusButton" type="button">Change Status</button>
             <div id="changeStatusDialog"></div>
-        </div>
+        <% } else { %>
+            <div>
+                <div style="font-size: 12px; line-height: 1.6; margin-bottom: 5px;">
+                    <div style="display: flex; align-items: center; white-space: nowrap;">
+                        <span style="width: 10px; height: 10px; background-color: #28a745; border-radius: 50%; margin-right: 6px; flex-shrink: 0;"></span>
+                        <strong class="count-completed" style="margin-right: 4px;"><%= displayClosedCount %></strong> Completed
+                    </div>
+                    <div style="display: flex; align-items: center; white-space: nowrap;">
+                        <span style="width: 10px; height: 10px; background-color: #ffc107; border-radius: 50%; margin-right: 6px; flex-shrink: 0;"></span>
+                        <strong class="count-pending" style="margin-right: 4px;"><%= displayPendingReviewCount %></strong> Pending Review
+                    </div>
+                    <div style="display: flex; align-items: center; white-space: nowrap;">
+                        <span style="width: 10px; height: 10px; background-color: #007bff; border-radius: 50%; margin-right: 6px; flex-shrink: 0;"></span>
+                        <strong class="count-assigned" style="margin-right: 4px;"><%= displayAssignedCount %></strong> Assigned
+                    </div>
+                </div>
+                <button id="changeStatusButton" type="button">Change Status</button>
+                <div id="changeStatusDialog"></div>
+            </div>
+        <% } %>
     <% } else { %>
         <%
             var statuses = this.model.get('statuses') || {};
@@ -124,13 +143,15 @@
             <div style="text-align: center; color: #ffc107; font-weight: bold; border-radius: 4px;">
                 Pending Review
             </div>
+            <button id="changeStatusButton" type="button">Change Status</button>
+            <div id="changeStatusDialog"></div>
         <% } else { %>
             <div style="text-align: center; color: red; font-weight: bold; border-radius: 4px;">
                 Pending
             </div>
+            <button id="changeStatusButton" type="button">Change Status</button>
+            <div id="changeStatusDialog"></div>
         <% } %>
-        <button id="changeStatusButton" type="button">Change Status</button>
-        <div id="changeStatusDialog"></div>
     <% } %>
 </td>
 <% if(isLeaderAllowedToEdit){ %>

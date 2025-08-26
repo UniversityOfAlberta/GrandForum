@@ -21,25 +21,43 @@
     }
     %>
 </td>
-<td align="center"><%= dueDate %></td>
-<td align="center" style="white-space:nowrap; padding: 5px;">
+<td style="text-align: center;"><%= dueDate %></td>
+<td style="text-align: center; white-space:nowrap; padding: 5px;">
     <% 
     if (isLeaderAllowedToEdit) { %>
-        <div style="font-size: 12px; line-height: 1.6; margin-bottom: 5px; text-align: left;">
-            <div style="display: flex; align-items: center; white-space: nowrap;">
-                <span style="width: 10px; height: 10px; background-color: #28a745; border-radius: 50%; margin-right: 6px;"></span>
-                <strong style="margin-right: 4px;"><%= displayClosedCount %></strong> Completed
+        <%
+            var allStatuses = this.model.get('statuses') || {};
+            var allAssignees = this.model.get('assignees') || [];
+            var isFullyCompleted = false;
+            if (allAssignees.length > 0) {
+                isFullyCompleted = _.every(allAssignees, function(assignee) {
+                    var assigneeId = assignee.id || assignee;
+                    return allStatuses[assigneeId] === 'Closed';
+                });
+            }
+        %>
+        <% if (isFullyCompleted) { %>
+            <div style="color: #28a745; font-weight: bold;">
+                Completed
             </div>
-            <div style="display: flex; align-items: center; white-space: nowrap;">
-                <span style="width: 10px; height: 10px; background-color: #ffc107; border-radius: 50%; margin-right: 6px;"></span>
-                <strong style="margin-right: 4px;"><%= displayPendingReviewCount %></strong> Pending Review
+            <button id="checkStatus" type="button" class="btn btn-primary btn-xs">Check Status</button>
+        <% } else { %>
+            <div style="font-size: 12px; line-height: 1.6; margin-bottom: 5px; text-align: left;">
+                <div style="display: flex; align-items: center; white-space: nowrap;">
+                    <span style="width: 10px; height: 10px; background-color: #28a745; border-radius: 50%; margin-right: 6px;"></span>
+                    <strong style="margin-right: 4px;"><%= displayClosedCount %></strong> Completed
+                </div>
+                <div style="display: flex; align-items: center; white-space: nowrap;">
+                    <span style="width: 10px; height: 10px; background-color: #ffc107; border-radius: 50%; margin-right: 6px;"></span>
+                    <strong style="margin-right: 4px;"><%= displayPendingReviewCount %></strong> Pending Review
+                </div>
+                <div style="display: flex; align-items: center; white-space: nowrap;">
+                    <span style="width: 10px; height: 10px; background-color: #007bff; border-radius: 50%; margin-right: 6px;"></span>
+                    <strong style="margin-right: 4px;"><%= displayAssignedCount %></strong> Assigned
+                </div>
             </div>
-            <div style="display: flex; align-items: center; white-space: nowrap;">
-                <span style="width: 10px; height: 10px; background-color: #007bff; border-radius: 50%; margin-right: 6px;"></span>
-                <strong style="margin-right: 4px;"><%= displayAssignedCount %></strong> Assigned
-            </div>
-        </div>
-        <button id="checkStatus" type="button" class="btn btn-primary btn-xs">Check Status</button>
+            <button id="checkStatus" type="button" class="btn btn-primary btn-xs">Check Status</button>
+        <% } %>
 
     <% } else if (isCurrentUserAssignee || isCurrentUserReviewer) { %>
         
@@ -81,12 +99,13 @@
             <div style="color: #ffc107; font-weight: bold; margin-bottom: 4px;">
                 Pending Review
             </div>
+            <button id="checkStatus" type="button" class="btn btn-primary btn-xs">Check Status</button>
         <% } else { %>
             <div style="color: red; font-weight: bold; margin-bottom: 4px;">
                 Pending
             </div>
+            <button id="checkStatus" type="button" class="btn btn-primary btn-xs">Check Status</button>
         <% } %>
-        <button id="checkStatus" type="button" class="btn btn-primary btn-xs">Check Status</button>
     <% } %>
 </td>
 <td>
