@@ -39,12 +39,12 @@ class RoleProjectCheckBox extends VerticalCheckBox {
             $projectsField = new ProjectList("project_field", "Associated ".Inflect::pluralize($config->getValue('projectTerm')), array(), $projects, VALIDATE_NOTHING);
             $projectsField->role = $option;
             if(count($projects) > 0){
-                $html .= "<div id='{$this->id}_{$option}_projects' style='margin-left: 2em; display: none; margin-bottom: 1em;'><fieldset><legend>"."Associated ".Inflect::pluralize($config->getValue('projectTerm'))."</legend>{$projectsField->render()}</fieldset></div>";
+                $html .= "<div id='".str_replace(" ", "", "{$this->id}_{$option}_projects")."' style='margin-left: 2em; display: none; margin-bottom: 1em;'><fieldset><legend>"."Associated ".Inflect::pluralize($config->getValue('projectTerm'))."</legend>{$projectsField->render()}</fieldset></div>";
             }
         }
         $html .= "<script type='text/javascript'>
             $(\"[name='{$this->id}[]']\").change(function(){
-                var value = $(this).val();
+                var value = $(this).val().replaceAll(' ', '');
                 if($(this).is(':checked')){
                     $('#{$this->id}_' + value + '_projects').slideDown();
                 }
