@@ -8,4 +8,39 @@
             ]]>
         </ReportItem>
     </ReportSection>
+    <ReportSection id="additionalInfo">
+        <If if="{>({getText(RP_LETTER5, TABLE, ADMIN, {$user_id}, 1, 0, {$last_year})}, 0)}">
+            <ReportItem id="admin_title" type="Text" blobItem="ADMIN_TITLE">
+                <![CDATA[
+                    <h3>Administration</h3>
+                    <b>Position Title:</b>
+                    {$item}<br /><br />
+                ]]>
+            </ReportItem>
+            <ReportItem id="admin_expectation" type="Textarea" blobItem="ADMIN_EXPECTATION" rich="true">
+                <![CDATA[
+                    <b>Position Expectation:</b>
+                    {$item}<br /><br />
+                ]]>
+            </ReportItem>
+            <ReportItem id="admin_completion" type="Textarea" blobItem="ADMIN_COMPLETION" rich="true">
+                <![CDATA[
+                    <b>Completion of Expected Tasks:</b>
+                    {$item}<br /><br />
+                ]]>
+            </ReportItem>
+            <ReportItem id="admin_accomplishments" type="Textarea" blobItem="ADMIN_ACCOMPLISHMENTS" rich="true">
+                <![CDATA[
+                    <b>Main / Noteworthy Accomplishments:</b>
+                    {$item}<br /><br />
+                ]]>
+            </ReportItem>
+            <ReportItem id="admin_leadership" type="Textarea" blobItem="ADMIN_LEADERSHIP" rich="true">
+                <![CDATA[
+                    <b>Leadership / Innovation Activities:</b>
+                    {$item}<br /><br />
+                ]]>
+            </ReportItem>
+        </If>
+    </ReportSection>
 </Report>

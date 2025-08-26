@@ -4,7 +4,7 @@
         <Role role="FEC" start="{$this_year}-07-01" end="{$next_year}-07-01">
             <SectionPermission id="fec" permissions="rw" />
             <SectionPermission id="fec_votes" permissions="" />
-            <SectionPermission id="summary" permissions="" />
+            <SectionPermission id="summary" permissions="rw" />
         </Role>
         <Role role="DEAN" start="{$this_year}-07-01" end="{$next_year}-07-01">
             <SectionPermission id="fec" permissions="rw" />
