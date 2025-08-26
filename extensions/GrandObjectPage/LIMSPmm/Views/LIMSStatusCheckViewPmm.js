@@ -33,7 +33,6 @@ LIMSStatusCheckViewPmm = Backbone.View.extend({
 
 
     render: function() {
-    // Get the model's data
     var templateData = this.model.toJSON();
 
     if (this.project) {

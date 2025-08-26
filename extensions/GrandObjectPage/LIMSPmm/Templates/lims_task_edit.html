@@ -60,7 +60,7 @@
         }
         %>
     </td>
-    <td align="center"><%= dueDate %></td>
+    <td style="text-align: center;"><%= dueDate %></td>
     
 <% } %>
 
@@ -86,22 +86,51 @@
         </div>
     <% } else { %>
         <%
+            var statuses = this.model.get('statuses') || {};
             var currentUserId = me.get('id');
-            var statuses = this.model.get('statuses');
-            var myStatus = statuses ? statuses[currentUserId] : null;
-            var isMyStatusClosed = (myStatus === 'Closed');
-        %>
-        <% if (isMyStatusClosed) { %>
-            <div align="center" style="color: #28a745; font-weight: bold; border-radius: 4px;">
+            var assignees = this.model.get('assignees') || [];
+            var reviewers = this.model.get('reviewers') || {};
+            var myStatus = null;
+
+            if (statuses[currentUserId]) {
+                myStatus = statuses[currentUserId];
+            } 
+            else {
+                var isAssignedToEveryone = _.some(assignees, function(a) { return a.id === -1; });
+                if (isAssignedToEveryone) {
+                    myStatus = statuses['-1'];
+                }
+            }
+
+            if (myStatus === null) {
+                var reviewedAssigneeId = _.findKey(reviewers, function(reviewer) {
+                    return reviewer && reviewer.id == currentUserId;
+                });
+                if (reviewedAssigneeId) {
+                    myStatus = statuses[reviewedAssigneeId];
+                }
+            }
+
+            if (myStatus === null) {
+                myStatus = 'Assigned';
+            }
+
+            if (myStatus === 'Closed') { 
+            %>
+            <div style="text-align: center; color: #28a745; font-weight: bold; border-radius: 4px;">
                 Completed
             </div>
+        <% } else if (myStatus === 'Done') { %>
+            <div style="text-align: center; color: #ffc107; font-weight: bold; border-radius: 4px;">
+                Pending Review
+            </div>
         <% } else { %>
-            <div align="center" style="color: red; font-weight: bold; border-radius: 4px;">
+            <div style="text-align: center; color: red; font-weight: bold; border-radius: 4px;">
                 Pending
             </div>
-            <button id="changeStatusButton" type="button">Change Status</button>
-            <div id="changeStatusDialog"></div>
         <% } %>
+        <button id="changeStatusButton" type="button">Change Status</button>
+        <div id="changeStatusDialog"></div>
     <% } %>
 </td>
 <% if(isLeaderAllowedToEdit){ %>

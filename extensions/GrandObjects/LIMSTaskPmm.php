@@ -159,7 +159,14 @@ class LIMSTaskPmm extends BackboneModel
                 return true;
             }
         }
-
+        $reviewers = $this->getReviewers();
+        $validReviewers = array_filter($reviewers);
+        if (!empty($validReviewers)) {
+            $reviewerIds = array_column($validReviewers, 'id');
+            if (in_array($personId, $reviewerIds)) {
+                return true;
+            }
+        }
         return false;
     }
 
@@ -399,9 +406,10 @@ class LIMSTaskPmm extends BackboneModel
                 $assigneeId = (isset($assignee->id)) ? $assignee->id : $assignee;
                 $assigneeId = (int)$assigneeId;
                 $currentUserId = (int)$me->getId();
+                $dbReviewerId = $data[$assigneeId]['reviewer'];
 
                 $isCurrentUserTheAssignee = ($currentUserId == $assigneeId);
-                $isCurrentUserTheReviewer = (isset($data[$assigneeId]['reviewer']) && $currentUserId == (int)$data[$assigneeId]['reviewer']);
+                $isCurrentUserTheReviewer = (!empty($dbReviewerId) && (int)$currentUserId === (int)$dbReviewerId);
                 $canUserEditThisRow = $isLeader || $isCurrentUserTheAssignee || $isCurrentUserTheReviewer;
 
                 $status = null;
