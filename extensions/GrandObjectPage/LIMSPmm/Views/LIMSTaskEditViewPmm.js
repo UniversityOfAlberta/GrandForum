@@ -38,6 +38,16 @@ LIMSTaskEditViewPmm = Backbone.View.extend({
         var accountedFor = closedCount + pendingReviewCount;
         var assignedCount = displayAssignees.length - accountedFor;
 
+        var currentUserId = me.get('id');
+        var originalAssignees = primaryData.assignees || [];
+        var isCurrentUserAssignee = originalAssignees.some(function(assignee) {
+            return (assignee.id || assignee) === currentUserId || (assignee.id || assignee) === -1;
+        });
+        var reviewerList = Object.values(displayReviewers);
+        var isCurrentUserReviewer = reviewerList.some(function(reviewer) {
+            return reviewer && reviewer.id === currentUserId;
+        });
+
         this.model.set({
             displayAssignees: displayAssignees,
             displayStatuses: displayStatuses,
@@ -46,8 +56,11 @@ LIMSTaskEditViewPmm = Backbone.View.extend({
             displayComments: displayComments,
             displayClosedCount: closedCount,
             displayPendingReviewCount: pendingReviewCount,
-            displayAssignedCount: assignedCount
+            displayAssignedCount: assignedCount,
+            isCurrentUserAssignee: isCurrentUserAssignee,
+            isCurrentUserReviewer: isCurrentUserReviewer
         });
+
     },
     
     selectTemplate: function(){
@@ -166,33 +179,30 @@ LIMSTaskEditViewPmm = Backbone.View.extend({
             });
         }.bind(this));
     },
+    isRowVisible: function() {
+        var isAssignee = this.model.get('isCurrentUserAssignee');
+        var isReviewer = this.model.get('isCurrentUserReviewer');
+        var isLeader = this.model.get('isLeaderAllowedToEdit');
+        return isAssignee || isReviewer || isLeader;
+    },
 
     render: function(){
-        // for (edId in tinyMCE.editors){
-        //     var e = tinyMCE.editors[edId];
-        //     if(e != undefined){
-        //         e.destroy();
-        //         e.remove();
-        //     }
-        // }
+        this.prepareDisplayState();
         this.selectTemplate();
 
-        if(!this.model.saving){
-            this.$el.html(this.template(this.model.toJSON()));
-            _.defer(function(){
-                this.$('select[name=assignees]').show().chosen();
-
-            }.bind(this));
+        if (this.isRowVisible()) {
+            if(!this.model.saving){
+                this.$el.html(this.template(this.model.toJSON()));
+                _.defer(function(){
+                    this.$('select[name=assignees]').show().chosen();
+                }.bind(this));
+            }
+            this.editDialog = this.$('#changeStatusDialog');
+            this.renderTinyMCE();
+            this.$el.show();
+        } else {
+            this.$el.hide();
         }
-        this.editDialog = this.$('#changeStatusDialog');
-
-
-        this.renderTinyMCE();
-
-        // if(!this.model.get('isAllowedToEdit')){
-        //     this.$el.prepend('<td></td>');
-        // }
-
 
         return this.$el;
     }

@@ -20,15 +20,21 @@ if (assignees && assignees.length > 0) {
         <tbody> 
             <% 
             displayAssignees.forEach(function(assignee) { 
+                var assigneeId = assignee.id;
+                var reviewerObj = reviewers[assigneeId] || {};
+
+                var isCurrentUserTheAssignee = (me.get('id') === assigneeId);
+                var isCurrentUserTheReviewer = (reviewerObj && me.get('id') === reviewerObj.id);
+
+                if (isLeaderAllowedToEdit || isCurrentUserTheAssignee || isCurrentUserTheReviewer) {
+
             %>
                 <tr>
                     <td valign="top"><%= assignee.name %></td>
                     <td valign="top">
                         <% 
-                        var assigneeId = (assignee.id != undefined) ? assignee.id : assignee;
                         var currentStatus = statuses[assigneeId] || 'Assigned';
                         var fileObj = files[assigneeId] || {};
-                        var reviewerObj = reviewers[assigneeId] || {};
                         %>
                         <%= currentStatus %>
                     </td>
@@ -47,7 +53,10 @@ if (assignees && assignees.length > 0) {
                         <% } %>
                     </td>
                 </tr>
-            <% }.bind(this)); %>
+            <% 
+            }
+            }); 
+            %>
         </tbody>
     </table>
 <% 

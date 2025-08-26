@@ -9,7 +9,7 @@ LIMSTaskViewPmm = Backbone.View.extend({
     initialize: function(options){
         this.project = options.project;
         this.listenTo(this.model, "sync", this.render);
-        this.template = _.template($('#lims_task_template').html());
+        this.selectTemplate();
         this.editDialog = $('<div></div>');
     },
 
@@ -29,18 +29,14 @@ LIMSTaskViewPmm = Backbone.View.extend({
         } else {
             effectiveAssignees = originalAssignees;
         }
-        console.log("as", effectiveAssignees)
         var statuses = primaryData.statuses || {};
         var effectiveStatusValues = effectiveAssignees.map(function(assignee) {
             return statuses[assignee.id] || 'Assigned';
         });
         var closedCount = effectiveStatusValues.filter(function(s) { return s === 'Closed'; }).length;
         var pendingReviewCount = effectiveStatusValues.filter(function(s) { return s === 'Done'; }).length;
-        console.log('closed', closedCount)
-        console.log('pending', pendingReviewCount)
         var accountedFor = closedCount + pendingReviewCount;
         var assignedCount = effectiveAssignees.length - accountedFor;
-        console.log('assignedCount', assignedCount)
 
         var reviewersObject = primaryData.reviewers || {}; 
         var isCurrentUserAssignee = originalAssignees.some(function(assignee) {
@@ -59,6 +55,17 @@ LIMSTaskViewPmm = Backbone.View.extend({
             isCurrentUserAssignee: isCurrentUserAssignee,
             isCurrentUserReviewer: isCurrentUserReviewer
         });
+    },
+
+    selectTemplate: function(){
+        // Get project role for current user
+        var userRole = _.pluck(_.filter(me.get('roles'), function(el){return el.title == this.project.get("name") ||  el.role !== PL}.bind(this)), 'role');
+        // Memebers can only change 'assigned' -> 'done'
+        var isPLAllowed = _.intersection(userRole, [PL, STAFF, MANAGER, ADMIN]).length > 0 ;
+        
+        this.model.set('isLeaderAllowedToEdit', isPLAllowed);
+
+        this.template = _.template($('#lims_task_template').html());
     },
 
     checkStatus: function(){
@@ -94,8 +101,8 @@ LIMSTaskViewPmm = Backbone.View.extend({
     },
     
     render: function(){
+        this.selectTemplate();
         this.updateTaskSummary()
-
         if (this.isRowVisible()) {
             var templateData = this.model.toJSON();
             if (this.project) {
