@@ -228,7 +228,7 @@ class AddMember extends SpecialPage{
             }
             $wgOut->addHTML("<td>{$request->getRoles()}</td>
                              <td>{$request->getSubRoles()}</td>
-                             <td align='left'>{$request->getProjects()}</td>
+                             <td align='left' style='white-space:nowrap;'>".str_replace(", ", "<br />", $request->getProjects())."</td>
                              <td align='left' style='white-space:nowrap;'>".str_replace(":", "<br />", $request->getRelation())."</td>
                              <td>".str_replace("\n", ", ", trim($request->getUniversity()))."<br />
                                  ".str_replace("\n", ", ", trim($request->getFaculty()))."<br />
@@ -420,7 +420,7 @@ class AddMember extends SpecialPage{
         }
         ksort($roleOptions);
         $rolesLabel = new Label("role_label", "Roles", "The roles the new user should belong to", $roleValidations);
-        $rolesField = new VerticalCheckBox("role_field", "Roles", array(), $roleOptions, $roleValidations);
+        $rolesField = new RoleProjectCheckBox("role_field", "Roles", array(), $roleOptions, $roleValidations);
         $rolesRow = new FormTableRow("role_row");
         $rolesRow->append($rolesLabel)->append($rolesField);
         
@@ -429,13 +429,6 @@ class AddMember extends SpecialPage{
         $subRolesRow = new FormTableRow("subrole_row");
         $subRolesRow->attr('id', "subrole_row");
         $subRolesRow->append($subRolesLabel)->append($subRolesField);
-
-        $projects = Project::getAllProjects();
-        foreach($projects as $key => $project){
-            if($project->getStatus() == "Proposed"){
-                unset($projects[$key]);
-            }
-        }
 
         $universities = array_merge(array(""), Person::getAllUniversities());
         $departments = array_merge(array(""), Person::getAllDepartments());
@@ -450,11 +443,6 @@ class AddMember extends SpecialPage{
         if(!$config->getValue('candidateEnabled') || !$me->isRoleAtLeast(STAFF)){
             $candRow->attr('style', 'display:none;');
         }
-               
-        $projectsLabel = new Label("project_label", "Associated ".Inflect::pluralize($config->getValue('projectTerm')), "The projects the user is a member of", VALIDATE_NOTHING);
-        $projectsField = new ProjectList("project_field", "Associated ".Inflect::pluralize($config->getValue('projectTerm')), array(), $projects, VALIDATE_NOTHING);
-        $projectsRow = new FormTableRow("project_row");
-        $projectsRow->append($projectsLabel)->append($projectsField);
         
         $nationalityValidation = ($config->getValue("networkName") == "MtS") ? VALIDATE_NOT_NULL : VALIDATE_NOTHING;
         $nationalityLabel = new Label("nationality_label", "Nationality", "The nationality of this user (only required for HQP)", $nationalityValidation);
@@ -566,8 +554,7 @@ class AddMember extends SpecialPage{
         $relHelpRow->append($relHelpLabel1)->append($relHelpLabel2);
         $relHelpRow->attr('id', "rel_row");
         
-        $formTable->append($projectsRow)
-                  ->append($nationalityRow);
+        $formTable->append($nationalityRow);
         for($i = 0; $i < 3; $i++){
             $extraText = "";
             $validation = ($i == 0) ? VALIDATE_NOT_NULL : VALIDATE_NOTHING;

@@ -2,6 +2,8 @@
 
 class ProjectList extends MultiColumnVerticalCheckBox {
     
+    var $role = "";
+    
     function __construct($id, $name, $value, $options, $validations=VALIDATE_NOTHING){
         parent::__construct($id, $name, $value, $options, $validations);
         $this->attr('expand', false);
@@ -36,6 +38,7 @@ class ProjectList extends MultiColumnVerticalCheckBox {
             }
         }
         $i = 0;
+        $role = ($this->role != "") ? "{$this->role}:" : "";
         foreach($themes as $theme => $projs){
             $count = ceil(count($projs)/3);
             $i = 0;
@@ -47,7 +50,7 @@ class ProjectList extends MultiColumnVerticalCheckBox {
                 $checked = "";
                 if(count($this->value) > 0){
                     foreach($this->value as $value){
-                        if($value == $proj->getName()){
+                        if($value == "{$role}{$proj->getName()}"){
                             $checked = " checked";
                             break;
                         }
@@ -61,8 +64,9 @@ class ProjectList extends MultiColumnVerticalCheckBox {
                 if($checked != ""){
                     $already = "already";
                 }
+                
                 $html .= "<div>
-                            <input class='{$this->id} {$already}' {$this->renderAttr()} type='checkbox' id='{$this->id}_{$proj->getName()}' name='{$this->id}[]' value='{$proj->getName()}' $checked />{$proj->getName()}";
+                            <input class='{$this->id} {$already}' {$this->renderAttr()} type='checkbox' id='{$this->id}_{$proj->getName()}' name='{$this->id}[]' value='{$role}{$proj->getName()}' $checked />{$proj->getName()}";
                 if($checked != "" && $reasons !== false){
                     $html .="<div style='display:none; padding-left:30px;'>
                                 <fieldset><legend>Reasoning</legend>
@@ -78,7 +82,7 @@ class ProjectList extends MultiColumnVerticalCheckBox {
                     if(!$subProj->isDeleted()){
                         if(count($this->value) > 0){
                             foreach($this->value as $value){
-                                if($value == $subProj->getName()){
+                                if($value == "{$role}{$subProj->getName()}"){
                                     $subchecked = " checked";
                                     break;
                                 }
@@ -88,7 +92,7 @@ class ProjectList extends MultiColumnVerticalCheckBox {
                         if($subchecked != ""){
                             $already = "already";
                         }
-                        $html .= "<input class='{$this->id} {$already}' {$this->renderAttr()} type='checkbox' id='{$this->id}_{$subProj->getName()}' name='{$this->id}[]' value='{$subProj->getName()}' $subchecked />{$subProj->getName()}";
+                        $html .= "<input class='{$this->id} {$already}' {$this->renderAttr()} type='checkbox' id='{$this->id}_{$subProj->getName()}' name='{$this->id}[]' value='{$role}{$subProj->getName()}' $subchecked />{$subProj->getName()}";
                         if($subchecked != "" && $reasons !== false){
                             $html .= "<div style='display:none; padding-left:30px;'>
                                         <fieldset><legend>Reasoning</legend>

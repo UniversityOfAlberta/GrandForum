@@ -55,17 +55,20 @@ class UserCreate {
                 // Add Projects
                 if(isset($_POST['wpNS'])){
                     $box = $_POST['wpNS'];
-                    while (list ($key,$val) = @each ($box)) {
+                    while (list ($key,$val) = @each($box)) {
                         if($val != null && $val != ""){
-                            $project = Project::newFromName($val);
-                            DBFunctions::insert('mw_user_groups',
-                                                array('ug_user' => $id,
-                                                      'ug_group' => $val));
-                            DBFunctions::insert('grand_role_projects',
-                                                array('role_id' => $roleId,
-                                                      'project_id' => $project->getId()));
-                            Cache::delete("project{$project->getId()}_people");
-                            Cache::delete("project{$project->getId()}_peopleDuring", true);
+                            $split = explode(":", $val);
+                            if(count($split) == 1 || $split[0] == "$role"){
+                                $project = (count($split) == 1) ? Project::newFromName($split[0]) : Project::newFromName($split[1]);
+                                DBFunctions::insert('mw_user_groups',
+                                                    array('ug_user' => $id,
+                                                          'ug_group' => $val));
+                                DBFunctions::insert('grand_role_projects',
+                                                    array('role_id' => $roleId,
+                                                          'project_id' => $project->getId()));
+                                Cache::delete("project{$project->getId()}_people");
+                                Cache::delete("project{$project->getId()}_peopleDuring", true);
+                            }
                         }
                     }
                 }
