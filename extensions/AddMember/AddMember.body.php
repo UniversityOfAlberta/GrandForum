@@ -46,13 +46,9 @@ class UserCreate {
                 DBFunctions::insert('mw_user_groups',
                                     array('ug_user' => $id,
                                           'ug_group' => $role));
-                DBFunctions::insert('grand_roles',
-                                    array('user_id' => $id,
-                                          'role' => $role,
-                                          'start_date' => @$_POST['start_date'],
-                                          'end_date' => @$_POST['end_date']));
-                $roleId = DBFunctions::insertId();
+                
                 // Add Projects
+                $noProjects = true;
                 if(isset($_POST['wpNS'])){
                     $box = $_POST['wpNS'];
                     while (list ($key,$val) = @each($box)) {
@@ -60,6 +56,12 @@ class UserCreate {
                             $split = explode(":", $val);
                             if(count($split) == 1 || $split[0] == "$role"){
                                 $project = (count($split) == 1) ? Project::newFromName($split[0]) : Project::newFromName($split[1]);
+                                DBFunctions::insert('grand_roles',
+                                    array('user_id' => $id,
+                                          'role' => $role,
+                                          'start_date' => @$_POST['start_date'],
+                                          'end_date' => @$_POST['end_date']));
+                                $roleId = DBFunctions::insertId();
                                 DBFunctions::insert('mw_user_groups',
                                                     array('ug_user' => $id,
                                                           'ug_group' => $val));
@@ -68,9 +70,19 @@ class UserCreate {
                                                           'project_id' => $project->getId()));
                                 Cache::delete("project{$project->getId()}_people");
                                 Cache::delete("project{$project->getId()}_peopleDuring", true);
+                                $noProjects = false;
                             }
                         }
                     }
+                }
+                
+                if($noProjects){
+                    // Add the role with no projects
+                    DBFunctions::insert('grand_roles',
+                                    array('user_id' => $id,
+                                          'role' => $role,
+                                          'start_date' => @$_POST['start_date'],
+                                          'end_date' => @$_POST['end_date']));
                 }
             }
         }
