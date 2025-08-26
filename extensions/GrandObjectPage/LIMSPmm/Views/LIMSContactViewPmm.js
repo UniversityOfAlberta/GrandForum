@@ -1,11 +1,22 @@
 LIMSContactViewPmm = Backbone.View.extend({
     isDialog: false,
+    project: null,
 
     initialize: function(options){
         this.model.fetch();
         this.listenTo(this.model, "sync", this.render);
         this.listenTo(this.model.opportunities, "sync", this.renderOpportunities);
         this.template = _.template($('#lims_contact_template').html());
+
+        var projectId = this.model.get('projectId');
+
+        if (projectId) {
+            this.project = new Project({ id: projectId });
+            this.project.fetch();
+            this.project.getMembers();
+            this.listenTo(this.project, 'sync', this.render);
+            this.listenTo(this.project.members, 'sync', this.render);
+        }
 
         if(options.isDialog != undefined){
             this.isDialog = options.isDialog;
@@ -23,7 +34,7 @@ LIMSContactViewPmm = Backbone.View.extend({
     renderOpportunities: function(){
         this.$("#opportunities").empty();
         this.model.opportunities.each(function(model){
-            var view = new LIMSOpportunityViewPmm({model: model});
+            var view = new LIMSOpportunityViewPmm({model: model, project: this.project});
             this.$("#opportunities").append(view.render());
         }.bind(this));
     },
