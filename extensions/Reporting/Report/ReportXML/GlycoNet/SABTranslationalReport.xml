@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="SAB Translational Report" reportType="RP_SAB_TRANS_REPORT" pdfType="RPTP_SAB_TRANS_REPORT" pdfFiles="SABTranslationalReportPDF" personId="0" ajax="true" disabled="false" year="2022">
+<Report name="SAB Translational Report" reportType="RP_SAB_TRANS_REPORT" pdfType="RPTP_SAB_TRANS_REPORT" pdfFiles="SABTranslationalReportPDF" personId="0" ajax="true" disabled="false" year="2025">
     <Permissions>
         <Role role="SD">
             <SectionPermission id="materials" permissions="rw" />
@@ -133,35 +133,23 @@
         </Static>
     </ReportSection>
     <ReportSection id="review" name="Project Review" blobSection="SAB_REPORT" tooltip="Review of Project Proposals" type="EditableReportSection">
-        <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="SAB-Translational">
+        <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="SAB-Translational" sortBy="{getText(RP_SAB_TRANS_REPORT, MATERIALS, CODE, {$user_id}_{$project_id}, 0, {$project_id})}">
             <If id="if" if="{!=({$user_id},{$my_id})}">
-                <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{getText(RP_SAB_TRANS_REPORT, MATERIALS, CODE, {$user_id}_{$project_id}, 0, {$project_id})} - {$user_name} - {getText(RP_TRANS,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},{$project_id})}">
+                <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{getText(RP_SAB_TRANS_REPORT, MATERIALS, CODE, {$user_id}_{$project_id}, 0, {$project_id})} - {$user_name} - {getText(RP_TRANS,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},0)}">
                     <ReportItemSet id="evaluators" type="SABReportItemSet" subType="SAB-Translational" includeSelf="true">
                         <Static>
                             <![CDATA[
                                 <h2>Reviewer {$index}</h2>
                                 <div style='margin-left:15px;'>
-                                    <h3>Project Strengths</h3>
-                                    <p>{getText(RP_SAB_TRANS_REVIEW,SAB_REVIEW,SAB_REVIEW_STRENGTH,{$parent_id},{$user_id},{$project_id})}</p>
-                                    <h3>Project Weaknesses</h3>
-                                    <p>{getText(RP_SAB_TRANS_REVIEW,SAB_REVIEW,SAB_REVIEW_WEAKNESS,{$parent_id},{$user_id},{$project_id})}</p>
-                                    <h3>Project Ranking</h3>
-                                    <p>{getText(RP_SAB_TRANS_REVIEW,SAB_REVIEW,SAB_REVIEW_RANKING,{$parent_id},{$user_id},{$project_id})}</p>
+                                    {if("{getBlobMD5(RP_SAB_TRANS_REVIEW,SAB_REVIEW,CDA,0,{$user_id},0)}" != "", <p><a href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={getBlobMD5(RP_SAB_TRANS_REVIEW,SAB_REVIEW,CDA,0,{$user_id},0)}'>Download CDA</a></p>)}
+
+                                    {if("{getBlobMD5(RP_SAB_TRANS_REVIEW,SAB_REVIEW,SAB_REVIEW,{$parent_id},{$user_id},0)}" != "", <p><a href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={getBlobMD5(RP_SAB_TRANS_REVIEW,SAB_REVIEW,SAB_REVIEW,{$parent_id},{$user_id},0)}'>Download Review</a></p>)}
                                 </div>
                             ]]>
                         </Static>
                     </ReportItemSet>
-                    <ReportItem id="summary" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="SAB_REPORT_SUMMARY">
-                        <![CDATA[
-                            <h2>Summary Statement</h2>
-                            {$item}
-                        ]]>
-                    </ReportItem>
                 </ReportItemSet>
             </If>
         </ReportItemSet>
     </ReportSection>
-    <!--ReportSection id="submit" tooltip="PDF generation of the Review" name="Generate PDF" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
-        <ReportItem id="review" type="SimpleReviewSubmitReportItem" />
-    </ReportSection-->
 </Report>
