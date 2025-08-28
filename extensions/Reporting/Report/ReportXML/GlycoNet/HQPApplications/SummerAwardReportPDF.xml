@@ -124,7 +124,7 @@
         </ReportItem>
         <ReportItem id="other" type="Textarea" blobItem="PRODUCTS" rich="true" height="400px">
             <![CDATA[
-                <h3>5. Other Products</h3>
+                <h2>5. Other Products</h2>
                 {$item}
             ]]>
         </ReportItem>
