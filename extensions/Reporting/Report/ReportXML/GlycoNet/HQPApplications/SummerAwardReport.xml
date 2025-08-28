@@ -153,29 +153,44 @@
         </ReportItem>
         <ReportItem id="summary" type="Textarea" blobItem="SUMMARY" limit="500" rich="true" recommended="true" height="400px">
             <![CDATA[
-                <h2>Exchange Summary - <small>500 words, including references</small></h2>
-                <p>Describe the impact that this research experience has had on you, and what you took away from it. Also address the overall project goals, your role in the project during the exchange, successes and challenges you encountered, and the benefits this exchange provided to the groups involved. Please use <i>Journal of Biological Chemistry</i> style for references.</p>
+                <h2>1. Exchange Summary - <small>500 words, including references</small></h2>
+                Describe the impact that this research experience has had on you and what you have learned from it. In your response, please also address:
+                <ul>
+                    <li>The overall project goals</li>
+                    <li>Your role in the project</li>
+                    <li>Successes and challenges you encountered</li>
+                    <li>How this work contributed to the goals or outcomes of the broader project</li>
+                </ul>
+                
+                <p>Please use <i>Journal of Biological Chemistry</i> style for references.</p>
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="skills" type="Textarea" blobItem="SKILLS" rich="true">
             <![CDATA[
-                <h2>Skills</h2>
-                <p>Which new skills, knowledge and/or experience have you developed during the project? Please provide details, examples and how this will help you in your future path/career.</p>
+                <h2>2. Skills</h2>
+                <p>Which new skills, knowledge, and/or experience have you developed during the project? Please provide details, examples, and explain how these will help you in your future career path.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="reflection" type="Textarea" blobItem="REFLECTION" rich="true">
+            <![CDATA[
+                <h2>3. Personal Reflection Quote (for communication purposes)</h2>
+                <p>Please provide a short, direct quote (1–3 sentences) summarizing your key takeaway or reflection. This may be used in our reports as well as in public communications.</p>
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="project_dashboard_prod_details" type="DashboardReportItem" structure="HQP_PRODUCTIVITY_STRUCTURE" table="false" details="true" totalOnly="true">
             <![CDATA[
-                <h2>Products</h2>
-                <p>List publications, presentations, and intellectual property produced during the tenure of your exchange.  To add products go to <a href='{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts' target='_blank'>Manage Products</a>.</p>
+                <h2>4. Products</h2>
+                <p>List publications, presentations, and intellectual property produced during the tenure of your exchange.  To add products go to <a href='{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts' target='_blank'>Manage Products</a>.  Instructions on how to add products can be found <a href='https://canadianglycomics.ca/wp-content/uploads/Managing-Products.pdf' target='_blank'>here</a>.</p>
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="other" type="Textarea" blobItem="PRODUCTS" rich="true" height="400px">
             <![CDATA[
-                <h3>Other Products</h3>
-                <p>List or describe any products which may be in progress or not published yet.</p>
+                <h3>5. Other Products</h3>
+                <p>List or describe any products that are in progress or not yet published.</p>
                 {$item}
             ]]>
         </ReportItem>
