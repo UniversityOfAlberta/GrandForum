@@ -288,6 +288,9 @@
 
     // Whether to show phase field on project views
     $config->setValue("projectPhase", true);
+
+    // Whether to show prev and next buttons to toggle between my projects on task views
+    $config->setValue("showPrevAndNextButton", true);
     
     // Whether or not to enable contributions
     $config->setValue("contributionsEnabled", true);

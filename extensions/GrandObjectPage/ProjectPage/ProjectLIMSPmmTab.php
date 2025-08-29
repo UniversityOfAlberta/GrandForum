@@ -11,6 +11,8 @@ class ProjectLIMSPmmTab extends AbstractEditableTab {
         parent::__construct("Activity Management");
         $this->project = $project;
         $this->visibility = $visibility;
+        $this->editText = "Edit";
+        $this->saveText = "Save";
     }
 
     function canEdit() {
