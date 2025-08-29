@@ -19,6 +19,7 @@ class LIMSTaskPmm extends BackboneModel
     var $statuses;
     var $files;
     var $reviewers;
+    var $taskType;
 
     static function newFromId($id)
     {
@@ -109,6 +110,8 @@ class LIMSTaskPmm extends BackboneModel
             $this->task = $data[0]['task'];
             $this->dueDate = $data[0]['due_date'];
             $this->comments = $data[0]['comments'];
+            $this->taskType = $data[0]['task_type'];
+
             $files = DBFunctions::select(array('grand_pmm_task_assignees'),
                                          array('id', 'filename', 'type', 'assignee'),
                                          array('task_id' => $this->id));
@@ -180,6 +183,10 @@ class LIMSTaskPmm extends BackboneModel
         return substr($this->dueDate, 0, 10);
     }
 
+    function getTaskType()
+    {
+        return $this->taskType;
+    }
     function getComments()
     {
         return $this->comments;
@@ -241,6 +248,7 @@ class LIMSTaskPmm extends BackboneModel
                 'task' => $this->getTask(),
                 'dueDate' => $this->getDueDate(),
                 'details' => $this->getComments(),
+                'taskType' => $this->getTaskType(),
                 'statuses' => $this->getStatuses(),
                 'isAllowedToEdit' => $this->isAllowedToEdit(),
                 'files' => $this->getFiles(),
@@ -264,6 +272,7 @@ class LIMSTaskPmm extends BackboneModel
                     'task' => $this->task,
                     'due_date' => $this->dueDate,
                     'comments' => $this->comments,
+                    'task_type' => $this->taskType
                     // 'status' => $this->status
                 )
             );
@@ -390,6 +399,7 @@ class LIMSTaskPmm extends BackboneModel
                     'task' => $this->task,
                     'due_date' => $this->dueDate,
                     'comments' => $this->comments,
+                    'task_type' => $this->taskType
                 ),
                 array('id' => $this->id)
             );

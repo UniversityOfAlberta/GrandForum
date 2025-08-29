@@ -156,7 +156,7 @@ class ProjectPage {
                             $next = (isset($allProjects[$key+1])) ? $allProjects[$key+1] : $allProjects[0];
                         }
                     }
-                    if($prev != null && $next != null){
+                    if($prev != null && $next != null && $config->getValue('showPrevAndNextButton')){
                         $wgOut->addHTML("<a href='{$prev->getUrl()}' class='button' style='width:35px;'>Prev</a>&nbsp;<a href='{$next->getUrl()}' class='button' style='width:35px;'>Next</a>");
                     }
                 }

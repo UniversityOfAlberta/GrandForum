@@ -110,33 +110,6 @@ EOF;
         $plRow->append(new Label("{$pre}_pl_label", $config->getValue('projectTerm')." Leader", "The leader of this Project.  The person should be a valid person on this project.", VALIDATE_NOTHING));
         $plRow->append(new ComboBox("{$pre}_pl", $config->getValue('projectTerm')." Leader", "", $names, VALIDATE_NI));
         
-        $descRow = new FormTableRow("{$pre}_description_row");
-        $descRow->append(new Label("{$pre}_description_label", "Overview", "The overview of the project", VALIDATE_NOTHING));
-        $descEditorHTML = <<<EOF
-        <textarea name="{$pre}_description" style="height: 200px; width: 100%;"></textarea>
-        <script type="text/javascript">
-        $(function() {
-            $('textarea[name="{$pre}_description"]').tinymce({
-                theme: 'modern',
-                relative_urls : false,
-                convert_urls: false,
-                menubar: false,
-                plugins: 'link image charmap lists table paste wordcount',
-                toolbar: [
-                    'undo redo | bold italic underline | link charmap | table | bullist numlist outdent indent | alignleft aligncenter alignright alignjustify'
-                ],
-                paste_postprocess: function(plugin, args) {
-                    var p = $('p', args.node);
-                    p.each(function(i, el){
-                        $(el).css('line-height', 'inherit');
-                    });
-                }
-            });
-        });
-        </script>
-        EOF;
-        $descRow->append(new CustomElement("{$pre}_description", "Overview", "", $descEditorHTML, VALIDATE_NOTHING));
-        
         $longDescRow = new FormTableRow("{$pre}_long_description_row");
         $longDescRow->append(new Label("{$pre}_long_description_label", "Description", "The full description of the project", VALIDATE_NOTHING));
         $longDescEditorHTML = <<<EOF
@@ -202,7 +175,50 @@ EOF;
         $table->append($phaseRow);
         $table->append($effectiveRow);
         $table->append($plRow);
-        $table->append($descRow);
+
+        $sectionMap = $config->getValue('projectSectionMap');
+        if ($sectionMap && is_array($sectionMap)) {
+            $overviewHeaderRow = new FormTableRow("{$pre}_overview_header_row");
+            $overviewHeaderRow->append(new Label("{$pre}_overview_header_label", "Project Overview", ""));
+            $overviewHeaderRow->append(new CustomElement("{$pre}_overview_header_dummy", "", "", ""));
+            $table->append($overviewHeaderRow);
+
+            $overviewContentRow = new FormTableRow("{$pre}_overview_content_row");
+            $overviewContentRow->append(new CustomElement("{$pre}_overview_spacer", "", "", ""));
+
+            $editorsHtml = "";
+            foreach ($sectionMap as $key => $value) {
+                $title = htmlspecialchars($value[0]);
+                $textareaName = "{$pre}_description[{$key}]";
+                $editorsHtml .= <<<EOF
+                    <div style="margin-bottom: 5px; font-weight: bold;">{$title}:</div>
+                    <textarea name="{$textareaName}" style="height: 200px; width: 100%; margin-bottom: 20px;"></textarea>
+                    <script type="text/javascript">
+                    $(function() {
+                        $('textarea[name="{$textareaName}"]').tinymce({
+                            theme: 'modern',
+                            relative_urls : false,
+                            convert_urls: false,
+                            menubar: false,
+                            plugins: 'link image charmap lists table paste wordcount',
+                            toolbar: [
+                                'undo redo | bold italic underline | link charmap | table | bullist numlist outdent indent | alignleft aligncenter alignright alignjustify'
+                            ],
+                            paste_postprocess: function(plugin, args) {
+                                var p = $('p', args.node);
+                                p.each(function(i, el){
+                                    $(el).css('line-height', 'inherit');
+                                });
+                            }
+                        });
+                    });
+                    </script>
+                EOF;
+            }
+            $overviewContentRow->append(new CustomElement("{$pre}_overview_editors", "", "", $editorsHtml, VALIDATE_NOTHING));
+            $table->append($overviewContentRow);
+        }
+
         $table->append($longDescRow);
         
         $form->append($table);
@@ -232,10 +248,15 @@ EOF;
             $form->getElementById("new_phase")->setPOST("phase");
             $form->getElementById("new_effective")->setPOST("effective_date");
             $form->getElementById("new_pl")->setPOST("pl");
-            $form->getElementById("new_description")->setPOST("description");
             $form->getElementById("new_long_description")->setPOST("long_description");
             $form->getElementById("new_challenge")->setPOST("challenge");
             $form->getElementById("new_parent_id")->setPOST("parent_id");
+
+            if (isset($_POST['new_description']) && is_array($_POST['new_description'])) {
+                foreach ($_POST['new_description'] as $key => $value) {
+                    $_POST["description{$key}"] = $value;
+                }
+            }
 
             if(!APIRequest::doAction('CreateProject', true)){
                 return "There was an error Creating the Project";

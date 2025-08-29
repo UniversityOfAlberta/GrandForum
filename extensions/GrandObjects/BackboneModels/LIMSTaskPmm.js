@@ -17,6 +17,7 @@ LIMSTaskPmm = Backbone.Model.extend({
             opportunity: "",
             assignees: [],
             task: "",
+            taskType:"",
             dueDate: "",
             comments: {},
             details: "",
