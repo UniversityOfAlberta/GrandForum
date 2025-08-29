@@ -1,6 +1,18 @@
 <% if(this.model.opportunity.get('isAllowedToEdit')){ %>
     <td valign="top"><span id="deleteTask" class="delete-icon" style="margin: 7px 5px 0 5px;" title="Delete Task"></span></td>
     <td valign="top"><%= HTML.TextBox(this, 'task', {placeholder: 'Enter Task...', style: "width:100%;box-sizing:border-box;margin:0;"}) %></td>
+    <% if(isLeaderAllowedToEdit){ %>   
+    <%
+    var taskTypesOptions = ['Planning', 'Screening', 'Data Extraction', 'Analysis and Report Writing'];
+    %>
+    <td valign="top">
+        <%= HTML.Select(this, 'taskType' , { 
+            options: taskTypesOptions
+        }) %>
+    </td>
+     <% } else { %>
+    <td valign="top"><%= taskType %></td>
+    <% } %>
     <% if(isLeaderAllowedToEdit){ %>
         <%
         var memberOptions =  _.map(this.project.members.toJSON(), function(person) {
