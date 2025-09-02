@@ -193,6 +193,10 @@ LIMSTaskEditViewPmm = Backbone.View.extend({
                 toolbar: [
                     'bold | link | bullist numlist'
                 ],
+                default_link_target: "_blank",
+                rel_list: [
+                    {title: 'No Referrer No Opener', value: 'noreferrer noopener'}
+                ],
                 paste_data_images: true,
                 invalid_elements: 'h1, h2, h3, h4, h5, h6, h7, font',
                 imagemanager_insert_template : '<img src="{$url}" width="{$custom.width}" height="{$custom.height}" />',
