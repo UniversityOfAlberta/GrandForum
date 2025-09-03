@@ -675,7 +675,7 @@ class ProjectMainTab extends AbstractEditableTab {
                                     relative_urls : false,
                                     convert_urls: false,
                                     menubar: false,
-                                    default_link_target: _blank,
+                                    default_link_target: '_blank',
                                     rel_list: [
                                         {title: 'No Referrer No Opener', value: 'noreferrer noopener'}
                                     ],                                   
