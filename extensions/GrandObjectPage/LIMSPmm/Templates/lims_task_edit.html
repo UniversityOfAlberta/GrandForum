@@ -50,21 +50,23 @@
     <td valign="top" style="white-space:nowrap;"><%= HTML.DatePicker(this, 'dueDate', {format: 'yy-mm-dd', style: 'width:5em'}) %></td>
 <% } else { %>
     <td><%= task %></td>
+    <td><%= taskType %></td>
     <td>
         <% 
         var assigneesList = this.model.get('assignees'); // Assuming 'assignees' is an array of assignee objects
         if (assigneesList && assigneesList.length > 0) {
-            assigneesList.forEach(function(assignee, index) {
+            var isEveryoneAssigned = this.model.get('isEveryoneAssigned');
+            if (isEveryoneAssigned) { %>
+                <div>Everyone</div>
+            <% } else {
+                assigneesList.forEach(function(assignee, index) {
                 %>
                 <div>
-                    <% if (assignee.id === -1) { %>
-                        <%= assignee.name %>
-                    <% } else { %>
-                        <a href="<%= assignee.url %>"><%= assignee.name %></a>
-                    <% } %>
+                    <a href="<%= assignee.url %>"><%= assignee.name %></a>
                 </div>
                 <% 
             });
+            }
         } else {
             %>
             <div>No Assignees</div>
@@ -76,7 +78,7 @@
     
 <% } %>
 
-<td valign="top" style="white-space:nowrap; padding: 5px;">
+<td style="text-align: center; white-space:nowrap; padding: 5px;">
     <% if(isLeaderAllowedToEdit){ %>
         <%
             var allStatuses = this.model.get('statuses') || {};
