@@ -12,6 +12,7 @@ LIMSTaskEditViewPmm = Backbone.View.extend({
         this.model.saving = false;
         this.listenTo(this.model, "sync", this.render);
         this.listenTo(this.model, "change:assignees", this.handleAssigneeChange);
+        this.listenTo(this.model, "change:statuses", this.render);
         this.prepareDisplayState();
         this.selectTemplate();
         this.model.startTracking();
