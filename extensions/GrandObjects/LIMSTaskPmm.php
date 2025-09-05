@@ -15,7 +15,7 @@ class LIMSTaskPmm extends BackboneModel
     var $assignees;
     var $task;
     var $dueDate;
-    var $comments;
+    var $details;
     var $statuses;
     var $files;
     var $reviewers;
@@ -109,7 +109,7 @@ class LIMSTaskPmm extends BackboneModel
             // $this->assignee = $data[0]['assignee'];
             $this->task = $data[0]['task'];
             $this->dueDate = $data[0]['due_date'];
-            $this->comments = $data[0]['comments'];
+            $this->details = $data[0]['details'];
             $this->taskType = $data[0]['task_type'];
 
             $files = DBFunctions::select(array('grand_pmm_task_assignees'),
@@ -187,9 +187,9 @@ class LIMSTaskPmm extends BackboneModel
     {
         return $this->taskType;
     }
-    function getComments()
+    function getDetails()
     {
-        return $this->comments;
+        return $this->details;
     }
 
     function getStatuses()
@@ -247,12 +247,12 @@ class LIMSTaskPmm extends BackboneModel
                 'assignees' => $assignees,
                 'task' => $this->getTask(),
                 'dueDate' => $this->getDueDate(),
-                'details' => $this->getComments(),
+                'details' => $this->getDetails(),
                 'taskType' => $this->getTaskType(),
                 'statuses' => $this->getStatuses(),
                 'isAllowedToEdit' => $this->isAllowedToEdit(),
                 'files' => $this->getFiles(),
-                'reviewers' => $this->getReviewers()
+                'reviewers' => $this->getReviewers(),
             );
             return $json;
         }
@@ -271,7 +271,7 @@ class LIMSTaskPmm extends BackboneModel
                     // 'assignee' => $this->assignee,
                     'task' => $this->task,
                     'due_date' => $this->dueDate,
-                    'comments' => $this->comments,
+                    'details' => $this->details,
                     'task_type' => $this->taskType
                     // 'status' => $this->status
                 )
@@ -314,6 +314,7 @@ class LIMSTaskPmm extends BackboneModel
 
             // Assume $assignees is an array of assignee objects (or IDs, depending on how you store them)
             $assignees = $this->getAssignees();
+            error_log("woho" . json_encode($_POST['comments']));
             foreach ($assignees as $assignee) {
                 $comment = @$_POST['comments'][$assignee->id];
 
@@ -398,7 +399,7 @@ class LIMSTaskPmm extends BackboneModel
                     'opportunity' => $this->opportunity,
                     'task' => $this->task,
                     'due_date' => $this->dueDate,
-                    'comments' => $this->comments,
+                    'details' => $this->details,
                     'task_type' => $this->taskType
                 ),
                 array('id' => $this->id)
@@ -494,7 +495,8 @@ class LIMSTaskPmm extends BackboneModel
                     'grand_pmm_task_assignees',
                     $insertData);
             }
-            $assignees = $this->getAssignees();            
+            $assignees = $this->getAssignees();   
+            error_log("woho" . json_encode($_POST['comments']));         
             foreach ($assignees as $assignee) {
                 $comment = @$_POST['comments'][$assignee->id];
 
