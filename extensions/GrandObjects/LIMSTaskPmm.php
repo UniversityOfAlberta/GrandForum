@@ -20,7 +20,7 @@ class LIMSTaskPmm extends BackboneModel
     var $files;
     var $reviewers;
     var $taskType;
-    var $comments;
+    var $commentsHistory;
 
     static function newFromId($id)
     {
@@ -128,10 +128,10 @@ class LIMSTaskPmm extends BackboneModel
                                         
             foreach($existingComments as $comment){
                 $assigneeId = $comment['assignee_id'];
-                if(!isset($this->comments[$assigneeId])){
-                    $this->comments[$assigneeId] = [];
+                if(!isset($this->commentsHistory[$assigneeId])){
+                    $this->commentsHistory[$assigneeId] = [];
                 }
-                $this->comments[$assigneeId][] = $comment;
+                $this->commentsHistory[$assigneeId][] = $comment;
             }
         // $this->status = $data[0]['status'];
         }
@@ -235,8 +235,8 @@ class LIMSTaskPmm extends BackboneModel
         return LIMSOpportunityPmm::isAllowedToCreate();
     }
 
-    function getComments(){
-        return $this->comments;
+    function getCommentsHistory(){
+        return $this->commentsHistory;
     }
 
     /**
@@ -270,7 +270,7 @@ class LIMSTaskPmm extends BackboneModel
                 'isAllowedToEdit' => $this->isAllowedToEdit(),
                 'files' => $this->getFiles(),
                 'reviewers' => $this->getReviewers(),
-                'comments' => $this->getComments()
+                'commentsHistory' => $this->getCommentsHistory()
             );
             return $json;
         }

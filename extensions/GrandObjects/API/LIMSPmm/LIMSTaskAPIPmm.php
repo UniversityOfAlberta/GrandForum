@@ -40,6 +40,7 @@ class LIMSTaskAPIPmm extends RESTAPI {
             $task->taskType = $this->POST('taskType');
             $_POST['comments'] = (array)$this->POST('comments');
             $task->files = $this->POST('files');
+            $task->commentsHistory = $this->POST('commentsHistory');
             $task->create();
             return $task->toJSON();
         }
@@ -60,6 +61,7 @@ class LIMSTaskAPIPmm extends RESTAPI {
             $_POST['comments'] = (array)$this->POST('comments');
             $task->taskType = $this->POST('taskType');
             $task->files = $this->POST('files');
+            $task->commentsHistory = $this->POST('commentsHistory');
             $task->update();
             return $task->toJSON();
         }

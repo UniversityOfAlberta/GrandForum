@@ -21,7 +21,7 @@ LIMSCommentHistoryPmm = Backbone.View.extend({
 
         var assigneeId = this.assignee.get('id');
         var assigneeName = this.assignee.get('fullName');
-        var allComments = this.model.get('comments');
+        var allComments = this.model.get('commentsHistory');
         var assigneeComments = (allComments && allComments[assigneeId]) ? allComments[assigneeId] : [];
 
         this.$el.html(this.template({
