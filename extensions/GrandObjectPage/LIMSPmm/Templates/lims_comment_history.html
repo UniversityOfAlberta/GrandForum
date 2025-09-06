@@ -1,0 +1,64 @@
+<div class="comment-history-list">
+        <% if (comments && comments.length > 0) { %>
+            <% _.each(comments, function(comment) { %>
+                <div class="comment-entry">
+                    <div class="comment-author">
+                        <strong><%= membersMap[comment.sender_id] || 'Unknown User' %></strong>
+                    </div>
+                    <div class="comment-text"><%- comment.comment %></div>
+                    <div class="comment-date"><%= new Date(comment.created_at).toLocaleString() %></div>
+                </div>
+            <% }); %>
+        <% } else { %>
+            <p>No comments found for this user.</p>
+        <% } %>
+    </div>
+
+<style>
+    .comment-history-list {
+        background-color: #ffffff;
+        height: 300px;
+        overflow-y: auto;
+        margin: 12px;
+        border:2px solid #e2e8f0;
+    }
+
+    .comment-history-list .comment-entry {
+        padding-bottom: 20px;
+    }
+
+    .comment-history-list .comment-entry:first-child {
+        margin-top: 5px;
+    }
+
+    .comment-history-list .comment-entry:last-child {
+        margin-bottom: 0;
+    }
+
+    .comment-history-list .comment-author {
+        font-size: 14px;
+        font-weight: 500;
+        color: #2d3748;
+        margin-bottom: 1px;
+        padding-left: 12px;
+    }
+    
+    .comment-history-list .comment-author strong {
+        font-weight: 500;
+    }
+
+    .comment-history-list .comment-text {
+        font-size: 16px;
+        padding-left: 12px;
+        line-height: 1.5;
+        color: #1a202c;
+        background-color: #EEF2F6;
+    }
+
+    .comment-history-list .comment-date {
+        font-size: 12px;
+        color: #718096;
+        padding-left: 12px;
+        margin-top: 4px;
+    }
+</style>

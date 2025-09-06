@@ -20,6 +20,7 @@ class LIMSTaskPmm extends BackboneModel
     var $files;
     var $reviewers;
     var $taskType;
+    var $comments;
 
     static function newFromId($id)
     {
@@ -119,6 +120,18 @@ class LIMSTaskPmm extends BackboneModel
                 $file['data'] = '';
                 $file['url'] = "{$wgServer}{$wgScriptPath}/index.php?action=api.limstaskpmm/{$this->id}/files/{$file['id']}";
                 $this->files[$file['assignee']] = $file;
+            }
+            $existingComments = DBFunctions::select(array('grand_pmm_task_assignees_comments'),
+                                         array('*'),
+                                         array('task_id' => $this->id),
+                                         array('created_at' => 'DESC'));
+                                        
+            foreach($existingComments as $comment){
+                $assigneeId = $comment['assignee_id'];
+                if(!isset($this->comments[$assigneeId])){
+                    $this->comments[$assigneeId] = [];
+                }
+                $this->comments[$assigneeId][] = $comment;
             }
         // $this->status = $data[0]['status'];
         }
@@ -222,6 +235,10 @@ class LIMSTaskPmm extends BackboneModel
         return LIMSOpportunityPmm::isAllowedToCreate();
     }
 
+    function getComments(){
+        return $this->comments;
+    }
+
     /**
      * Sends an email to the assignee
      * @param Person $assignee The Person to send the email to
@@ -253,6 +270,7 @@ class LIMSTaskPmm extends BackboneModel
                 'isAllowedToEdit' => $this->isAllowedToEdit(),
                 'files' => $this->getFiles(),
                 'reviewers' => $this->getReviewers(),
+                'comments' => $this->getComments()
             );
             return $json;
         }
@@ -305,6 +323,8 @@ class LIMSTaskPmm extends BackboneModel
                     );
                 }
             }
+
+            $this->addComments((int)$me->getId());
             $this->uploadFiles();
 
            
@@ -314,12 +334,9 @@ class LIMSTaskPmm extends BackboneModel
 
             // Assume $assignees is an array of assignee objects (or IDs, depending on how you store them)
             $assignees = $this->getAssignees();
-            error_log("woho" . json_encode($_POST['comments']));
             foreach ($assignees as $assignee) {
                 $comment = @$_POST['comments'][$assignee->id];
 
-                // If assignee is an object, you can get their email like this:
-                // (Note: Adjust this based on how you retrieve the email or other relevant information)
                 
                 // Create the notification for each assignee
                 Notification::addNotification(
@@ -353,6 +370,25 @@ class LIMSTaskPmm extends BackboneModel
                                           'data' => NULL),
                                     array('task_id' => $this->id,
                                     'assignee'=>$assigneeId));
+            }
+        }
+    }
+
+    function addComments($currentUserId){
+        if (!empty($_POST['comments'])) {
+            foreach($_POST['comments'] as $assigneeId => $commentText){
+                error_log("Adding comment for assigneeId: $assigneeId, comment: $commentText"); // Debug log
+                if (trim($commentText) !== '') {
+                    DBFunctions::insert(
+                        'grand_pmm_task_assignees_comments',
+                        array(
+                            'task_id'     => $this->id,
+                            'assignee_id' => (int)$assigneeId,
+                            'sender_id'   => $currentUserId,
+                            'comment'     => $commentText
+                        )
+                    );
+                }
             }
         }
     }
@@ -495,8 +531,9 @@ class LIMSTaskPmm extends BackboneModel
                     'grand_pmm_task_assignees',
                     $insertData);
             }
-            $assignees = $this->getAssignees();   
-            error_log("woho" . json_encode($_POST['comments']));         
+            $assignees = $this->getAssignees();
+            $this->addComments((int)$me->getId());
+
             foreach ($assignees as $assignee) {
                 $comment = @$_POST['comments'][$assignee->id];
 

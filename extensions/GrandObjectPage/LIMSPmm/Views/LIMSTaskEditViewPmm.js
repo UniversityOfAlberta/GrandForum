@@ -30,7 +30,6 @@ LIMSTaskEditViewPmm = Backbone.View.extend({
             displayStatuses[assigneeId]  = primaryData.statuses[assigneeId]  || 'Assigned';
             displayFiles[assigneeId]     = _.clone(primaryData.files[assigneeId]) || {};
             displayReviewers[assigneeId] = primaryData.reviewers[assigneeId] || {};
-            displayComments[assigneeId]  = primaryData.comments[assigneeId]  || '';
         }, this);
 
         var statusValues = Object.values(displayStatuses);
@@ -174,7 +173,7 @@ LIMSTaskEditViewPmm = Backbone.View.extend({
         
         this.editDialog.dialog({
             height: $(window).height() * 0.75,
-            width: 800,
+            width: 900,
             title: "Change Task Status"
         });
 

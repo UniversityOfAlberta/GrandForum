@@ -4,7 +4,8 @@ LIMSStatusChangeViewPmm = Backbone.View.extend({
     
     events: {
         'click #cancelButton': 'closeDialog', // Button to cancel
-        'click .deleteFile': 'deleteTaskFile' // Button to delete a file
+        'click .deleteFile': 'deleteTaskFile', // Button to delete a file
+        "click .view-comment-history": "showCommentHistory"
     },
 
     initialize: function(options) {
@@ -56,6 +57,30 @@ LIMSStatusChangeViewPmm = Backbone.View.extend({
         return this.$el;
     },
 
+    showCommentHistory: function(e) {
+        e.preventDefault();
+
+        var $button = $(e.currentTarget);
+        var assigneeId= $button.data('assignee-id');
+        var assigneeModel = this.project.members.get(assigneeId);
+        var historyView = new LIMSCommentHistoryPmm({
+            model: this.model,
+            project: this.project,
+            assignee: assigneeModel
+        });
+
+        var $dialog = $('<div>').append(historyView.el);
+
+        $dialog.dialog({
+            title: "Comment History for " + assigneeModel.get('fullName'),
+            modal: true,
+            width: 400,
+            close: function() {
+                historyView.remove();
+                $(this).dialog('destroy').remove();
+            }
+        });
+    },
 
     closeDialog: function() {
         var final = {};

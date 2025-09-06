@@ -9,6 +9,9 @@ if (displayAssignees && displayAssignees.length > 0) {
                 <th>Document</th>
                 <th>Reviewer</th>
                 <th>Email Feedback</th>
+                <% if (isLeaderAllowedToEdit) { %>
+                    <th>Comment History</th>
+                <% } %>
             </tr>
         </thead>
         <tbody>
@@ -95,10 +98,20 @@ if (displayAssignees && displayAssignees.length > 0) {
                     </td>
 
                     <td valign="top" height>
-                        <% if (canCurrentUserEdit || isCurrentUserTheReviewer) { %> 
-                            <%= HTML.TextArea(this, 'comments.' + assigneeId, {placeholder: "Enter your comments here", style: "height: 75px;width:100%;box-sizing:border-box;margin:0;"}) %>
-                        <% } %>   
+                        <% if (canCurrentUserEdit || isCurrentUserTheReviewer) { %>
+                            <%= HTML.TextArea(this, 'displayComments.' + assigneeId, {placeholder: "Enter your comments here", style: "height: 75px;width:100%;box-sizing:border-box;margin:0;"}) %>
+                        <% } %>
                     </td>
+                     <% if (isLeaderAllowedToEdit) { %>
+                        <td>
+                            <button class="view-comment-history" 
+                                data-assignee-id="<%= assigneeId %>" 
+                                style="font-size: 11px;">
+                                    All Comments
+                            </button>
+                        </td>
+                        <!-- <button id="showCommentHistory" type="button">Change Status</button> -->
+                    <% } %>
                 </tr>
                 <% } %>
             <% }.bind(this)); %>
