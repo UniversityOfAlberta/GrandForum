@@ -183,6 +183,44 @@ class ProjectWikiTab extends AbstractTab {
         $this->html .= "<script type='text/javascript'>
             $('#projectFiles').dataTable({'iDisplayLength': 100, 'autoWidth': false});
         </script>";
+
+        $taskFiles = $this->project->getTaskAssigneeFiles();
+        $this->html .= "<h2>Task Assignee Files</h2>";
+
+        if (count($taskFiles) > 0) {
+            $this->html .= "<table id='projectTaskFiles' style='background:#ffffff;' cellspacing='1' cellpadding='3' frame='box' rules='all'>
+                <thead>
+                    <tr bgcolor='#F2F2F2'>
+                        <th>Filename</th>
+                        <th>Task</th>
+                        <th>Assignee</th>
+                    </tr>
+                </thead>
+                <tbody>";
+
+            foreach ($taskFiles as $file) {
+                $task = LIMSTaskPmm::newFromId($file['task_id']);
+                $assignee = Person::newFromId($file['assignee']);
+                
+                $fileTitle = Title::newFromText($file['filename'], NS_FILE);
+                $fileUrl = $fileTitle->getFullURL();
+
+                $this->html .= "<tr>";
+                $this->html .= "<td><a href='{$fileUrl}'>{$file['filename']}</a></td>";
+                $this->html .= "<td>{$task->getTask()}</td>";
+                $this->html .= "<td><a href='{$assignee->getUrl()}'>{$assignee->getNameForForms()}</a></td>";
+                $this->html .= "</tr>\n";
+            }
+
+            $this->html .= "</tbody></table>";
+
+            $this->html .= "<script type='text/javascript'>
+                $('#projectTaskFiles').dataTable({'iDisplayLength': 100, 'autoWidth': false});
+            </script>";
+
+        } else {
+            $this->html .= "<p>No files have been uploaded by task assignees for this project.</p>";
+        }
         return $this->html;
     }
 
