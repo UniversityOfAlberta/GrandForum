@@ -14,7 +14,8 @@ LIMSTaskViewPmm = Backbone.View.extend({
     },
 
     events: {
-        "click #checkStatus": "checkStatus"
+        "click #checkStatus": "checkStatus",
+        "click .download-merged-csvs": "downloadMergedCsvs"
     },
 
     updateTaskSummary: function() {
@@ -99,7 +100,26 @@ LIMSTaskViewPmm = Backbone.View.extend({
 
         return isAssignee || isReviewer || isLeader;
     },
+
+    downloadMergedCsvs: function(e) {
+        e.preventDefault();
+
+        if (!this.model || !this.model.id) {
+            alert('Error: Task ID is not available.');
+            return;
+        }
+        
+        var taskId = this.model.id;
+        var restPath = 'api.limstaskpmm/' + taskId + '/merge_csvs';
     
+        var apiUrl = wgServer 
+               + wgScriptPath 
+               + '/index.php?action=' + restPath;
+        console.log("Final URL: " + apiUrl);
+
+        window.location.href = apiUrl;
+    },
+
     render: function(){
         this.selectTemplate();
         this.updateTaskSummary()
