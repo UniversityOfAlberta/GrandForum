@@ -58,7 +58,8 @@ LIMSTaskEditViewPmm = Backbone.View.extend({
             displayPendingReviewCount: pendingReviewCount,
             displayAssignedCount: assignedCount,
             isCurrentUserAssignee: isCurrentUserAssignee,
-            isCurrentUserReviewer: isCurrentUserReviewer
+            isCurrentUserReviewer: isCurrentUserReviewer,
+            isEveryoneAssigned: isEveryoneAssigned,
         });
 
     },
@@ -76,7 +77,8 @@ LIMSTaskEditViewPmm = Backbone.View.extend({
     
     events: {
         "click #deleteTask": "deleteTask",
-        "click #changeStatusButton": "changeStatus"
+        "click #changeStatusButton": "changeStatus",
+        "change select[name=assignees]": "updateAssigneeOptions",
     },
     
     updateCounts: function() {
@@ -129,6 +131,30 @@ LIMSTaskEditViewPmm = Backbone.View.extend({
         this.model.set('reviewers', updatedReviewers);
         this.prepareDisplayState();
         this.updateCounts();
+        this.updateAssigneeOptions();
+    },
+
+    updateAssigneeOptions: function(){
+        var assigneesSelect = this.$('select[name=assignees]');
+        var selectedAssignees = assigneesSelect.val() || [];
+        if (selectedAssignees.includes('-1')) {
+            assigneesSelect.find('option').not('[value="-1"]').prop('disabled', true);
+            
+            setTimeout(function() {
+                var chosenContainer = assigneesSelect.next('.chosen-container');
+                chosenContainer.find('.chosen-choices .search-choice').each(function() {
+                    var choiceText = $(this).find('span').text().trim();
+                    if (choiceText !== 'Everyone') {
+                        $(this).hide();
+                    }
+                });
+            }, 50);
+        } else {
+            assigneesSelect.find('option').prop('disabled', false);
+            var chosenContainer = assigneesSelect.next('.chosen-container');
+            chosenContainer.find('.chosen-choices .search-choice').show();
+        }
+        assigneesSelect.trigger("chosen:updated");
     },
 
     changeStatus: function(){
@@ -179,6 +205,7 @@ LIMSTaskEditViewPmm = Backbone.View.extend({
             });
         }.bind(this));
     },
+
     isRowVisible: function() {
         var isAssignee = this.model.get('isCurrentUserAssignee');
         var isReviewer = this.model.get('isCurrentUserReviewer');
@@ -195,6 +222,7 @@ LIMSTaskEditViewPmm = Backbone.View.extend({
                 this.$el.html(this.template(this.model.toJSON()));
                 _.defer(function(){
                     this.$('select[name=assignees]').show().chosen();
+                    this.updateAssigneeOptions();
                 }.bind(this));
             }
             this.editDialog = this.$('#changeStatusDialog');

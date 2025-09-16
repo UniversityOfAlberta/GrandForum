@@ -2,25 +2,20 @@
 <td><%= taskType %></td>
 <td>
     <% 
-    var assigneesList = this.model.get('assignees'); // Assuming 'assignees' is an array of assignee objects
-    if (assigneesList && assigneesList.length > 0) {
-        assigneesList.forEach(function(assignee, index) {
-            if (assignee.id == -1) {
-            %>
-                <div>Everyone</div>
-            <%
-            } else {
-            %>
-            <div><a href="<%= assignee.url %>"><%= assignee.name %></a></div>
-            <% 
-            }
-        });
-    } else {
-        %>
-        <div>No Assignees</div>
-        <%
-    }
-    %>
+    var assigneesList = this.model.get('assignees') || [];
+    var isEveryoneAssigned = _.some(assigneesList, function(a) { return a.id === -1; });
+
+    if (isEveryoneAssigned) { %>
+        <div>Everyone</div>
+    <% } else {
+        if (assigneesList.length > 0) {
+            assigneesList.forEach(function(assignee) { %>
+                <div><a href="<%= assignee.url %>"><%= assignee.name %></a></div>
+            <% });
+        } else { %>
+            <div>No Assignees</div>
+        <% }
+    } %>
 </td>
 <td style="text-align: center;"><%= dueDate %></td>
 <td style="text-align: center; white-space:nowrap; padding: 5px;">
