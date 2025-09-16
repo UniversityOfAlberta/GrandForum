@@ -12,6 +12,7 @@ LIMSTaskEditViewPmm = Backbone.View.extend({
         this.model.saving = false;
         this.listenTo(this.model, "sync", this.render);
         this.listenTo(this.model, "change:assignees", this.handleAssigneeChange);
+        this.listenTo(this.model, "change:statuses", this.render);
         this.prepareDisplayState();
         this.selectTemplate();
         this.model.startTracking();
@@ -192,6 +193,10 @@ LIMSTaskEditViewPmm = Backbone.View.extend({
                 plugins: 'link image charmap lists table paste',
                 toolbar: [
                     'bold | link | bullist numlist'
+                ],
+                default_link_target: "_blank",
+                rel_list: [
+                    {title: 'No Referrer No Opener', value: 'noreferrer noopener'}
                 ],
                 paste_data_images: true,
                 invalid_elements: 'h1, h2, h3, h4, h5, h6, h7, font',

@@ -675,6 +675,10 @@ class ProjectMainTab extends AbstractEditableTab {
                                     relative_urls : false,
                                     convert_urls: false,
                                     menubar: false,
+                                    default_link_target: '_blank',
+                                    rel_list: [
+                                        {title: 'No Referrer No Opener', value: 'noreferrer noopener'}
+                                    ],                                   
                                     plugins: 'link image charmap lists table paste wordcount',
                                     toolbar: [
                                         'undo redo | bold italic underline | link charmap | table | bullist numlist outdent indent | alignleft aligncenter alignright alignjustify'
