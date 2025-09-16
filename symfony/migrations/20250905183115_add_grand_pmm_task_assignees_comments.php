@@ -29,6 +29,14 @@ final class AddGrandPmmTaskAssigneesComments extends AbstractMigration
 
               ->addIndex('task_id')
               ->addIndex('assignee_id')
+
+              ->addForeignKey('task_id', 'grand_pmm_task', 'id', [
+                    'delete' => 'CASCADE'
+                ])
+
+              ->addForeignKey('assignee_id', 'grand_pmm_task_assginees', 'id', [
+                    'delete' => 'CASCADE'
+                ])
               ->create();
     }
 }

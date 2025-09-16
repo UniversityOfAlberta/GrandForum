@@ -25,15 +25,15 @@ final class TaskAssginees extends AbstractMigration
               ->addColumn('status', 'string', array('limit' => 64))
               ->addIndex('task_id')
               ->addIndex('assignee')
+
+              ->addForeignKey('task_id', 'grand_pmm_task', 'id', [
+                    'delete' => 'CASCADE', 
+                ])
               ->create();
 
         $table = $this->table('grand_pmm_task');
         $table->removeColumn('assignee')
               ->removeColumn('status')
                 ->update();
-
-
-
-
     }
 }
