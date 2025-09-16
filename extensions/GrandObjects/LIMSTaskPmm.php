@@ -377,7 +377,6 @@ class LIMSTaskPmm extends BackboneModel
     function addComments($currentUserId){
         if (!empty($_POST['comments'])) {
             foreach($_POST['comments'] as $assigneeId => $commentText){
-                error_log("Adding comment for assigneeId: $assigneeId, comment: $commentText"); // Debug log
                 if (trim($commentText) !== '') {
                     DBFunctions::insert(
                         'grand_pmm_task_assignees_comments',

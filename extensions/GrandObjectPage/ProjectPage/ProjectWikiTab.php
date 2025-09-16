@@ -203,7 +203,8 @@ class ProjectWikiTab extends AbstractTab {
                 $assignee = Person::newFromId($file['assignee']);
                 
                 $fileTitle = Title::newFromText($file['filename'], NS_FILE);
-                $fileUrl = $fileTitle->getFullURL();
+                $fileUrl = "{$wgServer}{$wgScriptPath}/index.php?action=api.limstaskpmm/{$file['task_id']}/files/{$file['id']}";
+
 
                 $this->html .= "<tr>";
                 $this->html .= "<td><a href='{$fileUrl}'>{$file['filename']}</a></td>";

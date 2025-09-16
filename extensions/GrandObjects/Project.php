@@ -1227,10 +1227,6 @@ class Project extends BackboneModel {
 
 function getTaskAssigneeFiles() {
     $projectId = intval($this->id);
-
-    error_log('id ' . $projectId);
-
-    // This is the new query that joins across all the required tables.
     $sql = "SELECT a.id, a.filename, a.task_id, a.assignee
             FROM grand_project AS p
             INNER JOIN grand_pmm_contact AS c ON p.id = c.project_id
@@ -1242,7 +1238,6 @@ function getTaskAssigneeFiles() {
               AND a.filename != ''";
     
     $data = DBFunctions::execSQL($sql);
-    error_log('data' . json_encode($data));
     return $data;
 }
     
