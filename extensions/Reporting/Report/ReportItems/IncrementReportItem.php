@@ -52,7 +52,7 @@ class IncrementReportItem extends SelectReportItem {
 	            break;
 	    }
 	    
-	    if(getFaculty() == 'Faculty of Rehabilitation Medicine' && strstr($fecType, "T") !== false){
+	    if(getFaculty() == 'Rehabilitation Medicine' && strstr($fecType, "T") !== false){
 	        // FRM ATS
 	        return $options;
 	    }
@@ -184,7 +184,7 @@ class IncrementReportItem extends SelectReportItem {
 	            }
 	        });
 	    </script>";
-	    if(getFaculty() == 'Faculty of Rehabilitation Medicine' && strstr($fecType, "T") !== false){
+	    if(getFaculty() == 'Rehabilitation Medicine' && strstr($fecType, "T") !== false){
 	        // FRM ATS
 	        $this->value .= "<script type='text/javascript'>
 	            $('select[name={$this->getPostId()}]').width(100);
