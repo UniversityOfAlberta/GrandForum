@@ -115,9 +115,38 @@ LIMSTaskViewPmm = Backbone.View.extend({
         var apiUrl = wgServer 
                + wgScriptPath 
                + '/index.php?action=' + restPath;
-        console.log("Final URL: " + apiUrl);
 
-        window.location.href = apiUrl;
+        $.ajax({
+            url: apiUrl,
+            method: 'GET',
+            xhrFields: {
+                responseType: 'blob'
+            },
+            success: function(data, textStatus, xhr) {
+                var contentType = xhr.getResponseHeader('content-type');
+                if (contentType && contentType.includes('text/csv')) {
+                    var blob = new Blob([data], { type: 'text/csv' });
+                    var url = window.URL.createObjectURL(blob);
+                    var a = document.createElement('a');
+                    a.href = url;
+                    a.download = xhr.getResponseHeader('content-disposition')
+                        .split('filename=')[1].replace(/"/g, '') || 'merged_data.csv';
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    window.URL.revokeObjectURL(url);
+                }
+            },
+            error: function(xhr, textStatus, errorThrown) {
+                var errorMessage = 'An error occurred while downloading CSV files.';
+                if (xhr.status === 404) {
+                    errorMessage = 'No CSV files found for this task.';
+                } else if (xhr.status === 400) {
+                    errorMessage = 'Invalid task ID provided.';
+                }
+                alert( errorMessage);
+            }.bind(this)
+        });
     },
 
     render: function(){
