@@ -81,13 +81,12 @@ EOF;
         if ($numPhases > 1) {
             // normal dropdown
             $phaseRow->append(new Label("{$pre}_phase_label", "Phase", "What project phase the new project belongs to", VALIDATE_NOT_NULL));
-            $phaseOptions = array_combine($phaseNames, $phaseNames);
+            $phaseOptions = array_combine(range(PROJECT_PHASE, 1, -1), range(PROJECT_PHASE, 1, -1)) + array("Research" => "Research");
             $phaseField = new SelectBox("{$pre}_phase", "Phase", null, $phaseOptions, VALIDATE_NOT_NULL);
             $phaseRow->append($phaseField);
         } elseif ($numPhases === 1) {
             // if only 1 phase then just use it as default
-            $defaultValue = reset($phaseNames);
-            $hiddenInputHTML = "<input type='hidden' name='{$pre}_phase' value='{$defaultValue}'>";
+            $hiddenInputHTML = "<input type='hidden' name='{$pre}_phase' value='".PROJECT_PHASE."'>";
             $phaseField = new CustomElement("{$pre}_phase_hidden", "", "", $hiddenInputHTML, VALIDATE_NOTHING);
             $phaseRow->append($phaseField);
             $phaseRow->hide();
@@ -138,7 +137,7 @@ EOF;
             });
         });
         </script>
-        EOF;
+EOF;
         $longDescRow->append(new CustomElement("{$pre}_long_description", "Description", "", $longDescEditorHTML, VALIDATE_NOTHING));
               
         //Challenges
@@ -221,7 +220,7 @@ EOF;
                         });
                     });
                     </script>
-                EOF;
+EOF;
             }
             $overviewContentRow->append(new CustomElement("{$pre}_overview_editors", "", "", $editorsHtml, VALIDATE_NOTHING));
             $table->append($overviewContentRow);
