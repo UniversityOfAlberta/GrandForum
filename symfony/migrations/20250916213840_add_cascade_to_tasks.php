@@ -19,13 +19,14 @@ final class AddCascadeToTasks extends AbstractMigration
      */
     public function change(): void
     {
-        $assigneeTable = $this->table('grand_pmm_task_assignees');
-        $assigneeTable->changeColumn('task_id', 'integer', [
-            'signed' => false,
-        ])
-            ->addForeignKey('task_id', 'grand_pmm_task', 'id', [
-                'delete' => 'CASCADE',
-            ])
-            ->update();
+        $table = $this->table('grand_pmm_task_assignees');
+        $table->changeColumn('task_id', 'integer', [
+                  'signed' => false,
+              ])
+              ->addForeignKey('task_id', 'grand_pmm_task', 'id', [
+                  'delete' => 'CASCADE',
+              ])
+              ->addIndex(['task_id', 'assignee'], ['unique' => true])
+              ->update();
     }
 }

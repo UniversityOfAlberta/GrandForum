@@ -114,6 +114,5 @@ LIMSStatusChangeViewPmm = Backbone.View.extend({
         final.assignees = finalAssignees;
         // as assignes is modified, handleAssigneeChange will be called
         this.model.set(final);
-        this.$el.dialog('close');
     }
 });
