@@ -309,7 +309,10 @@
     
     // Number of Project Top Products
     $config->setValue("nProjectTopProducts", 10);
-    
+
+    // Show Dashboard Tab (project view) to Members (Non Project Leaders)
+    $config->setValue("showDashboardTab", true);
+
     // Which extensions to enable
     $config->setValue("extensions", array(
         //'Shibboleth',

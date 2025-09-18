@@ -111,7 +111,7 @@ class ProjectPage {
                 else if($config->getValue('networkName') != "CIC" && (strstr($project->getName(), "GIS-") === false) && $config->getValue('networkName') != "I-CONNECTS"){
                     $tabbedPage->addTab(new ProjectMilestonesTab($project, $visibility));
                 }
-                if($project->getStatus() != 'Proposed'){
+                if($project->getStatus() != 'Proposed' && $config->getValue('showDashboardTab')){
                     $tabbedPage->addTab(new ProjectDashboardTab($project, $visibility));
                 }
                 if($project->getType() != 'Administrative' && !$me->isSubRole('NOBUDGET') && $config->getValue('networkName') != "CIC" && (strstr($project->getName(), "GIS-") === false)&& $config->getValue('networkName') != "I-CONNECTS"){
@@ -125,7 +125,11 @@ class ProjectPage {
                 if(isExtensionEnabled("PMM")){
                     $tabbedPage->addTab(new ProjectLIMSPmmTab($project, $visibility));
                 }
-                if($project->getStatus() != 'Proposed' && $project->getType() != 'Administrative'){
+                if(($project->getStatus() != 'Proposed' && $project->getType() != 'Administrative') && 
+                    (
+                        $config->getValue('networkName') != 'I-CONNECTS' || 
+                        ($config->getValue('networkName') == 'I-CONNECTS' && $me->isRoleAtLeast(PL))
+                    )){
                     $tabbedPage->addTab(new ProjectVisualizationsTab($project, $visibility));
                 }
                 if($config->getValue('wikiEnabled')){
