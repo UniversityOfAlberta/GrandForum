@@ -132,7 +132,12 @@ class ApplicationsTable extends SpecialPage{
                         }
                         if(count($tokens) > 0){
                             $url = "{$wgServer}{$wgScriptPath}/index.php/Special:ReportArchive?merge=" . implode(",", $tokens) . "&cover&generatePDF&headerName={$theme->getName()}";
-                            $extra .= "<tr><td>{$theme->getAcronym()}: {$theme->getName()}</td><td><a href='$url'><img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' /></a></td></tr>";
+                            $extra .= "<tr>
+                                            <td>{$theme->getAcronym()}: {$theme->getName()}</td>
+                                            <td>
+                                                <a href='$url'><img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' /></a>
+                                                <a href='$url&doc'><img src='{$wgServer}{$wgScriptPath}/skins/word.gif' /></a>
+                                            </td></tr>";
                         }
                     }
                     $extra .= "</tbody></table>";
