@@ -33,14 +33,8 @@ final class AddCommentsTable extends AbstractMigration
                     'default' => 'CURRENT_TIMESTAMP',
                     'null' => false
                 ])
-
                 ->addIndex('task_id')
                 ->addForeignKey('task_id', 'grand_pmm_task', 'id', [
-                    'delete' => 'CASCADE'
-                ])
-
-                ->addIndex(['task_id', 'assignee_id'], ['unique' => true])
-                ->addForeignKey(['task_id', 'assignee_id'], 'grand_pmm_task_assignees', ['task_id', 'assignee'], [
                     'delete' => 'CASCADE'
                 ])
                 ->create();

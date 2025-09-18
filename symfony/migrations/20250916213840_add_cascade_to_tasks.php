@@ -26,7 +26,6 @@ final class AddCascadeToTasks extends AbstractMigration
               ->addForeignKey('task_id', 'grand_pmm_task', 'id', [
                   'delete' => 'CASCADE',
               ])
-              ->addIndex(['task_id', 'assignee'], ['unique' => true])
               ->update();
     }
 }
