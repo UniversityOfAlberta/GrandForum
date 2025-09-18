@@ -125,7 +125,11 @@ class ProjectPage {
                 if(isExtensionEnabled("PMM")){
                     $tabbedPage->addTab(new ProjectLIMSPmmTab($project, $visibility));
                 }
-                if($project->getStatus() != 'Proposed' && $project->getType() != 'Administrative' && $me->isRoleAtLeast(PL) && $config->getValue('networkName') == 'I-CONNECTS'){
+                if(($project->getStatus() != 'Proposed' && $project->getType() != 'Administrative') && 
+                    (
+                        $config->getValue('networkName') != 'I-CONNECTS' || 
+                        ($config->getValue('networkName') == 'I-CONNECTS' && $me->isRoleAtLeast(PL))
+                    )){
                     $tabbedPage->addTab(new ProjectVisualizationsTab($project, $visibility));
                 }
                 if($config->getValue('wikiEnabled')){
