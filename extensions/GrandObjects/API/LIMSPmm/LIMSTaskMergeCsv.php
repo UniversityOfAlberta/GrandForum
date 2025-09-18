@@ -41,7 +41,7 @@ class LIMSTaskMergeCSV extends RESTAPI {
                         $csv_files_data[] = [
                             'content' => $decoded_content,
                             'assignee_name' => $assigneeName,
-                            'timestamp' => $file_meta['created_at'] ?? date('Y-m-d H:i:s') // Use the timestamp from DB
+                            'timestamp' => $file_meta['created_at'] ?? date('Y-m-d H:i:s')
                         ];
                     }
                 }
