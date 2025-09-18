@@ -60,29 +60,35 @@
         <%
             var statuses = this.model.get('statuses') || {};
             var currentUserId = me.get('id');
-            var assignees = this.model.get('assignees') || [];
             var reviewers = this.model.get('reviewers') || {};
             var myStatus = null;
 
-            if (statuses[currentUserId]) {
-                myStatus = statuses[currentUserId];
-            } 
-            else {
-                var isAssignedToEveryone = _.some(assignees, function(a) { return a.id === -1; });
-                if (isAssignedToEveryone) {
-                    myStatus = statuses['-1'];
-                }
+            var myAssigneeStatus = null;
+            if (isCurrentUserAssignee) {
+                myAssigneeStatus = statuses[currentUserId] || statuses['-1'];
             }
 
-            if (myStatus === null) {
+            var reviewTaskStatus = null;
+            if (isCurrentUserReviewer) {
                 var reviewedAssigneeId = _.findKey(reviewers, function(reviewer) {
                     return reviewer && reviewer.id == currentUserId;
                 });
                 if (reviewedAssigneeId) {
-                    myStatus = statuses[reviewedAssigneeId];
+                     reviewTaskStatus = statuses[reviewedAssigneeId];
                 }
             }
 
+            if (myAssigneeStatus && myAssigneeStatus !== 'Closed') {
+                myStatus = myAssigneeStatus;
+            } else if (isCurrentUserReviewer) {
+                if (reviewTaskStatus === 'Done') {
+                    myStatus = 'Done';
+                } else {
+                    myStatus = 'Closed';
+                }
+            } else {
+                myStatus = myAssigneeStatus;
+            }
             if (myStatus === null) {
                 myStatus = 'Assigned';
             }

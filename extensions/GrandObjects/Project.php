@@ -1224,6 +1224,22 @@ class Project extends BackboneModel {
         }
         return $articles;
     }
+
+function getTaskAssigneeFiles() {
+    $projectId = intval($this->id);
+    $sql = "SELECT a.id, a.filename, a.task_id, a.assignee
+            FROM grand_project AS p
+            INNER JOIN grand_pmm_contact AS c ON p.id = c.project_id
+            INNER JOIN grand_pmm_opportunity AS o ON c.id = o.contact
+            INNER JOIN grand_pmm_task AS t ON o.id = t.opportunity
+            INNER JOIN grand_pmm_task_assignees AS a ON t.id = a.task_id
+            WHERE p.id = {$projectId}
+              AND a.filename IS NOT NULL
+              AND a.filename != ''";
+    
+    $data = DBFunctions::execSQL($sql);
+    return $data;
+}
     
     /**
      * Returns an array containing responses for being 'Up to date'

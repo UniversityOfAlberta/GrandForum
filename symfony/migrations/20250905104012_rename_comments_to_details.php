@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use Phinx\Migration\AbstractMigration;
 
-final class TaskAssginees extends AbstractMigration
+final class RenameCommentsToDetails extends AbstractMigration
 {
     /**
      * Change Method.
@@ -19,17 +19,8 @@ final class TaskAssginees extends AbstractMigration
      */
     public function change(): void
     {
-        $table = $this->table('grand_pmm_task_assginees', array('id' => 'id'));
-        $table->addColumn('task_id', 'integer')
-              ->addColumn('assignee', 'integer')
-              ->addColumn('status', 'string', array('limit' => 64))
-              ->addIndex('task_id')
-              ->addIndex('assignee')
-              ->create();
-
         $table = $this->table('grand_pmm_task');
-        $table->removeColumn('assignee')
-              ->removeColumn('status')
-                ->update();
+        $table->renameColumn('comments', 'details')
+              ->update();
     }
 }
