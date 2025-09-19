@@ -15,7 +15,7 @@ class FakeSubmitReportItem extends TextReportItem {
         $wgOut->addHTML("<div>
                             {$instructions}
                         </div><br />
-                        <a class='button' id='submit_review'>Submit</a>
+                        <button id='submit_review' type='button'>Submit</button>
                         <script type='text/javascript'>
                             $('#reportFooter').prev().hide();
                             $('#reportFooter').hide();

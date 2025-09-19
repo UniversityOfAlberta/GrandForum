@@ -179,6 +179,20 @@
                 {$item}
             ]]>
         </ReportItem>
+        <Static>
+            <![CDATA[
+                <script type='text/javascript'>
+                    setInterval(function(){
+                        if($('#download_button_SabbaticalApplication').is(':disabled')){
+                            $('#submit_review').prop('disabled', true);
+                        }
+                        else{
+                            $('#submit_review').prop('disabled', false);
+                        }
+                    }, 100);
+                </script>
+            ]]>
+        </Static>
         <ReportItem id="report_review" type="ReviewReportItem">
             <![CDATA[
                 <h2>Preview</h2>
