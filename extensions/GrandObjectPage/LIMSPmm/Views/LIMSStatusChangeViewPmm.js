@@ -3,7 +3,6 @@ LIMSStatusChangeViewPmm = Backbone.View.extend({
     project: null,
     
     events: {
-        'click #cancelButton': 'closeDialog', // Button to cancel
         'click .deleteFile': 'deleteTaskFile', // Button to delete a file
         "click .view-comment-history": "showCommentHistory"
     },

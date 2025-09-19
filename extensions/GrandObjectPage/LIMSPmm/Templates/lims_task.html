@@ -36,7 +36,6 @@
             <div style="color: #28a745; font-weight: bold;">
                 Completed
             </div>
-            <button id="checkStatus" type="button" class="btn btn-primary btn-xs">Check Status</button>
         <% } else { %>
             <div style="font-size: 12px; line-height: 1.6; margin-bottom: 5px; text-align: left;">
                 <div style="display: flex; align-items: center; white-space: nowrap;">
@@ -52,8 +51,11 @@
                     <strong style="margin-right: 4px;"><%= displayAssignedCount %></strong> Assigned
                 </div>
             </div>
-            <button id="checkStatus" type="button" class="btn btn-primary btn-xs">Check Status</button>
         <% } %>
+        <div style="display: flex; flex-direction: column; gap: 5px; margin-top: 5px;">
+            <button id="checkStatus" type="button" class="btn btn-primary btn-xs">Check Status</button>
+            <button class="download-merged-csvs" type="button" class="btn btn-primary btn-xs">Download CSVs</button>
+        </div>
 
     <% } else if (isCurrentUserAssignee || isCurrentUserReviewer) { %>
         
