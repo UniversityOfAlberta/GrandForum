@@ -109,6 +109,33 @@ EOF;
         $plRow->append(new Label("{$pre}_pl_label", $config->getValue('projectTerm')." Leader", "The leader of this Project.  The person should be a valid person on this project.", VALIDATE_NOTHING));
         $plRow->append(new ComboBox("{$pre}_pl", $config->getValue('projectTerm')." Leader", "", $names, VALIDATE_NI));
         
+        $descRow = new FormTableRow("{$pre}_description_row");
+        $descRow->append(new Label("{$pre}_description_label", "Overview", "The overview of the project", VALIDATE_NOTHING));
+        $descEditorHTML = <<<EOF
+        <textarea name="{$pre}_description" style="height: 200px; width: 100%;"></textarea>
+        <script type="text/javascript">
+        $(function() {
+            $('textarea[name="{$pre}_description"]').tinymce({
+                theme: 'modern',
+                relative_urls : false,
+                convert_urls: false,
+                menubar: false,
+                plugins: 'link image charmap lists table paste wordcount',
+                toolbar: [
+                    'undo redo | bold italic underline | link charmap | table | bullist numlist outdent indent | alignleft aligncenter alignright alignjustify'
+                ],
+                paste_postprocess: function(plugin, args) {
+                    var p = $('p', args.node);
+                    p.each(function(i, el){
+                        $(el).css('line-height', 'inherit');
+                    });
+                }
+            });
+        });
+        </script>
+EOF;
+        $descRow->append(new CustomElement("{$pre}_description", "Overview", "", $descEditorHTML, VALIDATE_NOTHING));
+        
         $longDescRow = new FormTableRow("{$pre}_long_description_row");
         $longDescRow->append(new Label("{$pre}_long_description_label", "Description", "The full description of the project", VALIDATE_NOTHING));
         $longDescEditorHTML = <<<EOF
@@ -225,6 +252,9 @@ EOF;
             $overviewContentRow->append(new CustomElement("{$pre}_overview_editors", "", "", $editorsHtml, VALIDATE_NOTHING));
             $table->append($overviewContentRow);
         }
+        else{
+            $table->append($descRow);
+        }
 
         $table->append($longDescRow);
         
@@ -255,6 +285,7 @@ EOF;
             $form->getElementById("new_phase")->setPOST("phase");
             $form->getElementById("new_effective")->setPOST("effective_date");
             $form->getElementById("new_pl")->setPOST("pl");
+            $form->getElementById("new_description")->setPOST("description");
             $form->getElementById("new_long_description")->setPOST("long_description");
             $form->getElementById("new_challenge")->setPOST("challenge");
             $form->getElementById("new_parent_id")->setPOST("parent_id");
