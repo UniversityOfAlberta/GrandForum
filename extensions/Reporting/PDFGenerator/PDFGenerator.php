@@ -983,6 +983,7 @@ EOF;
                 -dBATCH \\
                 -dNOPAUSE \\
                 -sDEVICE=pdfwrite \\
+                -dPrinted=false \\
                 -dPDFSETTINGS=/prepress \\
                 -sOutputFile=\"/tmp/{$name}{$rand}withmarks\" \"/tmp/{$name}{$rand}nomarks\" \"/tmp/{$name}{$rand}pdfmarks\""); // Add Bookmarks
         
