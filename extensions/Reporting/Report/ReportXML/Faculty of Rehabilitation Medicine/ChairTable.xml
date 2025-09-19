@@ -142,6 +142,7 @@
                         </tbody>
                         </table>
                         <hr class="pdfnodisplay" />
+                        <div class="pdfnodisplay">
                         <script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/Reporting/Report/scripts/recommendations.js'></script>
                     ]]>
                 </ReportItem>
@@ -174,6 +175,7 @@
                                 }
                             });
                         </script>
+                        </div>
                     ]]>
                 </Static>
                 <ReportItem id="submit" type="SimpleReviewSubmit" section="{$section_name}" userId="{$user_id}">
