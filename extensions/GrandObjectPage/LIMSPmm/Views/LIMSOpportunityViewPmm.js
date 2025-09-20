@@ -36,15 +36,15 @@ LIMSOpportunityViewPmm = Backbone.View.extend({
         }
         
         var payload = {
-            action: "send notifications",
+            action: "send_notification",
             filterType: filterType,
             filterValue: filterValue,
             emailContent: emailContent
         };
         
         $.ajax({
-            url: 'index.php?action=api.send_email_notification',
-            type: 'POST',
+            url: 'index.php?action=api.limsopportunitypmm/' + this.model.get('id'),
+            method: 'POST',
             data: JSON.stringify(payload),
             contentType: 'application/json',
             success: function(response) {
