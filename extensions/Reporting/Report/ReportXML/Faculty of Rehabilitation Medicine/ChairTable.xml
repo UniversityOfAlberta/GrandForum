@@ -411,14 +411,14 @@
                     
                     $(".buttons-excel").off("click");
                     $(".buttons-excel").click(function(){
-                        var _tbl = document.getElementById('chairTable').outerHTML
+                        var _tbl = document.getElementById('chairTable').outerHTML.replaceAll("height: 0px;", "");
                      
                         var excel_content = `<html><body>${_tbl}</body></html>`
                      
                         var file = new Blob([excel_content], {type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
                         var dl_anchor = document.createElement('a')
                         dl_anchor.style.display = this.nonce;
-                        dl_anchor.download = "Summary.xlsx";
+                        dl_anchor.download = "FEC Summary.xls";
                         dl_anchor.href = window.URL.createObjectURL(file);
                      
                         document.body.appendChild(dl_anchor)
@@ -641,14 +641,14 @@
                     
                     $(".buttons-excel").off("click");
                     $(".buttons-excel").click(function(){
-                        var _tbl = document.getElementById('chairTable').outerHTML
+                        var _tbl = document.getElementById('chairTable').outerHTML.replaceAll("height: 0px;", "");
                      
                         var excel_content = `<html><body>${_tbl}</body></html>`
                      
                         var file = new Blob([excel_content], {type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
                         var dl_anchor = document.createElement('a')
                         dl_anchor.style.display = this.nonce;
-                        dl_anchor.download = "Summary.xlsx";
+                        dl_anchor.download = "ATSEC Summary.xls";
                         dl_anchor.href = window.URL.createObjectURL(file);
                      
                         document.body.appendChild(dl_anchor)
