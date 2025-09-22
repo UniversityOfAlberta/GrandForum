@@ -3,15 +3,19 @@
     <Permissions>
         <Role role="CHAIR">
             <SectionPermission id="summary" permissions="rw" />
+            <SectionPermission id="atsec_summary" permissions="rw" />
         </Role>
         <Role role="EA">
             <SectionPermission id="summary" permissions="rw" />
+            <SectionPermission id="atsec_summary" permissions="rw" />
         </Role>
         <Role role="DEAN">
             <SectionPermission id="summary" permissions="" />
+            <SectionPermission id="atsec_summary" permissions="" />
         </Role>
         <Role role="DEANEA">
             <SectionPermission id="summary" permissions="" />
+            <SectionPermission id="atsec_summary" permissions="" />
         </Role>
     </Permissions>
     <ReportSection id="recommendations">
@@ -423,5 +427,235 @@
                 </script>
             ]]>
         </Static>
-    </ReportSection>  
+    </ReportSection>
+    <ReportSection id="atsec_summary" tooltip="ATSEC Summary" name="ATSEC Summary" title="ATSEC Summary" blobSection="FEC_SUMMARY" type="ReportSection">
+        <Static>
+            <![CDATA[
+                <style>
+                    table#chairTable * {
+                        font-size:11px !important;
+                    }
+                </style>
+                
+                <table id='chairTable' class='wikitable' frame='box' rules='all'>
+                    <thead>
+                        <tr>
+                            <th rowspan='2' colspan='4'>Case</th>
+                            <th rowspan='2' colspan='4'>Variances</th>
+                            <th rowspan='2' colspan='4'>Summary of Teaching</th>
+                            <th rowspan='1' colspan='7'>Students</th>
+                            <th rowspan='2' colspan='10'>Summary of Research</th>
+                            <th rowspan='2' colspan='12'>Grant Funding Record</th>
+                            <th rowspan='1' colspan='9'>Summary of Service</th>
+                        </tr>
+                        <tr>
+                            <th colspan='3'>Thesis Based - MSc</th>
+                            <th colspan='3'>Thesis Based - PhD</th>
+                            <th>Other</th>
+                            
+                            <th colspan='2'>Dept</th>
+                            <th colspan='2'>Faculty</th>
+                            <th colspan='2'>University</th>
+                            <th colspan='2'>External/Scholarly to the University</th>
+                            <th rowspan='2'>Other Services</th>
+                        </tr>
+                        <tr>
+                            <th>Case#</th>
+                            <th>Name</th>
+                            <th>Rank</th>
+                            <th>Merit Recommendation</th>
+                            
+                            <th>Teaching</th>
+                            <th>Research/scholarly activities</th>
+                            <th>Service</th>
+                            <th>Admin</th>
+                            
+                            <th># Courses Taught</th>
+                            <th>No of Students (average)</th>
+                            <th># SPOT Survey</th>
+                            <th>Other Instructional Activities</th>
+                            
+                            <th>Supervise</th>
+                            <th>Committee Mbr</th>
+                            <th>Examiner committee Mbr</th>
+                            <th>Supervise</th>
+                            <th>Committee Mbr</th>
+                            <th>Examiner committee Mbr</th>
+                            <th>Post Doc</th>
+                            
+                            <th>First or Senior Refereed</th>
+                            <th>Co-Authored Refereed</th>
+                            <th>Non-Peer Reviewed Scholarly Article</th>
+                            <th>Conference Pesentations - Invited (presenter)</th>
+                            <th>Conference Presentations - Oral/Poster/Keynote (presenter)</th>
+                            <th>Presentation Conference - Panel/Workshop/Seminar (presenter)</th>
+                            <th>Conference Pesentations - Invited (contributor)</th>
+                            <th>Conference Presentations - Oral/Poster/Keynote (contributor)</th>
+                            <th>Presentation Conference - Panel/Workshop/Seminar (contributor)</th>
+                            <th>Book or Book Chapters</th>
+
+                            <th># Total New Grants</th>
+                            <th># New PI Grants</th>
+                            <th># New Grants as Co-Investigator</th>
+                            <th># On-going grants</th>
+                            <th>New PI Funds</th>
+                            <th>New PI Funds AWARDED (Current Year)</th>
+                            <th>New Grants as Co-I - Funds</th>
+                            <th>New Grants as Co-I - Funds AWARDED (Current Year)</th>
+                            <th>Ongoing Grant Funds</th>
+                            <th>Ongoing Grant Funds AWARDED</th>
+                            <th>Total Grant $</th>
+                            <th>Total Funds AWARDED $</th>
+
+                            <th>Chair</th>
+                            <th>Member</th>
+                            <th>Chair</th>
+                            <th>Member</th>
+                            <th>Chair</th>
+                            <th>Member</th>
+                            <th>Chair</th>
+                            <th>Member</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            ]]>
+        </Static>
+        <ReportItemSet id="faculty" type="DepartmentPeopleReportItemSet" atsec="true" department="{$my_dept}" start="{$last_year}-07-01" end="{$this_year}-07-01" university="University of Alberta" excludeMe="true">
+            <Static>
+                {set(nStudents, 0)}
+                {set(nCourses, 0)}
+                {set(nSpots, 0)}
+            </Static>
+            <ReportItemSet type="PersonCourses" unique="true">
+                <Static>
+                    <![CDATA[
+                        {set(nStudents, {add({get(nStudents)}, {getCourseAllLectureEnroll()})})}
+                        {set(nCourses, {add({get(nCourses)}, 1)})}
+                    ]]>
+                </Static>
+                <ReportItemSet type="CourseSections">
+                    <If if="{!=({course_eval(false)}, )}">
+                        <Static>
+                            <![CDATA[
+                                {set(nSpots, {add({get(nSpots)}, 1)})}
+                            ]]>
+                        </Static>
+                    </If>
+                </ReportItemSet>
+            </ReportItemSet>
+            <Static>
+                <![CDATA[
+                    <tr>
+                        <td>{getExtra()}</td>
+                        <td><a href="{$user_url}" target="_blank">{$user_name}</a></td>
+                        <td>{$user_level}</td>
+                        <td align='center'>{getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)}</td>
+                        
+                        <td align='center'>{getText(RP_FEC, FEC_INFORMATION, TEACHING, 0, {$user_id}, 0)}</td>
+                        <td align='center'>{getText(RP_FEC, FEC_INFORMATION, RESEARCH, 0, {$user_id}, 0)}</td>
+                        <td align='center'>{getText(RP_FEC, FEC_INFORMATION, SERVICE, 0, {$user_id}, 0)}</td>
+                        <td align='center'>{getText(RP_FEC, FEC_INFORMATION, ADMIN, 0, {$user_id}, 0)}</td>
+                        
+                        <td align='center'>{get(nCourses)}</td>
+                        <td align='center'>{round({divide({get(nStudents)}, {max(1, {get(nCourses)})})})}</td>
+                        <td align='center'>{get(nSpots)}</td>
+                        <td align='center'>{occurrences({getArray(RP_FEC, FEC_COURSES, FEC_PROJECT_COURSES, 0, {$user_id}, 0, projectCourses)}, Array)}</td>
+                        
+                        <td align='center'>
+                            {add({getHQPCount(msc-thesis, all, Supervisor)},
+                                 {getHQPCount(msc-thesis, all, Co-Supervisor)})}
+                        </td>
+                        <td align='center'>{getHQPCount(msc-thesis, all, Supervisory-Committee member)}</td>
+                        <td align='center'>
+                            {add({getHQPCount(msc-thesis, all, Examining-Committee member)},
+                                 {getHQPCount(msc-thesis, all, Examining-Committee chair)})}
+                        </td>
+                        <td align='center'>
+                            {add({getHQPCount(phd, all, Supervisor)},
+                                 {getHQPCount(phd, all, Co-Supervisor)})}
+                        </td>
+                        <td align='center'>{getHQPCount(phd, all, Supervisory-Committee member)}</td>
+                        <td align='center'>
+                            {add({getHQPCount(phd, all, Examining-Committee member)},
+                                 {getHQPCount(phd, all, Examining-Committee chair)})}
+                        </td>
+                        <td align='center'>{$user_fellow_count}</td>
+                        
+                        <td align='center'>{getUserPublicationCount(CYCLE_START, CYCLE_END, First Author Publication)}</td>
+                        <td align='center'>{getUserPublicationCount(CYCLE_START, CYCLE_END, Co-Author Publication)}</td>
+                        <td align='center'>{getUserPublicationCount(CYCLE_START, CYCLE_END, Not Refereed)}</td>
+                        <td align='center'>{getUserPublicationCount(CYCLE_START, CYCLE_END, Conference Presentation)}</td>
+                        <td align='center'>
+                            {subtract({subtract({getUserPublicationCount(CYCLE_START, CYCLE_END, Presentation)}, {getUserPublicationCount(CYCLE_START, CYCLE_END, Conference Presentation)})},
+                                                {getUserPublicationCount(CYCLE_START, CYCLE_END, Workshop Presentation)})}
+                        </td>
+                        <td align='center'>{getUserPublicationCount(CYCLE_START, CYCLE_END, Workshop Presentation)}</td>
+                        <td align='center'>{getUserPublicationCount(CYCLE_START, CYCLE_END, Conference Presentation, false, true)}</td>
+                        <td align='center'>
+                            {subtract({subtract({getUserPublicationCount(CYCLE_START, CYCLE_END, Presentation, false, true)}, {getUserPublicationCount(CYCLE_START, CYCLE_END, Conference Presentation, false, true)})},
+                                                {getUserPublicationCount(CYCLE_START, CYCLE_END, Workshop Presentation, false, true)})}
+                        </td>
+                        <td align='center'>{getUserPublicationCount(CYCLE_START, CYCLE_END, Workshop Presentation, false, true)}</td>
+                        <td align='center'>{getUserPublicationCount(CYCLE_START, CYCLE_END, Books)}</td>
+                        
+                        <td align='center'>{user_new_grant(count, both)}</td>
+                        <td align='center'>{user_new_grant(count, pi)}</td>
+                        <td align='center'>{user_new_grant(count, copi)}</td>
+                        <td align='center'>{user_continuing_grant(count, both)}</td>
+                        <td align='right'>{number_format({user_new_grant(total, pi)})}</td>
+                        <td align='right'>{number_format({user_new_grant(average, pi)})}</td>
+                        <td align='right'>{number_format({user_new_grant(total, copi)})}</td>
+                        <td align='right'>{number_format({user_new_grant(average, copi)})}</td>
+                        <td align='right'>{number_format({user_continuing_grant(total, both)})}</td>
+                        <td align='right'>{number_format({user_continuing_grant(average, both)})}</td>
+                        <td align='right'>{number_format({add({user_new_grant(total, both)},{user_continuing_grant(total, both)})})}</td>
+                        <td align='right'>{number_format({add({user_new_grant(average, both)},{user_continuing_grant(average, both)})})}</td>
+                        
+                        <td align='center'>{getUserServiceCount(CYCLE_START, CYCLE_END, Departmental, Chair)}</td>
+                        <td align='center'>{getUserServiceCount(CYCLE_START, CYCLE_END, Departmental, Member)}</td>
+                        <td align='center'>{getUserServiceCount(CYCLE_START, CYCLE_END, Faculty, Chair)}</td>
+                        <td align='center'>{getUserServiceCount(CYCLE_START, CYCLE_END, Faculty, Member)}</td>
+                        <td align='center'>{getUserServiceCount(CYCLE_START, CYCLE_END, University, Chair)}</td>
+                        <td align='center'>{getUserServiceCount(CYCLE_START, CYCLE_END, University, Member)}</td>
+                        <td align='center'>{getUserServiceCount(CYCLE_START, CYCLE_END, Community Outreach, Chair)}</td>
+                        <td align='center'>{getUserServiceCount(CYCLE_START, CYCLE_END, Community Outreach, Member)}</td>
+                        <td align='center'>{getUserServiceCount(CYCLE_START, CYCLE_END, Other)}</td>
+                    </tr>
+                ]]>
+            </Static>
+        </ReportItemSet>
+        <Static>
+            <![CDATA[
+                    </tbody>
+                </table>
+                <script type='text/javascript'>
+                    $('#chairTable').dataTable({
+                        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                        "iDisplayLength": -1,
+                        'dom': 'Blfrtip',
+                        'scrollX': true,
+                        'buttons': [
+                            'excel'
+                        ]
+                    });
+                    
+                    $(".buttons-excel").off("click");
+                    $(".buttons-excel").click(function(){
+                        var _tbl = document.getElementById('chairTable').outerHTML
+                     
+                        var excel_content = `<html><body>${_tbl}</body></html>`
+                     
+                        var file = new Blob([excel_content], {type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+                        var dl_anchor = document.createElement('a')
+                        dl_anchor.style.display = this.nonce;
+                        dl_anchor.download = "Summary.xlsx";
+                        dl_anchor.href = window.URL.createObjectURL(file);
+                     
+                        document.body.appendChild(dl_anchor)
+                        dl_anchor.click()
+                    });
+                </script>
+            ]]>
+        </Static>
+    </ReportSection>
 </Report>
