@@ -37,7 +37,8 @@ LIMSOpportunityPmm = Backbone.Model.extend({
             // For email notifications
             filterType: "",
             filterValue: "", 
-            emailContent: ""
+            emailContent: "",
+            filterValueOptions: []
         };
     }
 

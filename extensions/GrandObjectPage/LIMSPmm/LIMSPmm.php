@@ -37,7 +37,8 @@ class LIMSPmm extends BackbonePage {
                      'LIMSTaskEditViewPmm',
                     'LIMSStatusChangeViewPmm',
                     'LIMSStatusCheckViewPmm',
-                    'LIMSCommentHistoryPmm');
+                    'LIMSCommentHistoryPmm',
+                'LIMSEmailNotificationViewPmm');
     }
     
     function getModels(){

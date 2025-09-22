@@ -6,31 +6,7 @@
     <% } %>
 </div>
 <%= description %>
-<div id="emailAccordion" style="margin-bottom: 20px;">
-  <h3>Send an Email</h3>
-  <%
-  %>
-  <div>
-    <div style="display: flex;">
-        <div>Filter Type:</div>
-        <%= HTML.Select(this, 'filterType' , { 
-            options: Object.keys(filterOptions) || [""]
-        }) %>
-    </div>
-    <div style="display: flex;">
-        <div>Filter Value:</div>
-        <%= HTML.Select(this, 'filterValue' , { 
-            options: filterOptions[this.filterType] || [""]
-        }) %>
-    </div>
-    <div>
-        <div>Email Content:</div>
-        <%= HTML.TextArea(this, 'emailContent', {
-            style: "height: 63px;width:100%;box-sizing:border-box;margin:0;"}) %>
-    </div>
-    <button>Send</button>
-  </div>
-</div>
+<div id="emailNotificationContainer"></div>
 <div id="taskContainer" style="display:none;">
     <h4>Tasks</h4>
     <table id="tasks" class="wikitable" style="width:100%;">
