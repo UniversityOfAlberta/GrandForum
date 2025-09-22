@@ -33,12 +33,7 @@ LIMSOpportunityPmm = Backbone.Model.extend({
                     url: ""},
             description: "",
             files: [],
-            isAllowedToEdit: true,
-            // For email notifications
-            filterType: "",
-            filterValue: "", 
-            emailContent: "",
-            filterValueOptions: []
+            isAllowedToEdit: true
         };
     }
 

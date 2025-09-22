@@ -9,6 +9,12 @@ LIMSOpportunityViewPmm = Backbone.View.extend({
         this.project = options.project;
         this.listenTo(this.model, "sync", this.render);
         this.listenTo(this.model.tasks, "sync", this.renderTasks);
+
+        var userRole = _.pluck(_.filter(me.get('roles'), function(el){return el.title == this.project.get("name") ||  el.role !== PL}.bind(this)), 'role');
+        var isPLAllowed = _.intersection(userRole, [PL, STAFF, MANAGER, ADMIN]).length > 0 ;
+            
+        this.model.set('isLeaderAllowedToEdit', isPLAllowed);
+
         this.template = _.template($('#lims_opportunity_template').html());
         this.emailNotificationView = new LIMSEmailNotificationViewPmm({
             opportunity: this.model,
@@ -28,13 +34,13 @@ LIMSOpportunityViewPmm = Backbone.View.extend({
     },
 
     render: function () {
-    var templateData = this.model.toJSON();
-    this.$el.html(this.template(templateData));
-    
-    this.emailNotificationView.setElement(this.$('#emailAccordion')).render();
-    
-    this.$el.addClass("opportunity");
-    return this.$el;
-}
+        var templateData = this.model.toJSON();
+        this.$el.html(this.template(templateData));
+        
+        this.emailNotificationView.setElement(this.$('#emailAccordion')).render();
+        
+        this.$el.addClass("opportunity");
+        return this.$el;
+    }
 
 });

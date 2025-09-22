@@ -6,7 +6,9 @@
     <% } %>
 </div>
 <%= description %>
-<div id="emailAccordion"></div>
+<% if (isLeaderAllowedToEdit) { %>
+    <div id="emailAccordion"></div>
+<% } %>
 <div id="taskContainer" style="display:none;">
     <h4>Tasks</h4>
     <table id="tasks" class="wikitable" style="width:100%;">

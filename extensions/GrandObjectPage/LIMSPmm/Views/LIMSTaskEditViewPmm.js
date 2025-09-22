@@ -128,7 +128,7 @@ LIMSTaskEditViewPmm = Backbone.View.extend({
 
         var currentReviewers = _.clone(this.model.get('reviewers')) || {};
         var allMembers = this.project.members.toJSON();
-        var updatedReviewers = ReviewerHelper.assignReviewersToNewUsers(allAssignees, currentReviewers, allMembers);
+        var updatedReviewers = LIMSPmmHelper.assignReviewersToNewUsers(allAssignees, currentReviewers, allMembers);
         this.model.set('reviewers', updatedReviewers);
         this.prepareDisplayState();
         this.updateCounts();

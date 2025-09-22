@@ -15,15 +15,15 @@ LIMSOpportunityEditViewPmm = Backbone.View.extend({
     },
     
     selectTemplate: function(){
+        var userRole = _.pluck(_.filter(me.get('roles'), function(el){return el.title == this.project.get("name") ||  el.role !== PL}.bind(this)), 'role');
+        var isPLAllowed = _.intersection(userRole, [PL, STAFF, MANAGER, ADMIN]).length > 0 ;
+        
+        this.model.set('isLeaderAllowedToEdit', isPLAllowed);
         if(!this.model.get('isAllowedToEdit')){
             // Not allowed to edit, use read-only version
             this.template = _.template($('#lims_opportunity_template').html());
         }
         else{
-            var userRole = _.pluck(_.filter(me.get('roles'), function(el){return el.title == this.project.get("name") ||  el.role !== PL}.bind(this)), 'role');
-            var isPLAllowed = _.intersection(userRole, [PL, STAFF, MANAGER, ADMIN]).length > 0 ;
-            
-            this.model.set('isLeaderAllowedToEdit', isPLAllowed);
             this.template = _.template($('#lims_opportunity_edit_template').html());
         }
     },
