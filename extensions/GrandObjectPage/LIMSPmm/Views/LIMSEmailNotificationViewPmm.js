@@ -115,7 +115,18 @@ LIMSEmailNotificationViewPmm = Backbone.View.extend({
         templateData.filterValueOptions = this.getFilterValueOptions();
         templateData.filterTypeOptions = this.getFilterTypeOptions();
 
+        // to prevent accordion from closing when it re renders
+        var wasActive = this.$('.email-accordion').accordion('option', 'active');
+        var isInitialized = this.$('.email-accordion').hasClass('ui-accordion');
+        
         this.$el.html(this.template(templateData));
+        
+        this.$('.email-accordion').accordion({
+            collapsible: true,
+            active: isInitialized ? wasActive : false,
+            heightStyle: "content"
+        });
+        
         this.$el.attr('style', 'margin-bottom: 20px;');
         return this;
     },

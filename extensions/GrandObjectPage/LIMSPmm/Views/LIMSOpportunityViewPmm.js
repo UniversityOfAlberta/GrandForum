@@ -28,18 +28,13 @@ LIMSOpportunityViewPmm = Backbone.View.extend({
     },
 
     render: function () {
-        var templateData = this.model.toJSON();
-        if (this.project) {
-            templateData.project = this.project.toJSON();
-        }
-        this.$el.html(this.template(templateData));
+    var templateData = this.model.toJSON();
+    this.$el.html(this.template(templateData));
+    
+    this.emailNotificationView.setElement(this.$('#emailAccordion')).render();
+    
+    this.$el.addClass("opportunity");
+    return this.$el;
+}
 
-        var $emailContainer = this.$('#emailNotificationContainer');
-
-        var emailViewHtml = this.emailNotificationView.render();
-        $emailContainer.empty().append(emailViewHtml);
-
-        this.$el.addClass("opportunity");
-        return this.$el;
-    }
 });
