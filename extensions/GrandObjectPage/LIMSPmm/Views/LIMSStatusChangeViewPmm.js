@@ -57,28 +57,7 @@ LIMSStatusChangeViewPmm = Backbone.View.extend({
     },
 
     showCommentHistory: function(e) {
-        e.preventDefault();
-
-        var $button = $(e.currentTarget);
-        var assigneeId= $button.data('assignee-id');
-        var assigneeModel = this.project.members.get(assigneeId);
-        var historyView = new LIMSCommentHistoryPmm({
-            model: this.model,
-            project: this.project,
-            assignee: assigneeModel
-        });
-
-        var $dialog = $('<div>').append(historyView.el);
-
-        $dialog.dialog({
-            title: "Comment History for " + assigneeModel.get('fullName'),
-            modal: true,
-            width: 400,
-            close: function() {
-                historyView.remove();
-                $(this).dialog('destroy').remove();
-            }
-        });
+        LIMSPmmHelper.showCommentsHistory(e, this.model, this.project);
     },
 
     closeDialog: function() {

@@ -1,0 +1,28 @@
+<div class="email-accordion">
+    <h3>Send an Email</h3>
+    <div>
+        <div style="display: flex; margin-bottom: 10px;">
+            <div style="width: 100px;">Filter Type:</div>
+            <div style="flex: 1;">
+                <%= HTML.Select(this, 'filterType', {
+                    options: filterTypeOptions
+                }) %>
+            </div>
+        </div>
+        <div style="display: flex; margin-bottom: 10px;">
+            <div style="width: 100px;">Filter Value:</div>
+            <div style="flex: 1;">
+                <%= HTML.Select(this, 'filterValue', {
+                    options: filterValueOptions
+                }) %>
+            </div>
+        </div>
+        <div style="margin-bottom: 10px;">
+            <div style="margin-bottom: 5px;">Email Content:</div>
+            <%= HTML.TextArea(this, 'emailContent', {
+                style: "height: 63px;width:100%;box-sizing:border-box;margin:0;"
+            }) %>
+        </div>
+        <button>Send</button>
+    </div>
+</div>
