@@ -1,7 +1,4 @@
 LIMSEmailNotificationViewPmm = Backbone.View.extend({
-    tagName: 'div',
-    id: 'emailAccordion',
-    
     template: null,
     events: {
         'click button': 'sendEmailNotification'
@@ -21,48 +18,9 @@ LIMSEmailNotificationViewPmm = Backbone.View.extend({
         
         this.listenTo(this.opportunity.tasks, "sync add remove", this.render);
         
-        this.template = _.template(this.getTemplateString());
+        this.template = _.template($('#lims_email_notification_view_template').html());
     },
-    
-    getTemplateString: function() {
-        return `
-            <h3>Send an Email</h3>
-            <div>
-                <div style="display: flex; margin-bottom: 10px;">
-                    <div style="width: 100px;">Filter Type:</div>
-                    <div style="flex: 1;">
-                        <%
-                        var filterTypeOptions = [
-                            {value: '', option: 'Select...'},
-                            {value: 'Task Name', option: 'Task Name'},
-                            {value: 'Task Type', option: 'Task Type'},
-                            {value: 'Assignee Status', option: 'Assignee Status'}
-                        ];
-                        %>
-                        <%= HTML.Select(this, 'filterType', {
-                            options: filterTypeOptions
-                        }) %>
-                    </div>
-                </div>
-                <div style="display: flex; margin-bottom: 10px;">
-                    <div style="width: 100px;">Filter Value:</div>
-                    <div style="flex: 1;">
-                        <%= HTML.Select(this, 'filterValue', {
-                            options: filterValueOptions
-                        }) %>
-                    </div>
-                </div>
-                <div style="margin-bottom: 10px;">
-                    <div style="margin-bottom: 5px;">Email Content:</div>
-                    <%= HTML.TextArea(this, 'emailContent', {
-                        style: "height: 63px;width:100%;box-sizing:border-box;margin:0;"
-                    }) %>
-                </div>
-                <button>Send</button>
-            </div>
-        `;
-    },
-    
+
     onFilterTypeChange: function() {
         this.model.set('filterValue', '');
         this.render();
@@ -153,20 +111,12 @@ LIMSEmailNotificationViewPmm = Backbone.View.extend({
     },
     
     render: function() {
-        var templateData = {
-            filterValueOptions: this.getFilterValueOptions(),
-            HTML: HTML
-        };
-        
+        var templateData = this.model.toJSON();
+        templateData.filterValueOptions = this.getFilterValueOptions();
+        templateData.filterTypeOptions = this.getFilterTypeOptions();
+
         this.$el.html(this.template(templateData));
         this.$el.attr('style', 'margin-bottom: 20px;');
-        
-        this.$el.accordion({
-            collapsible: true,
-            active: false,
-            heightStyle: "content"
-        });
-        
-        return this.$el;
+        return this;
     },
 });
