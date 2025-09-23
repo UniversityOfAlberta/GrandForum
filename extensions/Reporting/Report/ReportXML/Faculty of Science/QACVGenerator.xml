@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name=" " title=" " headerName=" " reportType="RP_QA2" pdfType="RPTP_QA2" pdfFiles="QACV2PDF" ajax="true">
+<Report name=" " title=" " headerName=" " reportType="RP_QA2" pdfType="RPTP_QA2" pdfFiles="QACVPDF" ajax="true">
     <Permissions>
         <Role role="DEAN">
             <SectionPermission id="fec_table" permissions="rw" />
@@ -65,7 +65,7 @@
                         <td>{$user_level}</td>
                 ]]>
             </Static>
-            <ReportItem id="profile" type="PDFReportItem" class="profilePDF downloadButton{$user_id}" reportType="QACV2PDF" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
+            <ReportItem id="profile" type="PDFReportItem" class="profilePDF downloadButton{$user_id}" reportType="QACVPDF" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
                 <![CDATA[
                         <td align='center'>
                             {$item}
@@ -141,7 +141,7 @@
                         <td>{$user_level}</td>
                 ]]>
             </Static>
-            <ReportItem id="profile" type="PDFReportItem" class="profilePDF downloadButton{$user_id}" reportType="QACV2PDF" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
+            <ReportItem id="profile" type="PDFReportItem" class="profilePDF downloadButton{$user_id}" reportType="QACVPDF" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
                 <![CDATA[
                         <td align='center'>
                             {$item}
