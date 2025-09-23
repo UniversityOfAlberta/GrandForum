@@ -274,7 +274,7 @@ class MailingList extends BackboneModel {
                         break;
                     case "LOC":
                         $found = false;
-                        foreach($person->getCurrentUniversities() as $uni){
+                        foreach($person->getCurrentUniversities(false) as $uni){
                             $uni = University::newFromName($uni['university']);
                             if($uni->getId() == $value){
                                 $found = true;
@@ -286,7 +286,7 @@ class MailingList extends BackboneModel {
                         break;
                     case "POS":
                         $found = false;
-                        foreach($person->getCurrentUniversities() as $uni){
+                        foreach($person->getCurrentUniversities(false) as $uni){
                             if($uni['position'] == $value){
                                 $found = true;
                                 break;

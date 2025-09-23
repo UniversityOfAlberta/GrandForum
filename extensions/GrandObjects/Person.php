@@ -2442,9 +2442,9 @@ class Person extends BackboneModel {
      * Returns an array of Universities that this Person is currently at
      * @return array The current Universities this Person is at
      */
-    function getCurrentUniversities(){
+    function getCurrentUniversities($neverEmpty=true){
         $unis = $this->getUniversitiesDuring(date("Y-m-d H:i:s"), date("Y-m-d H:i:s"));
-        if(count($unis) == 0){
+        if(count($unis) == 0 && $neverEmpty){
             $unis[] = $this->getUniversity();
         }
         return $unis;
