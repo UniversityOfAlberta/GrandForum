@@ -76,7 +76,8 @@ LIMSEmailNotificationViewPmm = Backbone.View.extend({
             data: JSON.stringify(payload),
             contentType: 'application/json',
             success: function(response) {
-                alert('Email notification sent successfully!');
+                var successMessage = (response && response.message) ? response.message : 'Request completed successfully.';
+                alert(successMessage);
                 this.resetForm();
             }.bind(this),
             error: function(xhr, status, error) {
