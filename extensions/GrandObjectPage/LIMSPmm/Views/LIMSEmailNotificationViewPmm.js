@@ -9,72 +9,60 @@ LIMSEmailNotificationViewPmm = Backbone.View.extend({
         this.project = options.project;
         
         this.model = new Backbone.Model({
-            filterType: '',
-            filterValue: '',
+            taskName: '',
+            taskType: '',
+            assigneeStatus: '',
             emailContent: ''
         });
-        
-        this.listenTo(this.model, 'change:filterType', this.onFilterTypeChange);
-        
+                
         this.listenTo(this.opportunity.tasks, "sync add remove", this.render);
         
         this.template = _.template($('#lims_email_notification_view_template').html());
     },
-
-    onFilterTypeChange: function() {
-        this.model.set('filterValue', '');
-        this.render();
-    },
     
-    getFilterTypeOptions: function() {
-        return [
-            {value: '', option: 'Select...'},
-            {value: 'Task Name', option: 'Task Name'},
-            {value: 'Task Type', option: 'Task Type'},
-            {value: 'Assignee Status', option: 'Assignee Status'}
-        ];
-    },
-    
-    getFilterValueOptions: function() {
-        var filterType = this.model.get('filterType');
+    getFilterOptions: function(filterType) {
         var options = [{value: '', option: 'Select...'}];
         
         if (!filterType) return options;
+
+        var allFilterOptions = {
+            'taskName': this.opportunity.tasks.pluck('task') || [],
+            'taskType': ['Planning', 'Screening', 'Data Extraction', 'Analysis and Report Writing'],
+            'assigneeStatus': ['Assigned', 'Done', 'Closed']
+        };
+
+        var filterOptions = allFilterOptions[filterType];
         
-        var filterOptions = this.getFilterOptionsData();
-        var values = filterOptions[filterType] || [];
-        
-        _.each(values, function(value) {
+        _.each(filterOptions, function(value) {
             options.push({value: value, option: value});
         });
         
         return options;
     },
-    
-    getFilterOptionsData: function() {
-        return {
-            'Task Name': this.opportunity.tasks.pluck('task') || [],
-            'Task Type': ['Planning', 'Screening', 'Data Extraction', 'Analysis and Report Writing'],
-            'Assignee Status': ['Assigned', 'Done', 'Closed']
-        };
-    },
-    
+
     sendEmailNotification: function(e) {
         e.preventDefault();
         
-        var filterType = this.model.get('filterType');
-        var filterValue = this.model.get('filterValue');
+        var taskNameOption = this.model.get('taskName');
+        var taskTypeOption = this.model.get('taskType');
+        var assigneeStatusOption = this.model.get('assigneeStatus');
+
+        var filters = {}
+
+        if (taskNameOption !== ''){ filters['taskName'] = taskNameOption }
+        if (taskTypeOption !== ''){ filters['taskType'] = taskTypeOption }
+        if (assigneeStatusOption !== ''){ filters['assigneeStatus'] = assigneeStatusOption }
+
         var emailContent = this.model.get('emailContent');
         
-        if (!filterType || !filterValue || !emailContent) {
+        if (Object.keys(filters).length === 0 || !emailContent) {
             alert('Please fill in all fields before sending.');
             return;
         }
         
         var payload = {
             action: "send_notification",
-            filterType: filterType,
-            filterValue: filterValue,
+            filters: filters,
             emailContent: emailContent
         };
         
@@ -102,8 +90,9 @@ LIMSEmailNotificationViewPmm = Backbone.View.extend({
     
     resetForm: function() {
         this.model.set({
-            filterType: '',
-            filterValue: '',
+            taskName: '',
+            taskType: '',
+            assigneeStatus: '',
             emailContent: ''
         });
         
@@ -112,8 +101,7 @@ LIMSEmailNotificationViewPmm = Backbone.View.extend({
     
     render: function() {
         var templateData = this.model.toJSON();
-        templateData.filterValueOptions = this.getFilterValueOptions();
-        templateData.filterTypeOptions = this.getFilterTypeOptions();
+        templateData.getFilterOptions = this.getFilterOptions.bind(this); 
 
         // to prevent accordion from closing when it re renders
         var wasActive = this.$('.email-accordion').accordion('option', 'active');

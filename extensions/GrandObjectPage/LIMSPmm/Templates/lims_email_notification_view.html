@@ -1,28 +1,38 @@
 <div class="email-accordion">
     <h3>Send an Email</h3>
     <div>
-        <div style="display: flex; margin-bottom: 10px;">
-            <div style="width: 100px;">Filter Type:</div>
-            <div style="flex: 1;">
-                <%= HTML.Select(this, 'filterType', {
-                    options: filterTypeOptions
+        <div style="display: flex; flex-direction: column;">
+            <div style="display: flex; margin-bottom: 10px;">
+                <div style="width: 100px;">Task Name:</div>
+                <div style="flex: 1;">
+                    <%= HTML.Select(this, 'taskName', {
+                        options: getFilterOptions('taskName')
+                    }) %>
+                </div>
+            </div>
+            <div style="display: flex; margin-bottom: 10px;">
+                <div style="width: 100px;">Task Type:</div>
+                <div style="flex: 1;">
+                    <%= HTML.Select(this, 'taskType', {
+                        options: getFilterOptions('taskType')
+                    }) %>
+                </div>
+            </div>
+            <div style="display: flex; margin-bottom: 10px;">
+                <div style="width: 100px;">Assignee Status:</div>
+                <div style="flex: 1;">
+                    <%= HTML.Select(this, 'assigneeStatus', {
+                        options: getFilterOptions('assigneeStatus')
+                    }) %>
+                </div>
+            </div>
+            <div style="margin-bottom: 10px;">
+                <div style="margin-bottom: 5px;">Email Content:</div>
+                <%= HTML.TextArea(this, 'emailContent', {
+                    style: "height: 63px;width:100%;box-sizing:border-box;margin:0;"
                 }) %>
             </div>
+            <button>Send</button>
         </div>
-        <div style="display: flex; margin-bottom: 10px;">
-            <div style="width: 100px;">Filter Value:</div>
-            <div style="flex: 1;">
-                <%= HTML.Select(this, 'filterValue', {
-                    options: filterValueOptions
-                }) %>
-            </div>
-        </div>
-        <div style="margin-bottom: 10px;">
-            <div style="margin-bottom: 5px;">Email Content:</div>
-            <%= HTML.TextArea(this, 'emailContent', {
-                style: "height: 63px;width:100%;box-sizing:border-box;margin:0;"
-            }) %>
-        </div>
-        <button>Send</button>
     </div>
 </div>
