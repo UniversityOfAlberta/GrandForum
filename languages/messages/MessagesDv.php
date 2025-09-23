@@ -1,11 +1,8 @@
 <?php
 /** Divehi (ދިވެހިބަސް)
  *
- * To improve a translation please visit https://translatewiki.net
- *
- * @ingroup Language
  * @file
- *
+ * @ingroup Languages
  */
 
 $rtl = true;
@@ -39,16 +36,17 @@ $namespaceAliases = [
 	'ޤިސްމު_ޚިޔާލު'   => NS_CATEGORY_TALK,
 ];
 
+/** @phpcs-require-sorted-array */
 $specialPageAliases = [
 	'Activeusers'               => [ 'ހަރަކާތްތެރި_މެމްބަރުން' ],
 	'Allmessages'               => [ 'ހުރިހާ_މެސެޖެއް' ],
 	'Allpages'                  => [ 'ހުރިހާ_ޞަފްޙާއެއް' ],
 	'Ancientpages'              => [ 'ބާ_ޞަފްޙާތައް' ],
 	'Blankpage'                 => [ 'ހުސް_ޞަފްޙާ' ],
+	'BlockList'                 => [ 'ބްލޮކް_ކުރެވިފައިވާ_ލިސްޓް' ],
 	'Contributions'             => [ 'ޙިއްސާ' ],
 	'CreateAccount'             => [ 'މެމްބަރުކަން_ހާސިލްކުރައްވާ' ],
 	'Emailuser'                 => [ 'މެމްބަރަށް_އީ-މެއިލް_ފޮނުވާ' ],
-	'BlockList'                 => [ 'ބްލޮކް_ކުރެވިފައިވާ_ލިސްޓް' ],
 	'Listfiles'                 => [ 'ފައިލް_ލިސްޓް' ],
 	'Log'                       => [ 'ލޮގު' ],
 	'Longpages'                 => [ 'ދިގު_ސަފްޙާތައް' ],
@@ -62,6 +60,7 @@ $specialPageAliases = [
 	'Protectedtitles'           => [ 'ދިފާޢުކުރެވިފައިވާ_ނަންތައް' ],
 	'Randompage'                => [ 'ކޮންމެވެސް_ސަފްޙާއެއް' ],
 	'Recentchanges'             => [ 'އެންމެ_ފަހުގެ_ބަދަލުތައް' ],
+	'Renameuser'                => [ 'މެމްބަރުގެ_ނަން_ބަދަލު_ކުރައްވާ' ],
 	'Search'                    => [ 'ހޯއްދަވާ' ],
 	'Shortpages'                => [ 'ކުރު_ސަފްޙާތައް' ],
 	'Specialpages'              => [ 'ޙާއްސަ_ސަފްޙާތައް' ],

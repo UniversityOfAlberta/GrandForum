@@ -6,9 +6,13 @@ use Psr\Log\AbstractLogger;
 use Psr\Log\LoggerInterface;
 
 /**
- * Wraps another spi to capture all logs generated. This can be
- * used, for example, to collect all logs generated during a
- * unit test and report them when the test fails.
+ * Wrap another Spi and keep a copy of all log messages.
+ *
+ * This is developed for use by PHPUnit bootstrapping, to collect logs
+ * generated during a given unit test, and print them after a failing test.
+ *
+ * @internal For use in MediaWiki core only
+ * @ingroup Debug
  */
 class LogCapturingSpi implements Spi {
 	/** @var LoggerInterface[] */
@@ -61,15 +65,13 @@ class LogCapturingSpi implements Spi {
 			/** @var LogCapturingSpi */
 			private $parent;
 
-			// phpcs:ignore MediaWiki.Usage.NestedFunctions.NestedFunction
 			public function __construct( $channel, LoggerInterface $logger, LogCapturingSpi $parent ) {
 				$this->channel = $channel;
 				$this->logger = $logger;
 				$this->parent = $parent;
 			}
 
-			// phpcs:ignore MediaWiki.Usage.NestedFunctions.NestedFunction
-			public function log( $level, $message, array $context = [] ) {
+			public function log( $level, $message, array $context = [] ): void {
 				$this->parent->capture( [
 					'channel' => $this->channel,
 					'level' => $level,
@@ -85,7 +87,7 @@ class LogCapturingSpi implements Spi {
 	 * @internal For use by MediaWikiIntegrationTestCase
 	 * @return Spi
 	 */
-	public function getInnerSpi() : Spi {
+	public function getInnerSpi(): Spi {
 		return $this->inner;
 	}
 
@@ -95,7 +97,7 @@ class LogCapturingSpi implements Spi {
 	 * @param LoggerInterface|null $logger
 	 * @return LoggerInterface|null
 	 */
-	public function setLoggerForTest( $channel, LoggerInterface $logger = null ) {
+	public function setLoggerForTest( $channel, ?LoggerInterface $logger = null ) {
 		$ret = $this->singletons[$channel] ?? null;
 		$this->singletons[$channel] = $logger;
 		return $ret;

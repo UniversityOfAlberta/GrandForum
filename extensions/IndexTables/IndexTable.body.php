@@ -99,7 +99,7 @@ class IndexTable {
         else if($wgLang->getCode() == "fr"){
             $storiesSubTab = TabUtils::createSubTab("Tous Les Cas", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_Stories", "$selected");
         }
-        if($wgUser->isLoggedIn() && $me->isRoleAtLeast(NI)){
+        if($wgUser->isRegistered() && $me->isRoleAtLeast(NI)){
             $tabs['Main']['subtabs'][] = $storiesSubTab;
         }
         $themesColl = new Collection(Theme::getAllThemes());
@@ -161,7 +161,7 @@ class IndexTable {
         if($wgTitle != null && str_replace("_", " ", $wgTitle->getNsText()) == "{$config->getValue('networkName')}" && !$wgOut->isDisabled()){
             $result = true;
             $this->userCanExecute($wgTitle, $wgUser, "read", $result);
-            if(!$result || !$wgUser->isLoggedIn()){
+            if(!$result || !$wgUser->isRegistered()){
                 throw new PermissionsError('read');
             }
             $wgOut->addScript("<script type='text/javascript'>
@@ -560,7 +560,7 @@ EOF;
 
     private function generateUserStoriesTable(){
         global $wgUser,$wgOut, $config;
-        if(!$wgUser->isLoggedIn()){
+        if(!$wgUser->isRegistered()){
             permissionError();
         }
         $me = Person::newFromWgUser();

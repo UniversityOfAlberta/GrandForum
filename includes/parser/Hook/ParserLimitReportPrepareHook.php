@@ -2,10 +2,13 @@
 
 namespace MediaWiki\Hook;
 
-use Parser;
-use ParserOutput;
+use MediaWiki\Parser\Parser;
+use MediaWiki\Parser\ParserOutput;
 
 /**
+ * This is a hook handler interface, see docs/Hooks.md.
+ * Use the hook name "ParserLimitReportPrepare" to register handlers implementing this interface.
+ *
  * @stable to implement
  * @ingroup Hooks
  */

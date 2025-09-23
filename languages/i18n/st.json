@@ -2,11 +2,10 @@
 	"@metadata": {
 		"authors": [
 			"Cbrown1023",
-			"Zyxoas (on st.wikipedia.org)",
+			"Coldfact",
 			"Gustave London",
-			"Amire80",
 			"Tšepo",
-			"Coldfact"
+			"Zyxoas (on st.wikipedia.org)"
 		]
 	},
 	"sunday": "Sontaha",
@@ -68,10 +67,12 @@
 	"search": "Fuputsa",
 	"searchbutton": "Batla",
 	"searcharticle": "Tsamaea",
+	"skin-view-history": "Sheba histori",
 	"history": "Nalane",
 	"history_short": "Nalane",
 	"printableversion": "Phetolelo e hatisitsoeng",
 	"edit": "Fetola",
+	"skin-view-edit": "Fetola",
 	"newpage": "Leqephe le letjha",
 	"talkpagelinktext": "bua",
 	"specialpage": "Leqephe le khethehileng",
@@ -79,6 +80,7 @@
 	"talk": "Moqoqo",
 	"views": "Maikutlo",
 	"toolbox": "Lisebelisoa",
+	"cactions": "Tse ling",
 	"categorypage": "Mpontshe leqephe la mekga",
 	"otherlanguages": "Ka maleme a mang",
 	"lastmodifiedat": "Leqephe lena le qetetse ho fetoloa ka $1 , ka $2 .",
@@ -103,6 +105,7 @@
 	"toc": "Tse kahare",
 	"red-link-title": "$1 (leqephe ha le eo)",
 	"nstab-main": "Sengolwa",
+	"nstab-user": "{{GENDER:$1|Leqephe la mosebelisi}}",
 	"nstab-special": "Leqephe le khethehileng",
 	"nstab-image": "Faele",
 	"nstab-mediawiki": "Molaetsa",
@@ -111,7 +114,6 @@
 	"mainpage-nstab": "Leqephe la pele",
 	"yourpasswordagain": "Ngola lepetjo hape:",
 	"createaccount": "Ingodisetse",
-	"createaccountmail": "ka e-mail",
 	"badretype": "Mapetjo a mabedi o a ngotseng ha a tshwane.",
 	"mailmypassword": "Nthomele password ya ka ka email",
 	"pt-login": "Ho kena",
@@ -133,7 +135,6 @@
 	"searchresults-title": "Liphetho tsa \" $1 \"",
 	"searchprofile-everything": "Tsohle",
 	"searchresultshead": "Phuputso",
-	"allowemail": "Dumella batho ba bang hore ba nthomelle di-email",
 	"recentchanges": "Liphetoho tsa morao-rao",
 	"rcshowhideminor": "$1 liphetoho tse nyane",
 	"rcshowhideanons": "$1 basebelisi ba sa tsejoeng",
@@ -156,7 +157,6 @@
 	"newpages": "Maqephe a matjha",
 	"allpages": "Maqephe ohle",
 	"categories": "Mekhahlelo",
-	"categoriespagetext": "The following {{PLURAL:$1|category contains|categories contain}} pages or media.\n[[Special:UnusedCategories|Unused categories]] are not shown here.\nAlso see [[Special:WantedCategories|wanted categories]].",
 	"emailuser": "Romela motho enwa email",
 	"emailfrom": "E tswa ho:",
 	"emailto": "Ho:",
@@ -168,7 +168,7 @@
 	"delete-legend": "Hlakola",
 	"rollbacklink": "tsosoloso",
 	"blanknamespace": "(Lehae)",
-	"contributions": "Tse ngotsweng ke motho enwa",
+	"tool-link-contributions": "Tse ngotsweng ke motho enwa",
 	"mycontris": "Tse ngotsweng ke nna",
 	"ipbreason": "Lebaka:",
 	"ipb-pages-label": "Maqephe",
@@ -194,5 +194,7 @@
 	"tooltip-ca-nstab-main": "Sheba leqephe la litaba",
 	"pageinfo-toolboxlink": "Boitsebiso ba Leqephe",
 	"specialpages": "Maqephe a khethehileng",
-	"searchsuggest-search": "Batla {{SITENAME}}"
+	"searchsuggest-search": "Batla {{SITENAME}}",
+	"searchsuggest-containing": "Batla maqephe a nang le",
+	"nstab-mainpage": "Leqephe la pele"
 }

@@ -6,6 +6,8 @@ namespace OOUI;
  * A SelectWidget is of a generic selection of options.
  *
  * Should be used in conjunction with OptionWidget
+ *
+ * @method OptionWidget[] getItems()
  */
 class SelectWidget extends Widget {
 
@@ -36,15 +38,20 @@ class SelectWidget extends Widget {
 			'oo-ui-selectWidget-unpressed',
 		] );
 		$this->setAttributes( [
-			'role' => 'listbox'
+			'role' => 'listbox',
+			'aria-multiselectable' => $this->multiselect ? 'true' : 'false',
 		] );
 
 		$this->addItems( $config['items'] );
 		parent::__construct( $config );
 	}
 
+	/**
+	 * @return OptionWidget[]|OptionWidget|null
+	 */
 	public function findSelectedItems() {
-		$selected = array_filter( $this->getItems(), function ( $item ) {
+		/** @var OptionWidget[] $selected */
+		$selected = array_filter( $this->getItems(), static function ( $item ) {
 			return $item->isSelected();
 		} );
 
@@ -55,6 +62,9 @@ class SelectWidget extends Widget {
 				null );
 	}
 
+	/**
+	 * @return OptionWidget[]|OptionWidget|null
+	 */
 	public function findSelectedItem() {
 		return $this->findSelectedItems();
 	}
@@ -68,6 +78,7 @@ class SelectWidget extends Widget {
 	 */
 	public function selectItemByData( $data = null ) {
 		$itemFromData = $this->findItemFromData( $data );
+		'@phan-var OptionWidget|null $itemFromData';
 		if ( $data === null || $itemFromData === null ) {
 			return $this->selectItem();
 		}
@@ -81,12 +92,10 @@ class SelectWidget extends Widget {
 	 * @return $this
 	 */
 	public function unselectItem( $item ) {
-		$items = $this->getItems();
-
 		if ( $item ) {
 			$item->setSelected( false );
 		} else {
-			foreach ( $items as $i ) {
+			foreach ( $this->getItems() as $i ) {
 				if ( $i->isSelected() ) {
 					$i->setSelected( false );
 				}
@@ -103,12 +112,10 @@ class SelectWidget extends Widget {
 	 * @return $this
 	 */
 	public function selectItem( $item = null ) {
-		$items = $this->getItems();
-
 		if ( $this->multiselect && $item ) {
 			$item->setSelected( true );
 		} else {
-			foreach ( $items as $i ) {
+			foreach ( $this->getItems() as $i ) {
 				$selected = $item === $i;
 				if ( $i->isSelected() !== $selected ) {
 					$i->setSelected( $selected );

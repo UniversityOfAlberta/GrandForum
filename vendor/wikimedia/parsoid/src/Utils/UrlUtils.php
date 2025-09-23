@@ -6,7 +6,7 @@ namespace Wikimedia\Parsoid\Utils;
 
 /**
  * Utilities for manipulating URLs
- * @see https://tools.ietf.org/html/rfc3986
+ * @see https://datatracker.ietf.org/doc/html/rfc3986
  */
 class UrlUtils {
 
@@ -109,7 +109,7 @@ class UrlUtils {
 	 * '/a/./b/../c/' becomes '/a/c/'.
 	 *
 	 * @see https://tools.ietf.org/html/rfc3986#section-5.2.4
-	 * @note Copied from MediaWiki's wfRemoveDotSegments
+	 * @note Copied from MediaWiki's UrlUtils::removeDotSegments()
 	 * @param string $urlPath URL path, potentially containing dot-segments
 	 * @return string URL path with all dot-segments removed
 	 */
@@ -240,4 +240,24 @@ class UrlUtils {
 		return self::assembleUrl( $t );
 	}
 
+	/**
+	 * Check whether a given URL has a domain that occurs in a given set of domains
+	 *
+	 * @param string $url
+	 * @param array $domains Array of domains (strings)
+	 * @return bool True if the host part of $url ends in one of the strings in $domains
+	 */
+	public static function matchesDomainList( string $url, array $domains ): bool {
+		$bits = self::parseUrl( $url );
+		if ( isset( $bits['authority'] ) ) {
+			$host = '.' . $bits['authority'];
+			foreach ( $domains as $domain ) {
+				$domain = '.' . $domain;
+				if ( substr( $host, -strlen( $domain ) ) === $domain ) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 }

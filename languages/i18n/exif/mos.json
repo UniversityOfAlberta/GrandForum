@@ -1,9 +1,9 @@
 {
 	"@metadata": {
 		"authors": [
-			"Soumaya",
 			"Abdul Fatawu 352",
-			"Raizkgh"
+			"Raizkgh",
+			"Soumaya"
 		]
 	},
 	"exif-imagewidth": "yalem",
@@ -34,7 +34,6 @@
 	"exif-software": "D sẽn tũnug ne programã",
 	"exif-artist": "Gulsda",
 	"exif-copyright": "Sõngr sẽn yaa to-to",
-	"exif-exifversion": "Exif version",
 	"exif-flashpixversion": "Flashpix version sẽn deegd",
 	"exif-colorspace": "Rõnd sẽn be zĩigã",
 	"exif-componentsconfiguration": "Sõngr fãa võor",
@@ -264,5 +263,31 @@
 	"exif-urgency-normal": "Ya woto ($1)",
 	"exif-urgency-low": "A sẽn pa tar ligd wʋsgo ($1)",
 	"exif-urgency-high": "Wʋsgo ($1)",
-	"exif-urgency-other": "Sõngd-y n ges y sẽn segd n maan bũmb ningã yelle ($1)"
+	"exif-urgency-other": "Sõngd-y n ges y sẽn segd n maan bũmb ningã yelle ($1)",
+	"exif-firstphotodate": "Pipi fotã kibsã",
+	"exif-lastphotodate": "Foto wã sẽn zĩnd wakat sẽn loogã",
+	"exif-projectiontype": "Tʋʋmd sẽn be zĩig ning",
+	"exif-projectiontype-equirectangular": "Tʋʋm-vɩɩs sẽn yaa to-to",
+	"exif-usepanoramaviewer": "Sebr-y panorama gesg",
+	"exif-usepanoramaviewer-true": "N-ye",
+	"exif-usepanoramaviewer-false": "Pa",
+	"exif-exposurelockused": "B sẽn tũnug ne bãensã",
+	"exif-exposurelockused-true": "N-ye",
+	"exif-exposurelockused-false": "Pa",
+	"exif-poseheadingdegrees": "Dɩlla sẽn yaa to-to",
+	"exif-posepitchdegrees": "Dɩlla (grãns)",
+	"exif-poserolldegrees": "Rõnd (grãns)",
+	"exif-initialviewheadingdegrees": "Dɩlla sɩngre gom-zugu gesgo",
+	"exif-initialviewpitchdegrees": "Dɩlla sɩngre gom-zugu gesgo",
+	"exif-initialviewrolldegrees": "Dɩlla sɩngre gom-zugu gesgo",
+	"exif-initialverticalfovdegrees": "Dãk-y n ges-y bũmb nins sẽn be b sẽn pa tõe n maan bũmb ninsã yelle.",
+	"exif-sourcephotoscount": "Foto wã sõor sẽn yit sorã",
+	"exif-croppedareaimagewidthpixels": "Paaroma sẽn kẽed ne b sẽn yãkã",
+	"exif-croppedareaimageheightpixels": "Panorama sẽn yãg n yãg n gesã",
+	"exif-fullpanowidthpixels": "Pãrãma sẽn yaa to-to",
+	"exif-fullpanoheightpixels": "Panorama sẽn be zĩig sẽn zãre",
+	"exif-croppedarealeftpixels": "Panorama rɩtgã kood",
+	"exif-croppedareatoppixels": "Panorama sẽn yaa kãsenga",
+	"exif-initialcameradolly": "Sɩngr camera dolly",
+	"exif-stitchingsoftware": "Dɩt-y n ges-y b sẽn maand to-to wã"
 }

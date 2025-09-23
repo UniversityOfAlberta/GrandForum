@@ -1,7 +1,5 @@
 <?php
 /**
- * Implements Special:Mostlinked
- *
  * Copyright © 2005 Ævar Arnfjörð Bjarmason, 2006 Rob Church
  *
  * This program is free software; you can redistribute it and/or modify
@@ -20,22 +18,48 @@
  * http://www.gnu.org/copyleft/gpl.html
  *
  * @file
- * @ingroup SpecialPage
- * @author Ævar Arnfjörð Bjarmason <avarab@gmail.com>
- * @author Rob Church <robchur@gmail.com>
  */
 
+namespace MediaWiki\Specials;
+
+use MediaWiki\Cache\LinkBatchFactory;
+use MediaWiki\Html\Html;
+use MediaWiki\Linker\Linker;
+use MediaWiki\Linker\LinksMigration;
+use MediaWiki\SpecialPage\QueryPage;
+use MediaWiki\SpecialPage\SpecialPage;
+use MediaWiki\Title\Title;
+use Skin;
+use stdClass;
+use Wikimedia\Rdbms\IConnectionProvider;
 use Wikimedia\Rdbms\IDatabase;
 use Wikimedia\Rdbms\IResultWrapper;
 
 /**
- * A special page to show pages ordered by the number of pages linking to them.
+ * List of pages ordered by the number of pages linking to them.
  *
  * @ingroup SpecialPage
+ * @author Ævar Arnfjörð Bjarmason <avarab@gmail.com>
+ * @author Rob Church <robchur@gmail.com>
  */
 class SpecialMostLinked extends QueryPage {
-	public function __construct( $name = 'Mostlinked' ) {
-		parent::__construct( $name );
+
+	private LinksMigration $linksMigration;
+
+	/**
+	 * @param IConnectionProvider $dbProvider
+	 * @param LinkBatchFactory $linkBatchFactory
+	 * @param LinksMigration $linksMigration
+	 */
+	public function __construct(
+		IConnectionProvider $dbProvider,
+		LinkBatchFactory $linkBatchFactory,
+		LinksMigration $linksMigration
+	) {
+		parent::__construct( 'Mostlinked' );
+		$this->setDatabaseProvider( $dbProvider );
+		$this->setLinkBatchFactory( $linkBatchFactory );
+		$this->linksMigration = $linksMigration;
 	}
 
 	public function isExpensive() {
@@ -47,30 +71,20 @@ class SpecialMostLinked extends QueryPage {
 	}
 
 	public function getQueryInfo() {
+		[ $ns, $title ] = $this->linksMigration->getTitleFields( 'pagelinks' );
+		$queryInfo = $this->linksMigration->getQueryInfo( 'pagelinks' );
 		return [
-			'tables' => [ 'pagelinks', 'page' ],
+			'tables' => $queryInfo['tables'],
 			'fields' => [
-				'namespace' => 'pl_namespace',
-				'title' => 'pl_title',
-				'value' => 'COUNT(*)',
-				'page_namespace'
+				'namespace' => $ns,
+				'title' => $title,
+				'value' => 'COUNT(*)'
 			],
 			'options' => [
 				'HAVING' => 'COUNT(*) > 1',
-				'GROUP BY' => [
-					'pl_namespace', 'pl_title',
-					'page_namespace'
-				]
+				'GROUP BY' => [ $ns, $title ],
 			],
-			'join_conds' => [
-				'page' => [
-					'LEFT JOIN',
-					[
-						'page_namespace = pl_namespace',
-						'page_title = pl_title'
-					]
-				]
-			]
+			'join_conds' => $queryInfo['joins'],
 		];
 	}
 
@@ -103,7 +117,7 @@ class SpecialMostLinked extends QueryPage {
 	 * and the "what links here" page for it
 	 *
 	 * @param Skin $skin Skin to be used
-	 * @param object $result Result row
+	 * @param stdClass $result Result row
 	 * @return string
 	 */
 	public function formatResult( $skin, $result ) {
@@ -133,3 +147,9 @@ class SpecialMostLinked extends QueryPage {
 		return 'highuse';
 	}
 }
+
+/**
+ * Retain the old class name for backwards compatibility.
+ * @deprecated since 1.41
+ */
+class_alias( SpecialMostLinked::class, 'SpecialMostLinked' );

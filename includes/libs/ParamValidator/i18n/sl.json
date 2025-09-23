@@ -29,6 +29,7 @@
 	"paramvalidator-maxbytes": "Vrednost za parameter »$1« ne sme biti daljša od $3 {{PLURAL:$3|zloga|zlogov}} (bila je $4).",
 	"paramvalidator-maxchars": "Vrednost za parameter »$1« ne sme biti daljša od $3 ({{PLURAL:$3|znaka|znakov}}) (bila je $4).",
 	"paramvalidator-missingparam": "Parameter »$1« mora biti določen.",
+	"paramvalidator-notmulti": "Parameter »$1« sprejma samo eno vrednost. Ločevanje z več vrednostmi U+001F se lahko uporablja samo za parametre z več vrednostmi.",
 	"paramvalidator-outofrange-max": "Vrednost »$2« za parameter »$1« ne sme biti večja od $4.",
 	"paramvalidator-outofrange-minmax": "Vrednost »$2« za parameter »$1« mora biti med $3 in $4.",
 	"paramvalidator-outofrange-min": "Vrednost »$2« za parameter »$1« ne sme biti manjša od $3.",

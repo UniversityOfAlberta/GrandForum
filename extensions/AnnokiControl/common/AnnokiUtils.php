@@ -1,4 +1,7 @@
 <?php
+
+use MediaWiki\MediaWikiServices;
+
 /** 
  * Convenience class for common Annoki functions used across numerous extensions.
  * @package Annoki
@@ -18,12 +21,12 @@ class AnnokiUtils {
    * @return array An array of all users of the wiki.
    */
   static function getAllUsers() {
-    $dbr = wfGetDB( DB_REPLICA );
+    $dbr = MediaWikiServices::getInstance()->getConnectionProvider()->getReplicaDatabase();
     $ipblocks = $dbr->tableName('ipblocks');
     $userTable = $dbr->tableName('user');
     $result = $dbr->select("$userTable LEFT JOIN $ipblocks ON user_id = ipb_user", 'user_name, ipb_user');
      
-    while ($row = $dbr->fetchRow($result)) {
+    while ($row = $result->fetchRow()) {
       if ($row[1] == null) {
 	$users[] = $row[0];
       }
@@ -42,11 +45,11 @@ class AnnokiUtils {
   static function getAllAuthorsForTitle($title){
       $id = $title->getArticleID();
       
-      $dbr = wfGetDB( DB_REPLICA );
+      $dbr = MediaWikiServices::getInstance()->getConnectionProvider()->getReplicaDatabase();
       $result = $dbr->select('revision', 'distinct rev_user_text', "rev_page='$id'");
       $authors = array();
       
-      while ($row = $dbr->fetchRow($result)){
+      while ($row = $result->fetchRow()){
 	  $authors[] = $row['rev_user_text'];
       }
       

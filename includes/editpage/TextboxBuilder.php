@@ -1,9 +1,5 @@
 <?php
 /**
- * Helps EditPage build textboxes
- *
- * (C) Copyright 2017 Kunal Mehta <legoktm@member.fsf.org>
- *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -25,14 +21,17 @@
 namespace MediaWiki\EditPage;
 
 use MediaWiki\MediaWikiServices;
-use Sanitizer;
-use Title;
-use User;
+use MediaWiki\Page\PageIdentity;
+use MediaWiki\Parser\Sanitizer;
+use MediaWiki\Title\Title;
+use MediaWiki\User\UserIdentity;
 
 /**
  * Helps EditPage build textboxes
  *
+ * @newable
  * @since 1.31
+ * @author Kunal Mehta <legoktm@debian.org>
  */
 class TextboxBuilder {
 
@@ -46,8 +45,7 @@ class TextboxBuilder {
 			// is awkward.
 			// But don't add a newline if the text is empty, or Firefox in XHTML
 			// mode will show an extra newline. A bit annoying.
-			$wikitext .= "\n";
-			return $wikitext;
+			return $wikitext . "\n";
 		}
 		return $wikitext;
 	}
@@ -69,24 +67,25 @@ class TextboxBuilder {
 	}
 
 	/**
-	 * @param Title $title
+	 * @param PageIdentity $page
 	 * @return string[]
 	 */
-	public function getTextboxProtectionCSSClasses( Title $title ) {
+	public function getTextboxProtectionCSSClasses( PageIdentity $page ) {
 		$classes = []; // Textarea CSS
-		if ( $title->isProtected( 'edit' ) &&
-			MediaWikiServices::getInstance()->getPermissionManager()
-				->getNamespaceRestrictionLevels( $title->getNamespace() ) !== [ '' ]
+		$services = MediaWikiServices::getInstance();
+		if ( $services->getRestrictionStore()->isProtected( $page, 'edit' ) &&
+			$services->getPermissionManager()
+				->getNamespaceRestrictionLevels( $page->getNamespace() ) !== [ '' ]
 		) {
 			# Is the title semi-protected?
-			if ( $title->isSemiProtected() ) {
+			if ( $services->getRestrictionStore()->isSemiProtected( $page ) ) {
 				$classes[] = 'mw-textarea-sprotected';
 			} else {
 				# Then it must be protected based on static groups (regular)
 				$classes[] = 'mw-textarea-protected';
 			}
 			# Is the title cascade-protected?
-			if ( $title->isCascadeProtected() ) {
+			if ( $services->getRestrictionStore()->isCascadeProtected( $page ) ) {
 				$classes[] = 'mw-textarea-cprotected';
 			}
 		}
@@ -97,26 +96,29 @@ class TextboxBuilder {
 	/**
 	 * @param string $name
 	 * @param mixed[] $customAttribs
-	 * @param User $user
-	 * @param Title $title
+	 * @param UserIdentity $user
+	 * @param PageIdentity $page
 	 * @return mixed[]
 	 */
-	public function buildTextboxAttribs( $name, array $customAttribs, User $user, Title $title ) {
+	public function buildTextboxAttribs(
+		$name, array $customAttribs, UserIdentity $user, PageIdentity $page
+	) {
 		$attribs = $customAttribs + [
-				'accesskey' => ',',
-				'id' => $name,
-				'cols' => 80,
-				'rows' => 25,
-				// Avoid PHP notices when appending preferences
-				// (appending allows customAttribs['style'] to still work).
-				'style' => ''
-			];
+			'accesskey' => ',',
+			'id' => $name,
+			'cols' => 80,
+			'rows' => 25,
+			// Avoid PHP notices when appending preferences
+			// (appending allows customAttribs['style'] to still work).
+			'style' => ''
+		];
 
 		// The following classes can be used here:
 		// * mw-editfont-monospace
 		// * mw-editfont-sans-serif
 		// * mw-editfont-serif
-		$class = 'mw-editfont-' . $user->getOption( 'editfont' );
+		$userOptionsLookup = MediaWikiServices::getInstance()->getUserOptionsLookup();
+		$class = 'mw-editfont-' . $userOptionsLookup->getOption( $user, 'editfont' );
 
 		if ( isset( $attribs['class'] ) ) {
 			if ( is_string( $attribs['class'] ) ) {
@@ -128,6 +130,7 @@ class TextboxBuilder {
 			$attribs['class'] = $class;
 		}
 
+		$title = Title::newFromPageIdentity( $page );
 		$pageLang = $title->getPageLanguage();
 		$attribs['lang'] = $pageLang->getHtmlCode();
 		$attribs['dir'] = $pageLang->getDir();

@@ -2,8 +2,8 @@
 
 namespace MediaWiki\ParamValidator\TypeDef;
 
-use ApiResult;
-use NamespaceInfo;
+use MediaWiki\Api\ApiResult;
+use MediaWiki\Title\NamespaceInfo;
 use Wikimedia\ParamValidator\Callbacks;
 use Wikimedia\ParamValidator\ParamValidator;
 use Wikimedia\ParamValidator\TypeDef\EnumDef;
@@ -59,7 +59,7 @@ class NamespaceDef extends EnumDef {
 		return parent::normalizeSettings( $settings );
 	}
 
-	public function checkSettings( string $name, $settings, array $options, array $ret ) : array {
+	public function checkSettings( string $name, $settings, array $options, array $ret ): array {
 		$ret = parent::checkSettings( $name, $settings, $options, $ret );
 
 		$ret['allowedKeys'] = array_merge( $ret['allowedKeys'], [

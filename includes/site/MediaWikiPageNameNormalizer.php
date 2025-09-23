@@ -1,14 +1,5 @@
 <?php
-
-namespace MediaWiki\Site;
-
-use FormatJson;
-use Http;
-use UtfNormal\Validator;
-
 /**
- * Service for normalizing a page name using a MediaWiki api.
- *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -24,9 +15,21 @@ use UtfNormal\Validator;
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  * http://www.gnu.org/copyleft/gpl.html
  *
- * @since 1.27
+ * @file
+ */
+
+namespace MediaWiki\Site;
+
+use InvalidArgumentException;
+use MediaWiki\Http\HttpRequestFactory;
+use MediaWiki\Json\FormatJson;
+use MediaWiki\MediaWikiServices;
+use UtfNormal\Validator;
+
+/**
+ * Service for normalizing a page name via a MediaWiki action API.
  *
- * @license GPL-2.0-or-later
+ * @since 1.27
  * @author John Erling Blad < jeblad@gmail.com >
  * @author Daniel Kinzler
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
@@ -34,26 +37,29 @@ use UtfNormal\Validator;
  */
 class MediaWikiPageNameNormalizer {
 
-	/**
-	 * @var Http
-	 */
-	private $http;
+	public const FOLLOW_REDIRECT = 1;
+	public const NOFOLLOW_REDIRECT = 2;
 
 	/**
-	 * @param Http|null $http
+	 * @var HttpRequestFactory
 	 */
-	public function __construct( Http $http = null ) {
-		if ( !$http ) {
-			$http = new Http();
+	private $httpRequestFactory;
+
+	/**
+	 * @param HttpRequestFactory|null $httpRequestFactory
+	 */
+	public function __construct( $httpRequestFactory = null ) {
+		if ( !$httpRequestFactory instanceof HttpRequestFactory ) {
+			$httpRequestFactory = MediaWikiServices::getInstance()->getHttpRequestFactory();
 		}
-
-		$this->http = $http;
+		$this->httpRequestFactory = $httpRequestFactory;
 	}
 
 	/**
 	 * Returns the normalized form of the given page title, using the
-	 * normalization rules of the given site. If the given title is a redirect,
-	 * the redirect will be resolved and the redirect target is returned.
+	 * normalization rules of the given site. If $followRedirect is set to self::FOLLOW_REDIRECT (default)
+	 * and the given title is a redirect, the redirect will be resolved and
+	 * the redirect target is returned.
 	 * Only titles of existing pages will be returned.
 	 *
 	 * @note This actually makes an API request to the remote site, so beware
@@ -62,19 +68,23 @@ class MediaWikiPageNameNormalizer {
 	 * @see Site::normalizePageName
 	 *
 	 * @since 1.27
+	 * @since 1.37 Added $followRedirect
 	 *
 	 * @param string $pageName
 	 * @param string $apiUrl
+	 * @param int $followRedirect either self::FOLLOW_REDIRECT or self::NOFOLLOW_REDIRECT
 	 *
 	 * @return string|false The normalized form of the title,
 	 * or false to indicate an invalid title, a missing page,
 	 * or some other kind of error.
-	 * @throws \MWException
 	 */
-	public function normalizePageName( $pageName, $apiUrl ) {
-		// Check if we have strings as arguments.
-		if ( !is_string( $pageName ) ) {
-			throw new \MWException( '$pageName must be a string' );
+	public function normalizePageName( string $pageName, $apiUrl, $followRedirect = self::FOLLOW_REDIRECT ) {
+		if ( $followRedirect === self::FOLLOW_REDIRECT ) {
+			$redirects = true;
+		} elseif ( $followRedirect === self::NOFOLLOW_REDIRECT ) {
+			$redirects = false;
+		} else {
+			throw new InvalidArgumentException( '$followRedirect is not properly set: ' . $followRedirect );
 		}
 
 		// Go on call the external site
@@ -88,7 +98,7 @@ class MediaWikiPageNameNormalizer {
 		$args = [
 			'action' => 'query',
 			'prop' => 'info',
-			'redirects' => true,
+			'redirects' => $redirects,
 			'converttitles' => true,
 			'format' => 'json',
 			'titles' => $pageName,
@@ -103,9 +113,9 @@ class MediaWikiPageNameNormalizer {
 
 		// Go on call the external site
 		// @todo we need a good way to specify a timeout here.
-		$ret = $this->http->get( $url, [], __METHOD__ );
+		$ret = $this->httpRequestFactory->get( $url, [], __METHOD__ );
 
-		if ( $ret === false ) {
+		if ( $ret === null ) {
 			wfDebugLog( "MediaWikiSite", "call to external site failed: $url" );
 			return false;
 		}
@@ -178,7 +188,7 @@ class MediaWikiPageNameNormalizer {
 			// Filter the substructure down to what we actually are using.
 			$collectedHits = array_filter(
 				array_values( $externalData['query'][$listId] ),
-				function ( $a ) use ( $fieldId, $pageTitle ) {
+				static function ( $a ) use ( $fieldId, $pageTitle ) {
 					return $a[$fieldId] === $pageTitle;
 				}
 			);

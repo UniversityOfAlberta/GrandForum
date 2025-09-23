@@ -22,7 +22,7 @@ class PersonStoryAPI extends RESTAPI {
 
     function doPOST(){
 /*        global $wgUser;
-        if($wgUser->isLoggedIn()){
+        if($wgUser->isRegistered()){
             $product = Paper::newFromId($this->getParam('id'));
             $person = Person::newFromId($this->getParam('personId'));
             $serializedAuthors = $product->authors;
@@ -55,7 +55,7 @@ class PersonStoryAPI extends RESTAPI {
 
     function doDELETE(){
         /*global $wgUser;
-        if($wgUser->isLoggedIn()){
+        if($wgUser->isRegistered()){
             $product = Paper::newFromId($this->getParam('id'));
             $person = Person::newFromId($this->getParam('personId'));
             $serializedAuthors = $product->authors;

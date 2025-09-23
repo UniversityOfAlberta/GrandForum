@@ -1,11 +1,8 @@
 <?php
 /** Korean (Democratic People's Republic of Korea) (조선말)
  *
- * To improve a translation please visit https://translatewiki.net
- *
- * @ingroup Language
  * @file
- *
+ * @ingroup Languages
  */
 
 $fallback = 'ko';

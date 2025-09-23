@@ -1,11 +1,8 @@
 <?php
-/** Buginese (ᨅᨔ ᨕᨘᨁᨗ)
+/** Buginese (Basa Ugi)
  *
- * To improve a translation please visit https://translatewiki.net
- *
- * @ingroup Language
  * @file
- *
+ * @ingroup Languages
  */
 
 $fallback = 'id';

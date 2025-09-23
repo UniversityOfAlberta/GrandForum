@@ -41,7 +41,18 @@
  * @ingroup FileBackend
  */
 
+namespace Wikimedia\FileBackend;
+
+use MapCacheLRU;
+use Shellbox\Command\BoxedCommand;
+use Shellbox\Shellbox;
+use StatusValue;
 use Wikimedia\AtEase\AtEase;
+use Wikimedia\FileBackend\FileIteration\FSFileBackendDirList;
+use Wikimedia\FileBackend\FileIteration\FSFileBackendFileList;
+use Wikimedia\FileBackend\FileOpHandle\FSFileOpHandle;
+use Wikimedia\FileBackend\FSFile\FSFile;
+use Wikimedia\FileBackend\FSFile\TempFSFile;
 use Wikimedia\Timestamp\ConvertibleTimestamp;
 
 /**
@@ -61,13 +72,13 @@ use Wikimedia\Timestamp\ConvertibleTimestamp;
  * @since 1.19
  */
 class FSFileBackend extends FileBackendStore {
-	/** @var MapCacheLRU Cache for known prepared/usable directorries */
+	/** @var MapCacheLRU Cache for known prepared/usable directories */
 	protected $usableDirCache;
 
-	/** @var string Directory holding the container directories */
+	/** @var string|null Directory holding the container directories */
 	protected $basePath;
 
-	/** @var array Map of container names to root paths for custom container paths */
+	/** @var array<string,string> Map of container names to root paths for custom container paths */
 	protected $containerPaths;
 
 	/** @var int Directory permission mode */
@@ -77,7 +88,7 @@ class FSFileBackend extends FileBackendStore {
 	/** @var string Required OS username to own files */
 	protected $fileOwner;
 
-	/** @var bool Simpler version of PHP_OS_FAMILY */
+	/** @var string Simpler version of PHP_OS_FAMILY */
 	protected $os;
 	/** @var string OS username running this script */
 	protected $currentUser;
@@ -135,7 +146,7 @@ class FSFileBackend extends FileBackendStore {
 	protected function resolveContainerPath( $container, $relStoragePath ) {
 		// Check that container has a root directory
 		if ( isset( $this->containerPaths[$container] ) || isset( $this->basePath ) ) {
-			// Check for sane relative paths (assume the base paths are OK)
+			// Check for sensible relative paths (assume the base paths are OK)
 			if ( $this->isLegalRelPath( $relStoragePath ) ) {
 				return $relStoragePath;
 			}
@@ -145,7 +156,7 @@ class FSFileBackend extends FileBackendStore {
 	}
 
 	/**
-	 * Sanity check a relative file system path for validity
+	 * Check a relative file system path for validity
 	 *
 	 * @param string $fsPath Normalized relative path
 	 * @return bool
@@ -183,15 +194,15 @@ class FSFileBackend extends FileBackendStore {
 	/**
 	 * Get the absolute file system path for a storage path
 	 *
-	 * @param string $storagePath Storage path
+	 * @param string $storagePath
 	 * @return string|null
 	 */
 	protected function resolveToFSPath( $storagePath ) {
-		list( $fullCont, $relPath ) = $this->resolveStoragePathReal( $storagePath );
+		[ $fullCont, $relPath ] = $this->resolveStoragePathReal( $storagePath );
 		if ( $relPath === null ) {
 			return null; // invalid
 		}
-		list( , $shortCont, ) = FileBackend::splitStoragePath( $storagePath );
+		[ , $shortCont, ] = FileBackend::splitStoragePath( $storagePath );
 		$fsPath = $this->containerFSRoot( $shortCont, $fullCont ); // must be valid
 		if ( $relPath != '' ) {
 			$fsPath .= "/{$relPath}";
@@ -289,7 +300,7 @@ class FSFileBackend extends FileBackendStore {
 		if ( $fsSrcPath === $fsDstPath ) {
 			$status->fatal( 'backend-fail-internal', $this->name );
 
-			return $status; // sanity
+			return $status;
 		}
 
 		if ( !empty( $params['async'] ) ) { // deferred
@@ -480,14 +491,11 @@ class FSFileBackend extends FileBackendStore {
 	}
 
 	/**
-	 * @param string $fullCont
-	 * @param string $dirRel
-	 * @param array $params
-	 * @return StatusValue
+	 * @inheritDoc
 	 */
 	protected function doPrepareInternal( $fullCont, $dirRel, array $params ) {
 		$status = $this->newStatus();
-		list( , $shortCont, ) = FileBackend::splitStoragePath( $params['dir'] );
+		[ , $shortCont, ] = FileBackend::splitStoragePath( $params['dir'] );
 		$contRoot = $this->containerFSRoot( $shortCont, $fullCont ); // must be valid
 		$fsDirectory = ( $dirRel != '' ) ? "{$contRoot}/{$dirRel}" : $contRoot;
 		// Create the directory and its parents as needed...
@@ -514,7 +522,7 @@ class FSFileBackend extends FileBackendStore {
 			$status->merge( $this->doSecureInternal( $fullCont, $dirRel, $params ) );
 		}
 
-		if ( $status->isOK() ) {
+		if ( $status->isGood() ) {
 			$this->usableDirCache->set( $fsDirectory, 1 );
 		}
 
@@ -523,7 +531,7 @@ class FSFileBackend extends FileBackendStore {
 
 	protected function doSecureInternal( $fullCont, $dirRel, array $params ) {
 		$status = $this->newStatus();
-		list( , $shortCont, ) = FileBackend::splitStoragePath( $params['dir'] );
+		[ , $shortCont, ] = FileBackend::splitStoragePath( $params['dir'] );
 		$contRoot = $this->containerFSRoot( $shortCont, $fullCont ); // must be valid
 		$fsDirectory = ( $dirRel != '' ) ? "{$contRoot}/{$dirRel}" : $contRoot;
 		// Seed new directories with a blank index.html, to prevent crawling...
@@ -551,7 +559,7 @@ class FSFileBackend extends FileBackendStore {
 
 	protected function doPublishInternal( $fullCont, $dirRel, array $params ) {
 		$status = $this->newStatus();
-		list( , $shortCont, ) = FileBackend::splitStoragePath( $params['dir'] );
+		[ , $shortCont, ] = FileBackend::splitStoragePath( $params['dir'] );
 		$contRoot = $this->containerFSRoot( $shortCont, $fullCont ); // must be valid
 		$fsDirectory = ( $dirRel != '' ) ? "{$contRoot}/{$dirRel}" : $contRoot;
 		// Unseed new directories with a blank index.html, to allow crawling...
@@ -575,7 +583,7 @@ class FSFileBackend extends FileBackendStore {
 
 	protected function doCleanInternal( $fullCont, $dirRel, array $params ) {
 		$status = $this->newStatus();
-		list( , $shortCont, ) = FileBackend::splitStoragePath( $params['dir'] );
+		[ , $shortCont, ] = FileBackend::splitStoragePath( $params['dir'] );
 		$contRoot = $this->containerFSRoot( $shortCont, $fullCont ); // must be valid
 		$fsDirectory = ( $dirRel != '' ) ? "{$contRoot}/{$dirRel}" : $contRoot;
 
@@ -587,7 +595,7 @@ class FSFileBackend extends FileBackendStore {
 	protected function doGetFileStat( array $params ) {
 		$fsSrcPath = $this->resolveToFSPath( $params['src'] );
 		if ( $fsSrcPath === null ) {
-			return self::$RES_ERROR; // invalid storage path
+			return self::RES_ERROR; // invalid storage path
 		}
 
 		$this->trapWarnings(); // don't trust 'false' if there were errors
@@ -603,10 +611,10 @@ class FSFileBackend extends FileBackendStore {
 			];
 		}
 
-		return $hadError ? self::$RES_ERROR : self::$RES_ABSENT;
+		return $hadError ? self::RES_ERROR : self::RES_ABSENT;
 	}
 
-	protected function doClearCache( array $paths = null ) {
+	protected function doClearCache( ?array $paths = null ) {
 		if ( is_array( $paths ) ) {
 			foreach ( $paths as $path ) {
 				$fsPath = $this->resolveToFSPath( $path );
@@ -622,7 +630,7 @@ class FSFileBackend extends FileBackendStore {
 	}
 
 	protected function doDirectoryExists( $fullCont, $dirRel, array $params ) {
-		list( , $shortCont, ) = FileBackend::splitStoragePath( $params['dir'] );
+		[ , $shortCont, ] = FileBackend::splitStoragePath( $params['dir'] );
 		$contRoot = $this->containerFSRoot( $shortCont, $fullCont ); // must be valid
 		$fsDirectory = ( $dirRel != '' ) ? "{$contRoot}/{$dirRel}" : $contRoot;
 
@@ -630,7 +638,7 @@ class FSFileBackend extends FileBackendStore {
 		$exists = is_dir( $fsDirectory );
 		$hadError = $this->untrapWarnings();
 
-		return $hadError ? self::$RES_ERROR : $exists;
+		return $hadError ? self::RES_ERROR : $exists;
 	}
 
 	/**
@@ -641,7 +649,7 @@ class FSFileBackend extends FileBackendStore {
 	 * @return array|FSFileBackendDirList|null
 	 */
 	public function getDirectoryListInternal( $fullCont, $dirRel, array $params ) {
-		list( , $shortCont, ) = FileBackend::splitStoragePath( $params['dir'] );
+		[ , $shortCont, ] = FileBackend::splitStoragePath( $params['dir'] );
 		$contRoot = $this->containerFSRoot( $shortCont, $fullCont ); // must be valid
 		$fsDirectory = ( $dirRel != '' ) ? "{$contRoot}/{$dirRel}" : $contRoot;
 
@@ -655,11 +663,11 @@ class FSFileBackend extends FileBackendStore {
 			} elseif ( is_dir( $fsDirectory ) ) {
 				$this->logger->warning( __METHOD__ . ": unreadable directory: '$fsDirectory'" );
 
-				return self::$RES_ERROR; // bad permissions?
+				return self::RES_ERROR; // bad permissions?
 			} else {
 				$this->logger->warning( __METHOD__ . ": unreachable directory: '$fsDirectory'" );
 
-				return self::$RES_ERROR;
+				return self::RES_ERROR;
 			}
 		}
 
@@ -674,7 +682,7 @@ class FSFileBackend extends FileBackendStore {
 	 * @return array|FSFileBackendFileList|null
 	 */
 	public function getFileListInternal( $fullCont, $dirRel, array $params ) {
-		list( , $shortCont, ) = FileBackend::splitStoragePath( $params['dir'] );
+		[ , $shortCont, ] = FileBackend::splitStoragePath( $params['dir'] );
 		$contRoot = $this->containerFSRoot( $shortCont, $fullCont ); // must be valid
 		$fsDirectory = ( $dirRel != '' ) ? "{$contRoot}/{$dirRel}" : $contRoot;
 
@@ -689,12 +697,12 @@ class FSFileBackend extends FileBackendStore {
 				$this->logger->warning( __METHOD__ .
 					": unreadable directory: '$fsDirectory': $error" );
 
-				return self::$RES_ERROR; // bad permissions?
+				return self::RES_ERROR; // bad permissions?
 			} else {
 				$this->logger->warning( __METHOD__ .
 					": unreachable directory: '$fsDirectory': $error" );
 
-				return self::$RES_ERROR;
+				return self::RES_ERROR;
 			}
 		}
 
@@ -707,7 +715,7 @@ class FSFileBackend extends FileBackendStore {
 		foreach ( $params['srcs'] as $src ) {
 			$source = $this->resolveToFSPath( $src );
 			if ( $source === null ) {
-				$fsFiles[$src] = self::$RES_ERROR; // invalid path
+				$fsFiles[$src] = self::RES_ERROR; // invalid path
 				continue;
 			}
 
@@ -718,9 +726,9 @@ class FSFileBackend extends FileBackendStore {
 			if ( $isFile ) {
 				$fsFiles[$src] = new FSFile( $source );
 			} elseif ( $hadError ) {
-				$fsFiles[$src] = self::$RES_ERROR;
+				$fsFiles[$src] = self::RES_ERROR;
 			} else {
-				$fsFiles[$src] = self::$RES_ABSENT;
+				$fsFiles[$src] = self::RES_ABSENT;
 			}
 		}
 
@@ -733,14 +741,14 @@ class FSFileBackend extends FileBackendStore {
 		foreach ( $params['srcs'] as $src ) {
 			$source = $this->resolveToFSPath( $src );
 			if ( $source === null ) {
-				$tmpFiles[$src] = self::$RES_ERROR; // invalid path
+				$tmpFiles[$src] = self::RES_ERROR; // invalid path
 				continue;
 			}
 			// Create a new temporary file with the same extension...
 			$ext = FileBackend::extensionFromPath( $src );
 			$tmpFile = $this->tmpFileFactory->newTempFSFile( 'localcopy_', $ext );
 			if ( !$tmpFile ) {
-				$tmpFiles[$src] = self::$RES_ERROR;
+				$tmpFiles[$src] = self::RES_ERROR;
 				continue;
 			}
 
@@ -755,13 +763,24 @@ class FSFileBackend extends FileBackendStore {
 				$this->chmod( $tmpPath );
 				$tmpFiles[$src] = $tmpFile;
 			} elseif ( $hadError ) {
-				$tmpFiles[$src] = self::$RES_ERROR; // copy failed
+				$tmpFiles[$src] = self::RES_ERROR; // copy failed
 			} else {
-				$tmpFiles[$src] = self::$RES_ABSENT;
+				$tmpFiles[$src] = self::RES_ABSENT;
 			}
 		}
 
 		return $tmpFiles;
+	}
+
+	public function addShellboxInputFile( BoxedCommand $command, string $boxedName,
+		array $params
+	) {
+		$path = $this->resolveToFSPath( $params['src'] );
+		if ( $path === null ) {
+			return $this->newStatus( 'backend-fail-invalidpath', $params['src'] );
+		}
+		$command->inputFileFromFile( $boxedName, $path );
+		return $this->newStatus();
 	}
 
 	protected function directoriesAreVirtual() {
@@ -814,7 +833,7 @@ class FSFileBackend extends FileBackendStore {
 	/**
 	 * @param string $fsSrcPath Absolute file system path
 	 * @param string $fsDstPath Absolute file system path
-	 * @param bool $ignoreMissing Whether to no-op if the source file is non-existant
+	 * @param bool $ignoreMissing Whether to no-op if the source file is non-existent
 	 * @return string Command
 	 */
 	private function makeCopyCommand( $fsSrcPath, $fsDstPath, $ignoreMissing ) {
@@ -822,9 +841,9 @@ class FSFileBackend extends FileBackendStore {
 		// inode are unaffected since it writes to a new inode, and (c) new threads reading
 		// the file will either totally see the old version or totally see the new version
 		$fsStagePath = $this->makeStagingPath( $fsDstPath );
-		$encSrc = escapeshellarg( $this->cleanPathSlashes( $fsSrcPath ) );
-		$encStage = escapeshellarg( $this->cleanPathSlashes( $fsStagePath ) );
-		$encDst = escapeshellarg( $this->cleanPathSlashes( $fsDstPath ) );
+		$encSrc = Shellbox::escape( $this->cleanPathSlashes( $fsSrcPath ) );
+		$encStage = Shellbox::escape( $this->cleanPathSlashes( $fsStagePath ) );
+		$encDst = Shellbox::escape( $this->cleanPathSlashes( $fsDstPath ) );
 		if ( $this->os === 'Windows' ) {
 			// https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/copy
 			// https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/move
@@ -848,14 +867,14 @@ class FSFileBackend extends FileBackendStore {
 	/**
 	 * @param string $fsSrcPath Absolute file system path
 	 * @param string $fsDstPath Absolute file system path
-	 * @param bool $ignoreMissing Whether to no-op if the source file is non-existant
+	 * @param bool $ignoreMissing Whether to no-op if the source file is non-existent
 	 * @return string Command
 	 */
 	private function makeMoveCommand( $fsSrcPath, $fsDstPath, $ignoreMissing = false ) {
 		// https://manpages.debian.org/buster/coreutils/mv.1.en.html
 		// https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/move
-		$encSrc = escapeshellarg( $this->cleanPathSlashes( $fsSrcPath ) );
-		$encDst	= escapeshellarg( $this->cleanPathSlashes( $fsDstPath ) );
+		$encSrc = Shellbox::escape( $this->cleanPathSlashes( $fsSrcPath ) );
+		$encDst = Shellbox::escape( $this->cleanPathSlashes( $fsDstPath ) );
 		if ( $this->os === 'Windows' ) {
 			$writeCmd = "MOVE /Y $encSrc $encDst 2>&1";
 			$cmd = $ignoreMissing ? "IF EXIST $encSrc $writeCmd" : $writeCmd;
@@ -869,13 +888,13 @@ class FSFileBackend extends FileBackendStore {
 
 	/**
 	 * @param string $fsPath Absolute file system path
-	 * @param bool $ignoreMissing Whether to no-op if the file is non-existant
+	 * @param bool $ignoreMissing Whether to no-op if the file is non-existent
 	 * @return string Command
 	 */
 	private function makeUnlinkCommand( $fsPath, $ignoreMissing = false ) {
 		// https://manpages.debian.org/buster/coreutils/rm.1.en.html
 		// https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/del
-		$encSrc = escapeshellarg( $this->cleanPathSlashes( $fsPath ) );
+		$encSrc = Shellbox::escape( $this->cleanPathSlashes( $fsPath ) );
 		if ( $this->os === 'Windows' ) {
 			$writeCmd = "DEL /Q $encSrc 2>&1";
 			$cmd = $ignoreMissing ? "IF EXIST $encSrc $writeCmd" : $writeCmd;
@@ -968,13 +987,14 @@ class FSFileBackend extends FileBackendStore {
 	 * @return string
 	 */
 	protected function htaccessPrivate() {
-		return "Deny from all\n";
+		return "Require all denied\n" .
+			"Satisfy All\n";
 	}
 
 	/**
 	 * Clean up directory separators for the given OS
 	 *
-	 * @param string $fsPath FS path
+	 * @param string $fsPath
 	 * @return string
 	 */
 	protected function cleanPathSlashes( $fsPath ) {
@@ -1050,3 +1070,6 @@ class FSFileBackend extends FileBackendStore {
 		return (bool)preg_match( $this->getFileNotFoundRegex(), $error );
 	}
 }
+
+/** @deprecated class alias since 1.43 */
+class_alias( FSFileBackend::class, 'FSFileBackend' );

@@ -1,7 +1,5 @@
 <?php
 /**
- * Tajik (Тоҷикӣ) specific code.
- *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -18,16 +16,16 @@
  * http://www.gnu.org/copyleft/gpl.html
  *
  * @file
- * @ingroup Language
  */
 
 /**
- * Converts Tajiki to Latin orthography
+ * Tajik (Тоҷикӣ) specific code, converting Tajiki to Latin orthography.
  *
- * @ingroup Language
+ * @ingroup Languages
  */
 class TgConverter extends LanguageConverter {
-	private $table = [
+
+	private const TABLE = [
 		'а' => 'a',
 		'б' => 'b',
 		'в' => 'v',
@@ -103,17 +101,21 @@ class TgConverter extends LanguageConverter {
 		'Ц' => 'Ts',
 	];
 
-	/**
-	 * @param Language $langobj
-	 */
-	public function __construct( $langobj ) {
-		$variants = [ 'tg', 'tg-latn' ];
-		parent::__construct( $langobj, 'tg', $variants );
+	public function getMainCode(): string {
+		return 'tg';
 	}
 
-	protected function loadDefaultTables() {
-		$this->mTables = [
-			'tg-latn' => new ReplacementArray( $this->table ),
+	public function getLanguageVariants(): array {
+		return [ 'tg', 'tg-latn' ];
+	}
+
+	public function getVariantsFallbacks(): array {
+		return [];
+	}
+
+	protected function loadDefaultTables(): array {
+		return [
+			'tg-latn' => new ReplacementArray( self::TABLE ),
 			'tg' => new ReplacementArray()
 		];
 	}

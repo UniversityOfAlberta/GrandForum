@@ -2,10 +2,9 @@
 
 namespace Test\Parsoid\Ext\Nowiki;
 
-use DOMDocument;
-use DOMElement;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Wikimedia\Parsoid\DOM\Element;
 use Wikimedia\Parsoid\Ext\Nowiki\Nowiki;
 use Wikimedia\Parsoid\Ext\ParsoidExtensionAPI;
 use Wikimedia\Parsoid\Html2Wt\SerializerState;
@@ -19,10 +18,10 @@ class NowikiTest extends TestCase {
 	 * Create a DOM document with the given HTML body and return the given node within it.
 	 * @param string $html
 	 * @param string $selector
-	 * @return DOMElement
+	 * @return Element
 	 */
-	private function getNode( $html = '<div id="main"></div>', $selector = '#main' ) {
-		$document = new DOMDocument();
+	private function getNode( string $html = '<div id="main"></div>', string $selector = '#main' ): Element {
+		$document = DOMCompat::newDocument( true );
 		$document->loadHTML( "<html><body>$html</body></html>" );
 		return DOMCompat::querySelector( $document, $selector );
 	}
@@ -57,7 +56,7 @@ class NowikiTest extends TestCase {
 		$doc = $nowiki->sourceToDom( $extApi, 'ab[[cd]]e', [] );
 		$span = DOMCompat::querySelector( $doc, 'span' );
 		$this->assertNotNull( $span );
-		$this->assertSame( 'mw:Nowiki', $span->getAttribute( 'typeof' ) );
+		$this->assertSame( 'mw:Nowiki', DOMCompat::getAttribute( $span, 'typeof' ) );
 		$this->assertSame( 'ab[[cd]]e', $span->textContent );
 
 		$env = new MockEnv( [] );
@@ -67,7 +66,7 @@ class NowikiTest extends TestCase {
 		$this->assertNotNull( $span );
 		$span2 = DOMCompat::querySelector( $span, 'span' );
 		$this->assertNotNull( $span2 );
-		$this->assertSame( 'mw:Entity', $span2->getAttribute( 'typeof' ) );
+		$this->assertSame( 'mw:Entity', DOMCompat::getAttribute( $span2, 'typeof' ) );
 		$this->assertSame( '&', $span2->textContent );
 		$this->assertSame( 'foo&bar', $span->textContent );
 	}

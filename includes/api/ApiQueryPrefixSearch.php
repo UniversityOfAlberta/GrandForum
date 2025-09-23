@@ -20,17 +20,28 @@
  * @since 1.23
  */
 
+namespace MediaWiki\Api;
+
+use SearchEngine;
+use SearchEngineConfig;
+use SearchEngineFactory;
+
 /**
  * @ingroup API
  */
 class ApiQueryPrefixSearch extends ApiQueryGeneratorBase {
-	use SearchApi;
+	use \MediaWiki\Api\SearchApi;
 
-	/** @var array list of api allowed params */
-	private $allowedParams;
-
-	public function __construct( $query, $moduleName ) {
+	public function __construct(
+		ApiQuery $query,
+		string $moduleName,
+		SearchEngineConfig $searchEngineConfig,
+		SearchEngineFactory $searchEngineFactory
+	) {
 		parent::__construct( $query, $moduleName, 'ps' );
+		// Services needed in SearchApi trait
+		$this->searchEngineConfig = $searchEngineConfig;
+		$this->searchEngineFactory = $searchEngineFactory;
 	}
 
 	public function execute() {
@@ -59,7 +70,7 @@ class ApiQueryPrefixSearch extends ApiQueryGeneratorBase {
 		}
 
 		if ( $resultPageSet ) {
-			$resultPageSet->setRedirectMergePolicy( function ( array $current, array $new ) {
+			$resultPageSet->setRedirectMergePolicy( static function ( array $current, array $new ) {
 				if ( !isset( $current['index'] ) || $new['index'] < $current['index'] ) {
 					$current['index'] = $new['index'];
 				}
@@ -74,7 +85,7 @@ class ApiQueryPrefixSearch extends ApiQueryGeneratorBase {
 			$count = 0;
 			foreach ( $titles as $title ) {
 				$vals = [
-					'ns' => (int)$title->getNamespace(),
+					'ns' => $title->getNamespace(),
 					'title' => $title->getPrefixedText(),
 				];
 				if ( $title->isSpecialPage() ) {
@@ -100,12 +111,7 @@ class ApiQueryPrefixSearch extends ApiQueryGeneratorBase {
 	}
 
 	public function getAllowedParams() {
-		if ( $this->allowedParams !== null ) {
-			return $this->allowedParams;
-		}
-		$this->allowedParams = $this->buildCommonApiParams();
-
-		return $this->allowedParams;
+		return $this->buildCommonApiParams();
 	}
 
 	public function getSearchProfileParams() {
@@ -128,3 +134,6 @@ class ApiQueryPrefixSearch extends ApiQueryGeneratorBase {
 		return 'https://www.mediawiki.org/wiki/Special:MyLanguage/API:Prefixsearch';
 	}
 }
+
+/** @deprecated class alias since 1.43 */
+class_alias( ApiQueryPrefixSearch::class, 'ApiQueryPrefixSearch' );

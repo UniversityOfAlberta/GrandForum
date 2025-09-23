@@ -1,5 +1,20 @@
 <?php
 
+namespace MediaWiki\Registration;
+
+use Exception;
+use InvalidArgumentException;
+use MediaWiki\MainConfigNames;
+use MediaWiki\ResourceLoader\FilePath;
+use RuntimeException;
+use UnexpectedValueException;
+
+/**
+ * Load extension manifests and then aggregate their contents.
+ *
+ * @ingroup ExtensionRegistry
+ * @newable since 1.39
+ */
 class ExtensionProcessor implements Processor {
 
 	/**
@@ -8,66 +23,74 @@ class ExtensionProcessor implements Processor {
 	 * @var array
 	 */
 	protected static $globalSettings = [
-		'ActionFilteredLogs',
-		'Actions',
-		'AddGroups',
-		'APIFormatModules',
-		'APIListModules',
-		'APIMetaModules',
-		'APIModules',
-		'APIPropModules',
-		'AuthManagerAutoConfig',
-		'AvailableRights',
-		'CentralIdLookupProviders',
-		'ChangeCredentialsBlacklist',
-		'ConfigRegistry',
-		'ContentHandlers',
-		'DefaultUserOptions',
-		'ExtensionEntryPointListFiles',
-		'ExtensionFunctions',
-		'FeedClasses',
-		'FileExtensions',
-		'FilterLogTypes',
-		'GrantPermissionGroups',
-		'GrantPermissions',
-		'GroupPermissions',
-		'GroupsAddToSelf',
-		'GroupsRemoveFromSelf',
-		'HiddenPrefs',
-		'ImplicitGroups',
-		'JobClasses',
-		'LogActions',
-		'LogActionsHandlers',
-		'LogHeaders',
-		'LogNames',
-		'LogRestrictions',
-		'LogTypes',
-		'MediaHandlers',
-		'PasswordPolicy',
-		'RateLimits',
-		'RawHtmlMessages',
-		'ReauthenticateTime',
-		'RecentChangesFlags',
-		'RemoveCredentialsBlacklist',
-		'RemoveGroups',
-		'ResourceLoaderSources',
-		'RevokePermissions',
-		'SessionProviders',
-		'SpecialPages',
-		'ValidSkinNames',
+		MainConfigNames::ActionFilteredLogs,
+		MainConfigNames::Actions,
+		MainConfigNames::AddGroups,
+		MainConfigNames::APIFormatModules,
+		MainConfigNames::APIListModules,
+		MainConfigNames::APIMetaModules,
+		MainConfigNames::APIModules,
+		MainConfigNames::APIPropModules,
+		MainConfigNames::AuthManagerAutoConfig,
+		MainConfigNames::AvailableRights,
+		MainConfigNames::CentralIdLookupProviders,
+		MainConfigNames::ChangeCredentialsBlacklist,
+		MainConfigNames::ConditionalUserOptions,
+		MainConfigNames::ConfigRegistry,
+		MainConfigNames::ContentHandlers,
+		MainConfigNames::DefaultUserOptions,
+		MainConfigNames::ExtensionEntryPointListFiles,
+		MainConfigNames::ExtensionFunctions,
+		MainConfigNames::FeedClasses,
+		MainConfigNames::FileExtensions,
+		MainConfigNames::FilterLogTypes,
+		MainConfigNames::GrantPermissionGroups,
+		MainConfigNames::GrantPermissions,
+		MainConfigNames::GrantRiskGroups,
+		MainConfigNames::GroupPermissions,
+		MainConfigNames::GroupsAddToSelf,
+		MainConfigNames::GroupsRemoveFromSelf,
+		MainConfigNames::HiddenPrefs,
+		MainConfigNames::ImplicitGroups,
+		MainConfigNames::JobClasses,
+		MainConfigNames::LogActions,
+		MainConfigNames::LogActionsHandlers,
+		MainConfigNames::LogHeaders,
+		MainConfigNames::LogNames,
+		MainConfigNames::LogRestrictions,
+		MainConfigNames::LogTypes,
+		MainConfigNames::MediaHandlers,
+		MainConfigNames::OutputPipelineStages,
+		MainConfigNames::PasswordPolicy,
+		MainConfigNames::PrivilegedGroups,
+		MainConfigNames::RateLimits,
+		MainConfigNames::RawHtmlMessages,
+		MainConfigNames::ReauthenticateTime,
+		MainConfigNames::RecentChangesFlags,
+		MainConfigNames::RemoveCredentialsBlacklist,
+		MainConfigNames::RemoveGroups,
+		MainConfigNames::ResourceLoaderSources,
+		MainConfigNames::RevokePermissions,
+		MainConfigNames::SessionProviders,
+		MainConfigNames::SpecialPages,
+		MainConfigNames::UserRegistrationProviders,
 	];
 
 	/**
 	 * Top-level attributes that come from MW core
-	 *
-	 * @var string[]
 	 */
 	protected const CORE_ATTRIBS = [
 		'ParsoidModules',
 		'RestRoutes',
 		'SkinOOUIThemes',
+		'SkinCodexThemes',
 		'SearchMappings',
 		'TrackingCategories',
+		'LateJSConfigVarNames',
+		'TempUserSerialProviders',
+		'TempUserSerialMappings',
+		'DatabaseVirtualDomains',
+		'UserOptionsStoreProviders',
 	];
 
 	/**
@@ -75,7 +98,6 @@ class ExtensionProcessor implements Processor {
 	 *
 	 * @see ExtensionRegistry::exportExtractedData
 	 * @see getExtractedInfo
-	 * @var array
 	 */
 	protected const MERGE_STRATEGIES = [
 		'wgAuthManagerAutoConfig' => 'array_plus_2d',
@@ -94,8 +116,6 @@ class ExtensionProcessor implements Processor {
 
 	/**
 	 * Keys that are part of the extension credits
-	 *
-	 * @var array
 	 */
 	protected const CREDIT_ATTRIBS = [
 		'type',
@@ -112,8 +132,6 @@ class ExtensionProcessor implements Processor {
 	/**
 	 * Things that are not 'attributes', and are not in
 	 * $globalSettings or CREDIT_ATTRIBS.
-	 *
-	 * @var array
 	 */
 	protected const NOT_ATTRIBS = [
 		'callback',
@@ -124,12 +142,14 @@ class ExtensionProcessor implements Processor {
 		'namespaces',
 		'requires',
 		'AutoloadClasses',
+		'AutoloadNamespaces',
 		'ExtensionMessagesFiles',
+		'TranslationAliasesDirs',
+		'ForeignResourcesDir',
 		'Hooks',
 		'MessagePosterModule',
 		'MessagesDirs',
 		'OOUIThemePaths',
-		'ParserTestFiles',
 		'QUnitTestModule',
 		'ResourceFileModulePaths',
 		'ResourceModuleSkinStyles',
@@ -140,13 +160,15 @@ class ExtensionProcessor implements Processor {
 	/**
 	 * Stuff that is going to be set to $GLOBALS
 	 *
-	 * Some keys are pre-set to arrays so we can += to them
+	 * Some keys are pre-set to arrays, so we can += to them
 	 *
 	 * @var array
 	 */
 	protected $globals = [
 		'wgExtensionMessagesFiles' => [],
+		'wgRestAPIAdditionalRouteFiles' => [],
 		'wgMessagesDirs' => [],
+		'TranslationAliasesDirs' => [],
 	];
 
 	/**
@@ -157,8 +179,9 @@ class ExtensionProcessor implements Processor {
 	protected $defines = [];
 
 	/**
-	 * Things to be called once registration of these extensions are done
-	 * keyed by the name of the extension that it belongs to
+	 * Things to be called once the registration of these extensions is done
+	 *
+	 * Keyed by the name of the extension that it belongs to
 	 *
 	 * @var callable[]
 	 */
@@ -170,12 +193,32 @@ class ExtensionProcessor implements Processor {
 	protected $credits = [];
 
 	/**
-	 * @var array
+	 * Autoloader information.
+	 * Each element is an array of strings.
+	 * 'files' is just a list, 'classes' and 'namespaces' are associative.
+	 *
+	 * @var string[][]
 	 */
-	protected $config = [];
+	protected $autoload = [
+		'files' => [],
+		'classes' => [],
+		'namespaces' => [],
+	];
 
 	/**
-	 * Any thing else in the $info that hasn't
+	 * Autoloader information for development.
+	 * Same structure as $autoload.
+	 *
+	 * @var string[][]
+	 */
+	protected $autoloadDev = [
+		'files' => [],
+		'classes' => [],
+		'namespaces' => [],
+	];
+
+	/**
+	 * Anything else in the $info that hasn't
 	 * already been processed
 	 *
 	 * @var array
@@ -191,6 +234,24 @@ class ExtensionProcessor implements Processor {
 	protected $extAttributes = [];
 
 	/**
+	 * Extracts extension info from the given JSON file.
+	 *
+	 * @param string $path
+	 *
+	 * @return void
+	 */
+	public function extractInfoFromFile( string $path ) {
+		$json = file_get_contents( $path );
+		$info = json_decode( $json, true );
+
+		if ( !$info ) {
+			throw new RuntimeException( "Failed to load JSON data from $path" );
+		}
+
+		$this->extractInfo( $path, $info, $info['manifest_version'] );
+	}
+
+	/**
 	 * @param string $path
 	 * @param array $info
 	 * @param int $version manifest_version for info
@@ -199,8 +260,13 @@ class ExtensionProcessor implements Processor {
 		$dir = dirname( $path );
 		$this->extractHooks( $info, $path );
 		$this->extractExtensionMessagesFiles( $dir, $info );
+		$this->extractRestModuleFiles( $dir, $info );
 		$this->extractMessagesDirs( $dir, $info );
+		$this->extractTranslationAliasesDirs( $dir, $info );
+		$this->extractSkins( $dir, $info );
+		$this->extractSkinImportPaths( $dir, $info );
 		$this->extractNamespaces( $info );
+		$this->extractImplicitRights( $info );
 		$this->extractResourceLoaderModules( $dir, $info );
 		if ( isset( $info['ServiceWiringFiles'] ) ) {
 			$this->extractPathBasedGlobal(
@@ -209,21 +275,16 @@ class ExtensionProcessor implements Processor {
 				$info['ServiceWiringFiles']
 			);
 		}
-		if ( isset( $info['ParserTestFiles'] ) ) {
-			$this->extractPathBasedGlobal(
-				'wgParserTestFiles',
-				$dir,
-				$info['ParserTestFiles']
-			);
-		}
 		$name = $this->extractCredits( $path, $info );
 		if ( isset( $info['callback'] ) ) {
 			$this->callbacks[$name] = $info['callback'];
 		}
 
+		$this->extractAutoload( $info, $dir );
+
 		// config should be after all core globals are extracted,
 		// so duplicate setting detection will work fully
-		if ( $version === 2 ) {
+		if ( $version >= 2 ) {
 			$this->extractConfig2( $info, $dir );
 		} else {
 			// $version === 1
@@ -243,7 +304,9 @@ class ExtensionProcessor implements Processor {
 			}
 		}
 
-		if ( $version === 2 ) {
+		$this->extractForeignResourcesDir( $info, $name, $dir );
+
+		if ( $version >= 2 ) {
 			$this->extractAttributes( $path, $info );
 		}
 
@@ -258,8 +321,8 @@ class ExtensionProcessor implements Processor {
 				continue;
 			}
 
-			if ( $version === 2 ) {
-				// Only whitelisted attributes are set
+			if ( $version >= 2 ) {
+				// Only allowed attributes are set
 				if ( in_array( $key, self::CORE_ATTRIBS ) ) {
 					$this->storeToArray( $path, $key, $val, $this->attributes );
 				}
@@ -268,7 +331,7 @@ class ExtensionProcessor implements Processor {
 				if ( !in_array( $key, self::NOT_ATTRIBS )
 					&& !in_array( $key, self::CREDIT_ATTRIBS )
 				) {
-					// If it's not blacklisted, it's an attribute
+					// If it's not disallowed, it's an attribute
 					$this->storeToArrayRecursive( $path, $key, $val, $this->attributes );
 				}
 			}
@@ -287,7 +350,7 @@ class ExtensionProcessor implements Processor {
 		}
 	}
 
-	public function getExtractedInfo() {
+	public function getExtractedInfo( bool $includeDev = false ) {
 		// Make sure the merge strategies are set
 		foreach ( $this->globals as $key => $val ) {
 			if ( isset( self::MERGE_STRATEGIES[$key] ) ) {
@@ -311,13 +374,17 @@ class ExtensionProcessor implements Processor {
 			}
 		}
 
+		$autoload = $this->getExtractedAutoloadInfo( $includeDev );
+
 		return [
 			'globals' => $this->globals,
-			'config' => $this->config,
 			'defines' => $this->defines,
 			'callbacks' => $this->callbacks,
 			'credits' => $this->credits,
 			'attributes' => $this->attributes,
+			'autoloaderPaths' => $autoload['files'],
+			'autoloaderClasses' => $autoload['classes'],
+			'autoloaderNS' => $autoload['namespaces'],
 		];
 	}
 
@@ -338,7 +405,7 @@ class ExtensionProcessor implements Processor {
 		// picking the non-null if one is, or combines
 		// the two. Note that it is not possible for
 		// both inputs to be null.
-		$pick = function ( $a, $b ) {
+		$pick = static function ( $a, $b ) {
 			if ( $a === null ) {
 				return $b;
 			} elseif ( $b === null ) {
@@ -370,7 +437,7 @@ class ExtensionProcessor implements Processor {
 					);
 				} else {
 					// Prefer dev value, but these should be constant
-					// anyways (ext-* and ability-*)
+					// anyway (ext-* and ability-*)
 					$value = $dev['platform'][$pkey] ?? $req['platform'][$pkey];
 				}
 				$merged['platform'][$pkey] = $value;
@@ -389,6 +456,7 @@ class ExtensionProcessor implements Processor {
 				);
 			}
 		}
+
 		return $merged;
 	}
 
@@ -401,6 +469,7 @@ class ExtensionProcessor implements Processor {
 	 * @param array $hookHandlersAttr handler definitions from 'HookHandler' attribute
 	 * @param string $name
 	 * @param string $path extension.json file path
+	 *
 	 * @throws UnexpectedValueException
 	 */
 	private function setArrayHookHandler(
@@ -541,7 +610,9 @@ class ExtensionProcessor implements Processor {
 				if ( isset( $ns['capitallinkoverride'] ) ) {
 					$this->globals['wgCapitalLinkOverrides'][$id] = $ns['capitallinkoverride'];
 				}
-
+				if ( isset( $ns['includable'] ) && !$ns['includable'] ) {
+					$this->globals['wgNonincludableNamespaces'][] = $id;
+				}
 			}
 		}
 	}
@@ -595,7 +666,7 @@ class ExtensionProcessor implements Processor {
 			$baseDir = $basePath === '' ? $dir : "$dir/$basePath";
 			foreach ( $data['scripts'] ?? [] as $scripts ) {
 				$this->attributes['MessagePosterModule']['scripts'][] =
-					new ResourceLoaderFilePath( $scripts, $baseDir );
+					new FilePath( $scripts, $baseDir );
 			}
 			foreach ( $data['dependencies'] ?? [] as $dependency ) {
 				$this->attributes['MessagePosterModule']['dependencies'][] = $dependency;
@@ -609,6 +680,15 @@ class ExtensionProcessor implements Processor {
 				$file = "$dir/$file";
 			}
 			$this->globals["wgExtensionMessagesFiles"] += $info['ExtensionMessagesFiles'];
+		}
+	}
+
+	protected function extractRestModuleFiles( $dir, array $info ) {
+		$var = MainConfigNames::RestAPIAdditionalRouteFiles;
+		if ( isset( $info['RestModuleFiles'] ) ) {
+			foreach ( $info['RestModuleFiles'] as &$file ) {
+				$this->globals["wg$var"][] = "$dir/$file";
+			}
 		}
 	}
 
@@ -630,8 +710,78 @@ class ExtensionProcessor implements Processor {
 	}
 
 	/**
+	 * Set localization related settings, which need to be expanded to use
+	 * absolute paths
+	 *
+	 * @param string $dir
+	 * @param array $info
+	 */
+	protected function extractTranslationAliasesDirs( $dir, array $info ) {
+		foreach ( $info['TranslationAliasesDirs'] ?? [] as $name => $files ) {
+			foreach ( (array)$files as $file ) {
+				$this->globals['wgTranslationAliasesDirs'][$name][] = "$dir/$file";
+			}
+		}
+	}
+
+	/**
+	 * Extract skins and handle path correction for templateDirectory.
+	 *
+	 * @param string $dir
+	 * @param array $info
+	 */
+	protected function extractSkins( $dir, array $info ) {
+		if ( isset( $info['ValidSkinNames'] ) ) {
+			foreach ( $info['ValidSkinNames'] as $skinKey => $data ) {
+				if ( isset( $data['args'][0] ) ) {
+					$templateDirectory = $data['args'][0]['templateDirectory'] ?? 'templates';
+					$data['args'][0]['templateDirectory'] = $dir . '/' . $templateDirectory;
+				}
+				$this->globals['wgValidSkinNames'][$skinKey] = $data;
+			}
+		}
+	}
+
+	/**
+	 * Extract any user rights that should be granted implicitly.
+	 *
+	 * @param array $info
+	 */
+	protected function extractImplicitRights( array $info ) {
+		// Rate limits are only configurable for rights that are either in wgImplicitRights
+		// or in wgAvailableRights. Extensions that define rate limits should not have to
+		// explicitly add them to wgImplicitRights as well, we can do that automatically.
+
+		if ( isset( $info['RateLimits'] ) ) {
+			$rights = array_keys( $info['RateLimits'] );
+
+			if ( isset( $info['AvailableRights'] ) ) {
+				$rights = array_diff( $rights, $info['AvailableRights'] );
+			}
+
+			$this->globals['wgImplicitRights'] = array_merge(
+				$this->globals['wgImplicitRights'] ?? [],
+				$rights
+			);
+		}
+	}
+
+	/**
+	 * @param string $dir
+	 * @param array $info
+	 */
+	protected function extractSkinImportPaths( $dir, array $info ) {
+		if ( isset( $info['SkinLessImportPaths'] ) ) {
+			foreach ( $info['SkinLessImportPaths'] as $skin => $subpath ) {
+				$this->attributes['SkinLessImportPaths'][$skin] = "$dir/$subpath";
+			}
+		}
+	}
+
+	/**
 	 * @param string $path
 	 * @param array $info
+	 *
 	 * @return string Name of thing
 	 * @throws Exception
 	 */
@@ -653,7 +803,9 @@ class ExtensionProcessor implements Processor {
 		if ( isset( $this->credits[$name] ) ) {
 			$firstPath = $this->credits[$name]['path'];
 			$secondPath = $credits['path'];
-			throw new Exception( "It was attempted to load $name twice, from $firstPath and $secondPath." );
+			throw new InvalidArgumentException(
+				"It was attempted to load $name twice, from $firstPath and $secondPath."
+			);
 		}
 
 		$this->credits[$name] = $credits;
@@ -661,8 +813,18 @@ class ExtensionProcessor implements Processor {
 		return $name;
 	}
 
+	protected function extractForeignResourcesDir( array $info, string $name, string $dir ): void {
+		if ( array_key_exists( 'ForeignResourcesDir', $info ) ) {
+			if ( !is_string( $info['ForeignResourcesDir'] ) ) {
+				throw new InvalidArgumentException( "Incorrect ForeignResourcesDir type, must be a string (in $name)" );
+			}
+			$this->attributes['ForeignResourcesDir'][$name] = "{$dir}/{$info['ForeignResourcesDir']}";
+		}
+	}
+
 	/**
 	 * Set configuration settings for manifest_version == 1
+	 *
 	 * @todo In the future, this should be done via Config interfaces
 	 *
 	 * @param array $info
@@ -684,7 +846,26 @@ class ExtensionProcessor implements Processor {
 	}
 
 	/**
+	 * Applies a base path to the given string or string array.
+	 *
+	 * @param string[] $value
+	 * @param string $dir
+	 *
+	 * @return string[]
+	 */
+	private function applyPath( array $value, string $dir ): array {
+		$result = [];
+
+		foreach ( $value as $k => $v ) {
+			$result[$k] = $dir . '/' . $v;
+		}
+
+		return $result;
+	}
+
+	/**
 	 * Set configuration settings for manifest_version == 2
+	 *
 	 * @todo In the future, this should be done via Config interfaces
 	 *
 	 * @param array $info
@@ -694,15 +875,16 @@ class ExtensionProcessor implements Processor {
 		$prefix = $info['config_prefix'] ?? 'wg';
 		if ( isset( $info['config'] ) ) {
 			foreach ( $info['config'] as $key => $data ) {
+				if ( !array_key_exists( 'value', $data ) ) {
+					throw new UnexpectedValueException( "Missing value for config $key" );
+				}
+
 				$value = $data['value'];
 				if ( isset( $data['path'] ) && $data['path'] ) {
-					$callback = function ( $value ) use ( $dir ) {
-						return "$dir/$value";
-					};
 					if ( is_array( $value ) ) {
-						$value = array_map( $callback, $value );
+						$value = $this->applyPath( $value, $dir );
 					} else {
-						$value = $callback( $value );
+						$value = "$dir/$value";
 					}
 				}
 				if ( isset( $data['merge_strategy'] ) ) {
@@ -713,13 +895,12 @@ class ExtensionProcessor implements Processor {
 				if ( isset( $info['ConfigRegistry'][0] ) ) {
 					$data['configregistry'] = array_keys( $info['ConfigRegistry'] )[0];
 				}
-				$this->config[$key] = $data;
 			}
 		}
 	}
 
 	/**
-	 * Helper function to set a value to a specific global, if it isn't set already.
+	 * Helper function to set a value to a specific global config variable if it isn't set already.
 	 *
 	 * @param string $key The config key with the prefix and anything
 	 * @param mixed $value The value of the config
@@ -730,6 +911,14 @@ class ExtensionProcessor implements Processor {
 			throw new RuntimeException(
 				"The configuration setting '$key' was already set by MediaWiki core or"
 				. " another extension, and cannot be set again by $extName." );
+		}
+		if ( isset( $value[ExtensionRegistry::MERGE_STRATEGY] ) &&
+			$value[ExtensionRegistry::MERGE_STRATEGY] === 'array_merge_recursive' ) {
+			wfDeprecatedMsg(
+				"Using the array_merge_recursive merge strategy in extension.json and skin.json" .
+				" was deprecated in MediaWiki 1.42",
+				"1.42"
+			);
 		}
 		$this->globals[$key] = $value;
 	}
@@ -747,7 +936,7 @@ class ExtensionProcessor implements Processor {
 	 * @param string $name
 	 * @param array $value
 	 * @param array &$array
-	 * @throws InvalidArgumentException
+	 *
 	 */
 	protected function storeToArrayRecursive( $path, $name, $value, &$array ) {
 		if ( !is_array( $value ) ) {
@@ -767,6 +956,7 @@ class ExtensionProcessor implements Processor {
 	 * @param string $name
 	 * @param array $value
 	 * @param array &$array
+	 *
 	 * @throws InvalidArgumentException
 	 */
 	protected function storeToArray( $path, $name, $value, &$array ) {
@@ -780,11 +970,76 @@ class ExtensionProcessor implements Processor {
 		}
 	}
 
-	public function getExtraAutoloaderPaths( $dir, array $info ) {
-		$paths = [];
-		if ( isset( $info['load_composer_autoloader'] ) && $info['load_composer_autoloader'] === true ) {
-			$paths[] = "$dir/vendor/autoload.php";
+	/**
+	 * Returns the extracted autoload info.
+	 * The autoload info is returned as an associative array with three keys:
+	 * - files: a list of files to load, for use with Autoloader::loadFile()
+	 * - classes: a map of class names to files, for use with Autoloader::registerClass()
+	 * - namespaces: a map of namespace names to directories, for use
+	 *   with Autoloader::registerNamespace()
+	 *
+	 * @since 1.39
+	 *
+	 * @param bool $includeDev
+	 *
+	 * @return array[] The autoload info.
+	 */
+	public function getExtractedAutoloadInfo( bool $includeDev = false ): array {
+		$autoload = $this->autoload;
+
+		if ( $includeDev ) {
+			$autoload['classes'] += $this->autoloadDev['classes'];
+			$autoload['namespaces'] += $this->autoloadDev['namespaces'];
+
+			// NOTE: This is here for completeness. Per MW 1.39,
+			//       $this->autoloadDev['files'] is always empty.
+			//       So avoid the performance hit of array_merge().
+			if ( !empty( $this->autoloadDev['files'] ) ) {
+				// NOTE: Don't use += with numeric keys!
+				//       Could use PHPUtils::pushArray.
+				$autoload['files'] = array_merge(
+					$autoload['files'],
+					$this->autoloadDev['files']
+				);
+			}
 		}
-		return $paths;
+
+		return $autoload;
+	}
+
+	/**
+	 * @param array $info
+	 * @param string $dir
+	 */
+	private function extractAutoload( array $info, string $dir ) {
+		if ( isset( $info['load_composer_autoloader'] ) && $info['load_composer_autoloader'] === true ) {
+			$file = "$dir/vendor/autoload.php";
+			if ( file_exists( $file ) ) {
+				$this->autoload['files'][] = $file;
+			}
+		}
+
+		if ( isset( $info['AutoloadClasses'] ) ) {
+			$paths = $this->applyPath( $info['AutoloadClasses'], $dir );
+			$this->autoload['classes'] += $paths;
+		}
+
+		if ( isset( $info['AutoloadNamespaces'] ) ) {
+			$paths = $this->applyPath( $info['AutoloadNamespaces'], $dir );
+			$this->autoload['namespaces'] += $paths;
+		}
+
+		if ( isset( $info['TestAutoloadClasses'] ) ) {
+			$paths = $this->applyPath( $info['TestAutoloadClasses'], $dir );
+			$this->autoloadDev['classes'] += $paths;
+		}
+
+		if ( isset( $info['TestAutoloadNamespaces'] ) ) {
+			$paths = $this->applyPath( $info['TestAutoloadNamespaces'], $dir );
+			$this->autoloadDev['namespaces'] += $paths;
+		}
 	}
 }
+
+/** @deprecated class alias since 1.43 */
+class_alias( ExtensionProcessor::class, 'ExtensionProcessor' );

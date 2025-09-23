@@ -2,7 +2,7 @@
 /**
  * Helper class for the --prefetch option of dumpTextPass.php
  *
- * Copyright © 2005 Brion Vibber <brion@pobox.com>
+ * Copyright © 2005 Brooke Vibber <bvibber@wikimedia.org>
  * https://www.mediawiki.org/
  *
  * This program is free software; you can redistribute it and/or modify
@@ -42,19 +42,30 @@ use MediaWiki\Revision\SlotRecord;
  * @ingroup Maintenance
  */
 class BaseDump {
-	/** @var XMLReader */
+	/** @var XMLReader|null */
 	protected $reader = null;
+	/** @var bool */
 	protected $atEnd = false;
+	/** @var bool */
 	protected $atPageEnd = false;
+	/** @var int */
 	protected $lastPage = 0;
+	/** @var int */
 	protected $lastRev = 0;
+	/** @var string[]|null */
 	protected $infiles = null;
 
+	/**
+	 * @param string $infile
+	 */
 	public function __construct( $infile ) {
 		$this->infiles = explode( ';', $infile );
 		$this->reader = new XMLReader();
 		$infile = array_shift( $this->infiles );
-		$this->reader->open( $infile, null, LIBXML_PARSEHUGE );
+		if ( !$this->reader->open( $infile, null, LIBXML_PARSEHUGE ) ) {
+			$this->debug( __METHOD__ . ' was unable to open xml' );
+			$this->atEnd = true;
+		}
 	}
 
 	/**
@@ -75,7 +86,7 @@ class BaseDump {
 			$this->nextPage();
 		}
 		if ( $this->lastPage > $page || $this->atEnd ) {
-			$this->debug( "BaseDump::prefetch already past page $page "
+			$this->debug( "BaseDump::prefetch already past page $page or failed to open/read input file, "
 				. "looking for rev $rev  [$this->lastPage, $this->lastRev]" );
 
 			return null;
@@ -91,10 +102,9 @@ class BaseDump {
 			if ( $slot !== SlotRecord::MAIN ) {
 				$lastSlot = SlotRecord::MAIN;
 				while ( $lastSlot !== $slot ) {
-					if ( !$this->skipTo( 'content', 'revision' ) ) {
-						return null;
-					}
-					if ( !$this->skipTo( 'role', 'revision' ) ) {
+					if ( !$this->skipTo( 'content', 'revision' ) ||
+						!$this->skipTo( 'role', 'revision' )
+					) {
 						return null;
 					}
 					$lastSlot = $this->nodeContents();
@@ -110,6 +120,9 @@ class BaseDump {
 		}
 	}
 
+	/**
+	 * @param string $str
+	 */
 	protected function debug( $str ) {
 		wfDebug( $str );
 		// global $dumper;
@@ -127,8 +140,12 @@ class BaseDump {
 			$this->close();
 			if ( count( $this->infiles ) ) {
 				$infile = array_shift( $this->infiles );
-				$this->reader->open( $infile, null, LIBXML_PARSEHUGE );
-				$this->atEnd = false;
+				if ( !$this->reader->open( $infile, null, LIBXML_PARSEHUGE ) ) {
+					$this->debug( __METHOD__ . ' was unable to open xml' );
+					$this->atEnd = true;
+				} else {
+					$this->atEnd = false;
+				}
 			}
 		}
 	}
@@ -144,7 +161,7 @@ class BaseDump {
 	}
 
 	/**
-	 * @return string
+	 * @return string|null
 	 */
 	private function nextText() {
 		if ( !$this->skipTo( 'text', 'revision' ) ) {
@@ -186,7 +203,7 @@ class BaseDump {
 	 * Fetches text contents of the current element, assuming
 	 * no sub-elements or such scary things.
 	 *
-	 * @return string
+	 * @return string|null
 	 */
 	private function nodeContents() {
 		if ( $this->atEnd ) {

@@ -1,7 +1,5 @@
 <?php
 /**
- * Implements Special:Wantedtemplates
- *
  * Copyright © 2008, Danny B.
  * Based on SpecialWantedcategories.php by Ævar Arnfjörð Bjarmason <avarab@gmail.com>
  * makeWlhLink() taken from SpecialMostlinkedtemplates by Rob Church <robchur@gmail.com>
@@ -22,36 +20,61 @@
  * http://www.gnu.org/copyleft/gpl.html
  *
  * @file
+ */
+
+namespace MediaWiki\Specials;
+
+use MediaWiki\Cache\LinkBatchFactory;
+use MediaWiki\Linker\LinksMigration;
+use MediaWiki\SpecialPage\WantedQueryPage;
+use Wikimedia\Rdbms\IConnectionProvider;
+
+/**
+ * List of the most wanted templates
+ *
  * @ingroup SpecialPage
  * @author Danny B.
  */
-
-/**
- * A querypage to list the most wanted templates
- *
- * @ingroup SpecialPage
- */
 class SpecialWantedTemplates extends WantedQueryPage {
-	public function __construct( $name = 'Wantedtemplates' ) {
-		parent::__construct( $name );
+
+	private LinksMigration $linksMigration;
+
+	/**
+	 * @param IConnectionProvider $dbProvider
+	 * @param LinkBatchFactory $linkBatchFactory
+	 * @param LinksMigration $linksMigration
+	 */
+	public function __construct(
+		IConnectionProvider $dbProvider,
+		LinkBatchFactory $linkBatchFactory,
+		LinksMigration $linksMigration
+	) {
+		parent::__construct( 'Wantedtemplates' );
+		$this->setDatabaseProvider( $dbProvider );
+		$this->setLinkBatchFactory( $linkBatchFactory );
+		$this->linksMigration = $linksMigration;
 	}
 
 	public function getQueryInfo() {
+		$queryInfo = $this->linksMigration->getQueryInfo( 'templatelinks' );
+		[ $ns, $title ] = $this->linksMigration->getTitleFields( 'templatelinks' );
 		return [
-			'tables' => [ 'templatelinks', 'page' ],
+			'tables' => array_merge( $queryInfo['tables'], [ 'page' ] ),
 			'fields' => [
-				'namespace' => 'tl_namespace',
-				'title' => 'tl_title',
+				'namespace' => $ns,
+				'title' => $title,
 				'value' => 'COUNT(*)'
 			],
 			'conds' => [
-				'page_title IS NULL',
-				'tl_namespace' => NS_TEMPLATE
+				'page_title' => null,
+				$ns => NS_TEMPLATE
 			],
-			'options' => [ 'GROUP BY' => [ 'tl_namespace', 'tl_title' ] ],
-			'join_conds' => [ 'page' => [ 'LEFT JOIN',
-				[ 'page_namespace = tl_namespace',
-					'page_title = tl_title' ] ] ]
+			'options' => [ 'GROUP BY' => [ $ns, $title ] ],
+			'join_conds' => array_merge(
+				[ 'page' => [ 'LEFT JOIN',
+					[ "page_namespace = $ns", "page_title = $title" ] ] ],
+				$queryInfo['joins']
+			)
 		];
 	}
 
@@ -59,3 +82,9 @@ class SpecialWantedTemplates extends WantedQueryPage {
 		return 'maintenance';
 	}
 }
+
+/**
+ * Retain the old class name for backwards compatibility.
+ * @deprecated since 1.41
+ */
+class_alias( SpecialWantedTemplates::class, 'SpecialWantedTemplates' );

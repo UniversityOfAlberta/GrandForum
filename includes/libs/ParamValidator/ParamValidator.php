@@ -9,7 +9,7 @@ use Wikimedia\Message\DataMessageValue;
 use Wikimedia\Message\MessageValue;
 use Wikimedia\Message\ParamType;
 use Wikimedia\Message\ScalarParam;
-use Wikimedia\ObjectFactory;
+use Wikimedia\ObjectFactory\ObjectFactory;
 
 /**
  * Service for formatting and validating API parameters
@@ -41,8 +41,8 @@ use Wikimedia\ObjectFactory;
  */
 class ParamValidator {
 
-	/**
-	 * @name Constants for parameter settings arrays
+	// region    Constants for parameter settings arrays
+	/** @name    Constants for parameter settings arrays
 	 * These constants are keys in the settings array that define how the
 	 * parameters coming in from the request are to be interpreted.
 	 *
@@ -168,12 +168,18 @@ class ParamValidator {
 	public const PARAM_IGNORE_UNRECOGNIZED_VALUES = 'param-ignore-unrecognized-values';
 
 	/** @} */
+	// endregion -- end of Constants for parameter settings arrays
+
+	/**
+	 * @see TypeDef::OPT_ENFORCE_JSON_TYPES
+	 */
+	public const OPT_ENFORCE_JSON_TYPES = TypeDef::OPT_ENFORCE_JSON_TYPES;
 
 	/** Magic "all values" value when PARAM_ALL is true. */
 	public const ALL_DEFAULT_STRING = '*';
 
 	/** A list of standard type names and types that may be passed as `$typeDefs` to __construct(). */
-	public static $STANDARD_TYPES = [
+	public const STANDARD_TYPES = [
 		'boolean' => [ 'class' => TypeDef\BooleanDef::class ],
 		'checkbox' => [ 'class' => TypeDef\PresenceBooleanDef::class ],
 		'integer' => [ 'class' => TypeDef\IntegerDef::class ],
@@ -185,7 +191,7 @@ class ParamValidator {
 		'NULL' => [
 			'class' => TypeDef\StringDef::class,
 			'args' => [ [
-				'allowEmptyWhenRequired' => true,
+				TypeDef\StringDef::OPT_ALLOW_EMPTY => true,
 			] ],
 		],
 		'timestamp' => [ 'class' => TypeDef\TimestampDef::class ],
@@ -213,7 +219,7 @@ class ParamValidator {
 	 * @param Callbacks $callbacks
 	 * @param ObjectFactory $objectFactory To turn specs into TypeDef objects
 	 * @param array $options Associative array of additional settings
-	 *  - 'typeDefs': (array) As for addTypeDefs(). If omitted, self::$STANDARD_TYPES will be used.
+	 *  - 'typeDefs': (array) As for addTypeDefs(). If omitted, self::STANDARD_TYPES will be used.
 	 *    Pass an empty array if you want to start with no registered types.
 	 *  - 'ismultiLimits': (int[]) Two ints, being the default values for PARAM_ISMULTI_LIMIT1 and
 	 *    PARAM_ISMULTI_LIMIT2. If not given, defaults to `[ 50, 500 ]`.
@@ -226,7 +232,7 @@ class ParamValidator {
 		$this->callbacks = $callbacks;
 		$this->objectFactory = $objectFactory;
 
-		$this->addTypeDefs( $options['typeDefs'] ?? self::$STANDARD_TYPES );
+		$this->addTypeDefs( $options['typeDefs'] ?? self::STANDARD_TYPES );
 		$this->ismultiLimit1 = $options['ismultiLimits'][0] ?? 50;
 		$this->ismultiLimit2 = $options['ismultiLimits'][1] ?? 500;
 	}
@@ -266,7 +272,7 @@ class ParamValidator {
 	 */
 	public function addTypeDef( $name, $typeDef ) {
 		Assert::parameterType(
-			implode( '|', [ TypeDef::class, 'array' ] ),
+			[ TypeDef::class, 'array' ],
 			$typeDef,
 			'$typeDef'
 		);
@@ -285,7 +291,7 @@ class ParamValidator {
 	 */
 	public function overrideTypeDef( $name, $typeDef ) {
 		Assert::parameterType(
-			implode( '|', [ TypeDef::class, 'array', 'null' ] ),
+			[ TypeDef::class, 'array', 'null' ],
 			$typeDef,
 			'$typeDef'
 		);
@@ -388,7 +394,7 @@ class ParamValidator {
 	 *  - 'allowedKeys': (string[]) ParamValidator keys that are allowed in `$settings`.
 	 *  - 'messages': (MessageValue[]) Messages to be checked for existence.
 	 */
-	public function checkSettings( string $name, $settings, array $options ) : array {
+	public function checkSettings( string $name, $settings, array $options ): array {
 		$settings = $this->normalizeSettingsInternal( $settings );
 		$issues = [];
 		$allowedKeys = [
@@ -593,13 +599,39 @@ class ParamValidator {
 					$name, $value, $settings
 				);
 			}
+
+			// T326764: If the type of the actual param value is different from
+			// the type that is defined via getParamSettings(), throw an exception
+			// because this is a type to value mismatch.
+			if ( is_array( $value ) && !$typeDef->supportsArrays() ) {
+				throw new ValidationException(
+					DataMessageValue::new( 'paramvalidator-notmulti', [], 'badvalue' )
+						->plaintextParams( $name, gettype( $value ) ),
+					$name, $value, $settings
+				);
+			}
+
 			return $typeDef->validate( $name, $value, $settings, $options );
 		}
 
 		// Split the multi-value and validate each parameter
 		$limit1 = $settings[self::PARAM_ISMULTI_LIMIT1] ?? $this->ismultiLimit1;
 		$limit2 = max( $limit1, $settings[self::PARAM_ISMULTI_LIMIT2] ?? $this->ismultiLimit2 );
-		$valuesList = is_array( $value ) ? $value : self::explodeMultiValue( $value, $limit2 + 1 );
+
+		if ( is_array( $value ) ) {
+			$valuesList = $value;
+		} elseif ( $options[ self::OPT_ENFORCE_JSON_TYPES ] ?? false ) {
+			throw new ValidationException(
+				DataMessageValue::new(
+					'paramvalidator-multivalue-must-be-array',
+					[],
+					'multivalue-must-be-array'
+				)->plaintextParams( $name ),
+				$name, $value, $settings
+			);
+		} else {
+			$valuesList = self::explodeMultiValue( $value, $limit2 + 1 );
+		}
 
 		// Handle PARAM_ALL
 		$enumValues = $typeDef->getEnumValues( $name, $settings, $options );
@@ -622,6 +654,7 @@ class ParamValidator {
 		if ( count( $valuesList ) > $sizeLimit ) {
 			throw new ValidationException(
 				DataMessageValue::new( 'paramvalidator-toomanyvalues', [], 'toomanyvalues', [
+					'parameter' => $name,
 					'limit' => $sizeLimit,
 					'lowlimit' => $limit1,
 					'highlimit' => $limit2,
@@ -654,7 +687,7 @@ class ParamValidator {
 					'values' => $invalidValues,
 				] )
 					->plaintextParams( $name, $value )
-					->commaListParams( array_map( function ( $v ) {
+					->commaListParams( array_map( static function ( $v ) {
 						return new ScalarParam( ParamType::PLAINTEXT, $v );
 					}, $invalidValues ) )
 					->numParams( count( $invalidValues ) ),
@@ -724,7 +757,7 @@ class ParamValidator {
 		}
 
 		// Filter out nulls (strictly)
-		return array_filter( $info, function ( $v ) {
+		return array_filter( $info, static function ( $v ) {
 			return $v !== null;
 		} );
 	}

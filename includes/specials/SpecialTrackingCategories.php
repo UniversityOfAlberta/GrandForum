@@ -1,7 +1,5 @@
 <?php
 /**
- * Implements Special:TrackingCategories
- *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -18,11 +16,18 @@
  * http://www.gnu.org/copyleft/gpl.html
  *
  * @file
- * @ingroup SpecialPage
  */
 
+namespace MediaWiki\Specials;
+
+use MediaWiki\Cache\LinkBatchFactory;
+use MediaWiki\Category\TrackingCategories;
+use MediaWiki\Html\Html;
+use MediaWiki\SpecialPage\SpecialPage;
+
 /**
- * A special page that displays list of tracking categories
+ * A special page that displays list of tracking categories.
+ *
  * Tracking categories allow pages with certain characteristics to be tracked.
  * It works by adding any such page to a category automatically.
  * Category is specified by the tracking category's system message.
@@ -30,40 +35,48 @@
  * @ingroup SpecialPage
  * @since 1.23
  */
-
 class SpecialTrackingCategories extends SpecialPage {
-	public function __construct() {
+
+	private LinkBatchFactory $linkBatchFactory;
+	private TrackingCategories $trackingCategories;
+
+	/**
+	 * @param LinkBatchFactory $linkBatchFactory
+	 * @param TrackingCategories $trackingCategories
+	 */
+	public function __construct(
+		LinkBatchFactory $linkBatchFactory,
+		TrackingCategories $trackingCategories
+	) {
 		parent::__construct( 'TrackingCategories' );
+		$this->linkBatchFactory = $linkBatchFactory;
+		$this->trackingCategories = $trackingCategories;
 	}
 
 	public function execute( $par ) {
 		$this->setHeaders();
 		$this->outputHeader();
-		$this->addHelpLink( 'Help:Categories' );
-		$this->getOutput()->allowClickjacking();
-		$this->getOutput()->addModuleStyles( 'jquery.tablesorter.styles' );
+		$this->addHelpLink( 'Help:Tracking categories' );
+		$this->getOutput()->getMetadata()->setPreventClickjacking( false );
+		$this->getOutput()->addModuleStyles( [
+			'jquery.tablesorter.styles',
+			'mediawiki.pager.styles'
+		] );
 		$this->getOutput()->addModules( 'jquery.tablesorter' );
 		$this->getOutput()->addHTML(
 			Html::openElement( 'table', [ 'class' => 'mw-datatable sortable',
 				'id' => 'mw-trackingcategories-table' ] ) . "\n" .
-			"<thead><tr>
-			<th>" .
-				$this->msg( 'trackingcategories-msg' )->escaped() . "
-			</th>
-			<th>" .
-				$this->msg( 'trackingcategories-name' )->escaped() .
-			"</th>
-			<th>" .
-				$this->msg( 'trackingcategories-desc' )->escaped() . "
-			</th>
-			</tr></thead>"
+			'<thead><tr>' .
+			Html::element( 'th', [], $this->msg( 'trackingcategories-msg' )->text() ) .
+			Html::element( 'th', [], $this->msg( 'trackingcategories-name' )->text() ) .
+			Html::element( 'th', [], $this->msg( 'trackingcategories-desc' )->text() ) .
+			'</tr></thead>'
 		);
 
-		$trackingCategories = new TrackingCategories( $this->getConfig() );
-		$categoryList = $trackingCategories->getTrackingCategories();
+		$categoryList = $this->trackingCategories->getTrackingCategories();
 
-		$batch = new LinkBatch();
-		foreach ( $categoryList as $catMsg => $data ) {
+		$batch = $this->linkBatchFactory->newLinkBatch();
+		foreach ( $categoryList as $data ) {
 			$batch->addObj( $data['msg'] );
 			foreach ( $data['cats'] as $catTitle ) {
 				$batch->addObj( $catTitle );
@@ -85,10 +98,11 @@ class SpecialTrackingCategories extends SpecialPage {
 			);
 
 			foreach ( $data['cats'] as $catTitle ) {
-				$html = $linkRenderer->makeLink(
-					$catTitle,
-					$catTitle->getText()
-				);
+				$html = Html::rawElement( 'bdi', [ 'dir' => $this->getContentLanguage()->getDir() ],
+					$linkRenderer->makeLink(
+						$catTitle,
+						$catTitle->getText()
+					) );
 
 				$this->getHookRunner()->onSpecialTrackingCategories__generateCatLink(
 					$this, $catTitle, $html );
@@ -131,3 +145,9 @@ class SpecialTrackingCategories extends SpecialPage {
 		return 'pages';
 	}
 }
+
+/**
+ * Retain the old class name for backwards compatibility.
+ * @deprecated since 1.41
+ */
+class_alias( SpecialTrackingCategories::class, 'SpecialTrackingCategories' );

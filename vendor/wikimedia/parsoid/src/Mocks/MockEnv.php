@@ -1,18 +1,17 @@
 <?php
+declare( strict_types = 1 );
 
 namespace Wikimedia\Parsoid\Mocks;
 
 use Wikimedia\Parsoid\Config\Env;
 use Wikimedia\Parsoid\Config\PageContent;
+use Wikimedia\Parsoid\Config\StubMetadataCollector;
 
 class MockEnv extends Env {
-
 	/**
 	 * @param array $opts
 	 *  - log: (bool) Whether the logger should log. Default false.
 	 *  - wrapSections: (bool) Whether to wrap sections. Default false.
-	 *  - tidyWhitespaceBugMaxLength: (int|null) Value to use for tidyWhitespaceBugMaxLength,
-	 *    if non-null.
 	 *  - pageConfig: (PageConfig) If given, supplies a custom PageConfig instance to use.
 	 *  - siteConfig: (SiteConfig) If given, supplies a custom SiteConfig instance to use.
 	 *  - dataAccess: (DataAccess) If given, supplies a custom DataAccess instance to use.
@@ -20,6 +19,7 @@ class MockEnv extends Env {
 	 *    MockPageConfig.
 	 */
 	public function __construct( array $opts ) {
+		$siteConfig = $opts['siteConfig'] ?? new MockSiteConfig( $opts );
 		if ( isset( $opts['pageConfig'] ) ) {
 			$pageConfig = $opts['pageConfig'];
 		} else {
@@ -27,19 +27,11 @@ class MockEnv extends Env {
 			$pageContent = $content instanceof PageContent
 				? $content
 				: new MockPageContent( [ 'main' => $content ] );
-			$pageConfig = new MockPageConfig( $opts, $pageContent );
+			$pageConfig = new MockPageConfig( $siteConfig, $opts, $pageContent );
 		}
-		$siteConfig = $opts['siteConfig'] ?? new MockSiteConfig( $opts );
-		$dataAccess = $opts['dataAccess'] ?? new MockDataAccess( $opts );
-		parent::__construct( $siteConfig, $pageConfig, $dataAccess, $opts );
-	}
-
-	/** @inheritDoc */
-	public function bumpTimeUse( string $resource, $time, $cat ): void {
-	}
-
-	/** @inheritDoc */
-	public function bumpCount( string $resource, int $n = 1 ): void {
+		$dataAccess = $opts['dataAccess'] ?? new MockDataAccess( $siteConfig, $opts );
+		$metadata = new StubMetadataCollector( $siteConfig );
+		parent::__construct( $siteConfig, $pageConfig, $dataAccess, $metadata, $opts );
 	}
 
 	/**

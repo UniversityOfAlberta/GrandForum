@@ -22,7 +22,9 @@
  * @author Rob Church <robchur@gmail.com>
  */
 
+// @codeCoverageIgnoreStart
 require_once __DIR__ . '/Maintenance.php';
+// @codeCoverageIgnoreEnd
 
 /**
  * Maintenance script that deletes old (non-current) revisions from the database.
@@ -34,32 +36,37 @@ class DeleteOldRevisions extends Maintenance {
 		parent::__construct();
 		$this->addDescription( 'Delete old (non-current) revisions from the database' );
 		$this->addOption( 'delete', 'Actually perform the deletion' );
-		$this->addOption( 'page_id', 'List of page ids to work on', false );
+		$this->addArg( 'page_id', 'List of page ids to work on', false, true );
 	}
 
 	public function execute() {
 		$this->output( "Delete old revisions\n\n" );
-		$this->doDelete( $this->hasOption( 'delete' ), $this->mArgs );
+		$this->doDelete( $this->hasOption( 'delete' ), $this->getArgs( 'page_id' ) );
 	}
 
-	private function doDelete( $delete = false, $args = [] ) {
+	private function doDelete( $delete = false, $pageIds = [] ) {
 		# Data should come off the master, wrapped in a transaction
-		$dbw = $this->getDB( DB_MASTER );
+		$dbw = $this->getPrimaryDB();
 		$this->beginTransaction( $dbw, __METHOD__ );
 
 		$pageConds = [];
 		$revConds = [];
 
 		# If a list of page_ids was provided, limit results to that set of page_ids
-		if ( count( $args ) > 0 ) {
-			$pageConds['page_id'] = $args;
-			$revConds['rev_page'] = $args;
-			$this->output( "Limiting to page IDs " . implode( ',', $args ) . "\n" );
+		if ( count( $pageIds ) > 0 ) {
+			$pageConds['page_id'] = $pageIds;
+			$revConds['rev_page'] = $pageIds;
+			$this->output( "Limiting to page IDs " . implode( ',', $pageIds ) . "\n" );
 		}
 
 		# Get "active" revisions from the page table
 		$this->output( "Searching for active revisions..." );
-		$res = $dbw->select( 'page', 'page_latest', $pageConds, __METHOD__ );
+		$res = $dbw->newSelectQueryBuilder()
+			->select( 'page_latest' )
+			->from( 'page' )
+			->where( $pageConds )
+			->caller( __METHOD__ )
+			->fetchResultSet();
 		$latestRevs = [];
 		foreach ( $res as $row ) {
 			$latestRevs[] = $row->page_latest;
@@ -69,9 +76,14 @@ class DeleteOldRevisions extends Maintenance {
 		# Get all revisions that aren't in this set
 		$this->output( "Searching for inactive revisions..." );
 		if ( count( $latestRevs ) > 0 ) {
-			$revConds[] = 'rev_id NOT IN (' . $dbw->makeList( $latestRevs ) . ')';
+			$revConds[] = $dbw->expr( 'rev_id', '!=', $latestRevs );
 		}
-		$res = $dbw->select( 'revision', 'rev_id', $revConds, __METHOD__ );
+		$res = $dbw->newSelectQueryBuilder()
+			->select( 'rev_id' )
+			->from( 'revision' )
+			->where( $revConds )
+			->caller( __METHOD__ )
+			->fetchResultSet();
 		$oldRevs = [];
 		foreach ( $res as $row ) {
 			$oldRevs[] = $row->rev_id;
@@ -85,8 +97,14 @@ class DeleteOldRevisions extends Maintenance {
 		# Delete as appropriate
 		if ( $delete && $count ) {
 			$this->output( "Deleting..." );
-			$dbw->delete( 'revision', [ 'rev_id' => $oldRevs ], __METHOD__ );
-			$dbw->delete( 'ip_changes', [ 'ipc_rev_id' => $oldRevs ], __METHOD__ );
+			$dbw->newDeleteQueryBuilder()
+				->deleteFrom( 'revision' )
+				->where( [ 'rev_id' => $oldRevs ] )
+				->caller( __METHOD__ )->execute();
+			$dbw->newDeleteQueryBuilder()
+				->deleteFrom( 'ip_changes' )
+				->where( [ 'ipc_rev_id' => $oldRevs ] )
+				->caller( __METHOD__ )->execute();
 			$this->output( "done.\n" );
 		}
 
@@ -98,5 +116,7 @@ class DeleteOldRevisions extends Maintenance {
 	}
 }
 
+// @codeCoverageIgnoreStart
 $maintClass = DeleteOldRevisions::class;
 require_once RUN_MAINTENANCE_IF_MAIN;
+// @codeCoverageIgnoreEnd

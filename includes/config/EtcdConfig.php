@@ -18,10 +18,16 @@
  * @file
  */
 
+namespace MediaWiki\Config;
+
+use DnsSrvDiscoverer;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
+use Wikimedia\Http\MultiHttpClient;
 use Wikimedia\IPUtils;
-use Wikimedia\ObjectFactory;
+use Wikimedia\ObjectCache\BagOStuff;
+use Wikimedia\ObjectCache\HashBagOStuff;
+use Wikimedia\ObjectFactory\ObjectFactory;
 use Wikimedia\WaitConditionLoop;
 
 /**
@@ -36,17 +42,19 @@ class EtcdConfig implements Config, LoggerAwareInterface {
 	private $srvCache;
 	/** @var array */
 	private $procCache;
-	/** @var LoggerInterface */
-	private $logger;
+	/** @var DnsSrvDiscoverer */
+	private $dsd;
 
 	/** @var string */
+	private $service;
+	/** @var string */
 	private $host;
+	/** @var ?int */
+	private $port;
 	/** @var string */
 	private $protocol;
 	/** @var string */
 	private $directory;
-	/** @var string */
-	private $encoding;
 	/** @var int */
 	private $baseCacheTTL;
 	/** @var int */
@@ -56,10 +64,11 @@ class EtcdConfig implements Config, LoggerAwareInterface {
 
 	/**
 	 * @param array $params Parameter map:
-	 *   - host: the host address and port
-	 *   - protocol: either http or https
+	 *   - host: the host address
 	 *   - directory: the etc "directory" were MediaWiki specific variables are located
-	 *   - encoding: one of ("JSON", "YAML"). Defaults to JSON. [optional]
+	 *   - service: service name used in SRV discovery. Defaults to 'etcd'. [optional]
+	 *   - port: custom host port [optional]
+	 *   - protocol: one of ("http", "https"). Defaults to http. [optional]
 	 *   - cache: BagOStuff instance or ObjectFactory spec thereof for a server cache.
 	 *            The cache will also be used as a fallback if etcd is down. [optional]
 	 *   - cacheTTL: logical cache TTL in seconds [optional]
@@ -68,20 +77,40 @@ class EtcdConfig implements Config, LoggerAwareInterface {
 	 */
 	public function __construct( array $params ) {
 		$params += [
+			'service' => 'etcd',
+			'port' => null,
 			'protocol' => 'http',
-			'encoding' => 'JSON',
 			'cacheTTL' => 10,
 			'skewTTL' => 1,
 			'timeout' => 2
 		];
 
+		$this->service = $params['service'];
 		$this->host = $params['host'];
+		$this->port = $params['port'];
 		$this->protocol = $params['protocol'];
 		$this->directory = trim( $params['directory'], '/' );
-		$this->encoding = $params['encoding'];
 		$this->skewCacheTTL = $params['skewTTL'];
 		$this->baseCacheTTL = max( $params['cacheTTL'] - $this->skewCacheTTL, 0 );
 		$this->timeout = $params['timeout'];
+
+		// For backwards compatibility, check the host for an embedded port
+		$hostAndPort = IPUtils::splitHostAndPort( $this->host );
+
+		if ( $hostAndPort ) {
+			$this->host = $hostAndPort[0];
+
+			if ( $hostAndPort[1] ) {
+				$this->port = $hostAndPort[1];
+			}
+		}
+
+		// Also for backwards compatibility, check for a host in the format of
+		// an SRV record and use the service specified therein
+		if ( preg_match( '/^_([^\.]+)\._tcp\.(.+)$/', $this->host, $m ) ) {
+			$this->service = $m[1];
+			$this->host = $m[2];
+		}
 
 		if ( !isset( $params['cache'] ) ) {
 			$this->srvCache = new HashBagOStuff();
@@ -91,17 +120,18 @@ class EtcdConfig implements Config, LoggerAwareInterface {
 			$this->srvCache = ObjectFactory::getObjectFromSpec( $params['cache'] );
 		}
 
-		$this->logger = new Psr\Log\NullLogger();
 		$this->http = new MultiHttpClient( [
 			'connTimeout' => $this->timeout,
 			'reqTimeout' => $this->timeout,
-			'logger' => $this->logger
 		] );
+		$this->dsd = new DnsSrvDiscoverer( $this->service, 'tcp', $this->host );
 	}
 
+	/**
+	 * @deprecated since 1.41 No longer used and did not work in practice
+	 */
 	public function setLogger( LoggerInterface $logger ) {
-		$this->logger = $logger;
-		$this->http->setLogger( $logger );
+		trigger_error( __METHOD__ . ' is deprecated since 1.41', E_USER_DEPRECATED );
 	}
 
 	public function has( $name ) {
@@ -148,8 +178,6 @@ class EtcdConfig implements Config, LoggerAwareInterface {
 				// Check if the values are in cache yet...
 				$data = $this->srvCache->get( $key );
 				if ( is_array( $data ) && $data['expires'] > $now ) {
-					$this->logger->debug( "Found up-to-date etcd configuration cache." );
-
 					return WaitConditionLoop::CONDITION_REACHED;
 				}
 
@@ -171,12 +199,10 @@ class EtcdConfig implements Config, LoggerAwareInterface {
 							];
 							$this->srvCache->set( $key, $data, BagOStuff::TTL_INDEFINITE );
 
-							$this->logger->info( "Refreshed stale etcd configuration cache." );
-
 							return WaitConditionLoop::CONDITION_REACHED;
 						} else {
-							$this->logger->error( "Failed to fetch configuration: $error" );
-							if ( !$etcdResponse['retry'] ) {
+							trigger_error( "EtcdConfig failed to fetch data: $error", E_USER_WARNING );
+							if ( !$etcdResponse['retry'] && !is_array( $data ) ) {
 								// Fail fast since the error is likely to keep happening
 								return WaitConditionLoop::CONDITION_FAILED;
 							}
@@ -184,10 +210,12 @@ class EtcdConfig implements Config, LoggerAwareInterface {
 					} finally {
 						$this->srvCache->unlock( $key ); // release mutex
 					}
+				} else {
+					$error = 'lost lock';
 				}
 
 				if ( is_array( $data ) ) {
-					$this->logger->info( "Using stale etcd configuration cache." );
+					trigger_error( "EtcdConfig using stale data: $error", E_USER_NOTICE );
 
 					return WaitConditionLoop::CONDITION_REACHED;
 				}
@@ -199,9 +227,11 @@ class EtcdConfig implements Config, LoggerAwareInterface {
 
 		if ( $loop->invoke() !== WaitConditionLoop::CONDITION_REACHED ) {
 			// No cached value exists and etcd query failed; throw an error
+			// @phan-suppress-next-line PhanTypeSuspiciousStringExpression WaitConditionLoop throws or error set
 			throw new ConfigException( "Failed to load configuration from etcd: $error" );
 		}
 
+		// @phan-suppress-next-line PhanTypeMismatchProperty WaitConditionLoop throws ore data set
 		$this->procCache = $data;
 	}
 
@@ -209,40 +239,38 @@ class EtcdConfig implements Config, LoggerAwareInterface {
 	 * @return array (containing the keys config, error, retry, modifiedIndex)
 	 */
 	public function fetchAllFromEtcd() {
-		// TODO: inject DnsSrvDiscoverer in order to be able to test this method
-		$dsd = new DnsSrvDiscoverer( $this->host );
-		$servers = $dsd->getServers();
-		if ( !$servers ) {
-			return $this->fetchAllFromEtcdServer( $this->host );
-		}
+		$servers = $this->dsd->getServers() ?: [ [ $this->host, $this->port ] ];
 
-		do {
-			// Pick a random etcd server from dns
-			$server = $dsd->pickServer( $servers );
-			$host = IPUtils::combineHostAndPort( $server['target'], $server['port'] );
+		foreach ( $servers as [ $host, $port ] ) {
 			// Try to load the config from this particular server
-			$response = $this->fetchAllFromEtcdServer( $host );
+			$response = $this->fetchAllFromEtcdServer( $host, $port );
 			if ( is_array( $response['config'] ) || $response['retry'] ) {
 				break;
 			}
-
-			// Avoid the server next time if that failed
-			$servers = $dsd->removeServer( $server, $servers );
-		} while ( $servers );
+		}
 
 		return $response;
 	}
 
 	/**
-	 * @param string $address Host and port
+	 * @param string $address Host
+	 * @param ?int $port Port
 	 * @return array (containing the keys config, error, retry, modifiedIndex)
 	 */
-	protected function fetchAllFromEtcdServer( $address ) {
+	protected function fetchAllFromEtcdServer( string $address, ?int $port = null ) {
+		$host = $address;
+
+		if ( $port !== null ) {
+			$host = IPUtils::combineHostAndPort( $address, $port );
+		}
+
 		// Retrieve all the values under the MediaWiki config directory
-		list( $rcode, $rdesc, /* $rhdrs */, $rbody, $rerr ) = $this->http->run( [
+		[ $rcode, $rdesc, /* $rhdrs */, $rbody, $rerr ] = $this->http->run( [
 			'method' => 'GET',
-			'url' => "{$this->protocol}://{$address}/v2/keys/{$this->directory}/?recursive=true",
-			'headers' => [ 'content-type' => 'application/json' ]
+			'url' => "{$this->protocol}://{$host}/v2/keys/{$this->directory}/?recursive=true",
+			'headers' => [
+				'content-type' => 'application/json',
+			]
 		] );
 
 		$response = [ 'config' => null, 'error' => null, 'retry' => false, 'modifiedIndex' => 0 ];
@@ -327,10 +355,9 @@ class EtcdConfig implements Config, LoggerAwareInterface {
 	 * @return mixed
 	 */
 	private function unserialize( $string ) {
-		if ( $this->encoding === 'YAML' ) {
-			return yaml_parse( $string );
-		} else {
-			return json_decode( $string, true );
-		}
+		return json_decode( $string, true );
 	}
 }
+
+/** @deprecated class alias since 1.41 */
+class_alias( EtcdConfig::class, 'EtcdConfig' );

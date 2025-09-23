@@ -18,7 +18,15 @@
  * @file
  */
 
+namespace MediaWiki\LinkedData;
+
+use HttpError;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Output\OutputPage;
+use MediaWiki\Request\WebRequest;
+use MediaWiki\Revision\SlotRecord;
+use MediaWiki\Title\MalformedTitleException;
+use MediaWiki\Title\Title;
 use Wikimedia\Http\HttpAcceptNegotiator;
 use Wikimedia\Http\HttpAcceptParser;
 
@@ -50,7 +58,7 @@ class PageDataRequestHandler {
 		$parts = explode( '/', $subPage, 2 );
 		$slot = $parts[0];
 		$title = $parts[1] ?? '';
-		return ( $slot === 'main' || $slot === '' ) && $title !== '';
+		return ( $slot === SlotRecord::MAIN || $slot === '' ) && $title !== '';
 	}
 
 	/**
@@ -94,7 +102,7 @@ class PageDataRequestHandler {
 		}
 
 		try {
-			$title = Title::newFromTextThrow( $title );
+			$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromTextThrow( $title );
 		} catch ( MalformedTitleException $ex ) {
 			throw new HttpError( 400, wfMessage( 'pagedata-bad-title', $title ) );
 		}
@@ -146,8 +154,7 @@ class PageDataRequestHandler {
 		}
 
 		if ( $format === null ) {
-			$msg = wfMessage( 'pagedata-not-acceptable', implode( ', ', $mimeTypes ) );
-			throw new HttpError( 406, $msg );
+			throw new HttpError( 406, wfMessage( 'pagedata-not-acceptable', implode( ', ', $mimeTypes ) ) );
 		}
 
 		$url = $this->getDocUrl( $title, $format, $revision );
@@ -179,3 +186,6 @@ class PageDataRequestHandler {
 	}
 
 }
+
+/** @deprecated class alias since 1.42 */
+class_alias( PageDataRequestHandler::class, 'PageDataRequestHandler' );

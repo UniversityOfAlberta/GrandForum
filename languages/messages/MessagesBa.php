@@ -1,11 +1,8 @@
 <?php
 /** Bashkir (башҡортса)
  *
- * To improve a translation please visit https://translatewiki.net
- *
- * @ingroup Language
  * @file
- *
+ * @ingroup Languages
  */
 
 $fallback = 'ru';
@@ -45,12 +42,14 @@ $namespaceAliases = [
 	'Категория_б-са_фекер_алышыу' => NS_CATEGORY_TALK,
 ];
 
+/** @phpcs-require-sorted-array */
 $specialPageAliases = [
 	'Activeusers'               => [ 'ӘүҙемҠатнашыусылар', 'АктивҠатнашыусылар' ],
 	'Allmessages'               => [ 'Система_хәбәрҙәре' ],
 	'Allpages'                  => [ 'Барлыҡ_битәр' ],
 	'Blankpage'                 => [ 'Буш_бит' ],
 	'Block'                     => [ 'Блоклау' ],
+	'BlockList'                 => [ 'Блоклауҙар_исемлеге' ],
 	'Booksources'               => [ 'Китап_сығанаҡтары' ],
 	'BrokenRedirects'           => [ 'Өҙөлгән_йүнәлтеүҙәр' ],
 	'Categories'                => [ 'Категориялар' ],
@@ -69,7 +68,6 @@ $specialPageAliases = [
 	'FileDuplicateSearch'       => [ 'Файлдың_дубликаттарын_эҙләү' ],
 	'Filepath'                  => [ 'Файл_юлы' ],
 	'Import'                    => [ 'Импорт' ],
-	'BlockList'                 => [ 'Блоклауҙар_исемлеге' ],
 	'LinkSearch'                => [ 'Һылтанмалар_эҙләү' ],
 	'Listadmins'                => [ 'Хакимдар_исемлеге' ],
 	'Listbots'                  => [ 'Боттар_исемлеге' ],
@@ -97,6 +95,7 @@ $specialPageAliases = [
 	'Randompage'                => [ 'Осраҡлы_мәҡәлә' ],
 	'Recentchanges'             => [ 'Һуңғы_үҙгәртеүҙәр' ],
 	'Recentchangeslinked'       => [ 'Бәйле_үҙгәртеүҙәр' ],
+	'Renameuser'                => [ 'RenameUser' ],
 	'Revisiondelete'            => [ 'Төҙәтеүҙе_юйыу' ],
 	'Search'                    => [ 'Эҙләү' ],
 	'Shortpages'                => [ 'Ҡыҫҡа_биттәр' ],

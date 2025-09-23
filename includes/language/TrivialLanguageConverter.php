@@ -17,8 +17,12 @@
  *
  * @file
  */
+use MediaWiki\Language\ILanguageConverter;
+use MediaWiki\Language\Language;
 use MediaWiki\Linker\LinkTarget;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\StubObject\StubUserLang;
+use MediaWiki\Title\TitleFormatter;
 
 /**
  * A trivial language converter.
@@ -26,7 +30,7 @@ use MediaWiki\MediaWikiServices;
  * For Languages which do not implement variant
  * conversion, for example, German, TrivialLanguageConverter is provided rather than a
  * LanguageConverter when asked for their converter. The TrivialLanguageConverter just
- * returns text unchanged, i.e. it doesn't do any conversion.
+ * returns text unchanged, i.e., it doesn't do any conversion.
  *
  * See https://www.mediawiki.org/wiki/Writing_systems#LanguageConverter.
  *
@@ -45,9 +49,21 @@ class TrivialLanguageConverter implements ILanguageConverter {
 	 */
 	private $titleFormatter;
 
-	public function __construct( $langobj ) {
+	/**
+	 * Creates a converter for languages that don't have variants. This method is internal
+	 * and should be called for LanguageConverterFactory only
+	 *
+	 * @param Language|StubUserLang $langobj
+	 * @param TitleFormatter|null $titleFormatter
+	 *
+	 * @internal
+	 */
+	public function __construct(
+		$langobj,
+		?TitleFormatter $titleFormatter = null
+	) {
 		$this->language = $langobj;
-		$this->titleFormatter = MediaWikiServices::getInstance()->getTitleFormatter();
+		$this->titleFormatter = $titleFormatter ?? MediaWikiServices::getInstance()->getTitleFormatter();
 	}
 
 	public function autoConvert( $text, $variant = false ) {
@@ -62,25 +78,34 @@ class TrivialLanguageConverter implements ILanguageConverter {
 		return $t;
 	}
 
-	public function convertTo( $text, $variant ) {
+	public function convertTo( $text, $variant, bool $clearState = true ) {
 		return $text;
 	}
 
-	/**
-	 * @param LinkTarget $linkTarget
-	 * @return mixed
-	 */
-	public function convertTitle( LinkTarget $linkTarget ) {
-		return $this->titleFormatter->getPrefixedText( $linkTarget );
+	public function convertSplitTitle( $title ) {
+		$mainText = $this->titleFormatter->getText( $title );
+
+		$index = $title->getNamespace();
+		try {
+			$nsWithUnderscores = $this->titleFormatter->getNamespaceName( $index, $mainText );
+		} catch ( InvalidArgumentException $e ) {
+			// T165149: see MediaWikiTitleCodec::formatTitle()
+			$nsWithUnderscores = $this->language->getNsText( NS_SPECIAL );
+			$mainText = "Badtitle/NS$index:$mainText";
+		}
+		$nsText = str_replace( '_', ' ', $nsWithUnderscores );
+
+		return [ $nsText, ':', $mainText ];
+	}
+
+	public function convertTitle( $title ) {
+		return $this->titleFormatter->getPrefixedText( $title );
 	}
 
 	public function convertNamespace( $index, $variant = null ) {
 		return $this->language->getFormattedNsText( $index );
 	}
 
-	/**
-	 * @return string[]
-	 */
 	public function getVariants() {
 		return [ $this->language->getCode() ];
 	}
@@ -142,50 +167,20 @@ class TrivialLanguageConverter implements ILanguageConverter {
 	/**
 	 * Used by test suites which need to reset the converter state.
 	 *
-	 * @private
+	 * Called by ParserTestRunner with the help of TestingAccessWrapper
 	 */
 	private function reloadTables() {
 	}
 
-	/**
-	 * Check if this is a language with variants
-	 *
-	 * @since 1.35
-	 *
-	 * @return bool
-	 */
 	public function hasVariants() {
 		return count( $this->getVariants() ) > 1;
 	}
 
-	/**
-	 * Strict check if the language has the specific variant.
-	 *
-	 * Compare to LanguageConverter::validateVariant() which does a more
-	 * lenient check and attempts to coerce the given code to a valid one.
-	 *
-	 * @since 1.35
-	 * @param string $variant
-	 * @return bool
-	 */
 	public function hasVariant( $variant ) {
 		return $variant && ( $variant === $this->validateVariant( $variant ) );
 	}
 
-	/**
-	 * Perform output conversion on a string, and encode for safe HTML output.
-	 *
-	 * @since 1.35
-	 *
-	 * @param string $text Text to be converted
-	 * @return string
-	 */
 	public function convertHtml( $text ) {
 		return htmlspecialchars( $this->convert( $text ) );
 	}
 }
-
-/**
- * @deprecated since 1.35 use TrivialLanguageConverter instead
- */
-class_alias( TrivialLanguageConverter::class, 'FakeConverter' );

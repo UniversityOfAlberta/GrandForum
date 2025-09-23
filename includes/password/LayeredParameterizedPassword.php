@@ -22,6 +22,11 @@
 
 declare( strict_types = 1 );
 
+namespace MediaWiki\Password;
+
+use InvalidArgumentException;
+use UnexpectedValueException;
+
 /**
  * This password hash type layers one or more parameterized password types
  * on top of each other.
@@ -33,20 +38,22 @@ declare( strict_types = 1 );
  * @since 1.24
  */
 class LayeredParameterizedPassword extends ParameterizedPassword {
-	protected function getDelimiter() : string {
+	protected function getDelimiter(): string {
 		return '!';
 	}
 
-	protected function getDefaultParams() : array {
+	protected function getDefaultParams(): array {
 		$params = [];
 
 		foreach ( $this->config['types'] as $type ) {
 			$passObj = $this->factory->newFromType( $type );
 
 			if ( !$passObj instanceof ParameterizedPassword ) {
-				throw new MWException( 'Underlying type must be a parameterized password.' );
+				throw new UnexpectedValueException( 'Underlying type must be a parameterized password.' );
 			} elseif ( $passObj->getDelimiter() === $this->getDelimiter() ) {
-				throw new MWException( 'Underlying type cannot use same delimiter as encapsulating type.' );
+				throw new UnexpectedValueException(
+					'Underlying type cannot use same delimiter as encapsulating type.'
+				);
 			}
 
 			$params[] = implode( $passObj->getDelimiter(), $passObj->getDefaultParams() );
@@ -55,7 +62,7 @@ class LayeredParameterizedPassword extends ParameterizedPassword {
 		return $params;
 	}
 
-	public function crypt( string $password ) : void {
+	public function crypt( string $password ): void {
 		$lastHash = $password;
 		foreach ( $this->config['types'] as $i => $type ) {
 			// Construct pseudo-hash based on params and arguments
@@ -95,13 +102,11 @@ class LayeredParameterizedPassword extends ParameterizedPassword {
 	 * get an updated hash with all the layers.
 	 *
 	 * @param ParameterizedPassword $passObj Password hash of the first layer
-	 *
-	 * @throws MWException If the first parameter is not of the correct type
 	 */
 	public function partialCrypt( ParameterizedPassword $passObj ) {
 		$type = $passObj->config['type'];
 		if ( $type !== $this->config['types'][0] ) {
-			throw new MWException( 'Only a hash in the first layer can be finished.' );
+			throw new InvalidArgumentException( 'Only a hash in the first layer can be finished.' );
 		}
 
 		// Gather info from the existing hash
@@ -144,3 +149,6 @@ class LayeredParameterizedPassword extends ParameterizedPassword {
 		$this->hash = $lastHash;
 	}
 }
+
+/** @deprecated since 1.43 use MediaWiki\\Password\\LayeredParameterizedPassword */
+class_alias( LayeredParameterizedPassword::class, 'LayeredParameterizedPassword' );

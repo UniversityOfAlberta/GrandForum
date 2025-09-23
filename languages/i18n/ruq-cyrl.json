@@ -2,13 +2,12 @@
 	"@metadata": {
 		"authors": [
 			"Andrijko Z.",
+			"Stephanecbisson",
 			"Кумулај Маркус",
 			"Макѕе",
-			"Приетен тев",
-			"Stephanecbisson"
+			"Приетен тев"
 		]
 	},
-	"tog-underline": "Сублиниаере легајтулс:",
 	"sun": "Дум",
 	"mon": "Лун",
 	"tue": "Мар",
@@ -54,7 +53,6 @@
 	"dec": "дец",
 	"category_header": "Пажус ен категориа \"$1\"",
 	"subcategories": "Субкатегории",
-	"listingcontinuesabbrev": "контину",
 	"about": "Дајпул",
 	"cancel": "ренунтаје",
 	"mytalk": "Мај дискућу",
@@ -93,7 +91,7 @@
 	"privacy": "Политикмус де лижитул",
 	"privacypage": "Project:политикмус де лижитул",
 	"retrievedfrom": "адусе де \"$1\"",
-	"youhavenewmessages": "Весес $1 ($2).",
+	"new-messages": "Весес $1 ($2).",
 	"editsection": "едитаере",
 	"editold": "едита",
 	"editsectionhint": "Едитаере ћисецион: $1",
@@ -181,9 +179,8 @@
 	"namespace": "лСпаћи:",
 	"invert": "Ќсклуда спаћул",
 	"blanknamespace": "(Принципу)",
-	"contributions": "Контрибући дутилизатори",
+	"tool-link-contributions": "Контрибући дутилизатори",
 	"mycontris": "Мес контрибући",
-	"contribsub2": "пентру $1 ($2)",
 	"uctop": "сусверф",
 	"sp-contributions-talk": "дискућу",
 	"whatlinkshere": "Легајтул а це пажу",

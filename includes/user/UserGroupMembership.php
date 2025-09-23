@@ -20,10 +20,13 @@
  * @file
  */
 
+namespace MediaWiki\User;
+
+use InvalidArgumentException;
+use MediaWiki\Context\IContextSource;
 use MediaWiki\MediaWikiServices;
-use Wikimedia\Assert\Assert;
-use Wikimedia\Assert\ParameterTypeException;
-use Wikimedia\Rdbms\IDatabase;
+use MediaWiki\Message\Message;
+use MediaWiki\Title\Title;
 
 /**
  * Represents a "user group membership" -- a specific instance of a user belonging
@@ -53,27 +56,11 @@ class UserGroupMembership {
 	 * @param string|null $group The internal group name
 	 * @param string|null $expiry Timestamp of expiry in TS_MW format, or null if no expiry
 	 */
-	public function __construct( $userId = 0, $group = null, $expiry = null ) {
-		self::assertValidSpec( $userId, $group, $expiry );
-		$this->userId = (int)$userId;
+	public function __construct( int $userId = 0, ?string $group = null, ?string $expiry = null ) {
+		$this->userId = $userId;
 		$this->group = $group;
 		$this->expiry = $expiry ?: null;
-		$this->expired = $expiry ? wfTimestampNow() > $expiry : false;
-	}
-
-	/**
-	 * Asserts that the given parameters could be used to construct a UserGroupMembership object
-	 *
-	 * @param int $userId
-	 * @param string|null $group
-	 * @param string|null $expiry
-	 *
-	 * @throws ParameterTypeException
-	 */
-	private static function assertValidSpec( $userId, $group, $expiry ) {
-		Assert::parameterType( 'integer', $userId, '$userId' );
-		Assert::parameterType( [ 'string', 'null' ], $group, '$group' );
-		Assert::parameterType( [ 'string', 'null' ], $expiry, '$expiry' );
+		$this->expired = $expiry && wfTimestampNow() > $expiry;
 	}
 
 	/**
@@ -98,99 +85,6 @@ class UserGroupMembership {
 	}
 
 	/**
-	 * @deprecated since 1.35
-	 * @param $row
-	 */
-	protected function initFromRow( $row ) {
-		wfDeprecated( __METHOD__, '1.35' );
-		$this->userId = (int)$row->ug_user;
-		$this->group = $row->ug_group;
-		$this->expiry = $row->ug_expiry === null ?
-			null :
-			wfTimestamp( TS_MW, $row->ug_expiry );
-	}
-
-	/**
-	 * Creates a new UserGroupMembership object from a database row.
-	 *
-	 * @param stdClass $row The row from the user_groups table
-	 * @return UserGroupMembership
-	 *
-	 * @deprecated since 1.35, use UserGroupMembership constructor instead
-	 */
-	public static function newFromRow( $row ) {
-		wfDeprecated( __METHOD__, '1.35' );
-		return new self(
-			(int)$row->ug_user,
-			$row->ug_group,
-			$row->ug_expiry === null ? null : wfTimestamp( TS_MW, $row->ug_expiry )
-		);
-	}
-
-	/**
-	 * Returns the list of user_groups fields that should be selected to create
-	 * a new user group membership.
-	 * @return array
-	 *
-	 * @deprecated since 1.35, use UserGroupManager::getQueryInfo instead
-	 */
-	public static function selectFields() {
-		wfDeprecated( __METHOD__, '1.35' );
-		return MediaWikiServices::getInstance()->getUserGroupManager()->getQueryInfo()['fields'];
-	}
-
-	/**
-	 * Delete the row from the user_groups table.
-	 *
-	 * @throws MWException
-	 * @param IDatabase|null $dbw Optional master database connection to use
-	 * @return bool Whether or not anything was deleted
-	 *
-	 * @deprecated since 1.35, use UserGroupManager::removeUserFromGroup instead
-	 */
-	public function delete( IDatabase $dbw = null ) {
-		wfDeprecated( __METHOD__, '1.35' );
-		return MediaWikiServices::getInstance()
-			->getUserGroupManager()
-			->removeUserFromGroup(
-				// TODO: we're forced to forge a User instance here because we don't have
-				// a username around to create an artificial UserIdentityValue
-				// and the username is being used down the tree. This will be gone once the
-				// deprecated method is removed
-				User::newFromId( $this->getUserId() ),
-				$this->group
-			);
-	}
-
-	/**
-	 * Insert a user right membership into the database. When $allowUpdate is false,
-	 * the function fails if there is a conflicting membership entry (same user and
-	 * group) already in the table.
-	 *
-	 * @throws UnexpectedValueException
-	 * @param bool $allowUpdate Whether to perform "upsert" instead of INSERT
-	 * @param IDatabase|null $dbw If you have one available
-	 * @return bool Whether or not anything was inserted
-	 *
-	 * @deprecated since 1.35, use UserGroupManager::addUserToGroup instead
-	 */
-	public function insert( $allowUpdate = false, IDatabase $dbw = null ) {
-		wfDeprecated( __METHOD__, '1.35' );
-		return MediaWikiServices::getInstance()
-			->getUserGroupManager()
-			->addUserToGroup(
-				// TODO: we're forced to forge a User instance here because we don't have
-				// a username around to create an artificial UserIdentityValue
-				// and the username is being used down the tree. This will be gone once the
-				// deprecated method is removed
-				User::newFromId( $this->getUserId() ),
-				$this->group,
-				$this->expiry,
-				$allowUpdate
-			);
-	}
-
-	/**
 	 * Has the membership expired?
 	 *
 	 * @return bool
@@ -200,71 +94,9 @@ class UserGroupMembership {
 	}
 
 	/**
-	 * Purge expired memberships from the user_groups table
-	 *
-	 * @return int|bool false if purging wasn't attempted (e.g. because of
-	 *  readonly), the number of rows purged (might be 0) otherwise
-	 *
-	 * @deprecated since 1.35, use UserGroupManager::purgeExpired instead
-	 */
-	public static function purgeExpired() {
-		wfDeprecated( __METHOD__, '1.35' );
-		return MediaWikiServices::getInstance()
-			->getUserGroupManager()
-			->purgeExpired();
-	}
-
-	/**
-	 * Returns UserGroupMembership objects for all the groups a user currently
-	 * belongs to.
-	 *
-	 * @param int $userId ID of the user to search for
-	 * @param IDatabase|null $db unused since 1.35
-	 * @return UserGroupMembership[] Associative array of (group name => UserGroupMembership object)
-	 *
-	 * @deprecated since 1.35, use UserGroupManager::getUserGroupMemberships instead
-	 */
-	public static function getMembershipsForUser( $userId, IDatabase $db = null ) {
-		wfDeprecated( __METHOD__, '1.35' );
-		return MediaWikiServices::getInstance()
-			->getUserGroupManager()
-			->getUserGroupMemberships(
-				// TODO: we're forced to forge a User instance here because we don't have
-				// a username around to create an artificial UserIdentityValue
-				// and the username is being used down the tree. This will be gone once the
-				// deprecated method is removed
-				User::newFromId( $userId )
-			);
-	}
-
-	/**
-	 * Returns a UserGroupMembership object that pertains to the given user and group,
-	 * or false if the user does not belong to that group (or the assignment has
-	 * expired).
-	 *
-	 * @param int $userId ID of the user to search for
-	 * @param string $group User group name
-	 * @param IDatabase|null $db unused since 1.35
-	 * @return UserGroupMembership|false
-	 *
-	 * @deprecated since 1.35, use UserGroupManager::getUserGroupMemberships instead
-	 */
-	public static function getMembership( $userId, $group, IDatabase $db = null ) {
-		wfDeprecated( __METHOD__, '1.35' );
-		$ugms = MediaWikiServices::getInstance()
-			->getUserGroupManager()
-			->getUserGroupMemberships(
-				// TODO: we're forced to forge a User instance here because we don't have
-				// a username around to create an artificial UserIdentityValue
-				// and the username is being used down the tree. This will be gone once the
-				// deprecated method is removed
-				User::newFromId( $userId )
-			);
-		return $ugms[$group] ?? false;
-	}
-
-	/**
 	 * Gets a link for a user group, possibly including the expiry date if relevant.
+	 *
+	 * @deprecated since 1.41 use getLinkWiki or getLinkHTML directly
 	 *
 	 * @param string|UserGroupMembership $ugm Either a group name as a string, or
 	 *   a UserGroupMembership object
@@ -276,12 +108,106 @@ class UserGroupMembership {
 	 *   group name message ("Administrators"), omit this parameter.
 	 * @return string
 	 */
-	public static function getLink( $ugm, IContextSource $context, $format, $userName = null ) {
-		if ( $format !== 'wiki' && $format !== 'html' ) {
-			throw new MWException( 'UserGroupMembership::getLink() $format parameter should be ' .
-				"'wiki' or 'html'" );
+	public static function getLink( $ugm, IContextSource $context, string $format, $userName = null ) {
+		switch ( $format ) {
+			case 'wiki':
+				return self::getLinkWiki( $ugm, $context, $userName );
+			case 'html':
+				return self::getLinkHTML( $ugm, $context, $userName );
+			default:
+				throw new InvalidArgumentException( 'UserGroupMembership::getLink() $format parameter should be ' .
+					"'wiki' or 'html'" );
+		}
+	}
+
+	/**
+	 * Gets a link for a user group, possibly including the expiry date if relevant.
+	 * @since 1.41
+	 *
+	 * @param string|UserGroupMembership $ugm Either a group name as a string, or
+	 *   a UserGroupMembership object
+	 * @param IContextSource $context
+	 * @param string|null $userName If you want to use the group member message
+	 *   ("administrator"), pass the name of the user who belongs to the group; it
+	 *   is used for GENDER of the group member message. If you instead want the
+	 *   group name message ("Administrators"), omit this parameter.
+	 * @return string
+	 */
+	public static function getLinkHTML( $ugm, IContextSource $context, $userName = null ): string {
+		[
+			'expiry' => $expiry,
+			'linkTitle' => $linkTitle,
+			'groupName' => $groupName
+		] = self::getLinkInfo( $ugm, $context, $userName );
+
+		// link to the group description page, if it exists
+		$linkRenderer = MediaWikiServices::getInstance()->getLinkRenderer();
+		if ( $linkTitle ) {
+			$groupLink = $linkRenderer->makeLink( $linkTitle, $groupName );
+		} else {
+			$groupLink = htmlspecialchars( $groupName );
 		}
 
+		if ( $expiry ) {
+			[
+				'expiryDT' => $expiryDT,
+				'expiryD' => $expiryD,
+				'expiryT' => $expiryT
+			] = self::getLinkExpiryParams( $context, $expiry );
+			$groupLink = Message::rawParam( $groupLink );
+			return $context->msg( 'group-membership-link-with-expiry' )
+				->params( $groupLink, $expiryDT, $expiryD, $expiryT )->escaped();
+		}
+		return $groupLink;
+	}
+
+	/**
+	 * Gets a link for a user group, possibly including the expiry date if relevant.
+	 * @since 1.41
+	 *
+	 * @param string|UserGroupMembership $ugm Either a group name as a string, or
+	 *   a UserGroupMembership object
+	 * @param IContextSource $context
+	 * @param string|null $userName If you want to use the group member message
+	 *   ("administrator"), pass the name of the user who belongs to the group; it
+	 *   is used for GENDER of the group member message. If you instead want the
+	 *   group name message ("Administrators"), omit this parameter.
+	 * @return string
+	 */
+	public static function getLinkWiki( $ugm, IContextSource $context, $userName = null ): string {
+		[
+			'expiry' => $expiry,
+			'linkTitle' => $linkTitle,
+			'groupName' => $groupName
+		] = self::getLinkInfo( $ugm, $context, $userName );
+
+		// link to the group description page, if it exists
+		if ( $linkTitle ) {
+			$linkPage = $linkTitle->getFullText();
+			$groupLink = "[[$linkPage|$groupName]]";
+		} else {
+			$groupLink = $groupName;
+		}
+
+		if ( $expiry ) {
+			[
+				'expiryDT' => $expiryDT,
+				'expiryD' => $expiryD,
+				'expiryT' => $expiryT
+			] = self::getLinkExpiryParams( $context, $expiry );
+			return $context->msg( 'group-membership-link-with-expiry' )
+				->params( $groupLink, $expiryDT, $expiryD, $expiryT )->text();
+		}
+		return $groupLink;
+	}
+
+	/**
+	 * @param self|string $ugm
+	 * @param IContextSource $context
+	 * @param string|null $userName
+	 * @return array
+	 */
+	private static function getLinkInfo( $ugm, $context, $userName = null ): array {
 		if ( $ugm instanceof UserGroupMembership ) {
 			$expiry = $ugm->getExpiry();
 			$group = $ugm->getGroup();
@@ -290,73 +216,29 @@ class UserGroupMembership {
 			$group = $ugm;
 		}
 
+		$uiLanguage = $context->getLanguage();
 		if ( $userName !== null ) {
-			$groupName = self::getGroupMemberName( $group, $userName );
+			$groupName = $uiLanguage->getGroupMemberName( $group, $userName );
 		} else {
-			$groupName = self::getGroupName( $group );
+			$groupName = $uiLanguage->getGroupName( $group );
 		}
-
-		// link to the group description page, if it exists
 		$linkTitle = self::getGroupPage( $group );
-		$linkRenderer = MediaWikiServices::getInstance()->getLinkRenderer();
-		if ( $format === 'wiki' ) {
-			if ( $linkTitle ) {
-				$linkPage = $linkTitle->getFullText();
-				$groupLink = "[[$linkPage|$groupName]]";
-			} else {
-				$groupLink = $groupName;
-			}
-		} else {
-			if ( $linkTitle ) {
-				$groupLink = $linkRenderer->makeLink( $linkTitle, $groupName );
-			} else {
-				$groupLink = htmlspecialchars( $groupName );
-			}
-		}
-
-		if ( $expiry ) {
-			// format the expiry to a nice string
-			$uiLanguage = $context->getLanguage();
-			$uiUser = $context->getUser();
-			$expiryDT = $uiLanguage->userTimeAndDate( $expiry, $uiUser );
-			$expiryD = $uiLanguage->userDate( $expiry, $uiUser );
-			$expiryT = $uiLanguage->userTime( $expiry, $uiUser );
-
-			if ( $format === 'wiki' ) {
-				return $context->msg( 'group-membership-link-with-expiry' )
-					->params( $groupLink, $expiryDT, $expiryD, $expiryT )->text();
-			} else {
-				$groupLink = Message::rawParam( $groupLink );
-				return $context->msg( 'group-membership-link-with-expiry' )
-					->params( $groupLink, $expiryDT, $expiryD, $expiryT )->escaped();
-			}
-		}
-		return $groupLink;
+		return [ 'expiry' => $expiry, 'linkTitle' => $linkTitle, 'groupName' => $groupName ];
 	}
 
 	/**
-	 * Gets the localized friendly name for a group, if it exists. For example,
-	 * "Administrators" or "Bureaucrats"
-	 *
-	 * @param string $group Internal group name
-	 * @return string Localized friendly group name
+	 * @param IContextSource $context
+	 * @param string $expiry
+	 * @return array
 	 */
-	public static function getGroupName( $group ) {
-		$msg = wfMessage( "group-$group" );
-		return $msg->isBlank() ? $group : $msg->text();
-	}
-
-	/**
-	 * Gets the localized name for a member of a group, if it exists. For example,
-	 * "administrator" or "bureaucrat"
-	 *
-	 * @param string $group Internal group name
-	 * @param string $username Username for gender
-	 * @return string Localized name for group member
-	 */
-	public static function getGroupMemberName( $group, $username ) {
-		$msg = wfMessage( "group-$group-member", $username );
-		return $msg->isBlank() ? $group : $msg->text();
+	private static function getLinkExpiryParams( IContextSource $context, string $expiry ): array {
+		// format the expiry to a nice string
+		$uiLanguage = $context->getLanguage();
+		$uiUser = $context->getUser();
+		$expiryDT = $uiLanguage->userTimeAndDate( $expiry, $uiUser );
+		$expiryD = $uiLanguage->userDate( $expiry, $uiUser );
+		$expiryT = $uiLanguage->userTime( $expiry, $uiUser );
+		return [ 'expiryDT' => $expiryDT, 'expiryD' => $expiryD, 'expiryT' => $expiryT ];
 	}
 
 	/**
@@ -364,7 +246,7 @@ class UserGroupMembership {
 	 * of the group appears in the UI, it can link to this page.
 	 *
 	 * @param string $group Internal group name
-	 * @return Title|bool Title of the page if it exists, false otherwise
+	 * @return Title|false Title of the page if it exists, false otherwise
 	 */
 	public static function getGroupPage( $group ) {
 		$msg = wfMessage( "grouppage-$group" )->inContentLanguage();
@@ -393,3 +275,6 @@ class UserGroupMembership {
 	}
 
 }
+
+/** @deprecated class alias since 1.41 */
+class_alias( UserGroupMembership::class, 'UserGroupMembership' );

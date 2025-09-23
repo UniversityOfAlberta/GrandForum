@@ -19,8 +19,10 @@
  * @ingroup RevisionDelete
  */
 
+use MediaWiki\Api\ApiResult;
 use MediaWiki\MediaWikiServices;
-use MediaWiki\Revision\RevisionRecord;
+use MediaWiki\RevisionList\RevisionListBase;
+use MediaWiki\SpecialPage\SpecialPage;
 
 /**
  * Item class for a filearchive table row
@@ -67,15 +69,15 @@ class RevDelArchivedFileItem extends RevDelFileItem {
 	}
 
 	public function setBits( $bits ) {
-		$dbw = wfGetDB( DB_MASTER );
-		$dbw->update( 'filearchive',
-			[ 'fa_deleted' => $bits ],
-			[
+		$dbw = $this->dbProvider->getPrimaryDatabase();
+		$dbw->newUpdateQueryBuilder()
+			->update( 'filearchive' )
+			->set( [ 'fa_deleted' => $bits ] )
+			->where( [
 				'fa_id' => $this->row->fa_id,
 				'fa_deleted' => $this->getBits(),
-			],
-			__METHOD__
-		);
+			] )
+			->caller( __METHOD__ )->execute();
 
 		return (bool)$dbw->affectedRows();
 	}
@@ -92,7 +94,7 @@ class RevDelArchivedFileItem extends RevDelFileItem {
 			$key = $this->file->getKey();
 			$link = $this->getLinkRenderer()->makeLink( $undelete, $date, [],
 				[
-					'target' => $this->list->title->getPrefixedText(),
+					'target' => $this->list->getPageName(),
 					'file' => $key,
 					'token' => $this->list->getUser()->getEditToken( $key )
 				]
@@ -109,35 +111,37 @@ class RevDelArchivedFileItem extends RevDelFileItem {
 		$file = $this->file;
 		$user = $this->list->getUser();
 		$ret = [
-			'title' => $this->list->title->getPrefixedText(),
+			'title' => $this->list->getPageName(),
 			'timestamp' => wfTimestamp( TS_ISO_8601, $file->getTimestamp() ),
 			'width' => $file->getWidth(),
 			'height' => $file->getHeight(),
 			'size' => $file->getSize(),
-			'userhidden' => (bool)$file->isDeleted( RevisionRecord::DELETED_USER ),
-			'commenthidden' => (bool)$file->isDeleted( RevisionRecord::DELETED_COMMENT ),
+			'userhidden' => (bool)$file->isDeleted( File::DELETED_USER ),
+			'commenthidden' => (bool)$file->isDeleted( File::DELETED_COMMENT ),
 			'contenthidden' => (bool)$this->isDeleted(),
 		];
 		if ( $this->canViewContent() ) {
 			$ret += [
 				'url' => SpecialPage::getTitleFor( 'Revisiondelete' )->getLinkURL(
 					[
-						'target' => $this->list->title->getPrefixedText(),
+						'target' => $this->list->getPageName(),
 						'file' => $file->getKey(),
 						'token' => $user->getEditToken( $file->getKey() )
 					]
 				),
 			];
 		}
-		if ( $file->userCan( RevisionRecord::DELETED_USER, $user ) ) {
+		$uploader = $file->getUploader( ArchivedFile::FOR_THIS_USER, $user );
+		if ( $uploader ) {
 			$ret += [
-				'userid' => $file->getUser( 'id' ),
-				'user' => $file->getUser( 'text' ),
+				'userid' => $uploader->getId(),
+				'user' => $uploader->getName(),
 			];
 		}
-		if ( $file->userCan( RevisionRecord::DELETED_COMMENT, $user ) ) {
+		$comment = $file->getDescription( ArchivedFile::FOR_THIS_USER, $user );
+		if ( $comment !== '' ) {
 			$ret += [
-				'comment' => $file->getRawDescription(),
+				'comment' => $comment,
 			];
 		}
 

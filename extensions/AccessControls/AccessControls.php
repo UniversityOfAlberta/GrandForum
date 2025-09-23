@@ -104,7 +104,7 @@ function permissionError(){
         $wgTitle = new Title();
     }
     Hooks::run('BeforeDisplayNoArticleText', array(null));
-    if($wgUser->isLoggedIn()){
+    if($wgUser->isRegistered()){
         $wgOut->setPageTitle("Permission error");
         $wgOut->addHTML("<p>You are not allowed to execute the action you have requested.</p>
                          <p>Return to <a href='$wgServer$wgScriptPath/index.php/Main_Page'>Main Page</a>.</p>");

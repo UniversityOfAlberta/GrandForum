@@ -21,15 +21,13 @@
  * @ingroup Maintenance
  */
 
-if ( !defined( 'MEDIAWIKI' ) ) {
-	// So extensions (and other code) can check whether they're running in job mode.
-	// This is not defined if this script is included from installer/updater or phpunit.
-	define( 'MEDIAWIKI_JOB_RUNNER', true );
-}
-
+// @codeCoverageIgnoreStart
 require_once __DIR__ . '/Maintenance.php';
+// @codeCoverageIgnoreEnd
 
-use MediaWiki\MediaWikiServices;
+use MediaWiki\Json\FormatJson;
+use MediaWiki\Maintenance\ForkController;
+use MediaWiki\Settings\SettingsBuilder;
 
 /**
  * Maintenance script that runs pending jobs.
@@ -49,6 +47,13 @@ class RunJobs extends Maintenance {
 		$this->addOption( 'wait', 'Wait for new jobs instead of exiting', false, false );
 	}
 
+	public function finalSetup( SettingsBuilder $settingsBuilder ) {
+		// So extensions (and other code) can check whether they're running in job mode.
+		// This is not defined if this script is included from installer/updater or phpunit.
+		define( 'MEDIAWIKI_JOB_RUNNER', true );
+		parent::finalSetup( $settingsBuilder );
+	}
+
 	public function memoryLimit() {
 		if ( $this->hasOption( 'memory-limit' ) ) {
 			return parent::memoryLimit();
@@ -64,9 +69,13 @@ class RunJobs extends Maintenance {
 			if ( $procs < 1 || $procs > 1000 ) {
 				$this->fatalError( "Invalid argument to --procs" );
 			} elseif ( $procs != 1 ) {
-				$fc = new ForkController( $procs );
+				try {
+					$fc = new ForkController( $procs );
+				} catch ( Throwable $e ) {
+					$this->fatalError( $e->getMessage() );
+				}
 				if ( $fc->start() != 'child' ) {
-					exit( 0 );
+					return;
 				}
 			}
 		}
@@ -74,7 +83,7 @@ class RunJobs extends Maintenance {
 		$outputJSON = ( $this->getOption( 'result' ) === 'json' );
 		$wait = $this->hasOption( 'wait' );
 
-		$runner = MediaWikiServices::getInstance()->getJobRunner();
+		$runner = $this->getServiceContainer()->getJobRunner();
 		if ( !$outputJSON ) {
 			$runner->setDebugHandler( [ $this, 'debugInternal' ] );
 		}
@@ -100,7 +109,8 @@ class RunJobs extends Maintenance {
 				!$wait ||
 				$response['reached'] === 'time-limit' ||
 				$response['reached'] === 'job-limit' ||
-				$response['reached'] === 'memory-limit'
+				$response['reached'] === 'memory-limit' ||
+				$response['reached'] === 'exception'
 			) {
 				// If job queue is empty, output it
 				if ( !$outputJSON && $response['jobs'] === [] ) {
@@ -125,5 +135,7 @@ class RunJobs extends Maintenance {
 	}
 }
 
+// @codeCoverageIgnoreStart
 $maintClass = RunJobs::class;
 require_once RUN_MAINTENANCE_IF_MAIN;
+// @codeCoverageIgnoreEnd

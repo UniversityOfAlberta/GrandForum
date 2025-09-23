@@ -83,7 +83,7 @@ class UploadDef extends TypeDef {
 
 		if ( !$value instanceof UploadedFileInterface ) {
 			// Err?
-			$type = is_object( $value ) ? get_class( $value ) : gettype( $value );
+			$type = get_debug_type( $value );
 			throw new InvalidArgumentException( "\$value must be UploadedFileInterface, got $type" );
 		}
 
@@ -114,7 +114,8 @@ class UploadDef extends TypeDef {
 		} else {
 			$constant = '';
 			foreach ( get_defined_constants() as $c => $v ) {
-				if ( $v === $err && substr( $c, 0, 11 ) === 'UPLOAD_ERR_' ) {
+				// @phan-suppress-next-line PhanTypeComparisonFromArray
+				if ( $v === $err && str_starts_with( $c, 'UPLOAD_ERR_' ) ) {
 					$constant = " ($c?)";
 				}
 			}
@@ -122,7 +123,7 @@ class UploadDef extends TypeDef {
 		}
 	}
 
-	public function checkSettings( string $name, $settings, array $options, array $ret ) : array {
+	public function checkSettings( string $name, $settings, array $options, array $ret ): array {
 		$ret = parent::checkSettings( $name, $settings, $options, $ret );
 
 		if ( isset( $settings[ParamValidator::PARAM_DEFAULT] ) ) {

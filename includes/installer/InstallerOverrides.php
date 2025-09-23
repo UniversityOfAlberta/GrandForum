@@ -1,4 +1,5 @@
 <?php
+
 /**
  * MediaWiki installer overrides. See mw-config/overrides/README for details.
  *
@@ -20,12 +21,15 @@
  * @file
  */
 
+namespace MediaWiki\Installer;
+
+use MediaWiki\Request\WebRequest;
+
 /**
  * @since 1.20
  */
 class InstallerOverrides {
 	private static function getOverrides() {
-		global $IP;
 		static $overrides;
 
 		if ( !$overrides ) {
@@ -34,7 +38,7 @@ class InstallerOverrides {
 				'WebInstaller' => WebInstaller::class,
 				'CliInstaller' => CliInstaller::class,
 			];
-			foreach ( glob( "$IP/mw-config/overrides/*.php" ) as $file ) {
+			foreach ( glob( MW_INSTALL_PATH . '/mw-config/overrides/*.php' ) as $file ) {
 				require $file;
 			}
 		}

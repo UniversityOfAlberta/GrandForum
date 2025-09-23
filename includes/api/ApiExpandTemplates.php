@@ -20,7 +20,15 @@
  * @file
  */
 
-use MediaWiki\MediaWikiServices;
+namespace MediaWiki\Api;
+
+use MediaWiki\Json\FormatJson;
+use MediaWiki\Parser\Parser;
+use MediaWiki\Parser\ParserFactory;
+use MediaWiki\Parser\ParserOptions;
+use MediaWiki\Revision\RevisionStore;
+use MediaWiki\Title\Title;
+use Wikimedia\ParamValidator\ParamValidator;
 
 /**
  * API module that functions as a shortcut to the wikitext preprocessor. Expands
@@ -30,6 +38,19 @@ use MediaWiki\MediaWikiServices;
  * @ingroup API
  */
 class ApiExpandTemplates extends ApiBase {
+	private RevisionStore $revisionStore;
+	private ParserFactory $parserFactory;
+
+	public function __construct(
+		ApiMain $main,
+		string $action,
+		RevisionStore $revisionStore,
+		ParserFactory $parserFactory
+	) {
+		parent::__construct( $main, $action );
+		$this->revisionStore = $revisionStore;
+		$this->parserFactory = $parserFactory;
+	}
 
 	public function execute() {
 		// Cache may vary on the user because ParserOptions gets data from it
@@ -54,7 +75,7 @@ class ApiExpandTemplates extends ApiBase {
 			);
 			$prop = [];
 		} else {
-			$prop = array_flip( $params['prop'] );
+			$prop = array_fill_keys( $params['prop'], true );
 		}
 
 		$titleObj = Title::newFromText( $title );
@@ -65,17 +86,15 @@ class ApiExpandTemplates extends ApiBase {
 		// Get title and revision ID for parser
 		$revid = $params['revid'];
 		if ( $revid !== null ) {
-			$rev = MediaWikiServices::getInstance()->getRevisionStore()->getRevisionById( $revid );
+			$rev = $this->revisionStore->getRevisionById( $revid );
 			if ( !$rev ) {
 				$this->dieWithError( [ 'apierror-nosuchrevid', $revid ] );
 			}
 			$pTitleObj = $titleObj;
 			$titleObj = Title::newFromLinkTarget( $rev->getPageAsLinkTarget() );
-			if ( $titleProvided ) {
-				if ( !$titleObj->equals( $pTitleObj ) ) {
-					$this->addWarning( [ 'apierror-revwrongpage', $rev->getId(),
-						wfEscapeWikiText( $pTitleObj->getPrefixedText() ) ] );
-				}
+			if ( $titleProvided && !$titleObj->equals( $pTitleObj ) ) {
+				$this->addWarning( [ 'apierror-revwrongpage', $rev->getId(),
+					wfEscapeWikiText( $pTitleObj->getPrefixedText() ) ] );
 			}
 		}
 
@@ -95,10 +114,11 @@ class ApiExpandTemplates extends ApiBase {
 
 		$retval = [];
 
-		$parser = MediaWikiServices::getInstance()->getParser();
 		if ( isset( $prop['parsetree'] ) || $params['generatexml'] ) {
+			$parser = $this->parserFactory->getInstance();
 			$parser->startExternalParse( $titleObj, $options, Parser::OT_PREPROCESS );
 			$dom = $parser->preprocessToDom( $params['text'] );
+			// @phan-suppress-next-line PhanUndeclaredMethodInCallable
 			if ( is_callable( [ $dom, 'saveXML' ] ) ) {
 				// @phan-suppress-next-line PhanUndeclaredMethod
 				$xml = $dom->saveXML();
@@ -119,6 +139,7 @@ class ApiExpandTemplates extends ApiBase {
 		// if they didn't want any output except (probably) the parse tree,
 		// then don't bother actually fully expanding it
 		if ( $prop || $params['prop'] === null ) {
+			$parser = $this->parserFactory->getInstance();
 			$parser->startExternalParse( $titleObj, $options, Parser::OT_PREPROCESS );
 			$frame = $parser->getPreprocessor()->newFrame();
 			$wikitext = $parser->preprocess( $params['text'], $titleObj, $options, $revid, $frame );
@@ -128,13 +149,18 @@ class ApiExpandTemplates extends ApiBase {
 			} else {
 				$p_output = $parser->getOutput();
 				if ( isset( $prop['categories'] ) ) {
-					$categories = $p_output->getCategories();
+					$categories = $p_output->getCategoryNames();
 					if ( $categories ) {
+						$defaultSortKey = $p_output->getPageProperty( 'defaultsort' ) ?? '';
 						$categories_result = [];
-						foreach ( $categories as $category => $sortkey ) {
-							$entry = [];
-							$entry['sortkey'] = $sortkey;
-							ApiResult::setContentValue( $entry, 'category', (string)$category );
+						foreach ( $categories as $category ) {
+							$entry = [
+								// Note that ::getCategorySortKey() returns
+								// the empty string '' to mean
+								// "use the default sort key"
+								'sortkey' => $p_output->getCategorySortKey( $category ) ?: $defaultSortKey,
+							];
+							ApiResult::setContentValue( $entry, 'category', $category );
 							$categories_result[] = $entry;
 						}
 						ApiResult::setIndexedTagName( $categories_result, 'category' );
@@ -142,7 +168,7 @@ class ApiExpandTemplates extends ApiBase {
 					}
 				}
 				if ( isset( $prop['properties'] ) ) {
-					$properties = $p_output->getProperties();
+					$properties = $p_output->getPageProperties();
 					if ( $properties ) {
 						ApiResult::setArrayType( $properties, 'BCkvp', 'name' );
 						ApiResult::setIndexedTagName( $properties, 'property' );
@@ -165,8 +191,9 @@ class ApiExpandTemplates extends ApiBase {
 					$retval['modulestyles'] = array_values( array_unique( $p_output->getModuleStyles() ) );
 				}
 				if ( isset( $prop['jsconfigvars'] ) ) {
+					$showStrategyKeys = (bool)( $params['showstrategykeys'] );
 					$retval['jsconfigvars'] =
-						ApiResult::addMetadataToResultVars( $p_output->getJsConfigVars() );
+						ApiResult::addMetadataToResultVars( $p_output->getJsConfigVars( $showStrategyKeys ) );
 				}
 				if ( isset( $prop['encodedjsconfigvars'] ) ) {
 					$retval['encodedjsconfigvars'] = FormatJson::encode(
@@ -188,14 +215,14 @@ class ApiExpandTemplates extends ApiBase {
 		return [
 			'title' => null,
 			'text' => [
-				ApiBase::PARAM_TYPE => 'text',
-				ApiBase::PARAM_REQUIRED => true,
+				ParamValidator::PARAM_TYPE => 'text',
+				ParamValidator::PARAM_REQUIRED => true,
 			],
 			'revid' => [
-				ApiBase::PARAM_TYPE => 'integer',
+				ParamValidator::PARAM_TYPE => 'integer',
 			],
 			'prop' => [
-				ApiBase::PARAM_TYPE => [
+				ParamValidator::PARAM_TYPE => [
 					'wikitext',
 					'categories',
 					'properties',
@@ -206,13 +233,14 @@ class ApiExpandTemplates extends ApiBase {
 					'encodedjsconfigvars',
 					'parsetree',
 				],
-				ApiBase::PARAM_ISMULTI => true,
+				ParamValidator::PARAM_ISMULTI => true,
 				ApiBase::PARAM_HELP_MSG_PER_VALUE => [],
 			],
 			'includecomments' => false,
+			'showstrategykeys' => false,
 			'generatexml' => [
-				ApiBase::PARAM_TYPE => 'boolean',
-				ApiBase::PARAM_DEPRECATED => true,
+				ParamValidator::PARAM_TYPE => 'boolean',
+				ParamValidator::PARAM_DEPRECATED => true,
 			],
 		];
 	}
@@ -225,6 +253,9 @@ class ApiExpandTemplates extends ApiBase {
 	}
 
 	public function getHelpUrls() {
-		return 'https://www.mediawiki.org/wiki/Special:MyLanguage/API:Parsing_wikitext#expandtemplates';
+		return 'https://www.mediawiki.org/wiki/Special:MyLanguage/API:Expandtemplates';
 	}
 }
+
+/** @deprecated class alias since 1.43 */
+class_alias( ApiExpandTemplates::class, 'ApiExpandTemplates' );

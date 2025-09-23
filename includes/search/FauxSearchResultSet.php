@@ -1,5 +1,7 @@
 <?php
 
+use MediaWiki\Title\Title;
+
 /**
  * A manually constructed search result set.
  * Mainly meant for supporting developer setups where the search operation might be
@@ -21,7 +23,7 @@ class FauxSearchResultSet extends SearchResultSet {
 		$totalHits = max( count( $results ), $totalHits );
 		$hasMoreResults = count( $results ) < $totalHits;
 		parent::__construct( false, $hasMoreResults );
-		$this->results = array_map( function ( $result ) {
+		$this->results = array_map( static function ( $result ) {
 			if ( $result instanceof SearchResult ) {
 				return $result;
 			} elseif ( $result instanceof Title ) {

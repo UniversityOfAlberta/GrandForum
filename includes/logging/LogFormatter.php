@@ -22,8 +22,25 @@
  * @license GPL-2.0-or-later
  * @since 1.19
  */
+
+use MediaWiki\Api\ApiQueryBase;
+use MediaWiki\Api\ApiResult;
+use MediaWiki\CommentFormatter\CommentFormatter;
+use MediaWiki\Context\IContextSource;
+use MediaWiki\Context\RequestContext;
+use MediaWiki\Html\Html;
+use MediaWiki\Language\Language;
+use MediaWiki\Linker\Linker;
 use MediaWiki\Linker\LinkRenderer;
+use MediaWiki\Linker\LinkTarget;
+use MediaWiki\MainConfigNames;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Message\Message;
+use MediaWiki\SpecialPage\SpecialPage;
+use MediaWiki\Title\Title;
+use MediaWiki\User\User;
+use MediaWiki\User\UserEditTracker;
+use MediaWiki\User\UserIdentity;
 
 /**
  * Implements the default log formatting.
@@ -48,18 +65,11 @@ class LogFormatter {
 	 * Constructs a new formatter suitable for given entry.
 	 * @param LogEntry $entry
 	 * @return LogFormatter
+	 * @deprecated since 1.42, use LogFormatterFactory instead, hard-deprecated since 1.43
 	 */
 	public static function newFromEntry( LogEntry $entry ) {
-		global $wgLogActionsHandlers;
-		$fulltype = $entry->getFullType();
-		$wildcard = $entry->getType() . '/*';
-		$handler = $wgLogActionsHandlers[$fulltype] ?? $wgLogActionsHandlers[$wildcard] ?? '';
-
-		if ( $handler !== '' && is_string( $handler ) && class_exists( $handler ) ) {
-			return new $handler( $entry );
-		}
-
-		return new LegacyLogFormatter( $entry );
+		wfDeprecated( __METHOD__, '1.42' );
+		return MediaWikiServices::getInstance()->getLogFormatterFactory()->newFromEntry( $entry );
 	}
 
 	/**
@@ -68,8 +78,10 @@ class LogFormatter {
 	 * @param stdClass|array $row
 	 * @see DatabaseLogEntry::getSelectQueryData
 	 * @return LogFormatter
+	 * @deprecated since 1.42, use LogFormatterFactory instead, hard-deprecated since 1.43
 	 */
 	public static function newFromRow( $row ) {
+		wfDeprecated( __METHOD__, '1.42' );
 		return self::newFromEntry( DatabaseLogEntry::newFromRow( $row ) );
 	}
 
@@ -92,17 +104,24 @@ class LogFormatter {
 	 * be included in page history or send to IRC feed. Links are replaced
 	 * with plaintext or with [[pagename]] kind of syntax, that is parsed
 	 * by page histories and IRC feeds.
-	 * @var string
+	 * @var bool
 	 */
 	protected $plaintext = false;
 
-	/** @var string */
+	/** @var bool */
 	protected $irctext = false;
 
-	/**
-	 * @var LinkRenderer|null
-	 */
+	/** @var LinkRenderer|null */
 	private $linkRenderer;
+
+	/** @var Language|null */
+	private $contentLanguage;
+
+	/** @var CommentFormatter|null */
+	private $commentFormatter;
+
+	/** @var UserEditTracker|null */
+	private $userEditTracker;
 
 	/**
 	 * @see LogFormatter::getMessageParameters
@@ -115,7 +134,7 @@ class LogFormatter {
 	 *
 	 * @param LogEntry $entry
 	 */
-	protected function __construct( LogEntry $entry ) {
+	public function __construct( LogEntry $entry ) {
 		$this->entry = $entry;
 		$this->context = RequestContext::getMain();
 	}
@@ -144,8 +163,72 @@ class LogFormatter {
 		if ( $this->linkRenderer !== null ) {
 			return $this->linkRenderer;
 		} else {
+			wfDeprecated( static::class . " without all required services", '1.42' );
 			return MediaWikiServices::getInstance()->getLinkRenderer();
 		}
+	}
+
+	/**
+	 * @internal For factory only
+	 * @since 1.42
+	 * @param Language $contentLanguage
+	 */
+	final public function setContentLanguage( Language $contentLanguage ) {
+		$this->contentLanguage = $contentLanguage;
+	}
+
+	/**
+	 * @since 1.42
+	 * @return Language
+	 */
+	final public function getContentLanguage(): Language {
+		if ( $this->contentLanguage === null ) {
+			wfDeprecated( static::class . " without all required services", '1.42' );
+			$this->contentLanguage = MediaWikiServices::getInstance()->getContentLanguage();
+		}
+		return $this->contentLanguage;
+	}
+
+	/**
+	 * @internal For factory only
+	 * @since 1.42
+	 * @param CommentFormatter $commentFormatter
+	 */
+	final public function setCommentFormatter( CommentFormatter $commentFormatter ) {
+		$this->commentFormatter = $commentFormatter;
+	}
+
+	/**
+	 * @since 1.42
+	 * @return CommentFormatter
+	 */
+	final public function getCommentFormatter(): CommentFormatter {
+		if ( $this->commentFormatter === null ) {
+			wfDeprecated( static::class . " without all required services", '1.42' );
+			$this->commentFormatter = MediaWikiServices::getInstance()->getCommentFormatter();
+		}
+		return $this->commentFormatter;
+	}
+
+	/**
+	 * @internal For factory only
+	 * @since 1.42
+	 * @param UserEditTracker $userEditTracker
+	 */
+	final public function setUserEditTracker( UserEditTracker $userEditTracker ) {
+		$this->userEditTracker = $userEditTracker;
+	}
+
+	/**
+	 * @since 1.42
+	 * @return UserEditTracker
+	 */
+	final public function getUserEditTracker(): UserEditTracker {
+		if ( $this->userEditTracker === null ) {
+			wfDeprecated( static::class . " without all required services", '1.42' );
+			$this->userEditTracker = MediaWikiServices::getInstance()->getUserEditTracker();
+		}
+		return $this->userEditTracker;
 	}
 
 	/**
@@ -167,12 +250,10 @@ class LogFormatter {
 	public function canViewLogType() {
 		// If the user doesn't have the right permission to view the specific
 		// log type, return false
-		$logRestrictions = $this->context->getConfig()->get( 'LogRestrictions' );
+		$logRestrictions = $this->context->getConfig()->get( MainConfigNames::LogRestrictions );
 		$type = $this->entry->getType();
 		return !isset( $logRestrictions[$type] )
-			|| MediaWikiServices::getInstance()
-				   ->getPermissionManager()
-				   ->userHasRight( $this->context->getUser(), $logRestrictions[$type] );
+			|| $this->context->getAuthority()->isAllowed( $logRestrictions[$type] );
 	}
 
 	/**
@@ -183,7 +264,7 @@ class LogFormatter {
 	protected function canView( $field ) {
 		if ( $this->audience == self::FOR_THIS_USER ) {
 			return LogEventsList::userCanBitfield(
-				$this->entry->getDeleted(), $field, $this->context->getUser() ) &&
+				$this->entry->getDeleted(), $field, $this->context->getAuthority() ) &&
 				self::canViewLogType();
 		} else {
 			return !$this->entry->isDeleted( $field ) && self::canViewLogType();
@@ -242,6 +323,7 @@ class LogFormatter {
 	 * (T36508).
 	 * @see getActionText()
 	 * @return string Text
+	 * @suppress SecurityCheck-XSS Working with plaintext
 	 */
 	public function getIRCActionText() {
 		$this->plaintext = true;
@@ -253,7 +335,7 @@ class LogFormatter {
 		// Text of title the action is aimed at.
 		$target = $entry->getTarget()->getPrefixedText();
 		$text = null;
-		$contLang = MediaWikiServices::getInstance()->getContentLanguage();
+		$contLang = $this->getContentLanguage();
 		switch ( $entry->getType() ) {
 			case 'move':
 				switch ( $entry->getSubtype() ) {
@@ -403,7 +485,7 @@ class LogFormatter {
 						$duration = $contLang->translateBlockExpiry(
 							$rawDuration,
 							null,
-							wfTimestamp( TS_UNIX, $entry->getTimestamp() )
+							(int)wfTimestamp( TS_UNIX, $entry->getTimestamp() )
 						);
 						$flags = BlockLogFormatter::formatBlockFlags( $rawFlags, $contLang );
 						$text = wfMessage( 'blocklogentry' )
@@ -417,7 +499,7 @@ class LogFormatter {
 						$duration = $contLang->translateBlockExpiry(
 							$parameters['5::duration'],
 							null,
-							wfTimestamp( TS_UNIX, $entry->getTimestamp() )
+							(int)wfTimestamp( TS_UNIX, $entry->getTimestamp() )
 						);
 						$flags = BlockLogFormatter::formatBlockFlags( $parameters['6::flags'],
 							$contLang );
@@ -442,14 +524,11 @@ class LogFormatter {
 			// case 'suppress' --private log -- aaron  (so we know who to blame in a few years :-D)
 			// default:
 		}
-		if ( $text === null ) {
-			$text = $this->getPlainActionText();
-		}
 
 		$this->plaintext = false;
 		$this->irctext = false;
 
-		return $text;
+		return $text ?? $this->getPlainActionText();
 	}
 
 	/**
@@ -466,7 +545,7 @@ class LogFormatter {
 				$element = $this->plaintext ? $element->text() : $element->escaped();
 			}
 			if ( $this->entry->isDeleted( LogPage::DELETED_ACTION ) ) {
-				$element = $this->styleRestricedElement( $element );
+				$element = $this->styleRestrictedElement( $element );
 			}
 		} else {
 			$sep = $this->msg( 'word-separator' );
@@ -537,9 +616,9 @@ class LogFormatter {
 			if ( strpos( $key, ':' ) === false ) {
 				continue;
 			}
-			list( $index, $type, ) = explode( ':', $key, 3 );
+			[ $index, $type, ] = explode( ':', $key, 3 );
 			if ( ctype_digit( $index ) ) {
-				$params[$index - 1] = $this->formatParameterValue( $type, $value );
+				$params[(int)$index - 1] = $this->formatParameterValue( $type, $value );
 			}
 		}
 
@@ -561,14 +640,21 @@ class LogFormatter {
 	}
 
 	/**
-	 * Formats parameters intented for action message from
-	 * array of all parameters. There are three hardcoded
-	 * parameters (array is zero-indexed, this list not):
-	 *  - 1: user name with premade link
-	 *  - 2: usable for gender magic function
-	 *  - 3: target page with premade link
+	 * Formats parameters intended for action message from array of all parameters.
+	 * There are three hardcoded parameters:
+	 *  - $1: user name with premade link
+	 *  - $2: usable for gender magic function
+	 *  - $3: target page with premade link
+	 * More parameters might be present, depending on what code created the log
+	 * entry.
+	 *
+	 * The parameters are returned as a non-associative array that can be passed to
+	 * Message::params(), so $logFormatter->getMessageParameters()[0] is the $1 parameter
+	 * in the message and so on.
+	 *
 	 * @stable to override
 	 * @return array
+	 * @see ManualLogEntry::setParameters() for how parameters are determined.
 	 */
 	protected function getMessageParameters() {
 		if ( isset( $this->parsedParameters ) ) {
@@ -578,7 +664,7 @@ class LogFormatter {
 		$entry = $this->entry;
 		$params = $this->extractParameters();
 		$params[0] = Message::rawParam( $this->getPerformerElement() );
-		$params[1] = $this->canView( LogPage::DELETED_USER ) ? $entry->getPerformer()->getName() : '';
+		$params[1] = $this->canView( LogPage::DELETED_USER ) ? $entry->getPerformerIdentity()->getName() : '';
 		$params[2] = Message::rawParam( $this->makePageLink( $entry->getTarget() ) );
 
 		// Bad things happens if the numbers are not in correct order
@@ -611,7 +697,7 @@ class LogFormatter {
 	 *     * number: Format value as number
 	 *     * list: Format value as a comma-separated list
 	 * @param mixed $value The parameter value that should be formatted
-	 * @return string|array Formated value
+	 * @return mixed Formatted value
 	 * @since 1.21
 	 */
 	protected function formatParameterValue( $type, $value ) {
@@ -673,9 +759,10 @@ class LogFormatter {
 	 * @param Title|null $title The page
 	 * @param array $parameters Query parameters
 	 * @param string|null $html Linktext of the link as raw html
-	 * @return string
+	 * @return string wikitext or html
+	 * @return-taint onlysafefor_html
 	 */
-	protected function makePageLink( Title $title = null, $parameters = [], $html = null ) {
+	protected function makePageLink( ?Title $title = null, $parameters = [], $html = null ) {
 		if ( !$title instanceof Title ) {
 			$msg = $this->msg( 'invalidtitle' )->text();
 			if ( $this->plaintext ) {
@@ -703,10 +790,10 @@ class LogFormatter {
 	 */
 	public function getPerformerElement() {
 		if ( $this->canView( LogPage::DELETED_USER ) ) {
-			$performer = $this->entry->getPerformer();
-			$element = $this->makeUserLink( $performer );
+			$performerIdentity = $this->entry->getPerformerIdentity();
+			$element = $this->makeUserLink( $performerIdentity );
 			if ( $this->entry->isDeleted( LogPage::DELETED_USER ) ) {
-				$element = $this->styleRestricedElement( $element );
+				$element = $this->styleRestrictedElement( $element );
 			}
 		} else {
 			$element = $this->getRestrictedElement( 'rev-deleted-user' );
@@ -722,11 +809,12 @@ class LogFormatter {
 	 */
 	public function getComment() {
 		if ( $this->canView( LogPage::DELETED_COMMENT ) ) {
-			$comment = Linker::commentBlock( $this->entry->getComment() );
+			$comment = $this->getCommentFormatter()
+				->formatBlock( $this->entry->getComment() );
 			// No hard coded spaces thanx
 			$element = ltrim( $comment );
 			if ( $this->entry->isDeleted( LogPage::DELETED_COMMENT ) ) {
-				$element = $this->styleRestricedElement( $element );
+				$element = $this->styleRestrictedElement( $element );
 			}
 		} else {
 			$element = $this->getRestrictedElement( 'rev-deleted-comment' );
@@ -746,10 +834,7 @@ class LogFormatter {
 			return $this->msg( $message )->text();
 		}
 
-		$content = $this->msg( $message )->escaped();
-		$attribs = [ 'class' => 'history-deleted' ];
-
-		return Html::rawElement( 'span', $attribs, $content );
+		return $this->styleRestrictedElement( $this->msg( $message )->escaped() );
 	}
 
 	/**
@@ -757,11 +842,14 @@ class LogFormatter {
 	 * @param string $content
 	 * @return string HTML or wiki text
 	 */
-	protected function styleRestricedElement( $content ) {
+	protected function styleRestrictedElement( $content ) {
 		if ( $this->plaintext ) {
 			return $content;
 		}
-		$attribs = [ 'class' => 'history-deleted' ];
+		$attribs = [ 'class' => [ 'history-deleted' ] ];
+		if ( $this->entry->isDeleted( LogPage::DELETED_RESTRICTED ) ) {
+			$attribs['class'][] = 'mw-history-suppressed';
+		}
 
 		return Html::rawElement( 'span', $attribs, $content );
 	}
@@ -777,12 +865,12 @@ class LogFormatter {
 	}
 
 	/**
-	 * @param User $user
+	 * @param UserIdentity $user
 	 * @param int $toolFlags Combination of Linker::TOOL_LINKS_* flags
 	 * @return string wikitext or html
 	 * @return-taint onlysafefor_html
 	 */
-	protected function makeUserLink( User $user, $toolFlags = 0 ) {
+	protected function makeUserLink( UserIdentity $user, $toolFlags = 0 ) {
 		if ( $this->plaintext ) {
 			$element = $user->getName();
 		} else {
@@ -790,15 +878,16 @@ class LogFormatter {
 				$user->getId(),
 				$user->getName()
 			);
-
 			if ( $this->linkFlood ) {
+				$editCount = $this->getUserEditTracker()->getUserEditCount( $user );
+
 				$element .= Linker::userToolLinks(
 					$user->getId(),
 					$user->getName(),
 					true, // redContribsWhenNoEdits
 					$toolFlags,
-					$user->getEditCount(),
-					// do not render parenthesises in the HTML markup (CSS will provide)
+					$editCount,
+					// do not render parentheses in the HTML markup (CSS will provide)
 					false
 				);
 			}
@@ -809,7 +898,7 @@ class LogFormatter {
 
 	/**
 	 * @stable to override
-	 * @return array Array of titles that should be preloaded with LinkBatch
+	 * @return LinkTarget[] Array of titles that should be preloaded with LinkBatch
 	 */
 	public function getPreloadTitles() {
 		return [];
@@ -925,7 +1014,6 @@ class LogFormatter {
 			case 'title-link':
 				$title = Title::newFromText( $value );
 				if ( !$title ) {
-					// Huh? Do something halfway sane.
 					$title = SpecialPage::getTitleFor( 'Badtitle', $value );
 				}
 				$value = [];

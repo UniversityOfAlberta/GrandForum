@@ -25,9 +25,18 @@
  * @ingroup Maintenance
  */
 
-require_once __DIR__ . '/Maintenance.php';
+// NO_AUTOLOAD -- due to hashbang above
 
-use MediaWiki\MediaWikiServices;
+// @codeCoverageIgnoreStart
+require_once __DIR__ . '/Maintenance.php';
+// @codeCoverageIgnoreEnd
+
+use MediaWiki\Context\RequestContext;
+use MediaWiki\Installer\DatabaseInstaller;
+use MediaWiki\Installer\DatabaseUpdater;
+use MediaWiki\Installer\Installer;
+use MediaWiki\Settings\SettingsBuilder;
+use MediaWiki\WikiMap\WikiMap;
 use Wikimedia\Rdbms\DatabaseSqlite;
 
 /**
@@ -39,10 +48,10 @@ class UpdateMediaWiki extends Maintenance {
 	public function __construct() {
 		parent::__construct();
 		$this->addDescription( 'MediaWiki database updater' );
-		$this->addOption( 'skip-compat-checks', 'Skips compatibility checks, mostly for developers' );
 		$this->addOption( 'quick', 'Skip 5 second countdown before starting' );
+		$this->addOption( 'initial',
+			'Do initial updates required after manual installation using tables-generated.sql' );
 		$this->addOption( 'doshared', 'Also update shared tables' );
-		$this->addOption( 'nopurge', 'Do not purge the objectcache table after updates' );
 		$this->addOption( 'noschema', 'Only do the updates that are not done during schema updates' );
 		$this->addOption(
 			'schema',
@@ -56,28 +65,25 @@ class UpdateMediaWiki extends Maintenance {
 			'skip-external-dependencies',
 			'Skips checking whether external dependencies are up to date, mostly for developers'
 		);
+		$this->addOption(
+			'skip-config-validation',
+			'Skips checking whether the existing configuration is valid'
+		);
 	}
 
 	public function getDbType() {
 		return Maintenance::DB_ADMIN;
 	}
 
-	private function compatChecks() {
-		$minimumPcreVersion = Installer::MINIMUM_PCRE_VERSION;
-
-		$pcreVersion = explode( ' ', PCRE_VERSION, 2 )[0];
-		if ( version_compare( $pcreVersion, $minimumPcreVersion, '<' ) ) {
-			$this->fatalError(
-				"PCRE $minimumPcreVersion or later is required.\n" .
-				"Your PHP binary is linked with PCRE $pcreVersion.\n\n" .
-				"More information:\n" .
-				"https://www.mediawiki.org/wiki/Manual:Errors_and_symptoms/PCRE\n\n" .
-				"ABORTING.\n" );
-		}
+	public function setup() {
+		global $wgMessagesDirs;
+		// T206765: We need to load the installer i18n files as some of errors come installer/updater code
+		// T310378: We have to ensure we do this before execute()
+		$wgMessagesDirs['MediaWikiInstaller'] = dirname( __DIR__ ) . '/includes/installer/i18n';
 	}
 
 	public function execute() {
-		global $wgLang, $wgAllowSchemaUpdates, $wgMessagesDirs;
+		global $wgLang, $wgAllowSchemaUpdates;
 
 		if ( !$wgAllowSchemaUpdates
 			&& !( $this->hasOption( 'force' )
@@ -92,7 +98,7 @@ class UpdateMediaWiki extends Maintenance {
 		}
 
 		$this->fileHandle = null;
-		if ( substr( $this->getOption( 'schema', '' ), 0, 2 ) === "--" ) {
+		if ( str_starts_with( $this->getOption( 'schema', '' ), '--' ) ) {
 			$this->fatalError( "The --schema option requires a file as an argument.\n" );
 		} elseif ( $this->hasOption( 'schema' ) ) {
 			$file = $this->getOption( 'schema' );
@@ -103,10 +109,12 @@ class UpdateMediaWiki extends Maintenance {
 			}
 		}
 
-		// T206765: We need to load the installer i18n files as some of errors come installer/updater code
-		$wgMessagesDirs['MediawikiInstaller'] = dirname( __DIR__ ) . '/includes/installer/i18n';
+		// Check for warnings about settings, and abort if there are any.
+		if ( !$this->hasOption( 'skip-config-validation' ) ) {
+			$this->validateSettings();
+		}
 
-		$lang = MediaWikiServices::getInstance()->getLanguageFactory()->getLanguage( 'en' );
+		$lang = $this->getServiceContainer()->getLanguageFactory()->getLanguage( 'en' );
 		// Set global language to ensure localised errors are in English (T22633)
 		RequestContext::getMain()->setLanguage( $lang );
 
@@ -117,17 +125,10 @@ class UpdateMediaWiki extends Maintenance {
 
 		$this->output( 'MediaWiki ' . MW_VERSION . " Updater\n\n" );
 
-		MediaWikiServices::getInstance()->getDBLoadBalancerFactory()->waitForReplication();
-
-		if ( !$this->hasOption( 'skip-compat-checks' ) ) {
-			$this->compatChecks();
-		} else {
-			$this->output( "Skipping compatibility checks, proceed at your own risk (Ctrl+C to abort)\n" );
-			$this->countDown( 5 );
-		}
+		$this->waitForReplication();
 
 		// Check external dependencies are up to date
-		if ( !$this->hasOption( 'skip-external-dependencies' ) ) {
+		if ( !$this->hasOption( 'skip-external-dependencies' ) && !getenv( 'MW_SKIP_EXTERNAL_DEPENDENCIES' ) ) {
 			$composerLockUpToDate = $this->runChild( CheckComposerLockUpToDate::class );
 			$composerLockUpToDate->execute();
 		} else {
@@ -138,16 +139,15 @@ class UpdateMediaWiki extends Maintenance {
 
 		# Attempt to connect to the database as a privileged user
 		# This will vomit up an error if there are permissions problems
-		$db = $this->getDB( DB_MASTER );
+		$db = $this->getPrimaryDB();
 
 		# Check to see whether the database server meets the minimum requirements
 		/** @var DatabaseInstaller $dbInstallerClass */
 		$dbInstallerClass = Installer::getDBInstallerClass( $db->getType() );
-		$status = $dbInstallerClass::meetsMinimumRequirement( $db->getServerVersion() );
+		$status = $dbInstallerClass::meetsMinimumRequirement( $db );
 		if ( !$status->isOK() ) {
 			// This might output some wikitext like <strong> but it should be comprehensible
-			$text = $status->getWikiText();
-			$this->fatalError( $text );
+			$this->fatalError( $status );
 		}
 
 		$dbDomain = WikiMap::getCurrentWikiDbDomain()->getId();
@@ -161,7 +161,7 @@ class UpdateMediaWiki extends Maintenance {
 
 		if ( !$this->hasOption( 'quick' ) ) {
 			$this->output( "Abort with control-c in the next five seconds "
-				. "(skip this countdown with --quick) ... " );
+				. "(skip this countdown with --quick) ..." );
 			$this->countDown( 5 );
 		}
 
@@ -176,8 +176,22 @@ class UpdateMediaWiki extends Maintenance {
 			}
 			$updates[] = 'stats';
 		}
+		if ( $this->hasOption( 'initial' ) ) {
+			$updates[] = 'initial';
+		}
 
 		$updater = DatabaseUpdater::newForDB( $db, $shared, $this );
+
+		// Avoid upgrading from versions older than 1.35
+		// Using an implicit marker (rev_actor was introduced in 1.34)
+		// TODO: Use an explicit marker
+		// See T259771
+		if ( !$updater->fieldExists( 'revision', 'rev_actor' ) ) {
+			$this->fatalError(
+				"Can not upgrade from versions older than 1.35, please upgrade to that version or later first."
+			);
+		}
+
 		$updater->doUpdates( $updates );
 
 		foreach ( $updater->getPostDatabaseUpdateMaintenance() as $maint ) {
@@ -197,9 +211,8 @@ class UpdateMediaWiki extends Maintenance {
 		}
 
 		$updater->setFileAccess();
-		if ( !$this->hasOption( 'nopurge' ) ) {
-			$updater->purgeCache();
-		}
+
+		$updater->purgeCache();
 
 		$time2 = microtime( true );
 
@@ -222,8 +235,6 @@ class UpdateMediaWiki extends Maintenance {
 	}
 
 	/**
-	 * @throws FatalError
-	 * @throws MWException
 	 * @suppress PhanPluginDuplicateConditionalNullCoalescing
 	 */
 	public function validateParamsAndArgs() {
@@ -247,7 +258,52 @@ class UpdateMediaWiki extends Maintenance {
 
 		parent::validateParamsAndArgs();
 	}
+
+	private function formatWarnings( array $warnings ) {
+		$text = '';
+		foreach ( $warnings as $warning ) {
+			$warning = wordwrap( $warning, 75, "\n  " );
+			$text .= "* $warning\n";
+		}
+		return $text;
+	}
+
+	private function validateSettings() {
+		$settings = SettingsBuilder::getInstance();
+
+		$warnings = [];
+		if ( $settings->getWarnings() ) {
+			$warnings = $settings->getWarnings();
+		}
+
+		$status = $settings->validate();
+		if ( !$status->isOK() ) {
+			foreach ( $status->getMessages( 'error' ) as $msg ) {
+				$warnings[] = wfMessage( $msg )->text();
+			}
+		}
+
+		$deprecations = $settings->detectDeprecatedConfig();
+		foreach ( $deprecations as $key => $msg ) {
+			$warnings[] = "$key is deprecated: $msg";
+		}
+
+		$obsolete = $settings->detectObsoleteConfig();
+		foreach ( $obsolete as $key => $msg ) {
+			$warnings[] = "$key is obsolete: $msg";
+		}
+
+		if ( $warnings ) {
+			$this->fatalError( "Some of your configuration settings caused a warning:\n\n"
+				. $this->formatWarnings( $warnings ) . "\n"
+				. "Please correct the issue before running update.php again.\n"
+				. "If you know what you are doing, you can bypass this check\n"
+				. "using --skip-config-validation.\n" );
+		}
+	}
 }
 
+// @codeCoverageIgnoreStart
 $maintClass = UpdateMediaWiki::class;
 require_once RUN_MAINTENANCE_IF_MAIN;
+// @codeCoverageIgnoreEnd

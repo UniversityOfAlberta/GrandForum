@@ -1,7 +1,5 @@
 <?php
 /**
- * Implements Special:MIMESearch
- *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -18,20 +16,56 @@
  * http://www.gnu.org/copyleft/gpl.html
  *
  * @file
+ */
+
+namespace MediaWiki\Specials;
+
+use File;
+use HtmlArmor;
+use LocalFile;
+use MediaWiki\Cache\LinkBatchFactory;
+use MediaWiki\HTMLForm\HTMLForm;
+use MediaWiki\Language\ILanguageConverter;
+use MediaWiki\Languages\LanguageConverterFactory;
+use MediaWiki\Linker\Linker;
+use MediaWiki\MediaWikiServices;
+use MediaWiki\SpecialPage\QueryPage;
+use MediaWiki\Title\Title;
+use Skin;
+use stdClass;
+use Wikimedia\Rdbms\IConnectionProvider;
+
+/**
+ * Search the database for files of the requested MIME type, comparing this with the
+ * 'img_major_mime' and 'img_minor_mime' fields in the image table.
+ *
  * @ingroup SpecialPage
  * @author Ævar Arnfjörð Bjarmason <avarab@gmail.com>
  */
-
-/**
- * Searches the database for files of the requested MIME type, comparing this with the
- * 'img_major_mime' and 'img_minor_mime' fields in the image table.
- * @ingroup SpecialPage
- */
 class SpecialMIMESearch extends QueryPage {
-	protected $major, $minor, $mime;
+	/** @var string */
+	protected $major;
+	/** @var string */
+	protected $minor;
+	/** @var string */
+	protected $mime;
 
-	public function __construct( $name = 'MIMEsearch' ) {
-		parent::__construct( $name );
+	private ILanguageConverter $languageConverter;
+
+	/**
+	 * @param IConnectionProvider $dbProvider
+	 * @param LinkBatchFactory $linkBatchFactory
+	 * @param LanguageConverterFactory $languageConverterFactory
+	 */
+	public function __construct(
+		IConnectionProvider $dbProvider,
+		LinkBatchFactory $linkBatchFactory,
+		LanguageConverterFactory $languageConverterFactory
+	) {
+		parent::__construct( 'MIMEsearch' );
+		$this->setDatabaseProvider( $dbProvider );
+		$this->setLinkBatchFactory( $linkBatchFactory );
+		$this->languageConverter = $languageConverterFactory->getLanguageConverter( $this->getContentLanguage() );
 	}
 
 	public function isExpensive() {
@@ -100,7 +134,7 @@ class SpecialMIMESearch extends QueryPage {
 	 * The index is on (img_media_type, img_major_mime, img_minor_mime)
 	 * which unfortunately doesn't have img_name at the end for sorting.
 	 * So tell db to sort it however it wishes (Its not super important
-	 * that this report gives results in a logical order). As an aditional
+	 * that this report gives results in a logical order). As an additional
 	 * note, mysql seems to by default order things by img_name ASC, which
 	 * is what we ideally want, so everything works out fine anyhow.
 	 * @return array
@@ -127,7 +161,7 @@ class SpecialMIMESearch extends QueryPage {
 
 		HTMLForm::factory( 'ooui', $formDescriptor, $this->getContext() )
 			->setSubmitTextMsg( 'ilsubmit' )
-			->setAction( $this->getPageTitle()->getLocalURL() )
+			->setTitle( $this->getPageTitle() )
 			->setMethod( 'get' )
 			->prepareForm()
 			->displayForm( false );
@@ -135,18 +169,17 @@ class SpecialMIMESearch extends QueryPage {
 	}
 
 	protected function getSuggestionsForTypes() {
-		$dbr = wfGetDB( DB_REPLICA );
-		$lastMajor = null;
-		$suggestions = [];
-		$result = $dbr->select(
-			[ 'image' ],
+		$queryBuilder = $this->getDatabaseProvider()->getReplicaDatabase()->newSelectQueryBuilder();
+		$queryBuilder
 			// We ignore img_media_type, but using it in the query is needed for MySQL to choose a
 			// sensible execution plan
-			[ 'img_media_type', 'img_major_mime', 'img_minor_mime' ],
-			[],
-			__METHOD__,
-			[ 'GROUP BY' => [ 'img_media_type', 'img_major_mime', 'img_minor_mime' ] ]
-		);
+			->select( [ 'img_media_type', 'img_major_mime', 'img_minor_mime' ] )
+			->from( 'image' )
+			->groupBy( [ 'img_media_type', 'img_major_mime', 'img_minor_mime' ] );
+		$result = $queryBuilder->caller( __METHOD__ )->fetchResultSet();
+
+		$lastMajor = null;
+		$suggestions = [];
 		foreach ( $result as $row ) {
 			$major = $row->img_major_mime;
 			$minor = $row->img_minor_mime;
@@ -165,10 +198,11 @@ class SpecialMIMESearch extends QueryPage {
 		$this->addHelpLink( 'Help:Managing_files' );
 		$this->mime = $par ?: $this->getRequest()->getText( 'mime' );
 		$this->mime = trim( $this->mime );
-		list( $this->major, $this->minor ) = File::splitMime( $this->mime );
+		[ $this->major, $this->minor ] = File::splitMime( $this->mime );
+		$mimeAnalyzer = MediaWikiServices::getInstance()->getMimeAnalyzer();
 
 		if ( $this->major == '' || $this->minor == '' || $this->minor == 'unknown' ||
-			!self::isValidType( $this->major )
+			!$mimeAnalyzer->isValidMajorMimeType( $this->major )
 		) {
 			$this->setHeaders();
 			$this->outputHeader();
@@ -181,14 +215,14 @@ class SpecialMIMESearch extends QueryPage {
 
 	/**
 	 * @param Skin $skin
-	 * @param object $result Result row
+	 * @param stdClass $result Result row
 	 * @return string
 	 */
 	public function formatResult( $skin, $result ) {
 		$linkRenderer = $this->getLinkRenderer();
 		$nt = Title::makeTitle( $result->namespace, $result->title );
 
-		$text = $this->getLanguageConverter()->convertHtml( $nt->getText() );
+		$text = $this->languageConverter->convertHtml( $nt->getText() );
 		$plink = $linkRenderer->makeLink(
 			Title::newFromText( $nt->getPrefixedText() ),
 			new HtmlArmor( $text )
@@ -211,28 +245,6 @@ class SpecialMIMESearch extends QueryPage {
 		return "$download $plink . . $dimensions . . $bytes . . $user . . $time";
 	}
 
-	/**
-	 * @param string $type
-	 * @return bool
-	 */
-	protected static function isValidType( $type ) {
-		// From maintenance/tables.sql => img_major_mime
-		$types = [
-			'unknown',
-			'application',
-			'audio',
-			'image',
-			'text',
-			'video',
-			'message',
-			'model',
-			'multipart',
-			'chemical'
-		];
-
-		return in_array( $type, $types );
-	}
-
 	public function preprocessResults( $db, $res ) {
 		$this->executeLBFromResultWrapper( $res );
 	}
@@ -241,3 +253,9 @@ class SpecialMIMESearch extends QueryPage {
 		return 'media';
 	}
 }
+
+/**
+ * Retain the old class name for backwards compatibility.
+ * @deprecated since 1.41
+ */
+class_alias( SpecialMIMESearch::class, 'SpecialMIMESearch' );

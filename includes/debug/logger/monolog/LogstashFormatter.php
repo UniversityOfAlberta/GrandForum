@@ -3,12 +3,14 @@
 namespace MediaWiki\Logger\Monolog;
 
 /**
- * LogstashFormatter squashes the base message array and the context and extras subarrays into one.
- * This can result in unfortunately named context fields overwriting other data (T145133).
- * This class modifies the standard LogstashFormatter to rename such fields and flag the message.
- * Also changes exception JSON-ification which is done poorly by the standard class.
+ * Modified version of Monolog\Formatter\LogstashFormatter
+ *
+ * - Squash the base message array, the context and extra subarrays into one.
+ *   This can result in unfortunately named context fields overwriting other data (T145133).
+ * - Improve exception JSON-ification, which is done poorly by the standard class.
  *
  * @since 1.29
+ * @ingroup Debug
  */
 class LogstashFormatter extends \Monolog\Formatter\LogstashFormatter {
 
@@ -33,7 +35,7 @@ class LogstashFormatter extends \Monolog\Formatter\LogstashFormatter {
 	protected $version;
 
 	/**
-	 * See T247675 for removing this override.
+	 * TODO: See T247675 for removing this override.
 	 *
 	 * @param string $applicationName The application that sends the data, used as the "type"
 	 * field of logstash
@@ -54,9 +56,11 @@ class LogstashFormatter extends \Monolog\Formatter\LogstashFormatter {
 	public function format( array $record ): string {
 		$record = \Monolog\Formatter\NormalizerFormatter::format( $record );
 		if ( $this->version === self::V1 ) {
-			$message = $this->formatv1( $record );
+			$message = $this->formatV1( $record );
 		} elseif ( $this->version === self::V0 ) {
 			$message = $this->formatV0( $record );
+		} else {
+			$message = __METHOD__ . ' unknown version ' . $this->version;
 		}
 
 		return $this->toJson( $message ) . "\n";
@@ -196,8 +200,8 @@ class LogstashFormatter extends \Monolog\Formatter\LogstashFormatter {
 	}
 
 	/**
-	 * Check whether some context field would overwrite another message key. If so, rename
-	 * and flag.
+	 * Rename any context field that would otherwise overwrite a message key.
+	 *
 	 * @param array $fields Fields to be sent to logstash
 	 * @param array $context Copy of the original $record['context']
 	 * @return array Updated version of $fields
@@ -217,7 +221,8 @@ class LogstashFormatter extends \Monolog\Formatter\LogstashFormatter {
 	}
 
 	/**
-	 * Use a more user-friendly trace format than NormalizerFormatter
+	 * Use a more user-friendly trace format than Monolog\Formatter\NormalizerFormatter.
+	 *
 	 * @param \Throwable $e
 	 * @param int $depth
 	 * @return array

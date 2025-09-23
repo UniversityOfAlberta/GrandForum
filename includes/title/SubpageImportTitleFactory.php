@@ -18,7 +18,9 @@
  * @file
  */
 
-use MediaWiki\MediaWikiServices;
+namespace MediaWiki\Title;
+
+use InvalidArgumentException;
 
 /**
  * A class to convert page titles on a foreign wiki (ForeignTitle objects) into
@@ -26,21 +28,24 @@ use MediaWiki\MediaWikiServices;
  * of a given root page.
  */
 class SubpageImportTitleFactory implements ImportTitleFactory {
-	/** @var Title */
-	protected $rootPage;
+	private TitleFactory $titleFactory;
+	private Title $rootPage;
 
 	/**
-	 * @param Title $rootPage The root page under which all pages should be
-	 * created
+	 * @param NamespaceInfo $namespaceInfo
+	 * @param TitleFactory $titleFactory
+	 * @param Title $rootPage The root page under which all pages should be created
 	 */
-	public function __construct( Title $rootPage ) {
-		if (
-			!MediaWikiServices::getInstance()->getNamespaceInfo()->
-				hasSubpages( $rootPage->getNamespace() )
-		) {
-			throw new MWException( "The root page you specified, $rootPage, is in a " .
+	public function __construct(
+		NamespaceInfo $namespaceInfo,
+		TitleFactory $titleFactory,
+		Title $rootPage
+	) {
+		if ( !$namespaceInfo->hasSubpages( $rootPage->getNamespace() ) ) {
+			throw new InvalidArgumentException( "The root page you specified, $rootPage, is in a " .
 				"namespace where subpages are not allowed" );
 		}
+		$this->titleFactory = $titleFactory;
 		$this->rootPage = $rootPage;
 	}
 
@@ -53,7 +58,11 @@ class SubpageImportTitleFactory implements ImportTitleFactory {
 	 * @return Title|null
 	 */
 	public function createTitleFromForeignTitle( ForeignTitle $foreignTitle ) {
-		return Title::newFromText( $this->rootPage->getPrefixedDBkey() . '/' .
-			$foreignTitle->getFullText() );
+		return $this->titleFactory->newFromText(
+			$this->rootPage->getPrefixedDBkey() . '/' . $foreignTitle->getFullText()
+		);
 	}
 }
+
+/** @deprecated class alias since 1.41 */
+class_alias( SubpageImportTitleFactory::class, 'SubpageImportTitleFactory' );

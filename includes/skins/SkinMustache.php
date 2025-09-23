@@ -17,7 +17,13 @@
  *
  * @file
  */
-use Wikimedia\WrappedStringList;
+
+use MediaWiki\Html\Html;
+use MediaWiki\Html\TemplateParser;
+use MediaWiki\Language\Language;
+use MediaWiki\Skin\SkinComponentTempUserBanner;
+use MediaWiki\Skin\SkinComponentUtils;
+use MediaWiki\Title\Title;
 
 /**
  * Generic template for use with Mustache templates.
@@ -39,8 +45,38 @@ class SkinMustache extends SkinTemplate {
 	protected function getTemplateParser() {
 		if ( $this->templateParser === null ) {
 			$this->templateParser = new TemplateParser( $this->options['templateDirectory'] );
+			// For table of contents rendering.
+			$this->templateParser->enableRecursivePartials( true );
 		}
 		return $this->templateParser;
+	}
+
+	/**
+	 * Creates a banner notifying IP masked users (temporary accounts)
+	 * That they are editing via a temporary account.
+	 *
+	 * @return string
+	 */
+	private function createTempUserBannerHTML() {
+		$isSupportedSkin = $this->getOptions()['tempUserBanner'];
+		$isTempUser = $this->getUser()->isTemp();
+
+		if ( !$isSupportedSkin || !$isTempUser ) {
+			return '';
+		}
+
+		$returntoParam = SkinComponentUtils::getReturnToParam(
+			$this->getTitle(),
+			$this->getRequest(),
+			$this->getAuthority()
+		);
+
+		$tempUserBanner = new SkinComponentTempUserBanner(
+			$returntoParam,
+			$this->getContext(),
+			$this->getUser(),
+		);
+		return $tempUserBanner->getTemplateData()['html'];
 	}
 
 	/**
@@ -55,101 +91,64 @@ class SkinMustache extends SkinTemplate {
 		$tp = $this->getTemplateParser();
 		$template = $this->options['template'] ?? 'skin';
 		$data = $this->getTemplateData();
-
-		// T259955: OutputPage::headElement must be called last (after getTemplateData)
-		// as it calls OutputPage::getRlClient, which freezes the ResourceLoader
-		// modules queue for the current page load.
-		$html = $out->headElement( $this );
-
+		$html = $this->createTempUserBannerHTML();
 		$html .= $tp->processTemplate( $template, $data );
-		$html .= $this->tailElement( $out );
 		return $html;
 	}
 
 	/**
-	 * Subclasses may extend this method to add additional
-	 * template data.
-	 *
-	 * The data keys should be valid English words. Compound words should
-	 * be hypenated except if they are normally written as one word. Each
-	 * key should be prefixed with a type hint, this may be enforced by the
-	 * class PHPUnit test.
-	 *
-	 * Plain strings are prefixed with 'html-', plain arrays with 'array-'
-	 * and complex array data with 'data-'. 'is-' and 'has-' prefixes can
-	 * be used for boolean variables.
-	 *
-	 * @return array Data for a mustache template
+	 * @inheritDoc
+	 */
+	protected function doEditSectionLinksHTML( array $links, Language $lang ) {
+		$template = $this->getOptions()['templateSectionLinks'] ?? null;
+		if ( !$template ) {
+			return parent::doEditSectionLinksHTML( $links, $lang );
+		}
+		return $this->getTemplateParser()->processTemplate( $template, [
+			'class' => 'mw-editsection',
+			'array-links' => $links
+		] );
+	}
+
+	/**
+	 * @inheritDoc
+	 * @return array Data specific for a mustache template. See parent function for common data.
 	 */
 	public function getTemplateData() {
 		$out = $this->getOutput();
-		$printSource = Html::rawElement( 'div', [ 'class' => 'printfooter' ], $this->printSource() );
+		$printSource = Html::rawElement(
+			'div',
+			[
+				'class' => 'printfooter',
+				'data-nosnippet' => ''
+			] + $this->getUserLanguageAttributes(),
+			$this->printSource()
+		);
 		$bodyContent = $out->getHTML() . "\n" . $printSource;
 
-		$data = [
+		$newTalksHtml = $this->getNewtalks() ?: null;
+
+		$data = parent::getTemplateData() + [
 			// Array objects
 			'array-indicators' => $this->getIndicatorsData( $out->getIndicators() ),
-			// Data objects
-			'data-search-box' => $this->buildSearchProps(),
 			// HTML strings
-			'html-site-notice' => $this->getSiteNotice(),
-			'html-title' => $out->getPageTitle(),
+			'html-site-notice' => $this->getSiteNotice() ?: null,
+			'html-user-message' => $newTalksHtml ?
+				Html::rawElement( 'div', [ 'class' => 'usermessage' ], $newTalksHtml ) : null,
 			'html-subtitle' => $this->prepareSubtitle(),
 			'html-body-content' => $this->wrapHTML( $out->getTitle(), $bodyContent ),
 			'html-categories' => $this->getCategories(),
 			'html-after-content' => $this->afterContentHook(),
 			'html-undelete-link' => $this->prepareUndeleteLink(),
 			'html-user-language-attributes' => $this->prepareUserLanguageAttributes(),
+
+			// links
+			'link-mainpage' => Title::newMainPage()->getLocalURL(),
 		];
 
+		foreach ( $this->options['messages'] ?? [] as $message ) {
+			$data["msg-{$message}"] = $this->msg( $message )->text();
+		}
 		return $data;
-	}
-
-	/**
-	 * @return array
-	 */
-	private function buildSearchProps() : array {
-		$config = $this->getConfig();
-
-		$props = [
-			'form-action' => $config->get( 'Script' ),
-			'html-button-search-fallback' => $this->makeSearchButton(
-				'fulltext',
-				[ 'id' => 'mw-searchButton', 'class' => 'searchButton mw-fallbackSearchButton' ]
-			),
-			'html-button-search' => $this->makeSearchButton(
-				'go',
-				[ 'id' => 'searchButton', 'class' => 'searchButton' ]
-			),
-			'html-input' => $this->makeSearchInput( [ 'id' => 'searchInput' ] ),
-			'msg-search' => $this->msg( 'search' )->text(),
-			'page-title' => SpecialPage::getTitleFor( 'Search' )->getPrefixedDBkey(),
-		];
-
-		return $props;
-	}
-
-	/**
-	 * The final bits that go to the bottom of a page
-	 * HTML document including the closing tags
-	 *
-	 * @param OutputPage $out
-	 * @return string
-	 */
-	private function tailElement( $out ) {
-		$tail = [
-			MWDebug::getDebugHTML( $this ),
-			$this->bottomScripts(),
-			wfReportTime( $out->getCSP()->getNonce() ),
-			Html::rawElement(
-				'div',
-				[ 'id' => 'mw-html-debug-log' ],
-				MWDebug::getHTMLDebugLog()
-			)
-			. Html::closeElement( 'body' )
-			. Html::closeElement( 'html' )
-		];
-
-		return WrappedStringList::join( "\n", $tail );
 	}
 }

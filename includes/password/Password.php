@@ -22,6 +22,11 @@
 
 declare( strict_types = 1 );
 
+namespace MediaWiki\Password;
+
+use InvalidArgumentException;
+use RuntimeException;
+
 /**
  * Represents a password hash for use in authentication
  *
@@ -87,18 +92,16 @@ abstract class Password {
 	 * It is strongly recommended not to call this function directly unless you
 	 * have a reason to. Use the PasswordFactory class instead.
 	 *
-	 * @throws MWException If $config does not contain required parameters
-	 *
 	 * @param PasswordFactory $factory Factory object that created the password
 	 * @param array $config Array of engine configuration options for hashing
 	 * @param string|null $hash The raw hash, including the type
 	 */
-	final public function __construct( PasswordFactory $factory, array $config, string $hash = null ) {
+	final public function __construct( PasswordFactory $factory, array $config, ?string $hash = null ) {
 		if ( !$this->isSupported() ) {
-			throw new Exception( 'PHP support not found for ' . get_class( $this ) );
+			throw new RuntimeException( 'PHP support not found for ' . get_class( $this ) );
 		}
 		if ( !isset( $config['type'] ) ) {
-			throw new Exception( 'Password configuration must contain a type name.' );
+			throw new InvalidArgumentException( 'Password configuration must contain a type name.' );
 		}
 		$this->config = $config;
 		$this->factory = $factory;
@@ -117,7 +120,7 @@ abstract class Password {
 	 *
 	 * @return string Password type
 	 */
-	final public function getType() : string {
+	final public function getType(): string {
 		return $this->config['type'];
 	}
 
@@ -126,7 +129,7 @@ abstract class Password {
 	 *
 	 * @return bool
 	 */
-	protected function isSupported() : bool {
+	protected function isSupported(): bool {
 		return true;
 	}
 
@@ -137,7 +140,7 @@ abstract class Password {
 	 * @param string|null $hash The hash, with the :<TYPE>: prefix stripped
 	 * @throws PasswordError If there is an error in parsing the hash
 	 */
-	protected function parseHash( ?string $hash ) : void {
+	protected function parseHash( ?string $hash ): void {
 	}
 
 	/**
@@ -145,7 +148,7 @@ abstract class Password {
 	 *
 	 * @return bool True if needs update, false otherwise
 	 */
-	abstract public function needsUpdate() : bool;
+	abstract public function needsUpdate(): bool;
 
 	/**
 	 * Checks whether the given password matches the hash stored in this object.
@@ -153,7 +156,7 @@ abstract class Password {
 	 * @param string $password Password to check
 	 * @return bool
 	 */
-	public function verify( string $password ) : bool {
+	public function verify( string $password ): bool {
 		// No need to use the factory because we're definitely making
 		// an object of the same type.
 		$obj = clone $this;
@@ -165,7 +168,7 @@ abstract class Password {
 	/**
 	 * Convert this hash to a string that can be stored in the database
 	 *
-	 * The resulting string should be considered the seralized representation
+	 * The resulting string should be considered the serialized representation
 	 * of this hash, i.e., if the return value were recycled back into
 	 * PasswordFactory::newFromCiphertext, the returned object would be equivalent to
 	 * this; also, if two objects return the same value from this function, they
@@ -174,7 +177,7 @@ abstract class Password {
 	 * @return string
 	 * @throws PasswordError if password cannot be serialized to fit a tinyblob.
 	 */
-	public function toString() : string {
+	public function toString(): string {
 		$result = ':' . $this->config['type'] . ':' . $this->hash;
 		$this->assertIsSafeSize( $result );
 		return $result;
@@ -190,7 +193,7 @@ abstract class Password {
 	 * @param string $hash The hash in question.
 	 * @throws PasswordError If hash does not fit in DB.
 	 */
-	final protected function assertIsSafeSize( string $hash ) : void {
+	final protected function assertIsSafeSize( string $hash ): void {
 		if ( strlen( $hash ) > self::MAX_HASH_SIZE ) {
 			throw new PasswordError( "Password hash is too big" );
 		}
@@ -205,5 +208,8 @@ abstract class Password {
 	 * @param string $password Password to hash
 	 * @throws PasswordError If an internal error occurs in hashing
 	 */
-	abstract public function crypt( string $password ) : void;
+	abstract public function crypt( string $password ): void;
 }
+
+/** @deprecated since 1.43 use MediaWiki\\Password\\PasswordFactory */
+class_alias( Password::class, 'Password' );

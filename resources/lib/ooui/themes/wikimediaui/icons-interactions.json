@@ -12,13 +12,13 @@
 			"global": true
 		},
 		"destructive": {
-			"color": "#d33"
+			"color": "#d73333"
 		},
 		"error": {
-			"color": "#d33"
+			"color": "#d73333"
 		},
 		"warning": {
-			"color": "#fc3"
+			"color": "#edab00"
 		},
 		"success": {
 			"color": "#14866d"
@@ -57,6 +57,9 @@
 		"ellipsis": {
 			"file": "images/icons/ellipsis.svg"
 		},
+		"verticalEllipsis": {
+			"file": "images/icons/verticalEllipsis.svg"
+		},
 		"feedback": {
 			"file": {
 				"ltr": "images/icons/feedback-ltr.svg",
@@ -69,6 +72,12 @@
 				"rtl": "images/icons/funnel-rtl.svg"
 			},
 			"variants": [ "destructive" ]
+		},
+		"hand": {
+			"file": "images/icons/hand.svg",
+			"variants": [
+				"destructive"
+			]
 		},
 		"heart": {
 			"file": "images/icons/heart.svg"
@@ -115,6 +124,12 @@
 				"rtl": "images/icons/logOut-rtl.svg"
 			}
 		},
+		"network": {
+			"file": "images/icons/network.svg"
+		},
+		"networkOff": {
+			"file": "images/icons/networkOff.svg"
+		},
 		"newWindow": {
 			"file": {
 				"ltr": "images/icons/newWindow-ltr.svg",
@@ -135,10 +150,6 @@
 		},
 		"settings": {
 			"file": "images/icons/settings.svg"
-		},
-		"stopHand": {
-			"file": "images/icons/stopHand.svg",
-			"variants": [ "destructive" ]
 		},
 		"subtract": {
 			"file": "images/icons/subtract.svg",

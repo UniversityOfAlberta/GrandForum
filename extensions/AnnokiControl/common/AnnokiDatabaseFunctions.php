@@ -1,4 +1,7 @@
 <?php
+
+use MediaWiki\MediaWikiServices;
+
 /** 
  * Convenience class for accessing the database.
  * @package Annoki
@@ -24,7 +27,7 @@ class AnnokiDatabaseFunctions {
    */
   public static function getQueryResultsAsArray($query, $fieldName=false, $dbLink = null){
     if ($dbLink===null)
-      $dbLink = wfGetDB(DB_REPLICA);
+      $dbLink = MediaWikiServices::getInstance()->getConnectionProvider()->getReplicaDatabase();
 
     $res = $dbLink->query($query);
 
@@ -53,7 +56,7 @@ class AnnokiDatabaseFunctions {
       if ($wgDBtype != 'mysql')
 	  return false;
 
-      $dbr = wfGetDB(DB_REPLICA);
+      $dbr = MediaWikiServices::getInstance()->getConnectionProvider()->getReplicaDatabase();
       $query = "show tables like \"$tableName\"";
       $result = $dbr->query($query);
       $numRows = $dbr->numRows($results);

@@ -13,7 +13,7 @@ class PersonProductsTab extends AbstractTab {
 
     function generateBody(){
         global $wgUser;
-        if($wgUser->isLoggedIn()){
+        if($wgUser->isRegistered()){
             $dashboard = null;
             $prods = $this->person->getPapers('all', true, 'both');
             $categories = array();

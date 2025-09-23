@@ -19,6 +19,11 @@
  * @author fdcn <fdcn64@gmail.com>, PhiLiP <philip.npc@gmail.com>
  */
 
+namespace MediaWiki\Language;
+
+use MediaWiki\Logger\LoggerFactory;
+use StringUtils;
+
 /**
  * The rules used for language conversion, this processes the rules
  * extracted by Parser from the `-{ }-` wikitext syntax.
@@ -34,15 +39,21 @@ class ConverterRule {
 	 * @var LanguageConverter
 	 */
 	public $mConverter;
+	/** @var string|false */
 	public $mRuleDisplay = '';
+	/** @var string|false */
 	public $mRuleTitle = false;
 	/**
 	 * @var string the text of the rules
 	 */
 	public $mRules = '';
+	/** @var string */
 	public $mRulesAction = 'none';
+	/** @var array */
 	public $mFlags = [];
+	/** @var array */
 	public $mVariantFlags = [];
+	/** @var array */
 	public $mConvTable = [];
 	/**
 	 * @var array of the translation in each variant
@@ -63,10 +74,10 @@ class ConverterRule {
 	}
 
 	/**
-	 * Check if variants array in convert array.
+	 * Check if the variant array is in the convert array.
 	 *
 	 * @param array|string $variants Variant language code
-	 * @return string Translated text
+	 * @return string|false Translated text
 	 */
 	public function getTextInBidtable( $variants ) {
 		$variants = (array)$variants;
@@ -91,7 +102,7 @@ class ConverterRule {
 
 		$sepPos = strpos( $text, '|' );
 		if ( $sepPos !== false ) {
-			$validFlags = $this->mConverter->mFlags;
+			$validFlags = $this->mConverter->getFlags();
 			$f = StringUtils::explode( ';', substr( $text, 0, $sepPos ) );
 			foreach ( $f as $ff ) {
 				$ff = trim( $ff );
@@ -99,7 +110,7 @@ class ConverterRule {
 					$flags[$validFlags[$ff]] = true;
 				}
 			}
-			$text = strval( substr( $text, $sepPos + 1 ) );
+			$text = substr( $text, $sepPos + 1 );
 		}
 
 		if ( !$flags ) {
@@ -137,7 +148,7 @@ class ConverterRule {
 			// allow syntaxes like "-{zh-hans;zh-hant|XXXX}-"
 			$variantFlags = array_intersect( array_keys( $flags ), $this->mConverter->getVariants() );
 			if ( $variantFlags ) {
-				$variantFlags = array_flip( $variantFlags );
+				$variantFlags = array_fill_keys( $variantFlags, true );
 				$flags = [];
 			}
 		}
@@ -155,9 +166,22 @@ class ConverterRule {
 		$unidtable = [];
 		$varsep_pattern = $this->mConverter->getVarSeparatorPattern();
 
-		// Split according to $varsep_pattern, but ignore semicolons from HTML entities
+		// Split text according to $varsep_pattern, but ignore semicolons from HTML entities
 		$rules = preg_replace( '/(&[#a-zA-Z0-9]+);/', "$1\x01", $rules );
 		$choice = preg_split( $varsep_pattern, $rules );
+		// @phan-suppress-next-line PhanTypeComparisonFromArray
+		if ( $choice === false ) {
+			$error = preg_last_error();
+			$errorText = preg_last_error_msg();
+			LoggerFactory::getInstance( 'parser' )->warning(
+				'ConverterRule preg_split error: {code} {errorText}',
+				[
+					'code' => $error,
+					'errorText' => $errorText
+				]
+			);
+			$choice = [];
+		}
 		$choice = str_replace( "\x01", ';', $choice );
 
 		foreach ( $choice as $c ) {
@@ -189,7 +213,7 @@ class ConverterRule {
 				}
 			}
 			// syntax error, pass
-			if ( !isset( $this->mConverter->mVariantNames[$vv] ) ) {
+			if ( !isset( $this->mConverter->getVariantNames()[$vv] ) ) {
 				$bidtable = [];
 				$unidtable = [];
 				break;
@@ -203,15 +227,15 @@ class ConverterRule {
 	 * @return string
 	 */
 	private function getRulesDesc() {
-		$codesep = $this->mConverter->mDescCodeSep;
-		$varsep = $this->mConverter->mDescVarSep;
+		$codesep = $this->mConverter->getDescCodeSeparator();
+		$varsep = $this->mConverter->getDescVarSeparator();
 		$text = '';
 		foreach ( $this->mBidtable as $k => $v ) {
-			$text .= $this->mConverter->mVariantNames[$k] . "$codesep$v$varsep";
+			$text .= $this->mConverter->getVariantNames()[$k] . "$codesep$v$varsep";
 		}
 		foreach ( $this->mUnidtable as $k => $a ) {
 			foreach ( $a as $from => $to ) {
-				$text .= $from . '⇒' . $this->mConverter->mVariantNames[$k] .
+				$text .= $from . '⇒' . $this->mConverter->getVariantNames()[$k] .
 					"$codesep$to$varsep";
 			}
 		}
@@ -245,7 +269,7 @@ class ConverterRule {
 			$disp = array_values( $unidtable[$variant] )[0];
 		}
 		// or display first text under disable manual convert
-		if ( $disp === false && $this->mConverter->mManualLevel[$variant] === 'disable' ) {
+		if ( $disp === false && $this->mConverter->getManualLevel()[$variant] === 'disable' ) {
 			if ( count( $bidtable ) > 0 ) {
 				$disp = array_values( $bidtable )[0];
 			} else {
@@ -257,17 +281,17 @@ class ConverterRule {
 	}
 
 	/**
-	 * Similar to getRuleConvertedStr(), but this prefers to use original
-	 * page title if $variant === $this->mConverter->mMainLanguageCode
+	 * Similar to getRuleConvertedStr(), but this prefers to use MediaWiki\Title\Title;
+	 * use original page title if $variant === $this->mConverter->getMainCode(),
 	 * and may return false in this case (so this title conversion rule
 	 * will be ignored and the original title is shown).
 	 *
 	 * @since 1.22
 	 * @param string $variant The variant code to display page title in
-	 * @return string|bool The converted title or false if just page name
+	 * @return string|false The converted title or false if just page name
 	 */
 	private function getRuleConvertedTitle( $variant ) {
-		if ( $variant === $this->mConverter->mMainLanguageCode ) {
+		if ( $variant === $this->mConverter->getMainCode() ) {
 			// If a string targeting exactly this variant is set,
 			// use it. Otherwise, just return false, so the real
 			// page name can be shown (and because variant === main,
@@ -298,10 +322,10 @@ class ConverterRule {
 
 		$bidtable = $this->mBidtable;
 		$unidtable = $this->mUnidtable;
-		$manLevel = $this->mConverter->mManualLevel;
+		$manLevel = $this->mConverter->getManualLevel();
 
 		$vmarked = [];
-		foreach ( $this->mConverter->mVariants as $v ) {
+		foreach ( $this->mConverter->getVariants() as $v ) {
 			/* for bidirectional array
 				fill in the missing variants, if any,
 				with fallbacks */
@@ -364,7 +388,7 @@ class ConverterRule {
 				$this->mRules = $this->mConverter->autoConvert( $this->mRules,
 					$variant );
 			} else {
-				// if current variant no in flags,
+				// if the current variant is not in flags,
 				// then we check its fallback variants.
 				$variantFallbacks =
 					$this->mConverter->getVariantFallbacks( $variant );
@@ -385,7 +409,7 @@ class ConverterRule {
 		}
 
 		if ( !isset( $flags['R'] ) && !isset( $flags['N'] ) ) {
-			// decode => HTML entities modified by Sanitizer::removeHTMLtags
+			// decode => HTML entities modified by Sanitizer::internalRemoveHtmlTags
 			$this->mRules = str_replace( '=&gt;', '=>', $this->mRules );
 			$this->parseRules();
 		}
@@ -393,9 +417,9 @@ class ConverterRule {
 
 		if ( !$this->mBidtable && !$this->mUnidtable ) {
 			if ( isset( $flags['+'] ) || isset( $flags['-'] ) ) {
-				// fill all variants if text in -{A/H/-|text}- is non-empty but without rules
+				// fill all variants if the text in -{A/H/-|text}- is non-empty but without rules
 				if ( $rules !== '' ) {
-					foreach ( $this->mConverter->mVariants as $v ) {
+					foreach ( $this->mConverter->getVariants() as $v ) {
 						$this->mBidtable[$v] = $rules;
 					}
 				}
@@ -414,7 +438,7 @@ class ConverterRule {
 				case 'N':
 					// process N flag: output current variant name
 					$ruleVar = trim( $rules );
-					$this->mRuleDisplay = $this->mConverter->mVariantNames[$ruleVar] ?? '';
+					$this->mRuleDisplay = $this->mConverter->getVariantNames()[$ruleVar] ?? '';
 					break;
 				case 'D':
 					// process D flag: output rules description
@@ -440,7 +464,7 @@ class ConverterRule {
 					$this->mRuleDisplay = '';
 					break;
 				default:
-					// ignore unknown flags (but see error case below)
+					// ignore unknown flags (but see error-case below)
 			}
 		}
 		if ( $this->mRuleDisplay === false ) {
@@ -470,14 +494,14 @@ class ConverterRule {
 
 	/**
 	 * Get converted title.
-	 * @return string
+	 * @return string|false
 	 */
 	public function getTitle() {
 		return $this->mRuleTitle;
 	}
 
 	/**
-	 * Return how deal with conversion rules.
+	 * Return how to deal with conversion rules.
 	 * @return string
 	 */
 	public function getRulesAction() {
@@ -509,3 +533,6 @@ class ConverterRule {
 		return $this->mFlags;
 	}
 }
+
+/** @deprecated class alias since 1.43 */
+class_alias( ConverterRule::class, 'ConverterRule' );

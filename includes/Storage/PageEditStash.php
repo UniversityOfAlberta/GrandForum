@@ -1,7 +1,5 @@
 <?php
 /**
- * Predictive edit preparation system for MediaWiki page.
- *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -22,38 +20,54 @@
 
 namespace MediaWiki\Storage;
 
-use ActorMigration;
-use BagOStuff;
-use Content;
-use Liuggio\StatsdClient\Factory\StatsdDataFactoryInterface;
+use MediaWiki\Content\Content;
 use MediaWiki\HookContainer\HookContainer;
 use MediaWiki\HookContainer\HookRunner;
+use MediaWiki\Page\PageIdentity;
+use MediaWiki\Page\WikiPageFactory;
+use MediaWiki\Parser\ParserOutput;
+use MediaWiki\Parser\ParserOutputFlags;
+use MediaWiki\Revision\SlotRecord;
 use MediaWiki\Storage\Hook\ParserOutputStashForEditHook;
-use ParserOutput;
+use MediaWiki\User\UserEditTracker;
+use MediaWiki\User\UserFactory;
+use MediaWiki\User\UserIdentity;
 use Psr\Log\LoggerInterface;
 use stdClass;
-use Title;
-use User;
-use Wikimedia\Rdbms\ILoadBalancer;
+use Wikimedia\ObjectCache\BagOStuff;
+use Wikimedia\Rdbms\IConnectionProvider;
 use Wikimedia\ScopedCallback;
+use Wikimedia\Stats\StatsFactory;
 use WikiPage;
 
 /**
- * Class for managing stashed edits used by the page updater classes
+ * Manage the pre-emptive page parsing for edits to wiki pages.
+ *
+ * This is written to by ApiStashEdit, and consumed by ApiEditPage
+ * and EditPage (via PageUpdaterFactory and DerivedPageDataUpdater).
+ *
+ * See also mediawiki.action.edit/stash.js.
  *
  * @since 1.34
+ * @ingroup Page
  */
 class PageEditStash {
 	/** @var BagOStuff */
 	private $cache;
-	/** @var ILoadBalancer */
-	private $lb;
+	/** @var IConnectionProvider */
+	private $dbProvider;
 	/** @var LoggerInterface */
 	private $logger;
-	/** @var StatsdDataFactoryInterface */
+	/** @var StatsFactory */
 	private $stats;
 	/** @var ParserOutputStashForEditHook */
 	private $hookRunner;
+	/** @var UserEditTracker */
+	private $userEditTracker;
+	/** @var UserFactory */
+	private $userFactory;
+	/** @var WikiPageFactory */
+	private $wikiPageFactory;
 	/** @var int */
 	private $initiator;
 
@@ -74,55 +88,69 @@ class PageEditStash {
 
 	/**
 	 * @param BagOStuff $cache
-	 * @param ILoadBalancer $lb
+	 * @param IConnectionProvider $dbProvider
 	 * @param LoggerInterface $logger
-	 * @param StatsdDataFactoryInterface $stats
+	 * @param StatsFactory $stats
+	 * @param UserEditTracker $userEditTracker
+	 * @param UserFactory $userFactory
+	 * @param WikiPageFactory $wikiPageFactory
 	 * @param HookContainer $hookContainer
 	 * @param int $initiator Class INITIATOR__* constant
 	 */
 	public function __construct(
 		BagOStuff $cache,
-		ILoadBalancer $lb,
+		IConnectionProvider $dbProvider,
 		LoggerInterface $logger,
-		StatsdDataFactoryInterface $stats,
+		StatsFactory $stats,
+		UserEditTracker $userEditTracker,
+		UserFactory $userFactory,
+		WikiPageFactory $wikiPageFactory,
 		HookContainer $hookContainer,
 		$initiator
 	) {
 		$this->cache = $cache;
-		$this->lb = $lb;
+		$this->dbProvider = $dbProvider;
 		$this->logger = $logger;
 		$this->stats = $stats;
+		$this->userEditTracker = $userEditTracker;
+		$this->userFactory = $userFactory;
+		$this->wikiPageFactory = $wikiPageFactory;
 		$this->hookRunner = new HookRunner( $hookContainer );
 		$this->initiator = $initiator;
 	}
 
 	/**
-	 * @param WikiPage $page
+	 * @param PageUpdater $pageUpdater (a WikiPage instance is also supported but deprecated)
 	 * @param Content $content Edit content
-	 * @param User $user
+	 * @param UserIdentity $user
 	 * @param string $summary Edit summary
 	 * @return string Class ERROR_* constant
 	 */
-	public function parseAndCache( WikiPage $page, Content $content, User $user, string $summary ) {
+	public function parseAndCache( $pageUpdater, Content $content, UserIdentity $user, string $summary ) {
 		$logger = $this->logger;
 
-		$title = $page->getTitle();
-		$key = $this->getStashKey( $title, $this->getContentHash( $content ), $user );
+		if ( $pageUpdater instanceof WikiPage ) {
+			wfDeprecated( __METHOD__ . ' with WikiPage instance', '1.42' );
+			$pageUpdater = $pageUpdater->newPageUpdater( $user );
+		}
+
+		$page = $pageUpdater->getPage();
+		$key = $this->getStashKey( $page, $this->getContentHash( $content ), $user );
 		$fname = __METHOD__;
 
-		// Use the master DB to allow for fast blocking locks on the "save path" where this
+		// Use the primary DB to allow for fast blocking locks on the "save path" where this
 		// value might actually be used to complete a page edit. If the edit submission request
 		// happens before this edit stash requests finishes, then the submission will block until
 		// the stash request finishes parsing. For the lock acquisition below, there is not much
 		// need to duplicate parsing of the same content/user/summary bundle, so try to avoid
 		// blocking at all here.
-		$dbw = $this->lb->getConnectionRef( DB_MASTER );
+		$dbw = $this->dbProvider->getPrimaryDatabase();
 		if ( !$dbw->lock( $key, $fname, 0 ) ) {
 			// De-duplicate requests on the same key
 			return self::ERROR_BUSY;
 		}
 		/** @noinspection PhpUnusedLocalVariableInspection */
-		$unlocker = new ScopedCallback( function () use ( $dbw, $key, $fname ) {
+		$unlocker = new ScopedCallback( static function () use ( $dbw, $key, $fname ) {
 			$dbw->unlock( $key, $fname );
 		} );
 
@@ -130,24 +158,36 @@ class PageEditStash {
 
 		// Reuse any freshly build matching edit stash cache
 		$editInfo = $this->getStashValue( $key );
-		if ( $editInfo && wfTimestamp( TS_UNIX, $editInfo->timestamp ) >= $cutoffTime ) {
+		if ( $editInfo && (int)wfTimestamp( TS_UNIX, $editInfo->timestamp ) >= $cutoffTime ) {
 			$alreadyCached = true;
 		} else {
-			$format = $content->getDefaultFormat();
-			$editInfo = $page->prepareContentForEdit( $content, null, $user, $format, false );
-			$editInfo->output->setCacheTime( $editInfo->timestamp );
+			$pageUpdater->setContent( SlotRecord::MAIN, $content );
+
+			$update = $pageUpdater->prepareUpdate( EDIT_INTERNAL ); // applies pre-safe transform
+			$output = $update->getCanonicalParserOutput(); // causes content to be parsed
+			$output->setCacheTime( $update->getRevision()->getTimestamp() );
+
+			// emulate a cache value that kind of looks like a PreparedEdit, for use below
+			$editInfo = (object)[
+				'pstContent' => $update->getRawContent( SlotRecord::MAIN ),
+				'output'     => $output,
+				'timestamp'  => $output->getCacheTime()
+			];
+
 			$alreadyCached = false;
 		}
 
-		$context = [ 'cachekey' => $key, 'title' => $title->getPrefixedText() ];
+		$logContext = [ 'cachekey' => $key, 'title' => (string)$page ];
 
-		if ( $editInfo && $editInfo->output ) {
+		if ( $editInfo->output ) {
 			// Let extensions add ParserOutput metadata or warm other caches
+			$legacyUser = $this->userFactory->newFromUserIdentity( $user );
+			$legacyPage = $this->wikiPageFactory->newFromTitle( $page );
 			$this->hookRunner->onParserOutputStashForEdit(
-				$page, $content, $editInfo->output, $summary, $user );
+				$legacyPage, $content, $editInfo->output, $summary, $legacyUser );
 
 			if ( $alreadyCached ) {
-				$logger->debug( "Parser output for key '{cachekey}' already cached.", $context );
+				$logger->debug( "Parser output for key '{cachekey}' already cached.", $logContext );
 
 				return self::ERROR_NONE;
 			}
@@ -161,20 +201,20 @@ class PageEditStash {
 			);
 
 			if ( $code === true ) {
-				$logger->debug( "Cached parser output for key '{cachekey}'.", $context );
+				$logger->debug( "Cached parser output for key '{cachekey}'.", $logContext );
 
 				return self::ERROR_NONE;
 			} elseif ( $code === 'uncacheable' ) {
 				$logger->info(
 					"Uncacheable parser output for key '{cachekey}' [{code}].",
-					$context + [ 'code' => $code ]
+					$logContext + [ 'code' => $code ]
 				);
 
 				return self::ERROR_UNCACHEABLE;
 			} else {
 				$logger->error(
 					"Failed to cache parser output for key '{cachekey}'.",
-					$context + [ 'code' => $code ]
+					$logContext + [ 'code' => $code ]
 				);
 
 				return self::ERROR_CACHE;
@@ -199,19 +239,20 @@ class PageEditStash {
 	 *   - timestamp: the timestamp of the parse
 	 *   - edits: author edit count if they are logged in or NULL otherwise
 	 *
-	 * @param Title $title
+	 * @param PageIdentity $page
 	 * @param Content $content
-	 * @param User $user User to get parser options from
-	 * @return stdClass|bool Returns edit stash object or false on cache miss
+	 * @param UserIdentity $user to get parser options from
+	 * @return stdClass|false Returns edit stash object or false on cache miss
 	 */
-	public function checkCache( Title $title, Content $content, User $user ) {
+	public function checkCache( PageIdentity $page, Content $content, UserIdentity $user ) {
+		$legacyUser = $this->userFactory->newFromUserIdentity( $user );
 		if (
 			// The context is not an HTTP POST request
-			!$user->getRequest()->wasPosted() ||
+			!$legacyUser->getRequest()->wasPosted() ||
 			// The context is a CLI script or a job runner HTTP POST request
 			$this->initiator !== self::INITIATOR_USER ||
 			// The editor account is a known bot
-			$user->isBot()
+			$legacyUser->isBot()
 		) {
 			// Avoid wasted queries and statsd pollution
 			return false;
@@ -219,54 +260,54 @@ class PageEditStash {
 
 		$logger = $this->logger;
 
-		$key = $this->getStashKey( $title, $this->getContentHash( $content ), $user );
-		$context = [
+		$key = $this->getStashKey( $page, $this->getContentHash( $content ), $user );
+		$logContext = [
 			'key' => $key,
-			'title' => $title->getPrefixedText(),
+			'title' => (string)$page,
 			'user' => $user->getName()
 		];
 
 		$editInfo = $this->getAndWaitForStashValue( $key );
 		if ( !is_object( $editInfo ) || !$editInfo->output ) {
-			$this->incrStatsByContent( 'cache_misses.no_stash', $content );
+			$this->incrCacheReadStats( 'miss', 'no_stash', $content );
 			if ( $this->recentStashEntryCount( $user ) > 0 ) {
-				$logger->info( "Empty cache for key '{key}' but not for user.", $context );
+				$logger->info( "Empty cache for key '{key}' but not for user.", $logContext );
 			} else {
-				$logger->debug( "Empty cache for key '{key}'.", $context );
+				$logger->debug( "Empty cache for key '{key}'.", $logContext );
 			}
 
 			return false;
 		}
 
 		$age = time() - (int)wfTimestamp( TS_UNIX, $editInfo->output->getCacheTime() );
-		$context['age'] = $age;
+		$logContext['age'] = $age;
 
 		$isCacheUsable = true;
 		if ( $age <= self::PRESUME_FRESH_TTL_SEC ) {
 			// Assume nothing changed in this time
-			$this->incrStatsByContent( 'cache_hits.presumed_fresh', $content );
-			$logger->debug( "Timestamp-based cache hit for key '{key}'.", $context );
-		} elseif ( $user->isAnon() ) {
+			$this->incrCacheReadStats( 'hit', 'presumed_fresh', $content );
+			$logger->debug( "Timestamp-based cache hit for key '{key}'.", $logContext );
+		} elseif ( !$user->isRegistered() ) {
 			$lastEdit = $this->lastEditTime( $user );
 			$cacheTime = $editInfo->output->getCacheTime();
 			if ( $lastEdit < $cacheTime ) {
 				// Logged-out user made no local upload/template edits in the meantime
-				$this->incrStatsByContent( 'cache_hits.presumed_fresh', $content );
-				$logger->debug( "Edit check based cache hit for key '{key}'.", $context );
+				$this->incrCacheReadStats( 'hit', 'presumed_fresh', $content );
+				$logger->debug( "Edit check based cache hit for key '{key}'.", $logContext );
 			} else {
 				$isCacheUsable = false;
-				$this->incrStatsByContent( 'cache_misses.proven_stale', $content );
-				$logger->info( "Stale cache for key '{key}' due to outside edits.", $context );
+				$this->incrCacheReadStats( 'miss', 'proven_stale', $content );
+				$logger->info( "Stale cache for key '{key}' due to outside edits.", $logContext );
 			}
 		} else {
-			if ( $editInfo->edits === $user->getEditCount() ) {
+			if ( $editInfo->edits === $this->userEditTracker->getUserEditCount( $user ) ) {
 				// Logged-in user made no local upload/template edits in the meantime
-				$this->incrStatsByContent( 'cache_hits.presumed_fresh', $content );
-				$logger->debug( "Edit count based cache hit for key '{key}'.", $context );
+				$this->incrCacheReadStats( 'hit', 'presumed_fresh', $content );
+				$logger->debug( "Edit count based cache hit for key '{key}'.", $logContext );
 			} else {
 				$isCacheUsable = false;
-				$this->incrStatsByContent( 'cache_misses.proven_stale', $content );
-				$logger->info( "Stale cache for key '{key}'due to outside edits.", $context );
+				$this->incrCacheReadStats( 'miss', 'proven_stale', $content );
+				$logger->info( "Stale cache for key '{key}'due to outside edits.", $logContext );
 			}
 		}
 
@@ -274,29 +315,29 @@ class PageEditStash {
 			return false;
 		}
 
-		if ( $editInfo->output->getFlag( 'vary-revision' ) ) {
-			// This can be used for the initial parse, e.g. for filters or doEditContent(),
+		if ( $editInfo->output->getOutputFlag( ParserOutputFlags::VARY_REVISION ) ) {
+			// This can be used for the initial parse, e.g. for filters or doUserEditContent(),
 			// but a second parse will be triggered in doEditUpdates() no matter what
 			$logger->info(
 				"Cache for key '{key}' has vary-revision; post-insertion parse inevitable.",
-				$context
+				$logContext
 			);
 		} else {
 			static $flagsMaybeReparse = [
 				// Similar to the above if we didn't guess the ID correctly
-				'vary-revision-id',
+				ParserOutputFlags::VARY_REVISION_ID,
 				// Similar to the above if we didn't guess the timestamp correctly
-				'vary-revision-timestamp',
+				ParserOutputFlags::VARY_REVISION_TIMESTAMP,
 				// Similar to the above if we didn't guess the content correctly
-				'vary-revision-sha1',
+				ParserOutputFlags::VARY_REVISION_SHA1,
 				// Similar to the above if we didn't guess page ID correctly
-				'vary-page-id'
+				ParserOutputFlags::VARY_PAGE_ID,
 			];
 			foreach ( $flagsMaybeReparse as $flag ) {
-				if ( $editInfo->output->getFlag( $flag ) ) {
+				if ( $editInfo->output->getOutputFlag( $flag ) ) {
 					$logger->debug(
 						"Cache for key '{key}' has $flag; post-insertion parse possible.",
-						$context
+						$logContext
 					);
 				}
 			}
@@ -306,12 +347,20 @@ class PageEditStash {
 	}
 
 	/**
-	 * @param string $subkey
+	 * @param string $result
+	 * @param string $reason
 	 * @param Content $content
 	 */
-	private function incrStatsByContent( $subkey, Content $content ) {
-		$this->stats->increment( 'editstash.' . $subkey ); // overall for b/c
-		$this->stats->increment( 'editstash_by_model.' . $content->getModel() . '.' . $subkey );
+	private function incrCacheReadStats( $result, $reason, Content $content ) {
+		static $subtypeByResult = [ 'miss' => 'cache_misses', 'hit' => 'cache_hits' ];
+		$this->stats->getCounter( "editstash_cache_checks_total" )
+			->setLabel( 'reason', $reason )
+			->setLabel( 'result', $result )
+			->setLabel( 'model', $content->getModel() )
+			->copyToStatsdAt( [
+				'editstash.' . $subtypeByResult[ $result ] . '.' . $reason,
+				'editstash_by_model.' . $content->getModel() . '.' . $subtypeByResult[ $result ] . '.' . $reason ] )
+			->increment();
 	}
 
 	/**
@@ -325,16 +374,16 @@ class PageEditStash {
 			$start = microtime( true );
 			// We ignore user aborts and keep parsing. Block on any prior parsing
 			// so as to use its results and make use of the time spent parsing.
-			// Skip this logic if there no master connection in case this method
-			// is called on an HTTP GET request for some reason.
-			$dbw = $this->lb->getAnyOpenConnection( $this->lb->getWriterIndex() );
-			if ( $dbw && $dbw->lock( $key, __METHOD__, 30 ) ) {
+			$dbw = $this->dbProvider->getPrimaryDatabase();
+			if ( $dbw->lock( $key, __METHOD__, 30 ) ) {
 				$editInfo = $this->getStashValue( $key );
 				$dbw->unlock( $key, __METHOD__ );
 			}
 
 			$timeMs = 1000 * max( 0, microtime( true ) - $start );
-			$this->stats->timing( 'editstash.lock_wait_time', $timeMs );
+			$this->stats->getTiming( 'editstash_lock_wait_seconds' )
+				->copyToStatsdAt( 'editstash.lock_wait_time' )
+				->observe( $timeMs );
 		}
 
 		return $editInfo;
@@ -367,21 +416,17 @@ class PageEditStash {
 	}
 
 	/**
-	 * @param User $user
+	 * @param UserIdentity $user
 	 * @return string|null TS_MW timestamp or null
 	 */
-	private function lastEditTime( User $user ) {
-		$db = $this->lb->getConnectionRef( DB_REPLICA );
-
-		$actorQuery = ActorMigration::newMigration()->getWhere( $db, 'rc_user', $user, false );
-		$time = $db->selectField(
-			[ 'recentchanges' ] + $actorQuery['tables'],
-			'MAX(rc_timestamp)',
-			[ $actorQuery['conds'] ],
-			__METHOD__,
-			[],
-			$actorQuery['joins']
-		);
+	private function lastEditTime( UserIdentity $user ) {
+		$time = $this->dbProvider->getReplicaDatabase()->newSelectQueryBuilder()
+			->select( 'MAX(rc_timestamp)' )
+			->from( 'recentchanges' )
+			->join( 'actor', null, 'actor_id=rc_actor' )
+			->where( [ 'actor_name' => $user->getName() ] )
+			->caller( __METHOD__ )
+			->fetchField();
 
 		return wfTimestampOrNull( TS_MW, $time );
 	}
@@ -407,19 +452,19 @@ class PageEditStash {
 	 *   - a) The $user was used for PST options
 	 *   - b) The parser output was made from the PST using cannonical matching options
 	 *
-	 * @param Title $title
+	 * @param PageIdentity $page
 	 * @param string $contentHash Result of getContentHash()
-	 * @param User $user User to get parser options from
+	 * @param UserIdentity $user User to get parser options from
 	 * @return string
 	 */
-	private function getStashKey( Title $title, $contentHash, User $user ) {
+	private function getStashKey( PageIdentity $page, $contentHash, UserIdentity $user ) {
 		return $this->cache->makeKey(
-			'stashedit-info-v1',
-			md5( $title->getPrefixedDBkey() ),
+			'stashedit-info-v2',
+			md5( "{$page->getNamespace()}\n{$page->getDBkey()}" ),
 			// Account for the edit model/text
 			$contentHash,
 			// Account for user name related variables like signatures
-			md5( $user->getId() . "\n" . $user->getName() )
+			md5( "{$user->getId()}\n{$user->getName()}" )
 		);
 	}
 
@@ -428,12 +473,9 @@ class PageEditStash {
 	 * @return stdClass|bool Object map (pstContent,output,outputID,timestamp,edits) or false
 	 */
 	private function getStashValue( $key ) {
-		$stashInfo = $this->cache->get( $key );
-		if ( is_object( $stashInfo ) && $stashInfo->output instanceof ParserOutput ) {
-			return $stashInfo;
-		}
+		$serial = $this->cache->get( $key );
 
-		return false;
+		return $this->unserializeStashInfo( $serial );
 	}
 
 	/**
@@ -445,7 +487,7 @@ class PageEditStash {
 	 * @param Content $pstContent Pre-Save transformed content
 	 * @param ParserOutput $parserOutput
 	 * @param string $timestamp TS_MW
-	 * @param User $user
+	 * @param UserIdentity $user
 	 * @return string|bool True or an error code
 	 */
 	private function storeStashValue(
@@ -453,14 +495,14 @@ class PageEditStash {
 		Content $pstContent,
 		ParserOutput $parserOutput,
 		$timestamp,
-		User $user
+		UserIdentity $user
 	) {
 		// If an item is renewed, mind the cache TTL determined by config and parser functions.
-		// Put an upper limit on the TTL for sanity to avoid extreme template/file staleness.
+		// Put an upper limit on the TTL to avoid extreme template/file staleness.
 		$age = time() - (int)wfTimestamp( TS_UNIX, $parserOutput->getCacheTime() );
 		$ttl = min( $parserOutput->getCacheExpiry() - $age, self::MAX_CACHE_TTL );
 		// Avoid extremely stale user signature timestamps (T84843)
-		if ( $parserOutput->getFlag( 'user-signature' ) ) {
+		if ( $parserOutput->getOutputFlag( ParserOutputFlags::USER_SIGNATURE ) ) {
 			$ttl = min( $ttl, self::MAX_SIGNATURE_TTL );
 		}
 
@@ -473,10 +515,14 @@ class PageEditStash {
 			'pstContent' => $pstContent,
 			'output'     => $parserOutput,
 			'timestamp'  => $timestamp,
-			'edits'      => $user->getEditCount()
+			'edits'      => $this->userEditTracker->getUserEditCount( $user ),
 		];
+		$serial = $this->serializeStashInfo( $stashInfo );
+		if ( $serial === false ) {
+			return 'store_error';
+		}
 
-		$ok = $this->cache->set( $key, $stashInfo, $ttl, BagOStuff::WRITE_ALLOW_SEGMENTS );
+		$ok = $this->cache->set( $key, $serial, $ttl, BagOStuff::WRITE_ALLOW_SEGMENTS );
 		if ( $ok ) {
 			// These blobs can waste slots in low cardinality memcached slabs
 			$this->pruneExcessStashedEntries( $user, $key );
@@ -486,16 +532,16 @@ class PageEditStash {
 	}
 
 	/**
-	 * @param User $user
+	 * @param UserIdentity $user
 	 * @param string $newKey
 	 */
-	private function pruneExcessStashedEntries( User $user, $newKey ) {
+	private function pruneExcessStashedEntries( UserIdentity $user, $newKey ) {
 		$key = $this->cache->makeKey( 'stash-edit-recent', sha1( $user->getName() ) );
 
 		$keyList = $this->cache->get( $key ) ?: [];
 		if ( count( $keyList ) >= self::MAX_CACHE_RECENT ) {
 			$oldestKey = array_shift( $keyList );
-			$this->cache->delete( $oldestKey, BagOStuff::WRITE_PRUNE_SEGMENTS );
+			$this->cache->delete( $oldestKey, BagOStuff::WRITE_ALLOW_SEGMENTS );
 		}
 
 		$keyList[] = $newKey;
@@ -503,12 +549,29 @@ class PageEditStash {
 	}
 
 	/**
-	 * @param User $user
+	 * @param UserIdentity $user
 	 * @return int
 	 */
-	private function recentStashEntryCount( User $user ) {
+	private function recentStashEntryCount( UserIdentity $user ) {
 		$key = $this->cache->makeKey( 'stash-edit-recent', sha1( $user->getName() ) );
 
 		return count( $this->cache->get( $key ) ?: [] );
+	}
+
+	private function serializeStashInfo( stdClass $stashInfo ) {
+		// @todo: use JSON with ParserOutput and Content
+		return serialize( $stashInfo );
+	}
+
+	private function unserializeStashInfo( $serial ) {
+		if ( is_string( $serial ) ) {
+			// @todo: use JSON with ParserOutput and Content
+			$stashInfo = unserialize( $serial );
+			if ( is_object( $stashInfo ) && $stashInfo->output instanceof ParserOutput ) {
+				return $stashInfo;
+			}
+		}
+
+		return false;
 	}
 }

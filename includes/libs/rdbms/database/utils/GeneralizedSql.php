@@ -17,7 +17,6 @@
  *
  * @file
  */
-
 namespace Wikimedia\Rdbms;
 
 /**
@@ -31,8 +30,6 @@ class GeneralizedSql {
 	/** @var string */
 	private $rawSql;
 	/** @var string */
-	private $trxId;
-	/** @var string */
 	private $prefix;
 
 	/** @var string|null */
@@ -40,43 +37,11 @@ class GeneralizedSql {
 
 	/**
 	 * @param string $rawSql
-	 * @param string $trxId
 	 * @param string $prefix
 	 */
-	public function __construct( $rawSql, $trxId, $prefix ) {
+	public function __construct( $rawSql, $prefix ) {
 		$this->rawSql = $rawSql;
-		$this->trxId = $trxId;
 		$this->prefix = $prefix;
-	}
-
-	/**
-	 * Removes most variables from an SQL query and replaces them with X or N for numbers.
-	 * It's only slightly flawed. Don't use for anything important.
-	 *
-	 * @param string $sql A SQL Query
-	 *
-	 * @return string
-	 */
-	private static function generalizeSQL( $sql ) {
-		# This does the same as the regexp below would do, but in such a way
-		# as to avoid crashing php on some large strings.
-		# $sql = preg_replace( "/'([^\\\\']|\\\\.)*'|\"([^\\\\\"]|\\\\.)*\"/", "'X'", $sql );
-
-		$sql = str_replace( "\\\\", '', $sql );
-		$sql = str_replace( "\\'", '', $sql );
-		$sql = str_replace( "\\\"", '', $sql );
-		$sql = preg_replace( "/'.*'/s", "'X'", $sql );
-		$sql = preg_replace( '/".*"/s', "'X'", $sql );
-
-		# All newlines, tabs, etc replaced by single space
-		$sql = preg_replace( '/\s+/', ' ', $sql );
-
-		# All numbers => N,
-		# except the ones surrounded by characters, e.g. l10n
-		$sql = preg_replace( '/-?\d+(,-?\d+)+/s', 'N,...,N', $sql );
-		$sql = preg_replace( '/(?<![a-zA-Z])-?\d+(?![a-zA-Z])/s', 'N', $sql );
-
-		return $sql;
 	}
 
 	/**
@@ -88,9 +53,12 @@ class GeneralizedSql {
 		}
 
 		$this->genericSql = $this->prefix .
-			substr( self::generalizeSQL( $this->rawSql ), 0, 255 ) .
-			( $this->trxId ? " [TRX#{$this->trxId}]" : "" );
+			substr( QueryBuilderFromRawSql::generalizeSQL( $this->rawSql ), 0, 255 );
 
 		return $this->genericSql;
+	}
+
+	public function getRawSql() {
+		return $this->rawSql;
 	}
 }

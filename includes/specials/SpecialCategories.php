@@ -1,7 +1,5 @@
 <?php
 /**
- * Implements Special:Categories
- *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -18,34 +16,53 @@
  * http://www.gnu.org/copyleft/gpl.html
  *
  * @file
- * @ingroup SpecialPage
  */
 
+namespace MediaWiki\Specials;
+
+use MediaWiki\Cache\LinkBatchFactory;
+use MediaWiki\Html\Html;
+use MediaWiki\Pager\CategoryPager;
+use MediaWiki\SpecialPage\SpecialPage;
+use Wikimedia\Rdbms\IConnectionProvider;
+
 /**
+ * Implements Special:Categories
+ *
  * @ingroup SpecialPage
  */
 class SpecialCategories extends SpecialPage {
 
-	public function __construct() {
-		parent::__construct( 'Categories' );
+	private LinkBatchFactory $linkBatchFactory;
+	private IConnectionProvider $dbProvider;
 
-		// Since we don't control the constructor parameters, we can't inject services that way.
-		// Instead, we initialize services in the execute() method, and allow them to be overridden
-		// using the initServices() method.
+	/**
+	 * @param LinkBatchFactory $linkBatchFactory
+	 * @param IConnectionProvider $dbProvider
+	 */
+	public function __construct(
+		LinkBatchFactory $linkBatchFactory,
+		IConnectionProvider $dbProvider
+	) {
+		parent::__construct( 'Categories' );
+		$this->linkBatchFactory = $linkBatchFactory;
+		$this->dbProvider = $dbProvider;
 	}
 
 	public function execute( $par ) {
 		$this->setHeaders();
 		$this->outputHeader();
 		$this->addHelpLink( 'Help:Categories' );
-		$this->getOutput()->allowClickjacking();
+		$this->getOutput()->getMetadata()->setPreventClickjacking( false );
 
 		$from = $this->getRequest()->getText( 'from', $par ?? '' );
 
 		$cap = new CategoryPager(
 			$this->getContext(),
-			$from,
-			$this->getLinkRenderer()
+			$this->linkBatchFactory,
+			$this->getLinkRenderer(),
+			$this->dbProvider,
+			$from
 		);
 		$cap->doQuery();
 
@@ -64,3 +81,6 @@ class SpecialCategories extends SpecialPage {
 		return 'pages';
 	}
 }
+
+/** @deprecated class alias since 1.41 */
+class_alias( SpecialCategories::class, 'SpecialCategories' );

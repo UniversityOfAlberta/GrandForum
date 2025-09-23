@@ -2,13 +2,15 @@
 
 namespace MediaWiki\Search\SearchWidgets;
 
-use Html;
 use ISearchResultSet;
+use MediaWiki\Html\Html;
 use MediaWiki\Interwiki\InterwikiLookup;
 use MediaWiki\Linker\LinkRenderer;
+use MediaWiki\MainConfigNames;
+use MediaWiki\Output\OutputPage;
+use MediaWiki\Specials\SpecialSearch;
+use MediaWiki\Title\Title;
 use OOUI;
-use SpecialSearch;
-use Title;
 
 /**
  * Renders one or more ISearchResultSets into a sidebar grouped by
@@ -20,16 +22,18 @@ class InterwikiSearchResultSetWidget implements SearchResultSetWidget {
 	protected $specialSearch;
 	/** @var SearchResultWidget */
 	protected $resultWidget;
-	/** @var string[]|null */
+	/** @var array<string,string>|null */
 	protected $customCaptions;
 	/** @var LinkRenderer */
 	protected $linkRenderer;
 	/** @var InterwikiLookup */
 	protected $iwLookup;
-	/** @var \OutputPage */
+	/** @var OutputPage */
 	protected $output;
 	/** @var bool */
 	protected $showMultimedia;
+	/** @var array */
+	protected $iwLogoOverrides;
 
 	public function __construct(
 		SpecialSearch $specialSearch,
@@ -44,6 +48,7 @@ class InterwikiSearchResultSetWidget implements SearchResultSetWidget {
 		$this->iwLookup = $iwLookup;
 		$this->output = $specialSearch->getOutput();
 		$this->showMultimedia = $showMultimedia;
+		$this->iwLogoOverrides = $this->specialSearch->getConfig()->get( MainConfigNames::InterwikiLogoOverride );
 	}
 
 	/**
@@ -63,6 +68,7 @@ class InterwikiSearchResultSetWidget implements SearchResultSetWidget {
 			$this->output->addModules( 'mediawiki.special.search.commonsInterwikiWidget' );
 		}
 		$this->output->addModuleStyles( 'mediawiki.special.search.interwikiwidget.styles' );
+		$this->output->addModuleStyles( 'oojs-ui.styles.icons-wikimedia' );
 
 		$iwResults = [];
 		foreach ( $resultSets as $resultSet ) {
@@ -85,6 +91,7 @@ class InterwikiSearchResultSetWidget implements SearchResultSetWidget {
 				$iwResultItemOutput .= $this->resultWidget->render( $result, $position++ );
 			}
 
+			$headerHtml = $this->headerHtml( $term, $iwPrefix );
 			$footerHtml = $this->footerHtml( $term, $iwPrefix );
 			$iwResultListOutput .= Html::rawElement( 'li',
 				[
@@ -93,10 +100,10 @@ class InterwikiSearchResultSetWidget implements SearchResultSetWidget {
 					'data-iw-resultset-source' => $iwPrefix
 				],
 
+				$headerHtml .
 				$iwResultItemOutput .
 				$footerHtml
 			);
-
 			$iwResultSetPos++;
 		}
 
@@ -104,41 +111,54 @@ class InterwikiSearchResultSetWidget implements SearchResultSetWidget {
 			'div',
 			[ 'id' => 'mw-interwiki-results' ],
 			Html::rawElement(
-				'p',
-				[ 'class' => 'iw-headline' ],
-				$this->specialSearch->msg( 'search-interwiki-caption' )->parse()
-			) .
-			Html::rawElement(
 				'ul', [ 'class' => 'iw-results', ], $iwResultListOutput
 			)
 		);
 	}
 
 	/**
-	 * Generates an HTML footer for the given interwiki prefix
+	 * Generates an HTML header for the given interwiki prefix
 	 *
 	 * @param string $term User provided search term
-	 * @param string $iwPrefix Interwiki prefix of wiki to show footer for
+	 * @param string $iwPrefix Interwiki prefix of wiki to show heading for
 	 * @return string HTML
 	 */
-	protected function footerHtml( $term, $iwPrefix ) {
-		$href = Title::makeTitle( NS_SPECIAL, 'Search', null, $iwPrefix )->getLocalURL(
+	protected function headerHtml( $term, $iwPrefix ) {
+		$href = Title::makeTitle( NS_SPECIAL, 'Search', '', $iwPrefix )->getLocalURL(
 			[ 'search' => $term, 'fulltext' => 1 ]
 		);
 
 		$interwiki = $this->iwLookup->fetch( $iwPrefix );
-		$parsed = wfParseUrl( wfExpandUrl( $interwiki ? $interwiki->getURL() : '/' ) );
+		// This is false if the lookup fails, or if the other wiki is on the same
+		// domain name (i.e. /en-wiki/ and /de-wiki/)
+		$iwHost = $interwiki ? parse_url( $interwiki->getURL(), PHP_URL_HOST ) : false;
 
-		$caption = $this->customCaptions[$iwPrefix] ??
-			$this->specialSearch->msg( 'search-interwiki-default', $parsed['host'] )->escaped();
+		$captionText = $this->customCaptions[$iwPrefix] ?? $iwHost ?: $iwPrefix;
+		$searchLink = Html::element( 'a', [ 'href' => $href, 'target' => '_blank' ], $captionText );
 
-		$searchLink = Html::rawElement( 'em', null,
-			Html::rawElement( 'a', [ 'href' => $href, 'target' => '_blank' ], $caption )
+		return Html::rawElement( 'div',
+			[ 'class' => 'iw-result__header' ],
+			$this->iwIcon( $iwPrefix ) . $searchLink );
+	}
+
+	/**
+	 * Generates an HTML footer for the given interwiki prefix
+	 *
+	 * @param string $term User provided search term
+	 * @param string $iwPrefix Interwiki prefix of wiki to show heading for
+	 * @return string HTML
+	 */
+	protected function footerHtml( $term, $iwPrefix ) {
+		$href = Title::makeTitle( NS_SPECIAL, 'Search', '', $iwPrefix )->getLocalURL(
+			[ 'search' => $term, 'fulltext' => 1 ]
 		);
+
+		$captionText = $this->specialSearch->msg( 'search-interwiki-resultset-link' )->text();
+		$searchLink = Html::element( 'a', [ 'href' => $href, 'target' => '_blank' ], $captionText );
 
 		return Html::rawElement( 'div',
 			[ 'class' => 'iw-result__footer' ],
-			$this->iwIcon( $iwPrefix ) . $searchLink );
+			$searchLink );
 	}
 
 	protected function loadCustomCaptions() {
@@ -147,7 +167,7 @@ class InterwikiSearchResultSetWidget implements SearchResultSetWidget {
 		}
 
 		$this->customCaptions = [];
-		$customLines = explode( "\n", $this->specialSearch->msg( 'search-interwiki-custom' )->escaped() );
+		$customLines = explode( "\n", $this->specialSearch->msg( 'search-interwiki-custom' )->text() );
 		foreach ( $customLines as $line ) {
 			$parts = explode( ':', $line, 2 );
 			if ( count( $parts ) === 2 ) {
@@ -157,18 +177,56 @@ class InterwikiSearchResultSetWidget implements SearchResultSetWidget {
 	}
 
 	/**
-	 * Generates a custom OOUI icon element with a favicon as the image.
-	 * The favicon image URL is generated by parsing the interwiki URL
-	 * and returning the default location of the favicon for that domain,
-	 * which is assumed to be '/favicon.ico'.
+	 * Generates a custom OOUI icon element.
+	 * These icons are either generated by fetching the interwiki favicon.
+	 * or by using config 'InterwikiLogoOverrides'.
 	 *
 	 * @param string $iwPrefix Interwiki prefix
 	 * @return OOUI\IconWidget
 	 */
 	protected function iwIcon( $iwPrefix ) {
-		$interwiki = $this->iwLookup->fetch( $iwPrefix );
-		$parsed = wfParseUrl( wfExpandUrl( $interwiki ? $interwiki->getURL() : '/' ) );
+		$logoName = $this->generateLogoName( $iwPrefix );
+		// If the value is an URL we use the favicon
+		if ( filter_var( $logoName, FILTER_VALIDATE_URL ) || $logoName === "/" ) {
+			return $this->generateIconFromFavicon( $logoName );
+		}
 
+		$iwIcon = new OOUI\IconWidget( [
+			'icon' => $logoName
+		] );
+
+		return $iwIcon;
+	}
+
+	/**
+	 * Generates the logo name used to render the interwiki icon.
+	 * The logo name can be defined in two ways:
+	 * 1) The logo is generated using interwiki getURL to fetch the site favicon
+	 * 2) The logo name is defined using config `wgInterwikiLogoOverride`. This accept
+	 * Codex icon names and URLs.
+	 *
+	 * @param string $prefix Interwiki prefix
+	 * @return string logoName
+	 */
+	protected function generateLogoName( $prefix ) {
+		$logoOverridesKeys = array_keys( $this->iwLogoOverrides );
+		if ( in_array( $prefix, $logoOverridesKeys ) ) {
+			return $this->iwLogoOverrides[ $prefix ];
+		}
+
+		$interwiki = $this->iwLookup->fetch( $prefix );
+		return $interwiki ? $interwiki->getURL() : '/';
+	}
+
+	/**
+	 * Fetches the favicon of the provided URL.
+	 *
+	 * @param string $logoUrl
+	 * @return OOUI\IconWidget
+	 */
+	protected function generateIconFromFavicon( $logoUrl ) {
+		$parsed = wfGetUrlUtils()->parse( (string)wfGetUrlUtils()->expand( $logoUrl, PROTO_CURRENT ) );
+		'@phan-var array $parsed'; // Valid URL
 		$iwIconUrl = $parsed['scheme'] .
 			$parsed['delimiter'] .
 			$parsed['host'] .
@@ -177,10 +235,8 @@ class InterwikiSearchResultSetWidget implements SearchResultSetWidget {
 
 		$iwIcon = new OOUI\IconWidget( [
 			'icon' => 'favicon'
-		 ] );
+		] );
 
-		 $iwIcon->setAttributes( [ 'style' => "background-image:url($iwIconUrl);" ] );
-
-		return $iwIcon;
+		return $iwIcon->setAttributes( [ 'style' => "background-image:url($iwIconUrl);" ] );
 	}
 }

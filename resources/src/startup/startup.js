@@ -1,5 +1,5 @@
 /**
- * This file is where we decide whether to initialise the Grade A run-time.
+ * This file is where we decide whether to initialise the modern support browser run-time.
  *
  * - Beware: This file MUST parse without errors on even the most ancient of browsers!
  */
@@ -9,82 +9,79 @@
 /**
  * See <https://www.mediawiki.org/wiki/Compatibility#Browsers>
  *
- * Capabilities required for modern run-time:
- * - ECMAScript 5
- * - DOM Level 4 & Selectors API Level 1
- * - HTML5 & Web Storage
- * - DOM Level 2 Events
+ * Browsers that pass these checks get served our modern run-time. This includes all Grade A
+ * browsers, and some Grade C and Grade X browsers.
  *
- * Browsers we support in our modern run-time (Grade A):
- * - Chrome 13+
- * - IE 11+
- * - Firefox 4+
- * - Safari 5+
- * - Opera 15+
- * - Mobile Safari 6.0+ (iOS 6+)
- * - Android 4.1+
- *
- * Browsers we support in our no-javascript run-time (Grade C):
- * - Chrome 1+
- * - IE 8+
- * - Firefox 3+
- * - Safari 3+
- * - Opera 15+
- * - Mobile Safari 5.0+ (iOS 4+)
- * - Android 2.0+
- * - WebOS < 1.5
- * - PlayStation
- * - Symbian-based browsers
- * - NetFront-based browser
- * - Opera Mini
- * - Nokia's Ovi Browser
- * - MeeGo's browser
- * - Google Glass
- * - UC Mini (speed mode on)
- *
- * Other browsers that pass the check are considered Grade X.
+ * The following browsers are known to pass these checks:
+ * - Chrome 63+
+ * - Edge 79+
+ * - Opera 50+
+ * - Firefox 58+
+ * - Safari 11.1+
+ * - Mobile Safari 11.2+ (iOS 11+)
+ * - Android 5.0+
  *
  * @private
- * @param {string} ua User agent string
  * @return {boolean} User agent is compatible with MediaWiki JS
  */
-function isCompatible( ua ) {
+function isCompatible() {
 	return !!(
-		// https://caniuse.com/#feat=es5
-		// https://caniuse.com/#feat=use-strict
-		// https://caniuse.com/#feat=json / https://phabricator.wikimedia.org/T141344#2784065
-		( function () {
-			'use strict';
-			return !this && Function.prototype.bind && window.JSON;
-		}() ) &&
-
+		// Ensure DOM Level 4 features (including Selectors API).
+		//
 		// https://caniuse.com/#feat=queryselector
 		'querySelector' in document &&
 
+		// Ensure HTML 5 features (including Web Storage API)
+		//
 		// https://caniuse.com/#feat=namevalue-storage
-		// https://developer.blackberry.com/html5/apis/v1_0/localstorage.html
 		// https://blog.whatwg.org/this-week-in-html-5-episode-30
 		'localStorage' in window &&
 
-		// https://caniuse.com/#feat=addeventlistener
-		'addEventListener' in window &&
-
-		// Hardcoded exceptions for browsers that pass the requirement but we don't
-		// want to support in the modern run-time.
+		// Ensure ES2015 grammar and runtime API (a.k.a. ES6)
 		//
-		// Please extend the regex instead of adding new ones!
-		// And add a test case to startup.test.js
-		!ua.match( /MSIE 10|NetFront|Opera Mini|S40OviBrowser|MeeGo|Android.+Glass|^Mozilla\/5\.0 .+ Gecko\/$|googleweblight|PLAYSTATION|PlayStation/ )
+		// In practice, Promise.finally is a good proxy for overall ES6 support and
+		// rejects most unsupporting browsers in one sweep. The feature itself
+		// was specified in ES2018, however.
+		// https://caniuse.com/promise-finally
+		// Chrome 63+, Edge 18+, Opera 50+, Safari 11.1+, Firefox 58+, iOS 11+
+		//
+		// eslint-disable-next-line es-x/no-promise, es-x/no-promise-prototype-finally, dot-notation
+		typeof Promise === 'function' && Promise.prototype[ 'finally' ] &&
+		// ES6 Arrow Functions (with default params), this ensures
+		// genuine syntax support for ES6 grammar, not just API coverage.
+		//
+		// https://caniuse.com/arrow-functions
+		// Chrome 45+, Safari 10+, Firefox 22+, Opera 32+
+		//
+		// Based on Benjamin De Cock's snippet here:
+		// https://gist.github.com/bendc/d7f3dbc83d0f65ca0433caf90378cd95
+		( function () {
+			try {
+				// eslint-disable-next-line no-new, no-new-func
+				new Function( '(a = 0) => a' );
+				return true;
+			} catch ( e ) {
+				return false;
+			}
+		}() ) &&
+		// ES6 RegExp.prototype.flags
+		//
+		// https://caniuse.com/mdn-javascript_builtins_regexp_flags
+		// Edge 79+ (Chromium-based, rejects MSEdgeHTML-based Edge <= 18)
+		//
+		// eslint-disable-next-line es-x/no-regexp-prototype-flags
+		/./g.flags === 'g'
 	);
 }
 
-if ( !isCompatible( navigator.userAgent ) ) {
-	// Handle Grade C
-	// Undo speculative Grade A <html> class. See ResourceLoaderClientHtml::getDocumentAttributes().
+if ( !isCompatible() ) {
+	// Handle basic supported browsers (Grade C).
+	// Undo speculative modern (Grade A) root CSS class `<html class="client-js">`.
+	// See ResourceLoaderClientHtml::getDocumentAttributes().
 	document.documentElement.className = document.documentElement.className
 		.replace( /(^|\s)client-js(\s|$)/, '$1client-nojs$2' );
 
-	// Process any callbacks for Grade C
+	// Process any callbacks for basic support (Grade C).
 	while ( window.NORLQ && NORLQ[ 0 ] ) {
 		NORLQ.shift()();
 	}
@@ -94,12 +91,12 @@ if ( !isCompatible( navigator.userAgent ) ) {
 		}
 	};
 
-	// Clear and disable the Grade A queue
+	// Clear and disable the modern (Grade A) queue.
 	RLQ = {
 		push: function () {}
 	};
 } else {
-	// Handle Grade A
+	// Handle modern (Grade A).
 
 	if ( window.performance && performance.mark ) {
 		performance.mark( 'mwStartup' );
@@ -117,8 +114,8 @@ if ( !isCompatible( navigator.userAgent ) ) {
 
 		$CODE.registrations();
 
-		// For the current page
-		mw.config.set( window.RLCONF || {} ); // mw.loader needs wgCSPNonce and wgUserName
+		// First set page-specific config needed by mw.loader (wgUserName)
+		mw.config.set( window.RLCONF || {} );
 		mw.loader.state( window.RLSTATE || {} );
 		mw.loader.load( window.RLPAGEMODULES || [] );
 
@@ -157,7 +154,7 @@ if ( !isCompatible( navigator.userAgent ) ) {
 			RLQ.push( queue.shift() );
 		}
 
-		// Clear and disable the Grade C queue
+		// Clear and disable the basic (Grade C) queue.
 		NORLQ = {
 			push: function () {}
 		};

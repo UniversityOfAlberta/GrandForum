@@ -1,5 +1,7 @@
 <?php
 /**
+ * Copyright © Gabriel Wicke -- http://www.aulinx.de/
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -18,44 +20,64 @@
  * @file
  */
 
+use MediaWiki\Debug\MWDebug;
+use MediaWiki\Html\Html;
+use MediaWiki\Language\LanguageCode;
+use MediaWiki\Linker\Linker;
+use MediaWiki\MainConfigNames;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Message\Message;
+use MediaWiki\Permissions\Authority;
+use MediaWiki\ResourceLoader as RL;
+use MediaWiki\Skin\SkinComponentUtils;
+use MediaWiki\SpecialPage\SpecialPage;
+use MediaWiki\Specials\Contribute\ContributeFactory;
+use MediaWiki\Title\Title;
+use Wikimedia\Message\MessageSpecifier;
 
 /**
- * Base class for template-based skins.
+ * Base class for QuickTemplate-based skins.
  *
- * Template-filler skin base class
- * Formerly generic PHPTal (http://phptal.sourceforge.net/) skin
- * Based on Brion's smarty skin
- * @copyright Copyright © Gabriel Wicke -- http://www.aulinx.de/
- *
- * @todo Needs some serious refactoring into functions that correspond
- * to the computations individual esi snippets need. Most importantly no body
- * parsing for most of those of course.
+ * The template data is filled in SkinTemplate::prepareQuickTemplate.
  *
  * @stable to extend
- *
  * @ingroup Skins
  */
 class SkinTemplate extends Skin {
 	/**
-	 * @var string Name of our skin, it probably needs to be all lower case.
-	 *   Child classes should override the default.
-	 */
-	public $skinname = 'monobook';
-
-	/**
 	 * @var string For QuickTemplate, the name of the subclass which will
-	 *   actually fill the template.  Child classes should override the default.
+	 *   actually fill the template.
 	 */
-	public $template = QuickTemplate::class;
+	public $template;
 
+	/** @var string */
 	public $thispage;
+	/** @var string */
 	public $titletxt;
+	/** @var string */
 	public $userpage;
-	public $thisquery;
+	/** @var bool TODO: Rename this to $isRegistered (but that's a breaking change) */
 	public $loggedin;
+	/** @var string */
 	public $username;
+	/** @var array */
 	public $userpageUrlDetails;
+
+	/** @var bool */
+	private $isTempUser;
+
+	/** @var bool */
+	private $isNamedUser;
+
+	/** @var bool */
+	private $isAnonUser;
+
+	/** @var bool */
+	private $templateContextSet = false;
+	/** @var array|null */
+	private $contentNavigationCached;
+	/** @var array|null */
+	private $portletsCached;
 
 	/**
 	 * Create the template engine object; we feed it a bunch of data
@@ -74,7 +96,14 @@ class SkinTemplate extends Skin {
 	 */
 	protected function setupTemplateForOutput() {
 		$this->setupTemplateContext();
-		$tpl = $this->setupTemplate( $this->template );
+		$template = $this->options['template'] ?? $this->template;
+		if ( !$template ) {
+			throw new RuntimeException(
+				'SkinTemplate skins must define a `template` either as a public'
+					. ' property of by passing in a`template` option to the constructor.'
+			);
+		}
+		$tpl = $this->setupTemplate( $template );
 		return $tpl;
 	}
 
@@ -88,31 +117,32 @@ class SkinTemplate extends Skin {
 	 * @since 1.35
 	 */
 	final protected function setupTemplateContext() {
+		if ( $this->templateContextSet ) {
+			return;
+		}
+
 		$request = $this->getRequest();
 		$user = $this->getUser();
 		$title = $this->getTitle();
-
 		$this->thispage = $title->getPrefixedDBkey();
 		$this->titletxt = $title->getPrefixedText();
-		$this->userpage = $user->getUserPage()->getPrefixedText();
-		$query = [];
-		if ( !$request->wasPosted() ) {
-			$query = $request->getValues();
-			unset( $query['title'] );
-			unset( $query['returnto'] );
-			unset( $query['returntoquery'] );
-		}
-		$this->thisquery = wfArrayToCgi( $query );
-		$this->loggedin = $user->isLoggedIn();
+		$userpageTitle = $user->getUserPage();
+		$this->userpage = $userpageTitle->getPrefixedText();
+		$this->loggedin = $user->isRegistered();
 		$this->username = $user->getName();
+		$this->isTempUser = $user->isTemp();
+		$this->isNamedUser = $this->loggedin && !$this->isTempUser;
+		$this->isAnonUser = $user->isAnon();
 
-		if ( $this->loggedin ) {
-			$this->userpageUrlDetails = self::makeUrlDetails( $this->userpage );
+		if ( $this->isNamedUser ) {
+			$this->userpageUrlDetails = self::makeUrlDetails( $userpageTitle );
 		} else {
 			# This won't be used in the standard skins, but we define it to preserve the interface
 			# To save time, we check for existence
-			$this->userpageUrlDetails = self::makeKnownUrlDetails( $this->userpage );
+			$this->userpageUrlDetails = self::makeKnownUrlDetails( $userpageTitle );
 		}
+
+		$this->templateContextSet = true;
 	}
 
 	/**
@@ -120,13 +150,19 @@ class SkinTemplate extends Skin {
 	 * render method can rewrite this method, for example to use
 	 * TemplateParser::processTemplate
 	 * @since 1.35
-	 * @return string of complete document HTML to output to the page
-	 *  which includes `<!DOCTYPE>` and opening and closing html tags.
+	 * @return string HTML is the contents of the body tag e.g. <body>...</body>
 	 */
 	public function generateHTML() {
 		$tpl = $this->prepareQuickTemplate();
+		$options = $this->getOptions();
+		$out = $this->getOutput();
 		// execute template
-		return $tpl->execute();
+		ob_start();
+		$tpl->execute();
+		$html = ob_get_contents();
+		ob_end_clean();
+
+		return $html;
 	}
 
 	/**
@@ -145,130 +181,10 @@ class SkinTemplate extends Skin {
 	}
 
 	/**
-	 * Returns array of config variables that should be added only to this skin
-	 * for use in JavaScript.
-	 * Skins can override this to add variables to the page.
-	 * @since 1.35
-	 * @return array
+	 * @inheritDoc
 	 */
-	protected function getJsConfigVars() : array {
-		return [];
-	}
-
-	/**
-	 * Wrap the body text with language information and identifiable element
-	 *
-	 * @param Title $title
-	 * @param string $html body text
-	 * @return string html
-	 */
-	protected function wrapHTML( $title, $html ) {
-		# An ID that includes the actual body text; without categories, contentSub, ...
-		$realBodyAttribs = [ 'id' => 'mw-content-text' ];
-
-		# Add a mw-content-ltr/rtl class to be able to style based on text
-		# direction when the content is different from the UI language (only
-		# when viewing)
-		# Most information on special pages and file pages is in user language,
-		# rather than content language, so those will not get this
-		if ( Action::getActionName( $this ) === 'view' &&
-			( !$title->inNamespaces( NS_SPECIAL, NS_FILE ) || $title->isRedirect() ) ) {
-			$pageLang = $title->getPageViewLanguage();
-			$realBodyAttribs['lang'] = $pageLang->getHtmlCode();
-			$realBodyAttribs['dir'] = $pageLang->getDir();
-			$realBodyAttribs['class'] = 'mw-content-' . $pageLang->getDir();
-		}
-
-		return Html::rawElement( 'div', $realBodyAttribs, $html );
-	}
-
-	/**
-	 * Prepare the subtitle of the page for output in the skin if one has been set.
-	 * @since 1.35
-	 * @return string HTML
-	 */
-	final protected function prepareSubtitle() {
-		$out = $this->getOutput();
-		$subpagestr = $this->subPageSubtitle();
-		if ( $subpagestr !== '' ) {
-			$subpagestr = '<span class="subpages">' . $subpagestr . '</span>';
-		}
-		return $subpagestr . $out->getSubtitle();
-	}
-
-	/**
-	 * Prepare user language attribute links
-	 * @since 1.35
-	 * @return string HTML attributes
-	 */
-	final protected function prepareUserLanguageAttributes() {
-		$userLang = $this->getLanguage();
-		$userLangCode = $userLang->getHtmlCode();
-		$userLangDir = $userLang->getDir();
-		$contLang = MediaWikiServices::getInstance()->getContentLanguage();
-		if (
-			$userLangCode !== $contLang->getHtmlCode() ||
-			$userLangDir !== $contLang->getDir()
-		) {
-			$escUserlang = htmlspecialchars( $userLangCode );
-			$escUserdir = htmlspecialchars( $userLangDir );
-			// Attributes must be in double quotes because htmlspecialchars() doesn't
-			// escape single quotes
-			return " lang=\"$escUserlang\" dir=\"$escUserdir\"";
-		}
-		return '';
-	}
-
-	/**
-	 * Get template representation of the footer.
-	 * @since 1.35
-	 * @return array
-	 */
-	protected function getFooterIcons() {
-		$config = $this->getConfig();
-
-		$footericons = [];
-		foreach ( $config->get( 'FooterIcons' ) as $footerIconsKey => &$footerIconsBlock ) {
-			if ( count( $footerIconsBlock ) > 0 ) {
-				$footericons[$footerIconsKey] = [];
-				foreach ( $footerIconsBlock as &$footerIcon ) {
-					if ( isset( $footerIcon['src'] ) ) {
-						if ( !isset( $footerIcon['width'] ) ) {
-							$footerIcon['width'] = 88;
-						}
-						if ( !isset( $footerIcon['height'] ) ) {
-							$footerIcon['height'] = 31;
-						}
-					}
-
-					// Only output icons which have an image.
-					// For historic reasons this mimics the `icononly` option
-					// for BaseTemplate::getFooterIcons.
-					// In some cases the icon may be an empty array.
-					// Filter these out. (See T269776)
-					if ( is_string( $footerIcon ) || isset( $footerIcon['src'] ) ) {
-						$footericons[$footerIconsKey][] = $footerIcon;
-					}
-				}
-
-				// If no valid icons with images were added, unset the parent array
-				// Should also prevent empty arrays from when no copyright is set.
-				if ( !count( $footericons[$footerIconsKey] ) ) {
-					unset( $footericons[$footerIconsKey] );
-				}
-			}
-		}
-		return $footericons;
-	}
-
-	/**
-	 * Prepare undelete link for output in page.
-	 * @since 1.35
-	 * @return null|string HTML, or null if there is no undelete link.
-	 */
-	final protected function prepareUndeleteLink() {
-		$undelete = $this->getUndeleteLink();
-		return $undelete === '' ? null : '<span class="subpages">' . $undelete . '</span>';
+	public function getTemplateData() {
+		return parent::getTemplateData() + $this->getPortletsTemplateData();
 	}
 
 	/**
@@ -286,7 +202,6 @@ class SkinTemplate extends Skin {
 
 		$tpl->set( 'title', $out->getPageTitle() );
 		$tpl->set( 'pagetitle', $out->getHTMLTitle() );
-		$tpl->set( 'displaytitle', $out->mPageLinkTitle );
 
 		$tpl->set( 'thispage', $this->thispage );
 		$tpl->set( 'titleprefixeddbkey', $this->thispage );
@@ -302,27 +217,29 @@ class SkinTemplate extends Skin {
 		$feeds = $this->buildFeedUrls();
 		$tpl->set( 'feeds', count( $feeds ) ? $feeds : false );
 
-		$tpl->set( 'mimetype', $config->get( 'MimeType' ) );
+		$tpl->set( 'mimetype', $config->get( MainConfigNames::MimeType ) );
 		$tpl->set( 'charset', 'UTF-8' );
-		$tpl->set( 'wgScript', $config->get( 'Script' ) );
+		$tpl->set( 'wgScript', $config->get( MainConfigNames::Script ) );
 		$tpl->set( 'skinname', $this->skinname );
 		$tpl->set( 'skinclass', static::class );
 		$tpl->set( 'skin', $this );
-		$tpl->set( 'stylename', $this->stylename );
 		$tpl->set( 'printable', $out->isPrintable() );
 		$tpl->set( 'handheld', $request->getBool( 'handheld' ) );
 		$tpl->set( 'loggedin', $this->loggedin );
 		$tpl->set( 'notspecialpage', !$title->isSpecialPage() );
-		$tpl->set( 'searchaction', $this->getSearchLink() );
-		$tpl->set( 'searchtitle', SpecialPage::getTitleFor( 'Search' )->getPrefixedDBkey() );
+
+		$searchTitle = SpecialPage::newSearchPage( $this->getUser() );
+		$searchLink = $searchTitle->getLocalURL();
+		$tpl->set( 'searchaction', $searchLink );
+		$tpl->deprecate( 'searchaction', '1.36' );
+
+		$tpl->set( 'searchtitle', $searchTitle->getPrefixedDBkey() );
 		$tpl->set( 'search', trim( $request->getVal( 'search', '' ) ) );
-		$tpl->set( 'stylepath', $config->get( 'StylePath' ) );
-		$tpl->set( 'articlepath', $config->get( 'ArticlePath' ) );
-		$tpl->set( 'scriptpath', $config->get( 'ScriptPath' ) );
-		$tpl->set( 'serverurl', $config->get( 'Server' ) );
-		$logos = ResourceLoaderSkinModule::getAvailableLogos( $config );
-		$tpl->set( 'logopath', $logos['1x'] );
-		$tpl->set( 'sitename', $config->get( 'Sitename' ) );
+		$tpl->set( 'stylepath', $config->get( MainConfigNames::StylePath ) );
+		$tpl->set( 'articlepath', $config->get( MainConfigNames::ArticlePath ) );
+		$tpl->set( 'scriptpath', $config->get( MainConfigNames::ScriptPath ) );
+		$tpl->set( 'serverurl', $config->get( MainConfigNames::Server ) );
+		$tpl->set( 'sitename', $config->get( MainConfigNames::Sitename ) );
 
 		$userLang = $this->getLanguage();
 		$userLangCode = $userLang->getHtmlCode();
@@ -332,7 +249,9 @@ class SkinTemplate extends Skin {
 		$tpl->set( 'dir', $userLangDir );
 		$tpl->set( 'rtl', $userLang->isRTL() );
 
-		$tpl->set( 'capitalizeallnouns', $userLang->capitalizeAllNouns() ? ' capitalize-all-nouns' : '' );
+		$logos = RL\SkinModule::getAvailableLogos( $config, $userLangCode );
+		$tpl->set( 'logopath', $logos['1x'] );
+
 		$tpl->set( 'showjumplinks', true ); // showjumplinks preference has been removed
 		$tpl->set( 'username', $this->loggedin ? $this->username : null );
 		$tpl->set( 'userpage', $this->userpage );
@@ -351,7 +270,7 @@ class SkinTemplate extends Skin {
 		$tpl->set( 'newtalk', $this->getNewtalks() );
 		$tpl->set( 'logo', $this->logoText() );
 
-		$footerData = $this->getFooterLinks();
+		$footerData = $this->getComponent( 'footer' )->getTemplateData();
 		$tpl->set( 'copyright', $footerData['info']['copyright'] ?? false );
 		// No longer used
 		$tpl->set( 'viewcount', false );
@@ -359,21 +278,21 @@ class SkinTemplate extends Skin {
 		$tpl->set( 'credits', $footerData['info']['credits'] ?? false );
 		$tpl->set( 'numberofwatchingusers', false );
 
-		$tpl->set( 'copyrightico', $this->getCopyrightIcon() );
-		$tpl->set( 'poweredbyico', $this->getPoweredBy() );
-
 		$tpl->set( 'disclaimer', $footerData['places']['disclaimer'] ?? false );
 		$tpl->set( 'privacy', $footerData['places']['privacy'] ?? false );
 		$tpl->set( 'about', $footerData['places']['about'] ?? false );
 
 		// Flatten for compat with the 'footerlinks' key in QuickTemplate-based skins.
 		$flattenedfooterlinks = [];
-		foreach ( $footerData as $category => $links ) {
-			$flattenedfooterlinks[$category] = array_keys( $links );
-			foreach ( $links as $key => $value ) {
-				// For full support with BaseTemplate we also need to
-				// copy over the keys.
-				$tpl->set( $key, $value );
+		foreach ( $footerData as $category => $data ) {
+			if ( $category !== 'data-icons' ) {
+				foreach ( $data['array-items'] as $item ) {
+					$key = str_replace( 'data-', '', $category );
+					$flattenedfooterlinks[$key][] = $item['name'];
+					// For full support with BaseTemplate we also need to
+					// copy over the keys.
+					$tpl->set( $item['name'], $item['html'] );
+				}
 			}
 		}
 		$tpl->set( 'footerlinks', $flattenedfooterlinks );
@@ -388,9 +307,21 @@ class SkinTemplate extends Skin {
 
 		$tpl->set( 'language_urls', $this->getLanguages() ?: false );
 
+		$content_navigation = $this->buildContentNavigationUrlsInternal();
 		# Personal toolbar
-		$tpl->set( 'personal_urls', $this->buildPersonalUrls() );
-		$content_navigation = $this->buildContentNavigationUrls();
+		$tpl->set( 'personal_urls', $this->makeSkinTemplatePersonalUrls( $content_navigation ) );
+		// The user-menu, notifications, and user-interface-preferences are new content navigation entries which aren't
+		// expected to be part of content_navigation or content_actions. Adding them in there breaks skins that do not
+		// expect it. (See T316196)
+		unset(
+			$content_navigation['user-menu'],
+			$content_navigation['notifications'],
+			$content_navigation['user-page'],
+			$content_navigation['user-interface-preferences'],
+			$content_navigation['category-normal'],
+			$content_navigation['category-hidden'],
+			$content_navigation['associated-pages']
+		);
 		$content_actions = $this->buildContentActionUrls( $content_navigation );
 		$tpl->set( 'content_navigation', $content_navigation );
 		$tpl->set( 'content_actions', $content_actions );
@@ -398,21 +329,8 @@ class SkinTemplate extends Skin {
 		$tpl->set( 'sidebar', $this->buildSidebar() );
 		$tpl->set( 'nav_urls', $this->buildNavUrls() );
 
-		// Do this last in case hooks above add bottom scripts
-		$tpl->set( 'bottomscripts', $this->bottomScripts() );
-
-		// Set the head scripts near the end, in case the above actions resulted in added scripts
-		$tpl->set( 'headelement', $out->headElement( $this ) );
-
 		$tpl->set( 'debug', '' );
 		$tpl->set( 'debughtml', MWDebug::getHTMLDebugLog() );
-		$tpl->set( 'reporttime', wfReportTime( $out->getCSP()->getNonce() ) );
-
-		// original version by hansm
-		// See T60137 for information on deprecation.
-		if ( !$this->getHookRunner()->onSkinTemplateOutputPageBeforeExec( $this, $tpl ) ) {
-			wfDebug( __METHOD__ . ": Hook SkinTemplateOutputPageBeforeExec broke outputPage execution!" );
-		}
 
 		// Set the bodytext to another key so that skins can just output it on its own
 		// and output printfooter and debughtml separately
@@ -436,18 +354,7 @@ class SkinTemplate extends Skin {
 	}
 
 	/**
-	 * Get the HTML for the p-personal list
-	 * @deprecated since 1.35, use SkinTemplate::makePersonalToolsList()
-	 * @return string
-	 */
-	public function getPersonalToolsList() {
-		return $this->makePersonalToolsList();
-	}
-
-	/**
 	 * Get the HTML for the personal tools list
-	 * Please ensure setupTemplateContext is called before calling this method.
-	 *
 	 * @since 1.31
 	 *
 	 * @param array|null $personalTools
@@ -455,19 +362,14 @@ class SkinTemplate extends Skin {
 	 * @return string
 	 */
 	public function makePersonalToolsList( $personalTools = null, $options = [] ) {
-		$this->setupTemplateContext();
+		$personalTools ??= $this->getPersonalToolsForMakeListItem(
+			$this->buildPersonalUrls()
+		);
+
 		$html = '';
-
-		if ( $personalTools === null ) {
-			$personalTools = $this->getPersonalToolsForMakeListItem(
-				$this->buildPersonalUrls()
-			);
-		}
-
 		foreach ( $personalTools as $key => $item ) {
 			$html .= $this->makeListItem( $key, $item, $options );
 		}
-
 		return $html;
 	}
 
@@ -476,97 +378,79 @@ class SkinTemplate extends Skin {
 	 *
 	 * @since 1.31
 	 *
-	 * @return array Array of personal tools
+	 * @return array[]
 	 */
 	public function getStructuredPersonalTools() {
-		// buildPersonalUrls requires the template context.
-		$this->setupTemplateContext();
 		return $this->getPersonalToolsForMakeListItem(
 			$this->buildPersonalUrls()
 		);
 	}
 
 	/**
-	 * build array of urls for personal toolbar
-	 * Please ensure setupTemplateContext is called before calling
-	 * this method.
+	 * Build array of urls for personal toolbar
+	 *
+	 * @param bool $includeNotifications Since 1.36, notifications are optional
 	 * @return array
 	 */
-	protected function buildPersonalUrls() {
+	protected function buildPersonalUrls( bool $includeNotifications = true ) {
+		$this->setupTemplateContext();
 		$title = $this->getTitle();
+		$authority = $this->getAuthority();
 		$request = $this->getRequest();
 		$pageurl = $title->getLocalURL();
 		$services = MediaWikiServices::getInstance();
 		$authManager = $services->getAuthManager();
-		$permissionManager = $services->getPermissionManager();
+		$groupPermissionsLookup = $services->getGroupPermissionsLookup();
+		$tempUserConfig = $services->getTempUserConfig();
+		$returnto = SkinComponentUtils::getReturnToParam( $title, $request, $authority );
+		$shouldHideUserLinks = $this->isAnonUser && $tempUserConfig->isKnown();
 
 		/* set up the default links for the personal toolbar */
 		$personal_urls = [];
 
-		# Due to T34276, if a user does not have read permissions,
-		# $this->getTitle() will just give Special:Badtitle, which is
-		# not especially useful as a returnto parameter. Use the title
-		# from the request instead, if there was one.
-		if ( $permissionManager->userHasRight( $this->getUser(), 'read' ) ) {
-			$page = $title;
-		} else {
-			$page = Title::newFromText( $request->getVal( 'title', '' ) );
-		}
-		$page = $request->getVal( 'returnto', $page );
-		$returnto = [];
-		if ( strval( $page ) !== '' ) {
-			$returnto['returnto'] = $page;
-			$query = $request->getVal( 'returntoquery', $this->thisquery );
-			$paramsArray = wfCgiToArray( $query );
-			$query = wfArrayToCgi( $paramsArray );
-			if ( $query != '' ) {
-				$returnto['returntoquery'] = $query;
-			}
-		}
-
 		if ( $this->loggedin ) {
-			$personal_urls['userpage'] = [
-				'text' => $this->username,
-				'href' => &$this->userpageUrlDetails['href'],
-				'class' => $this->userpageUrlDetails['exists'] ? false : 'new',
-				'exists' => $this->userpageUrlDetails['exists'],
-				'active' => ( $this->userpageUrlDetails['href'] == $pageurl ),
-				'dir' => 'auto'
-			];
+			$this->addPersonalPageItem( $personal_urls, '' );
+
+			// Merge notifications into the personal menu for older skins.
+			if ( $includeNotifications ) {
+				$contentNavigation = $this->buildContentNavigationUrlsInternal();
+
+				$personal_urls += $contentNavigation['notifications'];
+			}
+
 			$usertalkUrlDetails = $this->makeTalkUrlDetails( $this->userpage );
 			$personal_urls['mytalk'] = [
 				'text' => $this->msg( 'mytalk' )->text(),
 				'href' => &$usertalkUrlDetails['href'],
 				'class' => $usertalkUrlDetails['exists'] ? false : 'new',
 				'exists' => $usertalkUrlDetails['exists'],
-				'active' => ( $usertalkUrlDetails['href'] == $pageurl )
+				'active' => ( $usertalkUrlDetails['href'] == $pageurl ),
+				'icon' => 'userTalk'
 			];
-			$href = self::makeSpecialUrl( 'Preferences' );
-			$personal_urls['preferences'] = [
-				'text' => $this->msg( 'mypreferences' )->text(),
-				'href' => $href,
-				'active' => ( $href == $pageurl )
-			];
-
-			if ( $permissionManager->userHasRight( $this->getUser(), 'viewmywatchlist' ) ) {
-				$href = self::makeSpecialUrl( 'Watchlist' );
-				$personal_urls['watchlist'] = [
-					'text' => $this->msg( 'mywatchlist' )->text(),
+			if ( !$this->isTempUser ) {
+				$href = SkinComponentUtils::makeSpecialUrl( 'Preferences' );
+				$personal_urls['preferences'] = [
+					'text' => $this->msg( 'mypreferences' )->text(),
 					'href' => $href,
-					'active' => ( $href == $pageurl )
+					'active' => ( $href == $pageurl ),
+					'icon' => 'settings',
 				];
+			}
+
+			if ( $authority->isAllowed( 'viewmywatchlist' ) ) {
+				$personal_urls['watchlist'] = self::buildWatchlistData();
 			}
 
 			# We need to do an explicit check for Special:Contributions, as we
 			# have to match both the title, and the target, which could come
 			# from request values (Special:Contributions?target=Jimbo_Wales)
-			# or be specified in "sub page" form
+			# or be specified in "subpage" form
 			# (Special:Contributions/Jimbo_Wales). The plot
 			# thickens, because the Title object is altered for special pages,
 			# so it doesn't contain the original alias-with-subpage.
 			$origTitle = Title::newFromText( $request->getText( 'title' ) );
 			if ( $origTitle instanceof Title && $origTitle->isSpecialPage() ) {
-				list( $spName, $spPar ) =
+				[ $spName, $spPar ] =
 					MediaWikiServices::getInstance()->getSpecialPageFactory()->
 						resolveAlias( $origTitle->getText() );
 				$active = $spName == 'Contributions'
@@ -576,49 +460,26 @@ class SkinTemplate extends Skin {
 				$active = false;
 			}
 
-			$href = self::makeSpecialUrlSubpage( 'Contributions', $this->username );
-			$personal_urls['mycontris'] = [
-				'text' => $this->msg( 'mycontris' )->text(),
-				'href' => $href,
-				'active' => $active
-			];
+			$personal_urls = $this->makeContributionsLink( $personal_urls, 'mycontris', $this->username, $active );
 
 			// if we can't set the user, we can't unset it either
 			if ( $request->getSession()->canSetUser() ) {
-				$personal_urls['logout'] = [
-					'text' => $this->msg( 'pt-userlogout' )->text(),
-					'data-mw' => 'interface',
-					'href' => self::makeSpecialUrl( 'Userlogout',
-						// Note: userlogout link must always contain an & character, otherwise we might not be able
-						// to detect a buggy precaching proxy (T19790)
-						( $title->isSpecial( 'Preferences' ) ? [] : $returnto ) ),
-					'active' => false
+				$personal_urls['logout'] = $this->buildLogoutLinkData();
+			}
+		} elseif ( !$shouldHideUserLinks ) {
+			$canEdit = $authority->isAllowed( 'edit' );
+			$canEditWithTemp = $tempUserConfig->isAutoCreateAction( 'edit' );
+			// No need to show Talk and Contributions to anons if they can't contribute!
+			if ( $canEdit || $canEditWithTemp ) {
+				// Non interactive placeholder for anonymous users.
+				// It's unstyled by default (black color). Skin that
+				// needs it, can style it using the 'pt-anonuserpage' id.
+				// Skin that does not need it should unset it.
+				$personal_urls['anonuserpage'] = [
+					'text' => $this->msg( 'notloggedin' )->text(),
 				];
 			}
-		} else {
-			$useCombinedLoginLink = $this->getConfig()->get( 'UseCombinedLoginLink' );
-			if ( !$authManager->canCreateAccounts() || !$authManager->canAuthenticateNow() ) {
-				// don't show combined login/signup link if one of those is actually not available
-				$useCombinedLoginLink = false;
-			}
-
-			$loginlink = $permissionManager->userHasRight( $this->getUser(), 'createaccount' )
-						 && $useCombinedLoginLink ? 'nav-login-createaccount' : 'pt-login';
-
-			$login_url = [
-				'text' => $this->msg( $loginlink )->text(),
-				'href' => self::makeSpecialUrl( 'Userlogin', $returnto ),
-				'active' => $title->isSpecial( 'Userlogin' )
-					|| $title->isSpecial( 'CreateAccount' ) && $useCombinedLoginLink,
-			];
-			$createaccount_url = [
-				'text' => $this->msg( 'pt-createaccount' )->text(),
-				'href' => self::makeSpecialUrl( 'CreateAccount', $returnto ),
-				'active' => $title->isSpecial( 'CreateAccount' ),
-			];
-
-			// No need to show Talk and Contributions to anons if they can't contribute!
-			if ( $permissionManager->groupHasPermission( '*', 'edit' ) ) {
+			if ( $canEdit ) {
 				// Because of caching, we can't link directly to the IP talk and
 				// contributions pages. Instead we use the special page shortcuts
 				// (which work correctly regardless of caching). This means we can't
@@ -627,46 +488,295 @@ class SkinTemplate extends Skin {
 				// huge loss.
 				$personal_urls['anontalk'] = [
 					'text' => $this->msg( 'anontalk' )->text(),
-					'href' => self::makeSpecialUrlSubpage( 'Mytalk', false ),
-					'active' => false
+					'href' => SkinComponentUtils::makeSpecialUrlSubpage( 'Mytalk', false ),
+					'active' => false,
+					'icon' => 'userTalk',
 				];
-				$personal_urls['anoncontribs'] = [
-					'text' => $this->msg( 'anoncontribs' )->text(),
-					'href' => self::makeSpecialUrlSubpage( 'Mycontributions', false ),
-					'active' => false
-				];
+				$personal_urls = $this->makeContributionsLink( $personal_urls, 'anoncontribs', null, false );
 			}
+		}
+
+		if ( !$this->loggedin ) {
+			$useCombinedLoginLink = $this->useCombinedLoginLink();
+			$login_url = $this->buildLoginData( $returnto, $useCombinedLoginLink );
+			$createaccount_url = $this->buildCreateAccountData( $returnto );
 
 			if (
 				$authManager->canCreateAccounts()
-				&& $permissionManager->userHasRight( $this->getUser(), 'createaccount' )
+				&& $authority->isAllowed( 'createaccount' )
 				&& !$useCombinedLoginLink
 			) {
 				$personal_urls['createaccount'] = $createaccount_url;
 			}
 
 			if ( $authManager->canAuthenticateNow() ) {
-				$key = $permissionManager->groupHasPermission( '*', 'read' )
+				// TODO: easy way to get anon authority
+				$key = $groupPermissionsLookup->groupHasPermission( '*', 'read' )
 					? 'login'
 					: 'login-private';
 				$personal_urls[$key] = $login_url;
 			}
 		}
 
-		$this->getHookRunner()->onPersonalUrls( $personal_urls, $title, $this );
 		return $personal_urls;
+	}
+
+	/**
+	 * Returns if a combined login/signup link will be used
+	 * @unstable
+	 *
+	 * @return bool
+	 */
+	protected function useCombinedLoginLink() {
+		$services = MediaWikiServices::getInstance();
+		$authManager = $services->getAuthManager();
+		$useCombinedLoginLink = $this->getConfig()->get( MainConfigNames::UseCombinedLoginLink );
+		if ( !$authManager->canCreateAccounts() || !$authManager->canAuthenticateNow() ) {
+			// don't show combined login/signup link if one of those is actually not available
+			$useCombinedLoginLink = false;
+		}
+
+		return $useCombinedLoginLink;
+	}
+
+	/**
+	 * Build "Login" link
+	 * @unstable
+	 *
+	 * @param string[] $returnto query params for the page to return to
+	 * @param bool $useCombinedLoginLink when set a single link to login form will be created
+	 *  with alternative label.
+	 * @return array
+	 */
+	protected function buildLoginData( $returnto, $useCombinedLoginLink ) {
+		$title = $this->getTitle();
+
+		$loginlink = $this->getAuthority()->isAllowed( 'createaccount' )
+			&& $useCombinedLoginLink ? 'nav-login-createaccount' : 'pt-login';
+
+		$login_url = [
+			'single-id' => 'pt-login',
+			'text' => $this->msg( $loginlink )->text(),
+			'href' => SkinComponentUtils::makeSpecialUrl( 'Userlogin', $returnto ),
+			'active' => $title->isSpecial( 'Userlogin' )
+				|| ( $title->isSpecial( 'CreateAccount' ) && $useCombinedLoginLink ),
+			'icon' => 'logIn'
+		];
+
+		return $login_url;
+	}
+
+	/**
+	 * @param array $links return value from OutputPage::getCategoryLinks
+	 * @return array of data
+	 */
+	private function getCategoryPortletsData( array $links ): array {
+		$categories = [];
+		foreach ( $links as $group => $groupLinks ) {
+			$allLinks = [];
+			$groupName = 'category-' . $group;
+			foreach ( $groupLinks as $i => $link ) {
+				$allLinks[$groupName . '-' . $i] = [
+					'html' => $link,
+				];
+			}
+			$categories[ $groupName ] = $allLinks;
+		}
+		return $categories;
+	}
+
+	/**
+	 * Extends category links with Skin::getAfterPortlet functionality.
+	 * @return string HTML
+	 */
+	public function getCategoryLinks() {
+		$afterPortlet = $this->getPortletsTemplateData()['data-portlets']['data-category-normal']['html-after-portal']
+			?? '';
+		return parent::getCategoryLinks() . $afterPortlet;
+	}
+
+	/**
+	 * @return array of portlet data for all portlets
+	 */
+	private function getPortletsTemplateData() {
+		if ( $this->portletsCached ) {
+			return $this->portletsCached;
+		}
+		$portlets = [];
+		$contentNavigation = $this->buildContentNavigationUrlsInternal();
+		$sidebar = [];
+		$sidebarData = $this->buildSidebar();
+		foreach ( $sidebarData as $name => $items ) {
+			if ( is_array( $items ) ) {
+				// Numeric strings gets an integer when set as key, cast back - T73639
+				$name = (string)$name;
+				switch ( $name ) {
+					// ignore search
+					case 'SEARCH':
+						break;
+					// Map toolbox to `tb` id.
+					case 'TOOLBOX':
+						$sidebar[] = $this->getPortletData( 'tb', $items );
+						break;
+					// Languages is no longer be tied to sidebar
+					case 'LANGUAGES':
+						// The language portal will be added provided either
+						// languages exist or there is a value in html-after-portal
+						// for example to show the add language wikidata link (T252800)
+						$portal = $this->getPortletData( 'lang', $items );
+						if ( count( $items ) || $portal['html-after-portal'] ) {
+							$portlets['data-languages'] = $portal;
+						}
+						break;
+					default:
+						$sidebar[] = $this->getPortletData( $name, $items );
+						break;
+				}
+			}
+		}
+
+		foreach ( $contentNavigation as $name => $items ) {
+			if ( $name === 'user-menu' ) {
+				$items = $this->getPersonalToolsForMakeListItem( $items, true );
+			}
+
+			$portlets['data-' . $name] = $this->getPortletData( $name, $items );
+		}
+
+		// A menu that includes the notifications. This will be deprecated in future versions
+		// of the skin API spec.
+		$portlets['data-personal'] = $this->getPortletData(
+			'personal',
+			$this->getPersonalToolsForMakeListItem(
+				$this->injectLegacyMenusIntoPersonalTools( $contentNavigation )
+			)
+		);
+
+		$this->portletsCached = [
+			'data-portlets' => $portlets,
+			'data-portlets-sidebar' => [
+				'data-portlets-first' => $sidebar[0] ?? null,
+				'array-portlets-rest' => array_slice( $sidebar, 1 ),
+			],
+		];
+		return $this->portletsCached;
+	}
+
+	/**
+	 * Build data required for "Logout" link.
+	 *
+	 * @unstable
+	 *
+	 * @since 1.37
+	 *
+	 * @return array Array of data required to create a logout link.
+	 */
+	final protected function buildLogoutLinkData() {
+		$title = $this->getTitle();
+		$request = $this->getRequest();
+		$authority = $this->getAuthority();
+		$returnto = SkinComponentUtils::getReturnToParam( $title, $request, $authority );
+		$isTemp = $this->isTempUser;
+		$msg = $isTemp ? 'templogout' : 'pt-userlogout';
+
+		return [
+			'single-id' => 'pt-logout',
+			'text' => $this->msg( $msg )->text(),
+			'data-mw' => 'interface',
+			'href' => SkinComponentUtils::makeSpecialUrl( 'Userlogout',
+				// Note: userlogout link must always contain an & character, otherwise we might not be able
+				// to detect a buggy precaching proxy (T19790)
+				( $title->isSpecial( 'Preferences' ) ? [] : $returnto ) ),
+			'active' => false,
+			'icon' => 'logOut'
+		];
+	}
+
+	/**
+	 * Build "Create Account" link data.
+	 * @unstable
+	 *
+	 * @param string[] $returnto query params for the page to return to
+	 * @return array
+	 */
+	protected function buildCreateAccountData( $returnto ) {
+		$title = $this->getTitle();
+
+		return [
+			'single-id' => 'pt-createaccount',
+			'text' => $this->msg( 'pt-createaccount' )->text(),
+			'href' => SkinComponentUtils::makeSpecialUrl( 'CreateAccount', $returnto ),
+			'active' => $title->isSpecial( 'CreateAccount' ),
+			'icon' => 'userAdd'
+		];
+	}
+
+	/**
+	 * Add the userpage link to the array
+	 *
+	 * @param array &$links Links array to append to
+	 * @param string $idSuffix Something to add to the IDs to make them unique
+	 */
+	private function addPersonalPageItem( &$links, $idSuffix ) {
+		if ( $this->isNamedUser ) { // T340152
+			$links['userpage'] = $this->buildPersonalPageItem( 'pt-userpage' . $idSuffix );
+		}
+	}
+
+	/**
+	 * Build a user page link data.
+	 *
+	 * @param string $id of user page item to be output in HTML attribute (optional)
+	 * @return array
+	 */
+	protected function buildPersonalPageItem( $id = 'pt-userpage' ): array {
+		$linkClasses = $this->userpageUrlDetails['exists'] ? [] : [ 'new' ];
+		// T335440 Temp accounts dont show a user page link
+		// But we still need to update the user icon, as its used by other UI elements
+		$icon = $this->isTempUser ? 'userTemporary' : 'userAvatar';
+		$href = &$this->userpageUrlDetails['href'];
+		return [
+			'id' => $id,
+			'single-id' => 'pt-userpage',
+			'text' => $this->username,
+			'href' => $href,
+			'link-class' => $linkClasses,
+			'exists' => $this->userpageUrlDetails['exists'],
+			'active' => ( $this->userpageUrlDetails['href'] == $this->getTitle()->getLocalURL() ),
+			'icon' => $icon,
+		];
+	}
+
+	/**
+	 * Build a watchlist link data.
+	 *
+	 * @return array Array of data required to create a watchlist link.
+	 */
+	private function buildWatchlistData() {
+		$href = SkinComponentUtils::makeSpecialUrl( 'Watchlist' );
+		$pageurl = $this->getTitle()->getLocalURL();
+
+		return [
+			'single-id' => 'pt-watchlist',
+			'text' => $this->msg( 'mywatchlist' )->text(),
+			'href' => $href,
+			'active' => ( $href == $pageurl ),
+			'icon' => 'watchlist'
+		];
 	}
 
 	/**
 	 * Builds an array with tab definition
 	 *
 	 * @param Title $title Page Where the tab links to
-	 * @param string|array $message Message key or an array of message keys (will fall back)
+	 * @param string|string[]|MessageSpecifier $message Message or an array of message keys
+	 *   (will fall back)
 	 * @param bool $selected Display the tab as selected
 	 * @param string $query Query string attached to tab URL
 	 * @param bool $checkEdit Check if $title exists and mark with .new if one doesn't
 	 *
 	 * @return array
+	 * @param-taint $message tainted
 	 */
 	public function tabAction( $title, $message, $selected, $query = '', $checkEdit = false ) {
 		$classes = [];
@@ -674,8 +784,18 @@ class SkinTemplate extends Skin {
 			$classes[] = 'selected';
 		}
 		$exists = true;
+		$services = MediaWikiServices::getInstance();
+		$linkClass = $services->getLinkRenderer()->getLinkClasses( $title );
 		if ( $checkEdit && !$title->isKnown() ) {
-			$classes[] = 'new';
+			// Selected tabs should not show as red link. It doesn't make sense
+			// to show a red link on a page the user has already navigated to.
+			// https://phabricator.wikimedia.org/T294129#7451549
+			if ( !$selected ) {
+				// For historic reasons we add to the LI element
+				$classes[] = 'new';
+				// but adding the class to the A element is more appropriate.
+				$linkClass .= ' new';
+			}
 			$exists = false;
 			if ( $query !== '' ) {
 				$query = 'action=edit&redlink=1&' . $query;
@@ -684,17 +804,15 @@ class SkinTemplate extends Skin {
 			}
 		}
 
-		$services = MediaWikiServices::getInstance();
-		$linkClass = $services->getLinkRenderer()->getLinkClasses( $title );
-
-		// wfMessageFallback will nicely accept $message as an array of fallbacks
-		// or just a single key
-		$msg = wfMessageFallback( $message )->setContext( $this->getContext() );
-		if ( is_array( $message ) ) {
-			// for hook compatibility just keep the last message name
-			$message = end( $message );
+		if ( $message instanceof MessageSpecifier ) {
+			$msg = new Message( $message );
+		} else {
+			// wfMessageFallback will nicely accept $message as an array of fallbacks
+			// or just a single key
+			$msg = wfMessageFallback( $message );
 		}
-		if ( $msg->exists() ) {
+		$msg->setContext( $this->getContext() );
+		if ( !$msg->isDisabled() ) {
 			$text = $msg->text();
 		} else {
 			$text = $services->getLanguageConverterFactory()
@@ -705,13 +823,6 @@ class SkinTemplate extends Skin {
 				);
 		}
 
-		$result = [];
-		if ( !$this->getHookRunner()->onSkinTemplateTabAction( $this, $title, $message,
-			$selected, $checkEdit, $classes, $query, $text, $result )
-		) {
-			return $result;
-		}
-
 		$result = [
 			'class' => implode( ' ', $classes ),
 			'text' => $text,
@@ -719,10 +830,50 @@ class SkinTemplate extends Skin {
 			'exists' => $exists,
 			'primary' => true ];
 		if ( $linkClass !== '' ) {
-			$result['link-class'] = $linkClass;
+			$result['link-class'] = trim( $linkClass );
 		}
 
 		return $result;
+	}
+
+	/**
+	 * Get a message label that skins can override.
+	 *
+	 * @param string $labelMessageKey
+	 * @param mixed $param for the message
+	 * @return string
+	 */
+	private function getSkinNavOverrideableLabel( $labelMessageKey, $param = null ) {
+		$skname = $this->skinname;
+		// The following messages can be used here:
+		// * skin-action-addsection
+		// * skin-action-delete
+		// * skin-action-move
+		// * skin-action-protect
+		// * skin-action-undelete
+		// * skin-action-unprotect
+		// * skin-action-viewdeleted
+		// * skin-action-viewsource
+		// * skin-view-create
+		// * skin-view-create-local
+		// * skin-view-edit
+		// * skin-view-edit-local
+		// * skin-view-foreign
+		// * skin-view-history
+		// * skin-view-view
+		$msg = wfMessageFallback(
+				"$skname-$labelMessageKey",
+				"skin-$labelMessageKey"
+			)->setContext( $this->getContext() );
+
+		if ( $param ) {
+			if ( is_numeric( $param ) ) {
+				$msg->numParams( $param );
+			} else {
+				$msg->params( $param );
+			}
+		}
+		return $msg->text();
 	}
 
 	/**
@@ -731,12 +882,7 @@ class SkinTemplate extends Skin {
 	 * @return array
 	 */
 	private function makeTalkUrlDetails( $name, $urlaction = '' ) {
-		$title = Title::newFromText( $name );
-		if ( !is_object( $title ) ) {
-			throw new MWException( __METHOD__ . " given invalid pagename $name" );
-		}
-		$title = $title->getTalkPage();
-		self::checkTitle( $title, $name );
+		$title = Title::newFromTextThrow( $name )->getTalkPage();
 		return [
 			'href' => $title->getLocalURL( $urlaction ),
 			'exists' => $title->isKnown(),
@@ -744,56 +890,95 @@ class SkinTemplate extends Skin {
 	}
 
 	/**
-	 * @deprecated since 1.35, no longer used
-	 * @param string $name
-	 * @param string|array $urlaction
-	 * @return array
-	 */
-	public function makeArticleUrlDetails( $name, $urlaction = '' ) {
-		wfDeprecated( __METHOD__, '1.35' );
-		$title = Title::newFromText( $name );
-		$title = $title->getSubjectPage();
-		self::checkTitle( $title, $name );
-		return [
-			'href' => $title->getLocalURL( $urlaction ),
-			'exists' => $title->exists(),
-		];
-	}
-
-	/**
 	 * Get the attributes for the watch link.
 	 * @param string $mode Either 'watch' or 'unwatch'
-	 * @param User $user
+	 * @param Authority $performer
 	 * @param Title $title
 	 * @param string|null $action
 	 * @param bool $onPage
 	 * @return array
 	 */
 	private function getWatchLinkAttrs(
-		string $mode, User $user, Title $title, ?string $action, bool $onPage
+		string $mode, Authority $performer, Title $title, ?string $action, bool $onPage
 	): array {
+		$isWatchMode = $action == 'watch';
 		$class = 'mw-watchlink ' . (
-			$onPage && ( $action == 'watch' || $action == 'unwatch' ) ? 'selected' : ''
+			$onPage && ( $isWatchMode || $action == 'unwatch' ) ? 'selected' : ''
 			);
 
-		// Add class identifying the page is temporarily watched, if applicable.
-		if ( $this->getConfig()->get( 'WatchlistExpiry' ) &&
-			$user->isTempWatched( $title )
+		$services = MediaWikiServices::getInstance();
+		$watchlistManager = $services->getWatchlistManager();
+		$watchIcon = $watchlistManager->isWatched( $performer, $title ) ? 'unStar' : 'star';
+		$watchExpiry = null;
+		// Modify tooltip and add class identifying the page is temporarily watched, if applicable.
+		if ( $this->getConfig()->get( MainConfigNames::WatchlistExpiry ) &&
+			$watchlistManager->isTempWatched( $performer, $title )
 		) {
 			$class .= ' mw-watchlink-temp';
+			$watchIcon = 'halfStar';
+
+			$watchStore = $services->getWatchedItemStore();
+			$watchedItem = $watchStore->getWatchedItem( $performer->getUser(), $title );
+			$diffInDays = $watchedItem->getExpiryInDays();
+			$watchExpiry = $watchedItem->getExpiry( TS_ISO_8601 );
+			if ( $diffInDays ) {
+				$msgParams = [ $diffInDays ];
+				// Resolves to tooltip-ca-unwatch-expiring message
+				$tooltip = 'ca-unwatch-expiring';
+			} else {
+				// Resolves to tooltip-ca-unwatch-expiring-hours message
+				$tooltip = 'ca-unwatch-expiring-hours';
+			}
 		}
 
 		return [
 			'class' => $class,
+			'icon' => $watchIcon,
 			// uses 'watch' or 'unwatch' message
 			'text' => $this->msg( $mode )->text(),
+			'single-id' => $tooltip ?? null,
+			'tooltip-params' => $msgParams ?? null,
 			'href' => $title->getLocalURL( [ 'action' => $mode ] ),
 			// Set a data-mw=interface attribute, which the mediawiki.page.ajax
 			// module will look for to make sure it's a trusted link
 			'data' => [
 				'mw' => 'interface',
+				'mw-expiry' => $watchExpiry,
 			],
 		];
+	}
+
+	/**
+	 * Run hooks relating to navigation menu data.
+	 * Skins should extend this if they want to run opinionated transformations to the data after all
+	 * hooks have been run. Note hooks are run in an arbitrary order.
+	 *
+	 * @param SkinTemplate $skin
+	 * @param array &$content_navigation representing all menus.
+	 * @since 1.37
+	 */
+	protected function runOnSkinTemplateNavigationHooks( SkinTemplate $skin, &$content_navigation ) {
+		$beforeHookAssociatedPages = array_keys( $content_navigation['associated-pages'] );
+		$beforeHookNamespaces = array_keys( $content_navigation['namespaces'] );
+
+		// Equiv to SkinTemplateContentActions, run
+		$this->getHookRunner()->onSkinTemplateNavigation__Universal(
+			$skin, $content_navigation );
+		// The new `associatedPages` menu (added in 1.39)
+		// should be backwards compatibile with `namespaces`.
+		// To do this we look for hook modifications to both keys. If modifications are not
+		// made the new key, but are made to the old key, associatedPages reverts back to the
+		// links in the namespaces menu.
+		// It's expected in future that `namespaces` menu will become an alias for `associatedPages`
+		// at which point this code can be removed.
+		$afterHookNamespaces = array_keys( $content_navigation[ 'namespaces' ] );
+		$afterHookAssociatedPages = array_keys( $content_navigation[ 'associated-pages' ] );
+		$associatedPagesChanged = count( array_diff( $afterHookAssociatedPages, $beforeHookAssociatedPages ) ) > 0;
+		$namespacesChanged = count( array_diff( $afterHookNamespaces, $beforeHookNamespaces ) ) > 0;
+		// If some change occurred to namespaces via the hook, revert back to namespaces.
+		if ( !$associatedPagesChanged && $namespacesChanged ) {
+			$content_navigation['associated-pages'] = $content_navigation['namespaces'];
+		}
 	}
 
 	/**
@@ -830,34 +1015,45 @@ class SkinTemplate extends Skin {
 	 *
 	 * @return array
 	 */
-	protected function buildContentNavigationUrls() {
+	private function buildContentNavigationUrlsInternal() {
+		if ( $this->contentNavigationCached ) {
+			return $this->contentNavigationCached;
+		}
 		// Display tabs for the relevant title rather than always the title itself
 		$title = $this->getRelevantTitle();
 		$onPage = $title->equals( $this->getTitle() );
 
 		$out = $this->getOutput();
 		$request = $this->getRequest();
-		$user = $this->getUser();
-		$permissionManager = MediaWikiServices::getInstance()->getPermissionManager();
+		$performer = $this->getAuthority();
+		$action = $this->getContext()->getActionName();
+		$services = MediaWikiServices::getInstance();
+		$permissionManager = $services->getPermissionManager();
+		$categoriesData = $this->getCategoryPortletsData( $this->getOutput()->getCategoryLinks() );
+		$userPageLink = [];
+		$this->addPersonalPageItem( $userPageLink, '-2' );
 
-		$content_navigation = [
+		$content_navigation = $categoriesData + [
+			// Modern keys: Please ensure these get unset inside Skin::prepareQuickTemplate
+			'user-interface-preferences' => [],
+			'user-page' => $userPageLink,
+			'user-menu' => $this->buildPersonalUrls( false ),
+			'notifications' => [],
+			'associated-pages' => [],
+			// Legacy keys
 			'namespaces' => [],
 			'views' => [],
 			'actions' => [],
 			'variants' => []
 		];
 
-		// parameters
-		$action = $request->getVal( 'action', 'view' );
-
-		$userCanRead = $permissionManager->quickUserCan( 'read', $user, $title );
-
-		$preventActiveTabs = false;
-		$this->getHookRunner()->onSkinTemplatePreventOtherActiveTabs( $this, $preventActiveTabs );
+		$associatedPages = [];
+		$namespaces = [];
+		$userCanRead = $this->getAuthority()->probablyCan( 'read', $title );
 
 		// Checks if page is some kind of content
 		if ( $title->canExist() ) {
-			// Gets page objects for the related namespaces
+			// Gets page objects for the associatedPages namespaces
 			$subjectPage = $title->getSubjectPage();
 			$talkPage = $title->getTalkPage();
 
@@ -873,29 +1069,52 @@ class SkinTemplate extends Skin {
 				$talkId = "{$subjectId}_talk";
 			}
 
-			$skname = $this->skinname;
-
 			// Adds namespace links
-			$subjectMsg = [ "nstab-$subjectId" ];
-			if ( $subjectPage->isMainPage() ) {
-				array_unshift( $subjectMsg, 'mainpage-nstab' );
+			if ( $subjectId === 'user' ) {
+				$subjectMsg = $this->msg( 'nstab-user', $subjectPage->getRootText() );
+			} else {
+				// The following messages are used here:
+				// * nstab-main
+				// * nstab-media
+				// * nstab-special
+				// * nstab-project
+				// * nstab-image
+				// * nstab-mediawiki
+				// * nstab-template
+				// * nstab-help
+				// * nstab-category
+				// * nstab-<subject namespace key>
+				$subjectMsg = [ "nstab-$subjectId" ];
+
+				if ( $subjectPage->isMainPage() ) {
+					array_unshift( $subjectMsg, 'nstab-mainpage' );
+				}
 			}
-			$content_navigation['namespaces'][$subjectId] = $this->tabAction(
-				$subjectPage, $subjectMsg, !$isTalk && !$preventActiveTabs, '', $userCanRead
+
+			$associatedPages[$subjectId] = $this->tabAction(
+				$subjectPage, $subjectMsg, !$isTalk, '', $userCanRead
 			);
-			$content_navigation['namespaces'][$subjectId]['context'] = 'subject';
-			$content_navigation['namespaces'][$talkId] = $this->tabAction(
-				$talkPage, [ "nstab-$talkId", 'talk' ], $isTalk && !$preventActiveTabs, '', $userCanRead
+			$associatedPages[$subjectId]['context'] = 'subject';
+			// Use the following messages if defined or talk if not:
+			// * nstab-talk, nstab-user_talk, nstab-media_talk, nstab-project_talk
+			// * nstab-image_talk, nstab-mediawiki_talk, nstab-template_talk
+			// * nstab-help_talk, nstab-category_talk,
+			// * nstab-<subject namespace key>_talk
+			$associatedPages[$talkId] = $this->tabAction(
+				$talkPage, [ "nstab-$talkId", "talk" ], $isTalk, '', $userCanRead
 			);
-			$content_navigation['namespaces'][$talkId]['context'] = 'talk';
+			$associatedPages[$talkId]['context'] = 'talk';
 
 			if ( $userCanRead ) {
 				// Adds "view" view link
 				if ( $title->isKnown() ) {
 					$content_navigation['views']['view'] = $this->tabAction(
 						$isTalk ? $talkPage : $subjectPage,
-						[ "$skname-view-view", 'view' ],
+						'view-view',
 						( $onPage && ( $action == 'view' || $action == 'purge' ) ), '', true
+					);
+					$content_navigation['views']['view']['text'] = $this->getSkinNavOverrideableLabel(
+						'view-view'
 					);
 					// signal to hide this from simple content_actions
 					$content_navigation['views']['view']['redundant'] = true;
@@ -909,27 +1128,25 @@ class SkinTemplate extends Skin {
 				if ( $isRemoteContent ) {
 					$content_navigation['views']['view-foreign'] = [
 						'class' => '',
-						'text' => wfMessageFallback( "$skname-view-foreign", 'view-foreign' )->
-							setContext( $this->getContext() )->
-							params( $page->getWikiDisplayName() )->text(),
+						'text' => $this->getSkinNavOverrideableLabel(
+							'view-foreign', $page->getWikiDisplayName()
+						),
 						'href' => $page->getSourceURL(),
 						'primary' => false,
 					];
 				}
 
 				// Checks if user can edit the current page if it exists or create it otherwise
-				if ( $permissionManager->quickUserCan( 'edit', $user, $title ) &&
-					 ( $title->exists() ||
-						 $permissionManager->quickUserCan( 'create', $user, $title ) )
-				) {
+				if ( $this->getAuthority()->probablyCan( 'edit', $title ) ) {
 					// Builds CSS class for talk page links
 					$isTalkClass = $isTalk ? ' istalk' : '';
 					// Whether the user is editing the page
 					$isEditing = $onPage && ( $action == 'edit' || $action == 'submit' );
+					$isRedirect = $page && $page->isRedirect();
 					// Whether to show the "Add a new section" tab
 					// Checks if this is a current rev of talk page and is not forced to be hidden
 					$showNewSection = !$out->forceHideNewSectionLink()
-						&& ( ( $isTalk && $out->isRevisionCurrent() ) || $out->showNewSectionLink() );
+						&& ( ( $isTalk && !$isRedirect && $out->isRevisionCurrent() ) || $out->showNewSectionLink() );
 					$section = $request->getVal( 'section' );
 
 					if ( $title->exists()
@@ -946,8 +1163,10 @@ class SkinTemplate extends Skin {
 							? 'selected'
 							: ''
 						) . $isTalkClass,
-						'text' => wfMessageFallback( "$skname-view-$msgKey", $msgKey )
-							->setContext( $this->getContext() )->text(),
+						'text' => $this->getSkinNavOverrideableLabel(
+							"view-$msgKey"
+						),
+						'single-id' => "ca-$msgKey",
 						'href' => $title->getLocalURL( $this->editUrlOptions() ),
 						'primary' => !$isRemoteContent, // don't collapse this in vector
 					];
@@ -958,8 +1177,9 @@ class SkinTemplate extends Skin {
 						// $content_navigation['actions']['addsection']
 						$content_navigation['views']['addsection'] = [
 							'class' => ( $isEditing && $section == 'new' ) ? 'selected' : false,
-							'text' => wfMessageFallback( "$skname-action-addsection", 'addsection' )
-								->setContext( $this->getContext() )->text(),
+							'text' => $this->getSkinNavOverrideableLabel(
+								"action-addsection"
+							),
 							'href' => $title->getLocalURL( 'action=edit&section=new' )
 						];
 					}
@@ -968,8 +1188,9 @@ class SkinTemplate extends Skin {
 					// Adds view source view link
 					$content_navigation['views']['viewsource'] = [
 						'class' => ( $onPage && $action == 'edit' ) ? 'selected' : false,
-						'text' => wfMessageFallback( "$skname-action-viewsource", 'viewsource' )
-							->setContext( $this->getContext() )->text(),
+						'text' => $this->getSkinNavOverrideableLabel(
+							"action-viewsource"
+						),
 						'href' => $title->getLocalURL( $this->editUrlOptions() ),
 						'primary' => true, // don't collapse this in vector
 					];
@@ -980,65 +1201,81 @@ class SkinTemplate extends Skin {
 					// Adds history view link
 					$content_navigation['views']['history'] = [
 						'class' => ( $onPage && $action == 'history' ) ? 'selected' : false,
-						'text' => wfMessageFallback( "$skname-view-history", 'history_short' )
-							->setContext( $this->getContext() )->text(),
+						'text' => $this->getSkinNavOverrideableLabel(
+							'view-history'
+						),
 						'href' => $title->getLocalURL( 'action=history' ),
 					];
 
-					if ( $permissionManager->quickUserCan( 'delete', $user, $title ) ) {
+					if ( $this->getAuthority()->probablyCan( 'delete', $title ) ) {
 						$content_navigation['actions']['delete'] = [
+							'icon' => 'trash',
 							'class' => ( $onPage && $action == 'delete' ) ? 'selected' : false,
-							'text' => wfMessageFallback( "$skname-action-delete", 'delete' )
-								->setContext( $this->getContext() )->text(),
-							'href' => $title->getLocalURL( 'action=delete' )
+							'text' => $this->getSkinNavOverrideableLabel(
+								'action-delete'
+							),
+							'href' => $title->getLocalURL( [
+								'action' => 'delete',
+								'oldid' => $out->getRevisionId(),
+							] )
 						];
 					}
 
-					if ( $permissionManager->quickUserCan( 'move', $user, $title ) ) {
+					if ( $this->getAuthority()->probablyCan( 'move', $title ) ) {
 						$moveTitle = SpecialPage::getTitleFor( 'Movepage', $title->getPrefixedDBkey() );
 						$content_navigation['actions']['move'] = [
 							'class' => $this->getTitle()->isSpecial( 'Movepage' ) ? 'selected' : false,
-							'text' => wfMessageFallback( "$skname-action-move", 'move' )
-								->setContext( $this->getContext() )->text(),
+							'text' => $this->getSkinNavOverrideableLabel(
+								'action-move'
+							),
+							'icon' => 'move',
 							'href' => $moveTitle->getLocalURL()
 						];
 					}
 				} else {
 					// article doesn't exist or is deleted
-					if ( $permissionManager->quickUserCan( 'deletedhistory', $user, $title ) ) {
-						$n = $title->isDeleted();
+					if ( $this->getAuthority()->probablyCan( 'deletedhistory', $title ) ) {
+						$n = $title->getDeletedEditsCount();
 						if ( $n ) {
 							$undelTitle = SpecialPage::getTitleFor( 'Undelete', $title->getPrefixedDBkey() );
 							// If the user can't undelete but can view deleted
 							// history show them a "View .. deleted" tab instead.
-							$msgKey = $permissionManager->quickUserCan( 'undelete',
-								$user, $title ) ? 'undelete' : 'viewdeleted';
+							$msgKey = $this->getAuthority()->probablyCan( 'undelete', $title ) ?
+								'undelete' : 'viewdeleted';
 							$content_navigation['actions']['undelete'] = [
 								'class' => $this->getTitle()->isSpecial( 'Undelete' ) ? 'selected' : false,
-								'text' => wfMessageFallback( "$skname-action-$msgKey", "{$msgKey}_short" )
-									->setContext( $this->getContext() )->numParams( $n )->text(),
+								'text' => $this->getSkinNavOverrideableLabel(
+									"action-$msgKey", $n
+								),
+								'icon' => 'trash',
 								'href' => $undelTitle->getLocalURL()
 							];
 						}
 					}
 				}
 
-				if ( $permissionManager->quickUserCan( 'protect', $user, $title ) &&
-					 $title->getRestrictionTypes() &&
-					 $permissionManager->getNamespaceRestrictionLevels( $title->getNamespace(), $user ) !== [ '' ]
+				$restrictionStore = $services->getRestrictionStore();
+				if ( $this->getAuthority()->probablyCan( 'protect', $title ) &&
+					$restrictionStore->listApplicableRestrictionTypes( $title ) &&
+					$permissionManager->getNamespaceRestrictionLevels(
+						$title->getNamespace(),
+						$performer->getUser()
+					) !== [ '' ]
 				) {
-					$mode = $title->isProtected() ? 'unprotect' : 'protect';
+					$isProtected = $restrictionStore->isProtected( $title );
+					$mode = $isProtected ? 'unprotect' : 'protect';
 					$content_navigation['actions'][$mode] = [
 						'class' => ( $onPage && $action == $mode ) ? 'selected' : false,
-						'text' => wfMessageFallback( "$skname-action-$mode", $mode )
-							->setContext( $this->getContext() )->text(),
+						'text' => $this->getSkinNavOverrideableLabel(
+							"action-$mode"
+						),
+						'icon' => $isProtected ? 'unLock' : 'lock',
 						'href' => $title->getLocalURL( "action=$mode" )
 					];
 				}
 
-				// Checks if the user is logged in
-				if ( $this->loggedin && $permissionManager->userHasAllRights( $user,
-						'viewmywatchlist', 'editmywatchlist' )
+				if ( $this->loggedin && $this->getAuthority()
+						->isAllowedAll( 'viewmywatchlist', 'editmywatchlist' )
 				) {
 					/**
 					 * The following actions use messages which, if made particular to
@@ -1049,12 +1286,13 @@ class SkinTemplate extends Skin {
 					 * a change to that procedure these messages will have to remain as
 					 * the global versions.
 					 */
-					$mode = $user->isWatched( $title ) ? 'unwatch' : 'watch';
+					$mode = MediaWikiServices::getInstance()->getWatchlistManager()
+						->isWatched( $performer, $title ) ? 'unwatch' : 'watch';
 
 					// Add the watch/unwatch link.
 					$content_navigation['actions'][$mode] = $this->getWatchLinkAttrs(
 						$mode,
-						$user,
+						$performer,
 						$title,
 						$action,
 						$onPage
@@ -1062,12 +1300,12 @@ class SkinTemplate extends Skin {
 				}
 			}
 
-			$this->getHookRunner()->onSkinTemplateNavigation( $this, $content_navigation );
+			// Add language variants
+			$languageConverterFactory = MediaWikiServices::getInstance()->getLanguageConverterFactory();
 
-			if ( $userCanRead && !$this->getConfig()->get( 'DisableLangConversion' ) ) {
+			if ( $userCanRead && !$languageConverterFactory->isConversionDisabled() ) {
 				$pageLang = $title->getPageLanguage();
-				$converter = MediaWikiServices::getInstance()
-					->getLanguageConverterFactory()
+				$converter = $languageConverterFactory
 					->getLanguageConverter( $pageLang );
 				// Checks that language conversion is enabled and variants exist
 				// And if it is not in the special namespace
@@ -1077,7 +1315,7 @@ class SkinTemplate extends Skin {
 					// Gets preferred variant (note that user preference is
 					// only possible for wiki content language variant)
 					$preferred = $converter->getPreferredVariant();
-					if ( Action::getActionName( $this ) === 'view' ) {
+					if ( $action === 'view' ) {
 						$params = $request->getQueryValues();
 						unset( $params['title'] );
 					} else {
@@ -1098,26 +1336,34 @@ class SkinTemplate extends Skin {
 					}
 				}
 			}
+			$namespaces = $associatedPages;
 		} else {
-			// If it's not content, it's got to be a special page
-			$content_navigation['namespaces']['special'] = [
+			// If it's not content, and a request URL is set it's got to be a special page
+			try {
+				$url = $request->getRequestURL();
+			} catch ( MWException $e ) {
+				$url = false;
+			}
+			$namespaces['special'] = [
 				'class' => 'selected',
 				'text' => $this->msg( 'nstab-special' )->text(),
-				'href' => $request->getRequestURL(), // @see: T4457, T4510
+				'href' => $url, // @see: T4457, T4510
 				'context' => 'subject'
 			];
-
-			$this->getHookRunner()->onSkinTemplateNavigation__SpecialPage(
-				$this, $content_navigation );
+			$associatedPages += $this->getSpecialPageAssociatedNavigationLinks( $title );
 		}
 
-		// Equiv to SkinTemplateContentActions
-		$this->getHookRunner()->onSkinTemplateNavigation__Universal(
-			$this, $content_navigation );
+		$content_navigation['namespaces'] = $namespaces;
+		$content_navigation['associated-pages'] = $associatedPages;
+		$this->runOnSkinTemplateNavigationHooks( $this, $content_navigation );
 
 		// Setup xml ids and tooltip info
 		foreach ( $content_navigation as $section => &$links ) {
 			foreach ( $links as $key => &$link ) {
+				// Allow links to set their own id for backwards compatibility reasons.
+				if ( isset( $link['id'] ) || isset( $link['html' ] ) ) {
+					continue;
+				}
 				$xmlID = $key;
 				if ( isset( $link['context'] ) && $link['context'] == 'subject' ) {
 					$xmlID = 'ca-nstab-' . $xmlID;
@@ -1126,6 +1372,8 @@ class SkinTemplate extends Skin {
 					$link['rel'] = 'discussion';
 				} elseif ( $section == 'variants' ) {
 					$xmlID = 'ca-varlang-' . $xmlID;
+					// @phan-suppress-next-line PhanTypePossiblyInvalidDimOffset False positive
+					$link['class'] .= ' ca-variants-' . $link['lang'];
 				} else {
 					$xmlID = 'ca-' . $xmlID;
 				}
@@ -1151,7 +1399,47 @@ class SkinTemplate extends Skin {
 			}
 		}
 
+		$this->contentNavigationCached = $content_navigation;
 		return $content_navigation;
+	}
+
+	/**
+	 * Return a list of pages that have been marked as related to/associated with
+	 * the special page for display.
+	 *
+	 * @param Title $title
+	 * @return array
+	 */
+	private function getSpecialPageAssociatedNavigationLinks( Title $title ): array {
+		$specialAssociatedNavigationLinks = [];
+		$specialFactory = MediaWikiServices::getInstance()->getSpecialPageFactory();
+		$special = $specialFactory->getPage( $title->getText() );
+		if ( $special === null ) {
+			// not a valid special page
+			return [];
+		}
+		$special->setContext( $this );
+		$associatedNavigationLinks = $special->getAssociatedNavigationLinks();
+		// If there are no subpages, we should not render
+		if ( count( $associatedNavigationLinks ) === 0 ) {
+			return [];
+		}
+
+		foreach ( $associatedNavigationLinks as $i => $relatedTitleText ) {
+			$relatedTitle = Title::newFromText( $relatedTitleText );
+			$special = $specialFactory->getPage( $relatedTitle->getText() );
+			if ( $special === null ) {
+				$text = $relatedTitle->getText();
+			} else {
+				$text = $special->getShortDescription( $relatedTitle->getSubpageText() );
+			}
+			$specialAssociatedNavigationLinks['special-specialAssociatedNavigationLinks-link-' . $i ] = [
+				'text' => $text,
+				'href' => $relatedTitle->getLocalURL(),
+				'class' => $relatedTitle->fixSpecialName()->equals( $title->fixSpecialName() ) ? 'selected' : '',
+			];
+		}
+		return $specialAssociatedNavigationLinks;
 	}
 
 	/**
@@ -1195,38 +1483,188 @@ class SkinTemplate extends Skin {
 	}
 
 	/**
-	 * build array of common navigation links and run
-	 * the SkinTemplateBuildNavUrlsNav_urlsAfterPermalink hook.
-	 * @inheritDoc
+	 * Insert legacy menu items from content navigation into the personal toolbar.
+	 *
+	 * @internal
+	 *
+	 * @param array $contentNavigation
 	 * @return array
 	 */
-	protected function buildNavUrls() {
-		$navUrls = parent::buildNavUrls();
-		$out = $this->getOutput();
-		if ( !$out->isArticle() ) {
-			return $navUrls;
+	final protected function injectLegacyMenusIntoPersonalTools(
+		array $contentNavigation
+	): array {
+		$userMenu = $contentNavigation['user-menu'] ?? [];
+		// userpage is only defined for logged-in users, and wfArrayInsertAfter requires the
+		// $after parameter to be a known key in the array.
+		if ( isset( $contentNavigation['user-menu']['userpage'] ) && isset( $contentNavigation['notifications'] ) ) {
+			$userMenu = wfArrayInsertAfter(
+				$userMenu,
+				$contentNavigation['notifications'],
+				'userpage'
+			);
 		}
-		$modifiedNavUrls = [];
-		foreach ( $navUrls as $key => $url ) {
-			$modifiedNavUrls[$key] = $url;
-			if ( $key === 'permalink' ) {
-				$revid = $out->getRevisionId();
-				// Use the copy of revision ID in case this undocumented,
-				// shady hook tries to mess with internals.
-				$this->getHookRunner()->onSkinTemplateBuildNavUrlsNav_urlsAfterPermalink(
-					$this, $modifiedNavUrls, $revid, $revid
-				);
-			}
+		if ( isset( $contentNavigation['user-interface-preferences'] ) ) {
+			return array_merge(
+				$contentNavigation['user-interface-preferences'],
+				$userMenu
+			);
 		}
-		return $modifiedNavUrls;
+		return $userMenu;
 	}
 
 	/**
-	 * Generate strings used for xml 'id' names
-	 * @deprecated since 1.35, use Title::getNamespaceKey() instead
-	 * @return string
+	 * Build the personal urls array.
+	 *
+	 * @internal
+	 *
+	 * @param array $contentNavigation
+	 * @return array
 	 */
-	protected function getNameSpaceKey() {
-		return $this->getTitle()->getNamespaceKey();
+	private function makeSkinTemplatePersonalUrls(
+		array $contentNavigation
+	): array {
+		if ( isset( $contentNavigation['user-menu'] ) ) {
+			return $this->injectLegacyMenusIntoPersonalTools( $contentNavigation );
+		}
+		return [];
 	}
+
+	/**
+	 * @since 1.35
+	 * @param array $attrs (optional) will be passed to tooltipAndAccesskeyAttribs
+	 *  and decorate the resulting input
+	 * @return string of HTML input
+	 */
+	public function makeSearchInput( $attrs = [] ) {
+		// It's possible that getTemplateData might be calling
+		// Skin::makeSearchInput. To avoid infinite recursion create a
+		// new instance of the search component here.
+		$searchBox = $this->getComponent( 'search-box' );
+		$data = $searchBox->getTemplateData();
+
+		return Html::element( 'input',
+			$data[ 'array-input-attributes' ] + $attrs
+		);
+	}
+
+	/**
+	 * @since 1.35
+	 * @param string $mode representing the type of button wanted
+	 *  either `go`, `fulltext` or `image`
+	 * @param array $attrs (optional)
+	 * @return string of HTML button
+	 */
+	final public function makeSearchButton( $mode, $attrs = [] ) {
+		// It's possible that getTemplateData might be calling
+		// Skin::makeSearchInput. To avoid infinite recursion create a
+		// new instance of the search component here.
+		$searchBox = $this->getComponent( 'search-box' );
+		$searchData = $searchBox->getTemplateData();
+
+		switch ( $mode ) {
+			case 'go':
+				$attrs['value'] ??= $this->msg( 'searcharticle' )->text();
+				return Html::element(
+					'input',
+					array_merge(
+						$searchData[ 'array-button-go-attributes' ], $attrs
+					)
+				);
+			case 'fulltext':
+				$attrs['value'] ??= $this->msg( 'searchbutton' )->text();
+				return Html::element(
+					'input',
+					array_merge(
+						$searchData[ 'array-button-fulltext-attributes' ], $attrs
+					)
+				);
+			case 'image':
+				$buttonAttrs = [
+					'type' => 'submit',
+					'name' => 'button',
+				];
+				$buttonAttrs = array_merge(
+					$buttonAttrs,
+					Linker::tooltipAndAccesskeyAttribs( 'search-fulltext' ),
+					$attrs
+				);
+				unset( $buttonAttrs['src'] );
+				unset( $buttonAttrs['alt'] );
+				unset( $buttonAttrs['width'] );
+				unset( $buttonAttrs['height'] );
+				$imgAttrs = [
+					'src' => $attrs['src'],
+					'alt' => $attrs['alt'] ?? $this->msg( 'searchbutton' )->text(),
+					'width' => $attrs['width'] ?? null,
+					'height' => $attrs['height'] ?? null,
+				];
+				return Html::rawElement( 'button', $buttonAttrs, Html::element( 'img', $imgAttrs ) );
+			default:
+				throw new InvalidArgumentException( 'Unknown mode passed to ' . __METHOD__ );
+		}
+	}
+
+	/**
+	 * @return bool
+	 */
+	private function isSpecialContributeShowable(): bool {
+		return ContributeFactory::isEnabledOnCurrentSkin(
+			$this,
+			$this->getConfig()->get( MainConfigNames::SpecialContributeSkinsEnabled )
+		);
+	}
+
+	/**
+	 * @param array &$personal_urls
+	 * @param string $key
+	 * @param string|null $userName
+	 * @param bool $active
+	 *
+	 * @return array
+	 */
+	private function makeContributionsLink(
+		array &$personal_urls,
+		string $key,
+		?string $userName = null,
+		bool $active = false
+	): array {
+		$isSpecialContributeShowable = $this->isSpecialContributeShowable();
+		$subpage = $userName ?? false;
+		$user = $this->getUser();
+		// If the "Contribute" page is showable and the user is anon. or has no edit count,
+		// direct them to the "Contribute" page instead of the "Contributions" or "Mycontributions" pages.
+		// Explanation:
+		// a. For logged-in users: In wikis where the "Contribute" page is enabled, we only want
+		// to navigate logged-in users to the "Contribute", when they have done no edits. Otherwise, we
+		// want to navigate them to the "Mycontributions" page to easily access their edits/contributions.
+		// Currently, the "Contribute" page is used as target for all logged-in users.
+		// b. For anon. users: In wikis where the "Contribute" page is enabled, we still navigate the
+		// anonymous users to the "Contribute" page.
+		// Task: T369041
+		if ( $isSpecialContributeShowable && (int)$user->getEditCount() === 0 ) {
+			$href = SkinComponentUtils::makeSpecialUrlSubpage(
+				'Contribute',
+				false
+			);
+			$personal_urls['contribute'] = [
+				'text' => $this->msg( 'contribute' )->text(),
+				'href' => $href,
+				'active' => $href == $this->getTitle()->getLocalURL(),
+				'icon' => 'edit'
+			];
+		} else {
+			$href = SkinComponentUtils::makeSpecialUrlSubpage(
+				$subpage !== false ? 'Contributions' : 'Mycontributions',
+				$subpage
+			);
+			$personal_urls[$key] = [
+				'text' => $this->msg( $key )->text(),
+				'href' => $href,
+				'active' => $active,
+				'icon' => 'userContributions'
+			];
+		}
+		return $personal_urls;
+	}
+
 }

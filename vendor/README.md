@@ -19,9 +19,13 @@ Adding or updating libraries
 ----------------------------
 
 0. Read the [documentation] on the process for adding new libraries.
-1. Ensure you're using the latest version of 2.5.1 of composer via
-   `composer --version`. This keeps installed.json alpha-sorted, making patches
-   less likely to conflict, and diffs easier to read.
+1. Ensure you're using version 2.8.1 of composer via `composer --version`.
+   Everyone using the same version means that diffs from the autoloader are
+   minimal and so easier to validate and manually rebase. This is most easily
+   done with Docker. For example, to run `composer update --no-dev` do:
+   ```
+   docker run --rm -it -u "$(id -u):$(id -g)" -v "$PWD/.git:/src/.git:ro" -v "$PWD:/src" -w /src docker-registry.wikimedia.org/releng/composer-php74:0.3.3-s4 update --no-dev
+   ```
 2. Edit the composer.json file to add/update the libraries you want to change.
    It is recommended that you use `composer require <package> <version>
    --no-update` to do so as composer will then automatically sort the
@@ -30,12 +34,16 @@ Adding or updating libraries
 4. Add all the new dependencies that got installed to composer.json as well,
    so that everything has their version pinned. (You can look at the changes
    in composer.lock or composer/installed.json to see what they are.)
-5. Rarely, lint checks fail because test files in some library were written
+5. In some cases, the libraries might include not needed files (e.g. test files,
+   project files, etc). If you cannot exclude them from library's archive
+   (e.g. by `export-ignore`ing unwanted files in library's `.gitattributes`
+   file), you can skip checking them in by listing them in `.gitignore` file.
+6. Rarely, lint checks fail because test files in some library were written
    for an unsupported PHP version. In that case add the test directories to
    the --exclude parameter in the script > test field in composer.json, and
    to .gitignore.
-6. Add and commit changes as a gerrit patch.
-7. Review and merge changes.
+7. Add and commit changes as a gerrit patch.
+8. Review and merge changes.
 
 Note that you MUST pair patches changing versions of libraries used by MediaWiki
 itself with ones for the "core" repo. Specifically, the patch in mediawiki/core

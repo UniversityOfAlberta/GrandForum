@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,18 +15,22 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  * http://www.gnu.org/copyleft/gpl.html
  *
- * @author Legoktm
- * @author Florian Schmidt
+ * @file
  */
+
+namespace MediaWiki\Registration;
 
 use Composer\Semver\Constraint\Constraint;
 use Composer\Semver\VersionParser;
+use UnexpectedValueException;
 
 /**
- * Provides functions to check a set of extensions with dependencies against
- * a set of loaded extensions and given version information.
+ * Check whether extensions and their dependencies meet certain version requirements.
  *
  * @since 1.29
+ * @ingroup ExtensionRegistry
+ * @author Legoktm
+ * @author Florian Schmidt
  */
 class VersionChecker {
 	/**
@@ -43,17 +46,17 @@ class VersionChecker {
 	/**
 	 * @var string[] List of installed PHP extensions
 	 */
-	private $phpExtensions = [];
+	private $phpExtensions;
 
 	/**
 	 * @var bool[] List of provided abilities
 	 */
-	private $abilities = [];
+	private $abilities;
 
 	/**
 	 * @var string[] List of provided ability errors
 	 */
-	private $abilityErrors = [];
+	private $abilityErrors;
 
 	/**
 	 * @var array Loaded extensions
@@ -88,6 +91,7 @@ class VersionChecker {
 	 * Set an array with credits of all loaded extensions and skins.
 	 *
 	 * @param array $credits An array of installed extensions with credits of them
+	 *
 	 * @return VersionChecker $this
 	 */
 	public function setLoadedExtensionsAndSkins( array $credits ) {
@@ -114,9 +118,8 @@ class VersionChecker {
 	}
 
 	/**
-	 * Set PHP version.
-	 *
 	 * @param string $phpVersion Current PHP version. Must be well-formed.
+	 *
 	 * @throws UnexpectedValueException
 	 */
 	private function setPhpVersion( $phpVersion ) {
@@ -151,6 +154,7 @@ class VersionChecker {
 	 *     }
 	 *
 	 * @param array $extDependencies All extensions that depend on other ones
+	 *
 	 * @return array[] List of errors
 	 */
 	public function checkArray( array $extDependencies ) {
@@ -161,16 +165,14 @@ class VersionChecker {
 					case ExtensionRegistry::MEDIAWIKI_CORE:
 						$mwError = $this->handleDependency(
 							$this->coreVersion,
-							$values,
-							$extension
+							$values
 						);
 						if ( $mwError !== false ) {
 							$errors[] = [
 								'msg' =>
 									"{$extension} is not compatible with the current MediaWiki "
 									. "core (version {$this->coreVersion->getPrettyString()}), "
-									. "it requires: $values."
-								,
+									. "it requires: $values.",
 								'type' => 'incompatible-core',
 							];
 						}
@@ -181,16 +183,14 @@ class VersionChecker {
 								// PHP version
 								$phpError = $this->handleDependency(
 									$this->phpVersion,
-									$constraint,
-									$extension
+									$constraint
 								);
 								if ( $phpError !== false ) {
 									$errors[] = [
 										'msg' =>
 											"{$extension} is not compatible with the current PHP "
 											. "version {$this->phpVersion->getPrettyString()}), "
-											. "it requires: $constraint."
-										,
+											. "it requires: $constraint.",
 										'type' => 'incompatible-php',
 									];
 								}
@@ -205,8 +205,7 @@ class VersionChecker {
 									$errors[] = [
 										'msg' =>
 											"{$extension} requires {$phpExtension} PHP extension "
-											. "to be installed."
-										,
+											. "to be installed.",
 										'type' => 'missing-phpExtension',
 										'missing' => $phpExtension,
 									];
@@ -224,7 +223,7 @@ class VersionChecker {
 										. 'in ' . $extension );
 								}
 
-								if ( $constraint === true &&
+								if ( $constraint &&
 									$this->abilities[$ability] !== true
 								) {
 									// add custom error message for missing ability if specified
@@ -236,8 +235,7 @@ class VersionChecker {
 									$errors[] = [
 										'msg' =>
 											"{$extension} requires \"{$ability}\" ability"
-											. $customMessage
-										,
+											. $customMessage,
 										'type' => 'missing-ability',
 										'missing' => $ability,
 									];
@@ -274,12 +272,12 @@ class VersionChecker {
 	 * Handle a simple dependency to MediaWiki core or PHP. See handleMediaWikiDependency and
 	 * handlePhpDependency for details.
 	 *
-	 * @param Constraint|bool $version The version installed
+	 * @param Constraint|false $version The version installed
 	 * @param string $constraint The required version constraint for this dependency
-	 * @param string $checkedExt The Extension, which depends on this dependency
+	 *
 	 * @return bool false if no error, true else
 	 */
-	private function handleDependency( $version, $constraint, $checkedExt ) {
+	private function handleDependency( $version, $constraint ) {
 		if ( $version === false ) {
 			// Couldn't parse the version, so we can't check anything
 			return false;
@@ -301,6 +299,7 @@ class VersionChecker {
 	 * @param string $constraint The required version constraint for this dependency
 	 * @param string $checkedExt The Extension, which depends on this dependency
 	 * @param string $type Either 'extensions' or 'skins'
+	 *
 	 * @return bool|array false for no errors, or an array of info
 	 */
 	private function handleExtensionDependency( $dependencyName, $constraint, $checkedExt,
@@ -361,3 +360,6 @@ class VersionChecker {
 		return false;
 	}
 }
+
+/** @deprecated class alias since 1.43 */
+class_alias( VersionChecker::class, 'VersionChecker' );

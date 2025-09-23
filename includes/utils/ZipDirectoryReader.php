@@ -20,6 +20,8 @@
  * @file
  */
 
+use MediaWiki\Status\Status;
+
 /**
  * A class for reading ZIP file directories, for the purposes of upload
  * verification.
@@ -36,7 +38,7 @@ class ZipDirectoryReader {
 	 * behavior.
 	 *
 	 * @param string $fileName The archive file name
-	 * @param array $callback The callback function. It will be called for each file
+	 * @param callable $callback The callback function. It will be called for each file
 	 *   with a single associative array each time, with members:
 	 *
 	 *      - name: The file name. Directories conventionally have a trailing
@@ -86,33 +88,48 @@ class ZipDirectoryReader {
 	 * function should be discarded.
 	 */
 	public static function read( $fileName, $callback, $options = [] ) {
-		$zdr = new self( $fileName, $callback, $options );
-
+		$file = fopen( $fileName, 'r' );
+		$zdr = new self( $file, $callback, $options );
 		return $zdr->execute();
 	}
 
-	/** The file name */
-	protected $fileName;
+	/**
+	 * Read an opened file handle presumed to be a ZIP and call a function for
+	 * each file discovered in it.
+	 *
+	 * @see ZipDirectoryReader::read
+	 *
+	 * @param resource $file A seekable stream containing the archive
+	 * @param callable $callback
+	 * @param array $options
+	 * @return Status
+	 */
+	public static function readHandle( $file, $callback, $options = [] ) {
+		$zdr = new self( $file, $callback, $options );
+		return $zdr->execute();
+	}
 
-	/** The opened file resource */
+	/** @var resource The opened file resource */
 	protected $file;
 
-	/** The cached length of the file, or null if it has not been loaded yet. */
+	/** @var int|null The cached length of the file, or null if it has not been loaded yet. */
 	protected $fileLength;
 
-	/** A segmented cache of the file contents */
+	/** @var string[] A segmented cache of the file contents */
 	protected $buffer;
 
-	/** The file data callback */
+	/** @var callable The file data callback */
 	protected $callback;
 
-	/** The ZIP64 mode */
+	/** @var bool The ZIP64 mode */
 	protected $zip64 = false;
 
-	/** Stored headers */
-	protected $eocdr, $eocdr64, $eocdr64Locator;
-
-	protected $data;
+	/** @var array Stored headers */
+	protected $eocdr;
+	/** @var array Stored headers */
+	protected $eocdr64;
+	/** @var array Stored headers */
+	protected $eocdr64Locator;
 
 	/** The "extra field" ID for ZIP64 central directory entries */
 	private const ZIP64_EXTRA_HEADER = 0x0001;
@@ -127,12 +144,12 @@ class ZipDirectoryReader {
 	private const GENERAL_CD_ENCRYPTED = 13;
 
 	/**
-	 * @param string $fileName
+	 * @param resource $file
 	 * @param callable $callback
 	 * @param array $options
 	 */
-	protected function __construct( $fileName, $callback, $options ) {
-		$this->fileName = $fileName;
+	protected function __construct( $file, $callback, $options ) {
+		$this->file = $file;
 		$this->callback = $callback;
 
 		if ( isset( $options['zip64'] ) ) {
@@ -146,8 +163,6 @@ class ZipDirectoryReader {
 	 * @return Status
 	 */
 	private function execute() {
-		$this->file = fopen( $this->fileName, 'r' );
-		$this->data = [];
 		if ( !$this->file ) {
 			return Status::newFatal( 'zip-file-open-error' );
 		}
@@ -156,7 +171,7 @@ class ZipDirectoryReader {
 		try {
 			$this->readEndOfCentralDirectoryRecord();
 			if ( $this->zip64 ) {
-				list( $offset, $size ) = $this->findZip64CentralDirectory();
+				[ $offset, $size ] = $this->findZip64CentralDirectory();
 				$this->readCentralDirectory( $offset, $size );
 			} else {
 				if ( $this->eocdr['CD size'] == 0xffffffff
@@ -168,7 +183,7 @@ class ZipDirectoryReader {
 						'opening vulnerabilities on clients using OpenJDK 7 or later.' );
 				}
 
-				list( $offset, $size ) = $this->findOldCentralDirectory();
+				[ $offset, $size ] = $this->findOldCentralDirectory();
 				$this->readCentralDirectory( $offset, $size );
 			}
 		} catch ( ZipDirectoryReaderError $e ) {
@@ -182,9 +197,10 @@ class ZipDirectoryReader {
 
 	/**
 	 * Throw an error, and log a debug message
-	 * @param mixed $code
+	 * @param string $code
 	 * @param string $debugMessage
 	 * @throws ZipDirectoryReaderError
+	 * @return never
 	 */
 	private function error( $code, $debugMessage ) {
 		wfDebug( __CLASS__ . ": Fatal error: $debugMessage" );
@@ -523,16 +539,14 @@ class ZipDirectoryReader {
 			$this->error( 'zip-bad', "getBlock() requested position $start, " .
 				"file length is $fileLength" );
 		}
-		if ( $length === null ) {
-			$length = $fileLength - $start;
-		}
+		$length ??= $fileLength - $start;
 		$end = $start + $length;
 		if ( $end > $fileLength ) {
 			$this->error( 'zip-bad', "getBlock() requested end position $end, " .
 				"file length is $fileLength" );
 		}
-		$startSeg = floor( $start / self::SEGSIZE );
-		$endSeg = ceil( $end / self::SEGSIZE );
+		$startSeg = (int)floor( $start / self::SEGSIZE );
+		$endSeg = (int)ceil( $end / self::SEGSIZE );
 
 		$block = '';
 		for ( $segIndex = $startSeg; $segIndex <= $endSeg; $segIndex++ ) {
@@ -593,7 +607,7 @@ class ZipDirectoryReader {
 		$size = 0;
 		foreach ( $struct as $type ) {
 			if ( is_array( $type ) ) {
-				list( , $fieldSize ) = $type;
+				[ , $fieldSize ] = $type;
 				$size += $fieldSize;
 			} else {
 				$size += $type;
@@ -619,8 +633,6 @@ class ZipDirectoryReader {
 	 *          Not null terminated.
 	 *
 	 * @param int $offset The offset into the string at which to start unpacking.
-	 *
-	 * @throws MWException
 	 * @return array Unpacked associative array. Note that large integers in the input
 	 *    may be represented as floating point numbers in the return value, so
 	 *    the use of weak comparison is advised.
@@ -635,14 +647,14 @@ class ZipDirectoryReader {
 		$pos = $offset;
 		foreach ( $struct as $key => $type ) {
 			if ( is_array( $type ) ) {
-				list( $typeName, $fieldSize ) = $type;
+				[ $typeName, $fieldSize ] = $type;
 				switch ( $typeName ) {
 					case 'string':
 						$data[$key] = substr( $string, $pos, $fieldSize );
 						$pos += $fieldSize;
 						break;
 					default:
-						throw new MWException( __METHOD__ . ": invalid type \"$typeName\"" );
+						throw new UnexpectedValueException( __METHOD__ . ": invalid type \"$typeName\"" );
 				}
 			} else {
 				// Unsigned little-endian integer

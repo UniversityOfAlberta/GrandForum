@@ -1,10 +1,8 @@
 <?php
 /** Mongolian (монгол)
  *
- * To improve a translation please visit https://translatewiki.net
- *
- * @ingroup Language
  * @file
+ * @ingroup Languages
  *
  * @author Boldbdd
  * @author Chinneeb
@@ -24,7 +22,7 @@ $namespaceNames = [
 	NS_TALK             => 'Хэлэлцүүлэг',
 	NS_USER             => 'Хэрэглэгч',
 	NS_USER_TALK        => 'Хэрэглэгчийн_яриа',
-	NS_PROJECT_TALK     => '$1-н_хэлэлцүүлэг',
+	NS_PROJECT_TALK     => '{{GRAMMAR:genitive|$1}}_хэлэлцүүлэг',
 	NS_FILE             => 'Файл',
 	NS_FILE_TALK        => 'Файлын_хэлэлцүүлэг',
 	NS_MEDIAWIKI        => 'МедиаВики',
@@ -40,8 +38,10 @@ $namespaceNames = [
 $namespaceAliases = [
 	'Зураг' => NS_FILE,
 	'Зургийн_хэлэлцүүлэг' => NS_FILE_TALK,
+	'$1-н_хэлэлцүүлэг'  => NS_PROJECT_TALK,
 ];
 
+/** @phpcs-require-sorted-array */
 $magicWords = [
 	'redirect'                  => [ '0', '#ЧИГЛҮҮЛЭГ', '#REDIRECT' ],
 ];

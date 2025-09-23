@@ -19,18 +19,17 @@
  */
 namespace MediaWiki\Http;
 
-use CurlHttpRequest;
+use GuzzleHttp\Client;
 use GuzzleHttpRequest;
-use Http;
+use InvalidArgumentException;
 use MediaWiki\Config\ServiceOptions;
 use MediaWiki\Logger\LoggerFactory;
-use MultiHttpClient;
+use MediaWiki\MainConfigNames;
+use MediaWiki\Status\Status;
 use MWHttpRequest;
-use PhpHttpRequest;
 use Profiler;
 use Psr\Log\LoggerInterface;
-use RuntimeException;
-use Status;
+use Wikimedia\Http\MultiHttpClient;
 
 /**
  * Factory creating MWHttpRequest objects.
@@ -40,18 +39,30 @@ class HttpRequestFactory {
 	private $options;
 	/** @var LoggerInterface */
 	private $logger;
+	/** @var Telemetry|null */
+	private $telemetry;
 
+	/**
+	 * @internal For use by ServiceWiring
+	 */
 	public const CONSTRUCTOR_OPTIONS = [
-		'HTTPTimeout',
-		'HTTPConnectTimeout',
-		'HTTPMaxTimeout',
-		'HTTPMaxConnectTimeout',
+		MainConfigNames::HTTPTimeout,
+		MainConfigNames::HTTPConnectTimeout,
+		MainConfigNames::HTTPMaxTimeout,
+		MainConfigNames::HTTPMaxConnectTimeout,
+		MainConfigNames::LocalVirtualHosts,
+		MainConfigNames::LocalHTTPProxy,
 	];
 
-	public function __construct( ServiceOptions $options, LoggerInterface $logger ) {
+	public function __construct(
+		ServiceOptions $options,
+		LoggerInterface $logger,
+		?Telemetry $telemetry = null
+	) {
 		$options->assertRequiredOptions( self::CONSTRUCTOR_OPTIONS );
 		$this->options = $options;
 		$this->logger = $logger;
+		$this->telemetry = $telemetry;
 	}
 
 	/**
@@ -66,7 +77,7 @@ class HttpRequestFactory {
 	 *                          not be used in production code.
 	 *    - postData            An array of key-value pairs or a url-encoded form data
 	 *    - proxy               The proxy to use.
-	 *                          Otherwise it will use $wgHTTPProxy (if set)
+	 *                          Otherwise it will use $wgHTTPProxy or $wgLocalHTTPProxy (if set)
 	 *                          Otherwise it will use the environment variable "http_proxy" (if set)
 	 *    - noProxy             Don't use any proxy at all. Takes precedence over proxy value(s).
 	 *    - sslVerifyHost       Verify hostname against certificate
@@ -83,45 +94,33 @@ class HttpRequestFactory {
 	 *    - password            Password for HTTP Basic Authentication
 	 *    - originalRequest     Information about the original request (as a WebRequest object or
 	 *                          an associative array with 'ip' and 'userAgent').
-	 * @codingStandardsIgnoreStart
-	 * @phan-param array{timeout?:int|string,connectTimeout?:int|string,postData?:string|array,proxy?:?string,noProxy?:bool,sslVerifyHost?:bool,sslVerifyCert?:bool,caInfo?:?string,maxRedirects?:int,followRedirects?:bool,userAgent?:string,method?:string,logger?:\Psr\Log\LoggerInterface,username?:string,password?:string,originalRequest?:\WebRequest|array{ip:string,userAgent:string}} $options
-	 * @codingStandardsIgnoreEnd
-	 * @param string $caller The method making this request, for profiling
-	 * @throws RuntimeException
+	 * @phpcs:ignore Generic.Files.LineLength
+	 * @phan-param array{timeout?:int|string,connectTimeout?:int|string,postData?:string|array,proxy?:?string,noProxy?:bool,sslVerifyHost?:bool,sslVerifyCert?:bool,caInfo?:?string,maxRedirects?:int,followRedirects?:bool,userAgent?:string,method?:string,logger?:\Psr\Log\LoggerInterface,username?:string,password?:string,originalRequest?:\MediaWiki\Request\WebRequest|array{ip:string,userAgent:string}} $options
+	 * @param string $caller The method making this request, for profiling @phan-mandatory-param
 	 * @return MWHttpRequest
 	 * @see MWHttpRequest::__construct
 	 */
 	public function create( $url, array $options = [], $caller = __METHOD__ ) {
-		if ( !Http::$httpEngine ) {
-			Http::$httpEngine = 'guzzle';
-		}
-
 		if ( !isset( $options['logger'] ) ) {
 			$options['logger'] = $this->logger;
 		}
 		$options['timeout'] = $this->normalizeTimeout(
 			$options['timeout'] ?? null,
 			$options['maxTimeout'] ?? null,
-			$this->options->get( 'HTTPTimeout' ),
-			$this->options->get( 'HTTPMaxTimeout' )
+			$this->options->get( MainConfigNames::HTTPTimeout ),
+			$this->options->get( MainConfigNames::HTTPMaxTimeout ) ?: INF
 		);
 		$options['connectTimeout'] = $this->normalizeTimeout(
 			$options['connectTimeout'] ?? null,
 			$options['maxConnectTimeout'] ?? null,
-			$this->options->get( 'HTTPConnectTimeout' ),
-			$this->options->get( 'HTTPMaxConnectTimeout' )
+			$this->options->get( MainConfigNames::HTTPConnectTimeout ),
+			$this->options->get( MainConfigNames::HTTPMaxConnectTimeout ) ?: INF
 		);
-
-		switch ( Http::$httpEngine ) {
-			case 'guzzle':
-				return new GuzzleHttpRequest( $url, $options, $caller, Profiler::instance() );
-			case 'curl':
-				return new CurlHttpRequest( $url, $options, $caller, Profiler::instance() );
-			case 'php':
-				return new PhpHttpRequest( $url, $options, $caller, Profiler::instance() );
-			default:
-				throw new RuntimeException( __METHOD__ . ': The requested engine is not valid.' );
+		$client = new GuzzleHttpRequest( $url, $options, $caller, Profiler::instance() );
+		if ( $this->telemetry ) {
+			$client->addTelemetry( $this->telemetry );
 		}
+		return $client;
 	}
 
 	/**
@@ -137,23 +136,19 @@ class HttpRequestFactory {
 	private function normalizeTimeout( $parameter, $maxParameter, $default, $maxConfigured ) {
 		if ( $parameter === 'default' || $parameter === null ) {
 			if ( !is_numeric( $default ) ) {
-				throw new \InvalidArgumentException(
+				throw new InvalidArgumentException(
 					'$wgHTTPTimeout and $wgHTTPConnectTimeout must be set to a number' );
 			}
 			$value = $default;
 		} else {
 			$value = $parameter;
 		}
-		if ( $maxParameter !== null ) {
-			$max = $maxParameter;
-		} else {
-			$max = $maxConfigured;
-		}
+		$max = $maxParameter ?? $maxConfigured;
 		if ( $max && $value > $max ) {
 			return $max;
-		} else {
-			return $value;
 		}
+
+		return $value;
 	}
 
 	/**
@@ -173,7 +168,7 @@ class HttpRequestFactory {
 	 * @param string $url Full URL to act on. If protocol-relative, will be expanded to an http://
 	 *  URL
 	 * @param array $options See HttpRequestFactory::create
-	 * @param string $caller The method making this request, for profiling
+	 * @param string $caller The method making this request, for profiling @phan-mandatory-param
 	 * @return string|null null on failure or a string on success
 	 */
 	public function request( $method, $url, array $options = [], $caller = __METHOD__ ) {
@@ -188,7 +183,7 @@ class HttpRequestFactory {
 		if ( $status->isOK() ) {
 			return $req->getContent();
 		} else {
-			$errors = $status->getErrorsByType( 'error' );
+			$errors = array_map( fn ( $msg ) => $msg->getKey(), $status->getMessages( 'error' ) );
 			$logger->warning( Status::wrap( $status )->getWikiText( false, false, 'en' ),
 				[ 'error' => $errors, 'caller' => $caller, 'content' => $req->getContent() ] );
 			return null;
@@ -196,12 +191,12 @@ class HttpRequestFactory {
 	}
 
 	/**
-	 * Simple wrapper for request( 'GET' ), parameters have same meaning as for request()
+	 * Simple wrapper for `request( 'GET' )`, parameters have the same meaning as for `request()`
 	 *
 	 * @since 1.34
 	 * @param string $url
 	 * @param array $options
-	 * @param string $caller
+	 * @param string $caller @phan-mandatory-param
 	 * @return string|null
 	 */
 	public function get( $url, array $options = [], $caller = __METHOD__ ) {
@@ -209,12 +204,12 @@ class HttpRequestFactory {
 	}
 
 	/**
-	 * Simple wrapper for request( 'POST' ), parameters have same meaning as for request()
+	 * Simple wrapper for `request( 'POST' )`, parameters have the same meaning as for `request()`
 	 *
 	 * @since 1.34
 	 * @param string $url
 	 * @param array $options
-	 * @param string $caller
+	 * @param string $caller @phan-mandatory-param
 	 * @return string|null
 	 */
 	public function post( $url, array $options = [], $caller = __METHOD__ ) {
@@ -244,21 +239,65 @@ class HttpRequestFactory {
 		$options['reqTimeout'] = $this->normalizeTimeout(
 			$options['reqTimeout'] ?? $options['timeout'] ?? null,
 			$options['maxReqTimeout'] ?? $options['maxTimeout'] ?? null,
-			$this->options->get( 'HTTPTimeout' ),
-			$this->options->get( 'HTTPMaxTimeout' )
+			$this->options->get( MainConfigNames::HTTPTimeout ),
+			$this->options->get( MainConfigNames::HTTPMaxTimeout ) ?: INF
 		);
 		$options['connTimeout'] = $this->normalizeTimeout(
 			$options['connTimeout'] ?? $options['connectTimeout'] ?? null,
 			$options['maxConnTimeout'] ?? $options['maxConnectTimeout'] ?? null,
-			$this->options->get( 'HTTPConnectTimeout' ),
-			$this->options->get( 'HTTPMaxConnectTimeout' )
+			$this->options->get( MainConfigNames::HTTPConnectTimeout ),
+			$this->options->get( MainConfigNames::HTTPMaxConnectTimeout ) ?: INF
 		);
 		$options += [
-			'maxReqTimeout' => $this->options->get( 'HTTPMaxTimeout' ),
-			'maxConnTimeout' => $this->options->get( 'HTTPMaxConnectTimeout' ),
+			'maxReqTimeout' => $this->options->get( MainConfigNames::HTTPMaxTimeout ) ?: INF,
+			'maxConnTimeout' =>
+				$this->options->get( MainConfigNames::HTTPMaxConnectTimeout ) ?: INF,
 			'userAgent' => $this->getUserAgent(),
-			'logger' => $this->logger
+			'logger' => $this->logger,
+			'localProxy' => $this->options->get( MainConfigNames::LocalHTTPProxy ),
+			'localVirtualHosts' => $this->options->get( MainConfigNames::LocalVirtualHosts ),
+			'telemetry' => Telemetry::getInstance(),
 		];
 		return new MultiHttpClient( $options );
+	}
+
+	/**
+	 * Get a GuzzleHttp\Client instance.
+	 *
+	 * @since 1.36
+	 * @param array $config Client configuration settings.
+	 * @return Client
+	 *
+	 * @see \GuzzleHttp\RequestOptions for a list of available request options.
+	 * @see Client::__construct() for additional options.
+	 * Additional options that should not be used in production code:
+	 *	- maxTimeout          Override for the configured maximum timeout.
+	 *	- maxConnectTimeout   Override for the configured maximum connect timeout.
+	 */
+	public function createGuzzleClient( array $config = [] ): Client {
+		$config['timeout'] = $this->normalizeTimeout(
+			$config['timeout'] ?? null,
+			$config['maxTimeout'] ?? null,
+			$this->options->get( MainConfigNames::HTTPTimeout ),
+			$this->options->get( MainConfigNames::HTTPMaxTimeout ) ?: INF
+		);
+
+		$config['connect_timeout'] = $this->normalizeTimeout(
+			$config['connect_timeout'] ?? null,
+			$config['maxConnectTimeout'] ?? null,
+			$this->options->get( MainConfigNames::HTTPConnectTimeout ),
+			$this->options->get( MainConfigNames::HTTPMaxConnectTimeout ) ?: INF
+		);
+
+		if ( !isset( $config['headers']['User-Agent'] ) ) {
+			$config['headers']['User-Agent'] = $this->getUserAgent();
+		}
+		if ( $this->telemetry ) {
+			$config['headers'] = array_merge(
+				$this->telemetry->getRequestHeaders(), $config['headers']
+			);
+		}
+
+		return new Client( $config );
 	}
 }

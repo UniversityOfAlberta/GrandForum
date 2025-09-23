@@ -36,14 +36,12 @@ trait SearchResultTrait {
 			$this->extensionData = $extensionData;
 		} elseif ( is_array( $extensionData ) ) {
 			wfDeprecated( __METHOD__ . ' with array argument', '1.32' );
-			$this->extensionData = function () use ( $extensionData ) {
+			$this->extensionData = static function () use ( $extensionData ) {
 				return $extensionData;
 			};
 		} else {
-			$type = is_object( $extensionData )
-				? get_class( $extensionData )
-				: gettype( $extensionData );
-			throw new \InvalidArgumentException(
+			$type = get_debug_type( $extensionData );
+			throw new InvalidArgumentException(
 				__METHOD__ . " must be called with Closure|array, but received $type" );
 		}
 	}

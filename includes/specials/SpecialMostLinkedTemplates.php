@@ -1,7 +1,5 @@
 <?php
 /**
- * Implements Special:Mostlinkedtemplates
- *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -18,22 +16,48 @@
  * http://www.gnu.org/copyleft/gpl.html
  *
  * @file
- * @ingroup SpecialPage
- * @author Rob Church <robchur@gmail.com>
  */
 
+namespace MediaWiki\Specials;
+
+use MediaWiki\Cache\LinkBatchFactory;
+use MediaWiki\Html\Html;
+use MediaWiki\Linker\Linker;
+use MediaWiki\Linker\LinksMigration;
+use MediaWiki\SpecialPage\QueryPage;
+use MediaWiki\SpecialPage\SpecialPage;
+use MediaWiki\Title\Title;
+use Skin;
+use stdClass;
+use Wikimedia\Rdbms\IConnectionProvider;
 use Wikimedia\Rdbms\IDatabase;
 use Wikimedia\Rdbms\IResultWrapper;
 
 /**
- * Special page lists templates with a large number of
- * transclusion links, i.e. "most used" templates
+ * List of templates with a large number of transclusion links,
+ * i.e. "most used" templates
  *
  * @ingroup SpecialPage
+ * @author Rob Church <robchur@gmail.com>
  */
 class SpecialMostLinkedTemplates extends QueryPage {
-	public function __construct( $name = 'Mostlinkedtemplates' ) {
-		parent::__construct( $name );
+
+	private LinksMigration $linksMigration;
+
+	/**
+	 * @param IConnectionProvider $dbProvider
+	 * @param LinkBatchFactory $linkBatchFactory
+	 * @param LinksMigration $linksMigration
+	 */
+	public function __construct(
+		IConnectionProvider $dbProvider,
+		LinkBatchFactory $linkBatchFactory,
+		LinksMigration $linksMigration
+	) {
+		parent::__construct( 'Mostlinkedtemplates' );
+		$this->setDatabaseProvider( $dbProvider );
+		$this->setLinkBatchFactory( $linkBatchFactory );
+		$this->linksMigration = $linksMigration;
 	}
 
 	/**
@@ -64,14 +88,17 @@ class SpecialMostLinkedTemplates extends QueryPage {
 	}
 
 	public function getQueryInfo() {
+		$queryInfo = $this->linksMigration->getQueryInfo( 'templatelinks' );
+		[ $ns, $title ] = $this->linksMigration->getTitleFields( 'templatelinks' );
 		return [
-			'tables' => [ 'templatelinks' ],
+			'tables' => $queryInfo['tables'],
 			'fields' => [
-				'namespace' => 'tl_namespace',
-				'title' => 'tl_title',
+				'namespace' => $ns,
+				'title' => $title,
 				'value' => 'COUNT(*)'
 			],
-			'options' => [ 'GROUP BY' => [ 'tl_namespace', 'tl_title' ] ]
+			'options' => [ 'GROUP BY' => [ $ns, $title ] ],
+			'join_conds' => $queryInfo['joins']
 		];
 	}
 
@@ -89,7 +116,7 @@ class SpecialMostLinkedTemplates extends QueryPage {
 	 * Format a result row
 	 *
 	 * @param Skin $skin
-	 * @param object $result Result row
+	 * @param stdClass $result Result row
 	 * @return string
 	 */
 	public function formatResult( $skin, $result ) {
@@ -116,7 +143,7 @@ class SpecialMostLinkedTemplates extends QueryPage {
 	 * Make a "what links here" link for a given title
 	 *
 	 * @param Title $title Title to make the link for
-	 * @param object $result Result row
+	 * @param stdClass $result Result row
 	 * @return string
 	 */
 	private function makeWlhLink( $title, $result ) {
@@ -130,3 +157,9 @@ class SpecialMostLinkedTemplates extends QueryPage {
 		return 'highuse';
 	}
 }
+
+/**
+ * Retain the old class name for backwards compatibility.
+ * @deprecated since 1.41
+ */
+class_alias( SpecialMostLinkedTemplates::class, 'SpecialMostLinkedTemplates' );

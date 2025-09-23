@@ -35,24 +35,30 @@ class SearchPostgres extends SearchDatabase {
 	/**
 	 * Perform a full text search query via tsearch2 and return a result set.
 	 * Currently searches a page's current title (page.page_title) and
-	 * latest revision article text (pagecontent.old_text)
+	 * latest revision article text (text.old_text)
 	 *
 	 * @param string $term Raw search term
 	 * @return SqlSearchResultSet
 	 */
 	protected function doSearchTitleInDB( $term ) {
-		$q = $this->searchQuery( $term, 'titlevector', 'page_title' );
+		$q = $this->searchQuery( $term, 'titlevector' );
 		$olderror = error_reporting( E_ERROR );
-		$dbr = $this->lb->getConnectionRef( DB_REPLICA );
+		$dbr = $this->dbProvider->getReplicaDatabase();
+		// The real type is still IDatabase, but IReplicaDatabase is used for safety.
+		'@phan-var IDatabase $dbr';
+		// phpcs:ignore MediaWiki.Usage.DbrQueryUsage.DbrQueryFound
 		$resultSet = $dbr->query( $q, 'SearchPostgres', IDatabase::QUERY_SILENCE_ERRORS );
 		error_reporting( $olderror );
 		return new SqlSearchResultSet( $resultSet, $this->searchTerms );
 	}
 
 	protected function doSearchTextInDB( $term ) {
-		$q = $this->searchQuery( $term, 'textvector', 'old_text' );
+		$q = $this->searchQuery( $term, 'textvector' );
 		$olderror = error_reporting( E_ERROR );
-		$dbr = $this->lb->getConnectionRef( DB_REPLICA );
+		$dbr = $this->dbProvider->getReplicaDatabase();
+		// The real type is still IDatabase, but IReplicaDatabase is used for safety.
+		'@phan-var IDatabase $dbr';
+		// phpcs:ignore MediaWiki.Usage.DbrQueryUsage.DbrQueryFound
 		$resultSet = $dbr->query( $q, 'SearchPostgres', IDatabase::QUERY_SILENCE_ERRORS );
 		error_reporting( $olderror );
 		return new SqlSearchResultSet( $resultSet, $this->searchTerms );
@@ -69,14 +75,14 @@ class SearchPostgres extends SearchDatabase {
 	private function parseQuery( $term ) {
 		wfDebug( "parseQuery received: $term" );
 
-		# # No backslashes allowed
-		$term = preg_replace( '/\\\/', '', $term );
+		// No backslashes allowed
+		$term = preg_replace( '/\\\\/', '', $term );
 
-		# # Collapse parens into nearby words:
+		// Collapse parens into nearby words:
 		$term = preg_replace( '/\s*\(\s*/', ' (', $term );
 		$term = preg_replace( '/\s*\)\s*/', ') ', $term );
 
-		# # Treat colons as word separators:
+		// Treat colons as word separators:
 		$term = preg_replace( '/:/', ' ', $term );
 
 		$searchstring = '';
@@ -98,23 +104,23 @@ class SearchPostgres extends SearchDatabase {
 			}
 		}
 
-		# # Strip out leading junk
+		// Strip out leading junk
 		$searchstring = preg_replace( '/^[\s\&\|]+/', '', $searchstring );
 
-		# # Remove any doubled-up operators
+		// Remove any doubled-up operators
 		$searchstring = preg_replace( '/([\!\&\|]) +(?:[\&\|] +)+/', "$1 ", $searchstring );
 
-		# # Remove any non-spaced operators (e.g. "Zounds!")
+		// Remove any non-spaced operators (e.g. "Zounds!")
 		$searchstring = preg_replace( '/([^ ])[\!\&\|]/', "$1", $searchstring );
 
-		# # Remove any trailing whitespace or operators
+		// Remove any trailing whitespace or operators
 		$searchstring = preg_replace( '/[\s\!\&\|]+$/', '', $searchstring );
 
-		# # Remove unnecessary quotes around everything
+		// Remove unnecessary quotes around everything
 		$searchstring = preg_replace( '/^[\'"](.*)[\'"]$/', "$1", $searchstring );
 
-		# # Quote the whole thing
-		$dbr = $this->lb->getConnectionRef( DB_REPLICA );
+		// Quote the whole thing
+		$dbr = $this->dbProvider->getReplicaDatabase();
 		$searchstring = $dbr->addQuotes( $searchstring );
 
 		wfDebug( "parseQuery returned: $searchstring" );
@@ -126,31 +132,34 @@ class SearchPostgres extends SearchDatabase {
 	 * Construct the full SQL query to do the search.
 	 * @param string $term
 	 * @param string $fulltext
-	 * @param string $colname
 	 * @return string
 	 */
-	private function searchQuery( $term, $fulltext, $colname ) {
+	private function searchQuery( $term, $fulltext ) {
 		# Get the SQL fragment for the given term
 		$searchstring = $this->parseQuery( $term );
 
-		# # We need a separate query here so gin does not complain about empty searches
+		// We need a separate query here so gin does not complain about empty searches
 		$sql = "SELECT to_tsquery($searchstring)";
-		$dbr = $this->lb->getConnectionRef( DB_REPLICA );
+		$dbr = $this->dbProvider->getReplicaDatabase();
+		// The real type is still IDatabase, but IReplicaDatabase is used for safety.
+		'@phan-var IDatabase $dbr';
+		// phpcs:ignore MediaWiki.Usage.DbrQueryUsage.DbrQueryFound
 		$res = $dbr->query( $sql, __METHOD__ );
 		if ( !$res ) {
-			# # TODO: Better output (example to catch: one 'two)
+			// TODO: Better output (example to catch: one 'two)
 			die( "Sorry, that was not a valid search string. Please go back and try again" );
 		}
 		$top = $res->fetchRow()[0];
 
 		$this->searchTerms = [];
 		$slotRoleStore = MediaWikiServices::getInstance()->getSlotRoleStore();
-		if ( $top === "" ) { # # e.g. if only stopwords are used XXX return something better
+		if ( $top === "" ) { // e.g. if only stopwords are used XXX return something better
 			$query = "SELECT page_id, page_namespace, page_title, 0 AS score " .
-				"FROM page p, revision r, slots s, content c, pagecontent pc " .
+				"FROM page p, revision r, slots s, content c, \"text\" pc " .
 				"WHERE p.page_latest = r.rev_id " .
 				"AND s.slot_revision_id = r.rev_id " .
-				"AND s.slot_role_id = " . $slotRoleStore->getId( SlotRecord::MAIN ) . " " .
+				"AND s.slot_role_id = " .
+					$dbr->addQuotes( $slotRoleStore->acquireId( SlotRecord::MAIN ) ) . " " .
 				"AND c.content_id = s.slot_content_id " .
 				"AND pc.old_id = substring( c.content_address from '^tt:([0-9]+)$' )::int " .
 				"AND 1=0";
@@ -164,18 +173,19 @@ class SearchPostgres extends SearchDatabase {
 
 			$query = "SELECT page_id, page_namespace, page_title, " .
 				"ts_rank($fulltext, to_tsquery($searchstring), 5) AS score " .
-				"FROM page p, revision r, slots s, content c, pagecontent pc " .
+				"FROM page p, revision r, slots s, content c, \"text\" pc " .
 				"WHERE p.page_latest = r.rev_id " .
 				"AND s.slot_revision_id = r.rev_id " .
-				"AND s.slot_role_id = " . $slotRoleStore->getId( SlotRecord::MAIN ) . " " .
+				"AND s.slot_role_id = " . $dbr->addQuotes(
+					$slotRoleStore->acquireId( SlotRecord::MAIN ) ) . " " .
 				"AND c.content_id = s.slot_content_id " .
 				"AND pc.old_id = substring( c.content_address from '^tt:([0-9]+)$' )::int " .
 				"AND $fulltext @@ to_tsquery($searchstring)";
 		}
-		# # Namespaces - defaults to 0
+		// Namespaces - defaults to main
 		if ( $this->namespaces !== null ) { // null -> search all
 			if ( count( $this->namespaces ) < 1 ) {
-				$query .= ' AND page_namespace = 0';
+				$query .= ' AND page_namespace = ' . NS_MAIN;
 			} else {
 				$namespaces = $dbr->makeList( $this->namespaces );
 				$query .= " AND page_namespace IN ($namespaces)";
@@ -191,23 +201,24 @@ class SearchPostgres extends SearchDatabase {
 		return $query;
 	}
 
-	# # Most of the work of these two functions are done automatically via triggers
+	// Most of the work of these two functions are done automatically via triggers
 
 	public function update( $pageid, $title, $text ) {
-		# # We don't want to index older revisions
+		// We don't want to index older revisions
 		$slotRoleStore = MediaWikiServices::getInstance()->getSlotRoleStore();
-		$sql = "UPDATE pagecontent SET textvector = NULL " .
+		$dbw = $this->dbProvider->getPrimaryDatabase();
+		$sql = "UPDATE \"text\" SET textvector = NULL " .
 			"WHERE textvector IS NOT NULL " .
 			"AND old_id IN " .
 			"(SELECT DISTINCT substring( c.content_address from '^tt:([0-9]+)$' )::int AS old_rev_text_id " .
 			" FROM content c, slots s, revision r " .
 			" WHERE r.rev_page = $pageid " .
 			" AND s.slot_revision_id = r.rev_id " .
-			" AND s.slot_role_id = " . $slotRoleStore->getId( SlotRecord::MAIN ) . " " .
+			" AND s.slot_role_id = " .
+				$dbw->addQuotes( $slotRoleStore->acquireId( SlotRecord::MAIN ) ) . " " .
 			" AND c.content_id = s.slot_content_id " .
 			" ORDER BY old_rev_text_id DESC OFFSET 1)";
 
-		$dbw = $this->lb->getConnectionRef( DB_MASTER );
 		$dbw->query( $sql, __METHOD__ );
 
 		return true;

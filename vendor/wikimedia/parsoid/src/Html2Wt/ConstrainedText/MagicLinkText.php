@@ -3,19 +3,16 @@ declare( strict_types = 1 );
 
 namespace Wikimedia\Parsoid\Html2Wt\ConstrainedText;
 
-use DOMElement;
-use stdClass;
 use Wikimedia\Parsoid\Config\Env;
+use Wikimedia\Parsoid\DOM\Element;
+use Wikimedia\Parsoid\NodeData\DataParsoid;
 
 /**
  * An autolink to an RFC/PMID/ISBN, like `RFC 1234`.
  */
 class MagicLinkText extends RegExpConstrainedText {
-	/**
-	 * @param string $text
-	 * @param DOMElement $node
-	 */
-	public function __construct( string $text, DOMElement $node ) {
+
+	public function __construct( string $text, Element $node ) {
 		parent::__construct( [
 			'text' => $text,
 			'node' => $node,
@@ -26,17 +23,9 @@ class MagicLinkText extends RegExpConstrainedText {
 		] );
 	}
 
-	/**
-	 * @param string $text
-	 * @param DOMElement $node
-	 * @param stdClass $dataParsoid
-	 * @param Env $env
-	 * @param array $opts
-	 * @return ?MagicLinkText
-	 */
 	protected static function fromSelSerImpl(
-		string $text, DOMElement $node, stdClass $dataParsoid,
-		Env $env, array $opts ) {
+		string $text, Element $node, DataParsoid $dataParsoid,
+		Env $env, array $opts ): ?MagicLinkText {
 		$stx = $dataParsoid->stx ?? null;
 		if ( $stx === 'magiclink' ) {
 			return new MagicLinkText( $text, $node );

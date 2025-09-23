@@ -21,6 +21,19 @@
  * @file
  */
 
+namespace MediaWiki\Api;
+
+use ILocalizedException;
+use MediaWiki\Language\Language;
+use MediaWiki\Language\RawMessage;
+use MediaWiki\Message\Message;
+use MediaWiki\Page\PageReference;
+use MediaWiki\Page\PageReferenceValue;
+use MediaWiki\Parser\Sanitizer;
+use StatusValue;
+use Throwable;
+use Wikimedia\Message\MessageSpecifier;
+
 /**
  * Formats errors and warnings for the API, and add them to the associated
  * ApiResult.
@@ -29,7 +42,7 @@
  * @phan-file-suppress PhanUndeclaredMethod Undeclared methods in IApiMessage
  */
 class ApiErrorFormatter {
-	/** @var Title Dummy title to silence warnings from MessageCache::parse() */
+	/** @var PageReference Dummy title to silence warnings from MessageCache::parse() */
 	private static $dummyTitle = null;
 
 	/** @var ApiResult */
@@ -37,7 +50,11 @@ class ApiErrorFormatter {
 
 	/** @var Language */
 	protected $lang;
+	/** @var PageReference|null page used for rendering error messages, or null to use the dummy title */
+	private $title = null;
+	/** @var bool */
 	protected $useDB = false;
+	/** @var string */
 	protected $format = 'none';
 
 	/**
@@ -110,26 +127,47 @@ class ApiErrorFormatter {
 
 	/**
 	 * Fetch a dummy title to set on Messages
-	 * @return Title
+	 * @return PageReference
 	 */
-	protected function getDummyTitle() {
+	protected function getDummyTitle(): PageReference {
 		if ( self::$dummyTitle === null ) {
-			self::$dummyTitle = Title::makeTitle( NS_SPECIAL, 'Badtitle/' . __METHOD__ );
+			self::$dummyTitle = PageReferenceValue::localReference(
+				NS_SPECIAL,
+				'Badtitle/' . __METHOD__
+			);
 		}
 		return self::$dummyTitle;
 	}
 
 	/**
+	 * Get the page used for rendering error messages, e.g. for wikitext magic words like {{PAGENAME}}
+	 * @since 1.37
+	 * @return PageReference
+	 */
+	public function getContextTitle(): PageReference {
+		return $this->title ?: $this->getDummyTitle();
+	}
+
+	/**
+	 * Set the page used for rendering error messages, e.g. for wikitext magic words like {{PAGENAME}}
+	 * @since 1.37
+	 * @param PageReference $title
+	 */
+	public function setContextTitle( PageReference $title ) {
+		$this->title = $title;
+	}
+
+	/**
 	 * Add a warning to the result
 	 * @param string|null $modulePath
-	 * @param Message|array|string $msg Warning message. See ApiMessage::create().
+	 * @param MessageSpecifier|array|string $msg Warning message. See ApiMessage::create().
 	 * @param string|null $code See ApiMessage::create().
 	 * @param array|null $data See ApiMessage::create().
 	 */
 	public function addWarning( $modulePath, $msg, $code = null, $data = null ) {
 		$msg = ApiMessage::create( $msg, $code, $data )
 			->inLanguage( $this->lang )
-			->title( $this->getDummyTitle() )
+			->page( $this->getContextTitle() )
 			->useDatabase( $this->useDB );
 		$this->addWarningOrError( 'warning', $modulePath, $msg );
 	}
@@ -137,14 +175,14 @@ class ApiErrorFormatter {
 	/**
 	 * Add an error to the result
 	 * @param string|null $modulePath
-	 * @param Message|array|string $msg Warning message. See ApiMessage::create().
+	 * @param MessageSpecifier|array|string $msg Warning message. See ApiMessage::create().
 	 * @param string|null $code See ApiMessage::create().
 	 * @param array|null $data See ApiMessage::create().
 	 */
 	public function addError( $modulePath, $msg, $code = null, $data = null ) {
 		$msg = ApiMessage::create( $msg, $code, $data )
 			->inLanguage( $this->lang )
-			->title( $this->getDummyTitle() )
+			->page( $this->getContextTitle() )
 			->useDatabase( $this->useDB );
 		$this->addWarningOrError( 'error', $modulePath, $msg );
 	}
@@ -159,29 +197,20 @@ class ApiErrorFormatter {
 	public function addMessagesFromStatus(
 		$modulePath, StatusValue $status, $types = [ 'warning', 'error' ], array $filter = []
 	) {
-		if ( $status->isGood() || !$status->getErrors() ) {
+		if ( $status->isGood() ) {
 			return;
 		}
 
-		$types = (array)$types;
-		foreach ( $status->getErrors() as $error ) {
-			if ( !in_array( $error['type'], $types, true ) ) {
-				continue;
-			}
-
-			if ( $error['type'] === 'error' ) {
-				$tag = 'error';
-			} else {
-				// Assume any unknown type is a warning
-				$tag = 'warning';
-			}
-
-			$msg = ApiMessage::create( $error )
-				->inLanguage( $this->lang )
-				->title( $this->getDummyTitle() )
-				->useDatabase( $this->useDB );
-			if ( !in_array( $msg->getKey(), $filter, true ) ) {
-				$this->addWarningOrError( $tag, $modulePath, $msg );
+		$types = array_unique( (array)$types );
+		foreach ( $types as $type ) {
+			foreach ( $status->getMessages( $type ) as $msg ) {
+				$msg = ApiMessage::create( $msg )
+					->inLanguage( $this->lang )
+					->page( $this->getContextTitle() )
+					->useDatabase( $this->useDB );
+				if ( !in_array( $msg->getKey(), $filter, true ) ) {
+					$this->addWarningOrError( $type, $modulePath, $msg );
+				}
 			}
 		}
 	}
@@ -213,7 +242,7 @@ class ApiErrorFormatter {
 			} else {
 				$msg = new RawMessage( '$1' );
 				if ( !isset( $options['code'] ) ) {
-					$class = preg_replace( '#^Wikimedia\\\Rdbms\\\#', '', get_class( $exception ) );
+					$class = preg_replace( '#^Wikimedia\\\\Rdbms\\\\#', '', get_class( $exception ) );
 					$options['code'] = 'internal_api_error_' . $class;
 					$options['data']['errorclass'] = get_class( $exception );
 				}
@@ -223,7 +252,7 @@ class ApiErrorFormatter {
 		return ApiMessage::create( $msg, $options['code'], $options['data'] )
 			->params( $params )
 			->inLanguage( $this->lang )
-			->title( $this->getDummyTitle() )
+			->page( $this->getContextTitle() )
 			->useDatabase( $this->useDB );
 	}
 
@@ -252,7 +281,7 @@ class ApiErrorFormatter {
 	public function formatMessage( $msg, $format = null ) {
 		$msg = ApiMessage::create( $msg )
 			->inLanguage( $this->lang )
-			->title( $this->getDummyTitle() )
+			->page( $this->getContextTitle() )
 			->useDatabase( $this->useDB );
 		return $this->formatMessageInternal( $msg, $format ?: $this->format );
 	}
@@ -265,11 +294,11 @@ class ApiErrorFormatter {
 	 * @return array
 	 */
 	public function arrayFromStatus( StatusValue $status, $type = 'error', $format = null ) {
-		if ( $status->isGood() || !$status->getErrors() ) {
+		if ( $status->isGood() || !$status->getMessages() ) {
 			return [];
 		}
 
-		$result = new ApiResult( 1e6 );
+		$result = new ApiResult( 1_000_000 );
 		$formatter = new ApiErrorFormatter(
 			$result, $this->lang, $format ?: $this->format, $this->useDB
 		);
@@ -293,9 +322,7 @@ class ApiErrorFormatter {
 		$ret = preg_replace( '!</?(var|kbd|samp|code)>!', '"', $text );
 
 		// Strip tags and decode.
-		$ret = Sanitizer::stripAllTags( $ret );
-
-		return $ret;
+		return Sanitizer::stripAllTags( $ret );
 	}
 
 	/**
@@ -390,3 +417,6 @@ class ApiErrorFormatter {
 		}
 	}
 }
+
+/** @deprecated class alias since 1.43 */
+class_alias( ApiErrorFormatter::class, 'ApiErrorFormatter' );

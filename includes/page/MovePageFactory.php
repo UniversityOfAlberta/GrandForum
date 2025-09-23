@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,10 +20,13 @@
 
 namespace MediaWiki\Page;
 
-use MovePage;
-use Title;
+use MediaWiki\Title\Title;
 
 /**
+ * Service for page rename actions.
+ *
+ * Default implementation is MediaWiki\Page\PageCommandFactory.
+ *
  * @since 1.35
  */
 interface MovePageFactory {
@@ -34,5 +36,5 @@ interface MovePageFactory {
 	 * @param Title $to
 	 * @return MovePage
 	 */
-	public function newMovePage( Title $from, Title $to ) : MovePage;
+	public function newMovePage( Title $from, Title $to ): MovePage;
 }

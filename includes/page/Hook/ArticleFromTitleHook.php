@@ -3,10 +3,13 @@
 namespace MediaWiki\Page\Hook;
 
 use Article;
-use IContextSource;
-use Title;
+use MediaWiki\Context\IContextSource;
+use MediaWiki\Title\Title;
 
 /**
+ * This is a hook handler interface, see docs/Hooks.md.
+ * Use the hook name "ArticleFromTitle" to register handlers implementing this interface.
+ *
  * @stable to implement
  * @ingroup Hooks
  */

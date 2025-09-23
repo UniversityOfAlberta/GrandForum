@@ -1,10 +1,8 @@
 <?php
 /** Līvõ kēļ (Līvõ kēļ)
  *
- * To improve a translation please visit https://translatewiki.net
- *
- * @ingroup Language
  * @file
+ * @ingroup Languages
  *
  * @author Andrijko Z.
  * @author Erdemaslancan

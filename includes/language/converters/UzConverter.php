@@ -1,7 +1,5 @@
 <?php
 /**
- * Uzbek specific code.
- *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -18,14 +16,15 @@
  * http://www.gnu.org/copyleft/gpl.html
  *
  * @file
- * @ingroup Language
  */
 
 /**
- * @ingroup Language
+ * Uzbek specific code.
+ *
+ * @ingroup Languages
  */
 class UzConverter extends LanguageConverter {
-	public $toLatin = [
+	private const TO_LATIN = [
 		'а' => 'a', 'А' => 'A',
 		'б' => 'b', 'Б' => 'B',
 		'д' => 'd', 'Д' => 'D',
@@ -63,7 +62,7 @@ class UzConverter extends LanguageConverter {
 		'ъ' => 'ʼ',
 	];
 
-	public $toCyrillic = [
+	private const TO_CYRILLIC = [
 		'a' => 'а', 'A' => 'А',
 		'b' => 'б', 'B' => 'Б',
 		'd' => 'д', 'D' => 'Д',
@@ -102,23 +101,26 @@ class UzConverter extends LanguageConverter {
 		'ʼ' => 'ъ',
 	];
 
-	/**
-	 * @param Language $langobj
-	 */
-	public function __construct( $langobj ) {
-		$variants = [ 'uz', 'uz-latn', 'uz-cyrl' ];
-		$variantfallbacks = [
+	public function getMainCode(): string {
+		return 'uz';
+	}
+
+	public function getLanguageVariants(): array {
+		return [ 'uz', 'uz-latn', 'uz-cyrl' ];
+	}
+
+	public function getVariantsFallbacks(): array {
+		return [
 			'uz' => 'uz-latn',
 			'uz-cyrl' => 'uz',
 			'uz-latn' => 'uz',
 		];
-		parent::__construct( $langobj, 'uz', $variants, $variantfallbacks );
 	}
 
-	protected function loadDefaultTables() {
-		$this->mTables = [
-			'uz-cyrl' => new ReplacementArray( $this->toCyrillic ),
-			'uz-latn' => new ReplacementArray( $this->toLatin ),
+	protected function loadDefaultTables(): array {
+		return [
+			'uz-cyrl' => new ReplacementArray( self::TO_CYRILLIC ),
+			'uz-latn' => new ReplacementArray( self::TO_LATIN ),
 			'uz' => new ReplacementArray()
 		];
 	}
@@ -134,5 +136,4 @@ class UzConverter extends LanguageConverter {
 		}
 		return parent::translate( $text, $toVariant );
 	}
-
 }

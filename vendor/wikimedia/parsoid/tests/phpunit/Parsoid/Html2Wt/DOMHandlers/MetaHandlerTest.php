@@ -8,8 +8,8 @@ use Wikimedia\Parsoid\Html2Wt\DOMHandlers\MetaHandler;
 use Wikimedia\Parsoid\Html2Wt\SerializerState;
 use Wikimedia\Parsoid\Html2Wt\WikitextSerializer;
 use Wikimedia\Parsoid\Mocks\MockEnv;
+use Wikimedia\Parsoid\Utils\ContentUtils;
 use Wikimedia\Parsoid\Utils\DOMCompat;
-use Wikimedia\Parsoid\Utils\DOMDataUtils;
 
 class MetaHandlerTest extends TestCase {
 	/**
@@ -20,14 +20,11 @@ class MetaHandlerTest extends TestCase {
 	 * @param array $extraMethodsToMock
 	 * @return WikitextSerializer|MockObject
 	 */
-	private function getBaseSerializerMock( $extraMethodsToMock = [] ) {
+	private function getBaseSerializerMock( array $extraMethodsToMock = [] ): WikitextSerializer {
 		$serializer = $this->getMockBuilder( WikitextSerializer::class )
 			->disableOriginalConstructor()
-			->setMethods( array_merge( [ 'buildSep', 'trace' ], $extraMethodsToMock ) )
+			->onlyMethods( array_merge( [ 'trace' ], $extraMethodsToMock ) )
 			->getMock();
-		$serializer->expects( $this->any() )
-			->method( 'buildSep' )
-			->willReturn( '' );
 		$serializer->expects( $this->any() )
 			->method( 'trace' )
 			->willReturn( null );
@@ -35,10 +32,9 @@ class MetaHandlerTest extends TestCase {
 		return $serializer;
 	}
 
-	protected function processMeta( $env, $state, $html, $res ) {
-		$doc = $env->createDocument( $html );
+	protected function processMeta( MockEnv $env, SerializerState $state, string $html, string $res ): void {
+		$doc = ContentUtils::createAndLoadDocument( $html );
 		$metaNode = DOMCompat::getBody( $doc )->firstChild;
-		DOMDataUtils::visitAndLoadDataAttribs( $metaNode );
 
 		$state->currLine->text = '';
 		( new MetaHandler() )->handle( $metaNode, $state );

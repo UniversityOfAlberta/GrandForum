@@ -1,7 +1,5 @@
 <?php
 /**
- * Implements Special:Allpages
- *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -18,8 +16,22 @@
  * http://www.gnu.org/copyleft/gpl.html
  *
  * @file
- * @ingroup SpecialPage
  */
+
+namespace MediaWiki\Specials;
+
+use MediaWiki\Html\Html;
+use MediaWiki\HTMLForm\HTMLForm;
+use MediaWiki\MainConfigNames;
+use MediaWiki\MediaWikiServices;
+use MediaWiki\Page\ExistingPageRecord;
+use MediaWiki\Page\PageStore;
+use MediaWiki\SpecialPage\IncludableSpecialPage;
+use MediaWiki\Title\Title;
+use MediaWiki\Title\TitleValue;
+use SearchEngineFactory;
+use Wikimedia\Rdbms\IConnectionProvider;
+use Wikimedia\Rdbms\SelectQueryBuilder;
 
 /**
  * Implements Special:Allpages
@@ -43,17 +55,27 @@ class SpecialAllPages extends IncludableSpecialPage {
 	 */
 	protected $nsfromMsg = 'allpagesfrom';
 
-	/**
-	 * @param string $name Name of the special page, as seen in links and URLs (default: 'Allpages')
-	 */
-	public function __construct( $name = 'Allpages' ) {
-		parent::__construct( $name );
+	private IConnectionProvider $dbProvider;
+	private SearchEngineFactory $searchEngineFactory;
+	private PageStore $pageStore;
+
+	public function __construct(
+		?IConnectionProvider $dbProvider = null,
+		?SearchEngineFactory $searchEngineFactory = null,
+		?PageStore $pageStore = null
+	) {
+		parent::__construct( 'Allpages' );
+		// This class is extended and therefore falls back to global state - T265309
+		$services = MediaWikiServices::getInstance();
+		$this->dbProvider = $dbProvider ?? $services->getConnectionProvider();
+		$this->searchEngineFactory = $searchEngineFactory ?? $services->getSearchEngineFactory();
+		$this->pageStore = $pageStore ?? $services->getPageStore();
 	}
 
 	/**
 	 * Entry point : initialise variables and call subfunctions.
 	 *
-	 * @param string $par Becomes "FOO" when called like Special:Allpages/FOO (default null)
+	 * @param string|null $par Becomes "FOO" when called like Special:Allpages/FOO
 	 */
 	public function execute( $par ) {
 		$request = $this->getRequest();
@@ -61,23 +83,23 @@ class SpecialAllPages extends IncludableSpecialPage {
 
 		$this->setHeaders();
 		$this->outputHeader();
-		$out->allowClickjacking();
+		$out->getMetadata()->setPreventClickjacking( false );
 
 		# GET values
 		$from = $request->getVal( 'from', null );
 		$to = $request->getVal( 'to', null );
 		$namespace = $request->getInt( 'namespace' );
 
-		$miserMode = (bool)$this->getConfig()->get( 'MiserMode' );
+		$miserMode = (bool)$this->getConfig()->get( MainConfigNames::MiserMode );
 
 		// Redirects filter is disabled in MiserMode
 		$hideredirects = $request->getBool( 'hideredirects', false ) && !$miserMode;
 
 		$namespaces = $this->getLanguage()->getNamespaces();
 
-		$out->setPageTitle(
+		$out->setPageTitleMsg(
 			( $namespace > 0 && array_key_exists( $namespace, $namespaces ) ) ?
-				$this->msg( 'allinnamespace', str_replace( '_', ' ', $namespaces[$namespace] ) ) :
+				$this->msg( 'allinnamespace' )->plaintextParams( str_replace( '_', ' ', $namespaces[$namespace] ) ) :
 				$this->msg( 'allarticles' )
 		);
 		$out->addModuleStyles( 'mediawiki.special' );
@@ -102,7 +124,7 @@ class SpecialAllPages extends IncludableSpecialPage {
 	protected function outputHTMLForm( $namespace = NS_MAIN,
 		$from = '', $to = '', $hideRedirects = false
 	) {
-		$miserMode = (bool)$this->getConfig()->get( 'MiserMode' );
+		$miserMode = (bool)$this->getConfig()->get( MainConfigNames::MiserMode );
 		$formDescriptor = [
 			'from' => [
 				'type' => 'text',
@@ -141,11 +163,10 @@ class SpecialAllPages extends IncludableSpecialPage {
 			unset( $formDescriptor['hideredirects'] );
 		}
 
-		$context = new DerivativeContext( $this->getContext() );
-		$context->setTitle( $this->getPageTitle() ); // Remove subpage
-		$htmlForm = HTMLForm::factory( 'ooui', $formDescriptor, $context );
+		$htmlForm = HTMLForm::factory( 'ooui', $formDescriptor, $this->getContext() );
 		$htmlForm
 			->setMethod( 'get' )
+			->setTitle( $this->getPageTitle() ) // Remove subpage
 			->setWrapperLegendMsg( 'allpages' )
 			->setSubmitTextMsg( 'allpagessubmit' )
 			->prepareForm()
@@ -154,15 +175,15 @@ class SpecialAllPages extends IncludableSpecialPage {
 
 	/**
 	 * @param int $namespace (default NS_MAIN)
-	 * @param string $from List all pages from this name
-	 * @param string $to List all pages to this name
+	 * @param string|null $from List all pages from this name
+	 * @param string|null $to List all pages to this name
 	 * @param bool $hideredirects Don't show redirects (default false)
 	 */
 	private function showToplevel(
-		$namespace = NS_MAIN, $from = '', $to = '', $hideredirects = false
+		$namespace = NS_MAIN, $from = null, $to = null, $hideredirects = false
 	) {
-		$from = Title::makeTitleSafe( $namespace, $from );
-		$to = Title::makeTitleSafe( $namespace, $to );
+		$from = $from ? Title::makeTitleSafe( $namespace, $from ) : null;
+		$to = $to ? Title::makeTitleSafe( $namespace, $to ) : null;
 		$from = ( $from && $from->isLocal() ) ? $from->getDBkey() : null;
 		$to = ( $to && $to->isLocal() ) ? $to->getDBkey() : null;
 
@@ -171,12 +192,12 @@ class SpecialAllPages extends IncludableSpecialPage {
 
 	/**
 	 * @param int $namespace Namespace (Default NS_MAIN)
-	 * @param string|false $from List all pages from this name (default false)
-	 * @param string|false $to List all pages to this name (default false)
+	 * @param string|null $from List all pages from this name (default null)
+	 * @param string|null $to List all pages to this name (default null)
 	 * @param bool $hideredirects Don't show redirects (default false)
 	 */
 	private function showChunk(
-		$namespace = NS_MAIN, $from = false, $to = false, $hideredirects = false
+		$namespace = NS_MAIN, $from = null, $to = null, $hideredirects = false
 	) {
 		$output = $this->getOutput();
 
@@ -193,52 +214,49 @@ class SpecialAllPages extends IncludableSpecialPage {
 			$out = $this->msg( 'allpages-bad-ns', $namespace )->parse();
 			$namespace = NS_MAIN;
 		} else {
-			list( $namespace, $fromKey, $from ) = $fromList;
-			list( , $toKey, $to ) = $toList;
+			[ $namespace, $fromKey, $from ] = $fromList;
+			[ , $toKey, $to ] = $toList;
 
-			$dbr = wfGetDB( DB_REPLICA );
+			$dbr = $this->dbProvider->getReplicaDatabase();
 			$filterConds = [ 'page_namespace' => $namespace ];
 			if ( $hideredirects ) {
 				$filterConds['page_is_redirect'] = 0;
 			}
 
 			$conds = $filterConds;
-			$conds[] = 'page_title >= ' . $dbr->addQuotes( $fromKey );
+			$conds[] = $dbr->expr( 'page_title', '>=', $fromKey );
 			if ( $toKey !== "" ) {
-				$conds[] = 'page_title <= ' . $dbr->addQuotes( $toKey );
+				$conds[] = $dbr->expr( 'page_title', '<=', $toKey );
 			}
 
-			$res = $dbr->select( 'page',
-				[ 'page_namespace', 'page_title', 'page_is_redirect', 'page_id' ],
-				$conds,
-				__METHOD__,
-				[
-					'ORDER BY' => 'page_title',
-					'LIMIT' => $this->maxPerPage + 1,
-					'USE INDEX' => 'name_title',
-				]
-			);
+			$res = $this->pageStore->newSelectQueryBuilder()
+				->where( $conds )
+				->caller( __METHOD__ )
+				->orderBy( 'page_title' )
+				->limit( $this->maxPerPage + 1 )
+				->useIndex( 'page_name_title' )
+				->fetchPageRecords();
+
+			// Eagerly fetch the set of pages to be displayed and warm up LinkCache (T328174).
+			// Note that we can't use fetchPageRecordArray() here as that returns an array keyed
+			// by page IDs; we need a simple sequence.
+			/** @var ExistingPageRecord[] $pages */
+			$pages = iterator_to_array( $res );
 
 			$linkRenderer = $this->getLinkRenderer();
-			if ( $res->numRows() > 0 ) {
+			if ( count( $pages ) > 0 ) {
 				$out = Html::openElement( 'ul', [ 'class' => 'mw-allpages-chunk' ] );
 
-				while ( ( $n < $this->maxPerPage ) && ( $s = $res->fetchObject() ) ) {
-					$t = Title::newFromRow( $s );
-					if ( $t ) {
-						$out .= '<li' .
-							( $s->page_is_redirect ? ' class="allpagesredirect"' : '' ) .
-							'>' .
-							$linkRenderer->makeLink( $t ) .
-							"</li>\n";
-					} else {
-						$out .= '<li>[[' . htmlspecialchars( $s->page_title ) . "]]</li>\n";
-					}
+				while ( $n < $this->maxPerPage && $n < count( $pages ) ) {
+					$page = $pages[$n];
+					$attributes = $page->isRedirect() ? [ 'class' => 'allpagesredirect' ] : [];
+
+					$out .= Html::rawElement( 'li', $attributes, $linkRenderer->makeKnownLink( $page ) ) . "\n";
 					$n++;
 				}
 				$out .= Html::closeElement( 'ul' );
 
-				if ( $res->numRows() > 2 ) {
+				if ( count( $pages ) > 2 ) {
 					// Only apply CSS column styles if there's more than 2 entries.
 					// Otherwise, rendering is broken as "mw-allpages-body"'s CSS column count is 3.
 					$out = Html::rawElement( 'div', [ 'class' => 'mw-allpages-body' ], $out );
@@ -250,25 +268,24 @@ class SpecialAllPages extends IncludableSpecialPage {
 			if ( $fromKey !== '' && !$this->including() ) {
 				# Get the first title from previous chunk
 				$prevConds = $filterConds;
-				$prevConds[] = 'page_title < ' . $dbr->addQuotes( $fromKey );
-				$prevKey = $dbr->selectField(
-					'page',
-					'page_title',
-					$prevConds,
-					__METHOD__,
-					[ 'ORDER BY' => 'page_title DESC', 'OFFSET' => $this->maxPerPage - 1 ]
-				);
+				$prevConds[] = $dbr->expr( 'page_title', '<', $fromKey );
+				$prevKey = $dbr->newSelectQueryBuilder()
+					->select( 'page_title' )
+					->from( 'page' )
+					->where( $prevConds )
+					->orderBy( 'page_title', SelectQueryBuilder::SORT_DESC )
+					->offset( $this->maxPerPage - 1 )
+					->caller( __METHOD__ )->fetchField();
 
 				if ( $prevKey === false ) {
 					# The previous chunk is not complete, need to link to the very first title
 					# available in the database
-					$prevKey = $dbr->selectField(
-						'page',
-						'page_title',
-						$prevConds,
-						__METHOD__,
-						[ 'ORDER BY' => 'page_title' ]
-					);
+					$prevKey = $dbr->newSelectQueryBuilder()
+						->select( 'page_title' )
+						->from( 'page' )
+						->where( $prevConds )
+						->orderBy( 'page_title' )
+						->caller( __METHOD__ )->fetchField();
 				}
 
 				if ( $prevKey !== false ) {
@@ -308,9 +325,9 @@ class SpecialAllPages extends IncludableSpecialPage {
 		}
 
 		// Generate a "next page" link if needed
-		if ( $n == $this->maxPerPage && $s = $res->fetchObject() ) {
-			# $s is the first link of the next chunk
-			$t = Title::makeTitle( $namespace, $s->page_title );
+		if ( $n === $this->maxPerPage && isset( $pages[$n] ) ) {
+			# $t is the first link of the next chunk
+			$t = TitleValue::newFromPage( $pages[$n] );
 			$query = [ 'from' => $t->getText() ];
 
 			if ( $namespace ) {
@@ -329,7 +346,7 @@ class SpecialAllPages extends IncludableSpecialPage {
 			);
 		}
 
-		$this->outputHTMLForm( $namespace, $from, $to, $hideredirects );
+		$this->outputHTMLForm( $namespace, $from ?? '', $to ?? '', $hideredirects );
 
 		if ( count( $navLinks ) ) {
 			// Add pagination links
@@ -382,10 +399,13 @@ class SpecialAllPages extends IncludableSpecialPage {
 	 * @return string[] Matching subpages
 	 */
 	public function prefixSearchSubpages( $search, $limit, $offset ) {
-		return $this->prefixSearchString( $search, $limit, $offset );
+		return $this->prefixSearchString( $search, $limit, $offset, $this->searchEngineFactory );
 	}
 
 	protected function getGroupName() {
 		return 'pages';
 	}
 }
+
+/** @deprecated class alias since 1.41 */
+class_alias( SpecialAllPages::class, 'SpecialAllPages' );

@@ -2,7 +2,7 @@
 /**
  * MediaWiki page data importer.
  *
- * Copyright © 2003,2005 Brion Vibber <brion@pobox.com>
+ * Copyright © 2003,2005 Brooke Vibber <bvibber@wikimedia.org>
  * https://www.mediawiki.org/
  *
  * This program is free software; you can redistribute it and/or modify
@@ -26,7 +26,7 @@
 
 /**
  * Used for importing XML dumps where the content of the dump is in a string.
- * This class is ineffecient, and should only be used for small dumps.
+ * This class is inefficient, and should only be used for small dumps.
  * For larger dumps, ImportStreamSource should be used instead.
  *
  * @ingroup SpecialPage
@@ -36,14 +36,13 @@ class ImportStringSource implements ImportSource {
 	private $mString;
 
 	/** @var bool */
-	private $mRead;
+	private $mRead = false;
 
 	/**
 	 * @param string $string
 	 */
 	public function __construct( $string ) {
 		$this->mString = $string;
-		$this->mRead = false;
 	}
 
 	/**
@@ -62,5 +61,21 @@ class ImportStringSource implements ImportSource {
 		}
 		$this->mRead = true;
 		return $this->mString;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isSeekable() {
+		return true;
+	}
+
+	/**
+	 * @param int $offset
+	 * @return int
+	 */
+	public function seek( int $offset ) {
+		$this->mRead = false;
+		return 0;
 	}
 }

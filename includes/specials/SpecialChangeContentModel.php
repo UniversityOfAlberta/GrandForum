@@ -1,27 +1,68 @@
 <?php
 
+namespace MediaWiki\Specials;
+
+use ErrorPageError;
+use LogEventsList;
+use LogPage;
+use MediaWiki\Collation\CollationFactory;
+use MediaWiki\CommentStore\CommentStore;
+use MediaWiki\Content\ContentHandler;
 use MediaWiki\Content\IContentHandlerFactory;
-use MediaWiki\MediaWikiServices;
+use MediaWiki\EditPage\SpamChecker;
+use MediaWiki\HTMLForm\HTMLForm;
+use MediaWiki\Language\RawMessage;
+use MediaWiki\Page\ContentModelChangeFactory;
+use MediaWiki\Page\WikiPageFactory;
+use MediaWiki\Revision\RevisionLookup;
 use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Revision\SlotRecord;
+use MediaWiki\SpecialPage\FormSpecialPage;
+use MediaWiki\Status\Status;
+use MediaWiki\Title\Title;
+use MediaWiki\Xml\Xml;
+use SearchEngineFactory;
 
+/**
+ * @ingroup SpecialPage
+ */
 class SpecialChangeContentModel extends FormSpecialPage {
 
-	/** @var IContentHandlerFactory */
-	private $contentHandlerFactory;
+	private IContentHandlerFactory $contentHandlerFactory;
+	private ContentModelChangeFactory $contentModelChangeFactory;
+	private SpamChecker $spamChecker;
+	private RevisionLookup $revisionLookup;
+	private WikiPageFactory $wikiPageFactory;
+	private SearchEngineFactory $searchEngineFactory;
+	private CollationFactory $collationFactory;
 
 	/**
-	 * @param IContentHandlerFactory|null $contentHandlerFactory
-	 * @internal use @see SpecialPageFactory::getPage
+	 * @param IContentHandlerFactory $contentHandlerFactory
+	 * @param ContentModelChangeFactory $contentModelChangeFactory
+	 * @param SpamChecker $spamChecker
+	 * @param RevisionLookup $revisionLookup
+	 * @param WikiPageFactory $wikiPageFactory
+	 * @param SearchEngineFactory $searchEngineFactory
+	 * @param CollationFactory $collationFactory
 	 */
-	public function __construct( ?IContentHandlerFactory $contentHandlerFactory = null ) {
+	public function __construct(
+		IContentHandlerFactory $contentHandlerFactory,
+		ContentModelChangeFactory $contentModelChangeFactory,
+		SpamChecker $spamChecker,
+		RevisionLookup $revisionLookup,
+		WikiPageFactory $wikiPageFactory,
+		SearchEngineFactory $searchEngineFactory,
+		CollationFactory $collationFactory
+	) {
 		parent::__construct( 'ChangeContentModel', 'editcontentmodel' );
 
-		if ( !$contentHandlerFactory ) {
-			wfDeprecated( __METHOD__ . ' without $contentHandlerFactory parameter', '1.35' );
-			$contentHandlerFactory = MediaWikiServices::getInstance()->getContentHandlerFactory();
-		}
 		$this->contentHandlerFactory = $contentHandlerFactory;
+		$this->contentModelChangeFactory = $contentModelChangeFactory;
+		$this->spamChecker = $spamChecker;
+		$this->revisionLookup = $revisionLookup;
+		$this->wikiPageFactory = $wikiPageFactory;
+		$this->searchEngineFactory = $searchEngineFactory;
+		$this->collationFactory = $collationFactory;
 	}
 
 	public function doesWrites() {
@@ -51,7 +92,7 @@ class SpecialChangeContentModel extends FormSpecialPage {
 		}
 	}
 
-	protected function postText() {
+	protected function postHtml() {
 		$text = '';
 		if ( $this->title ) {
 			$contentModelLogPage = new LogPage( 'contentmodel' );
@@ -89,9 +130,7 @@ class SpecialChangeContentModel extends FormSpecialPage {
 		// an exception instead of a fatal
 		$titleObj = Title::newFromTextThrow( $title );
 
-		$this->oldRevision = MediaWikiServices::getInstance()
-			->getRevisionLookup()
-			->getRevisionByTitle( $titleObj ) ?: false;
+		$this->oldRevision = $this->revisionLookup->getRevisionByTitle( $titleObj ) ?: false;
 
 		if ( $this->oldRevision ) {
 			$oldContent = $this->oldRevision->getContent( SlotRecord::MAIN );
@@ -117,10 +156,8 @@ class SpecialChangeContentModel extends FormSpecialPage {
 			],
 		];
 		if ( $this->title ) {
-			$spamChecker = MediaWikiServices::getInstance()->getSpamChecker();
-
 			$options = $this->getOptionsForTitle( $this->title );
-			if ( empty( $options ) ) {
+			if ( !$options ) {
 				throw new ErrorPageError(
 					'changecontentmodel-emptymodels-title',
 					'changecontentmodel-emptymodels-text',
@@ -129,16 +166,10 @@ class SpecialChangeContentModel extends FormSpecialPage {
 			}
 			$fields['pagetitle']['readonly'] = true;
 			$fields += [
-				'currentmodel' => [
-					'type' => 'text',
-					'name' => 'currentcontentmodel',
-					'default' => $this->title->getContentModel(),
-					'label-message' => 'changecontentmodel-current-label',
-					'readonly' => true
-				],
 				'model' => [
 					'type' => 'select',
 					'name' => 'model',
+					'default' => $this->title->getContentModel(),
 					'options' => $options,
 					'label-message' => 'changecontentmodel-model-label'
 				],
@@ -146,13 +177,13 @@ class SpecialChangeContentModel extends FormSpecialPage {
 					'type' => 'text',
 					'maxlength' => CommentStore::COMMENT_CHARACTER_LIMIT,
 					'name' => 'reason',
-					'validation-callback' => function ( $reason ) use ( $spamChecker ) {
+					'validation-callback' => function ( $reason ) {
 						if ( $reason === null || $reason === '' ) {
 							// Null on form display, or no reason given
 							return true;
 						}
 
-						$match = $spamChecker->checkSummary( $reason );
+						$match = $this->spamChecker->checkSummary( $reason );
 
 						if ( $match ) {
 							return $this->msg( 'spamprotectionmatch', $match )->parse();
@@ -168,7 +199,12 @@ class SpecialChangeContentModel extends FormSpecialPage {
 		return $fields;
 	}
 
-	private function getOptionsForTitle( Title $title = null ) {
+	/**
+	 * @return array $options An array of data for an OOUI drop-down list. The array keys
+	 * correspond to the human readable text in the drop-down list. The array values
+	 * correspond to the <option value="">.
+	 */
+	private function getOptionsForTitle( ?Title $title = null ) {
 		$models = $this->contentHandlerFactory->getContentModels();
 		$options = [];
 		foreach ( $models as $model ) {
@@ -177,9 +213,6 @@ class SpecialChangeContentModel extends FormSpecialPage {
 				continue;
 			}
 			if ( $title ) {
-				if ( $title->getContentModel() === $model ) {
-					continue;
-				}
 				if ( !$handler->canBeUsedOn( $title ) ) {
 					continue;
 				}
@@ -187,31 +220,36 @@ class SpecialChangeContentModel extends FormSpecialPage {
 			$options[ContentHandler::getLocalizedName( $model )] = $model;
 		}
 
+		// Put the options in the drop-down list in alphabetical order.
+		// Sort by array key, case insensitive.
+		$collation = $this->collationFactory->getCategoryCollation();
+		uksort( $options, static function ( $a, $b ) use ( $collation ) {
+			$a = $collation->getSortKey( $a );
+			$b = $collation->getSortKey( $b );
+			return strcmp( $a, $b );
+		} );
+
 		return $options;
 	}
 
 	public function onSubmit( array $data ) {
-		$user = $this->getUser();
 		$this->title = Title::newFromText( $data['pagetitle'] );
-		$page = WikiPage::factory( $this->title );
+		$page = $this->wikiPageFactory->newFromTitle( $this->title );
 
-		$changer = MediaWikiServices::getInstance()
-			->getContentModelChangeFactory()
-			->newContentModelChange(
-				$user,
+		$changer = $this->contentModelChangeFactory->newContentModelChange(
+				$this->getContext()->getAuthority(),
 				$page,
 				$data['model']
 			);
 
-		$errors = $changer->checkPermissions();
-		if ( $errors ) {
+		$permissionStatus = $changer->authorizeChange();
+		if ( !$permissionStatus->isGood() ) {
 			$out = $this->getOutput();
-			$wikitext = $out->formatPermissionsErrorMessage( $errors );
+			$wikitext = $out->formatPermissionStatus( $permissionStatus );
 			// Hack to get our wikitext parsed
 			return Status::newFatal( new RawMessage( '$1', [ $wikitext ] ) );
 		}
 
-		// Can also throw a ThrottledError, don't catch it
 		$status = $changer->doContentModelChange(
 			$this->getContext(),
 			$data['reason'],
@@ -223,7 +261,7 @@ class SpecialChangeContentModel extends FormSpecialPage {
 
 	public function onSuccess() {
 		$out = $this->getOutput();
-		$out->setPageTitle( $this->msg( 'changecontentmodel-success-title' ) );
+		$out->setPageTitleMsg( $this->msg( 'changecontentmodel-success-title' ) );
 		$out->addWikiMsg( 'changecontentmodel-success-text', $this->title );
 	}
 
@@ -236,10 +274,13 @@ class SpecialChangeContentModel extends FormSpecialPage {
 	 * @return string[] Matching subpages
 	 */
 	public function prefixSearchSubpages( $search, $limit, $offset ) {
-		return $this->prefixSearchString( $search, $limit, $offset );
+		return $this->prefixSearchString( $search, $limit, $offset, $this->searchEngineFactory );
 	}
 
 	protected function getGroupName() {
 		return 'pagetools';
 	}
 }
+
+/** @deprecated class alias since 1.41 */
+class_alias( SpecialChangeContentModel::class, 'SpecialChangeContentModel' );

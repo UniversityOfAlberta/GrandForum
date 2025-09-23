@@ -1,5 +1,7 @@
 <?php
 
+use MediaWiki\MediaWikiServices;
+
 function COL($value){
     return array("", $value);
 }
@@ -118,8 +120,8 @@ class DBFunctions {
     
     static function initDB(){
         if(DBFunctions::$dbr == null && DBFunctions::isReady()){
-            DBFunctions::$dbr = wfGetDB(DB_REPLICA);
-            DBFunctions::$dbw = wfGetDB(DB_PRIMARY);
+            DBFunctions::$dbr = MediaWikiServices::getInstance()->getConnectionProvider()->getReplicaDatabase();
+            DBFunctions::$dbw = MediaWikiServices::getInstance()->getConnectionProvider()->getPrimaryDatabase();
             DBFunctions::$mysqlnd = function_exists('mysqli_fetch_all');
         }
     }
@@ -176,16 +178,10 @@ class DBFunctions {
 		    }
 		    $peakMemBefore = memory_get_peak_usage(true)/1024/1024;
 		    $result = DBFunctions::$dbr->query($sql);
-		    
 	        $rows = array();
 	        if($result != null){
-	            if(DBFunctions::$mysqlnd){
-	                $rows = mysqli_fetch_all(ResultWrapper::unwrap($result), MYSQLI_ASSOC);
-	            }
-	            else{
-	                while ($row = mysqli_fetch_array(ResultWrapper::unwrap($result), MYSQLI_ASSOC)) {
-		                $rows[] = $row;
-	                }
+	            while($row=$result->fetchRow()){
+		            $rows[] = $row;
 	            }
 	        }
 	        $peakMemAfter = memory_get_peak_usage(true)/1024/1024;

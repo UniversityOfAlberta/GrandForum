@@ -1,7 +1,5 @@
 <?php
 /**
- * Simple version of LockManager based on using FS lock files.
- *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -18,14 +16,14 @@
  * http://www.gnu.org/copyleft/gpl.html
  *
  * @file
- * @ingroup LockManager
  */
 
 /**
- * Simple version of LockManager based on using FS lock files.
+ * Simple lock management based on server-local temporary files.
+ *
  * All locks are non-blocking, which avoids deadlocks.
  *
- * This should work fine for small sites running off one server.
+ * This should work fine for small sites running from a single web server.
  * Do not use this with 'lockDirectory' set to an NFS mount unless the
  * NFS client is at least version 2.6.12. Otherwise, the BSD flock()
  * locks will be ignored; see http://nfs.sourceforge.net/#section_d.
@@ -122,17 +120,18 @@ class FSLockManager extends LockManager {
 			if ( isset( $this->handles[$path] ) ) {
 				$handle = $this->handles[$path];
 			} else {
-				Wikimedia\suppressWarnings();
-				$handle = fopen( $this->getLockPath( $path ), 'a+' );
+				// phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged
+				$handle = @fopen( $this->getLockPath( $path ), 'a+' );
 				if ( !$handle && !is_dir( $this->lockDir ) ) {
-					// Create the lock directory in case it is missing
-					if ( mkdir( $this->lockDir, 0777, true ) ) {
-						$handle = fopen( $this->getLockPath( $path ), 'a+' ); // try again
+					// Create the lock directory and try again
+					// phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged
+					if ( @mkdir( $this->lockDir, 0777, true ) ) {
+						// phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged
+						$handle = @fopen( $this->getLockPath( $path ), 'a+' );
 					} else {
 						$this->logger->error( "Cannot create directory '{$this->lockDir}'." );
 					}
 				}
-				Wikimedia\restoreWarnings();
 			}
 			if ( $handle ) {
 				// Either a shared or exclusive lock
@@ -143,7 +142,7 @@ class FSLockManager extends LockManager {
 					$this->handles[$path] = $handle;
 				} else {
 					fclose( $handle );
-					$status->fatal( 'lockmanager-fail-acquirelock', $path );
+					$status->fatal( 'lockmanager-fail-conflict' );
 				}
 			} else {
 				$status->fatal( 'lockmanager-fail-openlock', $path );
@@ -244,7 +243,7 @@ class FSLockManager extends LockManager {
 	}
 
 	/**
-	 * Make sure remaining locks get cleared for sanity
+	 * Make sure remaining locks get cleared
 	 */
 	public function __destruct() {
 		while ( count( $this->locksHeld ) ) {

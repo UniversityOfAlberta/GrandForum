@@ -224,7 +224,7 @@ class PersonDashboardTab extends AbstractEditableTab {
     
     function showDashboard($person, $visibility){
         global $wgUser;
-        if($wgUser->isLoggedIn()){
+        if($wgUser->isRegistered()){
             $dashboard = null;
             $me = Person::newFromId($wgUser->getId());
             if($person->isRoleAtLeast(NI) || ($person->isRole(INACTIVE) && $person->wasLastRoleAtLeast(NI))){

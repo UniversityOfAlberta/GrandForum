@@ -19,12 +19,24 @@
  * @ingroup Pager
  */
 
+namespace MediaWiki\Pager;
+
+use ImageGalleryBase;
+use ImageGalleryClassNotFoundException;
+use MediaWiki\Cache\LinkBatchFactory;
+use MediaWiki\Context\IContextSource;
+use MediaWiki\Html\FormOptions;
+use MediaWiki\Linker\LinkRenderer;
+use MediaWiki\Permissions\GroupPermissionsLookup;
+use MediaWiki\Title\Title;
+use MediaWiki\Title\TitleValue;
+use MediaWiki\User\ExternalUserNames;
+use RecentChange;
+use Wikimedia\Rdbms\IConnectionProvider;
+
 /**
  * @ingroup Pager
  */
-use MediaWiki\Linker\LinkRenderer;
-use MediaWiki\MediaWikiServices;
-
 class NewFilesPager extends RangeChronologicalPager {
 
 	/**
@@ -37,17 +49,33 @@ class NewFilesPager extends RangeChronologicalPager {
 	 */
 	protected $opts;
 
+	private GroupPermissionsLookup $groupPermissionsLookup;
+	private LinkBatchFactory $linkBatchFactory;
+
 	/**
 	 * @param IContextSource $context
-	 * @param FormOptions $opts
+	 * @param GroupPermissionsLookup $groupPermissionsLookup
+	 * @param LinkBatchFactory $linkBatchFactory
 	 * @param LinkRenderer $linkRenderer
+	 * @param IConnectionProvider $dbProvider
+	 * @param FormOptions $opts
 	 */
-	public function __construct( IContextSource $context, FormOptions $opts,
-		LinkRenderer $linkRenderer
+	public function __construct(
+		IContextSource $context,
+		GroupPermissionsLookup $groupPermissionsLookup,
+		LinkBatchFactory $linkBatchFactory,
+		LinkRenderer $linkRenderer,
+		IConnectionProvider $dbProvider,
+		FormOptions $opts
 	) {
+		// Set database before parent constructor to avoid setting it there
+		$this->mDb = $dbProvider->getReplicaDatabase();
+
 		parent::__construct( $context, $linkRenderer );
 
 		$this->opts = $opts;
+		$this->groupPermissionsLookup = $groupPermissionsLookup;
+		$this->linkBatchFactory = $linkBatchFactory;
 		$this->setLimit( $opts->getValue( 'limit' ) );
 
 		$startTimestamp = '';
@@ -64,33 +92,29 @@ class NewFilesPager extends RangeChronologicalPager {
 	public function getQueryInfo() {
 		$opts = $this->opts;
 		$conds = [];
-		$actorQuery = ActorMigration::newMigration()->getJoin( 'img_user' );
-		$tables = [ 'image' ] + $actorQuery['tables'];
-		$fields = [ 'img_name', 'img_timestamp' ] + $actorQuery['fields'];
+		$dbr = $this->getDatabase();
+		$tables = [ 'image', 'actor' ];
+		$fields = [ 'img_name', 'img_timestamp', 'actor_user', 'actor_name' ];
 		$options = [];
-		$jconds = $actorQuery['joins'];
+		$jconds = [ 'actor' => [ 'JOIN', 'actor_id=img_actor' ] ];
 
 		$user = $opts->getValue( 'user' );
 		if ( $user !== '' ) {
-			$conds[] = ActorMigration::newMigration()
-				->getWhere( wfGetDB( DB_REPLICA ), 'img_user', User::newFromName( $user, false ) )['conds'];
+			$conds['actor_name'] = $user;
 		}
 
 		if ( !$opts->getValue( 'showbots' ) ) {
-			$groupsWithBotPermission = MediaWikiServices::getInstance()
-				->getPermissionManager()
-				->getGroupsWithPermission( 'bot' );
+			$groupsWithBotPermission = $this->groupPermissionsLookup->getGroupsWithPermission( 'bot' );
 
 			if ( count( $groupsWithBotPermission ) ) {
-				$dbr = wfGetDB( DB_REPLICA );
 				$tables[] = 'user_groups';
-				$conds[] = 'ug_group IS NULL';
+				$conds['ug_group'] = null;
 				$jconds['user_groups'] = [
 					'LEFT JOIN',
 					[
 						'ug_group' => $groupsWithBotPermission,
-						'ug_user = ' . $actorQuery['fields']['img_user'],
-						'ug_expiry IS NULL OR ug_expiry >= ' . $dbr->addQuotes( $dbr->timestamp() )
+						'ug_user = actor_user',
+						$dbr->expr( 'ug_expiry', '=', null )->or( 'ug_expiry', '>=', $dbr->timestamp() )
 					]
 				];
 			}
@@ -107,7 +131,7 @@ class NewFilesPager extends RangeChronologicalPager {
 				'JOIN',
 				[
 					'rc_title = img_name',
-					'rc_actor = ' . $actorQuery['fields']['img_actor'],
+					'rc_actor = img_actor',
 					'rc_timestamp = img_timestamp'
 				]
 			];
@@ -115,20 +139,6 @@ class NewFilesPager extends RangeChronologicalPager {
 
 		if ( $opts->getValue( 'mediatype' ) ) {
 			$conds['img_media_type'] = $opts->getValue( 'mediatype' );
-		}
-
-		$likeVal = $opts->getValue( 'like' );
-		if ( !$this->getConfig()->get( 'MiserMode' ) && $likeVal !== '' ) {
-			$dbr = wfGetDB( DB_REPLICA );
-			$likeObj = Title::newFromText( $likeVal );
-			if ( $likeObj instanceof Title ) {
-				$like = $dbr->buildLike(
-					$dbr->anyString(),
-					strtolower( $likeObj->getDBkey() ),
-					$dbr->anyString()
-				);
-				$conds[] = "LOWER(img_name) $like";
-			}
 		}
 
 		// We're ordering by img_timestamp, but MariaDB sometimes likes to query other tables first
@@ -151,7 +161,7 @@ class NewFilesPager extends RangeChronologicalPager {
 	}
 
 	public function getIndexField() {
-		return 'img_timestamp';
+		return [ [ 'img_timestamp', 'img_name' ] ];
 	}
 
 	protected function getStartBody() {
@@ -160,7 +170,7 @@ class NewFilesPager extends RangeChronologicalPager {
 			$mode = $this->getRequest()->getVal( 'gallerymode', null );
 			try {
 				$this->gallery = ImageGalleryBase::factory( $mode, $this->getContext() );
-			} catch ( Exception $e ) {
+			} catch ( ImageGalleryClassNotFoundException $e ) {
 				// User specified something invalid, fallback to default.
 				$this->gallery = ImageGalleryBase::factory( false, $this->getContext() );
 			}
@@ -174,40 +184,46 @@ class NewFilesPager extends RangeChronologicalPager {
 	}
 
 	protected function doBatchLookups() {
-		$userIds = [];
 		$this->mResult->seek( 0 );
+		$lb = $this->linkBatchFactory->newLinkBatch();
 		foreach ( $this->mResult as $row ) {
-			$userIds[] = $row->img_user;
+			if ( $row->actor_user ) {
+				$lb->add( NS_USER, $row->actor_name );
+			}
 		}
-		// Do a link batch query for names and userpages
-		UserCache::singleton()->doQuery( $userIds, [ 'userpage' ], __METHOD__ );
+		$lb->execute();
 	}
 
 	public function formatRow( $row ) {
-		$name = $row->img_name;
-		$username = UserCache::singleton()->getUserName( $row->img_user, $row->img_user_text );
+		$username = $row->actor_name;
 
-		$title = Title::makeTitle( NS_FILE, $name );
 		if ( ExternalUserNames::isExternal( $username ) ) {
 			$ul = htmlspecialchars( $username );
 		} else {
 			$ul = $this->getLinkRenderer()->makeLink(
-				Title::makeTitle( NS_USER, $username ),
+				new TitleValue( NS_USER, $username ),
 				$username
 			);
 		}
 		$time = $this->getLanguage()->userTimeAndDate( $row->img_timestamp, $this->getUser() );
 
 		$this->gallery->add(
-			$title,
+			Title::makeTitle( NS_FILE, $row->img_name ),
 			"$ul<br />\n<i>"
-			. htmlspecialchars( $time )
-			. "</i><br />\n",
+				. htmlspecialchars( $time )
+				. "</i><br />\n",
 			'',
 			'',
 			[],
 			ImageGalleryBase::LOADING_LAZY
 		);
+
 		return '';
 	}
 }
+
+/**
+ * Retain the old class name for backwards compatibility.
+ * @deprecated since 1.41
+ */
+class_alias( NewFilesPager::class, 'NewFilesPager' );

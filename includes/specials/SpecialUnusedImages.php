@@ -1,7 +1,5 @@
 <?php
 /**
- * Implements Special:Unusedimages
- *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -18,17 +16,27 @@
  * http://www.gnu.org/copyleft/gpl.html
  *
  * @file
- * @ingroup SpecialPage
  */
 
+namespace MediaWiki\Specials;
+
+use MediaWiki\MainConfigNames;
+use MediaWiki\SpecialPage\ImageQueryPage;
+use Wikimedia\Rdbms\IConnectionProvider;
+
 /**
- * A special page that lists unused images
+ * List of unused images
  *
  * @ingroup SpecialPage
  */
 class SpecialUnusedImages extends ImageQueryPage {
-	public function __construct( $name = 'Unusedimages' ) {
-		parent::__construct( $name );
+
+	/**
+	 * @param IConnectionProvider $dbProvider
+	 */
+	public function __construct( IConnectionProvider $dbProvider ) {
+		parent::__construct( 'Unusedimages' );
+		$this->setDatabaseProvider( $dbProvider );
 	}
 
 	public function isExpensive() {
@@ -51,16 +59,16 @@ class SpecialUnusedImages extends ImageQueryPage {
 				'title' => 'img_name',
 				'value' => 'img_timestamp',
 			],
-			'conds' => [ 'il_to IS NULL' ],
+			'conds' => [ 'il_to' => null ],
 			'join_conds' => [ 'imagelinks' => [ 'LEFT JOIN', 'il_to = img_name' ] ]
 		];
 
-		if ( $this->getConfig()->get( 'CountCategorizedImagesAsUsed' ) ) {
+		if ( $this->getConfig()->get( MainConfigNames::CountCategorizedImagesAsUsed ) ) {
 			// Order is significant
 			$retval['tables'] = [ 'image', 'page', 'categorylinks',
 				'imagelinks' ];
 			$retval['conds']['page_namespace'] = NS_FILE;
-			$retval['conds'][] = 'cl_from IS NULL';
+			$retval['conds']['cl_from'] = null;
 			$retval['conds'][] = 'img_name = page_title';
 			$retval['join_conds']['categorylinks'] = [
 				'LEFT JOIN', 'cl_from = page_id' ];
@@ -76,7 +84,7 @@ class SpecialUnusedImages extends ImageQueryPage {
 	}
 
 	protected function getPageHeader() {
-		if ( $this->getConfig()->get( 'CountCategorizedImagesAsUsed' ) ) {
+		if ( $this->getConfig()->get( MainConfigNames::CountCategorizedImagesAsUsed ) ) {
 			return $this->msg(
 				'unusedimagestext-categorizedimgisused'
 			)->parseAsBlock();
@@ -88,3 +96,9 @@ class SpecialUnusedImages extends ImageQueryPage {
 		return 'maintenance';
 	}
 }
+
+/**
+ * Retain the old class name for backwards compatibility.
+ * @deprecated since 1.41
+ */
+class_alias( SpecialUnusedImages::class, 'SpecialUnusedImages' );

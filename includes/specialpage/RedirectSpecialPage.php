@@ -1,7 +1,5 @@
 <?php
 /**
- * Shortcuts to construct a special page alias.
- *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -18,8 +16,12 @@
  * http://www.gnu.org/copyleft/gpl.html
  *
  * @file
- * @ingroup SpecialPage
  */
+
+namespace MediaWiki\SpecialPage;
+
+use LogicException;
+use MediaWiki\Title\Title;
 
 /**
  * Shortcut to construct a special page alias.
@@ -29,10 +31,10 @@
  * @ingroup SpecialPage
  */
 abstract class RedirectSpecialPage extends UnlistedSpecialPage {
-	// Query parameters that can be passed through redirects
+	/** @var array Query parameters that can be passed through redirects */
 	protected $mAllowedRedirectParams = [];
 
-	// Query parameters added by redirects
+	/** @var array Query parameters added by redirects */
 	protected $mAddedRedirectParams = [];
 
 	/**
@@ -71,14 +73,14 @@ abstract class RedirectSpecialPage extends UnlistedSpecialPage {
 	 *
 	 * @stable to override
 	 * @param string|null $subpage
-	 * @return array|bool
+	 * @return array|false
 	 */
 	public function getRedirectQuery( $subpage ) {
 		$params = [];
 		$request = $this->getRequest();
 
 		foreach ( array_merge( $this->mAllowedRedirectParams,
-				[ 'uselang', 'useskin', 'debug', 'safemode' ] // parameters which can be passed to all pages
+				[ 'uselang', 'useskin', 'variant', 'debug', 'safemode' ] // parameters which can be passed to all pages
 			) as $arg ) {
 			if ( $request->getVal( $arg, null ) !== null ) {
 				$params[$arg] = $request->getVal( $arg );
@@ -114,6 +116,9 @@ abstract class RedirectSpecialPage extends UnlistedSpecialPage {
 	 */
 	protected function showNoRedirectPage() {
 		$class = static::class;
-		throw new MWException( "RedirectSpecialPage $class doesn't redirect!" );
+		throw new LogicException( "RedirectSpecialPage $class doesn't redirect!" );
 	}
 }
+
+/** @deprecated class alias since 1.41 */
+class_alias( RedirectSpecialPage::class, 'RedirectSpecialPage' );

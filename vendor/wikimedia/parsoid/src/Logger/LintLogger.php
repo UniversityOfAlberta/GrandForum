@@ -4,7 +4,6 @@ declare( strict_types = 1 );
 namespace Wikimedia\Parsoid\Logger;
 
 use Wikimedia\Parsoid\Config\Env;
-use Wikimedia\Parsoid\Utils\PHPUtils;
 use Wikimedia\Parsoid\Utils\Timing;
 use Wikimedia\Parsoid\Utils\TokenUtils;
 
@@ -18,9 +17,6 @@ class LintLogger {
 	/** @var Env */
 	private $env;
 
-	/**
-	 * @param Env $env
-	 */
 	public function __construct( Env $env ) {
 		$this->env = $env;
 	}
@@ -72,7 +68,7 @@ class LintLogger {
 		foreach ( $lints as &$lint ) {
 			$dsr = &$lint['dsr'];
 			if ( ( $dsr[2] ?? 0 ) > 1 ) { // widths 0,1,null are fine
-				$dsr[2] = $dsr[2] - $dsr[0];
+				$dsr[2] -= $dsr[0];
 			}
 			if ( ( $dsr[3] ?? 0 ) > 1 ) { // widths 0,1,null are fine
 				$dsr[3] = $dsr[1] - $dsr[3];
@@ -90,35 +86,13 @@ class LintLogger {
 	public function logLintOutput() {
 		$env = $this->env;
 
-		if ( $env->noDataAccess() ) {
-			return;
-		}
-
 		// We only want to send to the MW API if this was a request to parse
 		// the full page.
 		if ( !$env->logLinterData ) {
 			return;
 		}
 
-		$pageConfig = $env->getPageConfig();
-
-		// Skip linting if we cannot lint it
-		if ( !$pageConfig->hasLintableContentModel() ) {
-			return;
-		}
-
-		$linting = $env->getSiteConfig()->linting();
-		$enabledBuffer = null;
-
-		if ( $linting === true ) {
-			$enabledBuffer = $env->getLints(); // Everything is enabled
-		} elseif ( is_array( $linting ) ) {
-			$enabledBuffer = array_filter( $env->getLints(), function ( $item ) use ( &$linting ) {
-				return array_search( $item['type'], $linting, true ) !== false;
-			} );
-		} else {
-			PHPUtils::unreachable( 'Why are we here? Linting is disabled.' );
-		}
+		$enabledBuffer = $env->getLints();
 
 		// Convert offsets to ucs2
 		$offsetType = $env->getCurrentOffsetType();
@@ -126,7 +100,7 @@ class LintLogger {
 			self::convertDSROffsets( $env, $enabledBuffer, $offsetType, 'ucs2' );
 		}
 
-		$env->getDataAccess()->logLinterData( $pageConfig, $enabledBuffer );
+		$env->getDataAccess()->logLinterData( $env->getPageConfig(), $enabledBuffer );
 	}
 
 }

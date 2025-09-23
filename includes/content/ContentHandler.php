@@ -26,14 +26,49 @@
  * @author Daniel Kinzler
  */
 
+namespace MediaWiki\Content;
+
+use Action;
+use DifferenceEngine;
+use DifferenceEngineSlotDiffRenderer;
+use InvalidArgumentException;
+use LogicException;
+use MediaWiki\CommentStore\CommentStore;
+use MediaWiki\Content\Renderer\ContentParseParams;
+use MediaWiki\Content\Transform\PreloadTransformParams;
+use MediaWiki\Content\Transform\PreSaveTransformParams;
+use MediaWiki\Context\IContextSource;
+use MediaWiki\Context\RequestContext;
+use MediaWiki\Deferred\DeferrableUpdate;
+use MediaWiki\Diff\TextDiffer\ManifoldTextDiffer;
+use MediaWiki\HookContainer\HookRunner;
 use MediaWiki\HookContainer\ProtectedHookAccessorTrait;
+use MediaWiki\Language\ILanguageConverter;
+use MediaWiki\Language\Language;
 use MediaWiki\Logger\LoggerFactory;
+use MediaWiki\MainConfigNames;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Page\ParserOutputAccess;
+use MediaWiki\Parser\ParserCache;
+use MediaWiki\Parser\ParserOutput;
 use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Revision\SlotRecord;
 use MediaWiki\Revision\SlotRenderingProvider;
 use MediaWiki\Search\ParserOutputSearchDataExtractor;
+use MediaWiki\Title\Title;
+use MWContentSerializationException;
+use MWException;
+use MWUnknownContentModelException;
+use SearchEngine;
+use SearchIndexField;
+use SlotDiffRenderer;
+use StatusValue;
+use TextSlotDiffRenderer;
+use UnexpectedValueException;
 use Wikimedia\Assert\Assert;
+use Wikimedia\Rdbms\IDBAccessObject;
+use Wikimedia\ScopedCallback;
+use WikiPage;
 
 /**
  * A content handler knows how do deal with a specific type of content on a wiki
@@ -69,28 +104,18 @@ abstract class ContentHandler {
 	 * If $content is an instance of TextContent, this method returns the flat
 	 * text as returned by $content->getText().
 	 *
-	 * If $content is not a TextContent object, the behavior of this method
-	 * depends on the global $wgContentHandlerTextFallback:
-	 * - If $wgContentHandlerTextFallback is 'fail' and $content is not a
-	 *   TextContent object, an MWException is thrown.
-	 * - If $wgContentHandlerTextFallback is 'serialize' and $content is not a
-	 *   TextContent object, $content->serialize() is called to get a string
-	 *   form of the content.
-	 * - If $wgContentHandlerTextFallback is 'ignore' and $content is not a
-	 *   TextContent object, this method returns null.
-	 * - otherwise, the behavior is undefined.
+	 * If $content is not a TextContent object, this method returns null.
 	 *
 	 * @since 1.21
 	 *
-	 * @param Content|null $content
+	 * @deprecated since 1.37, use Content::getText() for TextContent instances
+	 * instead. Hard deprecated since 1.43.
 	 *
-	 * @throws MWException If the content is not an instance of TextContent and
-	 * wgContentHandlerTextFallback was set to 'fail'.
+	 * @param Content|null $content
 	 * @return string|null Textual form of the content, if available.
 	 */
-	public static function getContentText( Content $content = null ) {
-		global $wgContentHandlerTextFallback;
-
+	public static function getContentText( ?Content $content = null ) {
+		wfDeprecated( __METHOD__, '1.37' );
 		if ( $content === null ) {
 			return '';
 		}
@@ -100,18 +125,6 @@ abstract class ContentHandler {
 		}
 
 		wfDebugLog( 'ContentHandler', 'Accessing ' . $content->getModel() . ' content as text!' );
-
-		if ( $wgContentHandlerTextFallback == 'fail' ) {
-			throw new MWException(
-				"Attempt to get text from Content with model " .
-				$content->getModel()
-			);
-		}
-
-		if ( $wgContentHandlerTextFallback == 'serialize' ) {
-			return $content->serialize();
-		}
-
 		return null;
 	}
 
@@ -134,24 +147,19 @@ abstract class ContentHandler {
 	 * @param string|null $format The format to use for deserialization. If not
 	 *    given, the model's default format is used.
 	 *
-	 * @throws MWException If model ID or format is not supported or if the text can not be
-	 * unserialized using the format.
 	 * @throws MWContentSerializationException
-	 * @return Content A Content object representing the text.	 *
+	 * @throws MWUnknownContentModelException
+	 * @return Content A Content object representing the text.
 	 */
-	public static function makeContent( $text, Title $title = null,
+	public static function makeContent( $text, ?Title $title = null,
 		$modelId = null, $format = null ) {
-		if ( $modelId === null ) {
-			if ( $title === null ) {
-				throw new MWException( "Must provide a Title object or a content model ID." );
-			}
-
-			$modelId = $title->getContentModel();
+		if ( !$title && !$modelId ) {
+			throw new InvalidArgumentException( "Must provide a Title object or a content model ID." );
 		}
 
 		return MediaWikiServices::getInstance()
 			->getContentHandlerFactory()
-			->getContentHandler( $modelId )
+			->getContentHandler( $modelId ?? $title->getContentModel() )
 			->unserializeContent( $text, $format );
 	}
 
@@ -181,39 +189,19 @@ abstract class ContentHandler {
 	 *
 	 * If none of the above applies, the wikitext model is used.
 	 *
-	 * Note: this is used by, and may thus not use, Title::getContentModel()
-	 *
 	 * @since 1.21
 	 * @deprecated since 1.33, use SlotRoleHandler::getDefaultModel() together with
-	 * SlotRoleRegistry::getRoleHandler().
+	 *   SlotRoleRegistry::getRoleHandler(). Hard deprecated since 1.43.
 	 *
 	 * @param Title $title
 	 *
 	 * @return string Default model name for the page given by $title
 	 */
 	public static function getDefaultModelFor( Title $title ) {
+		wfDeprecated( __METHOD__, '1.33' );
 		$slotRoleregistry = MediaWikiServices::getInstance()->getSlotRoleRegistry();
 		$mainSlotHandler = $slotRoleregistry->getRoleHandler( 'main' );
 		return $mainSlotHandler->getDefaultModel( $title );
-	}
-
-	/**
-	 * Returns the appropriate ContentHandler singleton for the given title.
-	 *
-	 * @since 1.21
-	 * @deprecated since 1.35, instead use
-	 *  ContentHandlerFactory::getContentHandler( $title->getContentModel() ).
-	 *
-	 * @param Title $title
-	 *
-	 * @return ContentHandler
-	 * @throws MWException
-	 * @throws MWUnknownContentModelException
-	 */
-	public static function getForTitle( Title $title ) {
-		return MediaWikiServices::getInstance()
-			->getContentHandlerFactory()
-			->getContentHandler( $title->getContentModel() );
 	}
 
 	/**
@@ -221,17 +209,18 @@ abstract class ContentHandler {
 	 * object.
 	 *
 	 * @deprecated since 1.35, instead use
-	 *  ContentHandlerFactory::getContentHandler( $content->getModel() ).
+	 *   ContentHandlerFactory::getContentHandler( $content->getModel() ).
+	 *   Hard deprecated since 1.43.
 	 *
 	 * @since 1.21
 	 *
 	 * @param Content $content
 	 *
 	 * @return ContentHandler
-	 * @throws MWException
 	 * @throws MWUnknownContentModelException
 	 */
 	public static function getForContent( Content $content ) {
+		wfDeprecated( __METHOD__, '1.35' );
 		return MediaWikiServices::getInstance()
 			->getContentHandlerFactory()
 			->getContentHandler( $content->getModel() );
@@ -252,35 +241,25 @@ abstract class ContentHandler {
 	 *
 	 * If no ContentHandler is defined for the desired $modelId, the
 	 * ContentHandler may be provided by the ContentHandlerForModelID hook.
-	 * If no ContentHandler can be determined, an MWException is raised.
+	 * If no ContentHandler can be determined, an MWUnknownContentModelException is raised.
 	 *
 	 * @since 1.21
 	 *
 	 * @deprecated since 1.35, use ContentHandlerFactory::getContentHandler
+	 *   Hard deprecated since 1.43.
 	 * @see  ContentHandlerFactory::getContentHandler()
 	 *
 	 * @param string $modelId The ID of the content model for which to get a
 	 *    handler. Use CONTENT_MODEL_XXX constants.
 	 *
-	 * @throws MWException For internal errors and problems in the configuration.
 	 * @throws MWUnknownContentModelException If no handler is known for the model ID.
 	 * @return ContentHandler The ContentHandler singleton for handling the model given by the ID.
 	 */
 	public static function getForModelID( $modelId ) {
+		wfDeprecated( __METHOD__, '1.35' );
 		return MediaWikiServices::getInstance()
 			->getContentHandlerFactory()
 			->getContentHandler( $modelId );
-	}
-
-	/**
-	 * @deprecated since 1.35 Please, use ContentHandlerFactory. Cleanup is not needed
-	 * @see ContentHandlerFactory
-	 *
-	 * Clean up handlers cache.
-	 */
-	public static function cleanupHandlersCache() {
-		// No-op: no longer needed, since the instance cache is in the
-		// ContentHandlerFactory service, and services get reset between tests
 	}
 
 	/**
@@ -290,16 +269,16 @@ abstract class ContentHandler {
 	 * have the form content-model-$name, where $name is getContentModelName( $id ).
 	 *
 	 * @param string $name The content model ID, as given by a CONTENT_MODEL_XXX
-	 *    constant or returned by Revision::getContentModel().
+	 *    constant or returned by Content::getModel() or SlotRecord::getModel().
 	 * @param Language|null $lang The language to parse the message in (since 1.26)
 	 *
-	 * @throws MWException If the model ID isn't known.
 	 * @return string The content model's localized name.
 	 */
-	public static function getLocalizedName( $name, Language $lang = null ) {
+	public static function getLocalizedName( $name, ?Language $lang = null ) {
 		// Messages: content-model-wikitext, content-model-text,
 		// content-model-javascript, content-model-css
-		$key = "content-model-$name";
+		// Lowercase the name as message keys need to be in lowercase, T358341
+		$key = "content-model-" . strtolower( $name ?? '' );
 
 		$msg = wfMessage( $key );
 		if ( $lang ) {
@@ -311,25 +290,25 @@ abstract class ContentHandler {
 
 	/**
 	 * @deprecated since 1.35, use ContentHandlerFactory::getContentModels
+	 *   Hard deprecated since 1.43.
 	 * @see ContentHandlerFactory::getContentModels
 	 *
 	 * @return string[]
-	 * @throws MWException
-	 * @throws MWUnknownContentModelException
 	 */
 	public static function getContentModels() {
+		wfDeprecated( __METHOD__, '1.35' );
 		return MediaWikiServices::getInstance()->getContentHandlerFactory()->getContentModels();
 	}
 
 	/**
 	 * @return string[]
-	 * @throws MWException
-	 * @throws MWUnknownContentModelException
 	 *
 	 * @deprecated since 1.35, use ContentHandlerFactory::getAllContentFormats
+	 *   Hard deprecated since 1.43.
 	 * @see ContentHandlerFactory::getAllContentFormats
 	 */
 	public static function getAllContentFormats() {
+		wfDeprecated( __METHOD__, '1.35' );
 		return MediaWikiServices::getInstance()->getContentHandlerFactory()->getAllContentFormats();
 	}
 
@@ -376,7 +355,7 @@ abstract class ContentHandler {
 	abstract public function serializeContent( Content $content, $format = null );
 
 	/**
-	 * Applies transformations on export (returns the blob unchanged per default).
+	 * Applies transformations on export (returns the blob unchanged by default).
 	 * Subclasses may override this to perform transformations such as conversion
 	 * of legacy formats or filtering of internal meta-data.
 	 *
@@ -406,7 +385,7 @@ abstract class ContentHandler {
 	abstract public function unserializeContent( $blob, $format = null );
 
 	/**
-	 * Apply import transformation (per default, returns $blob unchanged).
+	 * Apply import transformation (by default, returns $blob unchanged).
 	 * This gives subclasses an opportunity to transform data blobs on import.
 	 *
 	 * @stable to override
@@ -448,7 +427,7 @@ abstract class ContentHandler {
 	 * @param Title $destination The page to redirect to.
 	 * @param string $text Text to include in the redirect, if possible.
 	 *
-	 * @return Content Always null.
+	 * @return Content|null Always null.
 	 */
 	public function makeRedirectContent( Title $destination, $text = '' ) {
 		return null;
@@ -559,10 +538,13 @@ abstract class ContentHandler {
 	 * @stable to override
 	 * @since 1.21
 	 *
-	 * @return array An array mapping action names (typically "view", "edit", "history" etc.) to
-	 *  either the full qualified class name of an Action class, a callable taking ( Page $page,
-	 *  IContextSource $context = null ) as parameters and returning an Action object, or an actual
-	 *  Action object. An empty array in this default implementation.
+	 * @return array<string,class-string|callable|false|Action|array> An array mapping action names
+	 *  (typically "view", "edit", "history" etc.) to a specification according to
+	 *  {@see ActionFactory::getActionSpec}. Can be the full qualified class name of an Action
+	 *  class, a callable taking ( Article $article, IContextSource $context ) as parameters and
+	 *  returning an Action object, false to disable an action, an actual Action object,
+	 *  or an ObjectFactory specification array (can have 'class', 'services', etc.).
+	 *  An empty array in this default implementation.
 	 *
 	 * @see Action::factory
 	 */
@@ -581,7 +563,7 @@ abstract class ContentHandler {
 	 * (Note that in older versions of MediaWiki the hook documentation instructed extensions
 	 * to return false from the hook; you should not rely on always being able to decorate
 	 * the DifferenceEngine instance from the hook. If the owner of the content type wants to
-	 * decorare the instance, overriding this method is a safer approach.)
+	 * decorate the instance, overriding this method is a safer approach.)
 	 *
 	 * @todo This is page-level functionality so it should not belong to ContentHandler.
 	 *   Move it to a better place once one exists (e.g. PageTypeHandler).
@@ -615,7 +597,13 @@ abstract class ContentHandler {
 	 * @since 1.32
 	 *
 	 * @param IContextSource $context
-	 * @param array $options of the slot diff renderer (optional)
+	 * @param array $options An associative array of options passed to the SlotDiffRenderer:
+	 *   - diff-type: (string) The text diff format
+	 *   - contentLanguage: (string) The language code of the content language,
+	 *     to be passed to the TextDiffer constructor. This is ignored if a
+	 *     TextDiffer object is provided.
+	 *   - textDiffer: (TextDiffer) A TextDiffer object to use for text
+	 *     comparison.
 	 * @return SlotDiffRenderer
 	 */
 	final public function getSlotDiffRenderer( IContextSource $context, array $options = [] ) {
@@ -640,7 +628,8 @@ abstract class ContentHandler {
 
 	/**
 	 * Return the SlotDiffRenderer appropriate for this content handler.
-	 * @deprecated use getSlotDiffRendererWithOptions instead
+	 * @deprecated since 1.35; use getSlotDiffRendererWithOptions instead
+	 *   Emitting deprecation warnings since 1.41.
 	 * @param IContextSource $context
 	 * @return SlotDiffRenderer|null
 	 */
@@ -653,39 +642,64 @@ abstract class ContentHandler {
 	 * @stable to override
 	 *
 	 * @param IContextSource $context
-	 * @param array $options
+	 * @param array $options See getSlotDiffRenderer()
 	 *
 	 * @return SlotDiffRenderer
 	 */
 	protected function getSlotDiffRendererWithOptions( IContextSource $context, $options = [] ) {
 		$internalRenderer = $this->getSlotDiffRendererInternal( $context );
-		// `getSlotDiffRendererInternal` has been overriden by a class using the deprecated method.
+		// `getSlotDiffRendererInternal` has been overridden by a class using the deprecated method.
 		// Options will not work so exit early!
 		if ( $internalRenderer !== null ) {
+			wfDeprecated( 'ContentHandler::getSlotDiffRendererInternal', '1.35' );
 			return $internalRenderer;
 		}
+		return $this->createTextSlotDiffRenderer( $options );
+	}
 
-		$contentLanguage = MediaWikiServices::getInstance()->getContentLanguage();
-		$statsdDataFactory = MediaWikiServices::getInstance()->getStatsdDataFactory();
+	/**
+	 * Create a TextSlotDiffRenderer and inject dependencies
+	 *
+	 * @since 1.41
+	 * @param array $options See getSlotDiffRenderer()
+	 * @return TextSlotDiffRenderer
+	 */
+	final protected function createTextSlotDiffRenderer( array $options = [] ): TextSlotDiffRenderer {
 		$slotDiffRenderer = new TextSlotDiffRenderer();
-		$slotDiffRenderer->setStatsdDataFactory( $statsdDataFactory );
-		// XXX using the page language would be better, but it's unclear how that should be injected
-		$slotDiffRenderer->setLanguage( $contentLanguage );
 
-		$inline = ( $options['diff-type'] ?? '' ) === 'inline';
-		$engine = 'wikidiff2';
-		$engine = DifferenceEngine::getEngine();
+		$services = MediaWikiServices::getInstance();
+		$slotDiffRenderer->setStatsFactory( $services->getStatsFactory() );
+		$slotDiffRenderer->setHookContainer( $services->getHookContainer() );
+		$slotDiffRenderer->setContentModel( $this->getModelID() );
 
-		if ( $engine === 'php' ) {
-			$slotDiffRenderer->setEngine( TextSlotDiffRenderer::ENGINE_PHP );
-		} elseif ( $engine === 'wikidiff2' ) {
-			if ( $inline ) {
-				$slotDiffRenderer->setEngine( TextSlotDiffRenderer::ENGINE_WIKIDIFF2_INLINE );
-			} else {
-				$slotDiffRenderer->setEngine( TextSlotDiffRenderer::ENGINE_WIKIDIFF2 );
-			}
+		if ( isset( $options['textDiffer'] ) ) {
+			$textDiffer = $options['textDiffer'];
 		} else {
-			$slotDiffRenderer->setEngine( TextSlotDiffRenderer::ENGINE_EXTERNAL, $engine );
+			if ( isset( $options['contentLanguage'] ) ) {
+				$language = $services->getLanguageFactory()->getLanguage( $options['contentLanguage'] );
+			} else {
+				$language = $services->getContentLanguage();
+			}
+			$config = $services->getMainConfig();
+			$textDiffer = new ManifoldTextDiffer(
+				RequestContext::getMain(),
+				$language,
+				$config->get( MainConfigNames::DiffEngine ),
+				$config->get( MainConfigNames::ExternalDiffEngine ),
+				$config->get( MainConfigNames::Wikidiff2Options )
+			);
+		}
+		$format = $options['diff-type'] ?? 'table';
+		if ( !$textDiffer->hasFormat( $format ) ) {
+			// Maybe it would be better to throw an exception here, but at
+			// present, the value comes straight from user input without
+			// validation, so we have to fall back.
+			$format = 'table';
+		}
+		$slotDiffRenderer->setFormat( $format );
+		$slotDiffRenderer->setTextDiffer( $textDiffer );
+		if ( $options['inline-toggle'] ?? false ) {
+			$slotDiffRenderer->setInlineToggleEnabled();
 		}
 
 		return $slotDiffRenderer;
@@ -709,26 +723,27 @@ abstract class ContentHandler {
 	 * @param Title $title The page to determine the language for.
 	 * @param Content|null $content The page's content, if you have it handy, to avoid reloading it.
 	 *
-	 * @return Language The page's language
+	 * @return Language
 	 */
-	public function getPageLanguage( Title $title, Content $content = null ) {
-		global $wgLang;
+	public function getPageLanguage( Title $title, ?Content $content = null ) {
 		$services = MediaWikiServices::getInstance();
 		$pageLang = $services->getContentLanguage();
 
 		if ( $title->inNamespace( NS_MEDIAWIKI ) ) {
 			// Parse mediawiki messages with correct target language
-			list( /* $unused */, $lang ) = $services->getMessageCache()->figureMessage( $title->getText() );
+			[ /* $unused */, $lang ] = $services->getMessageCache()->figureMessage( $title->getText() );
 			$pageLang = $services->getLanguageFactory()->getLanguage( $lang );
 		}
 
-		// Simplify hook handlers by only passing objects of one type, in case nothing
-		// else has unstubbed the StubUserLang object by now.
-		StubObject::unstub( $wgLang );
+		// Unused, T299369
+		$userLang = null;
+		$this->getHookRunner()->onPageContentLanguage( $title, $pageLang, $userLang );
 
-		$this->getHookRunner()->onPageContentLanguage( $title, $pageLang, $wgLang );
+		if ( !$pageLang instanceof Language ) {
+			throw new UnexpectedValueException( 'onPageContentLanguage() hook provided an invalid $pageLang object.' );
+		}
 
-		return wfGetLangObj( $pageLang );
+		return $pageLang;
 	}
 
 	/**
@@ -745,14 +760,13 @@ abstract class ContentHandler {
 	 * that is, this method may load the content in order to determine the language.
 	 *
 	 * @stable to override
+	 * @deprecated since 1.42 Use ParserOutput::getLanguage instead. See also OutputPage::getContLangForJS.
 	 * @since 1.21
-	 *
 	 * @param Title $title The page to determine the language for.
 	 * @param Content|null $content The page's content, if you have it handy, to avoid reloading it.
-	 *
 	 * @return Language The page's language for viewing
 	 */
-	public function getPageViewLanguage( Title $title, Content $content = null ) {
+	public function getPageViewLanguage( Title $title, ?Content $content = null ) {
 		$pageLang = $this->getPageLanguage( $title, $content );
 
 		if ( $title->getNamespace() !== NS_MEDIAWIKI ) {
@@ -802,7 +816,7 @@ abstract class ContentHandler {
 	 * @stable to override
 	 * @since 1.21
 	 *
-	 * @return string
+	 * @return class-string<DifferenceEngine>
 	 */
 	protected function getDiffEngineClass() {
 		return DifferenceEngine::class;
@@ -821,7 +835,7 @@ abstract class ContentHandler {
 	 * @param Content $myContent One of the page's conflicting contents.
 	 * @param Content $yourContent One of the page's conflicting contents.
 	 *
-	 * @return Content|bool Always false.
+	 * @return Content|false Always false.
 	 */
 	public function merge3( Content $oldContent, Content $myContent, Content $yourContent ) {
 		return false;
@@ -832,7 +846,7 @@ abstract class ContentHandler {
 	 * @param Language $language Language of converter
 	 * @return ILanguageConverter
 	 */
-	private function getLanguageConverter( $language ) : ILanguageConverter {
+	private function getLanguageConverter( $language ): ILanguageConverter {
 		return MediaWikiServices::getInstance()->getLanguageConverterFactory()
 			->getLanguageConverter( $language );
 	}
@@ -850,8 +864,8 @@ abstract class ContentHandler {
 	 * @return string|null String key representing type of change, or null.
 	 */
 	private function getChangeType(
-		Content $oldContent = null,
-		Content $newContent = null,
+		?Content $oldContent = null,
+		?Content $newContent = null,
 		$flags = 0
 	) {
 		$oldTarget = $oldContent !== null ? $oldContent->getRedirectTarget() : null;
@@ -918,8 +932,8 @@ abstract class ContentHandler {
 	 * @return string An appropriate auto-summary, or an empty string.
 	 */
 	public function getAutosummary(
-		Content $oldContent = null,
-		Content $newContent = null,
+		?Content $oldContent = null,
+		?Content $newContent = null,
 		$flags = 0
 	) {
 		$changeType = $this->getChangeType( $oldContent, $newContent, $flags );
@@ -929,12 +943,16 @@ abstract class ContentHandler {
 			return '';
 		}
 
+		// Set the maximum auto-summary length to the general maximum summary length
+		// T221617
+		$summaryLimit = CommentStore::COMMENT_CHARACTER_LIMIT;
+
 		// Decide what kind of auto-summary is needed.
 		switch ( $changeType ) {
 			case 'new-redirect':
 				$newTarget = $newContent->getRedirectTarget();
 				$truncatedtext = $newContent->getTextForSummary(
-					250
+					$summaryLimit
 					- strlen( wfMessage( 'autoredircomment' )->inContentLanguage()->text() )
 					- strlen( $newTarget->getFullText() )
 				);
@@ -946,7 +964,7 @@ abstract class ContentHandler {
 				$newTarget = $newContent->getRedirectTarget();
 
 				$truncatedtext = $newContent->getTextForSummary(
-					250
+					$summaryLimit
 					- strlen( wfMessage( 'autosumm-changed-redirect-target' )
 						->inContentLanguage()->text() )
 					- strlen( $oldTarget->getFullText() )
@@ -960,7 +978,7 @@ abstract class ContentHandler {
 			case 'removed-redirect':
 				$oldTarget = $oldContent->getRedirectTarget();
 				$truncatedtext = $newContent->getTextForSummary(
-					250
+					$summaryLimit
 					- strlen( wfMessage( 'autosumm-removed-redirect' )
 						->inContentLanguage()->text() )
 					- strlen( $oldTarget->getFullText() ) );
@@ -970,7 +988,7 @@ abstract class ContentHandler {
 			case 'newpage':
 				// If they're making a new article, give its text, truncated, in the summary.
 				$truncatedtext = $newContent->getTextForSummary(
-					200 - strlen( wfMessage( 'autosumm-new' )->inContentLanguage()->text() ) );
+					$summaryLimit - strlen( wfMessage( 'autosumm-new' )->inContentLanguage()->text() ) );
 
 				return wfMessage( 'autosumm-new' )->rawParams( $truncatedtext )
 					->inContentLanguage()->text();
@@ -978,7 +996,7 @@ abstract class ContentHandler {
 				return wfMessage( 'autosumm-blank' )->inContentLanguage()->text();
 			case 'replace':
 				$truncatedtext = $newContent->getTextForSummary(
-					200 - strlen( wfMessage( 'autosumm-replace' )->inContentLanguage()->text() ) );
+					$summaryLimit - strlen( wfMessage( 'autosumm-replace' )->inContentLanguage()->text() ) );
 
 				return wfMessage( 'autosumm-replace' )->rawParams( $truncatedtext )
 					->inContentLanguage()->text();
@@ -1002,8 +1020,8 @@ abstract class ContentHandler {
 	 * @return string|null An appropriate tag, or null.
 	 */
 	public function getChangeTag(
-		Content $oldContent = null,
-		Content $newContent = null,
+		?Content $oldContent = null,
+		?Content $newContent = null,
 		$flags = 0
 	) {
 		$changeType = $this->getChangeType( $oldContent, $newContent, $flags );
@@ -1019,7 +1037,7 @@ abstract class ContentHandler {
 		$tag = 'mw-' . $changeType;
 
 		// Not all change types are tagged, so we check against the list of defined tags.
-		if ( in_array( $tag, ChangeTags::getSoftwareTags() ) ) {
+		if ( in_array( $tag, MediaWikiServices::getInstance()->getChangeTagsStore()->getSoftwareTags() ) ) {
 			return $tag;
 		}
 
@@ -1035,19 +1053,18 @@ abstract class ContentHandler {
 	 * @param Title $title The page's title
 	 * @param bool &$hasHistory Whether the page has a history
 	 *
-	 * @return mixed String containing deletion reason or empty string, or
+	 * @return string|false String containing deletion reason or empty string, or
 	 *    boolean false if no revision occurred
-	 *
-	 * @todo &$hasHistory is extremely ugly, it's here because
-	 * WikiPage::getAutoDeleteReason() and Article::generateReason()
-	 * have it / want it.
 	 */
-	public function getAutoDeleteReason( Title $title, &$hasHistory ) {
-		$dbr = wfGetDB( DB_REPLICA );
-		$revLookup = MediaWikiServices::getInstance()->getRevisionLookup();
+	public function getAutoDeleteReason( Title $title, &$hasHistory = false ) {
+		if ( func_num_args() === 2 ) {
+			wfDeprecated( __METHOD__ . ': $hasHistory parameter', '1.38' );
+		}
+		$dbr = MediaWikiServices::getInstance()->getConnectionProvider()->getReplicaDatabase();
+		$revStore = MediaWikiServices::getInstance()->getRevisionStore();
 
 		// Get the last revision
-		$revRecord = $revLookup->getRevisionByTitle( $title );
+		$revRecord = $revStore->getRevisionByTitle( $title );
 
 		if ( $revRecord === null ) {
 			return false;
@@ -1061,7 +1078,7 @@ abstract class ContentHandler {
 		// which can only be blank if there's a move/import/protect dummy
 		// revision involved
 		if ( !$content || $content->isEmpty() ) {
-			$prev = $revLookup->getPreviousRevision( $revRecord );
+			$prev = $revStore->getPreviousRevision( $revRecord );
 
 			if ( $prev ) {
 				$revRecord = $prev;
@@ -1074,26 +1091,21 @@ abstract class ContentHandler {
 
 		// Find out if there was only one contributor
 		// Only scan the last 20 revisions
-		$revQuery = MediaWikiServices::getInstance()->getRevisionStore()->getQueryInfo();
-		$res = $dbr->select(
-			$revQuery['tables'],
-			[ 'rev_user_text' => $revQuery['fields']['rev_user_text'] ],
-			[
+		$queryBuilder = $revStore->newSelectQueryBuilder( $dbr )
+			->where( [
 				'rev_page' => $title->getArticleID(),
 				$dbr->bitAnd( 'rev_deleted', RevisionRecord::DELETED_USER ) . ' = 0'
-			],
-			__METHOD__,
-			[ 'LIMIT' => 20 ],
-			$revQuery['joins']
-		);
+			] )
+			->limit( 20 );
+		$res = $queryBuilder->caller( __METHOD__ )->fetchResultSet();
 
-		if ( $res === false ) {
+		if ( !$res->numRows() ) {
 			// This page has no revisions, which is very weird
 			return false;
 		}
 
 		$hasHistory = ( $res->numRows() > 1 );
-		$row = $dbr->fetchObject( $res );
+		$row = $res->fetchObject();
 
 		if ( $row ) { // $row is false if the only contributor is hidden
 			$onlyAuthor = $row->rev_user_text;
@@ -1141,68 +1153,37 @@ abstract class ContentHandler {
 	}
 
 	/**
-	 * Get the Content object that needs to be saved in order to undo all revisions
-	 * between $undo and $undoafter. Revisions must belong to the same page,
-	 * must exist and must not be deleted.
+	 * Get the Content object that needs to be saved in order to undo all changes
+	 * between $undo and $undoafter.
 	 *
 	 * @stable to override
 	 * @since 1.21
 	 * @since 1.32 accepts Content objects for all parameters instead of Revision objects.
 	 *  Passing Revision objects is deprecated.
+	 * @since 1.37 only accepts Content objects
 	 *
-	 * @param Revision|Content $current The current text (passing a Revision is hard
-	 *    deprecated since 1.35)
-	 * @param Revision|Content $undo The content of the revision to undo (passing a Revision is
-	 *    hard deprecated since 1.35)
-	 * @param Revision|Content $undoafter Must be from an earlier revision than $undo (passing a
-	 *     Revision is hard deprecated since 1.35)
+	 * @param Content $currentContent The current text
+	 * @param Content $undoContent The content of the revision to undo
+	 * @param Content $undoAfterContent Must be from an earlier revision than $undo
 	 * @param bool $undoIsLatest Set true if $undo is from the current revision (since 1.32)
 	 *
 	 * @return Content|false Content on success, false on failure
 	 */
-	public function getUndoContent( $current, $undo, $undoafter, $undoIsLatest = false ) {
-		Assert::parameterType( Revision::class . '|' . Content::class, $current, '$current' );
-		if ( $current instanceof Content ) {
-			Assert::parameter( $undo instanceof Content, '$undo',
-				'Must be Content when $current is Content' );
-			Assert::parameter( $undoafter instanceof Content, '$undoafter',
-				'Must be Content when $current is Content' );
-			$cur_content = $current;
-			$undo_content = $undo;
-			$undoafter_content = $undoafter;
-		} else {
-			Assert::parameter( $undo instanceof Revision, '$undo',
-				'Must be Revision when $current is Revision' );
-			Assert::parameter( $undoafter instanceof Revision, '$undoafter',
-				'Must be Revision when $current is Revision' );
-
-			wfDeprecated( __METHOD__ . ' with Revision objects', '1.32' );
-
-			$cur_content = $current->getContent();
-
-			if ( empty( $cur_content ) ) {
-				return false; // no page
-			}
-
-			$undo_content = $undo->getContent();
-			$undoafter_content = $undoafter->getContent();
-
-			if ( !$undo_content || !$undoafter_content ) {
-				return false; // no content to undo
-			}
-
-			$undoIsLatest = $current->getId() === $undo->getId();
-		}
-
+	public function getUndoContent(
+		Content $currentContent,
+		Content $undoContent,
+		Content $undoAfterContent,
+		$undoIsLatest = false
+	) {
 		try {
-			$this->checkModelID( $cur_content->getModel() );
-			$this->checkModelID( $undo_content->getModel() );
+			$this->checkModelID( $currentContent->getModel() );
+			$this->checkModelID( $undoContent->getModel() );
 			if ( !$undoIsLatest ) {
 				// If we are undoing the most recent revision,
 				// its ok to revert content model changes. However
 				// if we are undoing a revision in the middle, then
 				// doing that will be confusing.
-				$this->checkModelID( $undoafter_content->getModel() );
+				$this->checkModelID( $undoAfterContent->getModel() );
 			}
 		} catch ( MWException $e ) {
 			// If the revisions have different content models
@@ -1210,12 +1191,12 @@ abstract class ContentHandler {
 			return false;
 		}
 
-		if ( $cur_content->equals( $undo_content ) ) {
+		if ( $currentContent->equals( $undoContent ) ) {
 			// No use doing a merge if it's just a straight revert.
-			return $undoafter_content;
+			return $undoAfterContent;
 		}
 
-		$undone_content = $this->merge3( $undo_content, $undoafter_content, $cur_content );
+		$undone_content = $this->merge3( $undoContent, $undoAfterContent, $currentContent );
 
 		return $undone_content;
 	}
@@ -1238,7 +1219,7 @@ abstract class ContentHandler {
 	 * This default implementation returns false.
 	 *
 	 * Content models that return true here should also implement
-	 * Content::getSection, Content::replaceSection, etc. to handle sections..
+	 * Content::getSection, Content::replaceSection, etc. to handle sections.
 	 *
 	 * @stable to override
 	 *
@@ -1277,13 +1258,41 @@ abstract class ContentHandler {
 
 	/**
 	 * Return true if this content model supports direct editing, such as via EditPage.
+	 * This should return true for TextContent and its derivatives, and return false
+	 * for structured data content.
 	 *
 	 * @stable to override
 	 *
-	 * @return bool Default is false, and true for TextContent and it's derivatives.
+	 * @return bool Default is false.
 	 */
 	public function supportsDirectEditing() {
 		return false;
+	}
+
+	/**
+	 * If a non-existing page can be created with the contents from another (arbitrary) page being
+	 * preloaded in the editor, see {@see EditPage::getContentObject}. Only makes sense together
+	 * with {@see supportsDirectEditing}.
+	 *
+	 * @stable to override
+	 * @since 1.39
+	 *
+	 * @return bool
+	 */
+	public function supportsPreloadContent(): bool {
+		return false;
+	}
+
+	/**
+	 * Whether an edit on the content should trigger an HTML render and ParserCache entry.
+	 *
+	 * @stable to override
+	 * @since 1.37
+	 *
+	 * @return bool true if edit should trigger an HTML render false otherwise
+	 */
+	public function generateHTMLOnEdit(): bool {
+		return true;
 	}
 
 	/**
@@ -1346,7 +1355,7 @@ abstract class ContentHandler {
 	 * @param SearchIndexField[] &$fields
 	 * @param SearchEngine $engine
 	 * @param string $name
-	 * @param int $type
+	 * @param string $type
 	 * @return SearchIndexField[] new field defs
 	 * @since 1.28
 	 */
@@ -1360,21 +1369,47 @@ abstract class ContentHandler {
 	 * as representation of this document.
 	 * Overriding class should call parent function or take care of calling
 	 * the SearchDataForIndex hook.
-	 * @stable to override
 	 *
+	 * The $output must be the result of a call to {@link getParserOutputForIndexing()}
+	 * on the same content handler. That method may return ParserOutput
+	 * {@link ParserOutput::hasText() without HTML}; this base implementation
+	 * does not rely on the HTML being present, so it is safe to call
+	 * even by subclasses that override {@link getParserOutputForIndexing()}
+	 * to skip HTML generation. On the other hand,
+	 * since the default implementation of {@link getParserOutputForIndexing()}
+	 * does generate HTML, subclasses are free to rely on the HTML here
+	 * if they do not override {@link getParserOutputForIndexing()}.
+	 *
+	 * @stable to override
 	 * @param WikiPage $page Page to index
 	 * @param ParserOutput $output
 	 * @param SearchEngine $engine Search engine for which we are indexing
-	 * @return array Map of name=>value for fields
+	 * @param RevisionRecord|null $revision Revision content to fetch if provided or use the latest revision
+	 *                                      from WikiPage::getRevisionRecord() if not
+	 * @return array Map of name=>value for fields, an empty array is returned if the latest
+	 *               revision cannot be retrieved.
 	 * @since 1.28
 	 */
 	public function getDataForSearchIndex(
 		WikiPage $page,
 		ParserOutput $output,
-		SearchEngine $engine
+		SearchEngine $engine,
+		?RevisionRecord $revision = null
 	) {
+		$revision ??= $page->getRevisionRecord();
+		if ( $revision === null ) {
+			LoggerFactory::getInstance( 'search' )->warning(
+				"Called getDataForSearchIndex on the page {page_id} for which the " .
+				"latest revision cannot be loaded.",
+				[ "page_id" => $page->getId() ]
+			);
+			return [];
+		}
+		Assert::invariant( $revision->getPageId() === $page->getId(),
+			'$revision and $page must target the same page_id' );
+
 		$fieldData = [];
-		$content = $page->getContent();
+		$content = $revision->getContent( SlotRecord::MAIN );
 
 		if ( $content ) {
 			$searchDataExtractor = new ParserOutputSearchDataExtractor();
@@ -1393,49 +1428,62 @@ abstract class ContentHandler {
 		}
 
 		$this->getHookRunner()->onSearchDataForIndex( $fieldData, $this, $page, $output, $engine );
+		$this->getHookRunner()->onSearchDataForIndex2( $fieldData, $this, $page, $output, $engine, $revision );
+
 		return $fieldData;
 	}
 
 	/**
 	 * Produce page output suitable for indexing.
+	 * Typically used with {@link getDataForSearchIndex()}.
 	 *
 	 * Specific content handlers may override it if they need different content handling.
+	 *
+	 * The default implementation returns output {@link ParserOutput::hasText() with HTML},
+	 * but callers should not rely on this, and subclasses may override this method
+	 * and skip HTML generation if it is not needed for indexing.
+	 * (In that case, they should not attempt to store the output in the $cache.)
 	 *
 	 * @stable to override
 	 *
 	 * @param WikiPage $page
-	 * @param ParserCache|null $cache
-	 * @return ParserOutput
+	 * @param ParserCache|null $cache deprecated since 1.38 and won't have any effect
+	 * @param RevisionRecord|null $revision
+	 * @return ParserOutput|null null when the ParserOutput cannot be obtained
+	 * @see ParserOutputAccess::getParserOutput() for failure modes
 	 */
-	public function getParserOutputForIndexing( WikiPage $page, ParserCache $cache = null ) {
+	public function getParserOutputForIndexing(
+		WikiPage $page,
+		?ParserCache $cache = null,
+		?RevisionRecord $revision = null
+	) {
 		// TODO: MCR: ContentHandler should be called per slot, not for the whole page.
 		// See T190066.
 		$parserOptions = $page->makeParserOptions( 'canonical' );
-		if ( $cache ) {
-			$parserOutput = $cache->get( $page, $parserOptions );
-		}
-
-		if ( empty( $parserOutput ) ) {
-			$renderer = MediaWikiServices::getInstance()->getRevisionRenderer();
-			$revisionRecord = $this->latestRevision( $page );
-			$parserOutput =
-				$renderer->getRenderedRevision(
-					$revisionRecord,
-					$parserOptions
-				)->getRevisionParserOutput();
-			if ( $cache ) {
-				$cache->save( $parserOutput, $page, $parserOptions );
-			}
-		}
-		return $parserOutput;
+		$parserOptions->setRenderReason( 'ParserOutputForIndexing' );
+		$parserOutputAccess = MediaWikiServices::getInstance()->getParserOutputAccess();
+		return $parserOutputAccess->getParserOutput(
+			$page,
+			$parserOptions,
+			$revision,
+			ParserOutputAccess::OPT_NO_UPDATE_CACHE
+		)->getValue();
 	}
 
-	private function latestRevision( WikiPage $page ): RevisionRecord {
+	/**
+	 * Get the latest revision of the given $page,
+	 * fetching it from the primary if necessary.
+	 *
+	 * @param WikiPage $page
+	 * @return RevisionRecord
+	 * @since 1.36 (previously private)
+	 */
+	protected function latestRevision( WikiPage $page ): RevisionRecord {
 		$revRecord = $page->getRevisionRecord();
 		if ( $revRecord == null ) {
 			// If the content represents a brand new page it's possible
-			// we need to fetch it from the master.
-			$page->loadPageData( WikiPage::READ_LATEST );
+			// we need to fetch it from the primary.
+			$page->loadPageData( IDBAccessObject::READ_LATEST );
 			$revRecord = $page->getRevisionRecord();
 			if ( $revRecord == null ) {
 				$text = $page->getTitle()->getPrefixedText();
@@ -1522,4 +1570,202 @@ abstract class ContentHandler {
 		return [];
 	}
 
+	/**
+	 * Returns a $content object with pre-save transformations applied (or the same
+	 * object if no transformations apply).
+	 *
+	 * @note Not stable to call other then from ContentHandler hierarchy.
+	 * Callers need to use ContentTransformer::preSaveTransform.
+	 * @stable to override
+	 * @since 1.37
+	 *
+	 * @param Content $content
+	 * @param PreSaveTransformParams $pstParams
+	 *
+	 * @return Content
+	 */
+	public function preSaveTransform(
+		Content $content,
+		PreSaveTransformParams $pstParams
+	): Content {
+		return $content;
+	}
+
+	/**
+	 * Returns a $content object with preload transformations applied (or the same
+	 * object if no transformations apply).
+	 *
+	 * @note Not stable to call other then from ContentHandler hierarchy.
+	 * Callers need to use ContentTransformer::preLoadTransform.
+	 * @stable to override
+	 * @since 1.37
+	 *
+	 * @param Content $content
+	 * @param PreloadTransformParams $pltParams
+	 *
+	 * @return Content
+	 */
+	public function preloadTransform(
+		Content $content,
+		PreloadTransformParams $pltParams
+	): Content {
+		return $content;
+	}
+
+	/**
+	 * Validate content for saving it.
+	 *
+	 * This may be used to check the content's consistency with global state. This function should
+	 * NOT write any information to the database.
+	 *
+	 * Note that this method will usually be called inside the same transaction
+	 * bracket that will be used to save the new revision, so the revision passed
+	 * in is probably unsaved (has no id) and might belong to unsaved page.
+	 *
+	 * @since 1.38
+	 * @stable to override
+	 *
+	 * @param Content $content
+	 * @param ValidationParams $validationParams
+	 *
+	 * @return StatusValue A status object indicating if content can be saved in the given revision.
+	 */
+	public function validateSave(
+		Content $content,
+		ValidationParams $validationParams
+	) {
+		if ( $content->isValid() ) {
+			return StatusValue::newGood();
+		} else {
+			return StatusValue::newFatal( "invalid-content-data" );
+		}
+	}
+
+	/**
+	 * Returns a ParserOutput object containing information derived from this content.
+	 * Most importantly, unless $cpoParams->getGenerateHtml was false, the return value contains an
+	 * HTML representation of the content.
+	 *
+	 * Subclasses that want to control the parser output may override
+	 * fillParserOutput() instead.
+	 *
+	 *
+	 *
+	 * @since 1.38
+	 *
+	 * @param Content $content
+	 * @param ContentParseParams $cpoParams
+	 * @return ParserOutput Containing information derived from this content.
+	 */
+	public function getParserOutput(
+		Content $content,
+		ContentParseParams $cpoParams
+	) {
+		$services = MediaWikiServices::getInstance();
+		$title = $services->getTitleFactory()->newFromPageReference( $cpoParams->getPage() );
+		$parserOptions = $cpoParams->getParserOptions();
+
+		if ( $parserOptions->getIsPreview() ) {
+			$scopedCallback = $parserOptions->setupFakeRevision( $title, $content, $parserOptions->getUserIdentity() );
+		}
+
+		$hookRunner = new HookRunner( $services->getHookContainer() );
+
+		$po = new ParserOutput();
+
+		// Initialize to the page language
+		$po->setLanguage( $title->getPageLanguage() );
+
+		$parserOptions->registerWatcher( [ &$po, 'recordOption' ] );
+		if ( $hookRunner->onContentGetParserOutput(
+			// FIXME $cpoParams->getRevId() may be null here?
+			// @phan-suppress-next-line PhanTypeMismatchArgumentNullable
+			$content, $title, $cpoParams->getRevId(), $parserOptions, $cpoParams->getGenerateHtml(), $po )
+		) {
+			// Save and restore the old value, just in case something is reusing
+			// the ParserOptions object in some weird way.
+			$oldRedir = $parserOptions->getRedirectTarget();
+			$parserOptions->setRedirectTarget( $content->getRedirectTarget() );
+
+			$po->resetParseStartTime();
+			$this->fillParserOutput(
+				$content,
+				$cpoParams,
+				$po
+			);
+			$po->recordTimeProfile();
+
+			MediaWikiServices::getInstance()->get( '_ParserObserver' )->notifyParse(
+				$title,
+				$cpoParams->getRevId(),
+				$parserOptions,
+				$content,
+				$po
+			);
+			$parserOptions->setRedirectTarget( $oldRedir );
+		}
+
+		$hookRunner->onContentAlterParserOutput( $content, $title, $po );
+		$parserOptions->registerWatcher( null );
+		if ( isset( $scopedCallback ) ) {
+			ScopedCallback::consume( $scopedCallback );
+		}
+
+		return $po;
+	}
+
+	/**
+	 * A temporary layer to move AbstractContent::fillParserOutput to ContentHandler::fillParserOutput
+	 *
+	 * @internal only core AbstractContent::fillParserOutput implementations need to call this.
+	 * @since 1.38
+	 * @param Content $content
+	 * @param ContentParseParams $cpoParams
+	 * @param ParserOutput &$output The output object to fill (reference).
+	 */
+	public function fillParserOutputInternal(
+		Content $content,
+		ContentParseParams $cpoParams,
+		ParserOutput &$output
+	) {
+		$this->fillParserOutput( $content, $cpoParams, $output );
+	}
+
+	/**
+	 * Fills the provided ParserOutput with information derived from the content.
+	 * Unless $cpoParams->getGenerateHtml() was false,
+	 * this includes an HTML representation of the content.
+	 *
+	 * If $cpoParams->getGenerateHtml() is false, and you chose not to generate
+	 * html, the ParserOutput must have a text of null. If the
+	 * text of the ParserOutput object is anything other than null (even if ''),
+	 * it is assumed that you don't support not generating html, and that it is
+	 * safe to reuse the parser output for calls expecting that html was generated.
+	 *
+	 * Subclasses are expected to override this method.
+	 *
+	 * This placeholder implementation always throws an exception.
+	 *
+	 * @stable to override
+	 *
+	 * @since 1.38
+	 * @param Content $content
+	 * @param ContentParseParams $cpoParams
+	 * @param ParserOutput &$output The output object to fill (reference).
+	 * Most implementations should modify the output object passed in here;
+	 * if you choose to replace it with a fresh object instead,
+	 * make sure you call {@link ParserOutput::resetParseStartTime()} on it.
+	 */
+	protected function fillParserOutput(
+		Content $content,
+		ContentParseParams $cpoParams,
+		ParserOutput &$output
+	) {
+		// Subclasses must override fillParserOutput() to directly don't fail.
+		throw new LogicException( 'Subclasses of ContentHandler must override fillParserOutput!' );
+	}
+
 }
+
+/** @deprecated class alias since 1.43 */
+class_alias( ContentHandler::class, 'ContentHandler' );

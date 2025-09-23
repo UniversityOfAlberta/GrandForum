@@ -23,9 +23,9 @@
  * @todo Make this more useful, right now just dumps content language
  */
 
-use MediaWiki\MediaWikiServices;
-
+// @codeCoverageIgnoreStart
 require_once __DIR__ . '/../Maintenance.php';
+// @codeCoverageIgnoreEnd
 
 /**
  * Maintenance script that dumps an entire language, using the keys from English.
@@ -34,19 +34,16 @@ require_once __DIR__ . '/../Maintenance.php';
  */
 class DumpMessages extends Maintenance {
 
-	/** @var LocalisationCache */
-	private $localisationCache;
-
 	public function __construct() {
 		parent::__construct();
 		$this->addDescription( 'Dump an entire language, using the keys from English' );
-		$this->localisationCache = MediaWikiServices::getInstance()->getLocalisationCache();
 	}
 
 	public function execute() {
 		$messages = [];
-		$localisationMessagesEn = $this->localisationCache->getItem( 'en', 'messages' );
-		foreach ( array_keys( $localisationMessagesEn ) as $key ) {
+		$localisationCache = $this->getServiceContainer()->getLocalisationCache();
+		$localisationMessagesEn = $localisationCache->getItem( 'en', 'messages' );
+		foreach ( $localisationMessagesEn as $key => $_ ) {
 			$messages[$key] = wfMessage( $key )->text();
 		}
 		$this->output( "MediaWiki " . MW_VERSION . " language file\n" );
@@ -54,5 +51,7 @@ class DumpMessages extends Maintenance {
 	}
 }
 
+// @codeCoverageIgnoreStart
 $maintClass = DumpMessages::class;
 require_once RUN_MAINTENANCE_IF_MAIN;
+// @codeCoverageIgnoreEnd

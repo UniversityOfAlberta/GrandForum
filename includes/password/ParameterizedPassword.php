@@ -22,9 +22,11 @@
 
 declare( strict_types = 1 );
 
+namespace MediaWiki\Password;
+
 /**
  * Helper class for password hash types that have a delimited set of parameters
- * inside of the hash.
+ * inside the hash.
  *
  * All passwords are in the form of :<TYPE>:... as explained in the main Password
  * class. This class is for hashes in the form of :<TYPE>:<PARAM1>:<PARAM2>:... where
@@ -47,14 +49,14 @@ abstract class ParameterizedPassword extends Password {
 	/**
 	 * Extra arguments that were found in the hash. This may or may not make
 	 * the hash invalid.
-	 * @var array
+	 * @var string[]
 	 */
 	protected $args = [];
 
 	/**
 	 * @inheritDoc
 	 */
-	protected function parseHash( ?string $hash ) : void {
+	protected function parseHash( ?string $hash ): void {
 		parent::parseHash( $hash );
 
 		if ( $hash === null ) {
@@ -83,11 +85,11 @@ abstract class ParameterizedPassword extends Password {
 		}
 	}
 
-	public function needsUpdate() : bool {
+	public function needsUpdate(): bool {
 		return $this->params !== $this->getDefaultParams();
 	}
 
-	public function toString() : string {
+	public function toString(): string {
 		$str = ':' . $this->config['type'] . ':';
 
 		if ( count( $this->params ) || count( $this->args ) ) {
@@ -105,7 +107,7 @@ abstract class ParameterizedPassword extends Password {
 	 *
 	 * @return string
 	 */
-	abstract protected function getDelimiter() : string;
+	abstract protected function getDelimiter(): string;
 
 	/**
 	 * Return an ordered array of default parameters for this password hash
@@ -122,5 +124,8 @@ abstract class ParameterizedPassword extends Password {
 	 *
 	 * @return array
 	 */
-	abstract protected function getDefaultParams() : array;
+	abstract protected function getDefaultParams(): array;
 }
+
+/** @deprecated since 1.43 use MediaWiki\\Password\\ParameterizedPassword */
+class_alias( ParameterizedPassword::class, 'ParameterizedPassword' );

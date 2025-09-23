@@ -28,7 +28,15 @@
  * @ingroup Maintenance
  */
 
+use MediaWiki\Content\WikitextContent;
+use MediaWiki\Parser\ParserOptions;
+use MediaWiki\User\User;
+use Wikimedia\Diff\Diff;
+use Wikimedia\Diff\UnifiedDiffFormatter;
+
+// @codeCoverageIgnoreStart
 require_once __DIR__ . '/dumpIterator.php';
+// @codeCoverageIgnoreEnd
 
 /**
  * Maintenance script to take page text out of an XML dump file and render
@@ -38,9 +46,10 @@ require_once __DIR__ . '/dumpIterator.php';
  */
 class CompareParsers extends DumpIterator {
 
+	/** @var int */
 	private $count = 0;
-	/** @var bool */
-	private $saveFailed;
+	/** @var string|false */
+	private $saveFailed = false;
 	/** @var bool */
 	private $stripParametersEnabled;
 	/** @var bool */
@@ -54,7 +63,6 @@ class CompareParsers extends DumpIterator {
 
 	public function __construct() {
 		parent::__construct();
-		$this->saveFailed = false;
 		$this->addDescription( 'Run a file or dump with several parsers' );
 		$this->addOption( 'parser1', 'The first parser to compare.', true, true );
 		$this->addOption( 'parser2', 'The second parser to compare.', true, true );
@@ -166,11 +174,14 @@ class CompareParsers extends DumpIterator {
 				);
 			}
 			if ( $this->showDiff ) {
-				$this->output( wfDiff(
-					$this->stripParameters( $output1->getText() ),
-					$this->stripParameters( $output2->getText() ),
-					''
-				) );
+				$diffs = new Diff(
+					explode( "\n", $this->stripParameters( $output1->getText() ) ),
+					explode( "\n", $this->stripParameters( $output2->getText() ) )
+				);
+				$formatter = new UnifiedDiffFormatter();
+				$unifiedDiff = $formatter->format( $diffs );
+
+				$this->output( $unifiedDiff );
 			}
 		} else {
 			$this->output( $title->getPrefixedText() . "\tOK\n" );
@@ -182,7 +193,7 @@ class CompareParsers extends DumpIterator {
 	}
 
 	private static function checkParserLocally( $parserName ) {
-		/* Look for the parser in a file appropiately named in the current folder */
+		/* Look for the parser in a file appropriately named in the current folder */
 		if ( !class_exists( $parserName ) && file_exists( "$parserName.php" ) ) {
 			global $wgAutoloadClasses;
 			$wgAutoloadClasses[$parserName] = realpath( '.' ) . "/$parserName.php";
@@ -190,5 +201,7 @@ class CompareParsers extends DumpIterator {
 	}
 }
 
+// @codeCoverageIgnoreStart
 $maintClass = CompareParsers::class;
 require_once RUN_MAINTENANCE_IF_MAIN;
+// @codeCoverageIgnoreEnd

@@ -21,6 +21,9 @@
  * @ingroup Upload
  */
 
+use MediaWiki\Request\WebRequest;
+use MediaWiki\Request\WebRequestUpload;
+
 /**
  * Implements regular file uploads
  *
@@ -43,11 +46,12 @@ class UploadFromFile extends UploadBase {
 			$desiredDestName = $upload->getName();
 		}
 
+		// @phan-suppress-next-line PhanTypeMismatchArgumentNullable getName only null on failure
 		$this->initialize( $desiredDestName, $upload );
 	}
 
 	/**
-	 * Initialize from a filename and a WebRequestUpload
+	 * Initialize from a filename and a MediaWiki\Request\WebRequestUpload
 	 * @param string $name
 	 * @param WebRequestUpload $webRequestUpload
 	 */

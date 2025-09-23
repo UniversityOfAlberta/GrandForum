@@ -1,41 +1,44 @@
 <?php
+declare( strict_types = 1 );
 
 namespace Wikimedia\Parsoid\Mocks;
 
+use Wikimedia\Bcp47Code\Bcp47Code;
 use Wikimedia\Parsoid\Config\PageConfig;
 use Wikimedia\Parsoid\Config\PageContent;
+use Wikimedia\Parsoid\Config\SiteConfig;
+use Wikimedia\Parsoid\Core\LinkTarget;
+use Wikimedia\Parsoid\Utils\Title;
+use Wikimedia\Parsoid\Utils\Utils;
 
 class MockPageConfig extends PageConfig {
+	private SiteConfig $siteConfig;
 
-	/** @var PageContent|null */
+	/** @var ?PageContent */
 	private $content;
 
 	/** @var int */
 	private $pageid;
 
-	/** @var int */
-	private $pagens;
+	private Title $title;
 
-	/** @var string */
-	private $title;
+	private Bcp47Code $pagelanguage;
 
-	/** @var string|null */
-	private $pagelanguage;
-
-	/** @var string|null */
+	/** @var ?string */
 	private $pagelanguageDir;
 
 	/**
 	 * Construct a mock environment object for use in tests
+	 * @param SiteConfig $siteConfig
 	 * @param array $opts
-	 * @param PageContent|null $content
+	 * @param ?PageContent $content
 	 */
-	public function __construct( array $opts, ?PageContent $content ) {
+	public function __construct( SiteConfig $siteConfig, array $opts, ?PageContent $content ) {
+		$this->siteConfig = $siteConfig;
 		$this->content = $content;
-		$this->title = $opts['title'] ?? 'TestPage';
+		$this->title = Title::newFromText( $opts['title'] ?? 'TestPage', $siteConfig, $opts['pagens'] ?? null );
 		$this->pageid = $opts['pageid'] ?? -1;
-		$this->pagens = $opts['pagens'] ?? 0;
-		$this->pagelanguage = $opts['pageLanguage'] ?? null;
+		$this->pagelanguage = Utils::mwCodeToBcp47( $opts['pageLanguage'] ?? 'en' );
 		$this->pagelanguageDir = $opts['pageLanguageDir'] ?? null;
 	}
 
@@ -44,18 +47,9 @@ class MockPageConfig extends PageConfig {
 		return 'wikitext';
 	}
 
-	public function hasLintableContentModel(): bool {
-		return true;
-	}
-
 	/** @inheritDoc */
-	public function getTitle(): string {
+	public function getLinkTarget(): LinkTarget {
 		return $this->title;
-	}
-
-	/** @inheritDoc */
-	public function getNs(): int {
-		return $this->pagens;
 	}
 
 	/** @inheritDoc */
@@ -64,8 +58,8 @@ class MockPageConfig extends PageConfig {
 	}
 
 	/** @inheritDoc */
-	public function getPageLanguage(): string {
-		return $this->pagelanguage ?? 'en';
+	public function getPageLanguageBcp47(): Bcp47Code {
+		return $this->pagelanguage;
 	}
 
 	/** @inheritDoc */
@@ -90,11 +84,13 @@ class MockPageConfig extends PageConfig {
 
 	/** @inheritDoc */
 	public function getRevisionUser(): ?string {
+		// @phan-suppress-previous-line PhanPluginNeverReturnMethod
 		throw new \BadMethodCallException( 'Not implemented' );
 	}
 
 	/** @inheritDoc */
 	public function getRevisionUserId(): ?int {
+		// @phan-suppress-previous-line PhanPluginNeverReturnMethod
 		throw new \BadMethodCallException( 'Not implemented' );
 	}
 
@@ -105,6 +101,7 @@ class MockPageConfig extends PageConfig {
 
 	/** @inheritDoc */
 	public function getRevisionSize(): ?int {
+		// @phan-suppress-previous-line PhanPluginNeverReturnMethod
 		throw new \BadMethodCallException( 'Not implemented' );
 	}
 

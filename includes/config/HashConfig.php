@@ -20,12 +20,17 @@
  * @file
  */
 
+namespace MediaWiki\Config;
+
+use ArrayIterator;
+use Traversable;
+
 /**
  * A Config instance which stores all settings as a member variable
  *
  * @since 1.24
  */
-class HashConfig implements Config, MutableConfig {
+class HashConfig implements Config, MutableConfig, IterableConfig {
 
 	/**
 	 * Array of config settings
@@ -75,4 +80,33 @@ class HashConfig implements Config, MutableConfig {
 	public function set( $name, $value ) {
 		$this->settings[$name] = $value;
 	}
+
+	/**
+	 * @inheritDoc
+	 * @since 1.38
+	 * @return Traversable
+	 */
+	public function getIterator(): Traversable {
+		return new ArrayIterator( $this->settings );
+	}
+
+	/**
+	 * @inheritDoc
+	 * @since 1.38
+	 * @return string[]
+	 */
+	public function getNames(): array {
+		return array_keys( $this->settings );
+	}
+
+	/**
+	 * Clears all config variables.
+	 * @since 1.39
+	 */
+	public function clear() {
+		$this->settings = [];
+	}
 }
+
+/** @deprecated class alias since 1.41 */
+class_alias( HashConfig::class, 'HashConfig' );

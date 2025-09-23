@@ -2,12 +2,15 @@
 
 namespace MediaWiki\Storage\Hook;
 
-use Content;
-use ParserOutput;
-use User;
+use MediaWiki\Content\Content;
+use MediaWiki\Parser\ParserOutput;
+use MediaWiki\User\User;
 use WikiPage;
 
 /**
+ * This is a hook handler interface, see docs/Hooks.md.
+ * Use the hook name "ParserOutputStashForEdit" to register handlers implementing this interface.
+ *
  * @stable to implement
  * @ingroup Hooks
  */

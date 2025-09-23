@@ -2,11 +2,12 @@
 
 namespace Test\Parsoid\Language;
 
-use DOMDocument;
 use PHPUnit\Framework\TestCase;
+use Wikimedia\Bcp47Code\Bcp47CodeValue;
 use Wikimedia\LangConv\ReplacementMachine;
 use Wikimedia\Parsoid\Language\LanguageConverter;
 use Wikimedia\Parsoid\Mocks\MockEnv;
+use Wikimedia\Parsoid\Utils\DOMCompat;
 
 class EnTest extends TestCase {
 
@@ -40,7 +41,10 @@ class EnTest extends TestCase {
 	private static $machine;
 
 	public static function setUpBeforeClass(): void {
-		$lang = LanguageConverter::loadLanguage( new MockEnv( [] ), 'en' );
+		$lang = LanguageConverter::loadLanguage(
+			new MockEnv( [] ),
+			new Bcp47CodeValue( 'en' )
+		);
 		self::$machine = $lang->getConverter()->getMachine();
 	}
 
@@ -58,7 +62,7 @@ class EnTest extends TestCase {
 				continue;
 			}
 
-			$doc = new DOMDocument();
+			$doc = DOMCompat::newDocument( true );
 			$out = self::$machine->convert(
 				$doc, $input, $variantCode,
 				$invertCode ?? $this->getInvertCode( $variantCode )
@@ -69,7 +73,7 @@ class EnTest extends TestCase {
 	}
 
 	public function provideEn() {
-		return array_map( function ( $item ) {
+		return array_map( static function ( $item ) {
 			return [
 				$item['title'],
 				$item['output'],

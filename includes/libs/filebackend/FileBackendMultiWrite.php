@@ -21,6 +21,16 @@
  * @ingroup FileBackend
  */
 
+namespace Wikimedia\FileBackend;
+
+use InvalidArgumentException;
+use LockManager;
+use LogicException;
+use MediaWiki\Deferred\DeferredUpdates;
+use MediaWiki\Json\FormatJson;
+use Shellbox\Command\BoxedCommand;
+use StatusValue;
+use StringUtils;
 use Wikimedia\Timestamp\ConvertibleTimestamp;
 
 /**
@@ -34,6 +44,7 @@ use Wikimedia\Timestamp\ConvertibleTimestamp;
  * Only use this class when transitioning from one storage system to another.
  *
  * Read operations are only done on the 'master' backend for consistency.
+ * Except on getting list of thumbnails for write operations.
  * Write operations are performed on all backends, starting with the master.
  * This makes a best-effort to have transactional semantics, but since requests
  * may sometimes fail, the use of "autoResync" or background scripts to fix
@@ -68,7 +79,7 @@ class FileBackendMultiWrite extends FileBackend {
 
 	/**
 	 * Construct a proxy backend that consists of several internal backends.
-	 * Locking, journaling, and read-only checks are handled by the proxy backend.
+	 * Locking and read-only checks are handled by the proxy backend.
 	 *
 	 * Additional $config params include:
 	 *   - backends       : Array of backend config and multi-backend settings.
@@ -92,7 +103,6 @@ class FileBackendMultiWrite extends FileBackend {
 	 *                      any checks from "syncChecks" are still synchronous.
 	 *
 	 * @param array $config
-	 * @throws LogicException
 	 */
 	public function __construct( array $config ) {
 		parent::__construct( $config );
@@ -102,33 +112,32 @@ class FileBackendMultiWrite extends FileBackend {
 		// Construct backends here rather than via registration
 		// to keep these backends hidden from outside the proxy.
 		$namesUsed = [];
-		foreach ( $config['backends'] as $index => $config ) {
-			$name = $config['name'];
+		foreach ( $config['backends'] as $index => $beConfig ) {
+			$name = $beConfig['name'];
 			if ( isset( $namesUsed[$name] ) ) { // don't break FileOp predicates
 				throw new LogicException( "Two or more backends defined with the name $name." );
 			}
 			$namesUsed[$name] = 1;
-			// Alter certain sub-backend settings for sanity
-			unset( $config['readOnly'] ); // use proxy backend setting
-			unset( $config['fileJournal'] ); // use proxy backend journal
-			unset( $config['lockManager'] ); // lock under proxy backend
-			$config['domainId'] = $this->domainId; // use the proxy backend wiki ID
-			if ( !empty( $config['isMultiMaster'] ) ) {
+			// Alter certain sub-backend settings
+			unset( $beConfig['readOnly'] ); // use proxy backend setting
+			unset( $beConfig['lockManager'] ); // lock under proxy backend
+			$beConfig['domainId'] = $this->domainId; // use the proxy backend wiki ID
+			$beConfig['logger'] = $this->logger; // use the proxy backend logger
+			if ( !empty( $beConfig['isMultiMaster'] ) ) {
 				if ( $this->masterIndex >= 0 ) {
 					throw new LogicException( 'More than one master backend defined.' );
 				}
 				$this->masterIndex = $index; // this is the "master"
-				$config['fileJournal'] = $this->fileJournal; // log under proxy backend
 			}
-			if ( !empty( $config['readAffinity'] ) ) {
+			if ( !empty( $beConfig['readAffinity'] ) ) {
 				$this->readIndex = $index; // prefer this for reads
 			}
 			// Create sub-backend object
-			if ( !isset( $config['class'] ) ) {
+			if ( !isset( $beConfig['class'] ) ) {
 				throw new InvalidArgumentException( 'No class given for a backend config.' );
 			}
-			$class = $config['class'];
-			$this->backends[$index] = new $class( $config );
+			$class = $beConfig['class'];
+			$this->backends[$index] = new $class( $beConfig );
 		}
 		if ( $this->masterIndex < 0 ) { // need backends and must have a master
 			throw new LogicException( 'No master backend defined.' );
@@ -141,6 +150,7 @@ class FileBackendMultiWrite extends FileBackend {
 	final protected function doOperationsInternal( array $ops, array $opts ) {
 		$status = $this->newStatus();
 
+		$fname = __METHOD__;
 		$mbe = $this->backends[$this->masterIndex]; // convenience
 
 		// Acquire any locks as needed
@@ -165,7 +175,7 @@ class FileBackendMultiWrite extends FileBackend {
 		$syncStatus = $this->consistencyCheck( $relevantPaths );
 		if ( !$syncStatus->isOK() ) {
 			$this->logger->error(
-				__METHOD__ . ": failed sync check: " . FormatJson::encode( $relevantPaths )
+				"$fname: failed sync check: " . FormatJson::encode( $relevantPaths )
 			);
 			// Try to resync the clone backends to the master on the spot
 			if (
@@ -194,17 +204,19 @@ class FileBackendMultiWrite extends FileBackend {
 				if ( $this->asyncWrites && !$this->hasVolatileSources( $ops ) ) {
 					// Bind $scopeLock to the callback to preserve locks
 					DeferredUpdates::addCallableUpdate(
-						function () use ( $backend, $realOps, $opts, $scopeLock, $relevantPaths ) {
-							$this->logger->error(
-								"'{$backend->getName()}' async replication; paths: " .
+						function () use (
+							$backend, $realOps, $opts, $scopeLock, $relevantPaths, $fname
+						) {
+							$this->logger->debug(
+								"$fname: '{$backend->getName()}' async replication; paths: " .
 								FormatJson::encode( $relevantPaths )
 							);
 							$backend->doOperations( $realOps, $opts );
 						}
 					);
 				} else {
-					$this->logger->error(
-						"'{$backend->getName()}' sync replication; paths: " .
+					$this->logger->debug(
+						"$fname: '{$backend->getName()}' sync replication; paths: " .
 						FormatJson::encode( $relevantPaths )
 					);
 					$status->merge( $backend->doOperations( $realOps, $opts ) );
@@ -286,8 +298,8 @@ class FileBackendMultiWrite extends FileBackend {
 					} elseif (
 						( $this->syncChecks & self::CHECK_TIME ) &&
 						abs(
-							ConvertibleTimestamp::convert( TS_UNIX, $masterStat['mtime'] ) -
-							ConvertibleTimestamp::convert( TS_UNIX, $cloneStat['mtime'] )
+							(int)ConvertibleTimestamp::convert( TS_UNIX, $masterStat['mtime'] ) -
+							(int)ConvertibleTimestamp::convert( TS_UNIX, $cloneStat['mtime'] )
 						) > 30
 					) {
 						// File in the clone backend is significantly newer or older
@@ -417,6 +429,7 @@ class FileBackendMultiWrite extends FileBackend {
 					if ( $resyncMode === 'conservative' ) {
 						// Do not delete stray files; reduces the risk of data loss
 						$status->fatal( 'backend-fail-synced', $path );
+						$this->logger->error( "$fname: not allowed to delete file '$clonePath'" );
 					} else {
 						// Delete the stay file from the clone backend
 						$status->merge( $cloneBackend->quickDelete( [ 'src' => $clonePath ] ) );
@@ -458,7 +471,7 @@ class FileBackendMultiWrite extends FileBackend {
 			}
 		}
 
-		return array_values( array_unique( array_filter( $paths, 'FileBackend::isStoragePath' ) ) );
+		return array_values( array_unique( array_filter( $paths, [ FileBackend::class, 'isStoragePath' ] ) ) );
 	}
 
 	/**
@@ -556,7 +569,7 @@ class FileBackendMultiWrite extends FileBackend {
 			$realOps = $this->substOpBatchPaths( $ops, $backend );
 			if ( $this->asyncWrites && !$this->hasVolatileSources( $ops ) ) {
 				DeferredUpdates::addCallableUpdate(
-					function () use ( $backend, $realOps ) {
+					static function () use ( $backend, $realOps ) {
 						$backend->doQuickOperations( $realOps );
 					}
 				);
@@ -610,7 +623,7 @@ class FileBackendMultiWrite extends FileBackend {
 			$realParams = $this->substOpPaths( $params, $backend );
 			if ( $this->asyncWrites ) {
 				DeferredUpdates::addCallableUpdate(
-					function () use ( $backend, $method, $realParams ) {
+					static function () use ( $backend, $method, $realParams ) {
 						$backend->$method( $realParams );
 					}
 				);
@@ -738,6 +751,14 @@ class FileBackendMultiWrite extends FileBackend {
 		return $this->backends[$index]->getFileHttpUrl( $realParams );
 	}
 
+	public function addShellboxInputFile( BoxedCommand $command, string $boxedName,
+		array $params
+	) {
+		$index = $this->getReadIndexFromParams( $params );
+		$realParams = $this->substOpPaths( $params, $this->backends[$index] );
+		return $this->backends[$index]->addShellboxInputFile( $command, $boxedName, $realParams );
+	}
+
 	public function directoryExists( array $params ) {
 		$realParams = $this->substOpPaths( $params, $this->backends[$this->masterIndex] );
 
@@ -751,16 +772,37 @@ class FileBackendMultiWrite extends FileBackend {
 	}
 
 	public function getFileList( array $params ) {
-		$realParams = $this->substOpPaths( $params, $this->backends[$this->masterIndex] );
+		if ( isset( $params['forWrite'] ) && $params['forWrite'] ) {
+			return $this->getFileListForWrite( $params );
+		}
 
+		$realParams = $this->substOpPaths( $params, $this->backends[$this->masterIndex] );
 		return $this->backends[$this->masterIndex]->getFileList( $realParams );
+	}
+
+	private function getFileListForWrite( $params ) {
+		$files = [];
+		// Get the list of thumbnails from all backends to allow
+		// deleting all of them. Otherwise, old thumbnails existing on
+		// one backend only won't get updated in reupload (T331138).
+		foreach ( $this->backends as $backend ) {
+			$realParams = $this->substOpPaths( $params, $backend );
+			$iterator = $backend->getFileList( $realParams );
+			if ( $iterator !== null ) {
+				foreach ( $iterator as $file ) {
+					$files[] = $file;
+				}
+			}
+		}
+
+		return array_unique( $files );
 	}
 
 	public function getFeatures() {
 		return $this->backends[$this->masterIndex]->getFeatures();
 	}
 
-	public function clearCache( array $paths = null ) {
+	public function clearCache( ?array $paths = null ) {
 		foreach ( $this->backends as $backend ) {
 			$realPaths = is_array( $paths ) ? $this->substPaths( $paths, $backend ) : null;
 			$backend->clearCache( $realPaths );
@@ -808,3 +850,6 @@ class FileBackendMultiWrite extends FileBackend {
 		return !empty( $params['latest'] ) ? $this->masterIndex : $this->readIndex;
 	}
 }
+
+/** @deprecated class alias since 1.43 */
+class_alias( FileBackendMultiWrite::class, 'FileBackendMultiWrite' );

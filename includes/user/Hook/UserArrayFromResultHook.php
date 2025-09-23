@@ -2,10 +2,13 @@
 
 namespace MediaWiki\User\Hook;
 
-use UserArrayFromResult;
+use MediaWiki\User\UserArrayFromResult;
 use Wikimedia\Rdbms\IResultWrapper;
 
 /**
+ * This is a hook handler interface, see docs/Hooks.md.
+ * Use the hook name "UserArrayFromResult" to register handlers implementing this interface.
+ *
  * @stable to implement
  * @ingroup Hooks
  */

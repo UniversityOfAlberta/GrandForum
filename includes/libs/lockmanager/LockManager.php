@@ -1,15 +1,5 @@
 <?php
 /**
- * @defgroup LockManager Lock management
- * @ingroup FileBackend
- */
-use Psr\Log\LoggerInterface;
-use Psr\Log\NullLogger;
-use Wikimedia\WaitConditionLoop;
-
-/**
- * Resource locking handling.
- *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -26,11 +16,20 @@ use Wikimedia\WaitConditionLoop;
  * http://www.gnu.org/copyleft/gpl.html
  *
  * @file
- * @ingroup LockManager
+ */
+
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
+use Wikimedia\RequestTimeout\RequestTimeout;
+use Wikimedia\WaitConditionLoop;
+
+/**
+ * @defgroup LockManager Lock management
+ * @ingroup FileBackend
  */
 
 /**
- * @brief Class for handling resource locking.
+ * Resource locking handling.
  *
  * Locks on resource keys can either be shared or exclusive.
  *
@@ -59,8 +58,10 @@ abstract class LockManager {
 	/** @var array Map of (resource path => lock type => count) */
 	protected $locksHeld = [];
 
-	protected $domain; // string; domain (usually wiki ID)
-	protected $lockTTL; // integer; maximum time locks can be held
+	/** @var string domain (usually wiki ID) */
+	protected $domain;
+	/** @var int maximum time locks can be held */
+	protected $lockTTL;
 
 	/** @var string Random 32-char hex number */
 	protected $session;
@@ -70,8 +71,17 @@ abstract class LockManager {
 	public const LOCK_UW = 2; // shared lock (for reads used to write elsewhere)
 	public const LOCK_EX = 3; // exclusive lock (for writes)
 
-	/** @var int Max expected lock expiry in any context */
-	protected const MAX_LOCK_TTL = 7200; // 2 hours
+	/** Max expected lock expiry in any context */
+	protected const MAX_LOCK_TTL = 2 * 3600; // 2 hours
+
+	/** Default lock TTL in CLI mode */
+	protected const CLI_LOCK_TTL = 3600; // 1 hour
+
+	/** Minimum lock TTL. The configured lockTTL is ignored if it is less than this value. */
+	protected const MIN_LOCK_TTL = 5; // seconds
+
+	/** The minimum lock TTL if it is guessed from max_execution_time rather than configured. */
+	protected const MIN_GUESSED_LOCK_TTL = 5 * 60; // 5 minutes
 
 	/**
 	 * Construct a new instance from configuration
@@ -85,12 +95,13 @@ abstract class LockManager {
 	public function __construct( array $config ) {
 		$this->domain = $config['domain'] ?? 'global';
 		if ( isset( $config['lockTTL'] ) ) {
-			$this->lockTTL = max( 5, $config['lockTTL'] );
+			$this->lockTTL = max( self::MIN_LOCK_TTL, $config['lockTTL'] );
 		} elseif ( PHP_SAPI === 'cli' || PHP_SAPI === 'phpdbg' ) {
-			$this->lockTTL = 3600;
+			$this->lockTTL = self::CLI_LOCK_TTL;
 		} else {
-			$met = ini_get( 'max_execution_time' ); // this is 0 in CLI mode
-			$this->lockTTL = max( 5 * 60, 2 * (int)$met );
+			$ttl = 2 * ceil( RequestTimeout::singleton()->getWallTimeLimit() );
+			$this->lockTTL = ( $ttl === INF || $ttl < self::MIN_GUESSED_LOCK_TTL )
+				? self::MIN_GUESSED_LOCK_TTL : $ttl;
 		}
 
 		// Upper bound on how long to keep lock structures around. This is useful when setting
@@ -141,6 +152,7 @@ abstract class LockManager {
 		);
 		$loop->invoke();
 
+		// @phan-suppress-next-line PhanTypeMismatchReturn WaitConditionLoop throws or status is set
 		return $status;
 	}
 
@@ -179,18 +191,6 @@ abstract class LockManager {
 	 */
 	final protected function sha1Base36Absolute( $path ) {
 		return Wikimedia\base_convert( sha1( "{$this->domain}:{$path}" ), 16, 36, 31 );
-	}
-
-	/**
-	 * Get the base 16 SHA-1 of a string, padded to 31 digits.
-	 * Before hashing, the path will be prefixed with the domain ID.
-	 * This should be used internally for lock key or file names.
-	 *
-	 * @param string $path
-	 * @return string
-	 */
-	final protected function sha1Base16Absolute( $path ) {
-		return sha1( "{$this->domain}:{$path}" );
 	}
 
 	/**

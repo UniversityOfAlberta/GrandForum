@@ -19,6 +19,13 @@
  * @ingroup FileBackend
  */
 
+namespace Wikimedia\FileBackend\FileIteration;
+
+use AppendIterator;
+use FilterIterator;
+use Iterator;
+use Wikimedia\FileBackend\FileBackendStore;
+
 /**
  * FileBackendStore helper function to handle listings that span container shards.
  * Do not use this class from places outside of FileBackendStore.
@@ -65,7 +72,9 @@ abstract class FileBackendStoreShardListIterator extends FilterIterator {
 	}
 
 	public function accept(): bool {
-		$rel = $this->getInnerIterator()->current(); // path relative to given directory
+		$inner = $this->getInnerIterator();
+		'@phan-var AppendIterator $inner';
+		$rel = $inner->current(); // path relative to given directory
 		$path = $this->params['dir'] . "/{$rel}"; // full storage path
 		if ( $this->backend->isSingleShardPathInternal( $path ) ) {
 			return true; // path is only on one shard; no issue with duplicates
@@ -92,3 +101,6 @@ abstract class FileBackendStoreShardListIterator extends FilterIterator {
 	 */
 	abstract protected function listFromShard( $container );
 }
+
+/** @deprecated class alias since 1.43 */
+class_alias( FileBackendStoreShardListIterator::class, 'FileBackendStoreShardListIterator' );

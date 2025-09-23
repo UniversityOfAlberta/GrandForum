@@ -1,7 +1,5 @@
 <?php
 /**
- * Implements Special:Emailuser
- *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -18,26 +16,61 @@
  * http://www.gnu.org/copyleft/gpl.html
  *
  * @file
- * @ingroup SpecialPage
  */
+
+namespace MediaWiki\Specials;
+
+use ErrorPageError;
+use MediaWiki\HTMLForm\HTMLForm;
+use MediaWiki\Mail\EmailUserFactory;
+use MediaWiki\MainConfigNames;
 use MediaWiki\MediaWikiServices;
-use MediaWiki\Preferences\MultiUsernameFilter;
+use MediaWiki\Permissions\PermissionStatus;
+use MediaWiki\SpecialPage\SpecialPage;
+use MediaWiki\Status\Status;
+use MediaWiki\User\Options\UserOptionsLookup;
+use MediaWiki\User\User;
+use MediaWiki\User\UserFactory;
+use MediaWiki\User\UserNamePrefixSearch;
+use MediaWiki\User\UserNameUtils;
+use StatusValue;
 
 /**
- * A special page that allows users to send e-mails to other users
+ * Send an e-mail from one user to another.
+ *
+ * This is discoverable via the sidebar on any user's User namespace page.
  *
  * @ingroup SpecialPage
+ * @ingroup Mail
  */
-class SpecialEmailUser extends UnlistedSpecialPage {
-	protected $mTarget;
+class SpecialEmailUser extends SpecialPage {
+
+	private UserNameUtils $userNameUtils;
+	private UserNamePrefixSearch $userNamePrefixSearch;
+	private UserOptionsLookup $userOptionsLookup;
+	private EmailUserFactory $emailUserFactory;
+	private UserFactory $userFactory;
 
 	/**
-	 * @var User|string
+	 * @param UserNameUtils $userNameUtils
+	 * @param UserNamePrefixSearch $userNamePrefixSearch
+	 * @param UserOptionsLookup $userOptionsLookup
+	 * @param EmailUserFactory $emailUserFactory
+	 * @param UserFactory $userFactory
 	 */
-	protected $mTargetObj;
-
-	public function __construct() {
+	public function __construct(
+		UserNameUtils $userNameUtils,
+		UserNamePrefixSearch $userNamePrefixSearch,
+		UserOptionsLookup $userOptionsLookup,
+		EmailUserFactory $emailUserFactory,
+		UserFactory $userFactory
+	) {
 		parent::__construct( 'Emailuser' );
+		$this->userNameUtils = $userNameUtils;
+		$this->userNamePrefixSearch = $userNamePrefixSearch;
+		$this->userOptionsLookup = $userOptionsLookup;
+		$this->emailUserFactory = $emailUserFactory;
+		$this->userFactory = $userFactory;
 	}
 
 	public function doesWrites() {
@@ -45,23 +78,19 @@ class SpecialEmailUser extends UnlistedSpecialPage {
 	}
 
 	public function getDescription() {
-		$target = self::getTarget( $this->mTarget, $this->getUser() );
-		if ( !$target instanceof User ) {
-			return $this->msg( 'emailuser-title-notarget' )->text();
-		}
-
-		return $this->msg( 'emailuser-title-target', $target->getName() )->text();
+		return $this->msg( 'emailuser-title-notarget' );
 	}
 
-	protected function getFormFields() {
+	protected function getFormFields( User $target ) {
 		$linkRenderer = $this->getLinkRenderer();
+		$user = $this->getUser();
 		return [
 			'From' => [
 				'type' => 'info',
 				'raw' => 1,
 				'default' => $linkRenderer->makeLink(
-					$this->getUser()->getUserPage(),
-					$this->getUser()->getName()
+					$user->getUserPage(),
+					$user->getName()
 				),
 				'label-message' => 'emailfrom',
 				'id' => 'mw-emailuser-sender',
@@ -70,20 +99,19 @@ class SpecialEmailUser extends UnlistedSpecialPage {
 				'type' => 'info',
 				'raw' => 1,
 				'default' => $linkRenderer->makeLink(
-					$this->mTargetObj->getUserPage(),
-					$this->mTargetObj->getName()
+					$target->getUserPage(),
+					$target->getName()
 				),
 				'label-message' => 'emailto',
 				'id' => 'mw-emailuser-recipient',
 			],
 			'Target' => [
 				'type' => 'hidden',
-				'default' => $this->mTargetObj->getName(),
+				'default' => $target->getName(),
 			],
 			'Subject' => [
 				'type' => 'text',
-				'default' => $this->msg( 'defemailsubject',
-					$this->getUser()->getName() )->inContentLanguage()->text(),
+				'default' => $this->msg( 'defemailsubject', $user->getName() )->inContentLanguage()->text(),
 				'label-message' => 'emailsubject',
 				'maxlength' => 200,
 				'size' => 60,
@@ -98,68 +126,50 @@ class SpecialEmailUser extends UnlistedSpecialPage {
 			'CCMe' => [
 				'type' => 'check',
 				'label-message' => 'emailccme',
-				'default' => $this->getUser()->getBoolOption( 'ccmeonemails' ),
+				'default' => $this->userOptionsLookup->getBoolOption( $user, 'ccmeonemails' ),
 			],
 		];
 	}
 
 	public function execute( $par ) {
+		$this->setHeaders();
+		$this->outputHeader();
+
 		$out = $this->getOutput();
 		$request = $this->getRequest();
 		$out->addModuleStyles( 'mediawiki.special' );
 
-		$this->mTarget = $par ?? $request->getVal( 'wpTarget', $request->getVal( 'target', '' ) );
-
-		// Make sure, that HTMLForm uses the correct target.
-		$request->setVal( 'wpTarget', $this->mTarget );
-
-		// This needs to be below assignment of $this->mTarget because
-		// getDescription() needs it to determine the correct page title.
-		$this->setHeaders();
-		$this->outputHeader();
-
-		// error out if sending user cannot do this
-		$error = self::getPermissionsError(
+		// Error out if sending user cannot do this. Don't authorize yet.
+		$emailUser = $this->emailUserFactory->newEmailUserBC(
 			$this->getUser(),
-			$this->getRequest()->getVal( 'wpEditToken' ),
 			$this->getConfig()
 		);
+		$emailUser->setEditToken( (string)$request->getVal( 'wpEditToken' ) );
+		$status = $emailUser->canSend();
 
-		switch ( $error ) {
-			case null:
-				# Wahey!
-				break;
-			case 'badaccess':
-				throw new PermissionsError( 'sendemail' );
-			case 'blockedemailuser':
-				throw new UserBlockedError( $this->getUser()->getBlock() );
-			case 'actionthrottledtext':
-				throw new ThrottledError;
-			case 'mailnologin':
-			case 'usermaildisabled':
-				throw new ErrorPageError( $error, "{$error}text" );
-			default:
-				# It's a hook error
-				list( $title, $msg, $params ) = $error;
-				throw new ErrorPageError( $title, $msg, $params );
+		if ( !$status->isGood() ) {
+			if ( $status instanceof PermissionStatus ) {
+				$status->throwErrorPageError();
+			} elseif ( $status->hasMessage( 'mailnologin' ) ) {
+				throw new ErrorPageError( 'mailnologin', 'mailnologintext' );
+			} elseif ( $status->hasMessage( 'usermaildisabled' ) ) {
+				throw new ErrorPageError( 'usermaildisabled', 'usermaildisabledtext' );
+			} elseif ( $status->getValue() !== null ) {
+				// BC for deprecated hook errors
+				// (to be removed when UserCanSendEmail and EmailUserPermissionsErrors are removed)
+				$msg = $status->getMessages()[0];
+				throw new ErrorPageError( $status->getValue(), $msg );
+			} else {
+				// Fallback in case new error types are added in EmailUser
+				throw new ErrorPageError( $this->getDescription(), Status::wrap( $status )->getMessage() );
+			}
 		}
 
-		// Make sure, that a submitted form isn't submitted to a subpage (which could be
-		// a non-existing username)
-		$context = new DerivativeContext( $this->getContext() );
-		$context->setTitle( $this->getPageTitle() ); // Remove subpage
-		$this->setContext( $context );
-
-		// A little hack: HTMLForm will check $this->mTarget only, if the form was posted, not
-		// if the user opens Special:EmailUser/Florian (e.g.). So check, if the user did that
-		// and show the "Send email to user" form directly, if so. Show the "enter username"
-		// form, otherwise.
-		$this->mTargetObj = self::getTarget( $this->mTarget, $this->getUser() );
-		if ( !$this->mTargetObj instanceof User ) {
-			$this->userForm( $this->mTarget );
-		} else {
-			$this->sendEmailForm();
-		}
+		// Always go through the userform, it will do validations on the target
+		// and display the emailform for us.
+		$target = $par ?? $request->getVal( 'wpTarget', $request->getVal( 'target', '' ) );
+		// @phan-suppress-next-line PhanTypeMismatchArgumentNullable Defaults to empty string
+		$this->userForm( $target );
 	}
 
 	/**
@@ -168,122 +178,24 @@ class SpecialEmailUser extends UnlistedSpecialPage {
 	 * @param string $target Target user name
 	 * @param User $sender User sending the email
 	 * @return User|string User object on success or a string on error
+	 * @deprecated since 1.42 Use UserFactory::newFromName() and EmailUser::validateTarget()
 	 */
 	public static function getTarget( $target, User $sender ) {
-		if ( $target == '' ) {
-			wfDebug( "Target is empty." );
-
+		$targetObject = MediaWikiServices::getInstance()->getUserFactory()->newFromName( $target );
+		if ( !$targetObject instanceof User ) {
 			return 'notarget';
 		}
 
-		$nu = User::newFromName( $target );
-		$error = self::validateTarget( $nu, $sender );
-
-		return $error ?: $nu;
-	}
-
-	/**
-	 * Validate target User
-	 *
-	 * @param User $target Target user
-	 * @param User $sender User sending the email
-	 * @return string Error message or empty string if valid.
-	 * @since 1.30
-	 */
-	public static function validateTarget( $target, User $sender ) {
-		if ( !$target instanceof User || !$target->getId() ) {
-			wfDebug( "Target is invalid user." );
-
-			return 'notarget';
+		$status = MediaWikiServices::getInstance()->getEmailUserFactory()
+			->newEmailUser( $sender )
+			->validateTarget( $targetObject );
+		if ( !$status->isGood() ) {
+			$msg = $status->getMessages()[0]->getKey();
+			$ret = $msg === 'emailnotarget' ? 'notarget' : preg_replace( '/text$/', '', $msg );
+		} else {
+			$ret = $targetObject;
 		}
-
-		if ( !$target->isEmailConfirmed() ) {
-			wfDebug( "User has no valid email." );
-
-			return 'noemail';
-		}
-
-		if ( !$target->canReceiveEmail() ) {
-			wfDebug( "User does not allow user emails." );
-
-			return 'nowikiemail';
-		}
-
-		if ( !$target->getOption( 'email-allow-new-users' ) && $sender->isNewbie() ) {
-			wfDebug( "User does not allow user emails from new users." );
-
-			return 'nowikiemail';
-		}
-
-		$muteList = $target->getOption( 'email-blacklist', '' );
-		if ( $muteList ) {
-			$muteList = MultiUsernameFilter::splitIds( $muteList );
-			$lookup = CentralIdLookup::factory();
-			$senderId = $lookup->centralIdFromLocalUser( $sender );
-			if ( $senderId !== 0 && in_array( $senderId, $muteList ) ) {
-				wfDebug( "User does not allow user emails from this user." );
-
-				return 'nowikiemail';
-			}
-		}
-
-		return '';
-	}
-
-	/**
-	 * Check whether a user is allowed to send email
-	 *
-	 * @param User $user
-	 * @param string $editToken Edit token
-	 * @param Config|null $config optional for backwards compatibility
-	 * @return null|string|array Null on success, string on error, or array on
-	 *  hook error
-	 */
-	public static function getPermissionsError( $user, $editToken, Config $config = null ) {
-		if ( $config === null ) {
-			wfDebug( __METHOD__ . ' called without a Config instance passed to it' );
-			$config = MediaWikiServices::getInstance()->getMainConfig();
-		}
-		if ( !$config->get( 'EnableEmail' ) || !$config->get( 'EnableUserEmail' ) ) {
-			return 'usermaildisabled';
-		}
-
-		// Run this before $user->isAllowed, to show appropriate message to anons (T160309)
-		if ( !$user->isEmailConfirmed() ) {
-			return 'mailnologin';
-		}
-
-		if ( !MediaWikiServices::getInstance()
-				->getPermissionManager()
-				->userHasRight( $user, 'sendemail' )
-		) {
-			return 'badaccess';
-		}
-
-		if ( $user->isBlockedFromEmailuser() ) {
-			wfDebug( "User is blocked from sending e-mail." );
-
-			return "blockedemailuser";
-		}
-
-		// Check the ping limiter without incrementing it - we'll check it
-		// again later and increment it on a successful send
-		if ( $user->pingLimiter( 'emailuser', 0 ) ) {
-			wfDebug( "Ping limiter triggered." );
-
-			return 'actionthrottledtext';
-		}
-
-		$hookErr = false;
-
-		Hooks::runner()->onUserCanSendEmail( $user, $hookErr );
-		Hooks::runner()->onEmailUserPermissionsErrors( $user, $editToken, $hookErr );
-
-		if ( $hookErr ) {
-			return $hookErr;
-		}
-
-		return null;
+		return $ret;
 	}
 
 	/**
@@ -297,44 +209,59 @@ class SpecialEmailUser extends UnlistedSpecialPage {
 				'type' => 'user',
 				'exists' => true,
 				'required' => true,
-				'label' => $this->msg( 'emailusername' )->text(),
+				'label-message' => 'emailusername',
 				'id' => 'emailusertarget',
 				'autofocus' => true,
-				'value' => $name,
+				// Skip validation when visit directly without subpage (T347854)
+				'default' => '',
+				// Prefill for subpage syntax and old target param.
+				'filter-callback' => static function ( $value ) use ( $name ) {
+					return str_replace( '_', ' ',
+						( $value !== '' && $value !== false && $value !== null ) ? $value : $name );
+				},
+				'validation-callback' => function ( $value ) {
+					// HTMLForm checked that this is a valid user name
+					$target = $this->userFactory->newFromName( $value );
+					$statusValue = $this->emailUserFactory
+						// @phan-suppress-next-line PhanTypeMismatchArgumentNullable
+						->newEmailUser( $this->getUser() )->validateTarget( $target );
+					if ( !$statusValue->isGood() ) {
+						// TODO: Return Status instead of StatusValue from validateTarget() method?
+						return Status::wrap( $statusValue )->getMessage();
+					}
+					return true;
+				}
 			]
 		], $this->getContext() );
 
 		$htmlForm
+			->setMethod( 'GET' )
+			->setTitle( $this->getPageTitle() ) // Remove subpage
 			->setSubmitCallback( [ $this, 'sendEmailForm' ] )
-			->setFormIdentifier( 'userForm' )
 			->setId( 'askusername' )
 			->setWrapperLegendMsg( 'emailtarget' )
 			->setSubmitTextMsg( 'emailusernamesubmit' )
 			->show();
 	}
 
-	public function sendEmailForm() {
+	/**
+	 * @param array $data
+	 * @return bool
+	 */
+	public function sendEmailForm( array $data ) {
 		$out = $this->getOutput();
 
-		$ret = $this->mTargetObj;
-		if ( !$ret instanceof User ) {
-			if ( $this->mTarget != '' ) {
-				// Messages used here: notargettext, noemailtext, nowikiemailtext
-				$ret = ( $ret == 'notarget' ) ? 'emailnotarget' : ( $ret . 'text' );
-				return Status::newFatal( $ret );
-			}
-			return false;
-		}
-
-		$htmlForm = HTMLForm::factory( 'ooui', $this->getFormFields(), $this->getContext() );
-		// By now we are supposed to be sure that $this->mTarget is a user name
+		// HTMLForm checked that this is a valid user name, the return value can never be null.
+		$target = $this->userFactory->newFromName( $data['Target'] );
+		// @phan-suppress-next-line PhanTypeMismatchArgumentNullable
+		$htmlForm = HTMLForm::factory( 'ooui', $this->getFormFields( $target ), $this->getContext() );
 		$htmlForm
-			->addPreText( $this->msg( 'emailpagetext', $this->mTarget )->parse() )
+			->setTitle( $this->getPageTitle() ) // Remove subpage
+			->addPreHtml( $this->msg( 'emailpagetext', $target->getName() )->parse() )
 			->setSubmitTextMsg( 'emailsend' )
-			->setSubmitCallback( [ __CLASS__, 'submit' ] )
-			->setFormIdentifier( 'sendEmailForm' )
+			->setSubmitCallback( [ $this, 'onFormSubmit' ] )
 			->setWrapperLegendMsg( 'email-legend' )
-			->loadData();
+			->prepareForm();
 
 		if ( !$this->getHookRunner()->onEmailUserForm( $htmlForm ) ) {
 			return false;
@@ -343,159 +270,50 @@ class SpecialEmailUser extends UnlistedSpecialPage {
 		$result = $htmlForm->show();
 
 		if ( $result === true || ( $result instanceof Status && $result->isGood() ) ) {
-			$out->setPageTitle( $this->msg( 'emailsent' ) );
-			$out->addWikiMsg( 'emailsenttext', $this->mTarget );
-			$out->returnToMain( false, $ret->getUserPage() );
+			$out->setPageTitleMsg( $this->msg( 'emailsent' ) );
+			$out->addWikiMsg( 'emailsenttext', $target->getName() );
+			$out->returnToMain( false, $target->getUserPage() );
+		} else {
+			$out->setPageTitleMsg( $this->msg( 'emailuser-title-target', $target->getName() ) );
 		}
 		return true;
 	}
 
 	/**
-	 * Really send a mail. Permissions should have been checked using
-	 * getPermissionsError(). It is probably also a good
-	 * idea to check the edit token and ping limiter in advance.
-	 *
 	 * @param array $data
-	 * @param IContextSource $context
-	 * @return Status|bool
+	 * @return StatusValue|false
+	 * @internal Only public because it's used as an HTMLForm callback.
 	 */
-	public static function submit( array $data, IContextSource $context ) {
-		$config = $context->getConfig();
+	public function onFormSubmit( array $data ) {
+		// HTMLForm checked that this is a valid user name, the return value can never be null.
+		$target = $this->userFactory->newFromName( $data['Target'] );
 
-		$target = self::getTarget( $data['Target'], $context->getUser() );
-		if ( !$target instanceof User ) {
-			// Messages used here: notargettext, noemailtext, nowikiemailtext
-			return Status::newFatal( $target . 'text' );
-		}
+		$emailUser = $this->emailUserFactory->newEmailUser( $this->getAuthority() );
+		$emailUser->setEditToken( $this->getRequest()->getVal( 'wpEditToken' ) );
 
-		$to = MailAddress::newFromUser( $target );
-		$from = MailAddress::newFromUser( $context->getUser() );
-		$subject = $data['Subject'];
-		$text = $data['Text'];
+		// Fully authorize on sending emails.
+		$status = $emailUser->authorizeSend();
 
-		// Add a standard footer and trim up trailing newlines
-		$text = rtrim( $text ) . "\n\n-- \n";
-		$text .= $context->msg( 'emailuserfooter',
-			$from->name, $to->name )->inContentLanguage()->text();
-
-		if ( $config->get( 'EnableSpecialMute' ) ) {
-			$specialMutePage = SpecialPage::getTitleFor( 'Mute', $context->getUser()->getName() );
-			$text .= "\n" . $context->msg(
-				'specialmute-email-footer',
-				$specialMutePage->getCanonicalURL(),
-				$context->getUser()->getName()
-			)->inContentLanguage()->text();
-		}
-
-		// Check and increment the rate limits
-		if ( $context->getUser()->pingLimiter( 'emailuser' ) ) {
-			throw new ThrottledError();
-		}
-
-		$error = false;
-		if ( !Hooks::runner()->onEmailUser( $to, $from, $subject, $text, $error ) ) {
-			if ( $error instanceof Status ) {
-				return $error;
-			} elseif ( $error === false || $error === '' || $error === [] ) {
-				// Possibly to tell HTMLForm to pretend there was no submission?
-				return false;
-			} elseif ( $error === true ) {
-				// Hook sent the mail itself and indicates success?
-				return Status::newGood();
-			} elseif ( is_array( $error ) ) {
-				$status = Status::newGood();
-				foreach ( $error as $e ) {
-					$status->fatal( $e );
-				}
-				return $status;
-			} elseif ( $error instanceof MessageSpecifier ) {
-				return Status::newFatal( $error );
-			} else {
-				// Ugh. Either a raw HTML string, or something that's supposed
-				// to be treated like one.
-				$type = is_object( $error ) ? get_class( $error ) : gettype( $error );
-				wfDeprecatedMsg( "An EmailUser hook returned a $type as \$error, " .
-					"this is deprecated since MediaWiki 1.29",
-					'1.29', false, false );
-				return Status::newFatal( new ApiRawMessage(
-					[ '$1', Message::rawParam( (string)$error ) ], 'hookaborted'
-				) );
-			}
-		}
-
-		if ( $config->get( 'UserEmailUseReplyTo' ) ) {
-			/**
-			 * Put the generic wiki autogenerated address in the From:
-			 * header and reserve the user for Reply-To.
-			 *
-			 * This is a bit ugly, but will serve to differentiate
-			 * wiki-borne mails from direct mails and protects against
-			 * SPF and bounce problems with some mailers (see below).
-			 */
-			$mailFrom = new MailAddress( $config->get( 'PasswordSender' ),
-				$context->msg( 'emailsender' )->inContentLanguage()->text() );
-			$replyTo = $from;
-		} else {
-			/**
-			 * Put the sending user's e-mail address in the From: header.
-			 *
-			 * This is clean-looking and convenient, but has issues.
-			 * One is that it doesn't as clearly differentiate the wiki mail
-			 * from "directly" sent mails.
-			 *
-			 * Another is that some mailers (like sSMTP) will use the From
-			 * address as the envelope sender as well. For open sites this
-			 * can cause mails to be flunked for SPF violations (since the
-			 * wiki server isn't an authorized sender for various users'
-			 * domains) as well as creating a privacy issue as bounces
-			 * containing the recipient's e-mail address may get sent to
-			 * the sending user.
-			 */
-			$mailFrom = $from;
-			$replyTo = null;
-		}
-
-		$status = UserMailer::send( $to, $mailFrom, $subject, $text, [
-			'replyTo' => $replyTo,
-		] );
-
-		if ( !$status->isGood() ) {
-			return $status;
-		} else {
-			// if the user requested a copy of this mail, do this now,
-			// unless they are emailing themselves, in which case one
-			// copy of the message is sufficient.
-			if ( $data['CCMe'] && $to != $from ) {
-				$ccTo = $from;
-				$ccFrom = $from;
-				$ccSubject = $context->msg( 'emailccsubject' )->plaintextParams(
-					$target->getName(), $subject )->text();
-				$ccText = $text;
-
-				Hooks::runner()->onEmailUserCC( $ccTo, $ccFrom, $ccSubject, $ccText );
-
-				if ( $config->get( 'UserEmailUseReplyTo' ) ) {
-					$mailFrom = new MailAddress(
-						$config->get( 'PasswordSender' ),
-						$context->msg( 'emailsender' )->inContentLanguage()->text()
-					);
-					$replyTo = $ccFrom;
-				} else {
-					$mailFrom = $ccFrom;
-					$replyTo = null;
-				}
-
-				$ccStatus = UserMailer::send(
-					$ccTo, $mailFrom, $ccSubject, $ccText, [
-						'replyTo' => $replyTo,
-				] );
-				$status->merge( $ccStatus );
-			}
-
-			Hooks::runner()->onEmailUserComplete( $to, $from, $subject, $text );
-
+		if ( !$status->isOK() ) {
 			return $status;
 		}
+
+		// @phan-suppress-next-next-line PhanTypeMismatchArgumentNullable
+		$res = $emailUser->sendEmailUnsafe(
+			$target,
+			$data['Subject'],
+			$data['Text'],
+			$data['CCMe'],
+			$this->getLanguage()->getCode()
+		);
+		if ( $res->hasMessage( 'hookaborted' ) ) {
+			// BC: The method could previously return false if the EmailUser hook set the error to false. Preserve
+			// that behaviour until we replace the hook.
+			$res = false;
+		} else {
+			$res = Status::wrap( $res );
+		}
+		return $res;
 	}
 
 	/**
@@ -507,16 +325,27 @@ class SpecialEmailUser extends UnlistedSpecialPage {
 	 * @return string[] Matching subpages
 	 */
 	public function prefixSearchSubpages( $search, $limit, $offset ) {
-		$user = User::newFromName( $search );
-		if ( !$user ) {
+		$search = $this->userNameUtils->getCanonical( $search );
+		if ( !$search ) {
 			// No prefix suggestion for invalid user
 			return [];
 		}
 		// Autocomplete subpage as user list - public to allow caching
-		return UserNamePrefixSearch::search( 'public', $search, $limit, $offset );
+		return $this->userNamePrefixSearch
+			->search( UserNamePrefixSearch::AUDIENCE_PUBLIC, $search, $limit, $offset );
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isListed() {
+		return $this->getConfig()->get( MainConfigNames::EnableUserEmail );
 	}
 
 	protected function getGroupName() {
 		return 'users';
 	}
 }
+
+/** @deprecated class alias since 1.41 */
+class_alias( SpecialEmailUser::class, 'SpecialEmailUser' );

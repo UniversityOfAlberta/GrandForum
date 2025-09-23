@@ -25,9 +25,15 @@
  * @defgroup Search Search
  */
 
+use MediaWiki\Config\Config;
+use MediaWiki\Content\Content;
 use MediaWiki\HookContainer\HookContainer;
 use MediaWiki\HookContainer\HookRunner;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Search\TitleMatcher;
+use MediaWiki\Status\Status;
+use MediaWiki\Title\Title;
+use MediaWiki\User\User;
 
 /**
  * Contain a class for special pages
@@ -57,6 +63,7 @@ abstract class SearchEngine {
 
 	/** @var bool */
 	protected $showSuggestion = true;
+	/** @var string */
 	private $sort = self::DEFAULT_SORT;
 
 	/** @var array Feature values */
@@ -113,7 +120,7 @@ abstract class SearchEngine {
 	 * Perform a title search in the article archive.
 	 * NOTE: these results still should be filtered by
 	 * matching against PageArchive, permissions checks etc
-	 * The results returned by this methods are only sugegstions and
+	 * The results returned by this methods are only suggestions and
 	 * may not end up being shown to the user.
 	 *
 	 * @note As of 1.32 overriding this function is deprecated. It will
@@ -257,24 +264,23 @@ abstract class SearchEngine {
 
 	/**
 	 * Get service class to finding near matches.
-	 * @param Config $config Configuration to use for the matcher.
-	 * @return SearchNearMatcher
+	 *
+	 * @return TitleMatcher
+	 * @deprecated since 1.40, use MediaWikiServices::getInstance()->getTitleMatcher()
 	 */
 	public function getNearMatcher( Config $config ) {
-		return new SearchNearMatcher( $config,
-			MediaWikiServices::getInstance()->getContentLanguage(),
-			$this->getHookContainer()
-		);
+		return MediaWikiServices::getInstance()->getTitleMatcher();
 	}
 
 	/**
 	 * Get near matcher for default SearchEngine.
-	 * @return SearchNearMatcher
+	 *
+	 * @return TitleMatcher
+	 * @deprecated since 1.40, MediaWikiServices::getInstance()->getTitleMatcher()
 	 */
 	protected static function defaultNearMatcher() {
-		$services = MediaWikiServices::getInstance();
-		$config = $services->getMainConfig();
-		return $services->newSearchEngine()->getNearMatcher( $config );
+		wfDeprecated( __METHOD__, '1.40' );
+		return MediaWikiServices::getInstance()->getTitleMatcher();
 	}
 
 	/**
@@ -309,7 +315,7 @@ abstract class SearchEngine {
 		if ( $namespaces ) {
 			// Filter namespaces to only keep valid ones
 			$validNs = MediaWikiServices::getInstance()->getSearchEngineConfig()->searchableNamespaces();
-			$namespaces = array_filter( $namespaces, function ( $ns ) use( $validNs ) {
+			$namespaces = array_filter( $namespaces, static function ( $ns ) use( $validNs ) {
 				return $ns < 0 || isset( $validNs[$ns] );
 			} );
 		} else {
@@ -347,7 +353,6 @@ abstract class SearchEngine {
 	 * SearchEngine::getValidSorts()
 	 *
 	 * @since 1.25
-	 * @throws InvalidArgumentException
 	 * @param string $sort sort direction for query result
 	 */
 	public function setSort( $sort ) {
@@ -393,8 +398,6 @@ abstract class SearchEngine {
 	 * @return false|array false if no namespace was extracted, an array
 	 * with the parsed query at index 0 and an array of namespaces at index
 	 * 1 (or null for all namespaces).
-	 * @throws FatalError
-	 * @throws MWException
 	 */
 	public static function parseNamespacePrefixes(
 		$query,
@@ -418,8 +421,7 @@ abstract class SearchEngine {
 			}
 
 			foreach ( $allkeywords as $kw ) {
-				if ( strncmp( $query, $kw, strlen( $kw ) ) == 0 ) {
-					$extractedNamespace = null;
+				if ( str_starts_with( $query, $kw ) ) {
 					$parsed = substr( $query, strlen( $kw ) );
 					$allQuery = true;
 					break;
@@ -429,14 +431,16 @@ abstract class SearchEngine {
 
 		if ( !$allQuery && strpos( $query, ':' ) !== false ) {
 			$prefix = str_replace( ' ', '_', substr( $query, 0, strpos( $query, ':' ) ) );
-			$index = MediaWikiServices::getInstance()->getContentLanguage()->getNsIndex( $prefix );
+			$services = MediaWikiServices::getInstance();
+			$index = $services->getContentLanguage()->getNsIndex( $prefix );
 			if ( $index !== false ) {
 				$extractedNamespace = [ $index ];
 				$parsed = substr( $query, strlen( $prefix ) + 1 );
 			} elseif ( $withPrefixSearchExtractNamespaceHook ) {
 				$hookNamespaces = [ NS_MAIN ];
 				$hookQuery = $query;
-				Hooks::runner()->onPrefixSearchExtractNamespace( $hookNamespaces, $hookQuery );
+				( new HookRunner( $services->getHookContainer() ) )
+					->onPrefixSearchExtractNamespace( $hookNamespaces, $hookQuery );
 				if ( $hookQuery !== $query ) {
 					$parsed = $hookQuery;
 					$extractedNamespace = $hookNamespaces;
@@ -454,7 +458,7 @@ abstract class SearchEngine {
 	/**
 	 * Find snippet highlight settings for all users
 	 * @return array Contextlines, contextchars
-	 * @deprecated in 1.34 use the SearchHighlighter constants directly
+	 * @deprecated since 1.34; use the SearchHighlighter constants directly
 	 * @see SearchHighlighter::DEFAULT_CONTEXT_CHARS
 	 * @see SearchHighlighter::DEFAULT_CONTEXT_LINES
 	 */
@@ -512,7 +516,7 @@ abstract class SearchEngine {
 	 * @return string
 	 * @deprecated since 1.34 use Content::getTextForSearchIndex directly
 	 */
-	public function getTextFromContent( Title $t, Content $c = null ) {
+	public function getTextFromContent( Title $t, ?Content $c = null ) {
 		return $c ? $c->getTextForSearchIndex() : '';
 	}
 
@@ -619,8 +623,10 @@ abstract class SearchEngine {
 		$results = $this->completionSearchBackendOverfetch( $search );
 		$fallbackLimit = 1 + $this->limit - $results->getSize();
 		if ( $fallbackLimit > 0 ) {
-			$fallbackSearches = MediaWikiServices::getInstance()->getContentLanguage()->
-				autoConvertToAllVariants( $search );
+			$services = MediaWikiServices::getInstance();
+			$fallbackSearches = $services->getLanguageConverterFactory()
+				->getLanguageConverter( $services->getContentLanguage() )
+				->autoConvertToAllVariants( $search );
 			$fallbackSearches = array_diff( array_unique( $fallbackSearches ), [ $search ] );
 
 			foreach ( $fallbackSearches as $fbs ) {
@@ -642,7 +648,7 @@ abstract class SearchEngine {
 	 * @return Title[]
 	 */
 	public function extractTitles( SearchSuggestionSet $completionResults ) {
-		return $completionResults->map( function ( SearchSuggestion $sugg ) {
+		return $completionResults->map( static function ( SearchSuggestion $sugg ) {
 			return $sugg->getSuggestedTitle();
 		} );
 	}
@@ -661,13 +667,14 @@ abstract class SearchEngine {
 
 		$search = trim( $search );
 		// preload the titles with LinkBatch
-		$lb = new LinkBatch( $suggestions->map( function ( SearchSuggestion $sugg ) {
+		$linkBatchFactory = MediaWikiServices::getInstance()->getLinkBatchFactory();
+		$lb = $linkBatchFactory->newLinkBatch( $suggestions->map( static function ( SearchSuggestion $sugg ) {
 			return $sugg->getSuggestedTitle();
 		} ) );
 		$lb->setCaller( __METHOD__ );
 		$lb->execute();
 
-		$diff = $suggestions->filter( function ( SearchSuggestion $sugg ) {
+		$diff = $suggestions->filter( static function ( SearchSuggestion $sugg ) {
 			return $sugg->getSuggestedTitle()->isKnown();
 		} );
 		if ( $diff > 0 ) {
@@ -675,17 +682,20 @@ abstract class SearchEngine {
 				->updateCount( 'search.completion.missing', $diff );
 		}
 
-		$results = $suggestions->map( function ( SearchSuggestion $sugg ) {
+		// SearchExactMatchRescorer should probably be refactored to work directly on top of a SearchSuggestionSet
+		// instead of converting it to array and trying to infer if it has re-scored anything by inspected the head
+		// of the returned array.
+		$results = $suggestions->map( static function ( SearchSuggestion $sugg ) {
 			return $sugg->getSuggestedTitle()->getPrefixedText();
 		} );
 
+		$rescorer = new SearchExactMatchRescorer();
 		if ( $this->offset === 0 ) {
 			// Rescore results with an exact title match
 			// NOTE: in some cases like cross-namespace redirects
 			// (frequently used as shortcuts e.g. WP:WP on huwiki) some
 			// backends like Cirrus will return no results. We should still
 			// try an exact title match to workaround this limitation
-			$rescorer = new SearchExactMatchRescorer();
 			$rescoredResults = $rescorer->rescore( $search, $this->namespaces, $results, $this->limit );
 		} else {
 			// No need to rescore if offset is not 0
@@ -701,6 +711,12 @@ abstract class SearchEngine {
 				// means that we found a new exact match
 				$exactMatch = SearchSuggestion::fromTitle( 0, Title::newFromText( $rescoredResults[0] ) );
 				$suggestions->prepend( $exactMatch );
+				if ( $rescorer->getReplacedRedirect() !== null ) {
+					// the exact match rescorer replaced one of the suggestion found by the search engine
+					// let's remove it from our suggestions set to avoid showing duplicates
+					$suggestions->remove( SearchSuggestion::fromTitle( 0,
+						Title::newFromText( $rescorer->getReplacedRedirect() ) ) );
+				}
 				$suggestions->shrink( $this->limit );
 			} else {
 				// if the first result is not the same we need to rescore
@@ -757,7 +773,7 @@ abstract class SearchEngine {
 	 * @return array|null the list of profiles or null if none available
 	 * @phan-return null|array{name:string,desc-message:string,default?:bool}
 	 */
-	public function getProfiles( $profileType, User $user = null ) {
+	public function getProfiles( $profileType, ?User $user = null ) {
 		return null;
 	}
 
@@ -789,8 +805,7 @@ abstract class SearchEngine {
 				$handler = MediaWikiServices::getInstance()
 					->getContentHandlerFactory()
 					->getContentHandler( $model );
-			}
-			catch ( MWUnknownContentModelException $e ) {
+			} catch ( MWUnknownContentModelException $e ) {
 				// If we can find no handler, ignore it
 				continue;
 			}
@@ -869,8 +884,11 @@ abstract class SearchEngine {
 	 * @since 1.35
 	 * @return HookContainer
 	 */
-	protected function getHookContainer() : HookContainer {
+	protected function getHookContainer(): HookContainer {
 		if ( !$this->hookContainer ) {
+			// This shouldn't be hit in core, but it is needed for CirrusSearch
+			// which commonly creates a CirrusSearch object without cirrus being
+			// configured in $wgSearchType/$wgSearchTypeAlternatives.
 			$this->hookContainer = MediaWikiServices::getInstance()->getHookContainer();
 		}
 		return $this->hookContainer;
@@ -884,7 +902,7 @@ abstract class SearchEngine {
 	 * @since 1.35
 	 * @return HookRunner
 	 */
-	protected function getHookRunner() : HookRunner {
+	protected function getHookRunner(): HookRunner {
 		if ( !$this->hookRunner ) {
 			$this->hookRunner = new HookRunner( $this->getHookContainer() );
 		}

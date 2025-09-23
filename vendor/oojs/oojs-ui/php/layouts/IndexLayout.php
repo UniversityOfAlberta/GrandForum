@@ -19,7 +19,7 @@ class IndexLayout extends MenuLayout {
 	 */
 	protected $tabPanel;
 	/**
-	 * @var PanelLayout[]
+	 * @var TabPanelLayout[]
 	 */
 	protected $tabPanels;
 	/**
@@ -82,6 +82,7 @@ class IndexLayout extends MenuLayout {
 			->appendContent( $this->tabSelectWidget );
 	}
 
+	/** @inheritDoc */
 	public function getConfig( &$config ) {
 		$config = parent::getConfig( $config );
 		if ( !$this->autoFocus ) {
@@ -114,17 +115,23 @@ class IndexLayout extends MenuLayout {
 	 * Get a tab panel by its symbolic name.
 	 *
 	 * @param string $name Symbolic name of table panel
-	 * @return TabPanelLayout Tab panel, if found
+	 * @return TabPanelLayout|null Tab panel, if found
 	 */
-	public function getTabPanel( $name ) {
-		return $this->tabPanels[$name];
+	public function getTabPanel( $name ): ?TabPanelLayout {
+		return $this->tabPanels[$name] ?? null;
 	}
 
+	/**
+	 * @return TabPanelLayout|null
+	 */
 	public function getCurrentTabPanel() {
 		$name = $this->getCurrentTabPanelName();
 		return $name ? $this->getTabPanel( $name ) : null;
 	}
 
+	/**
+	 * @return string
+	 */
 	public function getCurrentTabPanelName() {
 		return $this->currentTabPanelName;
 	}
@@ -143,8 +150,9 @@ class IndexLayout extends MenuLayout {
 			$this->tabPanels[ $tabPanel->getName() ] = $tabPanel;
 			$tabItem = new TabOptionWidget( array_merge( [
 				'data' => $tabPanel->getName(),
+				'label' => $tabPanel->getLabel(),
 			], $tabPanel->getTabItemConfig() ) );
-			$tabPanel->setTabItem( $tabItem );
+			// TODO: Set aria-labelledby/aria-controls as in .js
 			$tabItems[] = $tabItem;
 		}
 		$this->tabSelectWidget->addItems( $tabItems );

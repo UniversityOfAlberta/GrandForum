@@ -1,10 +1,8 @@
 <?php
 /** Pontic (Ποντιακά)
  *
- * To improve a translation please visit https://translatewiki.net
- *
- * @ingroup Language
  * @file
+ * @ingroup Languages
  *
  * @author Consta
  * @author Crazymadlover

@@ -5,7 +5,7 @@
  * @since 1.25
  */
 ( function () {
-	var warningConfig = mw.config.get( 'wgFileWarning' ),
+	const warningConfig = mw.config.get( 'wgFileWarning' ),
 		warningMessages = warningConfig.messages,
 		warningLink = warningConfig.link,
 		$origMimetype = $( '.fullMedia .fileInfo .mime-type' ),
@@ -25,6 +25,9 @@
 			icon: 'alert',
 			framed: false,
 			popup: {
+				// This popup is always "visible", but hidden using CSS. OOUI event handlers that try to
+				// close it interfere with other things on the page. (T309093)
+				autoClose: false,
 				classes: [ 'mediawiki-filewarning' ],
 				padded: true,
 				width: 400,
@@ -36,7 +39,7 @@
 		if ( message ) {
 			$target.removeClass( 'empty' )
 				// eslint-disable-next-line mediawiki/msg-doc
-				.text( mw.message( message ).text() );
+				.text( mw.msg( message ) );
 		}
 	}
 
@@ -56,6 +59,10 @@
 				$info.attr( 'href', warningLink );
 			}
 		}
+
+		// Position the popup relative to $button rather than the default $element, so that it isn't
+		// pushed away by padding added to .mediawiki-filewarning-anchor in CSS. (T363157)
+		dialog.getPopup().setFloatableContainer( dialog.$button );
 
 		// Make OOUI open the dialog, it won't appear until the user
 		// hovers over the warning.

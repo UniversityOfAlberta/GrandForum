@@ -35,7 +35,7 @@ define( 'NORMALIZE_INTL', function_exists( 'normalizer_normalize' ) );
 
 /**
  * Unicode normalization routines for working with UTF-8 strings.
- * Currently assumes that input strings are valid UTF-8!
+ * Currently, it assumes that input strings are valid UTF-8!
  *
  * Not as fast as I'd like, but should be usable for most purposes.
  * UtfNormal\Validator::toNFC() will bail early if given ASCII text or text
@@ -48,12 +48,32 @@ define( 'NORMALIZE_INTL', function_exists( 'normalizer_normalize' ) );
  * @ingroup UtfNormal
  */
 class Validator {
-	public static $utfCombiningClass = null;
-	public static $utfCanonicalComp = null;
-	public static $utfCanonicalDecomp = null;
 
-	# Load compatibility decompositions on demand if they are needed.
-	public static $utfCompatibilityDecomp = null;
+	/**
+	 * @var array
+	 */
+	public static $utfCombiningClass;
+
+	/**
+	 * @var array
+	 */
+	public static $utfCanonicalComp;
+
+	/**
+	 * @var array
+	 */
+	public static $utfCanonicalDecomp;
+
+	/**
+	 * Load compatibility decompositions on demand if they are needed.
+	 *
+	 * @var array
+	 */
+	public static $utfCompatibilityDecomp;
+
+	/**
+	 * @var array|null
+	 */
 	public static $utfCheckNFC;
 
 	/**
@@ -66,14 +86,22 @@ class Validator {
 	 * @param string $string a UTF-8 string
 	 * @return string a clean, shiny, normalized UTF-8 string
 	 */
-	static function cleanUp( $string ) {
+	public static function cleanUp( $string ) {
 		if ( NORMALIZE_INTL ) {
 			$string = self::replaceForNativeNormalize( $string );
 			$norm = normalizer_normalize( $string, Normalizer::FORM_C );
+			// T303790 - Can be simplified (remove === null) check when support >= PHP 8.1
 			if ( $norm === null || $norm === false ) {
 				# normalizer_normalize will either return false or null
 				# (depending on which doc you read) if invalid utf8 string.
 				# quickIsNFCVerify cleans up invalid sequences.
+				#
+				# < PHP 8.1
+				# https://github.com/php/php-src/blob/PHP-8.0.17/ext/intl/normalizer/normalizer_normalize.c
+				# >= PHP 8.1
+				# https://www.php.net/manual/en/normalizer.normalize.php says return false
+				# https://github.com/php/php-src/blob/PHP-8.1.0/ext/intl/normalizer/normalizer_normalize.c
+				# Changed in https://github.com/php/php-src/commit/5dc995df375571489d9149fdccf258c0bd123317
 
 				if ( self::quickIsNFCVerify( $string ) ) {
 					# if that's true, the string is actually already normal.
@@ -101,7 +129,7 @@ class Validator {
 	 * @param string $string a valid UTF-8 string. Input is not validated.
 	 * @return string a UTF-8 string in normal form C
 	 */
-	static function toNFC( $string ) {
+	public static function toNFC( $string ) {
 		if ( NORMALIZE_INTL ) {
 			return normalizer_normalize( $string, Normalizer::FORM_C );
 		} elseif ( self::quickIsNFC( $string ) ) {
@@ -118,7 +146,7 @@ class Validator {
 	 * @param string $string A valid UTF-8 string. Input is not validated.
 	 * @return string A UTF-8 string in normal form D
 	 */
-	static function toNFD( $string ) {
+	public static function toNFD( $string ) {
 		if ( NORMALIZE_INTL ) {
 			return normalizer_normalize( $string, Normalizer::FORM_D );
 		} elseif ( preg_match( '/[\x80-\xff]/', $string ) ) {
@@ -136,7 +164,7 @@ class Validator {
 	 * @param string $string A valid UTF-8 string. Input is not validated.
 	 * @return string A UTF-8 string in normal form KC
 	 */
-	static function toNFKC( $string ) {
+	public static function toNFKC( $string ) {
 		if ( NORMALIZE_INTL ) {
 			return normalizer_normalize( $string, Normalizer::FORM_KC );
 		} elseif ( preg_match( '/[\x80-\xff]/', $string ) ) {
@@ -154,7 +182,7 @@ class Validator {
 	 * @param string $string a valid UTF-8 string. Input is not validated.
 	 * @return string a UTF-8 string in normal form KD
 	 */
-	static function toNFKD( $string ) {
+	public static function toNFKD( $string ) {
 		if ( NORMALIZE_INTL ) {
 			return normalizer_normalize( $string, Normalizer::FORM_KD );
 		} elseif ( preg_match( '/[\x80-\xff]/', $string ) ) {
@@ -166,9 +194,8 @@ class Validator {
 
 	/**
 	 * Load the basic composition data if necessary
-	 * @private
 	 */
-	static function loadData() {
+	public static function loadData() {
 		if ( !isset( self::$utfCombiningClass ) ) {
 			require_once __DIR__ . '/UtfNormalData.inc';
 		}
@@ -180,7 +207,7 @@ class Validator {
 	 * @param string $string a valid UTF-8 string. Input is not validated.
 	 * @return bool
 	 */
-	static function quickIsNFC( $string ) {
+	public static function quickIsNFC( $string ) {
 		# ASCII is always valid NFC!
 		# If it's pure ASCII, let it through.
 		if ( !preg_match( '/[\x80-\xff]/', $string ) ) {
@@ -188,6 +215,7 @@ class Validator {
 		}
 
 		self::loadData();
+
 		$len = strlen( $string );
 		for ( $i = 0; $i < $len; $i++ ) {
 			$c = $string[$i];
@@ -223,7 +251,7 @@ class Validator {
 	 * @param string &$string A UTF-8 string, altered on output to be valid UTF-8 safe for XML.
 	 * @return bool
 	 */
-	static function quickIsNFCVerify( &$string ) {
+	public static function quickIsNFCVerify( &$string ) {
 		# Screen out some characters that eg won't be allowed in XML
 		$string = preg_replace( '/[\x00-\x08\x0b\x0c\x0e-\x1f]/', Constants::UTF8_REPLACEMENT, $string );
 
@@ -313,26 +341,24 @@ class Validator {
 						if ( --$len && ( $c = $str[++$i] ) >= "\x80" && $c < "\xc0" ) {
 							# Legal tail bytes are nice.
 							$sequence .= $c;
+						} elseif ( $len === 0 ) {
+							# Premature end of string!
+							# Drop a replacement character into output to
+							# represent the invalid UTF-8 sequence.
+							$replace[] = [ Constants::UTF8_REPLACEMENT,
+								$base + $i + 1 - strlen( $sequence ),
+								strlen( $sequence ) ];
+							break 2;
 						} else {
-							if ( 0 == $len ) {
-								# Premature end of string!
-								# Drop a replacement character into output to
-								# represent the invalid UTF-8 sequence.
-								$replace[] = [ Constants::UTF8_REPLACEMENT,
-									$base + $i + 1 - strlen( $sequence ),
-									strlen( $sequence ) ];
-								break 2;
-							} else {
-								# Illegal tail byte; abandon the sequence.
-								$replace[] = [ Constants::UTF8_REPLACEMENT,
-									$base + $i - strlen( $sequence ),
-									strlen( $sequence ) ];
-								# Back up and reprocess this byte; it may itself
-								# be a legal ASCII or UTF-8 sequence head.
-								--$i;
-								++$len;
-								continue 2;
-							}
+							# Illegal tail byte; abandon the sequence.
+							$replace[] = [ Constants::UTF8_REPLACEMENT,
+								$base + $i - strlen( $sequence ),
+								strlen( $sequence ) ];
+							# Back up and reprocess this byte; it may itself
+							# be a legal ASCII or UTF-8 sequence head.
+							--$i;
+							++$len;
+							continue 2;
 						}
 					} while ( --$remaining );
 
@@ -363,7 +389,7 @@ class Validator {
 								# encode a character. Naïve string comparisons can be
 								# tricked into failing to see a match for an ASCII
 								# character, for instance, which can be a security hole
-								# if blacklist checks are being used.
+								# if lists of excluded characters are being used.
 								( $n < 0xc2 && $sequence <= Constants::UTF8_OVERLONG_A )
 								|| ( $n == 0xe0 && $sequence <= Constants::UTF8_OVERLONG_B )
 								|| ( $n == 0xf0 && $sequence <= Constants::UTF8_OVERLONG_C )
@@ -445,39 +471,36 @@ class Validator {
 	/**
 	 * @param string $string
 	 * @return string
-	 * @private
 	 */
-	static function NFC( $string ) {
+	public static function NFC( $string ) {
 		return self::fastCompose( self::NFD( $string ) );
 	}
 
 	/**
 	 * @param string $string
 	 * @return string
-	 * @private
 	 */
-	static function NFD( $string ) {
+	public static function NFD( $string ) {
 		self::loadData();
 
 		return self::fastCombiningSort(
-			self::fastDecompose( $string, self::$utfCanonicalDecomp ) );
+			self::fastDecompose( $string, self::$utfCanonicalDecomp )
+		);
 	}
 
 	/**
 	 * @param string $string
 	 * @return string
-	 * @private
 	 */
-	static function NFKC( $string ) {
+	public static function NFKC( $string ) {
 		return self::fastCompose( self::NFKD( $string ) );
 	}
 
 	/**
 	 * @param string $string
 	 * @return string
-	 * @private
 	 */
-	static function NFKD( $string ) {
+	public static function NFKD( $string ) {
 		if ( !isset( self::$utfCompatibilityDecomp ) ) {
 			require_once __DIR__ . '/UtfNormalDataK.inc';
 		}
@@ -490,13 +513,13 @@ class Validator {
 	 * Perform decomposition of a UTF-8 string into either D or KD form
 	 * (depending on which decomposition map is passed to us).
 	 * Input is assumed to be *valid* UTF-8. Invalid code will break.
-	 * @private
 	 * @param string $string valid UTF-8 string
 	 * @param array $map hash of expanded decomposition map
 	 * @return string a UTF-8 string decomposed, not yet normalized (needs sorting)
 	 */
-	static function fastDecompose( $string, $map ) {
+	public static function fastDecompose( $string, $map ) {
 		self::loadData();
+
 		$len = strlen( $string );
 		$out = '';
 		for ( $i = 0; $i < $len; $i++ ) {
@@ -554,12 +577,12 @@ class Validator {
 	/**
 	 * Sorts combining characters into canonical order. This is the
 	 * final step in creating decomposed normal forms D and KD.
-	 * @private
 	 * @param string $string a valid, decomposed UTF-8 string. Input is not validated.
 	 * @return string a UTF-8 string with combining characters sorted in canonical order
 	 */
-	static function fastCombiningSort( $string ) {
+	public static function fastCombiningSort( $string ) {
 		self::loadData();
+
 		$len = strlen( $string );
 		$out = '';
 		$combiners = [];
@@ -607,22 +630,24 @@ class Validator {
 	/**
 	 * Produces canonically composed sequences, i.e. normal form C or KC.
 	 *
-	 * @private
 	 * @param string $string a valid UTF-8 string in sorted normal form D or KD.
 	 *   Input is not validated.
 	 * @return string a UTF-8 string with canonical precomposed characters used
 	 *   where possible.
 	 */
-	static function fastCompose( $string ) {
+	public static function fastCompose( $string ) {
 		self::loadData();
+
 		$len = strlen( $string );
 		$out = '';
 		$lastClass = -1;
 		$lastHangul = 0;
 		$startChar = '';
 		$combining = '';
-		$x1 = ord( substr( Constants::UTF8_HANGUL_VBASE, 0, 1 ) );
-		$x2 = ord( substr( Constants::UTF8_HANGUL_TEND, 0, 1 ) );
+
+		// Optim: ord() ignores everything after the first byte
+		$x1 = ord( Constants::UTF8_HANGUL_VBASE );
+		$x2 = ord( Constants::UTF8_HANGUL_TEND );
 		for ( $i = 0; $i < $len; $i++ ) {
 			$c = $string[$i];
 			$n = ord( $c );
@@ -645,27 +670,26 @@ class Validator {
 				$i++;
 			}
 			$pair = $startChar . $c;
-			if ( $n > 0x80 ) {
-				if ( isset( self::$utfCombiningClass[$c] ) ) {
-					# A combining char; see what we can do with it
-					$class = self::$utfCombiningClass[$c];
-					if ( !empty( $startChar ) &&
-						$lastClass < $class &&
-						$class > 0 &&
-						isset( self::$utfCanonicalComp[$pair] )
-					) {
-						$startChar = self::$utfCanonicalComp[$pair];
-						$class = 0;
-					} else {
-						$combining .= $c;
-					}
-					$lastClass = $class;
-					$lastHangul = 0;
-					continue;
+			if ( $n > 0x80 && isset( self::$utfCombiningClass[$c] ) ) {
+				# A combining char; see what we can do with it
+				$class = self::$utfCombiningClass[$c];
+				// TODO: Is refusing falsey $startChar (e.g. '0') intentional here?
+				if ( $startChar &&
+					$lastClass < $class &&
+					$class > 0 &&
+					isset( self::$utfCanonicalComp[$pair] )
+				) {
+					$startChar = self::$utfCanonicalComp[$pair];
+					$class = 0;
+				} else {
+					$combining .= $c;
 				}
+				$lastClass = $class;
+				$lastHangul = 0;
+				continue;
 			}
 			# New start char
-			if ( $lastClass == 0 ) {
+			if ( $lastClass === 0 ) {
 				if ( isset( self::$utfCanonicalComp[$pair] ) ) {
 					$startChar = self::$utfCanonicalComp[$pair];
 					$lastHangul = 0;
@@ -747,7 +771,7 @@ class Validator {
 	 * @param string $string
 	 * @return string
 	 */
-	static function placebo( $string ) {
+	public static function placebo( $string ) {
 		$len = strlen( $string );
 		$out = '';
 		for ( $i = 0; $i < $len; $i++ ) {
@@ -768,10 +792,8 @@ class Validator {
 		$string = preg_replace(
 			'/[\x00-\x08\x0b\x0c\x0e-\x1f]/',
 			Constants::UTF8_REPLACEMENT,
-			$string );
-		$string = str_replace( Constants::UTF8_FFFE, Constants::UTF8_REPLACEMENT, $string );
-		$string = str_replace( Constants::UTF8_FFFF, Constants::UTF8_REPLACEMENT, $string );
-
-		return $string;
+			$string
+		);
+		return str_replace( [ Constants::UTF8_FFFE, Constants::UTF8_FFFF ], Constants::UTF8_REPLACEMENT, $string );
 	}
 }

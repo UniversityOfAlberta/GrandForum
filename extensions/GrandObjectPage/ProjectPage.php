@@ -175,7 +175,7 @@ class ProjectPage {
             $me = Person::newFromWgUser();
             $projects = $me->getProjects();
             
-            if(!$wgUser->isLoggedIn() || count($projects) == 0 || $me->isRoleAtLeast(MANAGER)){
+            if(!$wgUser->isRegistered() || count($projects) == 0 || $me->isRoleAtLeast(MANAGER)){
 		        return true;
 		    }
 

@@ -21,6 +21,10 @@
  * @ingroup Parser
  */
 
+namespace MediaWiki\Parser;
+
+use MediaWiki\Html\Html;
+use MediaWiki\Language\Language;
 use MediaWiki\MediaWikiServices;
 
 /**
@@ -44,25 +48,53 @@ class DateFormatter {
 	 * format, and the value is the ID of the target format that will be used
 	 * in that case.
 	 */
-	private $rules = [];
+	private const RULES = [
+		self::ALL => [
+			self::MD => self::MD,
+			self::DM => self::DM,
+		],
+		self::NONE => [
+			self::ISO => self::ISO,
+		],
+		self::MDY => [
+			self::DM => self::MD,
+		],
+		self::DMY => [
+			self::MD => self::DM,
+		],
+	];
 
 	/**
-	 * @var int[] Month numbers by lowercase name
+	 * @var array<string,int> Month numbers by lowercase name
 	 */
 	private $xMonths = [];
 
 	/**
-	 * @var string[] Month names by number
+	 * @var array<int,string> Month names by number
 	 */
 	private $monthNames = [];
 
 	/**
 	 * @var int[] A map of descriptive preference text to internal format ID
 	 */
-	private $preferenceIDs;
+	private const PREFERENCE_IDS = [
+		'default' => self::NONE,
+		'dmy' => self::DMY,
+		'mdy' => self::MDY,
+		'ymd' => self::YMD,
+		'ISO 8601' => self::ISO,
+	];
 
 	/** @var string[] Format strings similar to those used by date(), indexed by ID */
-	private $targetFormats;
+	private const TARGET_FORMATS = [
+		self::MDY => 'F j, Y',
+		self::DMY => 'j F Y',
+		self::YMD => 'Y F j',
+		self::ISO => 'y-m-d',
+		self::YDM => 'Y, j F',
+		self::DM => 'j F',
+		self::MD => 'F j',
+	];
 
 	/** Used as a preference ID for rules that apply regardless of preference */
 	private const ALL = -1;
@@ -82,9 +114,6 @@ class DateFormatter {
 	/** e.g. 2001-01-15 */
 	private const ISO = 4;
 
-	/** The highest ID that is a valid user preference */
-	private const LASTPREF = 4;
-
 	/** e.g. 2001, 15 January */
 	private const YDM = 5;
 
@@ -93,9 +122,6 @@ class DateFormatter {
 
 	/** e.g. January 15 */
 	private const MD = 7;
-
-	/** The highest ID that is a valid target format */
-	private const LAST = 7;
 
 	/**
 	 * @param Language $lang In which language to format the date
@@ -128,33 +154,6 @@ class DateFormatter {
 			self::MD => "/^{$md}$/iu",
 			self::ISO => "/^{$iso}$/iu",
 		];
-
-		// Target date formats
-		$this->targetFormats = [
-			self::DMY => 'j F Y',
-			self::YDM => 'Y, j F',
-			self::MDY => 'F j, Y',
-			self::YMD => 'Y F j',
-			self::DM => 'j F',
-			self::MD => 'F j',
-			self::ISO => 'y-m-d',
-		];
-
-		// Rules
-		//           pref       source      target
-		$this->rules[self::DMY][self::MD] = self::DM;
-		$this->rules[self::ALL][self::MD] = self::MD;
-		$this->rules[self::MDY][self::DM] = self::MD;
-		$this->rules[self::ALL][self::DM] = self::DM;
-		$this->rules[self::NONE][self::ISO] = self::ISO;
-
-		$this->preferenceIDs = [
-			'default' => self::NONE,
-			'dmy' => self::DMY,
-			'mdy' => self::MDY,
-			'ymd' => self::YMD,
-			'ISO 8601' => self::ISO,
-		];
 	}
 
 	/**
@@ -166,8 +165,8 @@ class DateFormatter {
 	 *     Defaults to the site content language
 	 * @return DateFormatter
 	 */
-	public static function getInstance( Language $lang = null ) {
-		$lang = $lang ?? MediaWikiServices::getInstance()->getContentLanguage();
+	public static function getInstance( ?Language $lang = null ) {
+		$lang ??= MediaWikiServices::getInstance()->getContentLanguage();
 		return MediaWikiServices::getInstance()->getDateFormatterFactory()->get( $lang );
 	}
 
@@ -181,31 +180,26 @@ class DateFormatter {
 	 * @return string
 	 */
 	public function reformat( $preference, $text, $options = [] ) {
-		if ( isset( $this->preferenceIDs[$preference] ) ) {
-			$preference = $this->preferenceIDs[$preference];
-		} else {
-			$preference = self::NONE;
-		}
-		for ( $source = 1; $source <= self::LAST; $source++ ) {
-			if ( isset( $this->rules[$preference][$source] ) ) {
+		$userFormatId = self::PREFERENCE_IDS[$preference] ?? self::NONE;
+		foreach ( self::TARGET_FORMATS as $source => $_ ) {
+			if ( isset( self::RULES[$userFormatId][$source] ) ) {
 				# Specific rules
-				$target = $this->rules[$preference][$source];
-			} elseif ( isset( $this->rules[self::ALL][$source] ) ) {
+				$target = self::RULES[$userFormatId][$source];
+			} elseif ( isset( self::RULES[self::ALL][$source] ) ) {
 				# General rules
-				$target = $this->rules[self::ALL][$source];
-			} elseif ( $preference ) {
+				$target = self::RULES[self::ALL][$source];
+			} elseif ( $userFormatId ) {
 				# User preference
-				$target = $preference;
+				$target = $userFormatId;
 			} else {
 				# Default
 				$target = $source;
 			}
+			$format = self::TARGET_FORMATS[$target];
 			$regex = $this->regexes[$source];
 
 			$text = preg_replace_callback( $regex,
-				function ( $match ) use ( $target ) {
-					$format = $this->targetFormats[$target];
-
+				function ( $match ) use ( $format ) {
 					$text = '';
 
 					// Pre-generate y/Y stuff because we need the year for the <span> title.
@@ -218,12 +212,11 @@ class DateFormatter {
 
 					if ( !isset( $match['isoMonth'] ) ) {
 						$m = $this->makeIsoMonth( $match['monthName'] );
-						if ( $m === false ) {
+						if ( $m === null ) {
 							// Fail
 							return $match[0];
-						} else {
-							$match['isoMonth'] = $m;
 						}
+						$match['isoMonth'] = $m;
 					}
 
 					if ( !isset( $match['isoDay'] ) ) {
@@ -241,6 +234,7 @@ class DateFormatter {
 								$text .= $match['isoMonth'];
 								break;
 							case 'y': // ISO year
+								// @phan-suppress-next-line PhanTypePossiblyInvalidDimOffset False positive
 								$text .= $match['isoYear'];
 								break;
 							case 'j': // ordinary day of month
@@ -255,11 +249,11 @@ class DateFormatter {
 								if ( $m > 12 || $m < 1 ) {
 									// Fail
 									return $match[0];
-								} else {
-									$text .= $this->monthNames[$m];
 								}
+								$text .= $this->monthNames[$m];
 								break;
 							case 'Y': // ordinary (optional BC) year
+								// @phan-suppress-next-line PhanTypePossiblyInvalidDimOffset False positive
 								$text .= $match['year'];
 								break;
 							default:
@@ -275,11 +269,9 @@ class DateFormatter {
 					$isoBits[] = $match['isoDay'];
 					$isoDate = implode( '-', $isoBits );
 
-					// Output is not strictly HTML (it's wikitext), but <span> is whitelisted.
-					$text = Html::rawElement( 'span',
+					// Output is not strictly HTML (it's wikitext), but <span> is allowed.
+					return Html::rawElement( 'span',
 						[ 'class' => 'mw-formatted-date', 'title' => $isoDate ], $text );
-
-					return $text;
 				}, $text
 			);
 		}
@@ -287,16 +279,12 @@ class DateFormatter {
 	}
 
 	/**
-	 * Makes an ISO month, e.g. 02, from a month name
-	 * @param string $monthName Month name
-	 * @return string|false ISO month name, or false if the input was invalid
+	 * @param string $monthName
+	 * @return string|null 2-digit month number, e.g. "02", or null if the input was invalid
 	 */
 	private function makeIsoMonth( $monthName ) {
-		$isoMonth = $this->xMonths[mb_strtolower( $monthName )] ?? false;
-		if ( $isoMonth === false ) {
-			return false;
-		}
-		return sprintf( '%02d', $isoMonth );
+		$number = $this->xMonths[mb_strtolower( $monthName )] ?? null;
+		return $number !== null ? sprintf( '%02d', $number ) : null;
 	}
 
 	/**
@@ -323,7 +311,7 @@ class DateFormatter {
 	 *   year number and 'BC' at the end otherwise.
 	 */
 	private function makeNormalYear( $iso ) {
-		if ( $iso[0] == '-' ) {
+		if ( $iso <= 0 ) {
 			$text = ( intval( substr( $iso, 1 ) ) + 1 ) . ' BC';
 		} else {
 			$text = intval( $iso );
@@ -331,3 +319,6 @@ class DateFormatter {
 		return $text;
 	}
 }
+
+/** @deprecated class alias since 1.43 */
+class_alias( DateFormatter::class, 'DateFormatter' );

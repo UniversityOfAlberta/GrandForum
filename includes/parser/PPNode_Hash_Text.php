@@ -19,14 +19,24 @@
  * @ingroup Parser
  */
 
+namespace MediaWiki\Parser;
+
+use InvalidArgumentException;
+use LogicException;
+use Stringable;
+
 /**
  * @ingroup Parser
  */
 // phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class PPNode_Hash_Text implements PPNode {
+class PPNode_Hash_Text implements Stringable, PPNode {
 
+	/** @var string */
 	public $value;
-	private $store, $index;
+	/** @var array */
+	private $store;
+	/** @var int */
+	private $index;
 
 	/**
 	 * Construct an object using the data from $store[$index]. The rest of the
@@ -36,16 +46,16 @@ class PPNode_Hash_Text implements PPNode {
 	 * @param int $index
 	 */
 	public function __construct( array $store, $index ) {
-		$this->value = $store[$index];
-		if ( !is_scalar( $this->value ) ) {
-			throw new MWException( __CLASS__ . ' given object instead of string' );
+		if ( !is_scalar( $store[$index] ) ) {
+			throw new InvalidArgumentException( __CLASS__ . ' given object instead of string' );
 		}
+		$this->value = $store[$index];
 		$this->store = $store;
 		$this->index = $index;
 	}
 
 	public function __toString() {
-		return htmlspecialchars( $this->value );
+		return htmlspecialchars( $this->value, ENT_COMPAT );
 	}
 
 	public function getNextSibling() {
@@ -77,14 +87,20 @@ class PPNode_Hash_Text implements PPNode {
 	}
 
 	public function splitArg() {
-		throw new MWException( __METHOD__ . ': not supported' );
+		// @phan-suppress-previous-line PhanPluginNeverReturnMethod
+		throw new LogicException( __METHOD__ . ': not supported' );
 	}
 
 	public function splitExt() {
-		throw new MWException( __METHOD__ . ': not supported' );
+		// @phan-suppress-previous-line PhanPluginNeverReturnMethod
+		throw new LogicException( __METHOD__ . ': not supported' );
 	}
 
 	public function splitHeading() {
-		throw new MWException( __METHOD__ . ': not supported' );
+		// @phan-suppress-previous-line PhanPluginNeverReturnMethod
+		throw new LogicException( __METHOD__ . ': not supported' );
 	}
 }
+
+/** @deprecated class alias since 1.43 */
+class_alias( PPNode_Hash_Text::class, 'PPNode_Hash_Text' );

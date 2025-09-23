@@ -19,23 +19,41 @@
  * @ingroup Parser
  */
 
+namespace MediaWiki\Parser;
+
 /**
  * @ingroup Parser
- * @property string[] $out
  */
 // phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class PPDPart_Hash extends PPDPart {
+class PPDPart_Hash {
+	/**
+	 * @var string[] Output accumulator
+	 */
+	public $out;
 
 	/**
-	 * @param string $out
+	 * @var int|null Index of equals sign, if found
 	 */
+	public $eqpos;
+
+	/**
+	 * @var int|null
+	 */
+	public $commentEnd;
+
+	/**
+	 * @var int|null
+	 */
+	public $visualEnd;
+
 	public function __construct( $out = '' ) {
+		$this->out = [];
+
 		if ( $out !== '' ) {
-			$accum = [ $out ];
-		} else {
-			$accum = [];
+			$this->out[] = $out;
 		}
-		// @phan-suppress-next-line PhanTypeMismatchArgumentProbablyReal
-		parent::__construct( $accum );
 	}
 }
+
+/** @deprecated class alias since 1.43 */
+class_alias( PPDPart_Hash::class, 'PPDPart_Hash' );

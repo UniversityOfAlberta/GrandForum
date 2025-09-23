@@ -1,14 +1,9 @@
 <?php
 /** Адыгэбзэ (Адыгэбзэ)
  *
- * To improve a translation please visit https://translatewiki.net
- *
- * @ingroup Language
  * @file
- *
+ * @ingroup Languages
  */
-
-# $fallback = 'ru'; // T29785
 
 $namespaceNames = [
 	NS_MEDIA            => 'Медиа',
@@ -46,3 +41,5 @@ $namespaceAliases = [
 
 // Remove Russian gender aliases
 $namespaceGenderAliases = [];
+
+$linkTrail = '/^([a-zабвгдеёжзийклмнопрстуфхцчшщъыьэюяӀ]+)(.*)$/sDu';

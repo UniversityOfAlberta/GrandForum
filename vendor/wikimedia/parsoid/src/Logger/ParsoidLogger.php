@@ -1,4 +1,5 @@
 <?php
+declare( strict_types = 1 );
 
 namespace Wikimedia\Parsoid\Logger;
 
@@ -10,8 +11,8 @@ class ParsoidLogger {
 	/* @var Logger */
 	private $backendLogger;
 
-	/* @var string */
-	private $enabledRE;
+	/* @var string|null Null means nothing is enabled */
+	private $enabledRE = null;
 
 	/** PORT-FIXME: Not yet implemented. Monolog supports sampling as well! */
 	/* @var string */
@@ -31,11 +32,11 @@ class ParsoidLogger {
 		'trace/list' => '[LIST]',
 		'trace/quote' => '[QUOTE]',
 		'trace/wts' => '[WTS]',
+		'debug/wts' => '---[WTS-DBG]---',
 		'debug/wts/sep' => '[SEP]',
 		'trace/selser' => '[SELSER]',
 		'trace/domdiff' => '[DOM-DIFF]',
 		'trace/wt-escape' => '[wt-esc]',
-		'trace/ttm:1' => '[1-TTM]',
 		'trace/ttm:2' => '[2-TTM]',
 		'trace/ttm:3' => '[3-TTM]',
 	];
@@ -49,7 +50,7 @@ class ParsoidLogger {
 	 * @return string
 	 */
 	private function buildLoggingRE( array $flags, string $logType ): string {
-		return $logType . '/(' . implode( '|', array_keys( $flags ) ) . ')(/|$)';
+		return $logType . '/(?:' . implode( '|', array_keys( $flags ) ) . ')(?:/|$)';
 	}
 
 	/**
@@ -63,7 +64,6 @@ class ParsoidLogger {
 	public function __construct( LoggerInterface $backendLogger, array $options ) {
 		$this->backendLogger = $backendLogger;
 
-		$this->enabledRE = '';
 		$rePatterns = $options['logLevels'];
 		if ( $options['traceFlags'] ) {
 			$rePatterns[] = $this->buildLoggingRE( $options['traceFlags'], 'trace' );
@@ -72,13 +72,24 @@ class ParsoidLogger {
 			$rePatterns[] = $this->buildLoggingRE( $options['debugFlags'], 'debug' );
 		}
 		if ( $options['dumpFlags'] ) {
-			$rePatterns[] = $this->buildLoggingRE( $options['dumpFlags'], 'dump' );
+			// For tracing, Parsoid simply calls $env->log( "trace/SOMETHING", ... );
+			// The filtering based on whether a trace is enabled is handled by this class.
+			// This is done via the regexp pattern being constructed above.
+			// However, for dumping, at some point before / during the port from JS to PHP,
+			// all filtering is being done at the site of constructing dumps. This might
+			// have been because of the expensive nature of dumps, but closures could have
+			// been used. In any case, given that usage, we don't need to do any filtering
+			// here. The only caller for dumps is Env.php::writeDump right now which is
+			// called after filtering for enabled flags, and which calls us with a "dump"
+			// prefix. So, all we need to do here is enable the 'dump' prefix without
+			// processing CLI flags. In the future, if those dump logging call sites go
+			// back to usage like $env->log( "dump/dom:post-dsr", ... ), etc. we can
+			// switch this back to constructing a regexp.
+			$rePatterns[] = 'dump'; // $this->buildLoggingRE( $options['dumpFlags'], 'dump' );
 		}
 
 		if ( count( $rePatterns ) > 0 ) {
-			$this->enabledRE = '#(' . implode( '|', $rePatterns ) . ')#';
-		} else {
-			$this->enabledRE = '/[^\s\S]/';
+			$this->enabledRE = '#^(?:' . implode( '|', $rePatterns ) . ')#';
 		}
 	}
 
@@ -105,7 +116,7 @@ class ParsoidLogger {
 		}
 
 		// indent by number of slashes
-		$numMatches = preg_match_all( '#/#', $logType );
+		$numMatches = substr_count( $logType, '/' );
 		$indent = str_repeat( '  ', $numMatches > 1 ? $numMatches - 1 : 0 );
 		$msg .= $indent;
 
@@ -159,7 +170,7 @@ class ParsoidLogger {
 	public function log( string $prefix, ...$args ): void {
 		// FIXME: This requires enabled loglevels to percolate all the way here!!
 		// Quick check for un-enabled logging.
-		if ( !preg_match( $this->enabledRE, $prefix ) ) {
+		if ( !$this->enabledRE || !preg_match( $this->enabledRE, $prefix ) ) {
 			return;
 		}
 
@@ -169,7 +180,7 @@ class ParsoidLogger {
 			return;
 		}
 
-		$logLevel = preg_replace( '#/.*$#', '', $prefix );
+		$logLevel = strstr( $prefix, '/', true ) ?: $prefix;
 
 		// Handle trace type first
 		if ( $logLevel === 'trace' || $logLevel === 'debug' ) {

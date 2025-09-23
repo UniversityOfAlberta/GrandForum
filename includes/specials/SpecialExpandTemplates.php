@@ -1,7 +1,5 @@
 <?php
 /**
- * Implements Special:ExpandTemplates
- *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -18,36 +16,56 @@
  * http://www.gnu.org/copyleft/gpl.html
  *
  * @file
- * @ingroup SpecialPage
  */
 
+namespace MediaWiki\Specials;
+
+use MediaWiki\Html\Html;
+use MediaWiki\HTMLForm\HTMLForm;
+use MediaWiki\MainConfigNames;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Output\OutputPage;
+use MediaWiki\Parser\Parser;
+use MediaWiki\Parser\ParserFactory;
+use MediaWiki\Parser\ParserOptions;
+use MediaWiki\Parser\ParserOutput;
+use MediaWiki\SpecialPage\SpecialPage;
+use MediaWiki\Status\Status;
+use MediaWiki\Tidy\TidyDriverBase;
+use MediaWiki\Title\Title;
+use MediaWiki\User\Options\UserOptionsLookup;
+use MediaWiki\Xml\Xml;
 
 /**
- * A special page that expands submitted templates, parser functions,
+ * A special page to enter wikitext and expands its templates, parser functions,
  * and variables, allowing easier debugging of these.
  *
  * @ingroup SpecialPage
+ * @ingroup Parser
  */
 class SpecialExpandTemplates extends SpecialPage {
 
-	/** @var bool Whether or not to show the XML parse tree */
-	protected $generateXML;
+	/** @var int Maximum size in bytes to include. 50 MB allows fixing those huge pages */
+	private const MAX_INCLUDE_SIZE = 50_000_000;
 
-	/** @var bool Whether or not to show the raw HTML code */
-	protected $generateRawHtml;
+	private ParserFactory $parserFactory;
+	private UserOptionsLookup $userOptionsLookup;
+	private TidyDriverBase $tidy;
 
-	/** @var bool Whether or not to remove comments in the expanded wikitext */
-	protected $removeComments;
-
-	/** @var bool Whether or not to remove <nowiki> tags in the expanded wikitext */
-	protected $removeNowiki;
-
-	/** @var int Maximum size in bytes to include. 50MB allows fixing those huge pages */
-	private const MAX_INCLUDE_SIZE = 50000000;
-
-	public function __construct() {
+	/**
+	 * @param ParserFactory $parserFactory
+	 * @param UserOptionsLookup $userOptionsLookup
+	 * @param TidyDriverBase $tidy
+	 */
+	public function __construct(
+		ParserFactory $parserFactory,
+		UserOptionsLookup $userOptionsLookup,
+		TidyDriverBase $tidy
+	) {
 		parent::__construct( 'ExpandTemplates' );
+		$this->parserFactory = $parserFactory;
+		$this->userOptionsLookup = $userOptionsLookup;
+		$this->tidy = $tidy;
 	}
 
 	/**
@@ -59,25 +77,27 @@ class SpecialExpandTemplates extends SpecialPage {
 		$this->addHelpLink( 'Help:ExpandTemplates' );
 
 		$request = $this->getRequest();
-		$titleStr = $request->getText( 'wpContextTitle' );
-		$title = Title::newFromText( $titleStr );
-
-		if ( !$title ) {
-			$title = $this->getPageTitle();
-		}
 		$input = $request->getText( 'wpInput' );
-		$this->generateXML = $request->getBool( 'wpGenerateXml' );
-		$this->generateRawHtml = $request->getBool( 'wpGenerateRawHtml' );
 
 		if ( strlen( $input ) ) {
-			$this->removeComments = $request->getBool( 'wpRemoveComments', false );
-			$this->removeNowiki = $request->getBool( 'wpRemoveNowiki', false );
+			$removeComments = $request->getBool( 'wpRemoveComments', false );
+			$removeNowiki = $request->getBool( 'wpRemoveNowiki', false );
+			$generateXML = $request->getBool( 'wpGenerateXml' );
+			$generateRawHtml = $request->getBool( 'wpGenerateRawHtml' );
+
 			$options = ParserOptions::newFromContext( $this->getContext() );
-			$options->setRemoveComments( $this->removeComments );
+			$options->setRemoveComments( $removeComments );
 			$options->setMaxIncludeSize( self::MAX_INCLUDE_SIZE );
 
-			$parser = MediaWikiServices::getInstance()->getParser();
-			if ( $this->generateXML ) {
+			$titleStr = $request->getText( 'wpContextTitle' );
+			$title = Title::newFromText( $titleStr );
+			if ( !$title ) {
+				$title = $this->getPageTitle();
+				$options->setTargetLanguage( $this->getContentLanguage() );
+			}
+
+			$parser = $this->parserFactory->getInstance();
+			if ( $generateXML ) {
 				$parser->startExternalParse( $title, $options, Parser::OT_PREPROCESS );
 				$dom = $parser->preprocessToDom( $input );
 
@@ -91,24 +111,17 @@ class SpecialExpandTemplates extends SpecialPage {
 			}
 
 			$output = $parser->preprocess( $input, $title, $options );
-		} else {
-			$this->removeComments = $request->getBool( 'wpRemoveComments', true );
-			$this->removeNowiki = $request->getBool( 'wpRemoveNowiki', false );
-			$output = false;
-		}
+			$this->makeForm();
 
-		$out = $this->getOutput();
-
-		$this->makeForm( $titleStr, $input );
-
-		if ( $output !== false ) {
-			if ( $this->generateXML && strlen( $output ) > 0 ) {
+			$out = $this->getOutput();
+			if ( $generateXML && strlen( $output ) > 0 ) {
+				// @phan-suppress-next-line PhanPossiblyUndeclaredVariable xml is set when used
 				$out->addHTML( $this->makeOutput( $xml, 'expand_templates_xml_output' ) );
 			}
 
 			$tmp = $this->makeOutput( $output );
 
-			if ( $this->removeNowiki ) {
+			if ( $removeNowiki ) {
 				$tmp = preg_replace(
 					[ '_&lt;nowiki&gt;_', '_&lt;/nowiki&gt;_', '_&lt;nowiki */&gt;_' ],
 					'',
@@ -116,19 +129,21 @@ class SpecialExpandTemplates extends SpecialPage {
 				);
 			}
 
-			$config = $this->getConfig();
-
-			$tmp = MWTidy::tidy( $tmp );
+			$tmp = $this->tidy->tidy( $tmp );
 
 			$out->addHTML( $tmp );
 
-			$pout = $this->generateHtml( $title, $output );
-			$rawhtml = $pout->getText();
-			if ( $this->generateRawHtml && strlen( $rawhtml ) > 0 ) {
+			$pout = $parser->parse( $output, $title, $options );
+			// TODO T371008 consider if using the Content framework makes sense instead of creating the pipeline
+			$rawhtml = MediaWikiServices::getInstance()->getDefaultOutputPipeline()
+				->run( $pout, $options, [ 'enableSectionEditLinks' => false ] )->getContentHolderText();
+			if ( $generateRawHtml && strlen( $rawhtml ) > 0 ) {
 				$out->addHTML( $this->makeOutput( $rawhtml, 'expand_templates_html_output' ) );
 			}
 
 			$this->showHtmlPreview( $title, $pout, $out );
+		} else {
+			$this->makeForm();
 		}
 	}
 
@@ -142,7 +157,7 @@ class SpecialExpandTemplates extends SpecialPage {
 	 */
 	public function onSubmitInput( array $values ) {
 		$status = Status::newGood();
-		if ( !strlen( $values['input'] ) ) {
+		if ( !strlen( $values['Input'] ) ) {
 			$status = Status::newFatal( 'expand_templates_input_missing' );
 		}
 		return $status;
@@ -150,57 +165,44 @@ class SpecialExpandTemplates extends SpecialPage {
 
 	/**
 	 * Generate a form allowing users to enter information
-	 *
-	 * @param string $title Value for context title field
-	 * @param string $input Value for input textbox
 	 */
-	private function makeForm( $title, $input ) {
+	private function makeForm() {
 		$fields = [
-			'contexttitle' => [
-				'type' => 'text',
-				'label' => $this->msg( 'expand_templates_title' )->plain(),
-				'name' => 'wpContextTitle',
-				'id' => 'contexttitle',
-				'size' => 60,
-				'default' => $title,
-				'autofocus' => true,
-			],
-			'input' => [
+			'Input' => [
 				'type' => 'textarea',
-				'name' => 'wpInput',
 				'label' => $this->msg( 'expand_templates_input' )->text(),
 				'rows' => 10,
-				'default' => $input,
 				'id' => 'input',
 				'useeditfont' => true,
+				'required' => true,
+				'autofocus' => true,
 			],
-			'removecomments' => [
+			'ContextTitle' => [
+				'type' => 'text',
+				'label' => $this->msg( 'expand_templates_title' )->plain(),
+				'id' => 'contexttitle',
+				'size' => 60,
+			],
+			'RemoveComments' => [
 				'type' => 'check',
 				'label' => $this->msg( 'expand_templates_remove_comments' )->text(),
-				'name' => 'wpRemoveComments',
 				'id' => 'removecomments',
-				'default' => $this->removeComments,
+				'default' => true,
 			],
-			'removenowiki' => [
+			'RemoveNowiki' => [
 				'type' => 'check',
 				'label' => $this->msg( 'expand_templates_remove_nowiki' )->text(),
-				'name' => 'wpRemoveNowiki',
 				'id' => 'removenowiki',
-				'default' => $this->removeNowiki,
 			],
-			'generate_xml' => [
+			'GenerateXml' => [
 				'type' => 'check',
 				'label' => $this->msg( 'expand_templates_generate_xml' )->text(),
-				'name' => 'wpGenerateXml',
 				'id' => 'generate_xml',
-				'default' => $this->generateXML,
 			],
-			'generate_rawhtml' => [
+			'GenerateRawHtml' => [
 				'type' => 'check',
 				'label' => $this->msg( 'expand_templates_generate_rawhtml' )->text(),
-				'name' => 'wpGenerateRawHtml',
 				'id' => 'generate_rawhtml',
-				'default' => $this->generateRawHtml,
 			],
 		];
 
@@ -208,7 +210,7 @@ class SpecialExpandTemplates extends SpecialPage {
 		$form
 			->setSubmitTextMsg( 'expand_templates_ok' )
 			->setWrapperLegendMsg( 'expandtemplates' )
-			->setHeaderText( $this->msg( 'expand_templates_intro' )->parse() )
+			->setHeaderHtml( $this->msg( 'expand_templates_intro' )->parse() )
 			->setSubmitCallback( [ $this, 'onSubmitInput' ] )
 			->showAlways();
 	}
@@ -230,24 +232,11 @@ class SpecialExpandTemplates extends SpecialPage {
 			[
 				'id' => 'output',
 				'readonly' => 'readonly',
-				'class' => 'mw-editfont-' . $this->getUser()->getOption( 'editfont' )
+				'class' => 'mw-editfont-' . $this->userOptionsLookup->getOption( $this->getUser(), 'editfont' )
 			]
 		);
 
 		return $out;
-	}
-
-	/**
-	 * Renders the supplied wikitext as html
-	 *
-	 * @param Title $title
-	 * @param string $text
-	 * @return ParserOutput
-	 */
-	private function generateHtml( Title $title, $text ) {
-		$popts = ParserOptions::newFromContext( $this->getContext() );
-		$popts->setTargetLanguage( $title->getPageLanguage() );
-		return MediaWikiServices::getInstance()->getParser()->parse( $text, $title, $popts );
 	}
 
 	/**
@@ -258,10 +247,9 @@ class SpecialExpandTemplates extends SpecialPage {
 	 * @param OutputPage $out
 	 */
 	private function showHtmlPreview( Title $title, ParserOutput $pout, OutputPage $out ) {
-		$lang = $title->getPageViewLanguage();
 		$out->addHTML( "<h2>" . $this->msg( 'expand_templates_preview' )->escaped() . "</h2>\n" );
 
-		if ( $this->getConfig()->get( 'RawHtml' ) ) {
+		if ( $this->getConfig()->get( MainConfigNames::RawHtml ) ) {
 			$request = $this->getRequest();
 			$user = $this->getUser();
 
@@ -269,10 +257,7 @@ class SpecialExpandTemplates extends SpecialPage {
 			// allowed and a valid edit token is not provided (T73111). However, MediaWiki
 			// does not currently provide logged-out users with CSRF protection; in that case,
 			// do not show the preview unless anonymous editing is allowed.
-			if ( $user->isAnon() && !MediaWikiServices::getInstance()
-					->getPermissionManager()
-					->userHasRight( $user, 'edit' )
-			) {
+			if ( $user->isAnon() && !$this->getAuthority()->isAllowed( 'edit' ) ) {
 				$error = [ 'expand_templates_preview_fail_html_anon' ];
 			} elseif ( !$user->matchEditToken( $request->getVal( 'wpEditToken' ), '', $request ) ) {
 				$error = [ 'expand_templates_preview_fail_html' ];
@@ -281,22 +266,25 @@ class SpecialExpandTemplates extends SpecialPage {
 			}
 
 			if ( $error ) {
-				$out->wrapWikiMsg( "<div class='previewnote errorbox'>\n$1\n</div>", $error );
+				$out->addHTML(
+					Html::errorBox(
+						$out->msg( $error )->parse(),
+						'',
+						'previewnote'
+					)
+				);
 				return;
 			}
 		}
 
-		$out->addHTML( Html::openElement( 'div', [
-			'class' => 'mw-content-' . $lang->getDir(),
-			'dir' => $lang->getDir(),
-			'lang' => $lang->getHtmlCode(),
-		] ) );
-		$out->addParserOutputContent( $pout );
-		$out->addHTML( Html::closeElement( 'div' ) );
-		$out->setCategoryLinks( $pout->getCategories() );
+		$out->addParserOutputContent( $pout, [ 'enableSectionEditLinks' => false ] );
+		$out->addCategoryLinks( $pout->getCategoryMap() );
 	}
 
 	protected function getGroupName() {
 		return 'wiki';
 	}
 }
+
+/** @deprecated class alias since 1.41 */
+class_alias( SpecialExpandTemplates::class, 'SpecialExpandTemplates' );

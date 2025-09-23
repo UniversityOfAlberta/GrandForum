@@ -5,12 +5,16 @@ namespace MediaWiki\Hook;
 use Skin;
 
 /**
+ * This is a hook handler interface, see docs/Hooks.md.
+ * Use the hook name "SkinAfterBottomScripts" to register handlers implementing this interface.
+ *
  * @stable to implement
  * @ingroup Hooks
  */
 interface SkinAfterBottomScriptsHook {
 	/**
-	 * This hook is called at the end of Skin::bottomScripts().
+	 * This hook is called in OutputPage::getBottomScripts() and allows to add extra html at the
+	 * end of bottom scripts section
 	 *
 	 * @since 1.35
 	 *

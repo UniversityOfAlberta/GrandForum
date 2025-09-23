@@ -164,9 +164,9 @@ abstract class API {
 				$password = isset($_POST['password']) ? $_POST['password'] : "";
 				
 				$user = User::newFromName($user_name);
-				if($user != false && $user->checkPassword($password) || $wgUser->isLoggedIn()){ 
+				if($user != false && $user->checkPassword($password) || $wgUser->isRegistered()){ 
 					// UserName and password are correct, or the user is in the browser and is already logged in
-					if(!$wgUser->isLoggedIn()){
+					if(!$wgUser->isRegistered()){
 					    $wgUser = $user;
 					}
 					$this->processParams($params);
@@ -346,7 +346,7 @@ abstract class RESTAPI extends API {
 			$this->getHelp();
 		}
 		else{
-			if($this->isLoginRequired() && !$wgUser->isLoggedIn()){
+			if($this->isLoginRequired() && !$wgUser->isRegistered()){
                 header("HTTP/1.0: 403 Authentication Required");
                 exit;
             }

@@ -3,11 +3,14 @@
 namespace MediaWiki\Diff\Hook;
 
 use DifferenceEngine;
-use OutputPage;
-use ParserOutput;
+use MediaWiki\Output\OutputPage;
+use MediaWiki\Parser\ParserOutput;
 use WikiPage;
 
 /**
+ * This is a hook handler interface, see docs/Hooks.md.
+ * Use the hook name "DifferenceEngineRenderRevisionAddParserOutput" to register handlers implementing this interface.
+ *
  * @stable to implement
  * @ingroup Hooks
  */

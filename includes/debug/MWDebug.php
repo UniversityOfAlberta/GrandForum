@@ -1,7 +1,5 @@
 <?php
 /**
- * Debug toolbar related code.
- *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -20,42 +18,59 @@
  * @file
  */
 
+namespace MediaWiki\Debug;
+
+use LogicException;
+use MediaWiki\Api\ApiResult;
+use MediaWiki\Context\IContextSource;
+use MediaWiki\Html\Html;
 use MediaWiki\Logger\LegacyLogger;
+use MediaWiki\Output\OutputPage;
+use MediaWiki\Parser\Sanitizer;
+use MediaWiki\ResourceLoader\ResourceLoader;
+use MediaWiki\Utils\GitInfo;
+use ReflectionMethod;
+use UtfNormal;
+use Wikimedia\WrappedString;
+use Wikimedia\WrappedStringList;
 
 /**
- * New debugger system that outputs a toolbar on page view.
+ * Debug toolbar.
  *
- * By default, most methods do nothing ( self::$enabled = false ). You have
- * to explicitly call MWDebug::init() to enabled them.
+ * By default most of these methods do nothing, as enforced by self::$enabled = false.
+ *
+ * To enable the debug toolbar, use $wgDebugToolbar = true in LocalSettings.php.
+ * That ensures MWDebug::init() is called from Setup.php.
  *
  * @since 1.19
+ * @ingroup Debug
  */
 class MWDebug {
 	/**
 	 * Log lines
 	 *
-	 * @var array $log
+	 * @var array
 	 */
 	protected static $log = [];
 
 	/**
 	 * Debug messages from wfDebug().
 	 *
-	 * @var array $debug
+	 * @var array
 	 */
 	protected static $debug = [];
 
 	/**
 	 * SQL statements of the database queries.
 	 *
-	 * @var array $query
+	 * @var array
 	 */
 	protected static $query = [];
 
 	/**
 	 * Is the debugger enabled?
 	 *
-	 * @var bool $enabled
+	 * @var bool
 	 */
 	protected static $enabled = false;
 
@@ -63,12 +78,12 @@ class MWDebug {
 	 * Array of functions that have already been warned, formatted
 	 * function-caller to prevent a buttload of warnings
 	 *
-	 * @var array $deprecationWarnings
+	 * @var array
 	 */
 	protected static $deprecationWarnings = [];
 
 	/**
-	 * @var string[] Deprecation filter regexes
+	 * @var array Keys are regexes, values are optional callbacks to call if the filter is hit
 	 */
 	protected static $deprecationFilters = [];
 
@@ -77,7 +92,7 @@ class MWDebug {
 	 */
 	public static function setup() {
 		global $wgDebugToolbar,
-			$wgUseCdn, $wgUseFileCache, $wgCommandLineMode;
+			$wgUseCdn, $wgUseFileCache;
 
 		if (
 			// Easy to forget to falsify $wgDebugToolbar for static caches.
@@ -86,7 +101,7 @@ class MWDebug {
 			$wgUseFileCache ||
 			// Keep MWDebug off on CLI. This prevents MWDebug from eating up
 			// all the memory for logging SQL queries in maintenance scripts.
-			$wgCommandLineMode
+			MW_ENTRY_POINT === 'cli'
 		) {
 			return;
 		}
@@ -194,26 +209,14 @@ class MWDebug {
 			self::formatCallerDescription( $msg, $callerDescription ),
 			'warning',
 			$level );
-
-		if ( self::$enabled ) {
-			self::$log[] = [
-				'msg' => htmlspecialchars( $msg ),
-				'type' => 'warn',
-				'caller' => $callerDescription['func'],
-			];
-		}
 	}
 
 	/**
 	 * Show a warning that $function is deprecated.
-	 * This will send it to the following locations:
-	 * - Debug toolbar, with one item per function and caller, if $wgDebugToolbar
-	 *   is set to true.
-	 * - PHP's error log, with level E_USER_DEPRECATED, if $wgDevelopmentWarnings
-	 *   is set to true.
-	 * - MediaWiki's debug log, if $wgDevelopmentWarnings is set to false.
 	 *
+	 * @see deprecatedMsg()
 	 * @since 1.19
+	 *
 	 * @param string $function Function that is deprecated.
 	 * @param string|false $version Version in which the function was deprecated.
 	 * @param string|bool $component Component to which the function belongs.
@@ -235,6 +238,48 @@ class MWDebug {
 	}
 
 	/**
+	 * Show a warning if $method declared in $class is overridden in $instance.
+	 *
+	 * @since 1.36
+	 * @see deprecatedMsg()
+	 *
+	 * phpcs:ignore MediaWiki.Commenting.FunctionComment.ObjectTypeHintParam
+	 * @param object $instance Object on which to detect deprecated overrides (typically $this).
+	 * @param string $class Class declaring the deprecated method (typically __CLASS__ )
+	 * @param string $method The name of the deprecated method.
+	 * @param string|false $version Version in which the method was deprecated.
+	 *   Does not issue deprecation warnings if false.
+	 * @param string|bool $component Component to which the class belongs.
+	 *    If false, it is assumed the class is in MediaWiki core.
+	 * @param int $callerOffset How far up the callstack is the original
+	 *    caller. 2 = function that called the function that called
+	 *    MWDebug::detectDeprecatedOverride()
+	 *
+	 * @return bool True if the method was overridden, false otherwise. If the method
+	 *         was overridden, it should be called. The deprecated method's default
+	 *         implementation should call MWDebug::deprecated().
+	 */
+	public static function detectDeprecatedOverride( $instance, $class, $method, $version = false,
+		$component = false, $callerOffset = 2
+	) {
+		$reflectionMethod = new ReflectionMethod( $instance, $method );
+		$declaringClass = $reflectionMethod->getDeclaringClass()->getName();
+
+		if ( $declaringClass === $class ) {
+			// not overridden, nothing to do
+			return false;
+		}
+
+		if ( $version ) {
+			$component = $component ?: 'MediaWiki';
+			$msg = "$declaringClass overrides $method which was deprecated in $component $version.";
+			self::deprecatedMsg( $msg, $version, $component, $callerOffset + 1 );
+		}
+
+		return true;
+	}
+
+	/**
 	 * Log a deprecation warning with arbitrary message text. A caller
 	 * description will be appended. If the message has already been sent for
 	 * this caller, it won't be sent again.
@@ -242,6 +287,14 @@ class MWDebug {
 	 * Although there are component and version parameters, they are not
 	 * automatically appended to the message. The message text should include
 	 * information about when the thing was deprecated.
+	 *
+	 * The warning will be sent to the following locations:
+	 * - Debug toolbar, with one item per function and caller, if $wgDebugToolbar
+	 *   is set to true.
+	 * - PHP's error log, with level E_USER_DEPRECATED, if $wgDevelopmentWarnings
+	 *   is set to true. This is the case in phpunit tests by default, and will
+	 *   cause tests to fail.
+	 * - MediaWiki's debug log, if $wgDevelopmentWarnings is set to false.
 	 *
 	 * @since 1.35
 	 *
@@ -313,39 +366,23 @@ class MWDebug {
 	 *
 	 * @param string $msg The complete message including relevant caller information.
 	 * @param bool $sendToLog If true, the message will be sent to the debug
-	 *   toolbar, the debug log, and raised as a warning if indicated by
-	 *   $wgDevelopmentWarnings. If false, the message will only be sent to
-	 *   the debug toolbar.
+	 *   toolbar, the debug log, and raised as a warning to PHP. If false, the message
+	 *   will only be sent to the debug toolbar.
 	 * @param string $callerFunc The caller, for display in the debug toolbar's
 	 *   caller column.
 	 */
 	public static function sendRawDeprecated( $msg, $sendToLog = true, $callerFunc = '' ) {
-		foreach ( self::$deprecationFilters as $filter ) {
+		foreach ( self::$deprecationFilters as $filter => $callback ) {
 			if ( preg_match( $filter, $msg ) ) {
+				if ( is_callable( $callback ) ) {
+					$callback();
+				}
 				return;
 			}
 		}
 
 		if ( $sendToLog ) {
-			global $wgDevelopmentWarnings; // we could have a more specific $wgDeprecationWarnings setting.
-			self::sendMessage(
-				$msg,
-				'deprecated',
-				$wgDevelopmentWarnings ? E_USER_DEPRECATED : false
-			);
-		}
-
-		if ( self::$enabled ) {
-			$logMsg = htmlspecialchars( $msg ) .
-				Html::rawElement( 'div', [ 'class' => 'mw-debug-backtrace' ],
-					Html::element( 'span', [], 'Backtrace:' ) . wfBacktrace()
-				);
-
-			self::$log[] = [
-				'msg' => $logMsg,
-				'type' => 'deprecated',
-				'caller' => $callerFunc,
-			];
+			trigger_error( $msg, E_USER_DEPRECATED );
 		}
 	}
 
@@ -354,12 +391,15 @@ class MWDebug {
 	 * Use this to filter deprecation warnings when testing deprecated code.
 	 *
 	 * @param string $regex
+	 * @param ?callable $callback To call if $regex is hit
 	 */
-	public static function filterDeprecationForTest( $regex ) {
+	public static function filterDeprecationForTest(
+		string $regex, ?callable $callback = null
+	): void {
 		if ( !defined( 'MW_PHPUNIT_TEST' ) && !defined( 'MW_PARSER_TEST' ) ) {
-			throw new RuntimeException( __METHOD__ . ' can only be used in tests' );
+			throw new LogicException( __METHOD__ . ' can only be used in tests' );
 		}
-		self::$deprecationFilters[] = $regex;
+		self::$deprecationFilters[$regex] = $callback;
 	}
 
 	/**
@@ -414,7 +454,35 @@ class MWDebug {
 	 * @return string
 	 */
 	private static function formatCallerDescription( $msg, $caller ) {
+		// When changing this, update the below parseCallerDescription() method  as well.
 		return $msg . ' [Called from ' . $caller['func'] . ' in ' . $caller['file'] . ']';
+	}
+
+	/**
+	 * Append a caller description to an error message
+	 *
+	 * @internal For use by MWExceptionHandler to override 'exception.file' in error logs.
+	 * @param string $msg Formatted message from formatCallerDescription() and getCallerDescription()
+	 * @return null|array<string,string> Null if unable to recognise all parts, or array with:
+	 *  - 'file': string of file path
+	 *  - 'line': string of line number
+	 *  - 'func': string of function or method name
+	 *  - 'message': Re-formatted version of $msg for use with ErrorException,
+	 *  so as to not include file/line twice.
+	 */
+	public static function parseCallerDescription( $msg ) {
+		$match = null;
+		preg_match( '/(.*) \[Called from ([^ ]+) in ([^ ]+) at line (\d+)\]$/', $msg, $match );
+		if ( $match ) {
+			return [
+				'message' => "{$match[1]} [Called from {$match[2]}]",
+				'func' => $match[2],
+				'file' => $match[3],
+				'line' => $match[4],
+			];
+		} else {
+			return null;
+		}
 	}
 
 	/**
@@ -434,9 +502,11 @@ class MWDebug {
 	}
 
 	/**
-	 * This is a method to pass messages from wfDebug to the pretty debugger.
-	 * Do NOT use this method, use MWDebug::log or wfDebug()
+	 * This method receives messages from LoggerFactory, wfDebugLog, and MWExceptionHandler.
 	 *
+	 * Do NOT call this method directly.
+	 *
+	 * @internal For use by MWExceptionHandler and LegacyLogger only
 	 * @since 1.19
 	 * @param string $str
 	 * @param array $context
@@ -458,7 +528,40 @@ class MWDebug {
 				$str = LegacyLogger::interpolate( $str, $context );
 				$str = $prefix . $str;
 			}
-			self::$debug[] = rtrim( UtfNormal\Validator::cleanUp( $str ) );
+			$str = rtrim( UtfNormal\Validator::cleanUp( $str ) );
+			self::$debug[] = $str;
+			if ( isset( $context['channel'] ) && $context['channel'] === 'error' ) {
+				$message = isset( $context['exception'] )
+					? $context['exception']->getMessage()
+					: $str;
+				$real = self::parseCallerDescription( $message );
+				if ( $real ) {
+					// from wfLogWarning()
+					$message = $real['message'];
+					$caller = $real['func'];
+				} else {
+					$trace = isset( $context['exception'] ) ? $context['exception']->getTrace() : [];
+					if ( ( $trace[5]['function'] ?? null ) === 'wfDeprecated' ) {
+						// from MWExceptionHandler/trigger_error/MWDebug/MWDebug/MWDebug/wfDeprecated()
+						$offset = 6;
+					} elseif ( ( $trace[1]['function'] ?? null ) === 'trigger_error' ) {
+						// from trigger_error
+						$offset = 2;
+					} else {
+						// built-in PHP error
+						$offset = 1;
+					}
+					$frame = $trace[$offset] ?? $trace[0];
+					$caller = ( isset( $frame['class'] ) ? $frame['class'] . '::' : '' )
+						. $frame['function'];
+				}
+
+				self::$log[] = [
+					'msg' => htmlspecialchars( $message ),
+					'type' => 'warn',
+					'caller' => $caller,
+				];
+			}
 		}
 	}
 
@@ -521,7 +624,14 @@ class MWDebug {
 		$files = get_included_files();
 		$fileList = [];
 		foreach ( $files as $file ) {
-			$size = filesize( $file );
+			// phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged
+			$size = @filesize( $file );
+			if ( $size === false ) {
+				// Certain files that have been included might then be deleted. This is especially likely to happen
+				// in tests, see T351986.
+				// Just use a size of 0, but include these files here to try and be as useful as possible.
+				$size = 0;
+			}
 			$fileList[] = [
 				'name' => $file,
 				'size' => $context->getLanguage()->formatSize( $size ),
@@ -536,12 +646,12 @@ class MWDebug {
 	 *
 	 * @since 1.19
 	 * @param IContextSource $context
-	 * @return string
+	 * @return WrappedStringList
 	 */
 	public static function getDebugHTML( IContextSource $context ) {
 		global $wgDebugComments;
 
-		$html = '';
+		$html = [];
 
 		if ( self::$enabled ) {
 			self::log( 'MWDebug output complete' );
@@ -549,19 +659,20 @@ class MWDebug {
 
 			// Cannot use OutputPage::addJsConfigVars because those are already outputted
 			// by the time this method is called.
-			$html = ResourceLoader::makeInlineScript(
-				ResourceLoader::makeConfigSetScript( [ 'debugInfo' => $debugInfo ] ),
-				$context->getOutput()->getCSP()->getNonce()
+			$html[] = ResourceLoader::makeInlineScript(
+				ResourceLoader::makeConfigSetScript( [ 'debugInfo' => $debugInfo ] )
 			);
 		}
 
 		if ( $wgDebugComments ) {
-			$html .= "<!-- Debug output:\n" .
-				htmlspecialchars( implode( "\n", self::$debug ), ENT_NOQUOTES ) .
-				"\n\n-->";
+			$html[] = '<!-- Debug output:';
+			foreach ( self::$debug as $line ) {
+				$html[] = htmlspecialchars( $line, ENT_NOQUOTES );
+			}
+			$html[] = '-->';
 		}
 
-		return $html;
+		return WrappedString::join( "\n", $html );
 	}
 
 	/**
@@ -570,26 +681,26 @@ class MWDebug {
 	 * If $wgShowDebug is false, an empty string is always returned.
 	 *
 	 * @since 1.20
-	 * @return string HTML fragment
+	 * @return WrappedStringList HTML fragment
 	 */
 	public static function getHTMLDebugLog() {
 		global $wgShowDebug;
 
-		if ( !$wgShowDebug ) {
-			return '';
+		$html = [];
+		if ( $wgShowDebug ) {
+			$html[] = Html::openElement( 'div', [ 'id' => 'mw-html-debug-log' ] );
+			$html[] = "<hr />\n<strong>Debug data:</strong><ul id=\"mw-debug-html\">";
+
+			foreach ( self::$debug as $line ) {
+				$display = nl2br( htmlspecialchars( trim( $line ) ) );
+
+				$html[] = "<li><code>$display</code></li>";
+			}
+
+			$html[] = '</ul>';
+			$html[] = '</div>';
 		}
-
-		$ret = "\n<hr />\n<strong>Debug data:</strong><ul id=\"mw-debug-html\">\n";
-
-		foreach ( self::$debug as $line ) {
-			$display = nl2br( htmlspecialchars( trim( $line ) ) );
-
-			$ret .= "<li><code>$display</code></li>\n";
-		}
-
-		$ret .= '</ul>' . "\n";
-
-		return $ret;
+		return WrappedString::join( "\n", $html );
 	}
 
 	/**
@@ -669,3 +780,6 @@ class MWDebug {
 		];
 	}
 }
+
+/** @deprecated class alias since 1.43 */
+class_alias( MWDebug::class, 'MWDebug' );

@@ -20,17 +20,29 @@
  * @file
  */
 
-use Wikimedia\Rdbms\IDatabase;
+namespace MediaWiki\RevisionList;
+
+use Iterator;
+use MediaWiki\Context\ContextSource;
+use MediaWiki\Context\IContextSource;
+use MediaWiki\Debug\DeprecationHelper;
+use MediaWiki\MediaWikiServices;
+use MediaWiki\Page\PageIdentity;
+use MediaWiki\Title\Title;
+use stdClass;
+use Wikimedia\Rdbms\IReadableDatabase;
 use Wikimedia\Rdbms\IResultWrapper;
 
 /**
  * List for revision table items for a single page
  */
 abstract class RevisionListBase extends ContextSource implements Iterator {
-	/** @var Title */
-	public $title;
+	use DeprecationHelper;
 
-	/** @var array */
+	/** @var PageIdentity */
+	protected $page;
+
+	/** @var int[]|null */
 	protected $ids;
 
 	/** @var IResultWrapper|false */
@@ -40,18 +52,44 @@ abstract class RevisionListBase extends ContextSource implements Iterator {
 	protected $current;
 
 	/**
-	 * Construct a revision list for a given title
+	 * Construct a revision list for a given page identity
 	 * @param IContextSource $context
-	 * @param Title $title
+	 * @param PageIdentity $page
 	 */
-	public function __construct( IContextSource $context, Title $title ) {
+	public function __construct( IContextSource $context, PageIdentity $page ) {
 		$this->setContext( $context );
-		$this->title = $title;
+		$this->page = $page;
+
+		$this->deprecatePublicPropertyFallback(
+			'title',
+			'1.37',
+			function (): Title {
+				return Title::newFromPageIdentity( $this->page );
+			},
+			function ( PageIdentity $page ) {
+				$this->page = $page;
+			}
+		);
+	}
+
+	/**
+	 * @return PageIdentity
+	 */
+	public function getPage(): PageIdentity {
+		return $this->page;
+	}
+
+	/**
+	 * @internal for use by RevDelItems
+	 * @return string
+	 */
+	public function getPageName(): string {
+		return Title::newFromPageIdentity( $this->page )->getPrefixedText();
 	}
 
 	/**
 	 * Select items only where the ID is any of the specified values
-	 * @param array $ids
+	 * @param int[] $ids
 	 */
 	public function filterByIds( array $ids ) {
 		$this->ids = $ids;
@@ -60,7 +98,7 @@ abstract class RevisionListBase extends ContextSource implements Iterator {
 	/**
 	 * Get the internal type name of this list. Equal to the table name.
 	 * Override this function.
-	 * @return null
+	 * @return string|null
 	 */
 	public function getType() {
 		return null;
@@ -84,7 +122,9 @@ abstract class RevisionListBase extends ContextSource implements Iterator {
 	 */
 	public function reset() {
 		if ( !$this->res ) {
-			$this->res = $this->doQuery( wfGetDB( DB_REPLICA ) );
+			$this->res = $this->doQuery(
+				MediaWikiServices::getInstance()->getConnectionProvider()->getReplicaDatabase()
+			);
 		} else {
 			$this->res->rewind();
 		}
@@ -122,7 +162,7 @@ abstract class RevisionListBase extends ContextSource implements Iterator {
 	}
 
 	public function valid(): bool {
-		return $this->res ? $this->res->valid() : false;
+		return $this->res && $this->res->valid();
 	}
 
 	/**
@@ -139,15 +179,17 @@ abstract class RevisionListBase extends ContextSource implements Iterator {
 
 	/**
 	 * Do the DB query to iterate through the objects.
-	 * @param IDatabase $db DB object to use for the query
+	 * @param IReadableDatabase $db DB object to use for the query
 	 * @return IResultWrapper
 	 */
 	abstract public function doQuery( $db );
 
 	/**
 	 * Create an item object from a DB result row
-	 * @param object $row
+	 * @param stdClass $row
 	 * @return RevisionItemBase
 	 */
 	abstract public function newItem( $row );
 }
+/** @deprecated class alias since 1.43 */
+class_alias( RevisionListBase::class, 'RevisionListBase' );

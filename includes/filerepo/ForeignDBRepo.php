@@ -21,7 +21,8 @@
  * @ingroup FileRepo
  */
 
-use Wikimedia\Rdbms\Database;
+use MediaWiki\MediaWikiServices;
+use MediaWiki\Storage\BlobStore;
 use Wikimedia\Rdbms\DatabaseDomain;
 use Wikimedia\Rdbms\IDatabase;
 
@@ -30,7 +31,7 @@ use Wikimedia\Rdbms\IDatabase;
  *
  * @ingroup FileRepo
  */
-class ForeignDBRepo extends LocalRepo {
+class ForeignDBRepo extends LocalRepo implements IForeignRepoWithDB {
 	/** @var string */
 	protected $dbType;
 
@@ -52,9 +53,6 @@ class ForeignDBRepo extends LocalRepo {
 	/** @var string */
 	protected $tablePrefix;
 
-	/** @var bool */
-	protected $hasSharedCache;
-
 	/** @var IDatabase */
 	protected $dbConn;
 
@@ -63,14 +61,12 @@ class ForeignDBRepo extends LocalRepo {
 	/** @var callable */
 	protected $fileFromRowFactory = [ ForeignDBFile::class, 'newFromRow' ];
 
-	/** @var string */
-	private $dbDomain;
-
 	/**
 	 * @param array|null $info
 	 */
 	public function __construct( $info ) {
 		parent::__construct( $info );
+
 		'@phan-var array $info';
 		$this->dbType = $info['dbType'];
 		$this->dbServer = $info['dbServer'];
@@ -79,23 +75,23 @@ class ForeignDBRepo extends LocalRepo {
 		$this->dbName = $info['dbName'];
 		$this->dbFlags = $info['dbFlags'];
 		$this->tablePrefix = $info['tablePrefix'];
-		$this->hasSharedCache = $info['hasSharedCache'];
+		$this->hasAccessibleSharedCache = $info['hasSharedCache'];
 
 		$dbDomain = new DatabaseDomain( $this->dbName, null, $this->tablePrefix );
 		$this->dbDomain = $dbDomain->getId();
 	}
 
-	public function getMasterDB() {
+	public function getPrimaryDB() {
 		if ( !isset( $this->dbConn ) ) {
 			$func = $this->getDBFactory();
-			$this->dbConn = $func( DB_MASTER );
+			$this->dbConn = $func( DB_PRIMARY );
 		}
 
 		return $this->dbConn;
 	}
 
 	public function getReplicaDB() {
-		return $this->getMasterDB();
+		return $this->getPrimaryDB();
 	}
 
 	/**
@@ -112,37 +108,20 @@ class ForeignDBRepo extends LocalRepo {
 			'tablePrefix' => $this->tablePrefix
 		];
 
-		return function ( $index ) use ( $type, $params ) {
-			return Database::factory( $type, $params );
+		return static function ( $index ) use ( $type, $params ) {
+			$factory = MediaWikiServices::getInstance()->getDatabaseFactory();
+			return $factory->create( $type, $params );
 		};
 	}
 
 	/**
-	 * @return bool
+	 * @return never
 	 */
-	private function hasSharedCache() {
-		return $this->hasSharedCache;
-	}
-
-	public function getSharedCacheKey( ...$args ) {
-		if ( $this->hasSharedCache() ) {
-			return $this->wanCache->makeGlobalKey( $this->dbDomain, ...$args );
-		} else {
-			return false;
-		}
-	}
-
 	protected function assertWritableRepo() {
-		throw new MWException( static::class . ': write operations are not supported.' );
+		throw new LogicException( static::class . ': write operations are not supported.' );
 	}
 
-	/**
-	 * Return information about the repository.
-	 *
-	 * @return array
-	 * @since 1.22
-	 */
-	public function getInfo() {
-		return FileRepo::getInfo();
+	public function getBlobStore(): ?BlobStore {
+		return null;
 	}
 }

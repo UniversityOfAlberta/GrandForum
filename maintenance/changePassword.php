@@ -24,7 +24,11 @@
  * @ingroup Maintenance
  */
 
+// @codeCoverageIgnoreStart
 require_once __DIR__ . '/Maintenance.php';
+// @codeCoverageIgnoreEnd
+
+use MediaWiki\Maintenance\Maintenance;
 
 /**
  * Maintenance script to change the password of a given user.
@@ -41,16 +45,7 @@ class ChangePassword extends Maintenance {
 	}
 
 	public function execute() {
-		if ( $this->hasOption( "user" ) ) {
-			$user = User::newFromName( $this->getOption( 'user' ) );
-		} elseif ( $this->hasOption( "userid" ) ) {
-			$user = User::newFromId( $this->getOption( 'userid' ) );
-		} else {
-			$this->fatalError( "A \"user\" or \"userid\" must be set to change the password for" );
-		}
-		if ( !$user || !$user->getId() ) {
-			$this->fatalError( "No such user: " . $this->getOption( 'user' ) );
-		}
+		$user = $this->validateUserOption( "A \"user\" or \"userid\" must be set to change the password for" );
 		$password = $this->getOption( 'password' );
 		$status = $user->changeAuthenticationData( [
 			'username' => $user->getName(),
@@ -60,10 +55,12 @@ class ChangePassword extends Maintenance {
 		if ( $status->isGood() ) {
 			$this->output( "Password set for " . $user->getName() . "\n" );
 		} else {
-			$this->fatalError( $status->getMessage( false, false, 'en' )->text() );
+			$this->fatalError( $status );
 		}
 	}
 }
 
+// @codeCoverageIgnoreStart
 $maintClass = ChangePassword::class;
 require_once RUN_MAINTENANCE_IF_MAIN;
+// @codeCoverageIgnoreEnd

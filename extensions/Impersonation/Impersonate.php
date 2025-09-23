@@ -12,7 +12,7 @@ function getUserMode($action, $page){
     if($action == 'getUserMode'){
         session_write_close();
         $json = array();
-        if(!$wgUser->isLoggedIn()){
+        if(!$wgUser->isRegistered()){
             $json = array('mode' => 'loggedOut',
                           'message' => 'You are currently logged out');
             header('Content-Type: application/json');
@@ -53,7 +53,7 @@ function getUserMode($action, $page){
 
 function startImpersonate($wgUser){
     global $wgRequest, $wgServer, $wgScriptPath, $wgUser, $wgMessage, $wgRealUser, $wgImpersonating, $wgDelegating, $wgTitle;
-    if(!$wgUser->isLoggedIn()){
+    if(!$wgUser->isRegistered()){
         return true;
     }
     if(isset($_GET['embed']) && $_GET['embed'] != "false"){

@@ -5,13 +5,15 @@ declare( strict_types = 1 );
 namespace Wikimedia\Parsoid\Config\Api;
 
 use Liuggio\StatsdClient\Factory\StatsdDataFactoryInterface;
-use Monolog\Formatter\LineFormatter;
-use Monolog\Handler\ErrorLogHandler;
-use Monolog\Logger;
-use Psr\Log\LoggerInterface;
+use Wikimedia\Bcp47Code\Bcp47Code;
 use Wikimedia\Parsoid\Config\SiteConfig as ISiteConfig;
+use Wikimedia\Parsoid\Config\StubMetadataCollector;
+use Wikimedia\Parsoid\Core\ContentMetadataCollector;
+use Wikimedia\Parsoid\DOM\Document;
 use Wikimedia\Parsoid\Mocks\MockMetrics;
 use Wikimedia\Parsoid\Utils\ConfigUtils;
+use Wikimedia\Parsoid\Utils\PHPUtils;
+use Wikimedia\Parsoid\Utils\Title;
 use Wikimedia\Parsoid\Utils\UrlUtils;
 use Wikimedia\Parsoid\Utils\Utils;
 
@@ -26,34 +28,73 @@ class SiteConfig extends ISiteConfig {
 	private $api;
 
 	/** @var array|null */
-	private $siteData, $protocols;
+	private $siteData;
+
+	/** @var array|null */
+	private $protocols;
 
 	/** @var string|null */
-	private $baseUri, $relativeLinkPrefix;
+	private $baseUri;
+
+	/** @var string|null */
+	private $relativeLinkPrefix;
 
 	/** @var string */
-	private $savedCategoryRegexp, $savedRedirectRegexp, $savedBswRegexp;
+	private $savedCategoryRegexp;
 
-	/** @phan-var array<int,string> */
-	protected $nsNames = [], $nsCase = [];
+	/** @var string */
+	private $savedRedirectRegexp;
 
-	/** @phan-var array<string,int> */
-	protected $nsIds = [], $nsCanon = [];
+	/** @var string */
+	private $savedBswRegexp;
 
-	/** @phan-var array<int,bool> */
+	/** @var array<int,string> */
+	protected $nsNames = [];
+
+	/** @var array<int,string> */
+	protected $nsCase = [];
+
+	/** @var array<string,int> */
+	protected $nsIds = [];
+
+	/** @var array<string,int> */
+	protected $nsCanon = [];
+
+	/** @var array<int,bool> */
 	protected $nsWithSubpages = [];
 
-	/** @phan-var array<string,string> */
+	/** @var array<string,string> */
 	private $specialPageNames = [];
 
-	/** @phan-var array */
+	/** @var array */
 	private $specialPageAliases = [];
 
 	/** @var array|null */
-	private $interwikiMap, $variants,
-		$langConverterEnabled, $apiMagicWords, $paramMWs,
-		$apiVariables, $apiFunctionHooks,
-		$allMWs, $extensionTags;
+	private $interwikiMap;
+
+	/** @var array<string,array>|null Keys are stored as lowercased BCP-47 code strings */
+	private $variants;
+
+	/** @var array<string,bool>|null Keys are stored as lowercased BCP-47 code strings */
+	private $langConverterEnabled;
+
+	/** @var array|null */
+	private $apiMagicWords;
+
+	/** @var array|null */
+	private $paramMWs;
+
+	/** @var array|null */
+	private $apiVariables;
+
+	/** @var array|null */
+	private $apiFunctionHooks;
+
+	/** @var array|null */
+	private $allMWs;
+
+	/** @var array|null */
+	private $extensionTags;
 
 	/** @var int|null */
 	private $widthOption;
@@ -64,42 +105,28 @@ class SiteConfig extends ISiteConfig {
 	private $featureDetectionDone = false;
 	private $hasVideoInfo = false;
 
-	/**
-	 * @param ApiHelper $api
-	 * @param array $opts
-	 */
+	/** @var string[] Base parameters for a siteinfo query */
+	public const SITE_CONFIG_QUERY_PARAMS = [
+		'action' => 'query',
+		'meta' => 'siteinfo',
+		'siprop' => 'general|protocols|namespaces|namespacealiases|magicwords|interwikimap|'
+			. 'languagevariants|defaultoptions|specialpagealiases|extensiontags|'
+			. 'functionhooks|variables',
+	];
+
 	public function __construct( ApiHelper $api, array $opts ) {
 		parent::__construct();
 
 		$this->api = $api;
 
-		if ( isset( $opts['rtTestMode'] ) ) {
-			$this->rtTestMode = !empty( $opts['rtTestMode'] );
-		}
-
-		if ( isset( $opts['linting'] ) ) {
-			$this->linterEnabled = !empty( $opts['linting'] );
-		}
-
-		if ( isset( $opts['addHTMLTemplateParameters'] ) ) {
-			$this->addHTMLTemplateParameters = !empty( $opts['addHTMLTemplateParameters'] );
-		}
+		$this->linterEnabled = (bool)( $opts['linting'] ?? false );
+		$this->addHTMLTemplateParameters = (bool)( $opts['addHTMLTemplateParameters'] ?? false );
 
 		if ( isset( $opts['maxDepth'] ) ) {
-			$this->maxDepth = $opts['maxDepth'];
+			$this->maxDepth = (int)$opts['maxDepth'];
 		}
 
-		if ( isset( $opts['logger'] ) ) {
-			$this->setLogger( $opts['logger'] );
-		} else {
-			// Use Monolog's PHP console handler
-			$logger = new Logger( "Parsoid CLI" );
-			$handler = new ErrorLogHandler();
-			// Don't suppress inline newlines
-			$handler->setFormatter( new LineFormatter( '%message%', null, true ) );
-			$logger->pushHandler( $handler );
-			$this->setLogger( $logger );
-		}
+		$this->setLogger( $opts['logger'] ?? self::createLogger() );
 
 		if ( isset( $opts['wt2htmlLimits'] ) ) {
 			$this->wt2htmlLimits = array_merge(
@@ -119,7 +146,9 @@ class SiteConfig extends ISiteConfig {
 		$this->relativeLinkPrefix = null;
 		// Superclass value reset since parsertests reuse SiteConfig objects
 		$this->linkTrailRegex = false;
-		$this->magicWordMap = null;
+		$this->mwAliases = null;
+		$this->interwikiMapNoNamespaces = null;
+		$this->iwMatcher = null;
 	}
 
 	/**
@@ -168,7 +197,7 @@ class SiteConfig extends ISiteConfig {
 			$this->featureDetectionDone = true;
 			$data = $this->api->makeRequest( [ 'action' => 'paraminfo', 'modules' => 'query' ] );
 			$props = $data["paraminfo"]["modules"][0]["parameters"]["0"]["type"] ?? [];
-			$this->hasVideoInfo = array_search( 'videoinfo', $props, true ) !== false;
+			$this->hasVideoInfo = in_array( 'videoinfo', $props, true );
 		}
 	}
 
@@ -185,21 +214,20 @@ class SiteConfig extends ISiteConfig {
 			return;
 		}
 
-		$data = $this->api->makeRequest( [
-			'action' => 'query',
-			'meta' => 'siteinfo',
-			'siprop' => 'general|protocols|namespaces|namespacealiases|magicwords|interwikimap|'
-				. 'languagevariants|defaultoptions|specialpagealiases|extensiontags|'
-				. 'functionhooks|variables',
-		] )['query'];
+		$data = $this->api->makeRequest( self::SITE_CONFIG_QUERY_PARAMS )['query'];
 
 		$this->siteData = $data['general'];
 		$this->widthOption = $data['general']['thumblimits'][$data['defaultoptions']['thumbsize']];
 		$this->protocols = $data['protocols'];
 		$this->apiVariables = $data['variables'];
-		$this->apiFunctionHooks = $data['functionhooks'];
+		$this->apiFunctionHooks = PHPUtils::makeSet( $data['functionhooks'] );
 
 		// Process namespace data from API
+		$this->nsNames = [];
+		$this->nsCase = [];
+		$this->nsIds = [];
+		$this->nsCanon = [];
+		$this->nsWithSubpages = [];
 		foreach ( $data['namespaces'] as $ns ) {
 			$this->addNamespace( $ns );
 		}
@@ -224,6 +252,7 @@ class SiteConfig extends ISiteConfig {
 			$allMWs = [];
 			foreach ( $mw['aliases'] as $alias ) {
 				$this->apiMagicWords[$mwName][] = $alias;
+				// Aliases for double underscore mws include the underscores
 				if ( substr( $alias, 0, 2 ) === '__' && substr( $alias, -2 ) === '__' ) {
 					$bsws[$cs][] = preg_quote( substr( $alias, 2, -2 ), '@' );
 				}
@@ -245,15 +274,22 @@ class SiteConfig extends ISiteConfig {
 		$this->interwikiMap = ConfigUtils::computeInterwikiMap( $data['interwikimap'] );
 
 		// Parse variant data from the API
+		# T320662: API should return these in BCP-47 forms
 		$this->langConverterEnabled = [];
 		$this->variants = [];
 		foreach ( $data['languagevariants'] as $base => $variants ) {
+			$baseBcp47 = Utils::mwCodeToBcp47( $base );
 			if ( $this->siteData['langconversion'] ) {
-				$this->langConverterEnabled[$base] = true;
+				$baseKey = strtolower( $baseBcp47->toBcp47Code() );
+				$this->langConverterEnabled[$baseKey] = true;
 				foreach ( $variants as $code => $vdata ) {
-					$this->variants[$code] = [
-						'base' => $base,
-						'fallbacks' => $vdata['fallbacks'],
+					$variantKey = strtolower( Utils::mwCodeToBcp47( $code )->toBcp47Code() );
+					$this->variants[$variantKey] = [
+						'base' => $baseBcp47,
+						'fallbacks' => array_map(
+							[ Utils::class, 'mwCodeToBcp47' ],
+							$vdata['fallbacks']
+						),
 					];
 				}
 			}
@@ -278,7 +314,7 @@ class SiteConfig extends ISiteConfig {
 		}
 
 		$redirect = '(?i:\#REDIRECT)';
-		$quote = function ( $s ) {
+		$quote = static function ( $s ) {
 			$q = preg_quote( $s, '@' );
 			# Note that PHP < 7.3 doesn't escape # in preg_quote.  That means
 			# that the $redirect regexp will fail if used with the `x` flag.
@@ -298,6 +334,8 @@ class SiteConfig extends ISiteConfig {
 				break;
 			}
 		}
+		// `$this->nsNames[14]` is set earlier by the calls to `$this->addNamespace( $ns )`
+		// @phan-suppress-next-line PhanCoalescingAlwaysNull
 		$category = $this->quoteTitleRe( $this->nsNames[14] ?? 'Category', '@' );
 		if ( $category !== 'Category' ) {
 			$category = "(?:$category|Category)";
@@ -306,14 +344,6 @@ class SiteConfig extends ISiteConfig {
 		$this->savedCategoryRegexp = "@{$category}@";
 		$this->savedRedirectRegexp = "@{$redirect}@";
 		$this->savedBswRegexp = "@{$bswRegexp}@";
-	}
-
-	/**
-	 * Set the log channel, for debugging
-	 * @param LoggerInterface|null $logger
-	 */
-	public function setLogger( ?LoggerInterface $logger ): void {
-		$this->logger = $logger;
 	}
 
 	public function galleryOptions(): array {
@@ -385,7 +415,8 @@ class SiteConfig extends ISiteConfig {
 	/** @inheritDoc */
 	public function namespaceId( string $name ): ?int {
 		$this->loadSiteData();
-		return $this->nsIds[Utils::normalizeNamespaceName( $name )] ?? null;
+		$name = Utils::normalizeNamespaceName( $name );
+		return $this->nsCanon[$name] ?? $this->nsIds[$name] ?? null;
 	}
 
 	/** @inheritDoc */
@@ -413,6 +444,15 @@ class SiteConfig extends ISiteConfig {
 		return $this->specialPageNames[$alias] ?? null;
 	}
 
+	/** @inheritDoc */
+	public function magicLinkEnabled( string $which ): bool {
+		$this->loadSiteData();
+		$magic = $this->siteData['magiclinks'] ?? [];
+		// Default to true, as wikis too old to export the 'magiclinks'
+		// property always had magic links enabled.
+		return $magic[$which] ?? true;
+	}
+
 	public function interwikiMagic(): bool {
 		$this->loadSiteData();
 		return $this->siteData['interwikimagic'];
@@ -428,7 +468,7 @@ class SiteConfig extends ISiteConfig {
 		return $this->siteData['wikiid'];
 	}
 
-	public function legalTitleChars() : string {
+	public function legalTitleChars(): string {
 		$this->loadSiteData();
 		return $this->siteData['legaltitlechars'];
 	}
@@ -450,9 +490,9 @@ class SiteConfig extends ISiteConfig {
 		return $this->siteData['linktrail'];
 	}
 
-	public function lang(): string {
+	public function langBcp47(): Bcp47Code {
 		$this->loadSiteData();
-		return $this->siteData['lang'];
+		return Utils::mwCodeToBcp47( $this->siteData['lang'] );
 	}
 
 	public function mainpage(): string {
@@ -460,12 +500,27 @@ class SiteConfig extends ISiteConfig {
 		return $this->siteData['mainpage'];
 	}
 
-	public function responsiveReferences(): array {
+	public function mainPageLinkTarget(): Title {
 		$this->loadSiteData();
-		return [
-			'enabled' => $this->siteData['citeresponsivereferences'] ?? false,
-			'threshold' => 10,
-		];
+		return Title::newFromText( $this->siteData['mainpage'], $this );
+	}
+
+	/** @inheritDoc */
+	public function getMWConfigValue( string $key ) {
+		$this->loadSiteData();
+		switch ( $key ) {
+			// Hardcoded values for these 2 keys
+			case 'CiteResponsiveReferences':
+				return $this->siteData['citeresponsivereferences'] ?? false;
+
+			case 'CiteResponsiveReferencesThreshold':
+				return 10;
+
+			// We can add more hardcoded keys based on testing needs
+			// but null is the default for keys unsupported in this mode.
+			default:
+				return null;
+		}
 	}
 
 	public function rtl(): bool {
@@ -474,9 +529,9 @@ class SiteConfig extends ISiteConfig {
 	}
 
 	/** @inheritDoc */
-	public function langConverterEnabled( string $lang ): bool {
+	public function langConverterEnabledBcp47( Bcp47Code $lang ): bool {
 		$this->loadSiteData();
-		return $this->langConverterEnabled[$lang] ?? false;
+		return $this->langConverterEnabled[strtolower( $lang->toBcp47Code() )] ?? false;
 	}
 
 	public function script(): string {
@@ -494,15 +549,33 @@ class SiteConfig extends ISiteConfig {
 		return $this->siteData['server'];
 	}
 
-	/** @inheritDoc */
-	public function getModulesLoadURI(): string {
-		// In JS, you could override the load uri
-		// via conf.parsoid.modulesLoadURI, but custom values aren't
-		// exported via siteinfo.
-		// Parsoid/JS always makes this protocol-relative, so match
+	/**
+	 * @inheritDoc
+	 */
+	public function exportMetadataToHeadBcp47(
+		Document $document,
+		ContentMetadataCollector $metadata,
+		string $defaultTitle,
+		Bcp47Code $lang
+	): void {
+		'@phan-var StubMetadataCollector $metadata'; // @var StubMetadataCollector $metadata
+		$moduleLoadURI = $this->server() . $this->scriptpath() . '/load.php';
+		// Parsoid/JS always made this protocol-relative, so match
 		// that (for now at least)
-		$path = parent::getModulesLoadURI();
-		return preg_replace( '#^https?://#', '//', $path );
+		$moduleLoadURI = preg_replace( '#^https?://#', '//', $moduleLoadURI );
+		// Look for a displaytitle.
+		$displayTitle = $metadata->getPageProperty( 'displaytitle' ) ??
+			// Use the default title, properly escaped
+			Utils::escapeHtml( $defaultTitle );
+		$this->exportMetadataHelper(
+			$document,
+			$moduleLoadURI,
+			$metadata->getModules(),
+			$metadata->getModuleStyles(),
+			$metadata->getJsConfigVars(),
+			$displayTitle,
+			$lang
+		);
 	}
 
 	public function redirectRegexp(): string {
@@ -525,9 +598,10 @@ class SiteConfig extends ISiteConfig {
 		return $this->siteData['timeoffset'];
 	}
 
-	public function variants(): array {
+	/** @inheritDoc */
+	public function variantsFor( Bcp47Code $lang ): ?array {
 		$this->loadSiteData();
-		return $this->variants;
+		return $this->variants[strtolower( $lang->toBcp47Code() )] ?? null;
 	}
 
 	public function widthOption(): int {
@@ -542,9 +616,55 @@ class SiteConfig extends ISiteConfig {
 	}
 
 	/** @inheritDoc */
-	protected function getFunctionHooks(): array {
-		$this->loadSiteData();
-		return $this->apiFunctionHooks;
+	protected function haveComputedFunctionSynonyms(): bool {
+		return false;
+	}
+
+	private static $noHashFunctions = null;
+
+	/** @inheritDoc */
+	protected function updateFunctionSynonym( string $func, string $magicword, bool $caseSensitive ): void {
+		if ( !$this->apiFunctionHooks ) {
+			$this->loadSiteData();
+		}
+		if ( isset( $this->apiFunctionHooks[$magicword] ) ) {
+			if ( !self::$noHashFunctions ) {
+				// FIXME: This is an approximation only computed in non-integrated mode for
+				// commandline and developer testing. This set is probably not up to date
+				// and also doesn't reflect no-hash functions registered by extensions
+				// via setFunctionHook calls. As such, you might run into GOTCHAs during
+				// debugging of production issues in standalone / API config mode.
+				self::$noHashFunctions = PHPUtils::makeSet( [
+					'ns', 'nse', 'urlencode', 'lcfirst', 'ucfirst', 'lc', 'uc',
+					'localurl', 'localurle', 'fullurl', 'fullurle', 'canonicalurl',
+					'canonicalurle', 'formatnum', 'grammar', 'gender', 'plural', 'bidi',
+					'numberofpages', 'numberofusers', 'numberofactiveusers',
+					'numberofarticles', 'numberoffiles', 'numberofadmins',
+					'numberingroup', 'numberofedits', 'language',
+					'padleft', 'padright', 'anchorencode', 'defaultsort', 'filepath',
+					'pagesincategory', 'pagesize', 'protectionlevel', 'protectionexpiry',
+					'namespacee', 'namespacenumber', 'talkspace', 'talkspacee',
+					'subjectspace', 'subjectspacee', 'pagename', 'pagenamee',
+					'fullpagename', 'fullpagenamee', 'rootpagename', 'rootpagenamee',
+					'basepagename', 'basepagenamee', 'subpagename', 'subpagenamee',
+					'talkpagename', 'talkpagenamee', 'subjectpagename',
+					'subjectpagenamee', 'pageid', 'revisionid', 'revisionday',
+					'revisionday2', 'revisionmonth', 'revisionmonth1', 'revisionyear',
+					'revisiontimestamp', 'revisionuser', 'cascadingsources',
+					// Special callbacks in core
+					'namespace', 'int', 'displaytitle', 'pagesinnamespace',
+				] );
+			}
+
+			$syn = $func;
+			if ( substr( $syn, -1 ) === ':' ) {
+				$syn = substr( $syn, 0, -1 );
+			}
+			if ( !isset( self::$noHashFunctions[$magicword] ) ) {
+				$syn = '#' . $syn;
+			}
+			$this->functionSynonyms[intval( $caseSensitive )][$syn] = $magicword;
+		}
 	}
 
 	/** @inheritDoc */
@@ -563,7 +683,7 @@ class SiteConfig extends ISiteConfig {
 	public function getParameterizedAliasMatcher( array $words ): callable {
 		$this->loadSiteData();
 		$regexes = array_intersect_key( $this->paramMWs, array_flip( $words ) );
-		return function ( $text ) use ( $regexes ) {
+		return static function ( $text ) use ( $regexes ) {
 			/**
 			 * $name is the canonical magic word name
 			 * $re has patterns for matching aliases
@@ -642,32 +762,54 @@ class SiteConfig extends ISiteConfig {
 		return $this->protocols;
 	}
 
-	/**
-	 * @param array $parsoidSettings
-	 * @return SiteConfig
-	 */
-	public static function fromSettings( array $parsoidSettings ): SiteConfig {
-		$opts = [];
-		if ( isset( $parsoidSettings['linting'] ) ) {
-			$opts['linting'] = !empty( $parsoidSettings['linting'] );
-		}
-		if ( isset( $parsoidSettings['wt2htmlLimits'] ) ) {
-			$opts['wt2htmlLimits'] = $parsoidSettings['wt2htmlLimits'];
-		}
-		if ( isset( $parsoidSettings['html2wtLimits'] ) ) {
-			$opts['html2wtLimits'] = $parsoidSettings['html2wtLimits'];
-		}
-		$api = ApiHelper::fromSettings( $parsoidSettings );
-		return new SiteConfig( $api, $opts );
-	}
+	/** @var ?MockMetrics */
+	private $metrics;
 
 	/** @inheritDoc */
 	public function metrics(): ?StatsdDataFactoryInterface {
-		static $metrics = null;
-		if ( $metrics === null ) {
-			$metrics = new MockMetrics();
+		if ( $this->metrics === null ) {
+			$this->metrics = new MockMetrics();
 		}
-		return $metrics;
+		return $this->metrics;
 	}
 
+	/**
+	 * Increment a counter metric
+	 * @param string $name
+	 * @param array $labels
+	 * @param float $amount
+	 * @return void
+	 */
+	public function incrementCounter( string $name, array $labels, float $amount = 1 ): void {
+		// We don't use the labels for now, using MockMetrics instead
+		$this->metrics->increment( $name );
+	}
+
+	/**
+	 * Record a timing metric
+	 * @param string $name
+	 * @param float $value
+	 * @param array $labels
+	 * @return void
+	 */
+	public function observeTiming( string $name, float $value, array $labels ): void {
+		// We don't use the labels for now, using MockMetrics instead
+		$this->metrics->timing( $name, $value );
+	}
+
+	/** @inheritDoc */
+	public function getNoFollowConfig(): array {
+		$this->loadSiteData();
+		return [
+			'nofollow' => $this->siteData['nofollowlinks'] ?? true,
+			'nsexceptions' => $this->siteData['nofollownsexceptions'] ?? [],
+			'domainexceptions' => $this->siteData['nofollowdomainexceptions'] ?? [ 'mediawiki.org' ]
+		];
+	}
+
+	/** @inheritDoc */
+	public function getExternalLinkTarget() {
+		$this->loadSiteData();
+		return $this->siteData['externallinktarget'] ?? false;
+	}
 }

@@ -2,10 +2,13 @@
 
 namespace MediaWiki\Hook;
 
-use ContribsPager;
+use MediaWiki\Pager\ContributionsPager;
 
 // phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
 /**
+ * This is a hook handler interface, see docs/Hooks.md.
+ * Use the hook name "ContribsPager::getQueryInfo" to register handlers implementing this interface.
+ *
  * @stable to implement
  * @ingroup Hooks
  */
@@ -15,7 +18,7 @@ interface ContribsPager__getQueryInfoHook {
 	 *
 	 * @since 1.35
 	 *
-	 * @param ContribsPager $pager Pager object for contributions
+	 * @param ContributionsPager $pager Pager object for contributions
 	 * @param array &$queryInfo The query for the contribs Pager
 	 * @return bool|void True or no return value to continue or false to abort
 	 */

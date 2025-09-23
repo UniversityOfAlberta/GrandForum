@@ -1,5 +1,7 @@
 <?php
  
+ use MediaWiki\MediaWikiServices;
+ 
 $publicPresent = false;
 $egAlwaysAllow = array();
 
@@ -110,7 +112,8 @@ function createExtraTables() {
 	 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8
          ";
 
-	$dbw = wfGetDB(DB_PRIMARY);
+	$dbw = MediaWikiServices::getInstance()->getConnectionProvider()->getPrimaryDatabase();
+	
 	$dbw->query($pagePerm);	
 	$dbw->query($extraNS);
 	$dbw->query($uploadPerm);
@@ -125,7 +128,7 @@ function checkPublicSections(&$parser, &$text){
 
 function parsePublicSections($title, $text){
 	global $wgUser, $wgScriptPath, $wgOut, $publicPresent;
-	if(!is_null($title) && !$wgOut->isDisabled() && !$wgUser->isLoggedIn()){
+	if(!is_null($title) && !$wgOut->isDisabled() && !$wgUser->isRegistered()){
 		$buffer = "";
 		$offset = 0;
 		
@@ -158,7 +161,7 @@ function parsePublicSections($title, $text){
 
 function parseGuestSections($title, $text){
 	global $wgUser, $wgScriptPath, $wgOut;
-	if(!is_null($title) && !$wgOut->isDisabled() && $wgUser->isLoggedIn()){
+	if(!is_null($title) && !$wgOut->isDisabled() && $wgUser->isRegistered()){
 		$text = preg_replace("/\[guest\](.*?)\[\/guest\]/s", "", $text);
 	}
 	$text = str_ireplace("[guest]", "<guest>", $text);
@@ -221,8 +224,9 @@ function onUserCan2(&$title, &$user, $action, &$result) {
 
 
   // Check public sections of wiki page
-  if(!$user->isLoggedIn() && $title->getNamespace() >= 0 && $action == 'read'){
-      $article = WikiPage::factory($title);
+  if(!$user->isRegistered() && $title->getNamespace() >= 0 && $action == 'read'){
+      $article = MediaWikiServices::getInstance()->getWikiPageFactory()->newFromTitle($title);
+      var_dump($article->mId);
       if($article != null && $article->exists()){
           $text = $article->getContent()->getText();
           if(strstr($text, "[public]") !== false && strstr($text, "[/public]") !== false){
@@ -232,7 +236,7 @@ function onUserCan2(&$title, &$user, $action, &$result) {
       }
   }
 
-  if($user->isLoggedIn() && $title->getNamespace() == NS_MAIN && $action == 'read'){
+  if($user->isRegistered() && $title->getNamespace() == NS_MAIN && $action == 'read'){
     // A logged in user should be able to read any page in the main namespace
     
     $result = true;
@@ -447,10 +451,10 @@ function isPublicNS($nsId) {
   if ($nsId == -1) //-1 is a placeholder for a public page that is not in a public namespace
     return true;
   
-	$dbr = wfGetDB( DB_REPLICA );
+	$dbr = MediaWikiServices::getInstance()->getConnectionProvider()->getReplicaDatabase();
 	$result = $dbr->select("${egAnnokiTablePrefix}extranamespaces", "public", array("nsId" => $nsId) );
 
-	if (!($row = $dbr->fetchRow($result)) || ($row[0] == 0)) {
+	if (!($row = $result->fetchRow()) || ($row[0] == 0)) {
 		return false;
 	}
 
@@ -518,7 +522,7 @@ function updatePermissionsByPageID($pageID, $permissions) {
   if ($pageID == 0) { //TODO error?
     return;
   }
-  $dbw = wfGetDB( DB_PRIMARY );
+  $dbw = MediaWikiServices::getInstance()->getConnectionProvider()->getPrimaryDatabase();
   $dbw->delete("${egAnnokiTablePrefix}pagepermissions", array("page_id" => $pageID));
   
   $newPermissions = array();
@@ -538,10 +542,10 @@ function updatePermissionsByPageID($pageID, $permissions) {
 function getExtraPermissions($title) {
   global $egAnnokiTablePrefix;
 
-	$dbr = wfGetDB( DB_REPLICA );
+	$dbr = MediaWikiServices::getInstance()->getConnectionProvider()->getReplicaDatabase();
 	$result = $dbr->select("${egAnnokiTablePrefix}pagepermissions", "group_id", array("page_id" => $title->getArticleID()) );
 	$extraPerm = array();
-	while ($row = $dbr->fetchRow($result)) {
+	while ($row = $result->fetchRow()) {
 	  $extraPerm[] = $row[0];
 	}
 	return $extraPerm;
@@ -609,7 +613,7 @@ function listStragglers($action, $article){
 FROM `mw_page`
 WHERE `page_namespace` =0
 AND `page_is_redirect` =0";
-      $dbr = wfGetDB( DB_REPLICA );
+      $dbr = MediaWikiServices::getInstance()->getConnectionProvider()->getReplicaDatabase();
       $res = $dbr->query($query);
       print '<html>';
 
@@ -628,7 +632,7 @@ AND `page_is_redirect` =0";
 
 function logout($action, $article){
     global $wgUser, $wgServer, $wgScriptPath;
-    if($action == "logout" && $wgUser->isLoggedIn()){
+    if($action == "logout" && $wgUser->isRegistered()){
         $wgUser->logout();
         if(isset($_GET['returnto'])){
             redirect($_GET['returnto']);
@@ -676,7 +680,7 @@ function pageContentSaveComplete($article){
 
 function pageHistoryBeforeList($article, $context){
     global $wgUser, $wgOut;
-    if(!$wgUser->isLoggedIn()){
+    if(!$wgUser->isRegistered()){
 	$wgOut->clearHTML();
 	permissionError();
 	return true;
@@ -684,7 +688,7 @@ function pageHistoryBeforeList($article, $context){
 }
 function clearSubLevelTabs($article){
     global $wgUser;
-    if(!$wgUser->isLoggedIn()){
+    if(!$wgUser->isRegistered()){
 	TabUtils::clearActions();
     }
     return true;

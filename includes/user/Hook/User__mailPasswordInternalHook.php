@@ -2,10 +2,13 @@
 
 namespace MediaWiki\User\Hook;
 
-use User;
+use MediaWiki\User\User;
 
 // phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
 /**
+ * This is a hook handler interface, see docs/Hooks.md.
+ * Use the hook name "User::mailPasswordInternal" to register handlers implementing this interface.
+ *
  * @stable to implement
  * @ingroup Hooks
  */

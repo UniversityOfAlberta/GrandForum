@@ -1,15 +1,5 @@
 <?php
-
-namespace Cdb\Reader;
-
-use Cdb\Exception;
-use Cdb\Reader;
-use Cdb\Util;
-
 /**
- * This is a port of D.J. Bernstein's CDB to PHP. It's based on the copy that
- * appears in PHP 5.3.
- *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -24,50 +14,86 @@ use Cdb\Util;
  * with this program; if not, write to the Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  * http://www.gnu.org/copyleft/gpl.html
- *
- * @file
  */
+
+namespace Cdb\Reader;
+
+use Cdb\Exception;
+use Cdb\Reader;
+use Cdb\Util;
 
 /**
  * CDB reader class
+ *
+ * This is a port of D.J. Bernstein's CDB to PHP. It's based on the copy that
+ * appears in PHP 5.3.
  */
 class PHP extends Reader {
-
-	/** @var string The file name of the CDB file. **/
+	/**
+	 * The file name of the CDB file.
+	 * @var string
+	 */
 	protected $fileName;
 
-	/** @var string First 2048b of CDB file, containing pointers to hash table. **/
+	/**
+	 * The file handle
+	 */
+	protected $handle;
+
+	/**
+	 * @var string
+	 * First 2048 bytes of CDB file, containing pointers to hash table.
+	 */
 	protected $index;
 
-	/** @var int Offset in file where value of found key starts. **/
+	/**
+	 * Offset in file where value of found key starts.
+	 * @var int
+	 */
 	protected $dataPos;
 
-	/** @var int Byte length of found key's value. **/
+	/**
+	 * Byte length of found key's value.
+	 * @var int
+	 */
 	protected $dataLen;
 
-	/** @var int File position indicator when iterating over keys. **/
+	/**
+	 * File position indicator when iterating over keys.
+	 * @var int
+	 */
 	protected $keyIterPos = 2048;
 
-	/** @var int Offset in file where hash tables start. **/
+	/**
+	 * Offset in file where hash tables start.
+	 * @var int
+	 */
 	protected $keyIterStop;
 
-	/** @var string Read buffer for CDB file. **/
+	/**
+	 * Read buffer for CDB file.
+	 * @var string
+	 */
 	protected $buf;
 
-	/** @var int File offset where read buffer starts. **/
+	/**
+	 * File offset where read buffer starts.
+	 * @var int
+	 */
 	protected $bufStart;
 
-	/** @var int File handle position indicator **/
+	/**
+	 * File handle position indicator.
+	 * @var int
+	 */
 	protected $filePos = 2048;
 
 	/**
-	 * Constructor.
-	 *
 	 * @param string $fileName
 	 * @throws Exception If CDB file cannot be opened or if it contains fewer
 	 *   than 2048 bytes of data.
 	 */
-	public function __construct( $fileName ) {
+	public function __construct( string $fileName ) {
 		$this->fileName = $fileName;
 		$this->handle = fopen( $fileName, 'rb' );
 		if ( !$this->handle ) {
@@ -82,22 +108,21 @@ class PHP extends Reader {
 	/**
 	 * Close the handle on the CDB file.
 	 */
-	public function close() {
-		if ( isset( $this->handle ) ) {
+	public function close(): void {
+		if ( $this->handle ) {
 			fclose( $this->handle );
 		}
-		unset( $this->handle );
+		$this->handle = null;
 	}
 
 	/**
 	 * Get the value of a key.
 	 *
-	 * @param mixed $key
-	 * @return bool|string The key's value or false if not found.
+	 * @param string|int $key
+	 * @return string|false The key's value or false if not found
 	 */
 	public function get( $key ) {
-		// strval is required
-		if ( $this->find( strval( $key ) ) ) {
+		if ( $this->find( (string)$key ) ) {
 			return $this->read( $this->dataPos, $this->dataLen );
 		}
 
@@ -107,9 +132,8 @@ class PHP extends Reader {
 	/**
 	 * Read data from the CDB file.
 	 *
-	 * @throws Exception When attempting to read past the end of the file.
-	 * @param int $start Start reading from this position.
-	 * @param int $len Number of bytes to read.
+	 * @param int $start Start reading from this position
+	 * @param int $len Number of bytes to read
 	 * @return string Read data.
 	 */
 	protected function read( $start, $len ) {
@@ -192,7 +216,7 @@ class PHP extends Reader {
 		static $lookups;
 
 		if ( !$lookups ) {
-			$lookups = array();
+			$lookups = [];
 			for ( $i = 1; $i < 256; $i++ ) {
 				$lookups[ chr( $i ) ] = $i;
 			}
@@ -274,11 +298,11 @@ class PHP extends Reader {
 	/**
 	 * Check if a key exists in the CDB file.
 	 *
-	 * @param string $key
+	 * @param string|int $key
 	 * @return bool Whether the key exists.
 	 */
-	public function exists( $key ) {
-		return $this->find( strval( $key ) );
+	public function exists( $key ): bool {
+		return $this->find( (string)$key );
 	}
 
 	/**
@@ -291,7 +315,7 @@ class PHP extends Reader {
 
 		if ( !$this->keyIterStop ) {
 			$pos = INF;
-			for ( $i = 0; $i < 2048; $i+= 8 ) {
+			for ( $i = 0; $i < 2048; $i += 8 ) {
 				$pos = min( $this->readInt31( $i ), $pos );
 			}
 			$this->keyIterStop = $pos;

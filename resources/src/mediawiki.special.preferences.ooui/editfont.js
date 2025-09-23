@@ -2,9 +2,8 @@
  * JavaScript for Special:Preferences: editfont field enhancements.
  */
 ( function () {
-	mw.hook( 'htmlform.enhance' ).add( function ( $root ) {
-		var widget, lastValue,
-			$target = $root.find( '#mw-input-wpeditfont' );
+	mw.hook( 'htmlform.enhance' ).add( ( $root ) => {
+		const $target = $root.find( '#mw-input-wpeditfont' );
 
 		if (
 			// This preference could theoretically be disabled ($wgHiddenPrefs)
@@ -14,16 +13,18 @@
 			return;
 		}
 
-		widget = OO.ui.infuse( $target );
+		const widget = OO.ui.infuse( $target );
 
 		// Style options
-		widget.dropdownWidget.menu.items.forEach( function ( item ) {
+		widget.dropdownWidget.menu.items.forEach( ( item ) => {
 			// The following classes are used here:
 			// * mw-editfont-monospace
 			// * mw-editfont-sans-serif
 			// * mw-editfont-serif
 			item.$label.addClass( 'mw-editfont-' + item.getData() );
 		} );
+
+		let lastValue;
 
 		function updateLabel( value ) {
 			// Style selected item label

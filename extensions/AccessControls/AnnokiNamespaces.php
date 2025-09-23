@@ -1,4 +1,7 @@
 <?php
+
+use MediaWiki\MediaWikiServices;
+
 define('PROJECT_NS', 1);
 define('USER_NS', 2);
 
@@ -49,8 +52,8 @@ function registerExtraNamespaces(&$namespaces) {
 		/*if ($extraNamespace["nsUser"] != null) {
 			$wgUserNamespaces[$nsId] = array("id" => $extraNamespace["nsUser"], "name" => $extraNamespace["user_name"]);
 		}*/
-		if (!MWNamespace::isTalk($nsId)) {
-			$talk = MWNamespace::getTalk($nsId);
+		if (!MediaWikiServices::getInstance()->getNamespaceInfo()->isTalk($nsId)) {
+			$talk = MediaWikiServices::getInstance()->getNamespaceInfo()->isTalk($nsId);
 			$namespaces[$talk] = "{$nsName}_Talk";
 		}
 	}
@@ -114,8 +117,8 @@ function addNewNamespace($nsName, $user = null) {
   if ($egNamespaceAllowUsersWithoutNamespaces && trim($nsName) == "")
     return false;
   
-  $dbw = wfGetDB( DB_PRIMARY );
-  $result = $dbw->selectRow("${egAnnokiTablePrefix}extranamespaces", "MAX(nsId) AS maxId", "");
+  $dbw = MediaWikiServices::getInstance()->getConnectionProvider()->getPrimaryDatabase();
+  $result = $dbw->selectRow("{$egAnnokiTablePrefix}extranamespaces", "MAX(nsId) AS maxId", "");
   $nsId = (int) $result->maxId;
   
   if (!is_int($nsId) || ($nsId < 100)) {
@@ -129,7 +132,7 @@ function addNewNamespace($nsName, $user = null) {
   if ($user != null) {
     $userID = $user->getID();
   }
-  $dbw->insert("${egAnnokiTablePrefix}extranamespaces", array("nsId" => $nsId, "nsName" => $nsName, "nsUser" => $userID));
+  $dbw->insert("{$egAnnokiTablePrefix}extranamespaces", array("nsId" => $nsId, "nsName" => $nsName, "nsUser" => $userID));
   
   return true;
 }
@@ -146,8 +149,8 @@ function renameNamespace($nsName, $newNsName)  {
 	if ($nsId == -1) {
 		return;
 	}
-	$dbw = wfGetDB( DB_PRIMARY );
-	$dbw->update("${egAnnokiTablePrefix}extranamespaces", array("nsName" => $newNsName), array("nsId" => $nsId));
+	$dbw = MediaWikiServices::getInstance()->getConnectionProvider()->getPrimaryDatabase();
+	$dbw->update("{$egAnnokiTablePrefix}extranamespaces", array("nsName" => $newNsName), array("nsId" => $nsId));
 	$this->registerExtraNamespaces();
 }
 
@@ -158,12 +161,12 @@ function renameNamespace($nsName, $newNsName)  {
  */
 function retrieveAllExtraNamespaces() {
   global $egAnnokiTablePrefix;
-	$dbr = wfGetDB(DB_REPLICA);
+	$dbr = MediaWikiServices::getInstance()->getConnectionProvider()->getReplicaDatabase();
 	$sql = "SELECT nsId, nsName, nsUser from `mw_an_extranamespaces`";
 
 	$result = $dbr->query($sql);
 	$extraNS = array();
-	while ($row = $dbr->fetchRow($result)) {
+	while ($row = $result->fetchRow()) {
 		$extraNS[] = $row;
 	}
 	return $extraNS;
@@ -172,7 +175,7 @@ function retrieveAllExtraNamespaces() {
 function getAllPagesInNS($nsName, $includeRedir = true) {
 	$pages = array();
 	$nsId = $this->getNsId($nsName);
-	$dbr = wfGetDB( DB_REPLICA );
+	$dbr = MediaWikiServices::getInstance()->getConnectionProvider()->getReplicaDatabase();
 	$result = $dbr->select("page", array("page_title", "page_is_redirect"), array("page_namespace" => $nsId) );
 	if ($nsName == "Main") {
 		$nsName = "";
@@ -180,7 +183,7 @@ function getAllPagesInNS($nsName, $includeRedir = true) {
 	else {
 		$nsName .= ":";
 	}
-	while ($row = $dbr->fetchRow($result)) {
+	while ($row = $result->fetchRow()) {
 		if (!$includeRedir && $row[1] == 1) {
 			continue;
 		}
@@ -191,14 +194,14 @@ function getAllPagesInNS($nsName, $includeRedir = true) {
 
 function getAllPages($includeTalk = false) {
 	global $wgExtraNamespaces;
-	$dbr = wfGetDB( DB_REPLICA );
+	$dbr = MediaWikiServices::getInstance()->getConnectionProvider()->getReplicaDatabase();
 	$result = $dbr->select("page", array("page_title", "page_namespace", "page_is_redirect") );
 
-	while ($row = $dbr->fetchRow($result)) {
+	while ($row = $result->fetchRow()) {
 		if ($row[1] < 100 && $row[1] != NS_MAIN && $row[1] != NS_TALK) {
 			continue;
 		} 
-		if (!$includeTalk && MWNamespace::isTalk($row[1])) {
+		if (!$includeTalk && MediaWikiServices::getInstance()->getNamespaceInfo()->isTalk($row[1])) {
 			continue;
 		}
 		$nsName = "";
@@ -213,7 +216,7 @@ function getAllPages($includeTalk = false) {
 function getAllUsersInNS($nsName) {
   //$nsId = $this->getNsId($nsName); //BT
   $nsName = $this->getCleanNsName($nsName);
-  $dbr = wfGetDB( DB_REPLICA );
+  $dbr = MediaWikiServices::getInstance()->getConnectionProvider()->getReplicaDatabase();
 	$userGroupsTable = $dbr->tableName("user_groups");
 	$userTable = $dbr->tableName("user");
 	$users = array();
@@ -224,7 +227,7 @@ function getAllUsersInNS($nsName) {
 	WHERE u.user_id = ug.ug_user
 	AND ug.ug_group = '$nsName'"); //BT
 
-	while ($row = $dbr->fetchRow($result)) {
+	while ($row = $result->fetchRow()) {
 		$users[] = $row[0];
 	}
 	return $users;
@@ -242,7 +245,7 @@ static function getExtraNamespaces($type, $includeTalk = false) {
 
 	$list = array();
 	foreach ($wgExtraNamespaces as $extraNSId => $extraNS) {
-		if (MWNamespace::isTalk($extraNSId) && !$includeTalk) {
+		if (MediaWikiServices::getInstance()->getNamespaceInfo()->isTalk($extraNSId) && !$includeTalk) {
 			continue;
 		}
 		if ($type == USER_NS && UserNamespaces::isUserNs($extraNSId)) {
@@ -295,7 +298,7 @@ static function getExtraNamespaces($type, $includeTalk = false) {
    $ignore = array('sysop', 'bureaucrat', 'bot');
    
    foreach ($groups as $index => $ns) {
-     if (!in_array($ns, $ignore) && in_array(str_replace(" ", "_", $ns), $wgExtraNamespaces) && !MWNamespace::isTalk(self::getNamespaceID($ns))){
+     if (!in_array($ns, $ignore) && in_array(str_replace(" ", "_", $ns), $wgExtraNamespaces) && !MediaWikiServices::getInstance()->getNamespaceInfo()->isTalk(self::getNamespaceID($ns))){
        $namespaces[] = $ns;
      }
    }
@@ -316,10 +319,10 @@ static function getExtraNamespaces($type, $includeTalk = false) {
    
    $publicNS = array();
 
-   $dbr = wfGetDB( DB_REPLICA );
-   $result = $dbr->select("${egAnnokiTablePrefix}extranamespaces", 'nsName', array('public' => 1) );
+   $dbr = MediaWikiServices::getInstance()->getConnectionProvider()->getReplicaDatabase();
+   $result = $dbr->select("{$egAnnokiTablePrefix}extranamespaces", 'nsName', array('public' => 1) );
 
-   while ($row = $dbr->fetchRow($result)){
+   while ($row = $result->fetchRow()){
      $publicNS[] = $row[0];
    }
    
@@ -351,8 +354,8 @@ static function getExtraNamespaces($type, $includeTalk = false) {
  static function getUserNSforUser($user){
    global $egAnnokiTablePrefix;
 
-   $dbr = wfGetDB( DB_REPLICA );
-   $result = $dbr->selectField("${egAnnokiTablePrefix}extranamespaces", 'nsName', array('nsUser' => $user->getId()));
+   $dbr = MediaWikiServices::getInstance()->getConnectionProvider()->getReplicaDatabase();
+   $result = $dbr->selectField("{$egAnnokiTablePrefix}extranamespaces", 'nsName', array('nsUser' => $user->getId()));
 
    if (!$result)
      return false;

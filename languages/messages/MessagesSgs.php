@@ -1,10 +1,8 @@
 <?php
 /** Samogitian (žemaitėška)
  *
- * To improve a translation please visit https://translatewiki.net
- *
- * @ingroup Language
  * @file
+ * @ingroup Languages
  *
  * @author Hugo.arg
  * @author Kaganer

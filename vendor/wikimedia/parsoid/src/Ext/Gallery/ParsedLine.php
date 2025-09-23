@@ -3,22 +3,21 @@ declare( strict_types = 1 );
 
 namespace Wikimedia\Parsoid\Ext\Gallery;
 
-use DOMElement;
+use Wikimedia\Parsoid\Core\DomSourceRange;
+use Wikimedia\Parsoid\DOM\Element;
+use Wikimedia\Parsoid\Ext\DOMUtils;
 
-/**
- * @class
- */
 class ParsedLine {
 
 	/**
 	 * DOM node representing the thumbnail image.
-	 * @var DOMElement
+	 * @var Element
 	 */
 	public $thumb;
 
 	/**
 	 * DOM node representing the caption (if any).
-	 * @var DOMElement|null
+	 * @var ?Element
 	 */
 	public $gallerytext;
 
@@ -29,16 +28,26 @@ class ParsedLine {
 	public $rdfaType;
 
 	/**
+	 * @var DomSourceRange
+	 */
+	public $dsr;
+
+	public bool $hasError;
+
+	/**
 	 * Construct a new ParsedLine object.
-	 * @param DOMElement $thumb
-	 * @param DOMElement|null $gallerytext
+	 * @param Element $thumb
+	 * @param ?Element $gallerytext
 	 * @param string $rdfaType
+	 * @param DomSourceRange $dsr
 	 */
 	public function __construct(
-		DOMElement $thumb, ?DOMElement $gallerytext, string $rdfaType
+		Element $thumb, ?Element $gallerytext, string $rdfaType, DomSourceRange $dsr
 	) {
 		$this->thumb = $thumb;
 		$this->gallerytext = $gallerytext;
 		$this->rdfaType = $rdfaType;
+		$this->dsr = $dsr;
+		$this->hasError = DOMUtils::hasTypeOf( $thumb, 'mw:Error' );
 	}
 }

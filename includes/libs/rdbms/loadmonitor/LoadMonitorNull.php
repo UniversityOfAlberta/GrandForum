@@ -16,31 +16,14 @@
  * http://www.gnu.org/copyleft/gpl.html
  *
  * @file
- * @ingroup Database
  */
 
 namespace Wikimedia\Rdbms;
 
-use BagOStuff;
-use Psr\Log\LoggerInterface;
-use WANObjectCache;
-
-class LoadMonitorNull implements ILoadMonitor {
-	public function __construct(
-		ILoadBalancer $lb, BagOStuff $sCache, WANObjectCache $wCache, array $options = []
-	) {
-	}
-
-	public function setLogger( LoggerInterface $logger ) {
-	}
-
-	public function scaleLoads( array &$loads, $domain ) {
-	}
-
-	public function getLagTimes( array $serverIndexes, $domain ) {
-		return array_fill_keys( $serverIndexes, 0 );
-	}
-
-	public function clearCaches() {
+/**
+ * @ingroup Database
+ */
+class LoadMonitorNull extends LoadMonitor {
+	public function scaleLoads( array &$weightByServer ) {
 	}
 }

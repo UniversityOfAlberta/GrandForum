@@ -1,7 +1,7 @@
 <?php
 /**
  * Copyright © 2006 Yuri Astrakhan "<Firstname><Lastname>@gmail.com"
- * Copyright © 2008 Brion Vibber <brion@wikimedia.org>
+ * Copyright © 2008 Brooke Vibber <bvibber@wikimedia.org>
  * Copyright © 2014 Wikimedia Foundation and contributors
  *
  * This program is free software; you can redistribute it and/or modify
@@ -22,19 +22,48 @@
  * @file
  */
 
+namespace MediaWiki\Api;
+
+use InvalidArgumentException;
+use MediaWiki\Cache\LinkBatchFactory;
+use MediaWiki\MainConfigNames;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Title\Title;
+use MediaWiki\Utils\UrlUtils;
+use SearchEngine;
+use SearchEngineConfig;
+use SearchEngineFactory;
+use Wikimedia\ParamValidator\ParamValidator;
 
 /**
  * @ingroup API
  */
 class ApiOpenSearch extends ApiBase {
-	use SearchApi;
+	use \MediaWiki\Api\SearchApi;
 
+	/** @var string|null */
 	private $format = null;
+	/** @var string|null */
 	private $fm = null;
 
-	/** @var array list of api allowed params */
-	private $allowedParams = null;
+	private LinkBatchFactory $linkBatchFactory;
+	private UrlUtils $urlUtils;
+
+	public function __construct(
+		ApiMain $mainModule,
+		string $moduleName,
+		LinkBatchFactory $linkBatchFactory,
+		SearchEngineConfig $searchEngineConfig,
+		SearchEngineFactory $searchEngineFactory,
+		UrlUtils $urlUtils
+	) {
+		parent::__construct( $mainModule, $moduleName );
+		$this->linkBatchFactory = $linkBatchFactory;
+		// Services needed in SearchApi trait
+		$this->searchEngineConfig = $searchEngineConfig;
+		$this->searchEngineFactory = $searchEngineFactory;
+		$this->urlUtils = $urlUtils;
+	}
 
 	/**
 	 * Get the output format
@@ -43,15 +72,9 @@ class ApiOpenSearch extends ApiBase {
 	 */
 	protected function getFormat() {
 		if ( $this->format === null ) {
-			$params = $this->extractRequestParams();
-			$format = $params['format'];
+			$format = $this->getParameter( 'format' );
 
-			$allowedParams = $this->getAllowedParams();
-			if ( !in_array( $format, $allowedParams['format'][ApiBase::PARAM_TYPE] ) ) {
-				$format = $allowedParams['format'][ApiBase::PARAM_DFLT];
-			}
-
-			if ( substr( $format, -2 ) === 'fm' ) {
+			if ( str_ends_with( $format, 'fm' ) ) {
 				$this->format = substr( $format, 0, -2 );
 				$this->fm = 'fm';
 			} else {
@@ -86,7 +109,8 @@ class ApiOpenSearch extends ApiBase {
 		$search = $params['search'];
 
 		// Open search results may be stored for a very long time
-		$this->getMain()->setCacheMaxAge( $this->getConfig()->get( 'SearchSuggestCacheExpiry' ) );
+		$this->getMain()->setCacheMaxAge(
+			$this->getConfig()->get( MainConfigNames::SearchSuggestCacheExpiry ) );
 		$this->getMain()->setCacheMode( 'public' );
 		$results = $this->search( $search, $params );
 
@@ -94,7 +118,7 @@ class ApiOpenSearch extends ApiBase {
 		$this->getHookRunner()->onApiOpenSearchSuggest( $results );
 
 		// Trim extracts, if necessary
-		$length = $this->getConfig()->get( 'OpenSearchDescriptionLength' );
+		$length = $this->getConfig()->get( MainConfigNames::OpenSearchDescriptionLength );
 		foreach ( $results as &$r ) {
 			if ( is_string( $r['extract'] ) && !$r['extract trimmed'] ) {
 				$r['extract'] = self::trimExtract( $r['extract'], $length );
@@ -137,19 +161,19 @@ class ApiOpenSearch extends ApiBase {
 		if ( $resolveRedir ) {
 			// Query for redirects
 			$redirects = [];
-			$lb = new LinkBatch( $titles );
+			$lb = $this->linkBatchFactory->newLinkBatch( $titles );
 			if ( !$lb->isEmpty() ) {
 				$db = $this->getDB();
-				$res = $db->select(
-					[ 'page', 'redirect' ],
-					[ 'page_namespace', 'page_title', 'rd_namespace', 'rd_title' ],
-					[
-						'rd_from = page_id',
-						'rd_interwiki IS NULL OR rd_interwiki = ' . $db->addQuotes( '' ),
-						$lb->constructSet( 'page', $db ),
-					],
-					__METHOD__
-				);
+				$res = $db->newSelectQueryBuilder()
+					->select( [ 'page_namespace', 'page_title', 'rd_namespace', 'rd_title' ] )
+					->from( 'page' )
+					->join( 'redirect', null, [ 'rd_from = page_id' ] )
+					->where( [
+						'rd_interwiki' => '',
+						$lb->constructSet( 'page', $db )
+					] )
+					->caller( __METHOD__ )
+					->fetchResultSet();
 				foreach ( $res as $row ) {
 					$redirects[$row->page_namespace][$row->page_title] =
 						[ $row->rd_namespace, $row->rd_title ];
@@ -163,7 +187,7 @@ class ApiOpenSearch extends ApiBase {
 				$dbkey = $title->getDBkey();
 				$from = null;
 				if ( isset( $redirects[$ns][$dbkey] ) ) {
-					list( $ns, $dbkey ) = $redirects[$ns][$dbkey];
+					[ $ns, $dbkey ] = $redirects[$ns][$dbkey];
 					$from = $title;
 					$title = Title::makeTitle( $ns, $dbkey );
 				}
@@ -172,7 +196,7 @@ class ApiOpenSearch extends ApiBase {
 					$resultId = $title->getArticleID();
 					if ( $resultId === 0 ) {
 						$resultId = $nextSpecialPageId;
-						$nextSpecialPageId -= 1;
+						$nextSpecialPageId--;
 					}
 					$results[$resultId] = [
 						'title' => $title,
@@ -180,7 +204,7 @@ class ApiOpenSearch extends ApiBase {
 						'extract' => false,
 						'extract trimmed' => false,
 						'image' => false,
-						'url' => wfExpandUrl( $title->getFullURL(), PROTO_CURRENT ),
+						'url' => (string)$this->urlUtils->expand( $title->getFullURL(), PROTO_CURRENT ),
 					];
 				}
 			}
@@ -189,7 +213,7 @@ class ApiOpenSearch extends ApiBase {
 				$resultId = $title->getArticleID();
 				if ( $resultId === 0 ) {
 					$resultId = $nextSpecialPageId;
-					$nextSpecialPageId -= 1;
+					$nextSpecialPageId--;
 				}
 				$results[$resultId] = [
 					'title' => $title,
@@ -197,7 +221,7 @@ class ApiOpenSearch extends ApiBase {
 					'extract' => false,
 					'extract trimmed' => false,
 					'image' => false,
-					'url' => wfExpandUrl( $title->getFullURL(), PROTO_CURRENT ),
+					'url' => (string)$this->urlUtils->expand( $title->getFullURL(), PROTO_CURRENT ),
 				];
 			}
 		}
@@ -268,31 +292,30 @@ class ApiOpenSearch extends ApiBase {
 	}
 
 	public function getAllowedParams() {
-		if ( $this->allowedParams !== null ) {
-			return $this->allowedParams;
-		}
-		$this->allowedParams = $this->buildCommonApiParams( false ) + [
+		$allowedParams = $this->buildCommonApiParams( false ) + [
 			'suggest' => [
-				ApiBase::PARAM_DFLT => false,
+				ParamValidator::PARAM_DEFAULT => false,
 				// Deprecated since 1.35
-				ApiBase::PARAM_DEPRECATED => true,
+				ParamValidator::PARAM_DEPRECATED => true,
 			],
 			'redirects' => [
-				ApiBase::PARAM_TYPE => [ 'return', 'resolve' ],
+				ParamValidator::PARAM_TYPE => [ 'return', 'resolve' ],
+				ApiBase::PARAM_HELP_MSG_PER_VALUE => [],
+				ApiBase::PARAM_HELP_MSG_APPEND => [ 'apihelp-opensearch-param-redirects-append' ],
 			],
 			'format' => [
-				ApiBase::PARAM_DFLT => 'json',
-				ApiBase::PARAM_TYPE => [ 'json', 'jsonfm', 'xml', 'xmlfm' ],
+				ParamValidator::PARAM_DEFAULT => 'json',
+				ParamValidator::PARAM_TYPE => [ 'json', 'jsonfm', 'xml', 'xmlfm' ],
 			],
 			'warningsaserror' => false,
 		];
 
 		// Use open search specific default limit
-		$this->allowedParams['limit'][ApiBase::PARAM_DFLT] = $this->getConfig()->get(
-			'OpenSearchDefaultLimit'
+		$allowedParams['limit'][ParamValidator::PARAM_DEFAULT] = $this->getConfig()->get(
+			MainConfigNames::OpenSearchDefaultLimit
 		);
 
-		return $this->allowedParams;
+		return $allowedParams;
 	}
 
 	public function getSearchProfileParams() {
@@ -355,32 +378,31 @@ class ApiOpenSearch extends ApiBase {
 	 *
 	 * @param string $type MIME type
 	 * @return string
-	 * @throws MWException
 	 */
 	public static function getOpenSearchTemplate( $type ) {
-		$config = MediaWikiServices::getInstance()->getSearchEngineConfig();
-		$template = $config->getConfig()->get( 'OpenSearchTemplate' );
-
-		if ( $template && $type === 'application/x-suggestions+json' ) {
-			return $template;
-		}
-
-		$ns = implode( '|', $config->defaultNamespaces() );
+		$services = MediaWikiServices::getInstance();
+		$canonicalServer = $services->getMainConfig()->get( MainConfigNames::CanonicalServer );
+		$searchEngineConfig = $services->getSearchEngineConfig();
+		$ns = implode( '|', $searchEngineConfig->defaultNamespaces() );
 		if ( !$ns ) {
 			$ns = '0';
 		}
 
 		switch ( $type ) {
 			case 'application/x-suggestions+json':
-				return $config->getConfig()->get( 'CanonicalServer' ) . wfScript( 'api' )
-					. '?action=opensearch&search={searchTerms}&namespace=' . $ns;
+				return $canonicalServer .
+					wfScript( 'api' ) . '?action=opensearch&search={searchTerms}&namespace=' . $ns;
 
 			case 'application/x-suggestions+xml':
-				return $config->getConfig()->get( 'CanonicalServer' ) . wfScript( 'api' )
-					. '?action=opensearch&format=xml&search={searchTerms}&namespace=' . $ns;
+				return $canonicalServer .
+					wfScript( 'api' ) .
+					'?action=opensearch&format=xml&search={searchTerms}&namespace=' . $ns;
 
 			default:
-				throw new MWException( __METHOD__ . ": Unknown type '$type'" );
+				throw new InvalidArgumentException( __METHOD__ . ": Unknown type '$type'" );
 		}
 	}
 }
+
+/** @deprecated class alias since 1.43 */
+class_alias( ApiOpenSearch::class, 'ApiOpenSearch' );

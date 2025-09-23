@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,7 +20,17 @@
  * @ingroup Installer
  */
 
+namespace MediaWiki\Installer;
+
+use MediaWiki\Config\HashConfig;
+use MediaWiki\Json\FormatJson;
+use MediaWiki\MainConfigNames;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Parser\Sanitizer;
+use MediaWiki\Password\UserPasswordPolicy;
+use MediaWiki\Title\Title;
+use MediaWiki\User\User;
+use MediaWiki\User\UserRigorOptions;
 
 class WebInstallerName extends WebInstallerPage {
 
@@ -50,10 +61,12 @@ class WebInstallerName extends WebInstallerPage {
 			wfMessage( 'config-ns-other-default' )->inContentLanguage()->text()
 		);
 
-		$pingbackInfo = ( new Pingback() )->getSystemInfo();
 		// Database isn't available in config yet, so take it
 		// from the installer
-		$pingbackInfo['database'] = $this->getVar( 'wgDBtype' );
+		$pingbackConf = new HashConfig( [
+			MainConfigNames::DBtype => $this->getVar( 'wgDBtype' ),
+		] );
+		$pingbackInfo = Pingback::getSystemInfo( $pingbackConf );
 
 		$this->addHTML(
 			$this->parent->getTextBox( [
@@ -100,13 +113,11 @@ class WebInstallerName extends WebInstallerPage {
 				'label' => 'config-admin-email',
 				'help' => $this->parent->getHelpBox( 'config-admin-email-help' )
 			] ) .
-			// @phan-suppress-next-line SecurityCheck-DoubleEscaped taint cannot track the helpbox from the rest
 			$this->parent->getCheckBox( [
 				'var' => '_Subscribe',
 				'label' => 'config-subscribe',
 				'help' => $this->parent->getHelpBox( 'config-subscribe-help' )
 			] ) .
-			// @phan-suppress-next-line SecurityCheck-DoubleEscaped taint cannot track the helpbox from the rest
 			$this->parent->getCheckBox( [
 				'var' => 'wgPingback',
 				'label' => 'config-pingback',
@@ -203,7 +214,8 @@ class WebInstallerName extends WebInstallerPage {
 			$cname = $name;
 			$retVal = false;
 		} else {
-			$cname = User::getCanonicalName( $name, 'creatable' );
+			$userNameUtils = MediaWikiServices::getInstance()->getUserNameUtils();
+			$cname = $userNameUtils->getCanonical( $name, UserRigorOptions::RIGOR_CREATABLE );
 			if ( $cname === false ) {
 				$this->parent->showError( 'config-admin-name-invalid', $name );
 				$retVal = false;

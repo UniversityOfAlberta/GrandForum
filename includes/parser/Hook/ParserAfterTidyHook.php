@@ -2,9 +2,12 @@
 
 namespace MediaWiki\Hook;
 
-use Parser;
+use MediaWiki\Parser\Parser;
 
 /**
+ * This is a hook handler interface, see docs/Hooks.md.
+ * Use the hook name "ParserAfterTidy" to register handlers implementing this interface.
+ *
  * @stable to implement
  * @ingroup Hooks
  */

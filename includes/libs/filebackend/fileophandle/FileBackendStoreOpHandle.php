@@ -19,6 +19,10 @@
  * @ingroup FileBackend
  */
 
+namespace Wikimedia\FileBackend\FileOpHandle;
+
+use Wikimedia\FileBackend\FileBackendStore;
+
 /**
  * FileBackendStore helper class for performing asynchronous file operations.
  *
@@ -43,6 +47,10 @@ abstract class FileBackendStoreOpHandle {
 	 * Close all open file handles
 	 */
 	public function closeResources() {
+		// @phan-suppress-next-line PhanPluginUseReturnValueInternalKnown
 		array_map( 'fclose', $this->resourcesToClose );
 	}
 }
+
+/** @deprecated class alias since 1.43 */
+class_alias( FileBackendStoreOpHandle::class, 'FileBackendStoreOpHandle' );

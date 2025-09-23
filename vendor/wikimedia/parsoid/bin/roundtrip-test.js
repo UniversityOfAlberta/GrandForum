@@ -4,7 +4,6 @@
 
 require('../core-upgrade.js');
 require('colors');
-const { htmlDiff } = require('./diff.html.js');
 
 var entities = require('entities');
 var fs = require('fs');
@@ -19,17 +18,18 @@ var DOMUtils = require('../lib/utils/DOMUtils.js').DOMUtils;
 var DOMDataUtils = require('../lib/utils/DOMDataUtils.js').DOMDataUtils;
 var TestUtils = require('../tests/TestUtils.js').TestUtils;
 var WTUtils = require('../lib/utils/WTUtils.js').WTUtils;
-var apiUtils = require('../lib/api/apiUtils');
 var ParsoidConfig = require('../lib/config/ParsoidConfig.js').ParsoidConfig;
 var Diff = require('../lib/utils/Diff.js').Diff;
 var JSUtils = require('../lib/utils/jsutils.js').JSUtils;
 var MockEnv = require('../tests/MockEnv.js').MockEnv;
 
-var defaultContentVersion = '2.1.0';
+var defaultContentVersion = '2.8.0';
+
+var MAX_RETRIES = 10;
 
 function displayDiff(type, count) {
 	var pad = (10 - type.length);  // Be positive!
-	type = type[0].toUpperCase() + type.substr(1);
+	type = type[0].toUpperCase() + type.slice(1);
 	return type + ' differences' + ' '.repeat(pad) + ': ' + count + '\n';
 }
 
@@ -213,7 +213,7 @@ var findMatchingNodes = function(node, range) {
 
 	// Cannot inspect image subtree at a finer grained level
 	var typeOf = node.getAttribute('typeof') || '';
-	if (/\bmw:Image(\/|\s|$)/.test(typeOf) && /^(FIGURE|SPAN)$/.test(node.nodeName)) {
+	if (/\bmw:File(\/|\s|$)/.test(typeOf) && /^(FIGURE|SPAN)$/.test(node.nodeName)) {
 		return [node];
 	}
 
@@ -245,7 +245,7 @@ var findMatchingNodes = function(node, range) {
 				// I am going to rip this out.
 
 				console.log("error/diff", "Bad dsr for " + c.nodeName + ": "
-					+ c.outerHTML.substr(0, 50));
+					+ c.outerHTML.slice(0, 50));
 
 				if (dp.dsr && typeof (dsr[1]) === 'number') {
 					// We can cope in this case
@@ -290,6 +290,54 @@ var findMatchingNodes = function(node, range) {
 
 	return elts;
 };
+
+function stripTranscludedWhitespaceSpans(node) {
+	while (node) {
+		const sibling = node.nextSibling;
+		if (DOMUtils.isElt(node)) {
+			const about = node.getAttribute('about');
+			const nTypeOf = node.getAttribute('typeof') || '';
+
+			// remove whitespace spans that are first nodes of a transclusion,
+			// have whitespace content, and transfer attributes to their sibling.
+			if (node.nodeName === 'SPAN' &&
+				/^\s*$/.test(node.textContent) &&
+				/mw:Transclusion/.test(nTypeOf) &&
+				DOMUtils.isElt(sibling) &&
+				sibling.getAttribute('about') === about
+			) {
+				var sTypeOf = sibling.getAttribute('typeof') || '';
+				if (sTypeOf) {
+					sTypeOf = sTypeOf + ' ' + nTypeOf;
+				} else {
+					sTypeOf = nTypeOf;
+				}
+				sibling.setAttribute('typeof', sTypeOf);
+				sibling.setAttribute('data-mw', node.getAttribute('data-mw'));
+				sibling.setAttribute('data-parsoid', node.getAttribute('data-parsoid'));
+
+				const whitespace = node.ownerDocument.createTextNode(node.textContent);
+				node.parentNode.replaceChild(whitespace, node);
+
+				// Skip transclusion nodes
+				node = sibling;
+				while (node && DOMUtils.isElt(node) && node.getAttribute('about') === about) {
+					node = node.nextSibling;
+				}
+			} else if (/mw:Transclusion/.test(nTypeOf)) {
+				node = WTUtils.skipOverEncapsulatedContent(node);
+				// No skipping to nextSibling here!
+			} else if (node.firstChild) {
+				stripTranscludedWhitespaceSpans(node.firstChild);
+				node = sibling;
+			} else {
+				node = sibling;
+			}
+		} else {
+			node = sibling;
+		}
+	}
+}
 
 var getMatchingHTML = function(body, offsetRange, nlDiffs) {
 	// If the diff context straddles a template boundary (*) and if
@@ -394,17 +442,17 @@ function normalizeWikitext(wt, opts) {
 	return wt;
 }
 
-// Get diff substrings from offsets
+// Get diff slices from offsets
 var formatDiff = function(oldWt, newWt, offset, context) {
 	return [
 		'------',
-		oldWt.substring(offset[0].start - context, offset[0].start).blue +
-		oldWt.substring(offset[0].start, offset[0].end).green +
-		oldWt.substring(offset[0].end, offset[0].end + context).blue,
+		oldWt.slice(offset[0].start - context, offset[0].start).blue +
+		oldWt.slice(offset[0].start, offset[0].end).green +
+		oldWt.slice(offset[0].end, offset[0].end + context).blue,
 		'++++++',
-		newWt.substring(offset[1].start - context, offset[1].start).blue +
-		newWt.substring(offset[1].start, offset[1].end).red +
-		newWt.substring(offset[1].end, offset[1].end + context).blue,
+		newWt.slice(offset[1].start - context, offset[1].start).blue +
+		newWt.slice(offset[1].start, offset[1].end).red +
+		newWt.slice(offset[1].end, offset[1].end + context).blue,
 	].join('\n');
 };
 
@@ -424,8 +472,6 @@ function stripElementIds(node) {
 }
 
 function genSyntacticDiffs(data) {
-	// Do another diff without normalizations
-
 	var results = [];
 	var diff = Diff.diffLines(data.oldWt, data.newWt);
 	var offsets = Diff.convertDiffToOffsetPairs(diff, data.oldLineLengths, data.newLineLengths);
@@ -438,6 +484,20 @@ function genSyntacticDiffs(data) {
 		});
 	}
 	return results;
+}
+
+function normalizeDocumentHTML(body) {
+	// Strip whitspace spans that are first elements of a transclusion
+	stripTranscludedWhitespaceSpans(body);
+
+	// Strip 'mw..' ids from the DOMs. This matters for 2 scenarios:
+	// * reduces noise in visual diffs
+	// * all other things being equal after normalization, we don't
+	//   assume DOMs are different simply because ids are different
+	stripElementIds(body);
+
+	// Strip section tags from the DOMs
+	ContentUtils.stripUnnecessaryWrappersAndFallbackIds(body);
 }
 
 var checkIfSignificant = function(offsets, data) {
@@ -459,16 +519,8 @@ var checkIfSignificant = function(offsets, data) {
 		mw: data.newMw && data.newMw.body,
 	});
 
-	// Strip 'mw..' ids from the DOMs. This matters for 2 scenarios:
-	// * reduces noise in visual diffs
-	// * all other things being equal after normalization, we don't
-	//   assume DOMs are different simply because ids are different
-	stripElementIds(oldBody.ownerDocument.body);
-	stripElementIds(newBody.ownerDocument.body);
-
-	// Strip section tags from the DOMs
-	ContentUtils.stripSectionTagsAndFallbackIds(oldBody.ownerDocument.body);
-	ContentUtils.stripSectionTagsAndFallbackIds(newBody.ownerDocument.body);
+	normalizeDocumentHTML(oldBody.ownerDocument.body);
+	normalizeDocumentHTML(newBody.ownerDocument.body);
 
 	var i, offset;
 	var results = [];
@@ -480,7 +532,24 @@ var checkIfSignificant = function(offsets, data) {
 		// the wt-diffs are purely syntactic.
 		//
 		// FIXME: abstract to ensure same opts are used for parsoidPost and normalizeOut
-		const normOpts = { parsoidOnly: true, scrubWikitext: true, rtTestMode: true };
+		const normOpts = {
+			parsoidOnly: true,
+			// Eliminate spurious semantic errors that may arise because
+			// of the normalization done to new html before it got serialized.
+			// For example,
+			//   "== ==" will parse to "<h2><h2>" and then serialize to ""
+			//
+			// FIXME: Normally we would only run this on the old DOM since that is
+			// sufficient. BUT, for links with trailing whitespace like [[Foo ]],
+			// wt2wt has special handling to use syntactic variations from data-parsoid
+			// independent of what the DOM iself says. Try wt2wt on that wikitext to verify.
+			// But, till such time we strip data-parsoid based syntactic variations in
+			// link handlers, run DOM normalizations on both old and new HTML
+			// so that we don't report spurious semantic diffs because of this.
+			// In any case, DOM normalizations are idempotent and so at best, rerunning
+			// DOM normalization is wasteful and not harmful.
+			hackyNormalize: true
+		};
 		const normalizedOld = TestUtils.normalizeOut(oldBody, normOpts);
 		const normalizedNew = TestUtils.normalizeOut(newBody, normOpts);
 		if (normalizedOld === normalizedNew) {
@@ -491,6 +560,11 @@ var checkIfSignificant = function(offsets, data) {
 			// console.log(Diff.diffLines(normalizedOld, normalizedNew));
 		}
 	}
+
+	/*
+	console.log("---------OLD DOC HTML---------\n" + oldBody.ownerDocument.body.innerHTML);
+	console.log("---------NEW DOC HTML---------\n" + newBody.ownerDocument.body.innerHTML);
+	*/
 
 	// FIXME: In this code path below, the returned diffs might
 	// underreport syntactic diffs since these are based on
@@ -511,8 +585,8 @@ var checkIfSignificant = function(offsets, data) {
 		thisResult.wtDiff = formatDiff(oldWt, newWt, offset, 0);
 
 		// Is this a newline separator diff?
-		var oldStr = oldWt.substring(offset[0].start, offset[0].end);
-		var newStr = newWt.substring(offset[1].start, offset[1].end);
+		var oldStr = oldWt.slice(offset[0].start, offset[0].end);
+		var newStr = newWt.slice(offset[1].start, offset[1].end);
 		var nlDiffs = /^\s*$/.test(oldStr) && /^\s*$/.test(newStr)
 			&& (/\n/.test(oldStr) || /\n/.test(newStr));
 
@@ -522,17 +596,16 @@ var checkIfSignificant = function(offsets, data) {
 		var diff = Diff.patchDiff(oldHTML, newHTML);
 		if (diff !== null) {
 			// Normalize wts to check if we really have a semantic diff
-			var wt1 = normalizeWikitext(oldWt.substring(offset[0].start, offset[0].end), { newlines: true, postDiff: true });
-			var wt2 = normalizeWikitext(newWt.substring(offset[1].start, offset[1].end), { newlines: true, postDiff: true });
+			var wt1 = normalizeWikitext(oldWt.slice(offset[0].start, offset[0].end), { newlines: true, postDiff: true });
+			var wt2 = normalizeWikitext(newWt.slice(offset[1].start, offset[1].end), { newlines: true, postDiff: true });
 			if (wt1 !== wt2) {
-
 				// Syntatic diff + provide context for semantic diffs
 				thisResult.type = 'fail';
 				thisResult.wtDiff = formatDiff(oldWt, newWt, offset, 25);
 
 				// Don't clog the rt-test server db with humongous diffs
-				if (diff.length > 2000) {
-					diff = diff.substring(0, 2000) + "-- TRUNCATED TO 2000 chars --";
+				if (diff.length > 1000) {
+					diff = diff.slice(0, 1000) + "-- TRUNCATED TO 1000 chars --";
 				}
 				thisResult.htmlDiff = diff;
 			}
@@ -561,10 +634,7 @@ var parsoidPost = Promise.async(function *(profile, options) {
 		uri += 'pagebundle/to/wikitext/' + options.title;
 		if (options.oldid) {
 			uri += '/' + options.oldid;
-		} else {
-			uri += '/'; // T232556
 		}
-		httpOptions.body.scrub_wikitext = true;
 		// We want to encode the request but *not* decode the response.
 		httpOptions.body = JSON.stringify(httpOptions.body);
 		httpOptions.headers['Content-Type'] = 'application/json';
@@ -572,17 +642,15 @@ var parsoidPost = Promise.async(function *(profile, options) {
 		uri += 'wikitext/to/pagebundle/' + options.title;
 		if (options.oldid) {
 			uri += '/' + options.oldid;
-		} else {
-			uri += '/'; // T232556
 		}
-		httpOptions.headers.Accept = apiUtils.pagebundleContentType(options.outputContentVersion);
+		httpOptions.headers.Accept = 'application/json; charset=utf-8; profile="https://www.mediawiki.org/wiki/Specs/pagebundle/' + options.outputContentVersion + '"';
 		// setting json here encodes the request *and* decodes the response.
 		httpOptions.json = true;
 	}
 	httpOptions.uri = uri;
 	httpOptions.proxy = options.proxy;
 
-	var result = yield ScriptUtils.retryingHTTPRequest(10, httpOptions);
+	var result = yield issueRequest(httpOptions);
 	var body = result[1];
 
 	// FIXME: Parse time was removed from profiling when we stopped
@@ -593,13 +661,20 @@ var parsoidPost = Promise.async(function *(profile, options) {
 			pre += options.profilePrefix + ':';
 		}
 		var str;
+
+		// Detect standard error response
+		if ( typeof body === 'object' && body.httpCode >= 400 ) {
+			throw new Error('Received error: ' + body.reason);
+		}
+
 		if (options.html2wt) {
-			pre += 'html:';
+			pre += 'wt:';
 			str = body;
 		} else {
-			pre += 'wt:';
+			pre += 'html:';
 			str = body.html.body;
 		}
+
 		profile.size[pre + 'raw'] = str.length;
 		// Compress to record the gzipped size
 		var gzippedbuf = yield zlib.gzip(str);
@@ -616,19 +691,22 @@ function genLineLengths(str) {
 
 var roundTripDiff = Promise.async(function *(profile, parsoidOptions, data) {
 	var normOpts = { preDiff: true, newlines: true };
+	data.oldLineLengths = genLineLengths(data.oldWt);
+	data.newLineLengths = genLineLengths(data.newWt);
 
 	// Newline normalization to see if we can get to identical wt.
 	var wt1 = normalizeWikitext(data.oldWt, normOpts);
 	var wt2 = normalizeWikitext(data.newWt, normOpts);
-	data.oldLineLengths = genLineLengths(data.oldWt);
-	data.newLineLengths = genLineLengths(data.newWt);
 	if (wt1 === wt2) {
 		return genSyntacticDiffs(data);
 	}
 
+	// Do another diff without normalizations
 	// More conservative normalization this time around
 	normOpts.newlines = false;
-	var diff = Diff.diffLines(normalizeWikitext(data.oldWt, normOpts), normalizeWikitext(data.newWt, normOpts));
+	wt1 = normalizeWikitext(data.oldWt, normOpts);
+	wt2 = normalizeWikitext(data.newWt, normOpts);
+	var diff = Diff.diffLines(wt1, wt2);
 	var offsets = Diff.convertDiffToOffsetPairs(diff, data.oldLineLengths, data.newLineLengths);
 	if (!offsets.length) {
 		// FIXME: Can this really happen??
@@ -647,6 +725,17 @@ var roundTripDiff = Promise.async(function *(profile, parsoidOptions, data) {
 	return checkIfSignificant(offsets, data);
 });
 
+// Custom httpClient global variable that can be set by ci tests
+var httpClient;
+
+var issueRequest = function(httpOptions) {
+	if (httpClient) {
+		return httpClient.request(httpOptions);
+	} else {
+		return ScriptUtils.retryingHTTPRequest(MAX_RETRIES, httpOptions);
+	}
+};
+
 // Returns a Promise for a object containing a formatted string and an
 // exitCode.
 var runTests = Promise.async(function *(title, options, formatter) {
@@ -658,8 +747,14 @@ var runTests = Promise.async(function *(title, options, formatter) {
 	var domain = options.domain;
 	var prefix = options.prefix;
 
+	if (options.httpClient) {
+		httpClient = options.httpClient;
+	}
+
 	// Preserve the default, but only if neither was provided.
-	if (!prefix && !domain) { domain = 'en.wikipedia.org'; }
+	if (!prefix && !domain) {
+		domain = 'en.wikipedia.org';
+	}
 
 	if (domain && prefix) {
 		// All good.
@@ -707,8 +802,6 @@ var runTests = Promise.async(function *(title, options, formatter) {
 	var uri2 = parsoidOptions.uri + 'page/wikitext/' + parsoidOptions.title;
 	if (options.oldid) {
 		uri2 += '/' + options.oldid;
-	} else {
-		uri2 += '/'; // T232556
 	}
 
 	var profile = { time: { total: 0, start: 0 }, size: {} };
@@ -717,7 +810,7 @@ var runTests = Promise.async(function *(title, options, formatter) {
 	var exitCode;
 	try {
 		var opts;
-		var req = yield ScriptUtils.retryingHTTPRequest(10, {
+		var req = yield issueRequest({
 			method: 'GET',
 			uri: uri2,
 			proxy: proxy,
@@ -744,7 +837,7 @@ var runTests = Promise.async(function *(title, options, formatter) {
 		if (redirectMatch) {
 			const target = Util.decodeURIComponent(entities.decodeHTML5(redirectMatch[1].replace(/^(\.\/)?/, '')));
 			// Log this so we can collect these and update the database titles
-			console.error(`REDIRECT: ${prefix}:${title.replace(/"/g, '\\"')} -> ${prefix}:${target.replace(/"/g, '\\"')}`);
+			console.error(`REDIRECT: ${ prefix }:${ title.replace(/"/g, '\\"') } -> ${ prefix }:${ target.replace(/"/g, '\\"') }`);
 			return yield runTests(target, options, formatter);
 		}
 
@@ -761,7 +854,6 @@ var runTests = Promise.async(function *(title, options, formatter) {
 				original: {
 					'data-parsoid': data.oldDp,
 					'data-mw': data.oldMw,
-					wikitext: { body: data.oldWt },
 				},
 			},
 		}, parsoidOptions);
@@ -810,18 +902,9 @@ var runTests = Promise.async(function *(title, options, formatter) {
 		error = e;
 		exitCode = 1;
 	}
+
 	var output = formatter(error, prefix, title, data.diffs, profile);
-	// write diffs to $outDir/DOMAIN/TITLE
-	if (options.htmlDiffConfig && Math.random() < (options.htmlDiffConfig.sampleRate || 0)) {
-		const outDir = options.htmlDiffConfig.outDir || "/tmp/htmldiffs";
-		const dir = `${outDir}/${domain}`;
-		if (!fs.existsSync(dir)) {
-			fs.mkdirSync(dir);
-		}
-		const diffs = yield htmlDiff(options.htmlDiffConfig, domain, title);
-		// parsoidOptions.title is uri-encoded
-		fs.writeFileSync(`${dir}/${parsoidOptions.title}`, diffs.join('\n'));
-	}
+
 	return {
 		output: output,
 		exitCode: exitCode
@@ -915,7 +998,6 @@ if (require.main === module) {
 	})().done();
 } else if (typeof module === 'object') {
 	module.exports.runTests = runTests;
-
 	module.exports.jsonFormat = jsonFormat;
 	module.exports.plainFormat = plainFormat;
 	module.exports.xmlFormat = xmlFormat;

@@ -21,6 +21,12 @@
  * @since 1.21
  */
 
+namespace MediaWiki\Api;
+
+use MediaWiki\Title\Title;
+use Wikimedia\ParamValidator\ParamValidator;
+use Wikimedia\ParamValidator\TypeDef\IntegerDef;
+
 /**
  * A query module to enumerate pages that use a particular prop
  *
@@ -29,7 +35,7 @@
  */
 class ApiQueryPagesWithProp extends ApiQueryGeneratorBase {
 
-	public function __construct( ApiQuery $query, $moduleName ) {
+	public function __construct( ApiQuery $query, string $moduleName ) {
 		parent::__construct( $query, $moduleName, 'pwp' );
 	}
 
@@ -52,7 +58,7 @@ class ApiQueryPagesWithProp extends ApiQueryGeneratorBase {
 	private function run( $resultPageSet = null ) {
 		$params = $this->extractRequestParams();
 
-		$prop = array_flip( $params['prop'] );
+		$prop = array_fill_keys( $params['prop'], true );
 		$fld_ids = isset( $prop['ids'] );
 		$fld_title = isset( $prop['title'] );
 		$fld_value = isset( $prop['value'] );
@@ -71,12 +77,9 @@ class ApiQueryPagesWithProp extends ApiQueryGeneratorBase {
 		$dir = ( $params['dir'] == 'ascending' ) ? 'newer' : 'older';
 
 		if ( $params['continue'] ) {
-			$cont = explode( '|', $params['continue'] );
-			$this->dieContinueUsageIf( count( $cont ) != 1 );
-
+			$cont = $this->parseContinueParamOrDie( $params['continue'], [ 'int' ] );
 			// Add a WHERE clause
-			$from = (int)$cont[0];
-			$this->addWhereRange( 'pp_page', $dir, $from, null );
+			$this->addWhereRange( 'pp_page', $dir, $cont[0], null );
 		}
 
 		$sort = ( $params['dir'] === 'descending' ? ' DESC' : '' );
@@ -133,13 +136,13 @@ class ApiQueryPagesWithProp extends ApiQueryGeneratorBase {
 	public function getAllowedParams() {
 		return [
 			'propname' => [
-				ApiBase::PARAM_TYPE => 'string',
-				ApiBase::PARAM_REQUIRED => true,
+				ParamValidator::PARAM_TYPE => 'string',
+				ParamValidator::PARAM_REQUIRED => true,
 			],
 			'prop' => [
-				ApiBase::PARAM_DFLT => 'ids|title',
-				ApiBase::PARAM_ISMULTI => true,
-				ApiBase::PARAM_TYPE => [
+				ParamValidator::PARAM_DEFAULT => 'ids|title',
+				ParamValidator::PARAM_ISMULTI => true,
+				ParamValidator::PARAM_TYPE => [
 					'ids',
 					'title',
 					'value',
@@ -150,15 +153,15 @@ class ApiQueryPagesWithProp extends ApiQueryGeneratorBase {
 				ApiBase::PARAM_HELP_MSG => 'api-help-param-continue',
 			],
 			'limit' => [
-				ApiBase::PARAM_TYPE => 'limit',
-				ApiBase::PARAM_DFLT => 10,
-				ApiBase::PARAM_MIN => 1,
-				ApiBase::PARAM_MAX => ApiBase::LIMIT_BIG1,
-				ApiBase::PARAM_MAX2 => ApiBase::LIMIT_BIG2
+				ParamValidator::PARAM_TYPE => 'limit',
+				ParamValidator::PARAM_DEFAULT => 10,
+				IntegerDef::PARAM_MIN => 1,
+				IntegerDef::PARAM_MAX => ApiBase::LIMIT_BIG1,
+				IntegerDef::PARAM_MAX2 => ApiBase::LIMIT_BIG2
 			],
 			'dir' => [
-				ApiBase::PARAM_DFLT => 'ascending',
-				ApiBase::PARAM_TYPE => [
+				ParamValidator::PARAM_DEFAULT => 'ascending',
+				ParamValidator::PARAM_TYPE => [
 					'ascending',
 					'descending',
 				]
@@ -179,3 +182,6 @@ class ApiQueryPagesWithProp extends ApiQueryGeneratorBase {
 		return 'https://www.mediawiki.org/wiki/Special:MyLanguage/API:Pageswithprop';
 	}
 }
+
+/** @deprecated class alias since 1.43 */
+class_alias( ApiQueryPagesWithProp::class, 'ApiQueryPagesWithProp' );

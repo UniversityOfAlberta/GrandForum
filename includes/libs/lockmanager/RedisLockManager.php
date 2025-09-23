@@ -1,7 +1,5 @@
 <?php
 /**
- * Version of LockManager based on using redis servers.
- *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -18,13 +16,13 @@
  * http://www.gnu.org/copyleft/gpl.html
  *
  * @file
- * @ingroup LockManager
  */
+
+use Wikimedia\ObjectCache\RedisConnectionPool;
 
 /**
  * Manage locks using redis servers.
  *
- * Version of LockManager based on using redis servers.
  * This is meant for multi-wiki systems that may share files.
  * All locks are non-blocking, which avoids deadlocks.
  *
@@ -32,7 +30,7 @@
  * bucket. Each bucket maps to one or several peer servers, each running redis.
  * A majority of peers must agree for a lock to be acquired.
  *
- * This class requires Redis 2.6 as it makes use Lua scripts for fast atomic operations.
+ * This class requires Redis 2.6 as it makes use of Lua scripts for fast atomic operations.
  *
  * @ingroup LockManager
  * @since 1.22
@@ -56,18 +54,23 @@ class RedisLockManager extends QuorumLockManager {
 	 *
 	 * @param array $config Parameters include:
 	 *   - lockServers  : Associative array of server names to "<IP>:<port>" strings.
-	 *   - srvsByBucket : Array of 1-16 consecutive integer keys, starting from 0,
-	 *                    each having an odd-numbered list of server names (peers) as values.
-	 *   - redisConfig  : Configuration for RedisConnectionPool::__construct().
+	 *   - srvsByBucket : An array of up to 16 arrays, each containing the server names
+	 *                    in a bucket. Each bucket should have an odd number of servers.
+	 *                    If omitted, all servers will be in one bucket. (optional).
+	 *   - redisConfig  : Configuration for RedisConnectionPool::singleton() (optional).
 	 * @throws Exception
 	 */
 	public function __construct( array $config ) {
 		parent::__construct( $config );
 
 		$this->lockServers = $config['lockServers'];
-		// Sanitize srvsByBucket config to prevent PHP errors
-		$this->srvsByBucket = array_filter( $config['srvsByBucket'], 'is_array' );
-		$this->srvsByBucket = array_values( $this->srvsByBucket ); // consecutive
+		if ( isset( $config['srvsByBucket'] ) ) {
+			// Sanitize srvsByBucket config to prevent PHP errors
+			$this->srvsByBucket = array_filter( $config['srvsByBucket'], 'is_array' );
+			$this->srvsByBucket = array_values( $this->srvsByBucket ); // consecutive
+		} else {
+			$this->srvsByBucket = [ array_keys( $this->lockServers ) ];
+		}
 
 		$config['redisConfig']['serializer'] = 'none';
 		$this->redisPool = RedisConnectionPool::singleton( $config['redisConfig'] );
@@ -159,10 +162,8 @@ LUA;
 			foreach ( $pathList as $path ) {
 				$status->fatal( 'lockmanager-fail-acquirelock', $path );
 			}
-		} else {
-			foreach ( $res as $key ) {
-				$status->fatal( 'lockmanager-fail-acquirelock', $pathsByKey[$key] );
-			}
+		} elseif ( count( $res ) ) {
+			$status->fatal( 'lockmanager-fail-conflict' );
 		}
 
 		return $status;
@@ -260,16 +261,16 @@ LUA;
 	}
 
 	/**
-	 * Make sure remaining locks get cleared for sanity
+	 * Make sure remaining locks get cleared
 	 */
 	public function __destruct() {
-		while ( count( $this->locksHeld ) ) {
-			$pathsByType = [];
-			foreach ( $this->locksHeld as $path => $locks ) {
-				foreach ( $locks as $type => $count ) {
-					$pathsByType[$type][] = $path;
-				}
+		$pathsByType = [];
+		foreach ( $this->locksHeld as $path => $locks ) {
+			foreach ( $locks as $type => $count ) {
+				$pathsByType[$type][] = $path;
 			}
+		}
+		if ( $pathsByType ) {
 			$this->unlockByType( $pathsByType );
 		}
 	}

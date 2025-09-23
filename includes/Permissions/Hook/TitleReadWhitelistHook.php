@@ -2,10 +2,13 @@
 
 namespace MediaWiki\Permissions\Hook;
 
-use Title;
-use User;
+use MediaWiki\Title\Title;
+use MediaWiki\User\User;
 
 /**
+ * This is a hook handler interface, see docs/Hooks.md.
+ * Use the hook name "TitleReadWhitelist" to register handlers implementing this interface.
+ *
  * @stable to implement
  * @ingroup Hooks
  */

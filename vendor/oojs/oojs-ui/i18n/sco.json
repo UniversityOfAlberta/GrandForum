@@ -1,13 +1,15 @@
 {
 	"@metadata": {
 		"authors": [
+			"CiphriusKane",
 			"Foxj",
-			"John Reid"
+			"John Reid",
+			"MJL"
 		]
 	},
-	"ooui-outline-control-move-down": "Muiv eetem doon",
-	"ooui-outline-control-move-up": "Muiv eetem up",
-	"ooui-outline-control-remove": "Remuiv eetem",
+	"ooui-outline-control-move-down": "Muiv item doon",
+	"ooui-outline-control-move-up": "Muiv item up",
+	"ooui-outline-control-remove": "Remuiv item",
 	"ooui-toolbar-more": "Mair",
 	"ooui-toolgroup-expand": "Mair",
 	"ooui-toolgroup-collapse": "Less",
@@ -15,8 +17,7 @@
 	"ooui-dialog-message-reject": "Cancel",
 	"ooui-dialog-process-error": "Sommit went wrang",
 	"ooui-dialog-process-dismiss": "Close",
-	"ooui-dialog-process-retry": "Hae aniter gae",
+	"ooui-dialog-process-retry": "Try again",
 	"ooui-dialog-process-continue": "Conteena",
-	"ooui-selectfile-not-supported": "Cannae pick ony files",
 	"ooui-selectfile-placeholder": "Nae file selectit"
 }

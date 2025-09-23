@@ -19,11 +19,16 @@
  *
  * @file
  * @ingroup Maintenance
- * @author Brion Vibber
+ * @author Brooke Vibber
  * @author Rob Church <robchur@gmail.com>
  */
 
+use MediaWiki\Deferred\SiteStatsUpdate;
+use MediaWiki\SiteStats\SiteStatsInit;
+
+// @codeCoverageIgnoreStart
 require_once __DIR__ . '/Maintenance.php';
+// @codeCoverageIgnoreEnd
 
 /**
  * Maintenance script to re-initialise or update the site statistics table
@@ -36,7 +41,7 @@ class InitSiteStats extends Maintenance {
 		$this->addDescription( 'Re-initialise the site statistics tables' );
 		$this->addOption( 'update', 'Update the existing statistics' );
 		$this->addOption( 'active', 'Also update active users count' );
-		$this->addOption( 'use-master', 'Count using the master database' );
+		$this->addOption( 'use-master', 'Count using the primary database' );
 	}
 
 	public function execute() {
@@ -70,7 +75,7 @@ class InitSiteStats extends Maintenance {
 
 		if ( $this->hasOption( 'active' ) ) {
 			$this->output( "\nCounting and updating active users..." );
-			$active = SiteStatsUpdate::cacheUpdate( $this->getDB( DB_MASTER ) );
+			$active = SiteStatsUpdate::cacheUpdate( $this->getPrimaryDB() );
 			$this->output( "{$active}\n" );
 		}
 
@@ -78,5 +83,7 @@ class InitSiteStats extends Maintenance {
 	}
 }
 
+// @codeCoverageIgnoreStart
 $maintClass = InitSiteStats::class;
 require_once RUN_MAINTENANCE_IF_MAIN;
+// @codeCoverageIgnoreEnd

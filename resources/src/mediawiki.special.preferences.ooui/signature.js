@@ -2,10 +2,8 @@
  * JavaScript for Special:Preferences: signature field enhancements.
  */
 ( function () {
-	mw.hook( 'htmlform.enhance' ).add( function ( $root ) {
-		var signatureInput, $signatureInput, fancyToggleInput, $fancyToggleInput;
-
-		$signatureInput = $root.find( '#mw-input-wpnickname' );
+	mw.hook( 'htmlform.enhance' ).add( ( $root ) => {
+		const $signatureInput = $root.find( '#mw-input-wpnickname' );
 		if (
 			// This preference could theoretically be disabled ($wgHiddenPrefs)
 			!$signatureInput.length ||
@@ -14,7 +12,7 @@
 			return;
 		}
 
-		signatureInput = OO.ui.infuse( $signatureInput );
+		const signatureInput = OO.ui.infuse( $signatureInput );
 
 		// Add a visible length limit
 		mw.widgets.visibleCodePointLimit( signatureInput );
@@ -30,10 +28,10 @@
 				useEditFont
 			);
 		}
-		$fancyToggleInput = $root.find( '#mw-input-wpfancysig' );
+		const $fancyToggleInput = $root.find( '#mw-input-wpfancysig' );
 		if ( $fancyToggleInput.length ) {
-			fancyToggleInput = OO.ui.infuse( $fancyToggleInput );
-			fancyToggleInput.on( 'change', function () {
+			const fancyToggleInput = OO.ui.infuse( $fancyToggleInput );
+			fancyToggleInput.on( 'change', () => {
 				updateFont( fancyToggleInput.isSelected() );
 			} );
 			// !!+ casts '0' to false
@@ -42,14 +40,14 @@
 
 		// Highlight lint errors
 		$root.find( '[data-mw-lint-error-location]' ).each( function () {
-			var
+			const
 				$item = $( this ),
 				location = $item.data( 'mw-lint-error-location' ),
 				button = new OO.ui.ButtonWidget( {
 					label: mw.msg( 'prefs-signature-highlight-error' )
 				} );
 
-			button.on( 'click', function () {
+			button.on( 'click', () => {
 				signatureInput.selectRange( location[ 0 ], location[ 1 ] );
 			} );
 

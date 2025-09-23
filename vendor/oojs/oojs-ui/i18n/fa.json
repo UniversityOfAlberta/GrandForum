@@ -7,6 +7,7 @@
 			"Dalba",
 			"Ebraminio",
 			"Jdforrester",
+			"Jeeputer",
 			"Ladsgroup",
 			"Leyth",
 			"Mjbmr",
@@ -18,6 +19,7 @@
 			"فلورانس"
 		]
 	},
+	"ooui-copytextlayout-copy": "رونوشت",
 	"ooui-outline-control-move-down": "انتقال مورد به پایین",
 	"ooui-outline-control-move-up": "انتقال مورد به بالا",
 	"ooui-outline-control-remove": "حذف مورد",
@@ -31,10 +33,12 @@
 	"ooui-dialog-process-dismiss": "رد",
 	"ooui-dialog-process-retry": "دوباره امتحان کنید",
 	"ooui-dialog-process-continue": "ادامه",
-	"ooui-combobox-button-label": "پایین‌رونده برای جعبهٔ پایین‌رونده",
-	"ooui-selectfile-button-select": "یک فایل انتخاب کنید",
-	"ooui-selectfile-not-supported": "انتخاب پرونده پشتیبانی نمی‌شود",
+	"ooui-combobox-button-label": "تغییر گزینه‌ها",
+	"ooui-selectfile-button-select": "انتخاب یک پرونده",
+	"ooui-selectfile-button-select-multiple": "انتخاب پرونده‌ها",
 	"ooui-selectfile-placeholder": "هیچ پرونده‌ای انتخاب نشده است",
-	"ooui-selectfile-dragdrop-placeholder": "فایل را اینجا رها کنید",
+	"ooui-selectfile-dragdrop-placeholder": "پرونده را اینجا رها کنید",
+	"ooui-selectfile-dragdrop-placeholder-multiple": "پرونده‌ها را اینجا رها کنید",
+	"ooui-popup-widget-close-button-aria-label": "بستن",
 	"ooui-field-help": "راهنما"
 }

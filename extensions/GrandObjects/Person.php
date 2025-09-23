@@ -745,7 +745,7 @@ class Person extends BackboneModel {
     function __construct($data){
         global $wgUser;
         if(count($data) > 0){
-            if(@$data[0]['candidate'] == 1 && !$wgUser->isLoggedIn()){
+            if(@$data[0]['candidate'] == 1 && !$wgUser->isRegistered()){
                 return;
             }
             $this->id = @$data[0]['user_id'];
@@ -782,7 +782,7 @@ class Person extends BackboneModel {
         global $wgUser;
         $privateProfile = "";
         $publicProfile = $this->getProfile(false);
-        if($wgUser->isLoggedIn()){
+        if($wgUser->isRegistered()){
             $privateProfile = $this->getProfile(true);
         }
         $roles = array();
@@ -1001,7 +1001,7 @@ class Person extends BackboneModel {
      */
     function isLoggedIn(){
         $user = $this->getUser();
-        return $user->isLoggedIn();
+        return $user->isRegistered();
     }
     
     /**

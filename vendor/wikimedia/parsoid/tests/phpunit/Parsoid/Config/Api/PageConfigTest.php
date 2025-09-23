@@ -4,6 +4,8 @@ namespace Test\Parsoid\Config\Api;
 
 use Wikimedia\Parsoid\Config\Api\PageConfig;
 use Wikimedia\Parsoid\Config\PageContent;
+use Wikimedia\Parsoid\Mocks\MockSiteConfig;
+use Wikimedia\Parsoid\Utils\Title;
 
 /**
  * @covers \Wikimedia\Parsoid\Config\Api\PageConfig
@@ -12,31 +14,33 @@ class PageConfigTest extends \PHPUnit\Framework\TestCase {
 
 	private static $pageConfigs = [];
 
-	protected function getPageConfig( string $id ) {
+	protected function getPageConfig( string $id ): PageConfig {
 		if ( !self::$pageConfigs ) {
 			foreach (
 				[
 					'missing' => 'ThisPageDoesNotExist',
 					'existing' => 'Help:Sample_page',
-				] as $name => $title
+				] as $name => $titleText
 			) {
 				$helper = new TestApiHelper( $this, $name . 'page' );
-				self::$pageConfigs[$name] = new PageConfig( $helper, [ 'title' => $title ] );
+				$siteConfig = new MockSiteConfig( [] );
+				$title = Title::newFromText( $titleText, $siteConfig );
+				self::$pageConfigs[$name] = new PageConfig( $helper, $siteConfig, [ 'title' => $title ] );
 			}
 		}
 
 		return self::$pageConfigs[$id];
 	}
 
-	public function testHasLintableContentModel() {
-		// Assumes wikitext:
-		$this->assertTrue( $this->getPageConfig( 'missing' )->hasLintableContentModel() );
-		$this->assertTrue( $this->getPageConfig( 'existing' )->hasLintableContentModel() );
-	}
-
 	public function testGetTitle() {
-		$this->assertSame( 'ThisPageDoesNotExist', $this->getPageConfig( 'missing' )->getTitle() );
-		$this->assertSame( 'Help:Sample page', $this->getPageConfig( 'existing' )->getTitle() );
+		$this->assertSame(
+			'ThisPageDoesNotExist',
+			$this->getPageConfig( 'missing' )->getLinkTarget()->getPrefixedText()
+		);
+		$this->assertSame(
+			'Help:Sample page',
+			$this->getPageConfig( 'existing' )->getLinkTarget()->getPrefixedText()
+		);
 	}
 
 	public function testGetNs() {
@@ -50,8 +54,14 @@ class PageConfigTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetPageLanguage() {
-		$this->assertSame( 'en', $this->getPageConfig( 'missing' )->getPageLanguage() );
-		$this->assertSame( 'en', $this->getPageConfig( 'existing' )->getPageLanguage() );
+		$this->assertEqualsIgnoringCase(
+			'en',
+			$this->getPageConfig( 'missing' )->getPageLanguageBcp47()->toBcp47Code()
+		);
+		$this->assertEqualsIgnoringCase(
+			'en',
+			$this->getPageConfig( 'existing' )->getPageLanguageBcp47()->toBcp47Code()
+		);
 	}
 
 	public function testGetPageLanguageDir() {
@@ -61,47 +71,44 @@ class PageConfigTest extends \PHPUnit\Framework\TestCase {
 
 	public function testGetRevisionId() {
 		$this->assertNull( $this->getPageConfig( 'missing' )->getRevisionId() );
-		$this->assertSame( 810158619, $this->getPageConfig( 'existing' )->getRevisionId() );
+		$this->assertSame( 857016953, $this->getPageConfig( 'existing' )->getRevisionId() );
 	}
 
 	public function testGetParentRevisionId() {
 		$this->assertNull( $this->getPageConfig( 'missing' )->getParentRevisionId() );
-		$this->assertSame( 776171508, $this->getPageConfig( 'existing' )->getParentRevisionId() );
+		$this->assertSame( 817557113, $this->getPageConfig( 'existing' )->getParentRevisionId() );
 	}
 
 	public function testGetRevisionTimestamp() {
 		$this->assertNull( $this->getPageConfig( 'missing' )->getRevisionTimestamp() );
-		$this->assertSame( '20171113173753', $this->getPageConfig( 'existing' )->getRevisionTimestamp() );
+		$this->assertSame( '20180829005516', $this->getPageConfig( 'existing' )->getRevisionTimestamp() );
 	}
 
 	public function testGetRevisionUser() {
 		$this->assertNull( $this->getPageConfig( 'missing' )->getRevisionUser() );
-		$this->assertSame( 'ESanders (WMF)', $this->getPageConfig( 'existing' )->getRevisionUser() );
+		$this->assertSame( 'JCW-CleanerBot', $this->getPageConfig( 'existing' )->getRevisionUser() );
 	}
 
 	public function testGetRevisionUserId() {
 		$this->assertNull( $this->getPageConfig( 'missing' )->getRevisionUserId() );
-		$this->assertSame( 18442520, $this->getPageConfig( 'existing' )->getRevisionUserId() );
+		$this->assertSame( 31737083, $this->getPageConfig( 'existing' )->getRevisionUserId() );
 	}
 
 	public function testGetRevisionSha1() {
 		$this->assertNull( $this->getPageConfig( 'missing' )->getRevisionSha1() );
 		$this->assertSame(
-			'ae1ed2d432a4267b0cc5612d22cbf0d3d86a6e5c',
+			'27d4d91a06e8df01f33a2577e00305a81cd30bf0',
 			$this->getPageConfig( 'existing' )->getRevisionSha1()
 		);
 	}
 
 	public function testGetRevisionSize() {
 		$this->assertNull( $this->getPageConfig( 'missing' )->getRevisionSize() );
-		$this->assertSame( 1748, $this->getPageConfig( 'existing' )->getRevisionSize() );
+		$this->assertSame( 1736, $this->getPageConfig( 'existing' )->getRevisionSize() );
 	}
 
 	public function testGetRevisionContent() {
-		$this->assertSame(
-			'',
-			$this->getPageConfig( 'missing' )->getRevisionContent()->getContent( 'main' )
-		);
+		$this->assertNull( $this->getPageConfig( 'missing' )->getRevisionContent() );
 
 		$c = $this->getPageConfig( 'existing' )->getRevisionContent();
 		$this->assertInstanceOf( PageContent::class, $c );

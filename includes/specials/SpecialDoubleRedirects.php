@@ -1,7 +1,5 @@
 <?php
 /**
- * Implements Special:DoubleRedirects
- *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -18,22 +16,48 @@
  * http://www.gnu.org/copyleft/gpl.html
  *
  * @file
- * @ingroup SpecialPage
  */
 
-use MediaWiki\MediaWikiServices;
+namespace MediaWiki\Specials;
+
+use MediaWiki\Cache\LinkBatchFactory;
+use MediaWiki\Content\IContentHandlerFactory;
+use MediaWiki\Html\Html;
+use MediaWiki\SpecialPage\QueryPage;
+use MediaWiki\Title\Title;
+use Skin;
+use stdClass;
+use Wikimedia\Rdbms\IConnectionProvider;
 use Wikimedia\Rdbms\IDatabase;
 use Wikimedia\Rdbms\IResultWrapper;
 
 /**
- * A special page listing redirects to redirecting page.
- * The software will automatically not follow double redirects, to prevent loops.
+ * List of redirects to another redirecting page.
+ *
+ * The software will by default not follow double redirects, to prevent loops.
+ * Editors are encouraged to fix these, and can discover them via this page.
  *
  * @ingroup SpecialPage
  */
 class SpecialDoubleRedirects extends QueryPage {
-	public function __construct( $name = 'DoubleRedirects' ) {
-		parent::__construct( $name );
+
+	private IContentHandlerFactory $contentHandlerFactory;
+	private LinkBatchFactory $linkBatchFactory;
+
+	/**
+	 * @param IContentHandlerFactory $contentHandlerFactory
+	 * @param LinkBatchFactory $linkBatchFactory
+	 * @param IConnectionProvider $dbProvider
+	 */
+	public function __construct(
+		IContentHandlerFactory $contentHandlerFactory,
+		LinkBatchFactory $linkBatchFactory,
+		IConnectionProvider $dbProvider
+	) {
+		parent::__construct( 'DoubleRedirects' );
+		$this->contentHandlerFactory = $contentHandlerFactory;
+		$this->linkBatchFactory = $linkBatchFactory;
+		$this->setDatabaseProvider( $dbProvider );
 	}
 
 	public function isExpensive() {
@@ -54,7 +78,6 @@ class SpecialDoubleRedirects extends QueryPage {
 
 	private function reallyGetQueryInfo( $namespace = null, $title = null ) {
 		$limitToTitle = !( $namespace === null && $title === null );
-		$dbr = wfGetDB( DB_REPLICA );
 		$retval = [
 			'tables' => [
 				'ra' => 'redirect',
@@ -68,6 +91,7 @@ class SpecialDoubleRedirects extends QueryPage {
 
 				'b_namespace' => 'pb.page_namespace',
 				'b_title' => 'pb.page_title',
+				'b_fragment' => 'ra.rd_fragment',
 
 				// Select fields from redirect instead of page. Because there may
 				// not actually be a page table row for this target (e.g. for interwiki redirects)
@@ -83,10 +107,7 @@ class SpecialDoubleRedirects extends QueryPage {
 				// This isn't an optimization, it is required for correct results,
 				// otherwise a non-double redirect like Bar -> w:Foo will show up
 				// like "Bar -> Foo -> w:Foo".
-
-				// Need to check both NULL and "" for some reason,
-				// apparently either can be stored for non-iw entries.
-				'ra.rd_interwiki IS NULL OR ra.rd_interwiki = ' . $dbr->addQuotes( '' ),
+				'ra.rd_interwiki' => '',
 
 				'pb.page_namespace = ra.rd_namespace',
 				'pb.page_title = ra.rd_title',
@@ -113,7 +134,7 @@ class SpecialDoubleRedirects extends QueryPage {
 
 	/**
 	 * @param Skin $skin
-	 * @param object $result Result row
+	 * @param stdClass $result Result row
 	 * @return string
 	 */
 	public function formatResult( $skin, $result ) {
@@ -127,21 +148,14 @@ class SpecialDoubleRedirects extends QueryPage {
 			if ( isset( $result->b_namespace ) ) {
 				$deep = $result;
 			} else {
-				$dbr = wfGetDB( DB_REPLICA );
 				$qi = $this->reallyGetQueryInfo(
 					$result->namespace,
 					$result->title
 				);
-				$res = $dbr->select(
-					$qi['tables'],
-					$qi['fields'],
-					$qi['conds'],
-					__METHOD__
-				);
-
-				if ( $res ) {
-					$deep = $dbr->fetchObject( $res ) ?: false;
-				}
+				$deep = $this->getDatabaseProvider()->getReplicaDatabase()->newSelectQueryBuilder()
+					->queryInfo( $qi )
+					->caller( __METHOD__ )
+					->fetchRow();
 			}
 		}
 
@@ -155,13 +169,9 @@ class SpecialDoubleRedirects extends QueryPage {
 		// if the page is editable, add an edit link
 		if (
 			// check user permissions
-			MediaWikiServices::getInstance()
-				->getPermissionManager()
-				->userHasRight( $this->getUser(), 'edit' ) &&
+			$this->getAuthority()->isAllowed( 'edit' ) &&
 			// check, if the content model is editable through action=edit
-			MediaWikiServices::getInstance()
-				->getContentHandlerFactory()
-				->getContentHandler( $titleA->getContentModel() )
+			$this->contentHandlerFactory->getContentHandler( $titleA->getContentModel() )
 				->supportsDirectEditing()
 		) {
 			$edit = $linkRenderer->makeKnownLink(
@@ -174,20 +184,28 @@ class SpecialDoubleRedirects extends QueryPage {
 			$edit = '';
 		}
 
-		$linkA = $linkRenderer->makeKnownLink(
+		$arrow = $this->getLanguage()->getArrow();
+		$contentLanguage = $this->getContentLanguage();
+		$bdiAttrs = [
+			'dir' => $contentLanguage->getDir(),
+			'lang' => $contentLanguage->getHtmlCode(),
+		];
+		$linkA = Html::rawElement( 'bdi', $bdiAttrs, $linkRenderer->makeKnownLink(
 			$titleA,
 			null,
 			[],
 			[ 'redirect' => 'no' ]
-		);
+		) );
 
 		$titleB = Title::makeTitle( $deep->b_namespace, $deep->b_title );
-		$linkB = $linkRenderer->makeKnownLink(
+		// We show fragment, but don't link to it, as it probably doesn't exist anymore.
+		$titleBFrag = Title::makeTitle( $deep->b_namespace, $deep->b_title, $deep->b_fragment );
+		$linkB = Html::rawElement( 'bdi', $bdiAttrs, $linkRenderer->makeKnownLink(
 			$titleB,
-			null,
+			$titleBFrag->getFullText(),
 			[],
 			[ 'redirect' => 'no' ]
-		);
+		) );
 
 		$titleC = Title::makeTitle(
 			$deep->c_namespace,
@@ -195,12 +213,11 @@ class SpecialDoubleRedirects extends QueryPage {
 			$deep->c_fragment,
 			$deep->c_interwiki
 		);
-		$linkC = $linkRenderer->makeKnownLink( $titleC, $titleC->getFullText() );
+		$linkC = Html::rawElement( 'bdi', $bdiAttrs,
+			$linkRenderer->makeKnownLink( $titleC, $titleC->getFullText() )
+		);
 
-		$lang = $this->getLanguage();
-		$arr = $lang->getArrow() . $lang->getDirMark();
-
-		return ( "{$linkA} {$edit} {$arr} {$linkB} {$arr} {$linkC}" );
+		return ( "{$linkA} {$edit} {$arrow} {$linkB} {$arrow} {$linkC}" );
 	}
 
 	public function execute( $par ) {
@@ -219,7 +236,7 @@ class SpecialDoubleRedirects extends QueryPage {
 			return;
 		}
 
-		$batch = new LinkBatch;
+		$batch = $this->linkBatchFactory->newLinkBatch();
 		foreach ( $res as $row ) {
 			$batch->add( $row->namespace, $row->title );
 			if ( isset( $row->b_namespace ) ) {
@@ -241,3 +258,6 @@ class SpecialDoubleRedirects extends QueryPage {
 		return 'maintenance';
 	}
 }
+
+/** @deprecated class alias since 1.41 */
+class_alias( SpecialDoubleRedirects::class, 'SpecialDoubleRedirects' );

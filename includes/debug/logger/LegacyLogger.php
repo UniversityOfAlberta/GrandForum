@@ -22,14 +22,15 @@ namespace MediaWiki\Logger;
 
 use DateTimeZone;
 use Error;
-use MWDebug;
+use LogicException;
+use MediaWiki\Debug\MWDebug;
+use MediaWiki\WikiMap\WikiMap;
 use MWExceptionHandler;
 use Psr\Log\AbstractLogger;
 use Psr\Log\LogLevel;
-use RuntimeException;
 use Throwable;
 use UDPTransport;
-use WikiMap;
+use Wikimedia\AtEase\AtEase;
 
 /**
  * PSR-3 logger that mimics the historic implementation of MediaWiki's former
@@ -41,11 +42,11 @@ use WikiMap;
  * - `$wgDBerrorLog`
  * - `$wgDBerrorLogTZ`
  *
- * See documentation in DefaultSettings.php for detailed explanations of each
- * variable.
+ * See docs/Configuration.md for detailed explanations of these settings.
  *
  * @see \MediaWiki\Logger\LoggerFactory
  * @since 1.25
+ * @ingroup Debug
  * @copyright © 2014 Wikimedia Foundation and contributors
  */
 class LegacyLogger extends AbstractLogger {
@@ -66,10 +67,10 @@ class LegacyLogger extends AbstractLogger {
 	private const LEVEL_INFINITY = 999;
 
 	/**
-	 * Convert \Psr\Log\LogLevel constants into int for sane comparisons
+	 * Convert \Psr\Log\LogLevel constants into int for sensible comparisons
 	 * These are the same values that Monolog uses
 	 *
-	 * @var array $levelMapping
+	 * @var array
 	 */
 	protected static $levelMapping = [
 		LogLevel::DEBUG => self::LEVEL_DEBUG,
@@ -80,14 +81,6 @@ class LegacyLogger extends AbstractLogger {
 		LogLevel::CRITICAL => self::LEVEL_CRITICAL,
 		LogLevel::ALERT => self::LEVEL_ALERT,
 		LogLevel::EMERGENCY => self::LEVEL_EMERGENCY,
-	];
-
-	/**
-	 * @var array
-	 */
-	protected static $dbChannels = [
-		'DBQuery' => true,
-		'DBConnection' => true
 	];
 
 	/**
@@ -109,13 +102,15 @@ class LegacyLogger extends AbstractLogger {
 	 * @param string $channel
 	 */
 	public function __construct( $channel ) {
-		global $wgDebugLogFile, $wgDBerrorLog, $wgDebugLogGroups, $wgDebugToolbar;
+		global $wgDebugLogFile, $wgDBerrorLog, $wgDebugLogGroups, $wgDebugToolbar, $wgDebugRawPage, $wgShowDebug;
 
 		$this->channel = $channel;
-		$this->isDB = isset( self::$dbChannels[$channel] );
+		$this->isDB = ( $channel === 'rdbms' );
 
 		// Calculate minimum level, duplicating some of the logic from log() and shouldEmit()
-		if ( $wgDebugLogFile != '' || $wgDebugToolbar ) {
+		if ( !$wgDebugRawPage && wfIsDebugRawPage() ) {
+			$this->minimumLevel = self::LEVEL_WARNING;
+		} elseif ( $wgDebugLogFile != '' || $wgShowDebug || $wgDebugToolbar ) {
 			// Log all messages if there is a debug log file or debug toolbar
 			$this->minimumLevel = self::LEVEL_DEBUG;
 		} elseif ( isset( $wgDebugLogGroups[$channel] ) ) {
@@ -130,6 +125,7 @@ class LegacyLogger extends AbstractLogger {
 			// No other case hit: discard all messages
 			$this->minimumLevel = self::LEVEL_INFINITY;
 		}
+
 		if ( $this->isDB && $wgDBerrorLog && $this->minimumLevel > self::LEVEL_ERROR ) {
 			// Log DB errors if there is a DB error log
 			$this->minimumLevel = self::LEVEL_ERROR;
@@ -145,7 +141,7 @@ class LegacyLogger extends AbstractLogger {
 	 */
 	public function setMinimumForTest( ?int $level ) {
 		if ( !defined( 'MW_PHPUNIT_TEST' ) ) {
-			throw new RuntimeException( 'Not allowed outside tests' );
+			throw new LogicException( 'Not allowed outside tests' );
 		}
 		// Set LEVEL_INFINITY if given null, or restore the original level.
 		$original = $this->minimumLevel;
@@ -160,7 +156,7 @@ class LegacyLogger extends AbstractLogger {
 	 * @param string $message
 	 * @param array $context
 	 */
-	public function log( $level, $message, array $context = [] ) {
+	public function log( $level, $message, array $context = [] ): void {
 		if ( is_string( $level ) ) {
 			$level = self::$levelMapping[$level];
 		}
@@ -168,7 +164,7 @@ class LegacyLogger extends AbstractLogger {
 			return;
 		}
 
-		if ( $this->channel === 'DBQuery'
+		if ( $this->isDB
 			&& $level === self::LEVEL_DEBUG
 			&& isset( $context['sql'] )
 		) {
@@ -176,8 +172,8 @@ class LegacyLogger extends AbstractLogger {
 			MWDebug::query(
 				$context['sql'],
 				$context['method'],
-				$context['runtime'],
-				$context['db_host']
+				$context['runtime_ms'] / 1000,
+				$context['db_server']
 			);
 		}
 
@@ -197,6 +193,7 @@ class LegacyLogger extends AbstractLogger {
 		if ( self::shouldEmit( $effectiveChannel, $message, $level, $context ) ) {
 			$text = self::format( $effectiveChannel, $message, $context );
 			$destination = self::destination( $effectiveChannel, $message, $context );
+			$this->maybeLogToStderr( $text );
 			self::emit( $text, $destination );
 		}
 		if ( !isset( $context['private'] ) || !$context['private'] ) {
@@ -224,7 +221,7 @@ class LegacyLogger extends AbstractLogger {
 
 		if ( $channel === 'wfLogDBError' ) {
 			// wfLogDBError messages are emitted if a database log location is
-			// specfied.
+			// specified.
 			$shouldEmit = (bool)$wgDBerrorLog;
 
 		} elseif ( $channel === 'wfDebug' ) {
@@ -248,7 +245,7 @@ class LegacyLogger extends AbstractLogger {
 					$shouldEmit = $level >= self::$levelMapping[$logConfig['level']];
 				}
 			} else {
-				// Emit unless the config value is explictly false.
+				// Emit unless the config value is explicitly false.
 				$shouldEmit = $logConfig !== false;
 			}
 
@@ -390,7 +387,7 @@ class LegacyLogger extends AbstractLogger {
 	 * @return string Interpolated message
 	 */
 	public static function interpolate( $message, array $context ) {
-		if ( strpos( $message, '{' ) !== false ) {
+		if ( str_contains( $message, '{' ) ) {
 			$replace = [];
 			foreach ( $context as $key => $val ) {
 				$replace['{' . $key . '}'] = self::flatten( $val );
@@ -458,7 +455,7 @@ class LegacyLogger extends AbstractLogger {
 			return '[Resource ' . get_resource_type( $item ) . ']';
 		}
 
-		return '[Unknown ' . gettype( $item ) . ']';
+		return '[Unknown ' . get_debug_type( $item ) . ']';
 	}
 
 	/**
@@ -511,11 +508,11 @@ class LegacyLogger extends AbstractLogger {
 	 * @param string $file Filename
 	 */
 	public static function emit( $text, $file ) {
-		if ( substr( $file, 0, 4 ) == 'udp:' ) {
+		if ( str_starts_with( $file, 'udp:' ) ) {
 			$transport = UDPTransport::newFromString( $file );
 			$transport->emit( $text );
 		} else {
-			\Wikimedia\suppressWarnings();
+			AtEase::suppressWarnings();
 			$exists = file_exists( $file );
 			$size = $exists ? filesize( $file ) : false;
 			if ( !$exists ||
@@ -523,7 +520,20 @@ class LegacyLogger extends AbstractLogger {
 			) {
 				file_put_contents( $file, $text, FILE_APPEND );
 			}
-			\Wikimedia\restoreWarnings();
+			AtEase::restoreWarnings();
+		}
+	}
+
+	/**
+	 * If MW_LOG_STDERR is set (used currently in `composer serve`) then also
+	 * emit to stderr using error_log().
+	 *
+	 * @param string $text
+	 * @return void
+	 */
+	private function maybeLogToStderr( string $text ): void {
+		if ( getenv( 'MW_LOG_STDERR' ) ) {
+			error_log( trim( $text ) );
 		}
 	}
 

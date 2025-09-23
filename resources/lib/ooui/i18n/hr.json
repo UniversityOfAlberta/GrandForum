@@ -8,6 +8,7 @@
 			"Zeljko.filipin"
 		]
 	},
+	"ooui-copytextlayout-copy": "Kopiraj",
 	"ooui-outline-control-move-down": "Premjesti stavku dolje",
 	"ooui-outline-control-move-up": "Premjesti stavku gore",
 	"ooui-outline-control-remove": "Ukloni",
@@ -23,8 +24,10 @@
 	"ooui-dialog-process-continue": "Nastavi",
 	"ooui-combobox-button-label": "Promijeni mogućnosti",
 	"ooui-selectfile-button-select": "Odaberi datoteku",
-	"ooui-selectfile-not-supported": "Izbor datoteke nije podržan",
+	"ooui-selectfile-button-select-multiple": "Odaberi datoteke",
 	"ooui-selectfile-placeholder": "Datoteka nije označena",
 	"ooui-selectfile-dragdrop-placeholder": "Povucite datoteku ovdje",
+	"ooui-selectfile-dragdrop-placeholder-multiple": "Povucite datoteke ovdje",
+	"ooui-popup-widget-close-button-aria-label": "Zatvori",
 	"ooui-field-help": "Pomoć"
 }

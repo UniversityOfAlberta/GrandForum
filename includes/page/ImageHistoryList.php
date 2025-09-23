@@ -18,8 +18,14 @@
  * @file
  */
 
+use MediaWiki\Context\ContextSource;
 use MediaWiki\HookContainer\ProtectedHookAccessorTrait;
+use MediaWiki\Html\Html;
+use MediaWiki\Linker\Linker;
+use MediaWiki\MainConfigNames;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\SpecialPage\SpecialPage;
+use MediaWiki\Title\Title;
 
 /**
  * Builds the image revision log shown on image pages
@@ -29,27 +35,13 @@ use MediaWiki\MediaWikiServices;
 class ImageHistoryList extends ContextSource {
 	use ProtectedHookAccessorTrait;
 
-	/**
-	 * @var Title
-	 */
-	protected $title;
+	protected Title $title;
+	protected File $img;
+	protected ImagePage $imagePage;
+	protected File $current;
 
-	/**
-	 * @var File
-	 */
-	protected $img;
-
-	/**
-	 * @var ImagePage
-	 */
-	protected $imagePage;
-
-	/**
-	 * @var File
-	 */
-	protected $current;
-
-	protected $repo, $showThumb;
+	protected bool $showThumb;
+	/** @var bool */
 	protected $preventClickjacking = false;
 
 	/**
@@ -61,7 +53,7 @@ class ImageHistoryList extends ContextSource {
 		$this->img = $imagePage->getDisplayedFile();
 		$this->title = $imagePage->getTitle();
 		$this->imagePage = $imagePage;
-		$this->showThumb = $context->getConfig()->get( 'ShowArchiveThumbnails' ) &&
+		$this->showThumb = $context->getConfig()->get( MainConfigNames::ShowArchiveThumbnails ) &&
 			$this->img->canRender();
 		$this->setContext( $context );
 	}
@@ -81,106 +73,105 @@ class ImageHistoryList extends ContextSource {
 	}
 
 	/**
-	 * @param string $navLinks
 	 * @return string
 	 */
-	public function beginImageHistoryList( $navLinks = '' ) {
-		return Xml::element( 'h2', [ 'id' => 'filehistory' ], $this->msg( 'filehist' )->text() )
-		. "\n"
-		. "<div id=\"mw-imagepage-section-filehistory\">\n"
-		. $this->msg( 'filehist-help' )->parseAsBlock()
-		. $navLinks . "\n"
-		. Xml::openElement( 'table', [ 'class' => 'wikitable filehistory' ] ) . "\n"
-		. '<tr><th></th>'
-		. ( $this->current->isLocal()
-		&& ( MediaWikiServices::getInstance()
-				->getPermissionManager()
-				->userHasAnyRight( $this->getUser(), 'delete', 'deletedhistory' ) ) ? '<th></th>' : '' )
-		. '<th>' . $this->msg( 'filehist-datetime' )->escaped() . '</th>'
-		. ( $this->showThumb ? '<th>' . $this->msg( 'filehist-thumb' )->escaped() . '</th>' : '' )
-		. '<th>' . $this->msg( 'filehist-dimensions' )->escaped() . '</th>'
-		. '<th>' . $this->msg( 'filehist-user' )->escaped() . '</th>'
-		. '<th>' . $this->msg( 'filehist-comment' )->escaped() . '</th>'
-		. "</tr>\n";
+	public function beginImageHistoryList() {
+		// Styles for class=history-deleted
+		$this->getOutput()->addModuleStyles( 'mediawiki.interface.helpers.styles' );
+
+		$html = '';
+		$canDelete = $this->current->isLocal() &&
+			$this->getAuthority()->isAllowedAny( 'delete', 'deletedhistory' );
+
+		foreach ( [
+			'',
+			$canDelete ? '' : null,
+			'filehist-datetime',
+			$this->showThumb ? 'filehist-thumb' : null,
+			'filehist-dimensions',
+			'filehist-user',
+			'filehist-comment',
+		] as $key ) {
+			if ( $key !== null ) {
+				$html .= Html::element( 'th', [], $key ? $this->msg( $key )->text() : '' );
+			}
+		}
+
+		return Html::openElement( 'table', [ 'class' => 'wikitable filehistory' ] ) . "\n"
+			. Html::rawElement( 'tr', [], $html ) . "\n";
 	}
 
 	/**
-	 * @param string $navLinks
 	 * @return string
 	 */
-	public function endImageHistoryList( $navLinks = '' ) {
-		return "</table>\n$navLinks\n</div>\n";
+	public function endImageHistoryList() {
+		return Html::closeElement( 'table' ) . "\n";
 	}
 
 	/**
+	 * @internal
 	 * @param bool $iscur
 	 * @param File $file
+	 * @param string $formattedComment
 	 * @return string
 	 */
-	public function imageHistoryLine( $iscur, $file ) {
+	public function imageHistoryLine( $iscur, $file, $formattedComment ) {
 		$user = $this->getUser();
 		$lang = $this->getLanguage();
-		$pm = MediaWikiServices::getInstance()->getPermissionManager();
 		$linkRenderer = MediaWikiServices::getInstance()->getLinkRenderer();
 		$timestamp = wfTimestamp( TS_MW, $file->getTimestamp() );
 		// @phan-suppress-next-line PhanUndeclaredMethod
 		$img = $iscur ? $file->getName() : $file->getArchiveName();
-		$userId = $file->getUser( 'id' );
-		$userText = $file->getUser( 'text' );
-		$description = $file->getDescription( File::FOR_THIS_USER, $user );
+		$uploader = $file->getUploader( File::FOR_THIS_USER, $user );
 
 		$local = $this->current->isLocal();
-		$row = $selected = '';
+		$row = '';
 
 		// Deletion link
-		if ( $local && ( $pm->userHasAnyRight( $user, 'delete', 'deletedhistory' ) ) ) {
-			$row .= '<td>';
-			# Link to remove from history
-			if ( $pm->userHasRight( $user, 'delete' ) ) {
-				$q = [ 'action' => 'delete' ];
-				if ( !$iscur ) {
-					$q['oldimage'] = $img;
-				}
-				$row .= $linkRenderer->makeKnownLink(
-					$this->title,
-					$this->msg( $iscur ? 'filehist-deleteall' : 'filehist-deleteone' )->text(),
-					[], $q
-				);
-			}
+		if ( $local && ( $this->getAuthority()->isAllowedAny( 'delete', 'deletedhistory' ) ) ) {
+			$row .= Html::openElement( 'td' );
 			# Link to hide content. Don't show useless link to people who cannot hide revisions.
-			$canHide = $pm->userHasRight( $user, 'deleterevision' );
-			if ( $canHide || ( $pm->userHasRight( $user, 'deletedhistory' )
-					&& $file->getVisibility() ) ) {
-				if ( $pm->userHasRight( $user, 'delete' ) ) {
-					$row .= '<br />';
-				}
-				// If file is top revision or locked from this user, don't link
-				if ( $iscur || !$file->userCan( File::DELETED_RESTRICTED, $user ) ) {
-					$del = Linker::revDeleteLinkDisabled( $canHide );
+			if ( !$iscur && $this->getAuthority()->isAllowed( 'deleterevision' ) ) {
+				// If file is top revision, is missing or locked from this user, don't link
+				if ( !$file->userCan( File::DELETED_RESTRICTED, $user ) || !$file->exists() ) {
+					$row .= Html::check( 'deleterevisions', false, [ 'disabled' => 'disabled' ] );
 				} else {
-					list( $ts, ) = explode( '!', $img, 2 );
-					$query = [
-						'type' => 'oldimage',
-						'target' => $this->title->getPrefixedText(),
-						'ids' => $ts,
-					];
-					$del = Linker::revDeleteLink( $query,
-						$file->isDeleted( File::DELETED_RESTRICTED ), $canHide );
+					$row .= Html::check( 'ids[' . explode( '!', $img, 2 )[0] . ']', false );
 				}
-				$row .= $del;
+				if ( $this->getAuthority()->isAllowed( 'delete' ) ) {
+					$row .= ' ';
+				}
 			}
-			$row .= '</td>';
+			# Link to remove from history
+			if ( $this->getAuthority()->isAllowed( 'delete' ) ) {
+				if ( $file->exists() ) {
+					$row .= $linkRenderer->makeKnownLink(
+						$this->title,
+						$this->msg( $iscur ? 'filehist-deleteall' : 'filehist-deleteone' )->text(),
+						[],
+						[ 'action' => 'delete', 'oldimage' => $iscur ? null : $img ]
+					);
+				} else {
+					// T244567: Non-existing file can not be deleted.
+					$row .= $this->msg( 'filehist-missing' )->escaped();
+				}
+
+			}
+			$row .= Html::closeElement( 'td' );
 		}
 
 		// Reversion link/current indicator
-		$row .= '<td>';
+		$row .= Html::openElement( 'td' );
 		if ( $iscur ) {
 			$row .= $this->msg( 'filehist-current' )->escaped();
-		} elseif ( $local && $pm->quickUserCan( 'edit', $user, $this->title )
-			&& $pm->quickUserCan( 'upload', $user, $this->title )
+		} elseif ( $local && $this->getAuthority()->probablyCan( 'edit', $this->title )
+			&& $this->getAuthority()->probablyCan( 'upload', $this->title )
 		) {
 			if ( $file->isDeleted( File::DELETED_FILE ) ) {
 				$row .= $this->msg( 'filehist-revert' )->escaped();
+			} elseif ( !$file->exists() ) {
+				// T328112: Lost file, in this case there's no version to revert back to.
+				$row .= $this->msg( 'filehist-missing' )->escaped();
 			} else {
 				$row .= $linkRenderer->makeKnownLink(
 					$this->title,
@@ -193,13 +184,14 @@ class ImageHistoryList extends ContextSource {
 				);
 			}
 		}
-		$row .= '</td>';
+		$row .= Html::closeElement( 'td' );
 
 		// Date/time and image link
-		if ( $file->getTimestamp() === $this->img->getTimestamp() ) {
-			$selected = "class='filehistory-selected'";
-		}
-		$row .= "<td $selected style='white-space: nowrap;'>";
+		$selected = $file->getTimestamp() === $this->img->getTimestamp();
+		$row .= Html::openElement( 'td', [
+			'class' => $selected ? 'filehistory-selected' : null,
+			'style' => 'white-space: nowrap;'
+		] );
 		if ( !$file->userCan( File::DELETED_FILE, $user ) ) {
 			# Don't link to unviewable files
 			$row .= Html::element( 'span', [ 'class' => 'history-deleted' ],
@@ -208,11 +200,10 @@ class ImageHistoryList extends ContextSource {
 		} elseif ( $file->isDeleted( File::DELETED_FILE ) ) {
 			$timeAndDate = $lang->userTimeAndDate( $timestamp, $user );
 			if ( $local ) {
-				$this->preventClickjacking();
-				$revdel = SpecialPage::getTitleFor( 'Revisiondelete' );
+				$this->setPreventClickjacking( true );
 				# Make a link to review the image
 				$url = $linkRenderer->makeKnownLink(
-					$revdel,
+					SpecialPage::getTitleFor( 'Revisiondelete' ),
 					$timeAndDate,
 					[],
 					[
@@ -224,112 +215,119 @@ class ImageHistoryList extends ContextSource {
 			} else {
 				$url = htmlspecialchars( $timeAndDate );
 			}
-			$row .= '<span class="history-deleted">' . $url . '</span>';
+			$row .= Html::rawElement( 'span', [ 'class' => 'history-deleted' ], $url );
 		} elseif ( !$file->exists() ) {
 			$row .= Html::element( 'span', [ 'class' => 'mw-file-missing' ],
 				$lang->userTimeAndDate( $timestamp, $user )
 			);
 		} else {
 			$url = $iscur ? $this->current->getUrl() : $this->current->getArchiveUrl( $img );
-			$row .= Xml::element(
-				'a',
-				[ 'href' => $url ],
+			$row .= Html::element( 'a', [ 'href' => $url ],
 				$lang->userTimeAndDate( $timestamp, $user )
 			);
 		}
-		$row .= "</td>";
+		$row .= Html::closeElement( 'td' );
 
 		// Thumbnail
 		if ( $this->showThumb ) {
-			$row .= '<td>' . $this->getThumbForLine( $file ) . '</td>';
+			$row .= Html::rawElement( 'td', [],
+				$this->getThumbForLine( $file, $iscur ) ?? $this->msg( 'filehist-nothumb' )->escaped()
+			);
 		}
 
 		// Image dimensions + size
-		$row .= '<td>';
+		$row .= Html::openElement( 'td' );
 		$row .= htmlspecialchars( $file->getDimensionsString() );
 		$row .= $this->msg( 'word-separator' )->escaped();
-		$row .= '<span style="white-space: nowrap;">';
-		$row .= $this->msg( 'parentheses' )->sizeParams( $file->getSize() )->escaped();
-		$row .= '</span>';
-		$row .= '</td>';
+		$row .= Html::element( 'span', [ 'style' => 'white-space: nowrap;' ],
+			$this->msg( 'parentheses' )->sizeParams( $file->getSize() )->text()
+		);
+		$row .= Html::closeElement( 'td' );
 
 		// Uploading user
-		$row .= '<td>';
+		$row .= Html::openElement( 'td' );
 		// Hide deleted usernames
-		if ( $file->isDeleted( File::DELETED_USER ) ) {
-			$row .= '<span class="history-deleted">'
-				. $this->msg( 'rev-deleted-user' )->escaped() . '</span>';
-		} else {
+		if ( $uploader ) {
+			$row .= Linker::userLink( $uploader->getId(), $uploader->getName() );
 			if ( $local ) {
-				$row .= Linker::userLink( $userId, $userText );
-				$row .= '<span style="white-space: nowrap;">';
-				$row .= Linker::userToolLinks( $userId, $userText );
-				$row .= '</span>';
-			} else {
-				$row .= htmlspecialchars( $userText );
+				$row .= Html::rawElement( 'span', [ 'style' => 'white-space: nowrap;' ],
+					Linker::userToolLinks( $uploader->getId(), $uploader->getName() )
+				);
 			}
+		} else {
+			$row .= Html::element( 'span', [ 'class' => 'history-deleted' ],
+				$this->msg( 'rev-deleted-user' )->text()
+			);
 		}
-		$row .= '</td>';
+		$row .= Html::closeElement( 'td' );
 
 		// Don't show deleted descriptions
 		if ( $file->isDeleted( File::DELETED_COMMENT ) ) {
-			$row .= '<td><span class="history-deleted">' .
-				$this->msg( 'rev-deleted-comment' )->escaped() . '</span></td>';
+			$row .= Html::rawElement( 'td', [],
+				Html::element( 'span', [ 'class' => 'history-deleted' ],
+					$this->msg( 'rev-deleted-comment' )->text()
+				)
+			);
 		} else {
 			$contLang = MediaWikiServices::getInstance()->getContentLanguage();
-			$row .= Html::rawElement(
-				'td',
-				[ 'dir' => $contLang->getDir() ],
-				Linker::formatComment( $description, $this->title )
-			);
+			$row .= Html::rawElement( 'td', [ 'dir' => $contLang->getDir() ], $formattedComment );
 		}
 
 		$rowClass = null;
 		$this->getHookRunner()->onImagePageFileHistoryLine( $this, $file, $row, $rowClass );
-		$classAttr = $rowClass ? " class='$rowClass'" : '';
 
-		return "<tr{$classAttr}>{$row}</tr>\n";
+		return Html::rawElement( 'tr', [ 'class' => $rowClass ], $row ) . "\n";
 	}
 
 	/**
 	 * @param File $file
-	 * @return string
+	 * @param bool $iscur
+	 * @return string|null
 	 */
-	protected function getThumbForLine( $file ) {
-		$lang = $this->getLanguage();
+	protected function getThumbForLine( $file, $iscur ) {
 		$user = $this->getUser();
-		if ( $file->allowInlineDisplay() && $file->userCan( File::DELETED_FILE, $user )
-			&& !$file->isDeleted( File::DELETED_FILE )
+		if ( !$file->allowInlineDisplay() ||
+			$file->isDeleted( File::DELETED_FILE ) ||
+			!$file->userCan( File::DELETED_FILE, $user )
 		) {
-			$params = [
+			return null;
+		}
+
+		$thumbnail = $file->transform(
+			[
 				'width' => '120',
 				'height' => '120',
-			];
-			$timestamp = wfTimestamp( TS_MW, $file->getTimestamp() );
-
-			$thumbnail = $file->transform( $params );
-			$options = [
-				'alt' => $this->msg( 'filehist-thumbtext',
-					$lang->userTimeAndDate( $timestamp, $user ),
-					$lang->userDate( $timestamp, $user ),
-					$lang->userTime( $timestamp, $user ) )->text(),
-				'file-link' => true,
-			];
-
-			if ( !$thumbnail ) {
-				return $this->msg( 'filehist-nothumb' )->escaped();
-			}
-
-			return $thumbnail->toHtml( $options );
-		} else {
-			return $this->msg( 'filehist-nothumb' )->escaped();
+				'isFilePageThumb' => $iscur  // old revisions are already versioned
+			]
+		);
+		if ( !$thumbnail ) {
+			return null;
 		}
+
+		$lang = $this->getLanguage();
+		$timestamp = wfTimestamp( TS_MW, $file->getTimestamp() );
+		$alt = $this->msg(
+			'filehist-thumbtext',
+			$lang->userTimeAndDate( $timestamp, $user ),
+			$lang->userDate( $timestamp, $user ),
+			$lang->userTime( $timestamp, $user )
+		)->text();
+		return $thumbnail->toHtml( [ 'alt' => $alt, 'file-link' => true, 'loading' => 'lazy' ] );
 	}
 
 	/**
 	 * @param bool $enable
+	 * @deprecated since 1.38, use ::setPreventClickjacking() instead
 	 */
 	protected function preventClickjacking( $enable = true ) {
+		$this->preventClickjacking = $enable;
+	}
+
+	/**
+	 * @param bool $enable
+	 * @since 1.38
+	 */
+	protected function setPreventClickjacking( bool $enable ) {
 		$this->preventClickjacking = $enable;
 	}
 

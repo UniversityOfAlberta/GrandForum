@@ -23,7 +23,11 @@
  * @author Rob Church <robchur@gmail.com>
  */
 
+use MediaWiki\User\UserIdentity;
+
+// @codeCoverageIgnoreStart
 require_once __DIR__ . '/Maintenance.php';
+// @codeCoverageIgnoreEnd
 
 /**
  * Maintenance script that removes unused user accounts from the database.
@@ -39,21 +43,21 @@ class RemoveUnusedAccounts extends Maintenance {
 	}
 
 	public function execute() {
+		$services = $this->getServiceContainer();
+		$userFactory = $services->getUserFactory();
+		$userGroupManager = $services->getUserGroupManager();
 		$this->output( "Remove unused accounts\n\n" );
 
 		# Do an initial scan for inactive accounts and report the result
 		$this->output( "Checking for unused user accounts...\n" );
 		$delUser = [];
 		$delActor = [];
-		$dbr = $this->getDB( DB_REPLICA );
-		$res = $dbr->select(
-			[ 'user', 'actor' ],
-			[ 'user_id', 'user_name', 'user_touched', 'actor_id' ],
-			'',
-			__METHOD__,
-			[],
-			[ 'actor' => [ 'LEFT JOIN', 'user_id = actor_user' ] ]
-		);
+		$dbr = $this->getReplicaDB();
+		$res = $dbr->newSelectQueryBuilder()
+			->select( [ 'user_id', 'user_name', 'user_touched', 'actor_id' ] )
+			->from( 'user' )
+			->leftJoin( 'actor', null, 'user_id = actor_user' )
+			->caller( __METHOD__ )->fetchResultSet();
 		if ( $this->hasOption( 'ignore-groups' ) ) {
 			$excludedGroups = explode( ',', $this->getOption( 'ignore-groups' ) );
 		} else {
@@ -67,10 +71,12 @@ class RemoveUnusedAccounts extends Maintenance {
 		foreach ( $res as $row ) {
 			# Check the account, but ignore it if it's within a $excludedGroups
 			# group or if it's touched within the $touchedSeconds seconds.
-			$instance = User::newFromId( $row->user_id );
-			if ( count( array_intersect( $instance->getEffectiveGroups(), $excludedGroups ) ) == 0
-				&& $this->isInactiveAccount( $row->user_id, $row->actor_id ?? null, true )
-				&& wfTimestamp( TS_UNIX, $row->user_touched ) < wfTimestamp( TS_UNIX, time() - $touchedSeconds )
+			$instance = $userFactory->newFromId( $row->user_id );
+			if ( count(
+				array_intersect( $userGroupManager->getUserEffectiveGroups( $instance ), $excludedGroups ) ) == 0
+				&& $this->isInactiveAccount( $instance, $row->actor_id ?? null, true )
+				&& wfTimestamp( TS_UNIX, $row->user_touched ) < wfTimestamp( TS_UNIX, time() - $touchedSeconds
+				)
 			) {
 				# Inactive; print out the name and flag it
 				$delUser[] = $row->user_id;
@@ -86,33 +92,64 @@ class RemoveUnusedAccounts extends Maintenance {
 		# If required, go back and delete each marked account
 		if ( $count > 0 && $this->hasOption( 'delete' ) ) {
 			$this->output( "\nDeleting unused accounts..." );
-			$dbw = $this->getDB( DB_MASTER );
-			$dbw->delete( 'user', [ 'user_id' => $delUser ], __METHOD__ );
-			# Keep actor rows referenced from ipblocks
-			$keep = $dbw->selectFieldValues(
-				'ipblocks', 'ipb_by_actor', [ 'ipb_by_actor' => $delActor ], __METHOD__
-			);
+			$dbw = $this->getPrimaryDB();
+			$dbw->newDeleteQueryBuilder()
+				->deleteFrom( 'user' )
+				->where( [ 'user_id' => $delUser ] )
+				->caller( __METHOD__ )->execute();
+			# Keep actor rows referenced from block
+			$keep = $dbw->newSelectQueryBuilder()
+				->select( 'bl_by_actor' )
+				->from( 'block' )
+				->where( [ 'bl_by_actor' => $delActor ] )
+				->caller( __METHOD__ )->fetchFieldValues();
 			$del = array_diff( $delActor, $keep );
 			if ( $del ) {
-				$dbw->delete( 'actor', [ 'actor_id' => $del ], __METHOD__ );
+				$dbw->newDeleteQueryBuilder()
+					->deleteFrom( 'actor' )
+					->where( [ 'actor_id' => $del ] )
+					->caller( __METHOD__ )->execute();
 			}
 			if ( $keep ) {
-				$dbw->update( 'actor', [ 'actor_user' => 0 ], [ 'actor_id' => $keep ], __METHOD__ );
+				$dbw->newUpdateQueryBuilder()
+					->update( 'actor' )
+					->set( [ 'actor_user' => null ] )
+					->where( [ 'actor_id' => $keep ] )
+					->caller( __METHOD__ )
+					->execute();
 			}
-			$dbw->delete( 'user_groups', [ 'ug_user' => $delUser ], __METHOD__ );
-			$dbw->delete( 'user_former_groups', [ 'ufg_user' => $delUser ], __METHOD__ );
-			$dbw->delete( 'user_properties', [ 'up_user' => $delUser ], __METHOD__ );
-			$dbw->delete( 'logging', [ 'log_actor' => $delActor ], __METHOD__ );
-			$dbw->delete( 'recentchanges', [ 'rc_actor' => $delActor ], __METHOD__ );
+			$dbw->newDeleteQueryBuilder()
+				->deleteFrom( 'user_groups' )
+				->where( [ 'ug_user' => $delUser ] )
+				->caller( __METHOD__ )->execute();
+			$dbw->newDeleteQueryBuilder()
+				->deleteFrom( 'user_former_groups' )
+				->where( [ 'ufg_user' => $delUser ] )
+				->caller( __METHOD__ )->execute();
+			$dbw->newDeleteQueryBuilder()
+				->deleteFrom( 'user_properties' )
+				->where( [ 'up_user' => $delUser ] )
+				->caller( __METHOD__ )->execute();
+			$dbw->newDeleteQueryBuilder()
+				->deleteFrom( 'logging' )
+				->where( [ 'log_actor' => $delActor ] )
+				->caller( __METHOD__ )->execute();
+			$dbw->newDeleteQueryBuilder()
+				->deleteFrom( 'recentchanges' )
+				->where( [ 'rc_actor' => $delActor ] )
+				->caller( __METHOD__ )->execute();
 			$this->output( "done.\n" );
 			# Update the site_stats.ss_users field
-			$users = $dbw->selectField( 'user', 'COUNT(*)', [], __METHOD__ );
-			$dbw->update(
-				'site_stats',
-				[ 'ss_users' => $users ],
-				[ 'ss_row_id' => 1 ],
-				__METHOD__
-			);
+			$users = $dbw->newSelectQueryBuilder()
+				->select( 'COUNT(*)' )
+				->from( 'user' )
+				->caller( __METHOD__ )->fetchField();
+			$dbw->newUpdateQueryBuilder()
+				->update( 'site_stats' )
+				->set( [ 'ss_users' => $users ] )
+				->where( [ 'ss_row_id' => 1 ] )
+				->caller( __METHOD__ )
+				->execute();
 		} elseif ( $count > 0 ) {
 			$this->output( "\nRun the script again with --delete to remove them from the database.\n" );
 		}
@@ -123,53 +160,44 @@ class RemoveUnusedAccounts extends Maintenance {
 	 * Could the specified user account be deemed inactive?
 	 * (No edits, no deleted edits, no log entries, no current/old uploads)
 	 *
-	 * @param int $id User's ID
+	 * @param UserIdentity $user
 	 * @param int|null $actor User's actor ID
-	 * @param bool $master Perform checking on the master
+	 * @param bool $primary Perform checking on the primary DB
 	 * @return bool
 	 */
-	private function isInactiveAccount( $id, $actor, $master = false ) {
-		$dbo = $this->getDB( $master ? DB_MASTER : DB_REPLICA );
+	private function isInactiveAccount( $user, $actor, $primary = false ) {
+		if ( $actor === null ) {
+			// There's no longer a way for a user to be active in any of
+			// these tables without having an actor ID. The only way to link
+			// to a user row is via an actor row.
+			return true;
+		}
+
+		$dbo = $primary ? $this->getPrimaryDB() : $this->getReplicaDB();
 		$checks = [
-			'revision' => 'rev',
 			'archive' => 'ar',
 			'image' => 'img',
 			'oldimage' => 'oi',
-			'filearchive' => 'fa'
+			'filearchive' => 'fa',
+			'revision' => 'rev',
 		];
 		$count = 0;
 
-		$migration = ActorMigration::newMigration();
-
-		$user = User::newFromAnyId( $id, null, $actor );
-
 		$this->beginTransaction( $dbo, __METHOD__ );
 		foreach ( $checks as $table => $prefix ) {
-			$actorQuery = $migration->getWhere(
-				$dbo, $prefix . '_user', $user, $prefix !== 'oi' && $prefix !== 'fa'
-			);
-			$count += (int)$dbo->selectField(
-				[ $table ] + $actorQuery['tables'],
-				'COUNT(*)',
-				$actorQuery['conds'],
-				__METHOD__,
-				[],
-				$actorQuery['joins']
-			);
+			$count += (int)$dbo->newSelectQueryBuilder()
+				->select( 'COUNT(*)' )
+				->from( $table )
+				->where( [ "{$prefix}_actor" => $actor ] )
+				->caller( __METHOD__ )
+				->fetchField();
 		}
 
-		$actorQuery = $migration->getWhere( $dbo, 'log_user', $user, false );
-		$count += (int)$dbo->selectField(
-			[ 'logging' ] + $actorQuery['tables'],
-			'COUNT(*)',
-			[
-				$actorQuery['conds'],
-				'log_type != ' . $dbo->addQuotes( 'newusers' )
-			],
-			__METHOD__,
-			[],
-			$actorQuery['joins']
-		);
+		$count += (int)$dbo->newSelectQueryBuilder()
+			->select( 'COUNT(*)' )
+			->from( 'logging' )
+			->where( [ 'log_actor' => $actor, $dbo->expr( 'log_type', '!=', 'newusers' ) ] )
+			->caller( __METHOD__ )->fetchField();
 
 		$this->commitTransaction( $dbo, __METHOD__ );
 
@@ -177,5 +205,7 @@ class RemoveUnusedAccounts extends Maintenance {
 	}
 }
 
+// @codeCoverageIgnoreStart
 $maintClass = RemoveUnusedAccounts::class;
 require_once RUN_MAINTENANCE_IF_MAIN;
+// @codeCoverageIgnoreEnd

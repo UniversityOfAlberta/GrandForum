@@ -20,45 +20,34 @@
 
 namespace MediaWiki\Block;
 
-use CommentStoreComment;
-use IContextSource;
 use InvalidArgumentException;
+use MediaWiki\CommentStore\CommentStoreComment;
+use MediaWiki\DAO\WikiAwareEntityTrait;
+use MediaWiki\MainConfigNames;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Message\Message;
+use MediaWiki\Title\Title;
 use MediaWiki\User\UserIdentity;
-use Message;
-use RequestContext;
-use Title;
-use User;
-use Wikimedia\IPUtils;
 
 /**
- * @note Extensions should not subclass this, as MediaWiki currently does not support custom block types.
+ * @note Extensions should not subclass this, as MediaWiki currently does not
+ *   support custom block types.
  * @since 1.34 Factored out from DatabaseBlock (previously Block).
  */
-abstract class AbstractBlock {
-	/**
-	 * @deprecated since 1.34. Use getReasonComment and setReason instead.
-	 *  Internally, use $reason.
-	 */
-	protected $mReason;
+abstract class AbstractBlock implements Block {
+	use WikiAwareEntityTrait;
 
 	/** @var CommentStoreComment */
 	protected $reason;
 
-	/**
-	 * @deprecated since 1.34. Use getTimestamp and setTimestamp instead.
-	 * @var string
-	 */
-	public $mTimestamp;
+	/** @var string */
+	protected $timestamp = '';
 
-	/**
-	 * @deprecated since 1.34. Use getExpiry and setExpiry instead.
-	 * @var string
-	 */
-	public $mExpiry = '';
+	/** @var string */
+	protected $expiry = '';
 
 	/** @var bool */
-	protected $mBlockEmail = false;
+	protected $blockEmail = false;
 
 	/** @var bool */
 	protected $allowUsertalk = false;
@@ -66,13 +55,13 @@ abstract class AbstractBlock {
 	/** @var bool */
 	protected $blockCreateAccount = false;
 
-	/**
-	 * @deprecated since 1.34. Use getHideName and setHideName instead.
-	 * @var bool
-	 */
-	public $mHideName = false;
+	/** @var bool */
+	protected $hideName = false;
 
-	/** @var User|string|null */
+	/** @var bool */
+	protected $isHardblock;
+
+	/** @var UserIdentity|string|null */
 	protected $target;
 
 	/**
@@ -84,45 +73,57 @@ abstract class AbstractBlock {
 	/** @var bool */
 	protected $isSitewide = true;
 
-	# TYPE constants
-	public const TYPE_USER = 1;
-	public const TYPE_IP = 2;
-	public const TYPE_RANGE = 3;
-	public const TYPE_AUTO = 4;
-	public const TYPE_ID = 5;
+	/** @var string|false */
+	protected $wikiId;
 
 	/**
 	 * Create a new block with specified parameters on a user, IP or IP range.
 	 *
 	 * @param array $options Parameters of the block, with supported options:
-	 *  - address: (string|User) Target user name, User object, IP address or IP range
+	 *  - address: (string|UserIdentity) Target user name, user identity object,
+	 *    IP address or IP range
+	 *  - wiki: (string|false) The wiki the block has been issued in,
+	 *    self::LOCAL for the local wiki (since 1.38)
 	 *  - reason: (string|Message|CommentStoreComment) Reason for the block
-	 *  - timestamp: (string) The time at which the block comes into effect
+	 *  - timestamp: (string) The time at which the block comes into effect,
+	 *    in any format supported by wfTimestamp()
+	 *  - decodedTimestamp: (string) The timestamp in MW 14-character format
 	 *  - hideName: (bool) Hide the target user name
+	 *  - anonOnly: (bool) Used if the target is an IP address. The block only
+	 *    applies to anon and temporary users using this IP address, and not to
+	 *    logged-in users.
 	 */
 	public function __construct( array $options = [] ) {
 		$defaults = [
 			'address'         => '',
+			'wiki'            => self::LOCAL,
 			'reason'          => '',
 			'timestamp'       => '',
 			'hideName'        => false,
+			'anonOnly'        => false,
 		];
 
 		$options += $defaults;
 
+		$this->wikiId = $options['wiki'];
 		$this->setTarget( $options['address'] );
-
 		$this->setReason( $options['reason'] );
-		$this->setTimestamp( wfTimestamp( TS_MW, $options['timestamp'] ) );
+		if ( isset( $options['decodedTimestamp'] ) ) {
+			$this->setTimestamp( $options['decodedTimestamp'] );
+		} else {
+			$this->setTimestamp( wfTimestamp( TS_MW, $options['timestamp'] ) );
+		}
 		$this->setHideName( (bool)$options['hideName'] );
+		$this->isHardblock( !$options['anonOnly'] );
 	}
 
 	/**
 	 * Get the user id of the blocking sysop
 	 *
+	 * @param string|false $wikiId (since 1.38)
 	 * @return int (0 for foreign users)
 	 */
-	abstract public function getBy();
+	abstract public function getBy( $wikiId = self::LOCAL ): int;
 
 	/**
 	 * Get the username of the blocking sysop
@@ -132,35 +133,11 @@ abstract class AbstractBlock {
 	abstract public function getByName();
 
 	/**
-	 * Get the block ID
-	 * @return int|null
+	 * @inheritDoc
 	 */
-	public function getId() {
+	public function getId( $wikiId = self::LOCAL ): ?int {
+		$this->assertWiki( $wikiId );
 		return null;
-	}
-
-	/**
-	 * Get the information that identifies this block, such that a user could
-	 * look up everything that can be found about this block. May be an ID,
-	 * array of IDs, type, etc.
-	 *
-	 * @return mixed Identifying information
-	 */
-	abstract public function getIdentifier();
-
-	/**
-	 * Get the reason given for creating the block, as a string.
-	 *
-	 * Deprecated, since this gives the caller no control over the language
-	 * or format, and no access to the comment's data.
-	 *
-	 * @deprecated since 1.35. Use getReasonComment instead.
-	 * @since 1.33
-	 * @return string
-	 */
-	public function getReason() {
-		$language = RequestContext::getMain()->getLanguage();
-		return $this->reason->message->inLanguage( $language )->plain();
 	}
 
 	/**
@@ -169,7 +146,7 @@ abstract class AbstractBlock {
 	 * @since 1.35
 	 * @return CommentStoreComment
 	 */
-	public function getReasonComment() {
+	public function getReasonComment(): CommentStoreComment {
 		return $this->reason;
 	}
 
@@ -190,17 +167,17 @@ abstract class AbstractBlock {
 	 * @return bool The block hides the username
 	 */
 	public function getHideName() {
-		return $this->mHideName;
+		return $this->hideName;
 	}
 
 	/**
-	 * Set whether ths block hides the target's username
+	 * Set whether the block hides the target's username
 	 *
 	 * @since 1.33
 	 * @param bool $hideName The block hides the username
 	 */
 	public function setHideName( $hideName ) {
-		$this->mHideName = $hideName;
+		$this->hideName = $hideName;
 	}
 
 	/**
@@ -212,7 +189,7 @@ abstract class AbstractBlock {
 	 * @param null|bool $x
 	 * @return bool
 	 */
-	public function isSitewide( $x = null ) {
+	public function isSitewide( $x = null ): bool {
 		return wfSetVar( $this->isSitewide, $x );
 	}
 
@@ -225,7 +202,7 @@ abstract class AbstractBlock {
 	 * @param null|bool $x Value to set (if null, just get the property value)
 	 * @return bool Value of the property
 	 */
-	public function isCreateAccountBlocked( $x = null ) {
+	public function isCreateAccountBlocked( $x = null ): bool {
 		return wfSetVar( $this->blockCreateAccount, $x );
 	}
 
@@ -239,7 +216,7 @@ abstract class AbstractBlock {
 	 * @return bool Value of the property
 	 */
 	public function isEmailBlocked( $x = null ) {
-		return wfSetVar( $this->mBlockEmail, $x );
+		return wfSetVar( $this->blockEmail, $x );
 	}
 
 	/**
@@ -256,10 +233,32 @@ abstract class AbstractBlock {
 	}
 
 	/**
-	 * Determine whether the block prevents a given right. A right
-	 * may be blacklisted or whitelisted, or determined from a
-	 * property on the block object. For certain rights, the property
-	 * may be overridden according to global configs.
+	 * Get/set whether the block is a hard block (affects logged-in users on a
+	 * given IP/range).
+	 *
+	 * Note that temporary users are not considered logged-in here - they are
+	 * always blocked by IP-address blocks.
+	 *
+	 * Note that user blocks are always hard blocks, since the target is logged
+	 * in by definition.
+	 *
+	 * @since 1.36 Moved up from DatabaseBlock
+	 * @param bool|null $x
+	 * @return bool
+	 */
+	public function isHardblock( $x = null ): bool {
+		wfSetVar( $this->isHardblock, $x );
+
+		return $this->getType() == self::TYPE_USER
+			? true
+			: $this->isHardblock;
+	}
+
+	/**
+	 * Determine whether the block prevents a given right. A right may be
+	 * allowed or disallowed by default, or determined from a property on the
+	 * block object. For certain rights, the property may be overridden
+	 * according to global configs.
 	 *
 	 * @since 1.33
 	 * @param string $right
@@ -267,15 +266,12 @@ abstract class AbstractBlock {
 	 *  unsure (e.g. unrecognized right or unset property)
 	 */
 	public function appliesToRight( $right ) {
-		$config = RequestContext::getMain()->getConfig();
-		$blockDisablesLogin = $config->get( 'BlockDisablesLogin' );
+		$blockDisablesLogin = MediaWikiServices::getInstance()->getMainConfig()
+			->get( MainConfigNames::BlockDisablesLogin );
 
 		$res = null;
 		switch ( $right ) {
-			case 'edit':
-				// TODO: fix this case to return proper value
-				$res = true;
-				break;
+			case 'autocreateaccount':
 			case 'createaccount':
 				$res = $this->isCreateAccountBlocked();
 				break;
@@ -283,13 +279,10 @@ abstract class AbstractBlock {
 				$res = $this->isEmailBlocked();
 				break;
 			case 'upload':
-				// Until T6995 is completed
+				// Sitewide blocks always block upload. This may be overridden in a subclass.
 				$res = $this->isSitewide();
 				break;
 			case 'read':
-				$res = false;
-				break;
-			case 'purge':
 				$res = false;
 				break;
 		}
@@ -297,7 +290,7 @@ abstract class AbstractBlock {
 			// If a block would disable login, then it should
 			// prevent any right that all users cannot do
 			$permissionManager = MediaWikiServices::getInstance()->getPermissionManager();
-			$anon = new User;
+			$anon = MediaWikiServices::getInstance()->getUserFactory()->newAnonymous();
 			$res = $permissionManager->userHasRight( $anon, $right ) ? $res : true;
 		}
 
@@ -305,159 +298,43 @@ abstract class AbstractBlock {
 	}
 
 	/**
-	 * Get/set whether the block prevents a given action
-	 *
-	 * @deprecated since 1.33, use appliesToRight to determine block
-	 *  behaviour, and specific methods to get/set properties
-	 * @param string $action Action to check
-	 * @param bool|null $x Value for set, or null to just get value
-	 * @return bool|null Null for unrecognized rights.
-	 */
-	public function prevents( $action, $x = null ) {
-		wfDeprecated( __METHOD__, '1.33' );
-		$config = RequestContext::getMain()->getConfig();
-		$blockDisablesLogin = $config->get( 'BlockDisablesLogin' );
-		$blockAllowsUTEdit = $config->get( 'BlockAllowsUTEdit' );
-
-		$res = null;
-		switch ( $action ) {
-			case 'edit':
-				# For now... <evil laugh>
-				$res = true;
-				break;
-			case 'createaccount':
-				$res = wfSetVar( $this->blockCreateAccount, $x );
-				break;
-			case 'sendemail':
-				$res = wfSetVar( $this->mBlockEmail, $x );
-				break;
-			case 'upload':
-				// Until T6995 is completed
-				$res = $this->isSitewide();
-				break;
-			case 'editownusertalk':
-				// NOTE: this check is not reliable on partial blocks
-				// since partially blocked users are always allowed to edit
-				// their own talk page unless a restriction exists on the
-				// page or User_talk: namespace
-				wfSetVar( $this->allowUsertalk, $x === null ? null : !$x );
-				$res = !$this->isUsertalkEditAllowed();
-
-				// edit own user talk can be disabled by config
-				if ( !$blockAllowsUTEdit ) {
-					$res = true;
-				}
-				break;
-			case 'read':
-				$res = false;
-				break;
-			case 'purge':
-				$res = false;
-				break;
-		}
-		if ( !$res && $blockDisablesLogin ) {
-			// If a block would disable login, then it should
-			// prevent any action that all users cannot do
-			$permissionManager = MediaWikiServices::getInstance()->getPermissionManager();
-			$anon = new User;
-			$res = $permissionManager->userHasRight( $anon, $action ) ? $res : true;
-		}
-
-		return $res;
-	}
-
-	/**
-	 * From an existing block, get the target and the type of target.
-	 * Note that, except for null, it is always safe to treat the target
-	 * as a string; for User objects this will return User::__toString()
-	 * which in turn gives User::getName().
-	 *
-	 * If the type is not null, it will be an AbstractBlock::TYPE_ constant.
-	 *
-	 * @param string|UserIdentity|null $target
-	 * @return array [ User|String|null, int|null ]
-	 */
-	public static function parseTarget( $target ) {
-		# We may have been through this before
-		if ( $target instanceof UserIdentity ) {
-			$userObj = User::newFromIdentity( $target );
-			if ( IPUtils::isValid( $target->getName() ) ) {
-				return [ $userObj, self::TYPE_IP ];
-			} else {
-				return [ $userObj, self::TYPE_USER ];
-			}
-		} elseif ( $target === null ) {
-			return [ null, null ];
-		}
-
-		$target = trim( $target );
-
-		if ( IPUtils::isValid( $target ) ) {
-			# We can still create a User if it's an IP address, but we need to turn
-			# off validation checking (which would exclude IP addresses)
-			return [
-				User::newFromName( IPUtils::sanitizeIP( $target ), false ),
-				self::TYPE_IP
-			];
-
-		} elseif ( IPUtils::isValidRange( $target ) ) {
-			# Can't create a User from an IP range
-			return [ IPUtils::sanitizeRange( $target ), self::TYPE_RANGE ];
-		}
-
-		# Consider the possibility that this is not a username at all
-		# but actually an old subpage (T31797)
-		if ( strpos( $target, '/' ) !== false ) {
-			# An old subpage, drill down to the user behind it
-			$target = explode( '/', $target )[0];
-		}
-
-		$userObj = User::newFromName( $target );
-		if ( $userObj instanceof User ) {
-			# Note that since numbers are valid usernames, a $target of "12345" will be
-			# considered a User.  If you want to pass a block ID, prepend a hash "#12345",
-			# since hash characters are not valid in usernames or titles generally.
-			return [ $userObj, self::TYPE_USER ];
-
-		} elseif ( preg_match( '/^#\d+$/', $target ) ) {
-			# Autoblock reference in the form "#12345"
-			return [ substr( $target, 1 ), self::TYPE_AUTO ];
-
-		} else {
-			return [ null, null ];
-		}
-	}
-
-	/**
 	 * Get the type of target for this particular block.
 	 * @return int|null AbstractBlock::TYPE_ constant, will never be TYPE_ID
 	 */
-	public function getType() {
+	public function getType(): ?int {
 		return $this->type;
 	}
 
 	/**
-	 * Get the target and target type for this particular block. Note that for autoblocks,
-	 * this returns the unredacted name; frontend functions need to call $block->getRedactedName()
-	 * in this situation.
-	 *
-	 * If the type is not null, it will be an AbstractBlock::TYPE_ constant.
-	 *
-	 * @return array [ User|String|null, int|null ]
-	 * @todo FIXME: This should be an integral part of the block member variables
+	 * @since 1.37
+	 * @return ?UserIdentity
 	 */
-	public function getTargetAndType() {
-		return [ $this->getTarget(), $this->getType() ];
+	public function getTargetUserIdentity(): ?UserIdentity {
+		return $this->target instanceof UserIdentity ? $this->target : null;
 	}
 
 	/**
-	 * Get the target for this particular block.  Note that for autoblocks,
-	 * this returns the unredacted name; frontend functions need to call $block->getRedactedName()
-	 * in this situation.
-	 * @return User|string|null
+	 * @since 1.37
+	 * @return string
 	 */
-	public function getTarget() {
-		return $this->target;
+	public function getTargetName(): string {
+		return $this->target instanceof UserIdentity
+			? $this->target->getName()
+			: (string)$this->target;
+	}
+
+	/**
+	 * @param UserIdentity|string $target
+	 *
+	 * @return bool
+	 * @since 1.37
+	 */
+	public function isBlocking( $target ): bool {
+		$targetName = $target instanceof UserIdentity
+			? $target->getName()
+			: (string)$target;
+
+		return $targetName === $this->getTargetName();
 	}
 
 	/**
@@ -466,8 +343,8 @@ abstract class AbstractBlock {
 	 * @since 1.19
 	 * @return string
 	 */
-	public function getExpiry() {
-		return $this->mExpiry;
+	public function getExpiry(): string {
+		return $this->expiry;
 	}
 
 	/**
@@ -477,7 +354,8 @@ abstract class AbstractBlock {
 	 * @param string $expiry
 	 */
 	public function setExpiry( $expiry ) {
-		$this->mExpiry = $expiry;
+		// Force string so getExpiry() return typehint doesn't break things
+		$this->expiry = (string)$expiry;
 	}
 
 	/**
@@ -486,8 +364,8 @@ abstract class AbstractBlock {
 	 * @since 1.33
 	 * @return string
 	 */
-	public function getTimestamp() {
-		return $this->mTimestamp;
+	public function getTimestamp(): string {
+		return $this->timestamp;
 	}
 
 	/**
@@ -497,74 +375,37 @@ abstract class AbstractBlock {
 	 * @param string $timestamp
 	 */
 	public function setTimestamp( $timestamp ) {
-		$this->mTimestamp = $timestamp;
+		// Force string so getTimestamp() return typehint doesn't break things
+		$this->timestamp = (string)$timestamp;
 	}
 
 	/**
 	 * Set the target for this block, and update $this->type accordingly
-	 * @param mixed $target
+	 * @param string|UserIdentity|null $target
 	 */
 	public function setTarget( $target ) {
-		list( $this->target, $this->type ) = static::parseTarget( $target );
+		// Small optimization to make this code testable, this is what would happen anyway
+		if ( $target === '' ) {
+			$this->target = null;
+			$this->type = null;
+		} else {
+			[ $parsedTarget, $this->type ] = MediaWikiServices::getInstance()
+				->getBlockUtilsFactory()
+				->getBlockUtils( $this->wikiId )
+				->parseBlockTarget( $target );
+			if ( $parsedTarget !== null ) {
+				$this->assertWiki( is_string( $parsedTarget ) ? self::LOCAL : $parsedTarget->getWikiId() );
+			}
+			$this->target = $parsedTarget;
+		}
 	}
 
 	/**
-	 * Get the user who implemented this block
-	 * @deprecated since 1.35. Use getBy/getByName instead
-	 * @return null User object or null. May name a foreign user.
+	 * @since 1.38
+	 * @return string|false
 	 */
-	public function getBlocker() {
-		wfDeprecated( __METHOD__, '1.35' );
-		return null;
-	}
-
-	/**
-	 * Set the user who implemented (or will implement) this block
-	 * @deprecated since 1.35. Moved to DatabaseBlock
-	 * @param User|string $user Local User object or username string
-	 */
-	public function setBlocker( $user ) {
-		wfDeprecated( __METHOD__, '1.35' );
-	}
-
-	/**
-	 * Get the key and parameters for the corresponding error message.
-	 *
-	 * @deprecated since 1.35 Use BlockErrorFormatter::getMessage instead, and
-	 *  build the array using Message::getKey and Message::getParams.
-	 * @since 1.22
-	 * @param IContextSource $context
-	 * @return array
-	 */
-	public function getPermissionsError( IContextSource $context ) {
-		$message = MediaWikiServices::getInstance()
-			->getBlockErrorFormatter()->getMessage(
-				$this,
-				$context->getUser(),
-				$context->getLanguage(),
-				$context->getRequest()->getIP()
-			);
-		return array_merge( [ [ $message->getKey() ], $message->getParams() ] );
-	}
-
-	/**
-	 * Get block information used in different block error messages
-	 *
-	 * @deprecated since 1.35 Use BlockErrorFormatter::getMessage instead, and
-	 *  extract the params from the Message object using Message::getParams.
-	 * @since 1.33
-	 * @param IContextSource $context
-	 * @return array
-	 */
-	public function getBlockErrorParams( IContextSource $context ) {
-		wfDeprecated( __METHOD__, '1.35' );
-		return MediaWikiServices::getInstance()
-			->getBlockErrorFormatter()->getMessage(
-				$this,
-				$context->getUser(),
-				$context->getLanguage(),
-				$context->getRequest()->getIP()
-			)->getParams();
+	public function getWikiId() {
+		return $this->wikiId;
 	}
 
 	/**
@@ -575,7 +416,7 @@ abstract class AbstractBlock {
 	 * page needs to be passed into the block object, which is unaware
 	 * of the user.
 	 *
-	 * The ipb_allow_usertalk flag (which corresponds to the property
+	 * The bl_allow_usertalk flag (which corresponds to the property
 	 * allowUsertalk) is used on sitewide blocks and partial blocks
 	 * that contain a namespace restriction on the user talk namespace,
 	 * but do not contain a page restriction on the user's talk page.
@@ -594,10 +435,13 @@ abstract class AbstractBlock {
 	 *  and if the target is a User, the target's userpage is used
 	 * @return bool The user can edit their talk page
 	 */
-	public function appliesToUsertalk( Title $usertalk = null ) {
+	public function appliesToUsertalk( ?Title $usertalk = null ) {
 		if ( !$usertalk ) {
-			if ( $this->target instanceof User ) {
-				$usertalk = $this->target->getTalkPage();
+			if ( $this->target instanceof UserIdentity ) {
+				$usertalk = Title::makeTitle(
+					NS_USER_TALK,
+					$this->target->getName()
+				);
 			} else {
 				throw new InvalidArgumentException(
 					'$usertalk must be provided if block target is not a user/IP'
@@ -620,10 +464,11 @@ abstract class AbstractBlock {
 			}
 		}
 
-		// This is a type of block which uses the ipb_allow_usertalk
+		// This is a type of block which uses the bl_allow_usertalk
 		// flag. The flag can still be overridden by global configs.
-		$config = RequestContext::getMain()->getConfig();
-		if ( !$config->get( 'BlockAllowsUTEdit' ) ) {
+		if ( !MediaWikiServices::getInstance()->getMainConfig()
+			->get( MainConfigNames::BlockAllowsUTEdit )
+		) {
 			return true;
 		}
 		return !$this->isUsertalkEditAllowed();
@@ -634,7 +479,7 @@ abstract class AbstractBlock {
 	 *
 	 * This check does not consider whether `$this->isUsertalkEditAllowed`
 	 * returns false, as the identity of the user making the hypothetical edit
-	 * isn't known here (particularly in the case of IP hardblocks, range
+	 * isn't known here (particularly in the case of IP hard blocks, range
 	 * blocks, and auto-blocks).
 	 *
 	 * @param Title $title
@@ -661,7 +506,7 @@ abstract class AbstractBlock {
 	 *
 	 * This check does not consider whether `$this->isUsertalkEditAllowed`
 	 * returns false, as the identity of the user making the hypothetical edit
-	 * isn't known here (particularly in the case of IP hardblocks, range
+	 * isn't known here (particularly in the case of IP hard blocks, range
 	 * blocks, and auto-blocks).
 	 *
 	 * @since 1.33
@@ -674,20 +519,6 @@ abstract class AbstractBlock {
 	}
 
 	/**
-	 * Check if the block should be tracked with a cookie.
-	 *
-	 * @since 1.33
-	 * @deprecated since 1.34 Use BlockManager::trackBlockWithCookie instead
-	 *  of calling this directly.
-	 * @param bool $isAnon The user is logged out
-	 * @return bool The block should be tracked with a cookie
-	 */
-	public function shouldTrackWithCookie( $isAnon ) {
-		wfDeprecated( __METHOD__, '1.34' );
-		return false;
-	}
-
-	/**
 	 * Check if the block prevents a user from resetting their password
 	 *
 	 * @since 1.33
@@ -695,6 +526,13 @@ abstract class AbstractBlock {
 	 */
 	public function appliesToPasswordReset() {
 		return $this->isCreateAccountBlocked();
+	}
+
+	/**
+	 * @return AbstractBlock[]
+	 */
+	public function toArray(): array {
+		return [ $this ];
 	}
 
 }

@@ -1,9 +1,11 @@
 <?php
+declare( strict_types = 1 );
 
 namespace Wikimedia\Parsoid\Language;
 
 use Wikimedia\LangConv\ZhReplacementMachine;
 
+/* @note: Use of this class is currently disabled in production, see T346657 */
 class ZhConverter extends LanguageConverter {
 
 	public function loadDefaultTables() {

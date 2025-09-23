@@ -6,12 +6,15 @@
  */
 
 /**
- * Confirm dialog shown when the users is leaving an editor without saving
+ * @classdesc Confirm dialog shown when the user is leaving an editor without saving.
+ *
+ * The `useeditwarning` user option should be checked before showing this dialog.
  *
  * @class
  * @extends OO.ui.MessageDialog
  *
  * @constructor
+ * @description Create an instance of `mw.widgets.AbandonEditDialog`.
  * @param {Object} [config] Configuration options
  */
 mw.widgets.AbandonEditDialog = function VeUiAbandonEditDialog( config ) {

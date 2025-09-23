@@ -1,7 +1,5 @@
 <?php
 /**
- * Implements Special:Newimages
- *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -18,11 +16,29 @@
  * http://www.gnu.org/copyleft/gpl.html
  *
  * @file
- * @ingroup SpecialPage
  */
 
-use MediaWiki\MediaWikiServices;
+namespace MediaWiki\Specials;
 
+use MediaWiki\Cache\LinkBatchFactory;
+use MediaWiki\Context\DerivativeContext;
+use MediaWiki\Context\IContextSource;
+use MediaWiki\Html\FormOptions;
+use MediaWiki\Html\Html;
+use MediaWiki\HTMLForm\Field\HTMLUserTextField;
+use MediaWiki\HTMLForm\HTMLForm;
+use MediaWiki\Pager\NewFilesPager;
+use MediaWiki\Permissions\GroupPermissionsLookup;
+use MediaWiki\Request\DerivativeRequest;
+use MediaWiki\SpecialPage\IncludableSpecialPage;
+use Wikimedia\Mime\MimeAnalyzer;
+use Wikimedia\Rdbms\IConnectionProvider;
+
+/**
+ * Implements Special:Newimages
+ *
+ * @ingroup SpecialPage
+ */
 class SpecialNewFiles extends IncludableSpecialPage {
 	/** @var FormOptions */
 	protected $opts;
@@ -30,8 +46,27 @@ class SpecialNewFiles extends IncludableSpecialPage {
 	/** @var string[] */
 	protected $mediaTypes;
 
-	public function __construct() {
+	private GroupPermissionsLookup $groupPermissionsLookup;
+	private IConnectionProvider $dbProvider;
+	private LinkBatchFactory $linkBatchFactory;
+
+	/**
+	 * @param MimeAnalyzer $mimeAnalyzer
+	 * @param GroupPermissionsLookup $groupPermissionsLookup
+	 * @param IConnectionProvider $dbProvider
+	 * @param LinkBatchFactory $linkBatchFactory
+	 */
+	public function __construct(
+		MimeAnalyzer $mimeAnalyzer,
+		GroupPermissionsLookup $groupPermissionsLookup,
+		IConnectionProvider $dbProvider,
+		LinkBatchFactory $linkBatchFactory
+	) {
 		parent::__construct( 'Newimages' );
+		$this->groupPermissionsLookup = $groupPermissionsLookup;
+		$this->dbProvider = $dbProvider;
+		$this->mediaTypes = $mimeAnalyzer->getMediaTypes();
+		$this->linkBatchFactory = $linkBatchFactory;
 	}
 
 	public function execute( $par ) {
@@ -39,15 +74,12 @@ class SpecialNewFiles extends IncludableSpecialPage {
 
 		$this->setHeaders();
 		$this->outputHeader();
-		$mimeAnalyzer = MediaWiki\MediaWikiServices::getInstance()->getMimeAnalyzer();
-		$this->mediaTypes = $mimeAnalyzer->getMediaTypes();
 
 		$out = $this->getOutput();
 		$this->addHelpLink( 'Help:New images' );
 
 		$opts = new FormOptions();
 
-		$opts->add( 'like', '' );
 		$opts->add( 'user', '' );
 		$opts->add( 'showbots', false );
 		$opts->add( 'hidepatrolled', false );
@@ -60,7 +92,7 @@ class SpecialNewFiles extends IncludableSpecialPage {
 		$opts->fetchValuesFromRequest( $this->getRequest() );
 
 		if ( $par !== null ) {
-			$opts->setValue( is_numeric( $par ) ? 'limit' : 'like', $par );
+			$opts->setValue( 'limit', $par );
 		}
 
 		// If start date comes after end date chronologically, swap them.
@@ -85,13 +117,17 @@ class SpecialNewFiles extends IncludableSpecialPage {
 			) );
 		}
 
-		// if all media types have been selected, wipe out the array to prevent
-		// the pointless IN(...) query condition (which would have no effect
-		// because every possible type has been selected)
-		$missingMediaTypes = array_diff( $this->mediaTypes, $opts->getValue( 'mediatype' ) );
-		if ( empty( $missingMediaTypes ) ) {
-			$opts->setValue( 'mediatype', [] );
+		// Avoid unexpected query or query errors to assoc array input, or nested arrays via
+		// URL query params. Keep only string values (T321133).
+		$mediaTypes = $opts->getValue( 'mediatype' );
+		$mediaTypes = array_filter( $mediaTypes, 'is_string' );
+		// Avoid unbounded query size with bogus values. Keep only known types.
+		$mediaTypes = array_values( array_intersect( $this->mediaTypes, $mediaTypes ) );
+		// Optimization: Remove redundant IN() query condition if all types are checked.
+		if ( !array_diff( $this->mediaTypes, $mediaTypes ) ) {
+			$mediaTypes = [];
 		}
+		$opts->setValue( 'mediatype', $mediaTypes );
 
 		$opts->validateIntBounds( 'limit', 0, 500 );
 
@@ -102,7 +138,14 @@ class SpecialNewFiles extends IncludableSpecialPage {
 			$this->buildForm( $context );
 		}
 
-		$pager = new NewFilesPager( $context, $opts, $this->getLinkRenderer() );
+		$pager = new NewFilesPager(
+			$context,
+			$this->groupPermissionsLookup,
+			$this->linkBatchFactory,
+			$this->getLinkRenderer(),
+			$this->dbProvider,
+			$opts
+		);
 
 		$out->addHTML( $pager->getBody() );
 		if ( !$this->including() ) {
@@ -124,14 +167,8 @@ class SpecialNewFiles extends IncludableSpecialPage {
 		ksort( $mediaTypesOptions );
 
 		$formDescriptor = [
-			'like' => [
-				'type' => 'text',
-				'label-message' => 'newimages-label',
-				'name' => 'like',
-			],
-
 			'user' => [
-				'class' => 'HTMLUserTextField',
+				'class' => HTMLUserTextField::class,
 				'label-message' => 'newimages-user',
 				'name' => 'user',
 			],
@@ -182,10 +219,6 @@ class SpecialNewFiles extends IncludableSpecialPage {
 			],
 		];
 
-		if ( $this->getConfig()->get( 'MiserMode' ) ) {
-			unset( $formDescriptor['like'] );
-		}
-
 		if ( !$this->getUser()->useFilePatrol() ) {
 			unset( $formDescriptor['hidepatrolled'] );
 		}
@@ -210,11 +243,10 @@ class SpecialNewFiles extends IncludableSpecialPage {
 	public function setTopText() {
 		$message = $this->msg( 'newimagestext' )->inContentLanguage();
 		if ( !$message->isDisabled() ) {
-			$contLang = MediaWikiServices::getInstance()->getContentLanguage();
+			$contLang = $this->getContentLanguage();
 			$this->getOutput()->addWikiTextAsContent(
 				Html::rawElement( 'div',
 					[
-
 						'lang' => $contLang->getHtmlCode(),
 						'dir' => $contLang->getDir()
 					],
@@ -224,3 +256,9 @@ class SpecialNewFiles extends IncludableSpecialPage {
 		}
 	}
 }
+
+/**
+ * Retain the old class name for backwards compatibility.
+ * @deprecated since 1.41
+ */
+class_alias( SpecialNewFiles::class, 'SpecialNewFiles' );

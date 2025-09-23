@@ -20,7 +20,8 @@
  */
 
 use MediaWiki\MediaWikiServices;
-use MediaWiki\Revision\RevisionFactory;
+use MediaWiki\SpecialPage\SpecialPage;
+use Wikimedia\Rdbms\IDBAccessObject;
 
 /**
  * Item class for a archive table row
@@ -31,9 +32,9 @@ class RevDelArchiveItem extends RevDelRevisionItem {
 			->getRevisionFactory()
 			->newRevisionFromArchiveRow(
 				$row,
-				RevisionFactory::READ_NORMAL,
+				IDBAccessObject::READ_NORMAL,
 				null,
-				[ 'page_id' => $list->title->getArticleID() ]
+				[ 'page_id' => $list->getPage()->getId() ]
 			);
 
 		return $revRecord;
@@ -65,18 +66,19 @@ class RevDelArchiveItem extends RevDelRevisionItem {
 	}
 
 	public function setBits( $bits ) {
-		$dbw = wfGetDB( DB_MASTER );
-		$dbw->update( 'archive',
-			[ 'ar_deleted' => $bits ],
-			[
-				'ar_namespace' => $this->list->title->getNamespace(),
-				'ar_title' => $this->list->title->getDBkey(),
+		$dbw = MediaWikiServices::getInstance()->getConnectionProvider()->getPrimaryDatabase();
+		$dbw->newUpdateQueryBuilder()
+			->update( 'archive' )
+			->set( [ 'ar_deleted' => $bits ] )
+			->where( [
+				'ar_namespace' => $this->list->getPage()->getNamespace(),
+				'ar_title' => $this->list->getPage()->getDBkey(),
 				// use timestamp for index
 				'ar_timestamp' => $this->row->ar_timestamp,
 				'ar_rev_id' => $this->row->ar_rev_id,
 				'ar_deleted' => $this->getBits()
-			],
-			__METHOD__ );
+			] )
+			->caller( __METHOD__ )->execute();
 
 		return (bool)$dbw->affectedRows();
 	}
@@ -94,7 +96,7 @@ class RevDelArchiveItem extends RevDelRevisionItem {
 			$date,
 			[],
 			[
-				'target' => $this->list->title->getPrefixedText(),
+				'target' => $this->list->getPageName(),
 				'timestamp' => $this->revisionRecord->getTimestamp()
 			]
 		);
@@ -110,7 +112,7 @@ class RevDelArchiveItem extends RevDelRevisionItem {
 			$this->list->msg( 'diff' )->text(),
 			[],
 			[
-				'target' => $this->list->title->getPrefixedText(),
+				'target' => $this->list->getPageName(),
 				'diff' => 'prev',
 				'timestamp' => $this->revisionRecord->getTimestamp()
 			]

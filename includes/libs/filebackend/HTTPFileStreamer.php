@@ -20,6 +20,9 @@
  * @file
  */
 
+namespace Wikimedia\FileBackend;
+
+use HttpStatus;
 use Wikimedia\AtEase\AtEase;
 use Wikimedia\Timestamp\ConvertibleTimestamp;
 
@@ -35,8 +38,10 @@ class HTTPFileStreamer {
 	protected $obResetFunc;
 	/** @var callable */
 	protected $streamMimeFunc;
+	/** @var callable */
+	protected $headerFunc;
 
-	// Do not send any HTTP headers unless requested by caller (e.g. body only)
+	// Do not send any HTTP headers (i.e. body only)
 	public const STREAM_HEADLESS = 1;
 	// Do not try to tear down any PHP output buffers
 	public const STREAM_ALLOW_OB = 2;
@@ -67,11 +72,18 @@ class HTTPFileStreamer {
 	 * @param array $params Options map, which includes:
 	 *   - obResetFunc : alternative callback to clear the output buffer
 	 *   - streamMimeFunc : alternative method to determine the content type from the path
+	 *   - headerFunc : alternative method for sending response headers
 	 */
 	public function __construct( $path, array $params = [] ) {
 		$this->path = $path;
-		$this->obResetFunc = $params['obResetFunc'] ?? [ __CLASS__, 'resetOutputBuffers' ];
-		$this->streamMimeFunc = $params['streamMimeFunc'] ?? [ __CLASS__, 'contentTypeFromPath' ];
+
+		$this->obResetFunc = $params['obResetFunc'] ??
+			[ __CLASS__, 'resetOutputBuffers' ];
+
+		$this->streamMimeFunc = $params['streamMimeFunc'] ??
+			[ __CLASS__, 'contentTypeFromPath' ];
+
+		$this->headerFunc = $params['headerFunc'] ?? 'header';
 	}
 
 	/**
@@ -88,19 +100,19 @@ class HTTPFileStreamer {
 	public function stream(
 		$headers = [], $sendErrors = true, $optHeaders = [], $flags = 0
 	) {
+		$headless = ( $flags & self::STREAM_HEADLESS );
+
 		// Don't stream it out as text/html if there was a PHP error
-		if ( ( ( $flags & self::STREAM_HEADLESS ) == 0 || $headers ) && headers_sent() ) {
+		if ( $headers && headers_sent() ) {
 			echo "Headers already sent, terminating.\n";
 			return false;
 		}
 
-		$headerFunc = ( $flags & self::STREAM_HEADLESS )
-			? function ( $header ) {
+		$headerFunc = $headless
+			? static function ( $header ) {
 				// no-op
 			}
-			: function ( $header ) {
-				is_int( $header ) ? HttpStatus::header( $header ) : header( $header );
-			};
+			: [ $this, 'header' ];
 
 		AtEase::suppressWarnings();
 		$info = stat( $this->path );
@@ -144,7 +156,7 @@ class HTTPFileStreamer {
 
 		// Send additional headers
 		foreach ( $headers as $header ) {
-			header( $header ); // always use header(); specifically requested
+			$headerFunc( $header );
 		}
 
 		if ( isset( $optHeaders['range'] ) ) {
@@ -227,15 +239,15 @@ class HTTPFileStreamer {
 	public static function parseRange( $range, $size ) {
 		$m = [];
 		if ( preg_match( '#^bytes=(\d*)-(\d*)$#', $range, $m ) ) {
-			list( , $start, $end ) = $m;
+			[ , $start, $end ] = $m;
 			if ( $start === '' && $end === '' ) {
 				$absRange = [ 0, $size - 1 ];
 			} elseif ( $start === '' ) {
-				$absRange = [ $size - $end, $size - 1 ];
+				$absRange = [ $size - (int)$end, $size - 1 ];
 			} elseif ( $end === '' ) {
-				$absRange = [ $start, $size - 1 ];
+				$absRange = [ (int)$start, $size - 1 ];
 			} else {
-				$absRange = [ $start, $end ];
+				$absRange = [ (int)$start, (int)$end ];
 			}
 			if ( $absRange[0] >= 0 && $absRange[1] >= $absRange[0] ) {
 				if ( $absRange[0] < $size ) {
@@ -277,11 +289,24 @@ class HTTPFileStreamer {
 			case 'png':
 				return 'image/png';
 			case 'jpg':
-				return 'image/jpeg';
 			case 'jpeg':
 				return 'image/jpeg';
+			// T366422: Support webp here as well for consistency
+			case 'webp':
+				return 'image/webp';
 		}
 
 		return 'unknown/unknown';
 	}
+
+	private function header( $header ) {
+		if ( is_int( $header ) ) {
+			$header = HttpStatus::getHeader( $header );
+		}
+
+		( $this->headerFunc )( $header );
+	}
 }
+
+/** @deprecated class alias since 1.43 */
+class_alias( HTTPFileStreamer::class, 'HTTPFileStreamer' );

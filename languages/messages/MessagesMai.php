@@ -1,10 +1,8 @@
 <?php
 /** Maithili (मैथिली)
  *
- * To improve a translation please visit https://translatewiki.net
- *
- * @ingroup Language
  * @file
+ * @ingroup Languages
  *
  * @author Amire80
  * @author Ashishanchinhar

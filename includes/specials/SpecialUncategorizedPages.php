@@ -1,7 +1,5 @@
 <?php
 /**
- * Implements Special:Uncategorizedpages
- *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -18,24 +16,46 @@
  * http://www.gnu.org/copyleft/gpl.html
  *
  * @file
- * @ingroup SpecialPage
  */
 
-use MediaWiki\MediaWikiServices;
+namespace MediaWiki\Specials;
+
+use MediaWiki\Cache\LinkBatchFactory;
+use MediaWiki\Languages\LanguageConverterFactory;
+use MediaWiki\SpecialPage\PageQueryPage;
+use MediaWiki\Title\NamespaceInfo;
+use Wikimedia\Rdbms\IConnectionProvider;
 
 /**
- * A special page looking for page without any category.
+ * List of pages without any category.
+ *
+ * @todo FIXME: Make $requestedNamespace selectable, unify all subclasses into one
  *
  * @ingroup SpecialPage
- * @todo FIXME: Make $requestedNamespace selectable, unify all subclasses into one
  */
 class SpecialUncategorizedPages extends PageQueryPage {
 	/** @var int|false */
 	protected $requestedNamespace = false;
 
-	public function __construct( $name = 'Uncategorizedpages' ) {
-		parent::__construct( $name );
-		$this->addHelpLink( 'Help:Categories' );
+	private NamespaceInfo $namespaceInfo;
+
+	/**
+	 * @param NamespaceInfo $namespaceInfo
+	 * @param IConnectionProvider $dbProvider
+	 * @param LinkBatchFactory $linkBatchFactory
+	 * @param LanguageConverterFactory $languageConverterFactory
+	 */
+	public function __construct(
+		NamespaceInfo $namespaceInfo,
+		IConnectionProvider $dbProvider,
+		LinkBatchFactory $linkBatchFactory,
+		LanguageConverterFactory $languageConverterFactory
+	) {
+		parent::__construct( 'Uncategorizedpages' );
+		$this->namespaceInfo = $namespaceInfo;
+		$this->setDatabaseProvider( $dbProvider );
+		$this->setLinkBatchFactory( $linkBatchFactory );
+		$this->setLanguageConverter( $languageConverterFactory->getLanguageConverter( $this->getContentLanguage() ) );
 	}
 
 	protected function sortDescending() {
@@ -50,6 +70,11 @@ class SpecialUncategorizedPages extends PageQueryPage {
 		return false;
 	}
 
+	public function execute( $par ) {
+		$this->addHelpLink( 'Help:Categories' );
+		parent::execute( $par );
+	}
+
 	public function getQueryInfo() {
 		return [
 			'tables' => [ 'page', 'categorylinks' ],
@@ -60,11 +85,10 @@ class SpecialUncategorizedPages extends PageQueryPage {
 			// default for page_namespace is all content namespaces (if requestedNamespace is false)
 			// otherwise, page_namespace is requestedNamespace
 			'conds' => [
-				'cl_from IS NULL',
+				'cl_from' => null,
 				'page_namespace' => $this->requestedNamespace !== false
 						? $this->requestedNamespace
-						: MediaWikiServices::getInstance()->getNamespaceInfo()->
-							getContentNamespaces(),
+						: $this->namespaceInfo->getContentNamespaces(),
 				'page_is_redirect' => 0
 			],
 			'join_conds' => [
@@ -77,8 +101,7 @@ class SpecialUncategorizedPages extends PageQueryPage {
 		// For some crazy reason ordering by a constant
 		// causes a filesort
 		if ( $this->requestedNamespace === false &&
-			count( MediaWikiServices::getInstance()->getNamespaceInfo()->
-				getContentNamespaces() ) > 1
+			count( $this->namespaceInfo->getContentNamespaces() ) > 1
 		) {
 			return [ 'page_namespace', 'page_title' ];
 		}
@@ -90,3 +113,9 @@ class SpecialUncategorizedPages extends PageQueryPage {
 		return 'maintenance';
 	}
 }
+
+/**
+ * Retain the old class name for backwards compatibility.
+ * @deprecated since 1.41
+ */
+class_alias( SpecialUncategorizedPages::class, 'SpecialUncategorizedPages' );

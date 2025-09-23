@@ -2,22 +2,22 @@
 
 namespace MediaWiki\Rest\Handler;
 
-use MalformedTitleException;
 use MediaWiki\Languages\LanguageNameUtils;
-use MediaWiki\Permissions\PermissionManager;
+use MediaWiki\Page\ExistingPageRecord;
+use MediaWiki\Page\PageLookup;
+use MediaWiki\Rest\Handler\Helper\PageRedirectHelper;
+use MediaWiki\Rest\Handler\Helper\PageRestHelperFactory;
 use MediaWiki\Rest\LocalizedHttpException;
 use MediaWiki\Rest\Response;
 use MediaWiki\Rest\SimpleHandler;
-use RequestContext;
-use Title;
-use TitleFormatter;
-use TitleParser;
-use User;
+use MediaWiki\Title\MalformedTitleException;
+use MediaWiki\Title\TitleFormatter;
+use MediaWiki\Title\TitleParser;
 use Wikimedia\Message\MessageValue;
 use Wikimedia\Message\ParamType;
 use Wikimedia\Message\ScalarParam;
 use Wikimedia\ParamValidator\ParamValidator;
-use Wikimedia\Rdbms\ILoadBalancer;
+use Wikimedia\Rdbms\IConnectionProvider;
 
 /**
  * Class LanguageLinksHandler
@@ -27,61 +27,61 @@ use Wikimedia\Rdbms\ILoadBalancer;
  */
 class LanguageLinksHandler extends SimpleHandler {
 
-	/** @var ILoadBalancer */
-	private $loadBalancer;
-
-	/** @var LanguageNameUtils */
-	private $languageNameUtils;
-
-	/** @var PermissionManager */
-	private $permissionManager;
-
-	/** @var TitleFormatter */
-	private $titleFormatter;
-
-	/** @var TitleParser */
-	private $titleParser;
-
-	/** @var User */
-	private $user;
+	private IConnectionProvider $dbProvider;
+	private LanguageNameUtils $languageNameUtils;
+	private TitleFormatter $titleFormatter;
+	private TitleParser $titleParser;
+	private PageLookup $pageLookup;
+	private PageRestHelperFactory $helperFactory;
 
 	/**
-	 * @var Title|bool|null
+	 * @var ExistingPageRecord|false|null
 	 */
-	private $title = null;
+	private $page = false;
 
 	/**
-	 * @param ILoadBalancer $loadBalancer
+	 * @param IConnectionProvider $dbProvider
 	 * @param LanguageNameUtils $languageNameUtils
-	 * @param PermissionManager $permissionManager
 	 * @param TitleFormatter $titleFormatter
 	 * @param TitleParser $titleParser
+	 * @param PageLookup $pageLookup
+	 * @param PageRestHelperFactory $helperFactory
 	 */
 	public function __construct(
-		ILoadBalancer $loadBalancer,
+		IConnectionProvider $dbProvider,
 		LanguageNameUtils $languageNameUtils,
-		PermissionManager $permissionManager,
 		TitleFormatter $titleFormatter,
-		TitleParser $titleParser
+		TitleParser $titleParser,
+		PageLookup $pageLookup,
+		PageRestHelperFactory $helperFactory
 	) {
-		$this->loadBalancer = $loadBalancer;
+		$this->dbProvider = $dbProvider;
 		$this->languageNameUtils = $languageNameUtils;
-		$this->permissionManager = $permissionManager;
 		$this->titleFormatter = $titleFormatter;
 		$this->titleParser = $titleParser;
+		$this->pageLookup = $pageLookup;
+		$this->helperFactory = $helperFactory;
+	}
 
-		// @todo Inject this, when there is a good way to do that
-		$this->user = RequestContext::getMain()->getUser();
+	private function getRedirectHelper(): PageRedirectHelper {
+		return $this->helperFactory->newPageRedirectHelper(
+			$this->getResponseFactory(),
+			$this->getRouter(),
+			$this->getPath(),
+			$this->getRequest()
+		);
 	}
 
 	/**
-	 * @return Title|bool Title or false if unable to retrieve title
+	 * @return ExistingPageRecord|null
 	 */
-	private function getTitle() {
-		if ( $this->title === null ) {
-			$this->title = Title::newFromText( $this->getValidatedParams()['title'] ) ?? false;
+	private function getPage(): ?ExistingPageRecord {
+		if ( $this->page === false ) {
+			$this->page = $this->pageLookup->getExistingPageByText(
+					$this->getValidatedParams()['title']
+				);
 		}
-		return $this->title;
+		return $this->page;
 	}
 
 	/**
@@ -90,8 +90,10 @@ class LanguageLinksHandler extends SimpleHandler {
 	 * @throws LocalizedHttpException
 	 */
 	public function run( $title ) {
-		$titleObj = $this->getTitle();
-		if ( !$titleObj || !$titleObj->getArticleID() ) {
+		$page = $this->getPage();
+		$params = $this->getValidatedParams();
+
+		if ( !$page ) {
 			throw new LocalizedHttpException(
 				new MessageValue( 'rest-nonexistent-title',
 					[ new ScalarParam( ParamType::PLAINTEXT, $title ) ]
@@ -99,7 +101,18 @@ class LanguageLinksHandler extends SimpleHandler {
 				404
 			);
 		}
-		if ( !$this->permissionManager->userCan( 'read', $this->user, $titleObj ) ) {
+
+		'@phan-var \MediaWiki\Page\ExistingPageRecord $page';
+		$redirectResponse = $this->getRedirectHelper()->createNormalizationRedirectResponseIfNeeded(
+			$page,
+			$params['title'] ?? null
+		);
+
+		if ( $redirectResponse !== null ) {
+			return $redirectResponse;
+		}
+
+		if ( !$this->getAuthority()->authorizeRead( 'read', $page ) ) {
 			throw new LocalizedHttpException(
 				new MessageValue( 'rest-permission-denied-title',
 					[ new ScalarParam( ParamType::PLAINTEXT, $title ) ] ),
@@ -108,19 +121,17 @@ class LanguageLinksHandler extends SimpleHandler {
 		}
 
 		return $this->getResponseFactory()
-			->createJson( $this->fetchLinks( $titleObj->getArticleID() ) );
+			->createJson( $this->fetchLinks( $page->getId() ) );
 	}
 
 	private function fetchLinks( $pageId ) {
 		$result = [];
-		$res = $this->loadBalancer->getConnectionRef( DB_REPLICA )
-			->select(
-				'langlinks',
-				'*',
-				[ 'll_from' => $pageId ],
-				__METHOD__,
-				[ 'ORDER BY' => 'll_lang' ]
-			);
+		$res = $this->dbProvider->getReplicaDatabase()->newSelectQueryBuilder()
+			->select( [ 'll_title', 'll_lang' ] )
+			->from( 'langlinks' )
+			->where( [ 'll_from' => $pageId ] )
+			->orderBy( 'll_lang' )
+			->caller( __METHOD__ )->fetchResultSet();
 		foreach ( $res as $item ) {
 			try {
 				$targetTitle = $this->titleParser->parseTitle( $item->ll_title );
@@ -153,37 +164,30 @@ class LanguageLinksHandler extends SimpleHandler {
 
 	/**
 	 * @return string|null
-	 * @throws LocalizedHttpException
 	 */
 	protected function getETag(): ?string {
-		$title = $this->getTitle();
-		if ( !$title || !$title->getArticleID() ) {
+		$page = $this->getPage();
+		if ( !$page ) {
 			return null;
 		}
 
 		// XXX: use hash of the rendered HTML?
-		return '"' . $title->getLatestRevID() . '@' . wfTimestamp( TS_MW, $title->getTouched() ) . '"';
+		return '"' . $page->getLatest() . '@' . wfTimestamp( TS_MW, $page->getTouched() ) . '"';
 	}
 
 	/**
 	 * @return string|null
-	 * @throws LocalizedHttpException
 	 */
 	protected function getLastModified(): ?string {
-		$title = $this->getTitle();
-		if ( !$title || !$title->getArticleID() ) {
-			return null;
-		}
-
-		return $title->getTouched();
+		$page = $this->getPage();
+		return $page ? $page->getTouched() : null;
 	}
 
 	/**
 	 * @return bool
 	 */
 	protected function hasRepresentation() {
-		$title = $this->getTitle();
-		return $title ? $title->exists() : false;
+		return (bool)$this->getPage();
 	}
 
 }

@@ -23,7 +23,9 @@
  * @since 1.22
  */
 
-use MediaWiki\MediaWikiServices;
+use MediaWiki\Message\Message;
+use MediaWiki\SpecialPage\SpecialPage;
+use MediaWiki\Title\Title;
 
 /**
  * This class formats move log entries.
@@ -33,8 +35,15 @@ use MediaWiki\MediaWikiServices;
 class MoveLogFormatter extends LogFormatter {
 	public function getPreloadTitles() {
 		$params = $this->extractParameters();
+		$title = Title::newFromText( $params[3] );
 
-		return [ Title::newFromText( $params[3] ) ];
+		if ( $title !== null ) {
+			return [ $title ];
+		} else {
+			// namespace configuration may have changed to make $params[3] invalid (T370396);
+			// nothing to preload in this case
+			return [];
+		}
 	}
 
 	protected function getMessageKey() {
@@ -62,16 +71,14 @@ class MoveLogFormatter extends LogFormatter {
 	public function getActionLinks() {
 		if ( $this->entry->isDeleted( LogPage::DELETED_ACTION ) // Action is hidden
 			|| $this->entry->getSubtype() !== 'move'
-			|| !MediaWikiServices::getInstance()
-				->getPermissionManager()
-				->userHasRight( $this->context->getUser(), 'move' )
+			|| !$this->context->getAuthority()->isAllowed( 'move' )
 		) {
 			return '';
 		}
 
 		$params = $this->extractParameters();
 		$destTitle = Title::newFromText( $params[3] );
-		if ( !$destTitle ) {
+		if ( !$destTitle || !$destTitle->exists() ) {
 			return '';
 		}
 
@@ -82,7 +89,7 @@ class MoveLogFormatter extends LogFormatter {
 			[
 				'wpOldTitle' => $destTitle->getPrefixedDBkey(),
 				'wpNewTitle' => $this->entry->getTarget()->getPrefixedDBkey(),
-				'wpReason' => $this->msg( 'revertmove' )->inContentLanguage()->text(),
+				'wpReason' => $this->msg( 'revertmove-summary' )->inContentLanguage()->text(),
 				'wpMovetalk' => 0
 			]
 		);

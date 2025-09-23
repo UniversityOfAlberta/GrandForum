@@ -1,5 +1,7 @@
 <?php
 
+use MediaWiki\MediaWikiServices;
+
 class UserNamespaces {
 
 	/**
@@ -168,10 +170,10 @@ END;
 	static function getUserFromNamespace($nsName) {
 	  global $egAnnokiNamespaces, $egAnnokiTablePrefix;
 		$nsId = $egAnnokiNamespaces->getNsId($nsName);
-		$dbr = wfGetDB( DB_REPLICA );
-		$result = $dbr->select("${egAnnokiTablePrefix}extranamespaces", "nsUser", array("nsId" => $nsId) );
+		$dbr = MediaWikiServices::getInstance()->getConnectionProvider()->getReplicaDatabase();
+		$result = $dbr->select("{$egAnnokiTablePrefix}extranamespaces", "nsUser", array("nsId" => $nsId) );
 
-		$row = $dbr->fetchRow($result);
+		$row = $result->fetchRow();
 
 		if (!$row)
 			return null;

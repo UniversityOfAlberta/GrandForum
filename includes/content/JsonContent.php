@@ -8,9 +8,19 @@
  * @author Kunal Mehta <legoktm@gmail.com>
  */
 
+namespace MediaWiki\Content;
+
+use MediaWiki\Html\Html;
+use MediaWiki\Json\FormatJson;
+use MediaWiki\Status\Status;
+
 /**
- * Represents the content of a JSON content.
+ * JSON text content that can be viewed and edit directly by users.
+ *
  * @since 1.24
+ * @newable
+ * @stable to extend
+ * @ingroup Content
  */
 class JsonContent extends TextContent {
 
@@ -23,6 +33,7 @@ class JsonContent extends TextContent {
 	/**
 	 * @param string $text JSON
 	 * @param string $modelId
+	 * @stable to call
 	 */
 	public function __construct( $text, $modelId = CONTENT_MODEL_JSON ) {
 		parent::__construct( $text, $modelId );
@@ -37,9 +48,7 @@ class JsonContent extends TextContent {
 	 * @return Status
 	 */
 	public function getData() {
-		if ( $this->jsonParse === null ) {
-			$this->jsonParse = FormatJson::parse( $this->getText() );
-		}
+		$this->jsonParse ??= FormatJson::parse( $this->getText() );
 		return $this->jsonParse;
 	}
 
@@ -58,47 +67,7 @@ class JsonContent extends TextContent {
 	 * @return string
 	 */
 	public function beautifyJSON() {
-		return FormatJson::encode( $this->getData()->getValue(), true, FormatJson::UTF8_OK );
-	}
-
-	/**
-	 * Beautifies JSON prior to save.
-	 *
-	 * @param Title $title
-	 * @param User $user
-	 * @param ParserOptions $popts
-	 * @return JsonContent
-	 */
-	public function preSaveTransform( Title $title, User $user, ParserOptions $popts ) {
-		// FIXME: WikiPage::doEditContent invokes PST before validation. As such, native data
-		// may be invalid (though PST result is discarded later in that case).
-		if ( !$this->isValid() ) {
-			return $this;
-		}
-
-		return new static( self::normalizeLineEndings( $this->beautifyJSON() ) );
-	}
-
-	/**
-	 * Set the HTML and add the appropriate styles.
-	 *
-	 * @param Title $title
-	 * @param int $revId
-	 * @param ParserOptions $options
-	 * @param bool $generateHtml
-	 * @param ParserOutput &$output
-	 */
-	protected function fillParserOutput( Title $title, $revId,
-		ParserOptions $options, $generateHtml, ParserOutput &$output
-	) {
-		// FIXME: WikiPage::doEditContent generates parser output before validation.
-		// As such, native data may be invalid (though output is discarded later in that case).
-		if ( $generateHtml && $this->isValid() ) {
-			$output->setText( $this->rootValueTable( $this->getData()->getValue() ) );
-			$output->addModuleStyles( 'mediawiki.content.json' );
-		} else {
-			$output->setText( '' );
-		}
+		return FormatJson::encode( $this->getData()->getValue(), "\t", FormatJson::UTF8_OK );
 	}
 
 	/**
@@ -109,30 +78,32 @@ class JsonContent extends TextContent {
 	 * @param mixed $val
 	 * @return string HTML.
 	 */
-	protected function rootValueTable( $val ) {
+	public function rootValueTable( $val ) {
 		if ( is_object( $val ) ) {
-			return $this->objectTable( $val );
-		}
+			$table = $this->objectTable( $val );
 
-		if ( is_array( $val ) ) {
+		} elseif ( is_array( $val ) ) {
 			// Wrap arrays in another array so that they're visually boxed in a container.
 			// Otherwise they are visually indistinguishable from a single value.
-			return $this->arrayTable( [ $val ] );
+			$table = $this->arrayTable( [ $val ] );
+
+		} else {
+			$table = Html::rawElement( 'table', [ 'class' => 'mw-json mw-json-single-value' ],
+				Html::rawElement( 'tbody', [],
+					Html::rawElement( 'tr', [],
+						Html::element( 'td', [], $this->primitiveValue( $val ) )
+					)
+				)
+			);
 		}
 
-		return Html::rawElement( 'table', [ 'class' => 'mw-json mw-json-single-value' ],
-			Html::rawElement( 'tbody', [],
-				Html::rawElement( 'tr', [],
-					Html::element( 'td', [], $this->primitiveValue( $val ) )
-				)
-			)
-		);
+		return Html::rawElement( 'div', [ 'class' => 'noresize' ], $table );
 	}
 
 	/**
 	 * Create HTML table representing a JSON object.
 	 *
-	 * @param stdClass $mapping
+	 * @param \stdClass $mapping
 	 * @return string HTML
 	 */
 	protected function objectTable( $mapping ) {
@@ -239,3 +210,5 @@ class JsonContent extends TextContent {
 		return FormatJson::encode( $val );
 	}
 }
+/** @deprecated class alias since 1.43 */
+class_alias( JsonContent::class, 'JsonContent' );

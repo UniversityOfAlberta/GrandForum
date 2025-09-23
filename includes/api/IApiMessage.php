@@ -18,13 +18,17 @@
  * @file
  */
 
+namespace MediaWiki\Api;
+
+use Wikimedia\Message\MessageSpecifier;
+
 /**
  * Interface for messages with machine-readable data for use by the API
  *
  * The idea is that it's a Message that has some extra data for the API to use when interpreting it
  * as an error (or, in the future, as a warning). Internals of MediaWiki often use messages (or
  * message keys, or Status objects containing messages) to pass information about errors to the user
- * (see e.g. PermssionManager::getPermissionErrors()) and the API has to make do with that.
+ * (see e.g. PermissionManager::getPermissionErrors()) and the API has to make do with that.
  *
  * @since 1.25
  * @note This interface exists to work around PHP's inheritance, so ApiMessage
@@ -59,7 +63,7 @@ interface IApiMessage extends MessageSpecifier {
 	 * @param string|null $code If null, uses the default (see self::getApiCode())
 	 * @param array|null $data If non-null, passed to self::setApiData()
 	 */
-	public function setApiCode( $code, array $data = null );
+	public function setApiCode( $code, ?array $data = null );
 
 	/**
 	 * Sets additional machine-readable data about the error condition
@@ -67,3 +71,6 @@ interface IApiMessage extends MessageSpecifier {
 	 */
 	public function setApiData( array $data );
 }
+
+/** @deprecated class alias since 1.43 */
+class_alias( IApiMessage::class, 'IApiMessage' );

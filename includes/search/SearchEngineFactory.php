@@ -1,10 +1,8 @@
 <?php
 
 use MediaWiki\HookContainer\HookContainer;
-use MediaWiki\MediaWikiServices;
-use Wikimedia\ObjectFactory;
-use Wikimedia\Rdbms\IDatabase;
-use Wikimedia\Rdbms\ILoadBalancer;
+use Wikimedia\ObjectFactory\ObjectFactory;
+use Wikimedia\Rdbms\IConnectionProvider;
 
 /**
  * Factory class for SearchEngine.
@@ -20,9 +18,21 @@ class SearchEngineFactory {
 	/** @var HookContainer */
 	private $hookContainer;
 
-	public function __construct( SearchEngineConfig $config, HookContainer $hookContainer ) {
+	private IConnectionProvider $dbProvider;
+
+	/**
+	 * @param SearchEngineConfig $config
+	 * @param HookContainer $hookContainer
+	 * @param IConnectionProvider $dbProvider
+	 */
+	public function __construct(
+		SearchEngineConfig $config,
+		HookContainer $hookContainer,
+		IConnectionProvider $dbProvider
+	) {
 		$this->config = $config;
 		$this->hookContainer = $hookContainer;
+		$this->dbProvider = $dbProvider;
 	}
 
 	/**
@@ -35,45 +45,40 @@ class SearchEngineFactory {
 		$configuredClass = $this->config->getSearchType();
 		$alternativesClasses = $this->config->getSearchTypes();
 
-		$lb = MediaWikiServices::getInstance()->getDBLoadBalancer();
 		if ( $type !== null && in_array( $type, $alternativesClasses ) ) {
 			$class = $type;
 		} elseif ( $configuredClass !== null ) {
 			$class = $configuredClass;
 		} else {
-			$class = self::getSearchEngineClass( $lb );
+			$class = self::getSearchEngineClass( $this->dbProvider );
 		}
 
 		$mappings = $this->config->getSearchMappings();
 
-		if ( isset( $mappings[$class] ) ) {
-			$spec = $mappings[$class];
-		} else {
-			// Convert non mapped classes to ObjectFactory spec
-			$spec = [ 'class' => $class ];
-		}
+		// Convert non mapped classes to ObjectFactory spec
+		$spec = $mappings[$class] ?? [ 'class' => $class ];
 
 		$args = [];
 
 		if ( isset( $spec['class'] ) && is_subclass_of( $spec['class'], SearchDatabase::class ) ) {
-			$args['extraArgs'][] = $lb;
+			$args['extraArgs'][] = $this->dbProvider;
 		}
 
-		/** @var SearchEngine $engine */
+		// ObjectFactory::getObjectFromSpec accepts an array, not just a callable (phan bug)
+		// @phan-suppress-next-line PhanTypeInvalidCallableArraySize
 		$engine = ObjectFactory::getObjectFromSpec( $spec, $args );
+		/** @var SearchEngine $engine */
 		$engine->setHookContainer( $this->hookContainer );
 		return $engine;
 	}
 
 	/**
-	 * @param IDatabase|ILoadBalancer $dbOrLb
+	 * @param IConnectionProvider $dbProvider
 	 * @return string SearchEngine subclass name
 	 * @since 1.28
 	 */
-	public static function getSearchEngineClass( $dbOrLb ) {
-		$type = ( $dbOrLb instanceof IDatabase )
-			? $dbOrLb->getType()
-			: $dbOrLb->getServerType( $dbOrLb->getWriterIndex() );
+	public static function getSearchEngineClass( IConnectionProvider $dbProvider ) {
+		$type = $dbProvider->getReplicaDatabase()->getType();
 
 		switch ( $type ) {
 			case 'sqlite':

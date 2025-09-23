@@ -21,6 +21,8 @@
  * @ingroup Media
  */
 
+use Wikimedia\AtEase\AtEase;
+
 /**
  * Class for some IPTC functions.
  *
@@ -261,7 +263,7 @@ class IPTC {
 					// unlike other tags, this is a 2-byte binary number.
 					// technically this is required if there is iptc data
 					// but in practise it isn't always there.
-					if ( strlen( $val[0] ) == 2 ) {
+					if ( strlen( $val[0] ) === 2 ) {
 						// if is just to be paranoid.
 						$versionValue = ord( substr( $val[0], 0, 1 ) ) * 256;
 						$versionValue += ord( substr( $val[0], 1, 1 ) );
@@ -338,19 +340,19 @@ class IPTC {
 	 * @param array $date The date tag
 	 * @param array $time The time tag
 	 * @param string $charset
-	 * @return string Date in EXIF format.
+	 * @return string|null Date in EXIF format.
 	 */
 	private static function timeHelper( $date, $time, $charset ) {
 		if ( count( $date ) === 1 ) {
 			// the standard says this should always be 1
 			// just double checking.
-			list( $date ) = self::convIPTC( $date, $charset );
+			[ $date ] = self::convIPTC( $date, $charset );
 		} else {
 			return null;
 		}
 
 		if ( count( $time ) === 1 ) {
-			list( $time ) = self::convIPTC( $time, $charset );
+			[ $time ] = self::convIPTC( $time, $charset );
 			$dateOnly = false;
 		} else {
 			$time = '000000+0000'; // placeholder
@@ -380,25 +382,24 @@ class IPTC {
 			return null;
 		}
 
-		$tz = ( intval( substr( $time, 7, 2 ) ) * 60 * 60 )
-			+ ( intval( substr( $time, 9, 2 ) ) * 60 );
+		$tz = ( (int)substr( $time, 7, 2 ) * 60 * 60 )
+			+ ( (int)substr( $time, 9, 2 ) * 60 );
 
 		if ( substr( $time, 6, 1 ) === '-' ) {
 			$tz = -$tz;
 		}
 
-		$finalTimestamp = wfTimestamp( TS_EXIF, $unixTS + $tz );
+		$finalTimestamp = wfTimestamp( TS_EXIF, (int)$unixTS + $tz );
 		if ( $finalTimestamp === false ) {
-			wfDebugLog( 'iptc', "IPTC: can't make final timestamp. Date: " . ( $unixTS + $tz ) );
+			wfDebugLog( 'iptc', "IPTC: can't make final timestamp. Date: " . ( (int)$unixTS + $tz ) );
 
 			return null;
 		}
 		if ( $dateOnly ) {
 			// return the date only
 			return substr( $finalTimestamp, 0, 10 );
-		} else {
-			return $finalTimestamp;
 		}
+		return $finalTimestamp;
 	}
 
 	/**
@@ -429,9 +430,9 @@ class IPTC {
 	 */
 	private static function convIPTCHelper( $data, $charset ) {
 		if ( $charset ) {
-			Wikimedia\suppressWarnings();
+			AtEase::suppressWarnings();
 			$data = iconv( $charset, "UTF-8//IGNORE", $data );
-			Wikimedia\restoreWarnings();
+			AtEase::restoreWarnings();
 			if ( $data === false ) {
 				$data = "";
 				wfDebugLog( 'iptc', __METHOD__ . " Error converting iptc data charset $charset to utf-8" );
@@ -443,9 +444,8 @@ class IPTC {
 			UtfNormal\Validator::quickIsNFCVerify( $data ); // make $data valid utf-8
 			if ( $data === $oldData ) {
 				return $data; // if validation didn't change $data
-			} else {
-				return self::convIPTCHelper( $oldData, 'Windows-1252' );
 			}
+			return self::convIPTCHelper( $oldData, 'Windows-1252' );
 		}
 
 		return trim( $data );
@@ -576,7 +576,7 @@ class IPTC {
 				$c = 'CSN_369103';
 				break;
 			default:
-				wfDebugLog( 'iptc', __METHOD__ . 'Unknown charset in iptc 1:90: ' . bin2hex( $tag ) );
+				wfDebugLog( 'iptc', __METHOD__ . ': Unknown charset in iptc 1:90: ' . bin2hex( $tag ) );
 				// at this point just give up and refuse to parse iptc?
 				$c = false;
 		}

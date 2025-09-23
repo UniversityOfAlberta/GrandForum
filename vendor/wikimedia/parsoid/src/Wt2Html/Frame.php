@@ -1,9 +1,12 @@
 <?php
+declare( strict_types = 1 );
 
 namespace Wikimedia\Parsoid\Wt2Html;
 
 use Wikimedia\Parsoid\Config\Env;
 use Wikimedia\Parsoid\Tokens\EOFTk;
+use Wikimedia\Parsoid\Tokens\KV;
+use Wikimedia\Parsoid\Tokens\SourceRange;
 use Wikimedia\Parsoid\Tokens\Token;
 use Wikimedia\Parsoid\Utils\PHPUtils;
 use Wikimedia\Parsoid\Utils\PipelineUtils;
@@ -18,7 +21,7 @@ use Wikimedia\Parsoid\Utils\TokenUtils;
  * exceed the maximum expansion depth.
  */
 class Frame {
-	/** @var Frame */
+	/** @var ?Frame */
 	private $parentFrame;
 
 	/** @var Env */
@@ -39,12 +42,13 @@ class Frame {
 	/**
 	 * @param Title $title
 	 * @param Env $env
-	 * @param array $args
+	 * @param KV[] $args
 	 * @param string $srcText
-	 * @param Frame|null $parentFrame
+	 * @param ?Frame $parentFrame
 	 */
 	public function __construct(
-		Title $title, Env $env, array $args, string $srcText, Frame $parentFrame = null
+		Title $title, Env $env, array $args, string $srcText,
+		?Frame $parentFrame = null
 	) {
 		$this->title = $title;
 		$this->env = $env;
@@ -60,30 +64,18 @@ class Frame {
 		}
 	}
 
-	/**
-	 * @return Env
-	 */
 	public function getEnv(): Env {
 		return $this->env;
 	}
 
-	/**
-	 * @return Title
-	 */
 	public function getTitle(): Title {
 		return $this->title;
 	}
 
-	/**
-	 * @return Params
-	 */
 	public function getArgs(): Params {
 		return $this->args;
 	}
 
-	/**
-	 * @return string
-	 */
 	public function getSrcText(): string {
 		return $this->srcText;
 	}
@@ -91,7 +83,7 @@ class Frame {
 	/**
 	 * Create a new child frame.
 	 * @param Title $title
-	 * @param array $args
+	 * @param KV[] $args
 	 * @param string $srcText
 	 * @return Frame
 	 */
@@ -101,9 +93,9 @@ class Frame {
 
 	/**
 	 * Expand / convert a thunk (a chunk of tokens not yet fully expanded).
-	 * @param Token[] $chunk
+	 * @param array<Token|string> $chunk
 	 * @param array $options
-	 * @return Token[]
+	 * @return array<Token|string>
 	 */
 	public function expand( array $chunk, array $options ): array {
 		$this->env->log( 'debug', 'Frame.expand', $chunk );
@@ -124,11 +116,12 @@ class Frame {
 		// - the attribute use is wrappable  Ex: [[ ... | {{ .. link text }} ]]
 
 		$opts = [
-			'pipelineType' => 'tokens/x-mediawiki',
+			'pipelineType' => 'peg-tokens-to-expanded-tokens',
 			'pipelineOpts' => [
 				'isInclude' => $this->depth > 0,
-				'expandTemplates' => !empty( $options['expandTemplates'] ),
-				'inTemplate' => !empty( $options['inTemplate'] )
+				'expandTemplates' => $options['expandTemplates'],
+				'inTemplate' => $options['inTemplate'],
+				'attrExpansion' => $options['attrExpansion'] ?? false
 			],
 			'sol' => true,
 			'srcOffsets' => $options['srcOffsets'] ?? null,
@@ -170,5 +163,52 @@ class Frame {
 
 		// No loop detected.
 		return null;
+	}
+
+	/**
+	 * @param mixed $arg
+	 * @param SourceRange $srcOffsets
+	 * @return array
+	 */
+	private function expandArg( $arg, SourceRange $srcOffsets ): array {
+		if ( is_string( $arg ) ) {
+			return [ $arg ];
+		} else {
+			return $this->expand( $arg, [
+				'expandTemplates' => true,
+				'inTemplate' => true,
+				'srcOffsets' => $srcOffsets,
+			] );
+		}
+	}
+
+	/**
+	 * @param Token $tplArgToken
+	 * @return array tokens representing the arg value
+	 */
+	public function expandTemplateArg( Token $tplArgToken ): array {
+		$args = $this->args->named();
+		$attribs = $tplArgToken->attribs;
+
+		$expandedKeyToks = $this->expandArg(
+			$attribs[0]->k,
+			$attribs[0]->srcOffsets->key
+		);
+
+		$argName = trim( TokenUtils::tokensToString( $expandedKeyToks ) );
+		$res = $args['dict'][$argName] ?? null;
+
+		if ( $res !== null ) {
+			$res = isset( $args['namedArgs'][$argName] ) ?
+				TokenUtils::tokenTrim( $res ) : $res;
+			return is_string( $res ) ? [ $res ] : $res;
+		} elseif ( count( $attribs ) > 1 ) {
+			return $this->expandArg(
+				$attribs[1]->v,
+				$attribs[1]->srcOffsets->value
+			);
+		} else {
+			return array_merge( [ '{{{' ], $expandedKeyToks, [ '}}}' ] );
+		}
 	}
 }

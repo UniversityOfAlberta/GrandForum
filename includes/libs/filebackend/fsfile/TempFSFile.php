@@ -1,7 +1,5 @@
 <?php
 
-use MediaWiki\FileBackend\FSFile\TempFSFileFactory;
-
 /**
  * Location holder of files stored temporarily
  *
@@ -24,6 +22,11 @@ use MediaWiki\FileBackend\FSFile\TempFSFileFactory;
  * @ingroup FileBackend
  */
 
+namespace Wikimedia\FileBackend\FSFile;
+
+use MediaWiki\FileBackend\FSFile\TempFSFileFactory;
+use RuntimeException;
+use WeakMap;
 use Wikimedia\AtEase\AtEase;
 
 /**
@@ -38,6 +41,14 @@ class TempFSFile extends FSFile {
 
 	/** @var array Map of (path => 1) for paths to delete on shutdown */
 	protected static $pathsCollect = null;
+
+	/**
+	 * A WeakMap where the key is an object which depends on the file, and the
+	 * value is a TempFSFile responsible for deleting the file. This keeps each
+	 * TempFSFile alive until all associated objects have been destroyed.
+	 * @var WeakMap|null
+	 */
+	private static $references;
 
 	/**
 	 * Do not call directly. Use TempFSFileFactory
@@ -126,16 +137,25 @@ class TempFSFile extends FSFile {
 	/**
 	 * Clean up the temporary file only after an object goes out of scope
 	 *
-	 * @param object $object
+	 * @param mixed $object
 	 * @return TempFSFile This object
 	 */
 	public function bind( $object ) {
 		if ( is_object( $object ) ) {
-			if ( !isset( $object->tempFSFileReferences ) ) {
-				// Init first since $object might use __get() and return only a copy variable
-				$object->tempFSFileReferences = [];
+			// Use a WeakMap on PHP >= 8.0 to avoid dynamic property creation (T324894)
+			if ( PHP_VERSION_ID >= 80000 ) {
+				if ( self::$references === null ) {
+					self::$references = new WeakMap;
+				}
+				self::$references[$object] = $this;
+			} else {
+				// PHP 7.4
+				if ( !isset( $object->tempFSFileReferences ) ) {
+					// Init first since $object might use __get() and return only a copy variable
+					$object->tempFSFileReferences = [];
+				}
+				$object->tempFSFileReferences[] = $this;
 			}
-			$object->tempFSFileReferences[] = $this;
 		}
 
 		return $this;
@@ -191,3 +211,6 @@ class TempFSFile extends FSFile {
 		}
 	}
 }
+
+/** @deprecated class alias since 1.43 */
+class_alias( TempFSFile::class, 'TempFSFile' );

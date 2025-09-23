@@ -1,15 +1,13 @@
 <?php
 /** Shawiya (Latin script) (Tachawit)
  *
- * To improve a translation please visit https://translatewiki.net
- *
- * @ingroup Language
  * @file
+ * @ingroup Languages
  *
  * @author Reda Kerbouche
  */
 
-$fallback = 'fr, arq';
+$fallback = 'fr';
 
 $namespaceNames = [
 	NS_MEDIA            => 'Alɣagdud',

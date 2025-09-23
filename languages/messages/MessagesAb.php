@@ -1,11 +1,8 @@
 <?php
-/** Abkhazian (Аҧсшәа)
+/** Abkhazian (аԥсшәа)
  *
- * To improve a translation please visit https://translatewiki.net
- *
- * @ingroup Language
  * @file
- *
+ * @ingroup Languages
  */
 
 $fallback = 'ru';
@@ -54,6 +51,7 @@ $namespaceAliases = [
 // Remove Russian aliases
 $namespaceGenderAliases = [];
 
+/** @phpcs-require-sorted-array */
 $specialPageAliases = [
 	'Categories'                => [ 'Акатегориақәа' ],
 	'Mycontributions'           => [ 'Архиарақәа' ],
@@ -63,15 +61,16 @@ $specialPageAliases = [
 	'Newpages'                  => [ 'АдаҟьақәаҾыц' ],
 	'Randompage'                => [ 'Машәырлатәи' ],
 	'Recentchanges'             => [ 'АрҽеираҾыцқәа' ],
-	'Search'                    => [ 'Аҧшаара' ],
+	'Search'                    => [ 'Аԥшаара', 'Аҧшаара' ],
 	'Specialpages'              => [ 'ЦастәиАдаҟьақәа' ],
 	'Upload'                    => [ 'Аҭагалара' ],
 ];
 
+/** @phpcs-require-sorted-array */
 $magicWords = [
-	'language'                  => [ '0', '#АБЫЗШӘА:', '#ЯЗЫК:', '#LANGUAGE:' ],
-	'special'                   => [ '0', 'цастәи', 'служебная', 'special' ],
 	'index'                     => [ '1', '__АИНДЕКС__', '__ИНДЕКС__', '__INDEX__' ],
+	'language'                  => [ '0', '#АБЫЗШӘА', '#ЯЗЫК', '#LANGUAGE' ],
+	'special'                   => [ '0', 'цастәи', 'служебная', 'special' ],
 ];
 
-$linkTrail = '/^([a-zабвгҕдежзӡикқҟлмнопҧрстҭуфхҳцҵчҷҽҿшыҩџьә]+)(.*)$/sDu';
+$linkTrail = '/^([a-zабвгӷҕдежзӡикқҟлмнопԥҧрстҭуфхҳцҵчҷҽҿшыҩџьә]+)(.*)$/sDu';

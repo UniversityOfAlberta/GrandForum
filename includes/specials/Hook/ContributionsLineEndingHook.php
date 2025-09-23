@@ -2,10 +2,13 @@
 
 namespace MediaWiki\Hook;
 
-use ContribsPager;
+use MediaWiki\Pager\ContributionsPager;
 use stdClass;
 
 /**
+ * This is a hook handler interface, see docs/Hooks.md.
+ * Use the hook name "ContributionsLineEnding" to register handlers implementing this interface.
+ *
  * @stable to implement
  * @ingroup Hooks
  */
@@ -15,7 +18,7 @@ interface ContributionsLineEndingHook {
 	 *
 	 * @since 1.35
 	 *
-	 * @param ContribsPager $pager The ContribsPager object hooked into
+	 * @param ContributionsPager $pager The pager object hooked into
 	 * @param string &$ret The HTML line
 	 * @param stdClass $row The DB row for this line
 	 * @param string[] &$classes The classes to add to the surrounding <li>

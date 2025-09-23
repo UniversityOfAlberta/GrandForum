@@ -21,8 +21,10 @@
 
 namespace MediaWiki\Auth;
 
-use BagOStuff;
-use Config;
+use MediaWiki\MainConfigNames;
+use MediaWiki\MediaWikiServices;
+use MediaWiki\User\User;
+use Wikimedia\ObjectCache\BagOStuff;
 
 /**
  * A pre-authentication provider to throttle authentication actions.
@@ -58,13 +60,13 @@ class ThrottlePreAuthenticationProvider extends AbstractPreAuthenticationProvide
 	public function __construct( $params = [] ) {
 		$this->throttleSettings = array_intersect_key( $params,
 			[ 'accountCreationThrottle' => true, 'passwordAttemptThrottle' => true ] );
-		$this->cache = $params['cache'] ?? \ObjectCache::getLocalClusterInstance();
+		$services = MediaWikiServices::getInstance();
+		$this->cache = $params['cache'] ?? $services->getObjectCacheFactory()
+			->getLocalClusterInstance();
 	}
 
-	public function setConfig( Config $config ) {
-		parent::setConfig( $config );
-
-		$accountCreationThrottle = $this->config->get( 'AccountCreationThrottle' );
+	protected function postInitSetup() {
+		$accountCreationThrottle = $this->config->get( MainConfigNames::AccountCreationThrottle );
 		// Handle old $wgAccountCreationThrottle format (number of attempts per 24 hours)
 		if ( !is_array( $accountCreationThrottle ) ) {
 			$accountCreationThrottle = [ [
@@ -77,7 +79,8 @@ class ThrottlePreAuthenticationProvider extends AbstractPreAuthenticationProvide
 		$this->throttleSettings += [
 		// @codeCoverageIgnoreEnd
 			'accountCreationThrottle' => $accountCreationThrottle,
-			'passwordAttemptThrottle' => $this->config->get( 'PasswordAttemptThrottle' ),
+			'passwordAttemptThrottle' =>
+				$this->config->get( MainConfigNames::PasswordAttemptThrottle ),
 		];
 
 		if ( !empty( $this->throttleSettings['accountCreationThrottle'] ) ) {
@@ -129,12 +132,16 @@ class ThrottlePreAuthenticationProvider extends AbstractPreAuthenticationProvide
 		try {
 			$username = AuthenticationRequest::getUsernameFromRequests( $reqs );
 		} catch ( \UnexpectedValueException $e ) {
-			$username = '';
+			$username = null;
 		}
 
 		// Get everything this username could normalize to, and throttle each one individually.
 		// If nothing uses usernames, just throttle by IP.
-		$usernames = $this->manager->normalizeUsername( $username );
+		if ( $username !== null ) {
+			$usernames = $this->manager->normalizeUsername( $username );
+		} else {
+			$usernames = [ null ];
+		}
 		$result = false;
 		foreach ( $usernames as $name ) {
 			$r = $this->passwordAttemptThrottle->increase( $name, $ip, __METHOD__ );
@@ -154,7 +161,7 @@ class ThrottlePreAuthenticationProvider extends AbstractPreAuthenticationProvide
 	}
 
 	/**
-	 * @param null|\User $user
+	 * @param null|User $user
 	 * @param AuthenticationResponse $response
 	 */
 	public function postAuthentication( $user, AuthenticationResponse $response ) {

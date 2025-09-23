@@ -2,6 +2,7 @@
 
 namespace Test\Parsoid\Config\Api;
 
+use Wikimedia\Bcp47Code\Bcp47CodeValue;
 use Wikimedia\Parsoid\Config\Api\SiteConfig;
 
 /**
@@ -11,7 +12,7 @@ class SiteConfigTest extends \PHPUnit\Framework\TestCase {
 
 	private static $siteConfig;
 
-	protected function getSiteConfig() {
+	protected function getSiteConfig(): SiteConfig {
 		if ( self::$siteConfig === null ) {
 			$helper = new TestApiHelper( $this, 'siteinfo' );
 			self::$siteConfig = new SiteConfig( $helper, [] );
@@ -72,7 +73,6 @@ class SiteConfigTest extends \PHPUnit\Framework\TestCase {
 			[ 'STATICREDIRECT', true ],
 
 			// Case insensitive
-			[ 'NoCollaborationHubTOC', false ],
 			[ 'NoTOC', false ],
 			[ 'NoGallery', false ],
 			[ 'ForceTOC', false ],
@@ -179,10 +179,10 @@ class SiteConfigTest extends \PHPUnit\Framework\TestCase {
 		);
 	}
 
-	public function testLang() {
-		$this->assertSame(
+	public function testLangBcp47() {
+		$this->assertEqualsIgnoringCase(
 			'en',
-			$this->getSiteConfig()->lang()
+			$this->getSiteConfig()->langBcp47()->toBcp47Code()
 		);
 	}
 
@@ -193,10 +193,18 @@ class SiteConfigTest extends \PHPUnit\Framework\TestCase {
 		);
 	}
 
-	public function testResponsiveReferences() {
+	public function testGetMWConfigValue() {
 		$this->assertSame(
-			[ 'enabled' => true, 'threshold' => 10 ],
-			$this->getSiteConfig()->responsiveReferences()
+			true,
+			$this->getSiteConfig()->getMWConfigValue( 'CiteResponsiveReferences' )
+		);
+		$this->assertSame(
+			10,
+			$this->getSiteConfig()->getMWConfigValue( 'CiteResponsiveReferencesThreshold' )
+		);
+		$this->assertSame(
+			null,
+			$this->getSiteConfig()->getMWConfigValue( 'CiteUnknownConfig' )
 		);
 	}
 
@@ -207,9 +215,9 @@ class SiteConfigTest extends \PHPUnit\Framework\TestCase {
 		);
 	}
 
-	public function testLangConverterEnabled() {
-		$this->assertTrue( $this->getSiteConfig()->langConverterEnabled( 'zh' ) );
-		$this->assertFalse( $this->getSiteConfig()->langConverterEnabled( 'de' ) );
+	public function testLangConverterEnabledBcp47() {
+		$this->assertTrue( $this->getSiteConfig()->langConverterEnabledBcp47( new Bcp47CodeValue( 'zh' ) ) );
+		$this->assertFalse( $this->getSiteConfig()->langConverterEnabledBcp47( new Bcp47CodeValue( 'de' ) ) );
 	}
 
 	public function testScript() {
@@ -236,7 +244,7 @@ class SiteConfigTest extends \PHPUnit\Framework\TestCase {
 	public function testSolTransparentWikitextRegexp() {
 		$this->assertSame(
 			// phpcs:ignore Generic.Files.LineLength.TooLong
-			'@^[ \t\n\r\0\x0b]*(?:(?:(?i:\#REDIRECT))[ \t\n\r\x0c]*(?::[ \t\n\r\x0c]*)?\[\[[^\]]+\]\])?(?:\[\[Category\:[^\]]*?\]\]|__(?:(?:NOGLOBAL|DISAMBIG|NEWSECTIONLINK|NONEWSECTIONLINK|HIDDENCAT|EXPECTUNUSEDCATEGORY|INDEX|NOINDEX|STATICREDIRECT)|(?i:NOCOLLABORATIONHUBTOC|NOTOC|NOGALLERY|FORCETOC|TOC|NOEDITSECTION|NOTITLECONVERT|NOTC|NOCONTENTCONVERT|NOCC))__|<!--(?>[\s\S]*?-->)|[ \t\n\r\0\x0b])*$@',
+			'@^[ \t\n\r\0\x0b]*(?:(?:(?i:\#REDIRECT))[ \t\n\r\x0c]*(?::[ \t\n\r\x0c]*)?\[\[[^\]]+\]\])?(?:\[\[Category\:[^\]]*?\]\]|__(?:(?:NOGLOBAL|DISAMBIG|EXPECTUNUSEDCATEGORY|HIDDENCAT|INDEX|NEWSECTIONLINK|NOINDEX|NONEWSECTIONLINK|STATICREDIRECT)|(?i:FORCETOC|NOCONTENTCONVERT|NOCC|NOEDITSECTION|NOGALLERY|NOTITLECONVERT|NOTC|NOTOC|TOC))__|<!--(?>[\s\S]*?-->)|[ \t\n\r\0\x0b])*$@',
 			$this->getSiteConfig()->solTransparentWikitextRegexp()
 		);
 	}
@@ -244,7 +252,7 @@ class SiteConfigTest extends \PHPUnit\Framework\TestCase {
 	public function testSolTransparentWikitextNoWsRegexp() {
 		$this->assertSame(
 			// phpcs:ignore Generic.Files.LineLength.TooLong
-			'@((?:(?:(?i:\#REDIRECT))[ \t\n\r\x0c]*(?::[ \t\n\r\x0c]*)?\[\[[^\]]+\]\])?(?:\[\[Category\:[^\]]*?\]\]|__(?:(?:NOGLOBAL|DISAMBIG|NEWSECTIONLINK|NONEWSECTIONLINK|HIDDENCAT|EXPECTUNUSEDCATEGORY|INDEX|NOINDEX|STATICREDIRECT)|(?i:NOCOLLABORATIONHUBTOC|NOTOC|NOGALLERY|FORCETOC|TOC|NOEDITSECTION|NOTITLECONVERT|NOTC|NOCONTENTCONVERT|NOCC))__|<!--(?>[\s\S]*?-->))*)@',
+			'@((?:(?:(?i:\#REDIRECT))[ \t\n\r\x0c]*(?::[ \t\n\r\x0c]*)?\[\[[^\]]+\]\])?(?:\[\[Category\:[^\]]*?\]\]|__(?:(?:NOGLOBAL|DISAMBIG|EXPECTUNUSEDCATEGORY|HIDDENCAT|INDEX|NEWSECTIONLINK|NOINDEX|NONEWSECTIONLINK|STATICREDIRECT)|(?i:FORCETOC|NOCONTENTCONVERT|NOCC|NOEDITSECTION|NOGALLERY|NOTITLECONVERT|NOTC|NOTOC|TOC))__|<!--(?>[\s\S]*?-->))*)@',
 			$this->getSiteConfig()->solTransparentWikitextNoWsRegexp()
 		);
 	}
@@ -256,15 +264,19 @@ class SiteConfigTest extends \PHPUnit\Framework\TestCase {
 		);
 	}
 
-	public function testVariants() {
-		$ret = $this->getSiteConfig()->variants();
+	public function testVariantsFor() {
+		$ret = $this->getSiteConfig()->variantsFor( new Bcp47CodeValue( 'zh-hant-tw' ) );
 		$this->assertIsArray( $ret );
-		$this->assertSame(
+		$this->assertEquals(
 			[
-				'base' => 'zh',
-				'fallbacks' => [ 'zh-hant', 'zh-hk', 'zh-mo' ],
+				'base' => new Bcp47CodeValue( 'zh' ),
+				'fallbacks' => [
+					new Bcp47CodeValue( 'zh-Hant' ),
+					new Bcp47CodeValue( 'zh-Hant-HK' ),
+					new Bcp47CodeValue( 'zh-Hant-MO' ),
+				],
 			],
-			$ret['zh-tw'] ?? null
+			$ret
 		);
 	}
 
@@ -275,10 +287,11 @@ class SiteConfigTest extends \PHPUnit\Framework\TestCase {
 		);
 	}
 
-	public function testMagicWords() {
-		$ret = $this->getSiteConfig()->magicWords();
-		$this->assertIsArray( $ret );
-		$this->assertSame( 'disambiguation', $ret['__DISAMBIG__'] ?? null );
+	public function testGetMagicWordForBehaviorSwitch() {
+		$this->assertSame(
+			'disambiguation',
+			$this->getSiteConfig()->getMagicWordForBehaviorSwitch( '__DISAMBIG__' )
+		);
 	}
 
 	public function testMwAliases() {
@@ -294,16 +307,16 @@ class SiteConfigTest extends \PHPUnit\Framework\TestCase {
 		);
 	}
 
-	public function testMagicWordCanonicalName() {
+	public function testGetMagicWordForMediaOption() {
 		$this->assertSame(
 			'img_width',
-			$this->getSiteConfig()->magicWordCanonicalName( '$1px' )
+			$this->getSiteConfig()->getMagicWordForMediaOption( '$1px' )
 		);
 	}
 
-	public function testIsMagicWord() {
-		$this->assertTrue( $this->getSiteConfig()->isMagicWord( '$1px' ) );
-		$this->assertSame( false, $this->getSiteConfig()->isMagicWord( 'img_width' ) );
+	public function testIsBehaviorSwitch() {
+		$this->assertTrue( $this->getSiteConfig()->isBehaviorSwitch( '__TOC__' ) );
+		$this->assertSame( false, $this->getSiteConfig()->isBehaviorSwitch( 'img_width' ) );
 	}
 
 	public function testGetMagicWordMatcher() {
@@ -355,18 +368,15 @@ class SiteConfigTest extends \PHPUnit\Framework\TestCase {
 				'nowiki' => true,
 				'gallery' => true,
 				'indicator' => true,
+				'langconvert' => true,
 				'timeline' => true,
 				'hiero' => true,
-				'charinsert' => true,
-				'ref' => true,
-				'references' => true,
 				'inputbox' => true,
 				'imagemap' => true,
 				'source' => true,
 				'syntaxhighlight' => true,
 				'poem' => true,
 				'categorytree' => true,
-				'section' => true,
 				'score' => true,
 				'templatestyles' => true,
 				'templatedata' => true,
@@ -376,11 +386,13 @@ class SiteConfigTest extends \PHPUnit\Framework\TestCase {
 				'graph' => true,
 				'maplink' => true,
 				'mapframe' => true,
+				'charinsert' => true,
+				'ref' => true,
+				'references' => true,
+				'section' => true,
 				'labeledsectiontransclusion' => true,
 				'labeledsectiontransclusion/begin' => true,
-				'labeledsectiontransclusion/end' => true,
-				'translate' => true,
-				'tvar' => true
+				'labeledsectiontransclusion/end' => true
 			],
 			array_fill_keys( array_keys( $this->getSiteConfig()->getExtensionTagNameMap() ), true )
 		);

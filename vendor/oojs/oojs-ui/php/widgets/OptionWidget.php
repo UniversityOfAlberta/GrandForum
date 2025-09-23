@@ -58,12 +58,15 @@ class OptionWidget extends Widget {
 		return $this;
 	}
 
+	/**
+	 * @return bool
+	 */
 	public function isSelected() {
 		return $this->selected;
 	}
 
+	/** @inheritDoc */
 	public function getConfig( &$config ) {
-		$selected = $this->hasClass( 'oo-ui-optionWidget-selected' );
 		if ( $this->selected ) {
 			$config['selected'] = $this->selected;
 		}

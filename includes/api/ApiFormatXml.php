@@ -20,15 +20,25 @@
  * @file
  */
 
+namespace MediaWiki\Api;
+
+use MediaWiki\Title\Title;
+use MediaWiki\Xml\Xml;
+use Wikimedia\ParamValidator\ParamValidator;
+
 /**
  * API XML output formatter
  * @ingroup API
  */
 class ApiFormatXml extends ApiFormatBase {
 
+	/** @var string */
 	private $mRootElemName = 'api';
+	/** @var string */
 	public static $namespace = 'http://www.mediawiki.org/xml/api/';
+	/** @var bool */
 	private $mIncludeNamespace = false;
+	/** @var string|null */
 	private $mXslt = null;
 
 	public function getMimeType() {
@@ -58,7 +68,7 @@ class ApiFormatXml extends ApiFormatBase {
 			$result->addValue( null, 'xmlns', self::$namespace, ApiResult::NO_SIZE_CHECK );
 		}
 		$data = $result->getResultData( null, [
-			'Custom' => function ( &$data, &$metadata ) {
+			'Custom' => static function ( &$data, &$metadata ) {
 				if ( isset( $metadata[ApiResult::META_TYPE] ) ) {
 					// We want to use non-BC for BCassoc to force outputting of _idx.
 					switch ( $metadata[ApiResult::META_TYPE] ) {
@@ -117,8 +127,7 @@ class ApiFormatXml extends ApiFormatBase {
 				: '_v';
 			$bcBools = $value[ApiResult::META_BC_BOOLS] ?? [];
 			$indexSubelements = isset( $value[ApiResult::META_TYPE] )
-				? $value[ApiResult::META_TYPE] !== 'array'
-				: false;
+				&& $value[ApiResult::META_TYPE] !== 'array';
 
 			$content = null;
 			$subelements = [];
@@ -171,6 +180,7 @@ class ApiFormatXml extends ApiFormatBase {
 
 			if ( $content !== null ) {
 				if ( is_scalar( $content ) ) {
+					// @phan-suppress-next-line PhanTypeMismatchArgumentNullable name is check for null in other code
 					$retval .= $indstr . Xml::element( $name, $attributes, $content );
 				} else {
 					if ( $name !== null ) {
@@ -205,8 +215,10 @@ class ApiFormatXml extends ApiFormatBase {
 			// to make sure null value doesn't produce unclosed element,
 			// which is what Xml::element( $name, null, null ) returns
 			if ( $value === null ) {
+				// @phan-suppress-next-line PhanTypeMismatchArgumentNullable name is check for null in other code
 				$retval .= $indstr . Xml::element( $name, $attributes );
 			} else {
+				// @phan-suppress-next-line PhanTypeMismatchArgumentNullable name is check for null in other code
 				$retval .= $indstr . Xml::element( $name, $attributes, $value );
 			}
 		}
@@ -247,8 +259,8 @@ class ApiFormatXml extends ApiFormatBase {
 
 		return '_' . preg_replace_callback(
 			"/[^$nc]/uS",
-			function ( $m ) {
-				return sprintf( '.%X.', UtfNormal\Utils::utf8ToCodepoint( $m[0] ) );
+			static function ( $m ) {
+				return sprintf( '.%X.', \UtfNormal\Utils::utf8ToCodepoint( $m[0] ) );
 			},
 			str_replace( '.', '.2E.', $name )
 		);
@@ -261,12 +273,12 @@ class ApiFormatXml extends ApiFormatBase {
 
 			return;
 		}
-		if ( $nt->getNamespace() != NS_MEDIAWIKI ) {
+		if ( $nt->getNamespace() !== NS_MEDIAWIKI ) {
 			$this->addWarning( 'apiwarn-invalidxmlstylesheetns' );
 
 			return;
 		}
-		if ( substr( $nt->getText(), -4 ) !== '.xsl' ) {
+		if ( !str_ends_with( $nt->getText(), '.xsl' ) ) {
 			$this->addWarning( 'apiwarn-invalidxmlstylesheetext' );
 
 			return;
@@ -281,9 +293,12 @@ class ApiFormatXml extends ApiFormatBase {
 				ApiBase::PARAM_HELP_MSG => 'apihelp-xml-param-xslt',
 			],
 			'includexmlnamespace' => [
-				ApiBase::PARAM_DFLT => false,
+				ParamValidator::PARAM_DEFAULT => false,
 				ApiBase::PARAM_HELP_MSG => 'apihelp-xml-param-includexmlnamespace',
 			],
 		];
 	}
 }
+
+/** @deprecated class alias since 1.43 */
+class_alias( ApiFormatXml::class, 'ApiFormatXml' );

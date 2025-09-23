@@ -18,12 +18,14 @@
  * @file
  */
 
+use MediaWiki\HTMLForm\OOUIHTMLForm;
+
 /**
- * Extend OOUIHTMLForm purely so we can have a more sane way of getting the section headers
+ * Extend OOUIHTMLForm purely so we can have a more sensible way of getting the section headers
  */
 class EditWatchlistNormalHTMLForm extends OOUIHTMLForm {
 	public function getLegend( $namespace ) {
-		$namespace = substr( $namespace, 2 );
+		$namespace = (int)substr( $namespace, 2 );
 
 		return $namespace == NS_MAIN
 			? $this->msg( 'blanknamespace' )->text()

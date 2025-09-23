@@ -18,18 +18,17 @@
  * @file
  */
 
-/**
- * @defgroup Language Language
- */
-
 namespace MediaWiki\Languages;
 
-use HashBagOStuff;
+use InvalidArgumentException;
 use MediaWiki\Config\ServiceOptions;
 use MediaWiki\HookContainer\HookContainer;
 use MediaWiki\HookContainer\HookRunner;
-use MediaWikiTitleCodec;
-use MWException;
+use MediaWiki\Language\LanguageCode;
+use MediaWiki\MainConfigNames;
+use MediaWiki\Title\MediaWikiTitleCodec;
+use Wikimedia\ObjectCache\BagOStuff;
+use Wikimedia\ObjectCache\HashBagOStuff;
 
 /**
  * A service that provides utilities to do with language names and codes.
@@ -75,9 +74,13 @@ class LanguageNameUtils {
 	 */
 	private $validCodeCache = [];
 
+	/**
+	 * @internal For use by ServiceWiring
+	 */
 	public const CONSTRUCTOR_OPTIONS = [
-		'ExtraLanguageNames',
-		'UsePigLatinVariant',
+		MainConfigNames::ExtraLanguageNames,
+		MainConfigNames::UsePigLatinVariant,
+		MainConfigNames::UseXssLanguage,
 	];
 
 	/** @var HookRunner */
@@ -100,7 +103,7 @@ class LanguageNameUtils {
 	 * @param string $code Language tag (in lower case)
 	 * @return bool Whether language is supported
 	 */
-	public function isSupportedLanguage( string $code ) : bool {
+	public function isSupportedLanguage( string $code ): bool {
 		if ( !$this->isValidBuiltInCode( $code ) ) {
 			return false;
 		}
@@ -109,28 +112,38 @@ class LanguageNameUtils {
 			// Special code for internal use, not supported even though there is a qqq.json
 			return false;
 		}
+		if (
+			$code === 'en-x-piglatin' &&
+			!$this->options->get( MainConfigNames::UsePigLatinVariant )
+		) {
+			// Suppress Pig Latin unless explicitly enabled.
+			return false;
+		}
 
 		return is_readable( $this->getMessagesFileName( $code ) ) ||
 			is_readable( $this->getJsonMessagesFileName( $code ) );
 	}
 
 	/**
-	 * Returns true if a language code string is of a valid form, whether or not it exists. This
-	 * includes codes which are used solely for customisation via the MediaWiki namespace.
+	 * Returns true if a language code string is of a valid form, whether it exists.
+	 * This includes codes which are used solely for customisation via the MediaWiki namespace.
 	 *
 	 * @param string $code
 	 *
-	 * @return bool
+	 * @return bool False if the language code contains dangerous characters, e.g, HTML special
+	 *  characters or characters that are illegal in MediaWiki titles.
 	 */
-	public function isValidCode( string $code ) : bool {
+	public function isValidCode( string $code ): bool {
 		if ( !isset( $this->validCodeCache[$code] ) ) {
-			// People think language codes are HTML-safe, so enforce it.  Ideally we should only
+			// People think language codes are HTML-safe, so enforce it. Ideally, we should only
 			// allow a-zA-Z0-9- but .+ and other chars are often used for {{int:}} hacks.  See bugs
 			// T39564, T39587, T38938.
 			$this->validCodeCache[$code] =
 				// Protect against path traversal
 				strcspn( $code, ":/\\\000&<>'\"" ) === strlen( $code ) &&
-				!preg_match( MediaWikiTitleCodec::getTitleInvalidRegex(), $code );
+				!preg_match( MediaWikiTitleCodec::getTitleInvalidRegex(), $code ) &&
+				// libicu sets ULOC_FULLNAME_CAPACITY to 157; stay comfortably lower
+				strlen( $code ) <= 128;
 		}
 		return $this->validCodeCache[$code];
 	}
@@ -142,8 +155,8 @@ class LanguageNameUtils {
 	 * @param string $code
 	 * @return bool
 	 */
-	public function isValidBuiltInCode( string $code ) : bool {
-		return (bool)preg_match( '/^[a-z0-9-]{2,}$/', $code );
+	public function isValidBuiltInCode( string $code ): bool {
+		return (bool)preg_match( '/^[a-z0-9-]{2,128}$/', $code );
 	}
 
 	/**
@@ -153,14 +166,14 @@ class LanguageNameUtils {
 	 *
 	 * @return bool
 	 */
-	public function isKnownLanguageTag( string $tag ) : bool {
+	public function isKnownLanguageTag( string $tag ): bool {
 		// Quick escape for invalid input to avoid exceptions down the line when code tries to
 		// process tags which are not valid at all.
 		if ( !$this->isValidBuiltInCode( $tag ) ) {
 			return false;
 		}
 
-		if ( isset( Data\Names::$names[$tag] ) || $this->getLanguageName( $tag, $tag ) !== '' ) {
+		if ( isset( Data\Names::NAMES[$tag] ) || $this->getLanguageName( $tag, $tag ) !== '' ) {
 			return true;
 		}
 
@@ -169,32 +182,38 @@ class LanguageNameUtils {
 
 	/**
 	 * Get an array of language names, indexed by code.
+	 *
 	 * @param null|string $inLanguage Code of language in which to return the names
 	 *   Use self::AUTONYMS for autonyms (native names)
 	 * @param string $include One of:
-	 *   self::ALL all available languages
-	 *   self::DEFINED only if the language is defined in MediaWiki or wgExtraLanguageNames
+	 *   self::ALL All available languages
+	 *   self::DEFINED Only if the language is defined in MediaWiki or wgExtraLanguageNames
 	 *     (default)
-	 *   self::SUPPORTED only if the language is in self::DEFINED *and* has a message file
+	 *   self::SUPPORTED Only if the language is in self::DEFINED *and* has a message file
 	 * @return array Language code => language name (sorted by key)
 	 */
 	public function getLanguageNames( $inLanguage = self::AUTONYMS, $include = self::DEFINED ) {
+		if ( $inLanguage !== self::AUTONYMS ) {
+			$inLanguage = LanguageCode::replaceDeprecatedCodes( LanguageCode::bcp47ToInternal( $inLanguage ) );
+		}
 		$cacheKey = $inLanguage === self::AUTONYMS ? 'null' : $inLanguage;
 		$cacheKey .= ":$include";
 		if ( !$this->languageNameCache ) {
 			$this->languageNameCache = new HashBagOStuff( [ 'maxKeys' => 20 ] );
 		}
 
-		$ret = $this->languageNameCache->get( $cacheKey );
-		if ( !$ret ) {
-			$ret = $this->getLanguageNamesUncached( $inLanguage, $include );
-			$this->languageNameCache->set( $cacheKey, $ret );
-		}
-		return $ret;
+		return $this->languageNameCache->getWithSetCallback(
+			$cacheKey,
+			BagOStuff::TTL_INDEFINITE,
+			function () use ( $inLanguage, $include ) {
+				return $this->getLanguageNamesUncached( $inLanguage, $include );
+			}
+		);
 	}
 
 	/**
-	 * Uncached helper for getLanguageNames
+	 * Uncached helper for getLanguageNames.
+	 *
 	 * @param null|string $inLanguage As getLanguageNames
 	 * @param string $include As getLanguageNames
 	 * @return array Language code => language name (sorted by key)
@@ -209,13 +228,17 @@ class LanguageNameUtils {
 
 		if ( $inLanguage !== self::AUTONYMS ) {
 			# TODO: also include for self::AUTONYMS, when this code is more efficient
+			// @phan-suppress-next-line PhanTypeMismatchArgumentNullable False positive
 			$this->hookRunner->onLanguageGetTranslatedLanguageNames( $names, $inLanguage );
 		}
 
-		$mwNames = $this->options->get( 'ExtraLanguageNames' ) + Data\Names::$names;
-		if ( $this->options->get( 'UsePigLatinVariant' ) ) {
-			// Pig Latin (for variant development)
-			$mwNames['en-x-piglatin'] = 'Igpay Atinlay';
+		$mwNames = $this->options->get( MainConfigNames::ExtraLanguageNames ) + Data\Names::NAMES;
+		if ( !$this->options->get( MainConfigNames::UsePigLatinVariant ) ) {
+			// Suppress Pig Latin unless explicitly enabled.
+			unset( $mwNames['en-x-piglatin'] );
+		}
+		if ( $this->options->get( MainConfigNames::UseXssLanguage ) ) {
+			$mwNames['x-xss'] = 'fake xss language (see $wgUseXssLanguage)';
 		}
 
 		foreach ( $mwNames as $mwCode => $mwName ) {
@@ -263,28 +286,27 @@ class LanguageNameUtils {
 	 * @param string $code The code of the language for which to get the name
 	 * @param null|string $inLanguage Code of language in which to return the name (self::AUTONYMS
 	 *   for autonyms)
-	 * @param string $include See getLanguageNames(), except this defaults to self::ALL instead of
+	 * @param string $include See getLanguageNames(), except this function defaults to self::ALL instead of
 	 *   self::DEFINED
 	 * @return string Language name or empty
-	 * @since 1.20
 	 */
 	public function getLanguageName( $code, $inLanguage = self::AUTONYMS, $include = self::ALL ) {
-		$code = strtolower( $code );
+		$code = LanguageCode::replaceDeprecatedCodes( LanguageCode::bcp47ToInternal( $code ) );
 		$array = $this->getLanguageNames( $inLanguage, $include );
 		return $array[$code] ?? '';
 	}
 
 	/**
-	 * Get the name of a file for a certain language code
+	 * Get the name of a file for a certain language code.
+	 *
 	 * @param string $prefix Prepend this to the filename
 	 * @param string $code Language code
 	 * @param string $suffix Append this to the filename
-	 * @throws MWException
 	 * @return string $prefix . $mangledCode . $suffix
 	 */
 	public function getFileName( $prefix, $code, $suffix = '.php' ) {
 		if ( !$this->isValidBuiltInCode( $code ) ) {
-			throw new MWException( "Invalid language code \"$code\"" );
+			throw new InvalidArgumentException( "Invalid language code \"$code\"" );
 		}
 
 		return $prefix . str_replace( '-', '_', ucfirst( $code ) ) . $suffix;
@@ -304,13 +326,12 @@ class LanguageNameUtils {
 	/**
 	 * @param string $code
 	 * @return string
-	 * @throws MWException
 	 */
 	public function getJsonMessagesFileName( $code ) {
 		global $IP;
 
 		if ( !$this->isValidBuiltInCode( $code ) ) {
-			throw new MWException( "Invalid language code \"$code\"" );
+			throw new InvalidArgumentException( "Invalid language code \"$code\"" );
 		}
 
 		return "$IP/languages/i18n/$code.json";

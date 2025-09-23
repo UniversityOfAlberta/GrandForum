@@ -1,5 +1,8 @@
 <?php
-require_once("$IP/includes/ProtectionForm.php");
+
+use MediaWiki\MediaWikiServices;
+
+require_once("$IP/includes/page/ProtectionForm.php");
 //require_once("CustomSpecialUserRights.php");
 /**
  * This class is responsible for the custom protect action handler. When somebody clicks on the protect
@@ -124,7 +127,7 @@ class CustomProtectionForm extends ProtectionForm {
 	    return;
 	  }
 
-	  $dbw = wfGetDB( DB_PRIMARY );
+	  $dbw = MediaWikiServices::getInstance()->getConnectionProvider()->getPrimaryDatabase();
 	  if ($newValue == 1)
 	    $dbw->insert("${egAnnokiTablePrefix}pagepermissions", array('page_id' => $pageId, 'group_id' => -1));
 	  else

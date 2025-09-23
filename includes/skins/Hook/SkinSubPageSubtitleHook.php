@@ -2,10 +2,13 @@
 
 namespace MediaWiki\Hook;
 
-use OutputPage;
+use MediaWiki\Output\OutputPage;
 use Skin;
 
 /**
+ * This is a hook handler interface, see docs/Hooks.md.
+ * Use the hook name "SkinSubPageSubtitle" to register handlers implementing this interface.
+ *
  * @stable to implement
  * @ingroup Hooks
  */

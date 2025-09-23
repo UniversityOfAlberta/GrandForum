@@ -71,7 +71,7 @@ class Wiki extends BackboneModel {
     
     function __construct($article){
         if($article != null){
-            $this->id = $article->getId();
+            $this->id = $article->getTitle()->getArticleId();
             $this->ns = $article->getTitle()->getNsText();
             $this->title = $article->getTitle()->getText();
             $this->url = $article->getTitle()->getFullURL();

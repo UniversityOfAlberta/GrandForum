@@ -3,9 +3,12 @@
 namespace MediaWiki\Block\Hook;
 
 use MediaWiki\Block\AbstractBlock;
-use User;
+use MediaWiki\User\User;
 
 /**
+ * This is a hook handler interface, see docs/Hooks.md.
+ * Use the hook name "GetUserBlock" to register handlers implementing this interface.
+ *
  * @stable to implement
  * @ingroup Hooks
  */

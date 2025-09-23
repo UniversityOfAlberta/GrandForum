@@ -2,9 +2,12 @@
 
 namespace MediaWiki\Hook;
 
-use WebRequest;
+use MediaWiki\Request\WebRequest;
 
 /**
+ * This is a hook handler interface, see docs/Hooks.md.
+ * Use the hook name "SpecialLogAddLogSearchRelations" to register handlers implementing this interface.
+ *
  * @stable to implement
  * @ingroup Hooks
  */

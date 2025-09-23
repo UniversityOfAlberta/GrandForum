@@ -1,10 +1,5 @@
 <?php
-
-use MediaWiki\MediaWikiServices;
-
 /**
- * Implements Special:FileDuplicateSearch
- *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -21,82 +16,91 @@ use MediaWiki\MediaWikiServices;
  * http://www.gnu.org/copyleft/gpl.html
  *
  * @file
- * @ingroup SpecialPage
- * @author Raimond Spekking, based on Special:MIMESearch by Ævar Arnfjörð Bjarmason
  */
 
+namespace MediaWiki\Specials;
+
+use File;
+use MediaWiki\Cache\LinkBatchFactory;
+use MediaWiki\HTMLForm\HTMLForm;
+use MediaWiki\Language\ILanguageConverter;
+use MediaWiki\Languages\LanguageConverterFactory;
+use MediaWiki\Linker\Linker;
+use MediaWiki\SpecialPage\SpecialPage;
+use MediaWiki\Title\Title;
+use RepoGroup;
+use SearchEngineFactory;
+
 /**
- * Searches the database for files of the requested hash, comparing this with the
+ * Search the database for files of the requested hash, comparing this with the
  * 'img_sha1' field in the image table.
  *
  * @ingroup SpecialPage
+ * @author Raimond Spekking, based on Special:MIMESearch by Ævar Arnfjörð Bjarmason
  */
-class SpecialFileDuplicateSearch extends QueryPage {
-	protected $hash = '', $filename = '';
+class SpecialFileDuplicateSearch extends SpecialPage {
+	/**
+	 * @var string The form input hash
+	 */
+	private $hash = '';
 
 	/**
-	 * @var File selected reference file, if present
+	 * @var string The form input filename
 	 */
-	protected $file = null;
+	private $filename = '';
 
-	public function __construct( $name = 'FileDuplicateSearch' ) {
-		parent::__construct( $name );
-	}
+	/**
+	 * @var File|null selected reference file, if present
+	 */
+	private $file = null;
 
-	public function isSyndicated() {
-		return false;
-	}
+	private LinkBatchFactory $linkBatchFactory;
+	private RepoGroup $repoGroup;
+	private SearchEngineFactory $searchEngineFactory;
+	private ILanguageConverter $languageConverter;
 
-	public function isCacheable() {
-		return false;
-	}
-
-	public function isCached() {
-		return false;
-	}
-
-	protected function linkParameters() {
-		return [ 'filename' => $this->filename ];
+	/**
+	 * @param LinkBatchFactory $linkBatchFactory
+	 * @param RepoGroup $repoGroup
+	 * @param SearchEngineFactory $searchEngineFactory
+	 * @param LanguageConverterFactory $languageConverterFactory
+	 */
+	public function __construct(
+		LinkBatchFactory $linkBatchFactory,
+		RepoGroup $repoGroup,
+		SearchEngineFactory $searchEngineFactory,
+		LanguageConverterFactory $languageConverterFactory
+	) {
+		parent::__construct( 'FileDuplicateSearch' );
+		$this->linkBatchFactory = $linkBatchFactory;
+		$this->repoGroup = $repoGroup;
+		$this->searchEngineFactory = $searchEngineFactory;
+		$this->languageConverter = $languageConverterFactory->getLanguageConverter( $this->getContentLanguage() );
 	}
 
 	/**
 	 * Fetch dupes from all connected file repositories.
 	 *
-	 * @return array Array of File objects
+	 * @return File[]
 	 */
 	private function getDupes() {
-		return MediaWikiServices::getInstance()->getRepoGroup()->findBySha1( $this->hash );
+		return $this->repoGroup->findBySha1( $this->hash );
 	}
 
 	/**
-	 * @param array $dupes Array of File objects
+	 * @param File[] $dupes
 	 */
 	private function showList( $dupes ) {
 		$html = [];
-		$html[] = $this->openList( 0 );
+		$html[] = "<ol class='special'>";
 
 		foreach ( $dupes as $dupe ) {
-			$line = $this->formatResult( null, $dupe );
+			$line = $this->formatResult( $dupe );
 			$html[] = "<li>" . $line . "</li>";
 		}
-		$html[] = $this->closeList();
+		$html[] = '</ol>';
 
 		$this->getOutput()->addHTML( implode( "\n", $html ) );
-	}
-
-	public function getQueryInfo() {
-		$imgQuery = LocalFile::getQueryInfo();
-		return [
-			'tables' => $imgQuery['tables'],
-			'fields' => [
-				'title' => 'img_name',
-				'value' => 'img_sha1',
-				'img_user_text' => $imgQuery['fields']['img_user_text'],
-				'img_timestamp'
-			],
-			'conds' => [ 'img_sha1' => $this->hash ],
-			'join_conds' => $imgQuery['joins'],
-		];
 	}
 
 	public function execute( $par ) {
@@ -108,7 +112,7 @@ class SpecialFileDuplicateSearch extends QueryPage {
 		$this->hash = '';
 		$title = Title::newFromText( $this->filename, NS_FILE );
 		if ( $title && $title->getText() != '' ) {
-			$this->file = MediaWikiServices::getInstance()->getRepoGroup()->findFile( $title );
+			$this->file = $this->repoGroup->findFile( $title );
 		}
 
 		$out = $this->getOutput();
@@ -124,12 +128,8 @@ class SpecialFileDuplicateSearch extends QueryPage {
 				'default' => $this->filename,
 			],
 		];
-		$hiddenFields = [
-			'title' => $this->getPageTitle()->getPrefixedDBkey(),
-		];
 		$htmlForm = HTMLForm::factory( 'ooui', $formFields, $this->getContext() );
-		$htmlForm->addHiddenFields( $hiddenFields );
-		$htmlForm->setAction( wfScript() );
+		$htmlForm->setTitle( $this->getPageTitle() );
 		$htmlForm->setMethod( 'get' );
 		$htmlForm->setSubmitTextMsg( $this->msg( 'fileduplicatesearch-submit' ) );
 
@@ -155,10 +155,10 @@ class SpecialFileDuplicateSearch extends QueryPage {
 					$out->addModuleStyles( 'mediawiki.special' );
 					$out->addHTML( '<div id="mw-fileduplicatesearch-icon">' .
 						$thumb->toHtml( [ 'desc-link' => false ] ) . '<br />' .
-						$this->msg( 'fileduplicatesearch-info' )->numParams(
-							$img->getWidth(), $img->getHeight() )->params(
-								$this->getLanguage()->formatSize( $img->getSize() ),
-								$img->getMimeType() )->parseAsBlock() .
+						$this->msg( 'fileduplicatesearch-info' )
+							->numParams( $img->getWidth(), $img->getHeight() )
+							->sizeParams( $img->getSize() )
+							->params( $img->getMimeType() )->parseAsBlock() .
 						'</div>' );
 				}
 			}
@@ -185,15 +185,19 @@ class SpecialFileDuplicateSearch extends QueryPage {
 		}
 	}
 
+	/**
+	 * @param File[] $list
+	 */
 	private function doBatchLookups( $list ) {
-		$batch = new LinkBatch();
-		/** @var File $file */
+		$batch = $this->linkBatchFactory->newLinkBatch();
 		foreach ( $list as $file ) {
 			$batch->addObj( $file->getTitle() );
 			if ( $file->isLocal() ) {
-				$userName = $file->getUser( 'text' );
-				$batch->add( NS_USER, $userName );
-				$batch->add( NS_USER_TALK, $userName );
+				$uploader = $file->getUploader( File::FOR_THIS_USER, $this->getAuthority() );
+				if ( $uploader ) {
+					$batch->add( NS_USER, $uploader->getName() );
+					$batch->add( NS_USER_TALK, $uploader->getName() );
+				}
 			}
 		}
 
@@ -201,30 +205,29 @@ class SpecialFileDuplicateSearch extends QueryPage {
 	}
 
 	/**
-	 * @param Skin $skin
 	 * @param File $result
 	 * @return string HTML
 	 */
-	public function formatResult( $skin, $result ) {
+	private function formatResult( $result ) {
 		$linkRenderer = $this->getLinkRenderer();
 		$nt = $result->getTitle();
-		$text = MediaWikiServices::getInstance()->getContentLanguage()->convert(
-			htmlspecialchars( $nt->getText() )
-		);
+		$text = $this->languageConverter->convert( $nt->getText() );
 		$plink = $linkRenderer->makeLink(
 			$nt,
-			new HtmlArmor( $text )
+			$text
 		);
 
-		$userText = $result->getUser( 'text' );
-		if ( $result->isLocal() ) {
-			$userId = $result->getUser( 'id' );
-			$user = Linker::userLink( $userId, $userText );
+		$uploader = $result->getUploader( File::FOR_THIS_USER, $this->getAuthority() );
+		if ( $result->isLocal() && $uploader ) {
+			$user = Linker::userLink( $uploader->getId(), $uploader->getName() );
 			$user .= '<span style="white-space: nowrap;">';
-			$user .= Linker::userToolLinks( $userId, $userText );
+			$user .= Linker::userToolLinks( $uploader->getId(), $uploader->getName() );
 			$user .= '</span>';
+		} elseif ( $uploader ) {
+			$user = htmlspecialchars( $uploader->getName() );
 		} else {
-			$user = htmlspecialchars( $userText );
+			$user = '<span class="history-deleted">'
+				. $this->msg( 'rev-deleted-user' )->escaped() . '</span>';
 		}
 
 		$time = htmlspecialchars( $this->getLanguage()->userTimeAndDate(
@@ -247,13 +250,13 @@ class SpecialFileDuplicateSearch extends QueryPage {
 			// No prefix suggestion outside of file namespace
 			return [];
 		}
-		$searchEngine = MediaWikiServices::getInstance()->newSearchEngine();
+		$searchEngine = $this->searchEngineFactory->create();
 		$searchEngine->setLimitOffset( $limit, $offset );
 		// Autocomplete subpage the same as a normal search, but just for files
 		$searchEngine->setNamespaces( [ NS_FILE ] );
 		$result = $searchEngine->defaultPrefixSearch( $search );
 
-		return array_map( function ( Title $t ) {
+		return array_map( static function ( Title $t ) {
 			// Remove namespace in search suggestion
 			return $t->getText();
 		}, $result );
@@ -263,3 +266,6 @@ class SpecialFileDuplicateSearch extends QueryPage {
 		return 'media';
 	}
 }
+
+/** @deprecated class alias since 1.41 */
+class_alias( SpecialFileDuplicateSearch::class, 'SpecialFileDuplicateSearch' );

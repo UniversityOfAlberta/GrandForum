@@ -1,8 +1,6 @@
 <?php
 /**
- * Implements Special:Listusers
- *
- * Copyright © 2004 Brion Vibber, lcrocker, Tim Starling,
+ * Copyright © 2004 Brooke Vibber, lcrocker, Tim Starling,
  * Domas Mituzas, Antoine Musso, Jens Frank, Zhengzhu,
  * 2006 Rob Church <robchur@gmail.com>
  *
@@ -22,26 +20,72 @@
  * http://www.gnu.org/copyleft/gpl.html
  *
  * @file
- * @ingroup SpecialPage
  */
 
+namespace MediaWiki\Specials;
+
+use MediaWiki\Block\HideUserUtils;
+use MediaWiki\Cache\LinkBatchFactory;
+use MediaWiki\Html\Html;
+use MediaWiki\Pager\UsersPager;
+use MediaWiki\SpecialPage\IncludableSpecialPage;
+use MediaWiki\User\UserGroupManager;
+use MediaWiki\User\UserIdentityLookup;
+use Wikimedia\Rdbms\IConnectionProvider;
+
 /**
+ * Implements Special:Listusers
+ *
  * @ingroup SpecialPage
  */
 class SpecialListUsers extends IncludableSpecialPage {
 
-	public function __construct() {
+	private LinkBatchFactory $linkBatchFactory;
+	private IConnectionProvider $dbProvider;
+	private UserGroupManager $userGroupManager;
+	private UserIdentityLookup $userIdentityLookup;
+	private HideUserUtils $hideUserUtils;
+
+	/**
+	 * @param LinkBatchFactory $linkBatchFactory
+	 * @param IConnectionProvider $dbProvider
+	 * @param UserGroupManager $userGroupManager
+	 * @param UserIdentityLookup $userIdentityLookup
+	 * @param HideUserUtils $hideUserUtils
+	 */
+	public function __construct(
+		LinkBatchFactory $linkBatchFactory,
+		IConnectionProvider $dbProvider,
+		UserGroupManager $userGroupManager,
+		UserIdentityLookup $userIdentityLookup,
+		HideUserUtils $hideUserUtils
+	) {
 		parent::__construct( 'Listusers' );
+		$this->linkBatchFactory = $linkBatchFactory;
+		$this->dbProvider = $dbProvider;
+		$this->userGroupManager = $userGroupManager;
+		$this->userIdentityLookup = $userIdentityLookup;
+		$this->hideUserUtils = $hideUserUtils;
 	}
 
 	/**
-	 * @param string|null $par (optional) A group to list users from
+	 * @param string|null $par A group to list users from
 	 */
 	public function execute( $par ) {
 		$this->setHeaders();
 		$this->outputHeader();
 
-		$up = new UsersPager( $this->getContext(), $par, $this->including() );
+		$up = new UsersPager(
+			$this->getContext(),
+			$this->getHookContainer(),
+			$this->linkBatchFactory,
+			$this->dbProvider,
+			$this->userGroupManager,
+			$this->userIdentityLookup,
+			$this->hideUserUtils,
+			$par,
+			$this->including()
+		);
 
 		# getBody() first to check, if empty
 		$usersbody = $up->getBody();
@@ -70,10 +114,13 @@ class SpecialListUsers extends IncludableSpecialPage {
 	 * @return string[] subpages
 	 */
 	public function getSubpagesForPrefixSearch() {
-		return User::getAllGroups();
+		return $this->userGroupManager->listAllGroups();
 	}
 
 	protected function getGroupName() {
 		return 'users';
 	}
 }
+
+/** @deprecated class alias since 1.41 */
+class_alias( SpecialListUsers::class, 'SpecialListUsers' );

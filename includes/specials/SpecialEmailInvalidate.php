@@ -1,7 +1,5 @@
 <?php
 /**
- * Implements Special:EmailInvalidation
- *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -18,18 +16,34 @@
  * http://www.gnu.org/copyleft/gpl.html
  *
  * @file
- * @ingroup SpecialPage
  */
 
+namespace MediaWiki\Specials;
+
+use MediaWiki\SpecialPage\UnlistedSpecialPage;
+use MediaWiki\User\UserFactory;
+use Profiler;
+use Wikimedia\Rdbms\IDBAccessObject;
+use Wikimedia\ScopedCallback;
+
 /**
- * Special page allows users to cancel an email confirmation using the e-mail
- * confirmation code
+ * Cancel an email confirmation using the e-mail confirmation code.
  *
+ * @see SpecialConfirmEmail
  * @ingroup SpecialPage
+ * @ingroup Auth
  */
 class SpecialEmailInvalidate extends UnlistedSpecialPage {
-	public function __construct() {
+
+	private UserFactory $userFactory;
+
+	/**
+	 * @param UserFactory $userFactory
+	 */
+	public function __construct( UserFactory $userFactory ) {
 		parent::__construct( 'Invalidateemail', 'editmyprivateinfo' );
+
+		$this->userFactory = $userFactory;
 	}
 
 	public function doesWrites() {
@@ -37,7 +51,7 @@ class SpecialEmailInvalidate extends UnlistedSpecialPage {
 	}
 
 	public function execute( $code ) {
-		// Ignore things like master queries/connections on GET requests.
+		// Ignore things like primary queries/connections on GET requests.
 		// It's very convenient to just allow formless link usage.
 		$trxProfiler = Profiler::instance()->getTransactionProfiler();
 
@@ -45,9 +59,9 @@ class SpecialEmailInvalidate extends UnlistedSpecialPage {
 		$this->checkReadOnly();
 		$this->checkPermissions();
 
-		$old = $trxProfiler->setSilenced( true );
+		$scope = $trxProfiler->silenceForScope( $trxProfiler::EXPECTATION_REPLICAS_ONLY );
 		$this->attemptInvalidate( $code );
-		$trxProfiler->setSilenced( $old );
+		ScopedCallback::consume( $scope );
 	}
 
 	/**
@@ -57,7 +71,11 @@ class SpecialEmailInvalidate extends UnlistedSpecialPage {
 	 * @param string $code Confirmation code
 	 */
 	private function attemptInvalidate( $code ) {
-		$user = User::newFromConfirmationCode( $code, User::READ_LATEST );
+		$user = $this->userFactory->newFromConfirmationCode(
+			(string)$code,
+			IDBAccessObject::READ_LATEST
+		);
+
 		if ( !is_object( $user ) ) {
 			$this->getOutput()->addWikiMsg( 'confirmemail_invalid' );
 
@@ -68,8 +86,11 @@ class SpecialEmailInvalidate extends UnlistedSpecialPage {
 		$user->saveSettings();
 		$this->getOutput()->addWikiMsg( 'confirmemail_invalidated' );
 
-		if ( !$this->getUser()->isLoggedIn() ) {
+		if ( !$this->getUser()->isRegistered() ) {
 			$this->getOutput()->returnToMain();
 		}
 	}
 }
+
+/** @deprecated class alias since 1.41 */
+class_alias( SpecialEmailInvalidate::class, 'SpecialEmailInvalidate' );

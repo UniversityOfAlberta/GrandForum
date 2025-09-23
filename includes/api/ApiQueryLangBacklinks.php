@@ -23,13 +23,19 @@
  * @file
  */
 
+namespace MediaWiki\Api;
+
+use MediaWiki\Title\Title;
+use Wikimedia\ParamValidator\ParamValidator;
+use Wikimedia\ParamValidator\TypeDef\IntegerDef;
+
 /**
  * This gives links pointing to the given interwiki
  * @ingroup API
  */
 class ApiQueryLangBacklinks extends ApiQueryGeneratorBase {
 
-	public function __construct( ApiQuery $query, $moduleName ) {
+	public function __construct( ApiQuery $query, string $moduleName ) {
 		parent::__construct( $query, $moduleName, 'lbl' );
 	}
 
@@ -60,24 +66,17 @@ class ApiQueryLangBacklinks extends ApiQueryGeneratorBase {
 		}
 
 		if ( $params['continue'] !== null ) {
-			$cont = explode( '|', $params['continue'] );
-			$this->dieContinueUsageIf( count( $cont ) != 3 );
-
+			$cont = $this->parseContinueParamOrDie( $params['continue'], [ 'string', 'string', 'int' ] );
 			$db = $this->getDB();
-			$op = $params['dir'] == 'descending' ? '<' : '>';
-			$prefix = $db->addQuotes( $cont[0] );
-			$title = $db->addQuotes( $cont[1] );
-			$from = (int)$cont[2];
-			$this->addWhere(
-				"ll_lang $op $prefix OR " .
-				"(ll_lang = $prefix AND " .
-				"(ll_title $op $title OR " .
-				"(ll_title = $title AND " .
-				"ll_from $op= $from)))"
-			);
+			$op = $params['dir'] == 'descending' ? '<=' : '>=';
+			$this->addWhere( $db->buildComparison( $op, [
+				'll_lang' => $cont[0],
+				'll_title' => $cont[1],
+				'll_from' => $cont[2],
+			] ) );
 		}
 
-		$prop = array_flip( $params['prop'] );
+		$prop = array_fill_keys( $params['prop'], true );
 		$lllang = isset( $prop['lllang'] );
 		$lltitle = isset( $prop['lltitle'] );
 
@@ -182,24 +181,24 @@ class ApiQueryLangBacklinks extends ApiQueryGeneratorBase {
 				ApiBase::PARAM_HELP_MSG => 'api-help-param-continue',
 			],
 			'limit' => [
-				ApiBase::PARAM_DFLT => 10,
-				ApiBase::PARAM_TYPE => 'limit',
-				ApiBase::PARAM_MIN => 1,
-				ApiBase::PARAM_MAX => ApiBase::LIMIT_BIG1,
-				ApiBase::PARAM_MAX2 => ApiBase::LIMIT_BIG2
+				ParamValidator::PARAM_DEFAULT => 10,
+				ParamValidator::PARAM_TYPE => 'limit',
+				IntegerDef::PARAM_MIN => 1,
+				IntegerDef::PARAM_MAX => ApiBase::LIMIT_BIG1,
+				IntegerDef::PARAM_MAX2 => ApiBase::LIMIT_BIG2
 			],
 			'prop' => [
-				ApiBase::PARAM_ISMULTI => true,
-				ApiBase::PARAM_DFLT => '',
-				ApiBase::PARAM_TYPE => [
+				ParamValidator::PARAM_ISMULTI => true,
+				ParamValidator::PARAM_DEFAULT => '',
+				ParamValidator::PARAM_TYPE => [
 					'lllang',
 					'lltitle',
 				],
 				ApiBase::PARAM_HELP_MSG_PER_VALUE => [],
 			],
 			'dir' => [
-				ApiBase::PARAM_DFLT => 'ascending',
-				ApiBase::PARAM_TYPE => [
+				ParamValidator::PARAM_DEFAULT => 'ascending',
+				ParamValidator::PARAM_TYPE => [
 					'ascending',
 					'descending'
 				]
@@ -220,3 +219,6 @@ class ApiQueryLangBacklinks extends ApiQueryGeneratorBase {
 		return 'https://www.mediawiki.org/wiki/Special:MyLanguage/API:Langbacklinks';
 	}
 }
+
+/** @deprecated class alias since 1.43 */
+class_alias( ApiQueryLangBacklinks::class, 'ApiQueryLangBacklinks' );

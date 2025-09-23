@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,23 +21,24 @@
 
 namespace MediaWiki\Page;
 
-use MergeHistory;
-use Title;
-
 /**
+ * Service for mergehistory actions.
+ *
+ * Default implementation is MediaWiki\Page\PageCommandFactory.
+ *
  * @since 1.35
  */
 interface MergeHistoryFactory {
 
 	/**
-	 * @param Title $source
-	 * @param Title $destination
+	 * @param PageIdentity $source
+	 * @param PageIdentity $destination
 	 * @param string|null $timestamp
 	 * @return MergeHistory
 	 */
 	public function newMergeHistory(
-		Title $source,
-		Title $destination,
-		string $timestamp = null
-	) : MergeHistory;
+		PageIdentity $source,
+		PageIdentity $destination,
+		?string $timestamp = null
+	): MergeHistory;
 }

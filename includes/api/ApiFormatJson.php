@@ -20,15 +20,21 @@
  * @file
  */
 
+namespace MediaWiki\Api;
+
+use MediaWiki\Json\FormatJson;
+use Wikimedia\ParamValidator\ParamValidator;
+
 /**
  * API JSON output formatter
  * @ingroup API
  */
 class ApiFormatJson extends ApiFormatBase {
 
+	/** @var bool */
 	private $isRaw;
 
-	public function __construct( ApiMain $main, $format ) {
+	public function __construct( ApiMain $main, string $format ) {
 		parent::__construct( $main, $format );
 		$this->isRaw = ( $format === 'rawfm' );
 
@@ -82,7 +88,7 @@ class ApiFormatJson extends ApiFormatBase {
 				default:
 					// Should have been caught during parameter validation
 					// @codeCoverageIgnoreStart
-					$this->dieDebug( __METHOD__, 'Unknown value for \'formatversion\'' );
+					self::dieDebug( __METHOD__, 'Unknown value for \'formatversion\'' );
 					// @codeCoverageIgnoreEnd
 			}
 		}
@@ -92,17 +98,8 @@ class ApiFormatJson extends ApiFormatBase {
 			// This should never happen, but it's a bug which could crop up
 			// if you use ApiResult::NO_VALIDATE for instance.
 			// @codeCoverageIgnoreStart
-			$this->dieDebug( __METHOD__, 'Unable to encode API result as JSON' );
+			self::dieDebug( __METHOD__, 'Unable to encode API result as JSON' );
 			// @codeCoverageIgnoreEnd
-		}
-
-		// T68776: OutputHandler::mangleFlashPolicy() avoids a nasty bug in
-		// Flash, but what it does isn't friendly for the API, so we need to
-		// work around it.
-		if ( preg_match( '/\<\s*cross-domain-policy(?=\s|\>)/i', $json ) ) {
-			$json = preg_replace(
-				'/\<(\s*cross-domain-policy(?=\s|\>))/i', '\\u003C$1', $json
-			);
 		}
 
 		if ( isset( $params['callback'] ) ) {
@@ -120,24 +117,31 @@ class ApiFormatJson extends ApiFormatBase {
 			return parent::getAllowedParams();
 		}
 
-		$ret = parent::getAllowedParams() + [
+		return parent::getAllowedParams() + [
 			'callback' => [
 				ApiBase::PARAM_HELP_MSG => 'apihelp-json-param-callback',
 			],
 			'utf8' => [
-				ApiBase::PARAM_DFLT => false,
+				ParamValidator::PARAM_DEFAULT => false,
 				ApiBase::PARAM_HELP_MSG => 'apihelp-json-param-utf8',
 			],
 			'ascii' => [
-				ApiBase::PARAM_DFLT => false,
+				ParamValidator::PARAM_DEFAULT => false,
 				ApiBase::PARAM_HELP_MSG => 'apihelp-json-param-ascii',
 			],
 			'formatversion' => [
-				ApiBase::PARAM_TYPE => [ '1', '2', 'latest' ],
-				ApiBase::PARAM_DFLT => '1',
+				ParamValidator::PARAM_TYPE => [ '1', '2', 'latest' ],
+				ParamValidator::PARAM_DEFAULT => '1',
 				ApiBase::PARAM_HELP_MSG => 'apihelp-json-param-formatversion',
+				ApiBase::PARAM_HELP_MSG_PER_VALUE => [
+					'1' => 'apihelp-json-paramvalue-formatversion-1',
+					'2' => 'apihelp-json-paramvalue-formatversion-2',
+					'latest' => 'apihelp-json-paramvalue-formatversion-latest',
+				],
 			],
 		];
-		return $ret;
 	}
 }
+
+/** @deprecated class alias since 1.43 */
+class_alias( ApiFormatJson::class, 'ApiFormatJson' );

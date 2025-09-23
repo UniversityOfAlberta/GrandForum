@@ -2,14 +2,14 @@
 
 namespace MediaWiki\Rest\Handler;
 
-use FormatJson;
-use IApiMessage;
-use MediaWiki\Rest\HttpException;
+use MediaWiki\Api\IApiMessage;
+use MediaWiki\Content\TextContent;
+use MediaWiki\Json\FormatJson;
+use MediaWiki\ParamValidator\TypeDef\ArrayDef;
 use MediaWiki\Rest\LocalizedHttpException;
-use MediaWiki\Rest\Validator\JsonBodyValidator;
 use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Revision\SlotRecord;
-use TextContent;
+use MediaWiki\Utils\MWTimestamp;
 use Wikimedia\Message\MessageValue;
 use Wikimedia\ParamValidator\ParamValidator;
 
@@ -49,21 +49,14 @@ class UpdateHandler extends EditHandler {
 				ParamValidator::PARAM_TYPE => 'string',
 				ParamValidator::PARAM_REQUIRED => true,
 			],
-		];
+		] + parent::getParamSettings();
 	}
 
 	/**
 	 * @inheritDoc
 	 */
-	public function getBodyValidator( $contentType ) {
-		if ( $contentType !== 'application/json' ) {
-			throw new HttpException( "Unsupported Content-Type",
-				415,
-				[ 'content_type' => $contentType ]
-			);
-		}
-
-		return new JsonBodyValidator( [
+	public function getBodyParamSettings(): array {
+		return [
 			'source' => [
 				self::PARAM_SOURCE => 'body',
 				ParamValidator::PARAM_TYPE => 'string',
@@ -83,14 +76,12 @@ class UpdateHandler extends EditHandler {
 				self::PARAM_SOURCE => 'body',
 				ParamValidator::PARAM_TYPE => 'array',
 				ParamValidator::PARAM_REQUIRED => false,
+				ArrayDef::PARAM_SCHEMA => ArrayDef::makeObjectSchema(
+					[ 'id' => 'integer' ],
+					[ 'timestamp' => 'string' ], // from GET response, will be ignored
+				),
 			],
-			'token' => [
-				self::PARAM_SOURCE => 'body',
-				ParamValidator::PARAM_TYPE => 'string',
-				ParamValidator::PARAM_REQUIRED => false,
-				ParamValidator::PARAM_DEFAULT => '',
-			],
-		] );
+		] + $this->getTokenParamDefinition();
 	}
 
 	/**
@@ -98,6 +89,7 @@ class UpdateHandler extends EditHandler {
 	 */
 	protected function getActionModuleParameters() {
 		$body = $this->getValidatedBody();
+		'@phan-var array $body';
 
 		$title = $this->getTitleParameter();
 		$baseRevId = $body['latest']['id'] ?? 0;
@@ -110,7 +102,9 @@ class UpdateHandler extends EditHandler {
 			);
 		}
 
-		$token = $this->getActionModuleToken();
+		// Use a known good CSRF token if a token is not needed because we are
+		// using a method of authentication that protects against CSRF, like OAuth.
+		$token = $this->needsToken() ? $this->getToken() : $this->getUser()->getEditToken();
 
 		$params = [
 			'action' => 'edit',
@@ -132,6 +126,25 @@ class UpdateHandler extends EditHandler {
 		}
 
 		return $params;
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	protected function mapActionModuleResult( array $data ) {
+		if ( isset( $data['edit']['nochange'] ) ) {
+			// Null-edit, no new revision was created. The new revision is the same as the old.
+			// We may want to signal this more explicitly to the client in the future.
+
+			$title = $this->titleParser->parseTitle( $this->getValidatedParams()['title'] );
+			$currentRev = $this->revisionLookup->getRevisionByTitle( $title );
+
+			$data['edit']['newrevid'] = $currentRev->getId();
+			$data['edit']['newtimestamp']
+				= MWTimestamp::convert( TS_ISO_8601, $currentRev->getTimestamp() );
+		}
+
+		return parent::mapActionModuleResult( $data );
 	}
 
 	/**
@@ -172,6 +185,7 @@ class UpdateHandler extends EditHandler {
 	 */
 	private function getConflictData() {
 		$body = $this->getValidatedBody();
+		'@phan-var array $body';
 		$baseRevId = $body['latest']['id'] ?? 0;
 		$title = $this->titleParser->parseTitle( $this->getValidatedParams()['title'] );
 
@@ -185,12 +199,12 @@ class UpdateHandler extends EditHandler {
 		$baseContent = $baseRev->getContent(
 			SlotRecord::MAIN,
 			RevisionRecord::FOR_THIS_USER,
-			$this->getUser()
+			$this->getAuthority()
 		);
 		$currentContent = $currentRev->getContent(
 			SlotRecord::MAIN,
 			RevisionRecord::FOR_THIS_USER,
-			$this->getUser()
+			$this->getAuthority()
 		);
 
 		if ( !$baseContent || !$currentContent ) {
@@ -237,6 +251,6 @@ class UpdateHandler extends EditHandler {
 		}
 
 		$json = ( $this->jsonDiffFunction )( $from->getText(), $to->getText(), 2 );
-		return FormatJson::decode( $json, FormatJson::FORCE_ASSOC );
+		return FormatJson::decode( $json, true );
 	}
 }

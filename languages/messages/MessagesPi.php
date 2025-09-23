@@ -1,10 +1,8 @@
 <?php
 /** Pali (पालि)
  *
- * To improve a translation please visit https://translatewiki.net
- *
- * @ingroup Language
  * @file
+ * @ingroup Languages
  *
  * @author Eukesh (on pi.wikipedia.org)
  * @author Hemant wikikosh1

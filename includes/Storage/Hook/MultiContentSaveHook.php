@@ -2,12 +2,15 @@
 
 namespace MediaWiki\Storage\Hook;
 
-use CommentStoreComment;
+use MediaWiki\CommentStore\CommentStoreComment;
 use MediaWiki\Revision\RenderedRevision;
+use MediaWiki\Status\Status;
 use MediaWiki\User\UserIdentity;
-use Status;
 
 /**
+ * This is a hook handler interface, see docs/Hooks.md.
+ * Use the hook name "MultiContentSave" to register handlers implementing this interface.
+ *
  * @stable to implement
  * @ingroup Hooks
  */

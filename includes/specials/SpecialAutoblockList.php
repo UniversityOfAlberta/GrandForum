@@ -1,7 +1,5 @@
 <?php
 /**
- * Implements Special:AutoblockList
- *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -18,21 +16,70 @@
  * http://www.gnu.org/copyleft/gpl.html
  *
  * @file
- * @ingroup SpecialPage
  */
 
-use MediaWiki\MediaWikiServices;
+namespace MediaWiki\Specials;
+
+use MediaWiki\Block\BlockActionInfo;
+use MediaWiki\Block\BlockRestrictionStore;
+use MediaWiki\Block\BlockUtils;
+use MediaWiki\Block\HideUserUtils;
+use MediaWiki\Cache\LinkBatchFactory;
+use MediaWiki\CommentFormatter\RowCommentFormatter;
+use MediaWiki\CommentStore\CommentStore;
+use MediaWiki\Html\Html;
+use MediaWiki\HTMLForm\HTMLForm;
+use MediaWiki\Pager\BlockListPager;
+use MediaWiki\SpecialPage\SpecialPage;
+use Wikimedia\Rdbms\IConnectionProvider;
 
 /**
- * A special page that lists autoblocks
+ * List of autoblocks
  *
  * @since 1.29
  * @ingroup SpecialPage
  */
 class SpecialAutoblockList extends SpecialPage {
 
-	public function __construct() {
+	private LinkBatchFactory $linkBatchFactory;
+	private BlockRestrictionStore $blockRestrictionStore;
+	private IConnectionProvider $dbProvider;
+	private CommentStore $commentStore;
+	private BlockUtils $blockUtils;
+	private HideUserUtils $hideUserUtils;
+	private BlockActionInfo $blockActionInfo;
+	private RowCommentFormatter $rowCommentFormatter;
+
+	/**
+	 * @param LinkBatchFactory $linkBatchFactory
+	 * @param BlockRestrictionStore $blockRestrictionStore
+	 * @param IConnectionProvider $dbProvider
+	 * @param CommentStore $commentStore
+	 * @param BlockUtils $blockUtils
+	 * @param HideUserUtils $hideUserUtils
+	 * @param BlockActionInfo $blockActionInfo
+	 * @param RowCommentFormatter $rowCommentFormatter
+	 */
+	public function __construct(
+		LinkBatchFactory $linkBatchFactory,
+		BlockRestrictionStore $blockRestrictionStore,
+		IConnectionProvider $dbProvider,
+		CommentStore $commentStore,
+		BlockUtils $blockUtils,
+		HideUserUtils $hideUserUtils,
+		BlockActionInfo $blockActionInfo,
+		RowCommentFormatter $rowCommentFormatter
+	) {
 		parent::__construct( 'AutoblockList' );
+
+		$this->linkBatchFactory = $linkBatchFactory;
+		$this->blockRestrictionStore = $blockRestrictionStore;
+		$this->dbProvider = $dbProvider;
+		$this->commentStore = $commentStore;
+		$this->blockUtils = $blockUtils;
+		$this->hideUserUtils = $hideUserUtils;
+		$this->blockActionInfo = $blockActionInfo;
+		$this->rowCommentFormatter = $rowCommentFormatter;
 	}
 
 	/**
@@ -42,7 +89,7 @@ class SpecialAutoblockList extends SpecialPage {
 		$this->setHeaders();
 		$this->outputHeader();
 		$out = $this->getOutput();
-		$out->setPageTitle( $this->msg( 'autoblocklist' ) );
+		$out->setPageTitleMsg( $this->msg( 'autoblocklist' ) );
 		$this->addHelpLink( 'Autoblock' );
 		$out->addModuleStyles( [ 'mediawiki.special' ] );
 
@@ -60,17 +107,15 @@ class SpecialAutoblockList extends SpecialPage {
 			]
 		];
 
-		$context = new DerivativeContext( $this->getContext() );
-		$context->setTitle( $this->getPageTitle() ); // Remove subpage
-		$form = HTMLForm::factory( 'ooui', $fields, $context );
+		$form = HTMLForm::factory( 'ooui', $fields, $this->getContext() );
 		$form->setMethod( 'get' )
+			->setTitle( $this->getPageTitle() ) // Remove subpage
 			->setFormIdentifier( 'blocklist' )
 			->setWrapperLegendMsg( 'autoblocklist-legend' )
 			->setSubmitTextMsg( 'autoblocklist-submit' )
 			->prepareForm()
 			->displayForm( false );
 
-		$this->showTotal( $pager );
 		$this->showList( $pager );
 	}
 
@@ -80,30 +125,26 @@ class SpecialAutoblockList extends SpecialPage {
 	 */
 	protected function getBlockListPager() {
 		$conds = [
-			'ipb_parent_block_id IS NOT NULL'
+			$this->dbProvider->getReplicaDatabase()->expr( 'bl_parent_block_id', '!=', null ),
 		];
 		# Is the user allowed to see hidden blocks?
-		if ( !MediaWikiServices::getInstance()
-			->getPermissionManager()
-			->userHasRight( $this->getUser(), 'hideuser' )
-		) {
-			$conds['ipb_deleted'] = 0;
+		if ( !$this->getAuthority()->isAllowed( 'hideuser' ) ) {
+			$conds['bl_deleted'] = 0;
 		}
 
-		return new BlockListPager( $this, $conds );
-	}
-
-	/**
-	 * Show total number of autoblocks on top of the table
-	 *
-	 * @param BlockListPager $pager The BlockListPager instance for this page
-	 */
-	protected function showTotal( BlockListPager $pager ) {
-		$out = $this->getOutput();
-		$out->addHTML(
-			Html::rawElement( 'div', [ 'style' => 'font-weight: bold;' ],
-				$this->msg( 'autoblocklist-total-autoblocks', $pager->getTotalAutoblocks() )->parse() )
-			. "\n"
+		return new BlockListPager(
+			$this->getContext(),
+			$this->blockActionInfo,
+			$this->blockRestrictionStore,
+			$this->blockUtils,
+			$this->hideUserUtils,
+			$this->commentStore,
+			$this->linkBatchFactory,
+			$this->getLinkRenderer(),
+			$this->dbProvider,
+			$this->rowCommentFormatter,
+			$this->getSpecialPageFactory(),
+			$conds
 		);
 	}
 
@@ -160,3 +201,6 @@ class SpecialAutoblockList extends SpecialPage {
 		return 'users';
 	}
 }
+
+/** @deprecated class alias since 1.41 */
+class_alias( SpecialAutoblockList::class, 'SpecialAutoblockList' );

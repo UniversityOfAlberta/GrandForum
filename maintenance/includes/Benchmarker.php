@@ -26,7 +26,8 @@
  * @ingroup Benchmark
  */
 
-use MediaWiki\MediaWikiServices;
+namespace MediaWiki\Maintenance;
+
 use Wikimedia\RunningStat;
 
 // @codeCoverageIgnoreStart
@@ -39,24 +40,24 @@ require_once __DIR__ . '/../Maintenance.php';
  * @ingroup Benchmark
  */
 abstract class Benchmarker extends Maintenance {
+	/** @var int */
 	protected $defaultCount = 100;
-	private $lang;
 
 	public function __construct() {
 		parent::__construct();
-		$this->addOption( 'count', 'How many times to run a benchmark', false, true );
+		$this->addOption( 'count', "How many times to run a benchmark. Default: {$this->defaultCount}", false, true );
 		$this->addOption( 'verbose', 'Verbose logging of resource usage', false, false, 'v' );
 	}
 
 	public function bench( array $benchs ) {
-		$this->lang = MediaWikiServices::getInstance()->getLanguageFactory()->getLanguage( 'en' );
-
 		$this->startBench();
 		$count = $this->getOption( 'count', $this->defaultCount );
 		$verbose = $this->hasOption( 'verbose' );
 
-		// Normalise
 		$normBenchs = [];
+		$shortNames = [];
+
+		// Normalise
 		foreach ( $benchs as $key => $bench ) {
 			// Shortcut for simple functions
 			if ( is_callable( $bench ) ) {
@@ -72,15 +73,35 @@ abstract class Benchmarker extends Maintenance {
 			if ( is_string( $key ) ) {
 				$name = $key;
 			} else {
+				// @phan-suppress-next-line PhanTypePossiblyInvalidDimOffset False positive
 				if ( is_array( $bench['function'] ) ) {
-					$name = get_class( $bench['function'][0] ) . '::' . $bench['function'][1];
+					$class = $bench['function'][0];
+					if ( is_object( $class ) ) {
+						$class = get_class( $class );
+					}
+					$name = $class . '::' . $bench['function'][1];
 				} else {
+					// @phan-suppress-next-line PhanTypePossiblyInvalidDimOffset False positive
 					$name = strval( $bench['function'] );
 				}
-				$name = sprintf( "%s(%s)",
-					$name,
-					implode( ', ', $bench['args'] )
+				$argsText = implode(
+					', ',
+					array_map(
+						static function ( $a ) {
+							return var_export( $a, true );
+						},
+						// @phan-suppress-next-line PhanTypePossiblyInvalidDimOffset False positive
+						$bench['args']
+					)
 				);
+				$index = $shortNames[$name] = ( $shortNames[$name] ?? 0 ) + 1;
+				$shorten = strlen( $argsText ) > 80 || str_contains( $argsText, "\n" );
+				if ( !$shorten ) {
+					$name = "$name($argsText)";
+				}
+				if ( $shorten || $index > 1 ) {
+					$name = "$name@$index";
+				}
 			}
 
 			$normBenchs[$name] = $bench;
@@ -100,6 +121,7 @@ abstract class Benchmarker extends Maintenance {
 					$bench['setupEach']();
 				}
 				$t = microtime( true );
+				// @phan-suppress-next-line PhanTypePossiblyInvalidDimOffset False positive
 				call_user_func_array( $bench['function'], $bench['args'] );
 				$t = ( microtime( true ) - $t ) * 1000;
 				if ( $verbose ) {
@@ -160,7 +182,7 @@ abstract class Benchmarker extends Maintenance {
 		] as $key => $label ) {
 			$ret .= sprintf( "%' 20s: %s\n",
 				$label,
-				$this->lang->formatSize( $res['usage'][$key] )
+				$this->formatSize( $res['usage'][$key] )
 			);
 		}
 
@@ -170,22 +192,48 @@ abstract class Benchmarker extends Maintenance {
 	protected function verboseRun( $iteration ) {
 		$this->output( sprintf( "#%3d - memory: %-10s - peak: %-10s\n",
 			$iteration,
-			$this->lang->formatSize( memory_get_usage( true ) ),
-			$this->lang->formatSize( memory_get_peak_usage( true ) )
+			$this->formatSize( memory_get_usage( true ) ),
+			$this->formatSize( memory_get_peak_usage( true ) )
 		) );
+	}
+
+	/**
+	 * Format an amount of bytes into short human-readable string.
+	 *
+	 * This is simplified version of Language::formatSize() to avoid pulling
+	 * all the general MediaWiki services, which can significantly influence
+	 * measured memory use.
+	 *
+	 * @param int|float $bytes
+	 * @return string Formatted in using IEC bytes (multiples of 1024)
+	 */
+	private function formatSize( $bytes ): string {
+		if ( $bytes >= ( 1024 ** 3 ) ) {
+			return number_format( $bytes / ( 1024 ** 3 ), 2 ) . ' GiB';
+		}
+		if ( $bytes >= ( 1024 ** 2 ) ) {
+			return number_format( $bytes / ( 1024 ** 2 ), 2 ) . ' MiB';
+		}
+		if ( $bytes >= 1024 ) {
+			return number_format( $bytes / 1024, 1 ) . ' KiB';
+		}
+		return $bytes . ' B';
 	}
 
 	/**
 	 * @since 1.32
 	 * @param string $file Path to file (maybe compressed with gzip)
-	 * @return string Contents of file
+	 * @return string|false Contents of file, or false if file not found
 	 */
 	protected function loadFile( $file ) {
 		$content = file_get_contents( $file );
 		// Detect GZIP compression header
-		if ( substr( $content, 0, 2 ) === "\037\213" ) {
+		if ( str_starts_with( $content, "\037\213" ) ) {
 			$content = gzdecode( $content );
 		}
 		return $content;
 	}
 }
+
+/** @deprecated class alias since 1.43 */
+class_alias( Benchmarker::class, 'Benchmarker' );

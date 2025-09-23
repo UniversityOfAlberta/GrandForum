@@ -23,10 +23,6 @@
 
 namespace MediaWiki\Auth;
 
-use Config;
-use MediaWiki\HookContainer\HookContainer;
-use Psr\Log\LoggerAwareInterface;
-
 /**
  * An AuthenticationProvider is used by AuthManager when authenticating users.
  *
@@ -37,25 +33,7 @@ use Psr\Log\LoggerAwareInterface;
  * @ingroup Auth
  * @since 1.27
  */
-interface AuthenticationProvider extends LoggerAwareInterface {
-
-	/**
-	 * Set AuthManager
-	 * @param AuthManager $manager
-	 */
-	public function setManager( AuthManager $manager );
-
-	/**
-	 * Set configuration
-	 * @param Config $config
-	 */
-	public function setConfig( Config $config );
-
-	/**
-	 * Set the HookContainer
-	 * @param HookContainer $hookContainer
-	 */
-	public function setHookContainer( HookContainer $hookContainer );
+interface AuthenticationProvider {
 
 	/**
 	 * Return a unique identifier for this instance
@@ -89,15 +67,15 @@ interface AuthenticationProvider extends LoggerAwareInterface {
 	 * @see AuthManager::getAuthenticationRequests()
 	 * @param string $action
 	 * @param array $options Options are:
-	 *  - username: User name related to the action, or null/unset if anon.
+	 *  - username: Username related to the action, or null/unset if anon.
 	 *    - ACTION_LOGIN: The currently logged-in user, if any.
 	 *    - ACTION_CREATE: The account creator, if non-anonymous.
 	 *    - ACTION_LINK: The local user being linked to.
 	 *    - ACTION_CHANGE: The user having data changed.
 	 *    - ACTION_REMOVE: The user having data removed.
 	 *    If you leave the username property of the returned requests empty, this
-	 *    will automatically be copied there (except for ACTION_CREATE where it
-	 *    wouldn't really make sense).
+	 *    will automatically be copied there (except for ACTION_CREATE and
+	 *    ACTION_LOGIN).
 	 * @return AuthenticationRequest[]
 	 */
 	public function getAuthenticationRequests( $action, array $options );

@@ -18,6 +18,11 @@
  * @file
  */
 
+namespace MediaWiki\Deferred;
+
+use HTMLFileCache;
+use MediaWiki\Cache\CacheKeyHelper;
+use MediaWiki\Page\PageIdentity;
 use Wikimedia\Assert\Assert;
 
 /**
@@ -27,14 +32,14 @@ use Wikimedia\Assert\Assert;
  * @since 1.35
  */
 class HtmlFileCacheUpdate implements DeferrableUpdate, MergeableUpdate {
-	/** @var string[] List of page prefixed DB keys */
-	private $prefixedDbKeys = [];
+	/** @var PageIdentity[] List of pages */
+	private $pages;
 
 	/**
-	 * @param string[] $prefixedDbKeys List of page prefixed DB keys
+	 * @param PageIdentity[] $pages List of pages
 	 */
-	public function __construct( array $prefixedDbKeys ) {
-		$this->prefixedDbKeys = $prefixedDbKeys;
+	private function __construct( array $pages ) {
+		$this->pages = $pages;
 	}
 
 	public function merge( MergeableUpdate $update ) {
@@ -42,25 +47,31 @@ class HtmlFileCacheUpdate implements DeferrableUpdate, MergeableUpdate {
 		Assert::parameterType( __CLASS__, $update, '$update' );
 		'@phan-var self $update';
 
-		$this->prefixedDbKeys = array_merge( $this->prefixedDbKeys, $update->prefixedDbKeys );
+		$this->pages = array_merge( $this->pages, $update->pages );
 	}
 
 	/**
-	 * @param Traversable|Title[] $titles Array or iterator of Title instances
+	 * @since 1.37
+	 * @param iterable<PageIdentity> $pages PageIdentity instances
+	 *
 	 * @return HtmlFileCacheUpdate
 	 */
-	public static function newFromTitles( $titles ) {
-		$prefixedDbKeys = [];
-		foreach ( $titles as $title ) {
-			$prefixedDbKeys[] = $title->getPrefixedDBkey();
+	public static function newFromPages( $pages ) {
+		$pagesByKey = [];
+		foreach ( $pages as $pg ) {
+			$key = CacheKeyHelper::getKeyForPage( $pg );
+			$pagesByKey[$key] = $pg;
 		}
 
-		return new self( $prefixedDbKeys );
+		return new self( $pagesByKey );
 	}
 
 	public function doUpdate() {
-		foreach ( array_unique( $this->prefixedDbKeys ) as $prefixedDbKey ) {
-			HTMLFileCache::clearFileCache( $prefixedDbKey );
+		foreach ( $this->pages as $pg ) {
+			HTMLFileCache::clearFileCache( $pg );
 		}
 	}
 }
+
+/** @deprecated class alias since 1.42 */
+class_alias( HtmlFileCacheUpdate::class, 'HtmlFileCacheUpdate' );

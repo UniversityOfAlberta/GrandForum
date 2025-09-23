@@ -6,15 +6,11 @@ $vendorDir = dirname(__DIR__);
 $baseDir = $vendorDir;
 
 return array(
-    'eccc0347283a01e62f5536bcf76b6e62' => $vendorDir . '/wikimedia/at-ease/src/Wikimedia/Functions.php',
     '7b11c4dc42b3b3023073cb14e519683c' => $vendorDir . '/ralouphie/getallheaders/src/getallheaders.php',
+    '6e3fae29631ef280660b3cdad06f25a8' => $vendorDir . '/symfony/deprecation-contracts/function.php',
     'c3f7f0e81464740a933532e81fa26cc7' => $vendorDir . '/wikimedia/base-convert/src/Functions.php',
-    'c964ee0ededf28c96ebd9db5099ef910' => $vendorDir . '/guzzlehttp/promises/src/functions_include.php',
-    'a0edc8309cc5e1d60e3047b5df6b7052' => $vendorDir . '/guzzlehttp/psr7/src/functions_include.php',
-    'f598d06aa772fa33d905e87be6398fb1' => $vendorDir . '/symfony/polyfill-intl-idn/bootstrap.php',
-    'c50606d667a3fde2b80a955639479d3d' => $vendorDir . '/wikimedia/timestamp/src/defines.php',
     '37a3dc5111fe8f707ab4c132ef1dbc62' => $vendorDir . '/guzzlehttp/guzzle/src/functions_include.php',
-    'a4a119a56e50fbb293281d9a48007e0e' => $vendorDir . '/symfony/polyfill-php80/bootstrap.php',
-    '4d945db823e5f6ca6dd83ad1f5fbcc43' => $vendorDir . '/wikimedia/relpath/src/RelPath/RelPath.php',
-    '6513700b70192b7dfd0e5e9fc8082cf3' => $vendorDir . '/wikimedia/relpath/src/Wikimedia/RelPath.php',
+    'c50606d667a3fde2b80a955639479d3d' => $vendorDir . '/wikimedia/timestamp/src/defines.php',
+    '5897ea0ac4cccf14d323035e65887801' => $vendorDir . '/symfony/polyfill-php82/bootstrap.php',
+    '662a729f963d39afe703c9d9b7ab4a8c' => $vendorDir . '/symfony/polyfill-php83/bootstrap.php',
 );

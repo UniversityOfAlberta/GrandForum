@@ -73,7 +73,7 @@ class XhprofData {
 	 * Get raw data collected by xhprof.
 	 *
 	 * Each key in the returned array is an edge label for the call graph in
-	 * the form "caller==>callee". There is once special case edge labled
+	 * the form "caller==>callee". There is once special case edge labeled
 	 * simply "main()" which represents the global scope entry point of the
 	 * application.
 	 *
@@ -130,7 +130,7 @@ class XhprofData {
 
 		$keep = [];
 		foreach ( $data as $key => $stats ) {
-			list( $parent, $child ) = self::splitKey( $key );
+			[ $parent, $child ] = self::splitKey( $key );
 			if ( isset( $want[$parent] ) || isset( $want[$child] ) ) {
 				$keep[$key] = $stats;
 			}
@@ -144,7 +144,7 @@ class XhprofData {
 	 * called from that function during the measurement period.
 	 *
 	 * See getRawData() for a description of the metric that are returned for
-	 * each funcition call. The values for the wt, cpu, mu and pmu metrics are
+	 * each function call. The values for the wt, cpu, mu and pmu metrics are
 	 * arrays with these values:
 	 * - total: Cumulative value
 	 * - min: Minimum value
@@ -165,7 +165,7 @@ class XhprofData {
 
 			$inclusive = [];
 			foreach ( $this->hieraData as $key => $stats ) {
-				list( $parent, $child ) = self::splitKey( $key );
+				[ , $child ] = self::splitKey( $key );
 				if ( !isset( $inclusive[$child] ) ) {
 					$inclusive[$child] = [
 						'ct' => 0,
@@ -256,13 +256,13 @@ class XhprofData {
 					// Initialize exclusive data with inclusive totals
 					$this->complete[$func][$stat]['exclusive'] = $value['total'];
 				}
-				// Add sapce for call tree information to be filled in later
+				// Add space for call tree information to be filled in later
 				$this->complete[$func]['calls'] = [];
 				$this->complete[$func]['subcalls'] = [];
 			}
 
 			foreach ( $this->hieraData as $key => $stats ) {
-				list( $parent, $child ) = self::splitKey( $key );
+				[ $parent, $child ] = self::splitKey( $key );
 				if ( $parent !== null ) {
 					// Track call tree information
 					$this->complete[$child]['calls'][$parent] = $stats;
@@ -367,7 +367,7 @@ class XhprofData {
 	 * @return Closure
 	 */
 	public static function makeSortFunction( $key, $sub ) {
-		return function ( $a, $b ) use ( $key, $sub ) {
+		return static function ( $a, $b ) use ( $key, $sub ) {
 			if ( isset( $a[$key] ) && isset( $b[$key] ) ) {
 				// Descending sort: larger values will be first in result.
 				// Values for 'main()' will not have sub keys

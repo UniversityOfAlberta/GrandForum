@@ -3,11 +3,14 @@
 namespace Test\Parsoid\Html2Wt;
 
 use PHPUnit\Framework\TestCase;
+use Wikimedia\Parsoid\DOM\Node;
+use Wikimedia\Parsoid\Html2Wt\DiffUtils;
 use Wikimedia\Parsoid\Html2Wt\DOMNormalizer;
 use Wikimedia\Parsoid\Html2Wt\SerializerState;
 use Wikimedia\Parsoid\Html2Wt\WikitextSerializer;
 use Wikimedia\Parsoid\Mocks\MockEnv;
 use Wikimedia\Parsoid\Utils\ContentUtils;
+use Wikimedia\Parsoid\Utils\DOMCompat;
 use Wikimedia\Parsoid\Utils\DOMUtils;
 use Wikimedia\TestingAccessWrapper;
 
@@ -23,29 +26,25 @@ class DOMNormalizerTest extends TestCase {
 	 * @dataProvider provideNormalize
 	 * @param string $html
 	 * @param string $expected
+	 * @param string|null $message
 	 * @param array $opts
 	 * @param bool $stripDiffMarkers
 	 */
 	public function testNormalize(
-		string $html, string $expected, $message = null, array $opts = [], bool $stripDiffMarkers = true
+		string $html, string $expected, ?string $message = null, array $opts = [], bool $stripDiffMarkers = true
 	) {
-		$opts += [
-			'scrubWikitext' => true
-		];
 		$mockEnv = new MockEnv( $opts );
-		$mockSerializer = new WikitextSerializer( [ 'env' => $mockEnv ] );
-		$mockState = new SerializerState( $mockSerializer, [
-			'selserMode' => false,
-			'rtTestMode' => false,
-		] );
+		$mockSerializer = new WikitextSerializer( $mockEnv, [] );
+		$mockState = new SerializerState( $mockSerializer, [ 'selserMode' => false ] );
 		/** @var DOMNormalizer $DOMNormalizer */
 		$DOMNormalizer = TestingAccessWrapper::newFromObject( new DOMNormalizer( $mockState ) );
-		$body = ContentUtils::ppToDOM( $mockEnv, $html, [ 'markNew' => true ] );
+		$doc = ContentUtils::createAndLoadDocument( $html, [ 'markNew' => true ] );
+		$body = DOMCompat::getBody( $doc );
 		$DOMNormalizer->normalize( $body );
 
 		if ( $stripDiffMarkers ) {
-			DOMUtils::visitDOM( $body, function ( \DOMNode $node ) {
-				if ( DOMUtils::isDiffMarker( $node ) ) {
+			DOMUtils::visitDOM( $body, static function ( Node $node ) {
+				if ( DiffUtils::isDiffMarker( $node ) ) {
 					$node->parentNode->removeChild( $node );
 				}
 			} );
@@ -55,7 +54,7 @@ class DOMNormalizerTest extends TestCase {
 		$this->assertEquals( $expected, $actual, $message );
 	}
 
-	public function provideNormalize() {
+	public function provideNormalize(): array {
 		return [
 			// Tag Minimization
 			[ '<i>X</i><i>Y</i>', '<i>XY</i>', 'Tag Minimization #1', ],
@@ -82,16 +81,16 @@ class DOMNormalizerTest extends TestCase {
 				'Tag Minimization #5 Both nodes are old unedited nodes',
 
 			],
-			// Headings (with scrubWikitext)
+			// Headings
 			[
 				'<h2>H2<link href="Category:A1" rel="mw:PageProp/Category"/></h2>',
 				'<h2>H2</h2><link href="Category:A1" rel="mw:PageProp/Category"/>',
-				'Headings (with scrubWikitext) #1'
+				'Headings #1'
 			],
 			[
 				'<h2><meta property="mw:PageProp/toc"/> ok</h2>',
 				'<meta property="mw:PageProp/toc"/><h2>ok</h2>',
-				'Headings (with scrubWikitext) #2'
+				'Headings #2'
 			],
 			// Empty tag normalization
 			// These are stripped
@@ -106,6 +105,11 @@ class DOMNormalizerTest extends TestCase {
 				'<a href="http://foo.org"></a>',
 				'<a href="http://foo.org"></a>',
 				'Empty tag normalization #7',
+			],
+			[
+				'<p><meta typeof="mw:Annotation/translate"/></p>',
+				'<meta typeof="mw:Annotation/translate"/>',
+				'Normalization of annotations in paragraph',
 			],
 			// Trailing spaces in links
 			[
@@ -143,61 +147,6 @@ class DOMNormalizerTest extends TestCase {
 				'<table><tbody><tr><td>+</td><td>-</td></tr></tbody></table>',
 				'<table><tbody><tr><td> +</td><td> -</td></tr></tbody></table>',
 				'Escapable prefixes in table cells'
-			],
-			// Without ScrubWikitext
-			// Minimizable tags
-			[
-				"<i>X</i><i>Y</i>",
-				"<i>XY</i>",
-				'Minimizable tags Without ScrubWikitext #1',
-				[ 'scrubWikitext' => false ],
-			],
-			[
-				"<i>X</i><b><i>Y</i></b>",
-				"<i>X<b>Y</b></i>",
-				'Minimizable tags Without ScrubWikitext #2',
-				[ 'scrubWikitext' => false ]
-			],
-			[
-				"<i>A</i><b><i>X</i></b><b><i>Y</i></b><i>Z</i>",
-				"<i>A<b>XY</b>Z</i>",
-				'Minimizable tags Without ScrubWikitext #3',
-				[ 'scrubWikitext' => false ],
-			],
-			// Headings
-			[
-				'<h2>H2<link href="Category:A1" rel="mw:PageProp/Category"/></h2>',
-				'<h2>H2<link href="Category:A1" rel="mw:PageProp/Category"/></h2>',
-				'Headings (without scrubWikitext)',
-				[ 'scrubWikitext' => false ],
-			],
-			// Tables
-			[
-				'<table><tbody><tr><td>+</td><td>-</td></tr></tbody></table>',
-				'<table><tbody><tr><td>+</td><td>-</td></tr></tbody></table>',
-				'Tables (without scrubWikitext)',
-				[ 'scrubWikitext' => false ],
-			],
-			// Links
-			[
-				'<a data-parsoid="{}" href="FootBall">Foot</a><a href="FootBall">Ball</a>',
-				// NOTE: we are stripping data-parsoid before comparing output in our testing.
-				// Hence the difference in output.
-				'<a href="FootBall">Foot</a><a href="FootBall">Ball</a>',
-				'Links (without scrubWikitext) #1',
-				[ 'scrubWikitext' => false ],
-			],
-			[
-				'<a rel="mw:WikiLink" href="./Football"><u><i><b>Football</b></i></u></a>',
-				'<a rel="mw:WikiLink" href="./Football"><u><i><b>Football</b></i></u></a>',
-				'Links (without scrubWikitext) #2',
-				[ 'scrubWikitext' => false ],
-			],
-			[
-				'<a rel="mw:WikiLink" href="./Foo">Foo </a>bar',
-				'<a rel="mw:WikiLink" href="./Foo">Foo </a>bar',
-				'Links (without scrubWikitext) #3',
-				[ 'scrubWikitext' => false ],
 			],
 		];
 	}

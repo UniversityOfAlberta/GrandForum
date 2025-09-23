@@ -1,7 +1,5 @@
 <?php
 /**
- * Object for storing information about the effects of an edit.
- *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -18,11 +16,11 @@
  * http://www.gnu.org/copyleft/gpl.html
  *
  * @file
- *
- * @author Ostrzyciel
  */
 
 namespace MediaWiki\Storage;
+
+use JsonSerializable;
 
 /**
  * Object for storing information about the effects of an edit.
@@ -32,13 +30,16 @@ namespace MediaWiki\Storage;
  * information about whether the edit was a revert and which edits were reverted.
  *
  * @since 1.35
+ * @author Ostrzyciel
  */
-class EditResult {
+class EditResult implements JsonSerializable {
 
 	// revert methods
 	public const REVERT_UNDO = 1;
 	public const REVERT_ROLLBACK = 2;
 	public const REVERT_MANUAL = 3;
+
+	private const SERIALIZATION_FORMAT_VERSION = '1';
 
 	/** @var bool */
 	private $isNew;
@@ -65,8 +66,6 @@ class EditResult {
 	private $revertTags;
 
 	/**
-	 * EditResult constructor.
-	 *
 	 * @param bool $isNew
 	 * @param bool|int $originalRevisionId
 	 * @param int|null $revertMethod
@@ -99,6 +98,41 @@ class EditResult {
 	}
 
 	/**
+	 * Recreate the EditResult object from its array representation.
+	 *
+	 * This must ONLY be used for deserializing EditResult objects serialized using
+	 * EditResult::jsonSerialize(). The structure of the array may change without prior
+	 * notice.
+	 *
+	 * Any changes to the format are guaranteed to be backwards-compatible, so this
+	 * method will work fine with old serialized EditResults.
+	 *
+	 * For constructing EditResult objects from scratch use EditResultBuilder.
+	 *
+	 * @see EditResult::jsonSerialize()
+	 *
+	 * @param array $a
+	 * @phpcs:ignore Generic.Files.LineLength
+	 * @phan-param array{isNew:bool,originalRevisionId:bool|int,revertMethod:int|null,newestRevertedRevId:int|null,oldestRevertedRevId:int|null,isExactRevert:bool,isNullEdit:bool,revertTags:string[],version:string} $a
+	 *
+	 * @return EditResult
+	 *
+	 * @since 1.36
+	 */
+	public static function newFromArray( array $a ) {
+		return new self(
+			$a['isNew'],
+			$a['originalRevisionId'],
+			$a['revertMethod'],
+			$a['oldestRevertedRevId'],
+			$a['newestRevertedRevId'],
+			$a['isExactRevert'],
+			$a['isNullEdit'],
+			$a['revertTags']
+		);
+	}
+
+	/**
 	 * Returns the ID of the most recent revision that was reverted by this edit.
 	 * The same as getOldestRevertedRevisionId if only a single revision was
 	 * reverted. Returns null if the edit was not a revert.
@@ -107,7 +141,7 @@ class EditResult {
 	 *
 	 * @return int|null
 	 */
-	public function getNewestRevertedRevisionId() : ?int {
+	public function getNewestRevertedRevisionId(): ?int {
 		return $this->newestRevertedRevId;
 	}
 
@@ -120,7 +154,7 @@ class EditResult {
 	 *
 	 * @return int|null
 	 */
-	public function getOldestRevertedRevisionId() : ?int {
+	public function getOldestRevertedRevisionId(): ?int {
 		return $this->oldestRevertedRevId;
 	}
 
@@ -130,7 +164,7 @@ class EditResult {
 	 *
 	 * @return int
 	 */
-	public function getUndidRevId() : int {
+	public function getUndidRevId(): int {
 		if ( $this->getRevertMethod() !== self::REVERT_UNDO ) {
 			return 0;
 		}
@@ -157,7 +191,7 @@ class EditResult {
 	 *
 	 * @return bool
 	 */
-	public function isNew() : bool {
+	public function isNew(): bool {
 		return $this->isNew;
 	}
 
@@ -167,8 +201,9 @@ class EditResult {
 	 * An edit is considered a revert if it either:
 	 * - Restores the page to an exact previous state (rollbacks, manual reverts and some undos).
 	 *   E.g. for edits A B C D, edits C and D are reverted.
-	 * - Undoes some edits made previously, but automatic conflict resolution is done and
-	 *   possibly additional changes are made by the reverting user (undo).
+	 * - Undoes some edits made previously, not necessarily restoring the page to an exact
+	 *   previous state (undo). It is guaranteed that the revert was a "clean" result of a
+	 *   three-way merge and no additional changes were made by the reverting user.
 	 *   E.g. for edits A B C D, edits B and C are reverted.
 	 *
 	 * To check whether the edit was an exact revert, please use the isExactRevert() method.
@@ -177,7 +212,7 @@ class EditResult {
 	 *
 	 * @return bool
 	 */
-	public function isRevert() : bool {
+	public function isRevert(): bool {
 		return !$this->isNew() && $this->getOldestRevertedRevisionId();
 	}
 
@@ -191,7 +226,7 @@ class EditResult {
 	 *
 	 * @return int|null
 	 */
-	public function getRevertMethod() : ?int {
+	public function getRevertMethod(): ?int {
 		return $this->revertMethod;
 	}
 
@@ -201,7 +236,7 @@ class EditResult {
 	 *
 	 * @return bool
 	 */
-	public function isExactRevert() : bool {
+	public function isExactRevert(): bool {
 		return $this->isExactRevert;
 	}
 
@@ -211,7 +246,7 @@ class EditResult {
 	 *
 	 * @return bool
 	 */
-	public function isNullEdit() : bool {
+	public function isNullEdit(): bool {
 		return $this->isNullEdit;
 	}
 
@@ -220,7 +255,32 @@ class EditResult {
 	 *
 	 * @return string[]
 	 */
-	public function getRevertTags() : array {
+	public function getRevertTags(): array {
 		return $this->revertTags;
+	}
+
+	/**
+	 * Returns an array representing the EditResult object.
+	 *
+	 * @see EditResult::newFromArray()
+	 *
+	 * @return array
+	 * @phpcs:ignore Generic.Files.LineLength
+	 * @phan-return array{isNew:bool,originalRevisionId:bool|int,revertMethod:int|null,newestRevertedRevId:int|null,oldestRevertedRevId:int|null,isExactRevert:bool,isNullEdit:bool,revertTags:string[],version:string}
+	 *
+	 * @since 1.36
+	 */
+	public function jsonSerialize(): array {
+		return [
+			'isNew' => $this->isNew,
+			'originalRevisionId' => $this->originalRevisionId,
+			'revertMethod' => $this->revertMethod,
+			'newestRevertedRevId' => $this->newestRevertedRevId,
+			'oldestRevertedRevId' => $this->oldestRevertedRevId,
+			'isExactRevert' => $this->isExactRevert,
+			'isNullEdit' => $this->isNullEdit,
+			'revertTags' => $this->revertTags,
+			'version' => self::SERIALIZATION_FORMAT_VERSION
+		];
 	}
 }

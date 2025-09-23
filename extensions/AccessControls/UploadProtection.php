@@ -1,5 +1,7 @@
 <?php
 
+use MediaWiki\MediaWikiServices;
+
 class UploadProtection {
   const no_option = '--None--';
 
@@ -85,7 +87,7 @@ class UploadProtection {
     if ($namespace == '')
       return true;
     
-    $dbw = wfGetDB( DB_PRIMARY );
+    $dbw = MediaWikiServices::getInstance()->getConnectionProvider()->getPrimaryDatabase();
     //$uploadName = self::sanitize($uploadFormObj->mDesiredDestName);
     $uploadName = $uploadFormObj->mDesiredDestName; //replace does sanitize
     $dbw->replace("${egAnnokiTablePrefix}upload_perm_temp", array('upload_name'), array('upload_name' => $uploadName, 'nsName' => $namespace));
@@ -126,7 +128,7 @@ class UploadProtection {
     $selectedNamespace = $wgRequest->getText('wpUploadNamespace');
 
     if ($selectedNamespace == ''){
-      $dbr = wfGetDB ( DB_REPLICA );
+      $dbr = MediaWikiServices::getInstance()->getConnectionProvider()->getReplicaDatabase();
       $uploadName = self::sanitize($image->getTitle()); //selectField does not sanitize
       $selectedNamespace = $dbr->selectField("${egAnnokiTablePrefix}upload_perm_temp", 'nsName', 'upload_name=\''.$uploadName."'");
     }
@@ -134,7 +136,7 @@ class UploadProtection {
     if ($selectedNamespace == self::no_option || !$selectedNamespace)
       $selectedNamespace = null;
   
-    $dbw = wfGetDB( DB_PRIMARY );
+    $dbw = MediaWikiServices::getInstance()->getConnectionProvider()->getPrimaryDatabase();
     //$uploadName = self::sanitize($image->mDestName);
     $uploadName = $image->getTitle(); //replace does sanitize
     $dbw->replace("${egAnnokiTablePrefix}upload_permissions", array('upload_name'), array('upload_name' => $uploadName, 'nsName' => $selectedNamespace));
@@ -153,7 +155,7 @@ class UploadProtection {
     $title = $article->getTitle();
     if ($title->getNamespace() == NS_FILE){
       print "Deleting";
-      $dbw = wfGetDB( DB_PRIMARY );
+      $dbw = MediaWikiServices::getInstance()->getConnectionProvider()->getPrimaryDatabase();
       $dbw->delete("${egAnnokiTablePrefix}upload_permissions", array('upload_name=\''.$title->getDBkey()."'"));
     }
     return true;
@@ -186,7 +188,7 @@ class UploadProtection {
   //returns false if there is no NS for the given name
   static function getNsForImageName($imageName){
     global $egAnnokiTablePrefix;
-    $dbr = wfGetDB( DB_REPLICA );
+    $dbr = MediaWikiServices::getInstance()->getConnectionProvider()->getReplicaDatabase();
     $imageName = self::sanitize($imageName); //selectField does not sanitize
     $imageName = str_replace("_", " ", $imageName);
     return $dbr->selectField("${egAnnokiTablePrefix}upload_permissions", 'nsName', 'upload_name=\''.$imageName.'\' OR upload_name=\'File:'.$imageName."'");

@@ -1,11 +1,8 @@
 <?php
 /** Livvi-Karelian (Livvinкarjala)
  *
- * To improve a translation please visit https://translatewiki.net
- *
- * @ingroup Language
  * @file
- *
+ * @ingroup Languages
  */
 
 $fallback = 'fi'; // T146744#2678472

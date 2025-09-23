@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2009 Roan Kattouw "<Firstname>.<Lastname>@gmail.com"
+ * Copyright © 2009 Roan Kattouw <roan.kattouw@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,6 +20,15 @@
  * @file
  */
 
+namespace MediaWiki\Api;
+
+use MediaWiki\CommentFormatter\RowCommentFormatter;
+use MediaWiki\CommentStore\CommentStore;
+use MediaWiki\MainConfigNames;
+use MediaWiki\Title\Title;
+use Wikimedia\ParamValidator\ParamValidator;
+use Wikimedia\ParamValidator\TypeDef\IntegerDef;
+
 /**
  * Query module to enumerate all create-protected pages.
  *
@@ -27,8 +36,18 @@
  */
 class ApiQueryProtectedTitles extends ApiQueryGeneratorBase {
 
-	public function __construct( ApiQuery $query, $moduleName ) {
+	private CommentStore $commentStore;
+	private RowCommentFormatter $commentFormatter;
+
+	public function __construct(
+		ApiQuery $query,
+		string $moduleName,
+		CommentStore $commentStore,
+		RowCommentFormatter $commentFormatter
+	) {
 		parent::__construct( $query, $moduleName, 'pt' );
+		$this->commentStore = $commentStore;
+		$this->commentFormatter = $commentFormatter;
 	}
 
 	public function execute() {
@@ -49,14 +68,13 @@ class ApiQueryProtectedTitles extends ApiQueryGeneratorBase {
 		$this->addTables( 'protected_titles' );
 		$this->addFields( [ 'pt_namespace', 'pt_title', 'pt_timestamp' ] );
 
-		$prop = array_flip( $params['prop'] );
+		$prop = array_fill_keys( $params['prop'], true );
 		$this->addFieldsIf( 'pt_user', isset( $prop['user'] ) || isset( $prop['userid'] ) );
 		$this->addFieldsIf( 'pt_expiry', isset( $prop['expiry'] ) );
 		$this->addFieldsIf( 'pt_create_perm', isset( $prop['level'] ) );
 
 		if ( isset( $prop['comment'] ) || isset( $prop['parsedcomment'] ) ) {
-			$commentStore = CommentStore::getStore();
-			$commentQuery = $commentStore->getJoin( 'pt_reason' );
+			$commentQuery = $this->commentStore->getJoin( 'pt_reason' );
 			$this->addTables( $commentQuery['tables'] );
 			$this->addFields( $commentQuery['fields'] );
 			$this->addJoinConds( $commentQuery['joins'] );
@@ -71,20 +89,14 @@ class ApiQueryProtectedTitles extends ApiQueryGeneratorBase {
 		$this->addWhereRange( 'pt_title', $params['dir'], null, null );
 
 		if ( $params['continue'] !== null ) {
-			$cont = explode( '|', $params['continue'] );
-			$this->dieContinueUsageIf( count( $cont ) != 3 );
-			$op = ( $params['dir'] === 'newer' ? '>' : '<' );
+			$cont = $this->parseContinueParamOrDie( $params['continue'], [ 'timestamp', 'int', 'string' ] );
+			$op = ( $params['dir'] === 'newer' ? '>=' : '<=' );
 			$db = $this->getDB();
-			$continueTimestamp = $db->addQuotes( $db->timestamp( $cont[0] ) );
-			$continueNs = (int)$cont[1];
-			$this->dieContinueUsageIf( $continueNs != $cont[1] );
-			$continueTitle = $db->addQuotes( $cont[2] );
-			$this->addWhere( "pt_timestamp $op $continueTimestamp OR " .
-				"(pt_timestamp = $continueTimestamp AND " .
-				"(pt_namespace $op $continueNs OR " .
-				"(pt_namespace = $continueNs AND " .
-				"pt_title $op= $continueTitle)))"
-			);
+			$this->addWhere( $db->buildComparison( $op, [
+				'pt_timestamp' => $db->timestamp( $cont[0] ),
+				'pt_namespace' => $cont[1],
+				'pt_title' => $cont[2],
+			] ) );
 		}
 
 		if ( isset( $prop['user'] ) ) {
@@ -100,6 +112,14 @@ class ApiQueryProtectedTitles extends ApiQueryGeneratorBase {
 
 		if ( $resultPageSet === null ) {
 			$this->executeGenderCacheFromResultWrapper( $res, __METHOD__, 'pt' );
+			if ( isset( $prop['parsedcomment'] ) ) {
+				$formattedComments = $this->commentFormatter->formatItems(
+					$this->commentFormatter->rows( $res )
+						->commentKey( 'pt_reason' )
+						->namespaceField( 'pt_namespace' )
+						->titleField( 'pt_title' )
+				);
+			}
 		}
 
 		$count = 0;
@@ -107,7 +127,7 @@ class ApiQueryProtectedTitles extends ApiQueryGeneratorBase {
 
 		$titles = [];
 
-		foreach ( $res as $row ) {
+		foreach ( $res as $rowOffset => $row ) {
 			if ( ++$count > $params['limit'] ) {
 				// We've reached the one extra which shows that there are
 				// additional pages to be had. Stop here...
@@ -134,13 +154,12 @@ class ApiQueryProtectedTitles extends ApiQueryGeneratorBase {
 				}
 
 				if ( isset( $prop['comment'] ) ) {
-					$vals['comment'] = $commentStore->getComment( 'pt_reason', $row )->text;
+					$vals['comment'] = $this->commentStore->getComment( 'pt_reason', $row )->text;
 				}
 
 				if ( isset( $prop['parsedcomment'] ) ) {
-					$vals['parsedcomment'] = Linker::formatComment(
-						$commentStore->getComment( 'pt_reason', $row )->text
-					);
+					// @phan-suppress-next-line PhanTypeArraySuspiciousNullable
+					$vals['parsedcomment'] = $formattedComments[$rowOffset];
 				}
 
 				if ( isset( $prop['expiry'] ) ) {
@@ -175,7 +194,7 @@ class ApiQueryProtectedTitles extends ApiQueryGeneratorBase {
 
 	public function getCacheMode( $params ) {
 		if ( $params['prop'] !== null && in_array( 'parsedcomment', $params['prop'] ) ) {
-			// formatComment() calls wfMessage() among other things
+			// MediaWiki\CommentFormatter\CommentFormatter::formatItems() calls wfMessage() among other things
 			return 'anon-public-user-private';
 		} else {
 			return 'public';
@@ -185,38 +204,43 @@ class ApiQueryProtectedTitles extends ApiQueryGeneratorBase {
 	public function getAllowedParams() {
 		return [
 			'namespace' => [
-				ApiBase::PARAM_ISMULTI => true,
-				ApiBase::PARAM_TYPE => 'namespace',
+				ParamValidator::PARAM_ISMULTI => true,
+				ParamValidator::PARAM_TYPE => 'namespace',
 			],
 			'level' => [
-				ApiBase::PARAM_ISMULTI => true,
-				ApiBase::PARAM_TYPE => array_diff( $this->getConfig()->get( 'RestrictionLevels' ), [ '' ] )
+				ParamValidator::PARAM_ISMULTI => true,
+				ParamValidator::PARAM_TYPE => array_diff(
+					$this->getConfig()->get( MainConfigNames::RestrictionLevels ), [ '' ] )
 			],
 			'limit' => [
-				ApiBase::PARAM_DFLT => 10,
-				ApiBase::PARAM_TYPE => 'limit',
-				ApiBase::PARAM_MIN => 1,
-				ApiBase::PARAM_MAX => ApiBase::LIMIT_BIG1,
-				ApiBase::PARAM_MAX2 => ApiBase::LIMIT_BIG2
+				ParamValidator::PARAM_DEFAULT => 10,
+				ParamValidator::PARAM_TYPE => 'limit',
+				IntegerDef::PARAM_MIN => 1,
+				IntegerDef::PARAM_MAX => ApiBase::LIMIT_BIG1,
+				IntegerDef::PARAM_MAX2 => ApiBase::LIMIT_BIG2
 			],
 			'dir' => [
-				ApiBase::PARAM_DFLT => 'older',
-				ApiBase::PARAM_TYPE => [
+				ParamValidator::PARAM_DEFAULT => 'older',
+				ParamValidator::PARAM_TYPE => [
 					'newer',
 					'older'
 				],
 				ApiBase::PARAM_HELP_MSG => 'api-help-param-direction',
+				ApiBase::PARAM_HELP_MSG_PER_VALUE => [
+					'newer' => 'api-help-paramvalue-direction-newer',
+					'older' => 'api-help-paramvalue-direction-older',
+				],
 			],
 			'start' => [
-				ApiBase::PARAM_TYPE => 'timestamp'
+				ParamValidator::PARAM_TYPE => 'timestamp'
 			],
 			'end' => [
-				ApiBase::PARAM_TYPE => 'timestamp'
+				ParamValidator::PARAM_TYPE => 'timestamp'
 			],
 			'prop' => [
-				ApiBase::PARAM_ISMULTI => true,
-				ApiBase::PARAM_DFLT => 'timestamp|level',
-				ApiBase::PARAM_TYPE => [
+				ParamValidator::PARAM_ISMULTI => true,
+				ParamValidator::PARAM_DEFAULT => 'timestamp|level',
+				ParamValidator::PARAM_TYPE => [
 					'timestamp',
 					'user',
 					'userid',
@@ -246,3 +270,6 @@ class ApiQueryProtectedTitles extends ApiQueryGeneratorBase {
 		return 'https://www.mediawiki.org/wiki/Special:MyLanguage/API:Protectedtitles';
 	}
 }
+
+/** @deprecated class alias since 1.43 */
+class_alias( ApiQueryProtectedTitles::class, 'ApiQueryProtectedTitles' );

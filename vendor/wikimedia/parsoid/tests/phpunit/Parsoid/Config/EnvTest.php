@@ -6,6 +6,7 @@ use Wikimedia\Parsoid\Mocks\MockEnv;
 use Wikimedia\Parsoid\Mocks\MockPageConfig;
 use Wikimedia\Parsoid\Mocks\MockPageContent;
 use Wikimedia\Parsoid\Mocks\MockSiteConfig;
+use Wikimedia\Parsoid\Utils\Title;
 
 /**
  * @covers \Wikimedia\Parsoid\Config\Env
@@ -15,30 +16,30 @@ class EnvTest extends \PHPUnit\Framework\TestCase {
 	/**
 	 * @dataProvider provideResolveTitle
 	 */
-	public function testResolveTitle( $args, $expect, $ns = 4, $title = 'Wikipedia:Foo/bar/baz' ) {
-		$pageConfig = $this->getMockBuilder( MockPageConfig::class )
-			->setConstructorArgs( [ [], null ] )
-			->setMethods( [ 'getTitle', 'getNs', 'getRevisionContent' ] )
+	public function testResolveTitle( $args, $expect, $ns = 4, $titleString = 'Wikipedia:Foo/bar/baz' ) {
+		$siteConfig = $this->getMockBuilder( MockSiteConfig::class )
+			->setConstructorArgs( [ [] ] )
+			->onlyMethods( [ 'namespaceHasSubpages' ] )
 			->getMock();
-		$pageConfig->method( 'getTitle' )->willReturn( $title );
-		$pageConfig->method( 'getNs' )->willReturn( $ns );
+		$siteConfig->method( 'namespaceHasSubpages' )->willReturnCallback( static function ( $ns ) {
+			return $ns !== 0;
+		} );
+
+		$title = Title::newFromText( $titleString, $siteConfig );
+		$pageConfig = $this->getMockBuilder( MockPageConfig::class )
+			->setConstructorArgs( [ $siteConfig, [], null ] )
+			->onlyMethods( [ 'getLinkTarget', 'getRevisionContent' ] )
+			->getMock();
+		$pageConfig->method( 'getLinkTarget' )->willReturn( $title );
 		$pageConfig->method( 'getRevisionContent' )->willReturn(
 			new MockPageContent( [ 'main' => 'bogus' ] )
 		);
-
-		$siteConfig = $this->getMockBuilder( MockSiteConfig::class )
-			->setConstructorArgs( [ [] ] )
-			->setMethods( [ 'namespaceHasSubpages' ] )
-			->getMock();
-		$siteConfig->method( 'namespaceHasSubpages' )->willReturnCallback( function ( $ns ) {
-			return $ns !== 0;
-		} );
 
 		$env = new MockEnv( [ 'pageConfig' => $pageConfig, 'siteConfig' => $siteConfig ] );
 		$this->assertSame( $expect, $env->resolveTitle( ...$args ) );
 	}
 
-	public function provideResolveTitle() {
+	public function provideResolveTitle(): array {
 		return [
 			[ [ ' xxx ' ], 'xxx' ],
 			[ [ '#fragment' ], 'Wikipedia:Foo/bar/baz#fragment' ],

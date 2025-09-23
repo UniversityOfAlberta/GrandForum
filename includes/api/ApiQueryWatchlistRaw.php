@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2008 Roan Kattouw "<Firstname>.<Lastname>@gmail.com"
+ * Copyright © 2008 Roan Kattouw <roan.kattouw@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,8 +20,18 @@
  * @file
  */
 
-use MediaWiki\MediaWikiServices;
+namespace MediaWiki\Api;
+
+use MediaWiki\Cache\GenderCache;
+use MediaWiki\Language\Language;
 use MediaWiki\ParamValidator\TypeDef\UserDef;
+use MediaWiki\Title\NamespaceInfo;
+use MediaWiki\Title\Title;
+use MediaWiki\Title\TitleValue;
+use MediaWiki\Watchlist\WatchedItemQueryService;
+use MediaWiki\Watchlist\WatchedItemStore;
+use Wikimedia\ParamValidator\ParamValidator;
+use Wikimedia\ParamValidator\TypeDef\IntegerDef;
 
 /**
  * This query action allows clients to retrieve a list of pages
@@ -31,8 +41,24 @@ use MediaWiki\ParamValidator\TypeDef\UserDef;
  */
 class ApiQueryWatchlistRaw extends ApiQueryGeneratorBase {
 
-	public function __construct( ApiQuery $query, $moduleName ) {
+	private WatchedItemQueryService $watchedItemQueryService;
+	private Language $contentLanguage;
+	private NamespaceInfo $namespaceInfo;
+	private GenderCache $genderCache;
+
+	public function __construct(
+		ApiQuery $query,
+		string $moduleName,
+		WatchedItemQueryService $watchedItemQueryService,
+		Language $contentLanguage,
+		NamespaceInfo $namespaceInfo,
+		GenderCache $genderCache
+	) {
 		parent::__construct( $query, $moduleName, 'wr' );
+		$this->watchedItemQueryService = $watchedItemQueryService;
+		$this->contentLanguage = $contentLanguage;
+		$this->namespaceInfo = $namespaceInfo;
+		$this->genderCache = $genderCache;
 	}
 
 	public function execute() {
@@ -52,8 +78,8 @@ class ApiQueryWatchlistRaw extends ApiQueryGeneratorBase {
 
 		$user = $this->getWatchlistUser( $params );
 
-		$prop = array_flip( (array)$params['prop'] );
-		$show = array_flip( (array)$params['show'] );
+		$prop = array_fill_keys( (array)$params['prop'], true );
+		$show = array_fill_keys( (array)$params['show'], true );
 		if ( isset( $show[WatchedItemQueryService::FILTER_CHANGED] )
 			&& isset( $show[WatchedItemQueryService::FILTER_NOT_CHANGED] )
 		) {
@@ -72,12 +98,8 @@ class ApiQueryWatchlistRaw extends ApiQueryGeneratorBase {
 		}
 
 		if ( isset( $params['continue'] ) ) {
-			$cont = explode( '|', $params['continue'] );
-			$this->dieContinueUsageIf( count( $cont ) != 2 );
-			$ns = (int)$cont[0];
-			$this->dieContinueUsageIf( strval( $ns ) !== $cont[0] );
-			$title = $cont[1];
-			$options['startFrom'] = TitleValue::tryNew( $ns, $title );
+			$cont = $this->parseContinueParamOrDie( $params['continue'], [ 'int', 'string' ] );
+			$options['startFrom'] = TitleValue::tryNew( $cont[0], $cont[1] );
 			$this->dieContinueUsageIf( !$options['startFrom'] );
 		}
 
@@ -97,30 +119,27 @@ class ApiQueryWatchlistRaw extends ApiQueryGeneratorBase {
 
 		$titles = [];
 		$count = 0;
-		$services = MediaWikiServices::getInstance();
-		$items = $services->getWatchedItemQueryService()
-			->getWatchedItemsForUser( $user, $options );
+		$items = $this->watchedItemQueryService->getWatchedItemsForUser( $user, $options );
 
 		// Get gender information
 		if ( $items !== [] && $resultPageSet === null &&
-			$services->getContentLanguage()->needsGenderDistinction()
+			$this->contentLanguage->needsGenderDistinction()
 		) {
-			$nsInfo = $services->getNamespaceInfo();
 			$usernames = [];
 			foreach ( $items as $item ) {
-				$linkTarget = $item->getLinkTarget();
-				if ( $nsInfo->hasGenderDistinction( $linkTarget->getNamespace() ) ) {
+				$linkTarget = $item->getTarget();
+				if ( $this->namespaceInfo->hasGenderDistinction( $linkTarget->getNamespace() ) ) {
 					$usernames[] = $linkTarget->getText();
 				}
 			}
 			if ( $usernames !== [] ) {
-				$services->getGenderCache()->doQuery( $usernames, __METHOD__ );
+				$this->genderCache->doQuery( $usernames, __METHOD__ );
 			}
 		}
 
 		foreach ( $items as $item ) {
-			$ns = $item->getLinkTarget()->getNamespace();
-			$dbKey = $item->getLinkTarget()->getDBkey();
+			$ns = $item->getTarget()->getNamespace();
+			$dbKey = $item->getTarget()->getDBkey();
 			if ( ++$count > $params['limit'] ) {
 				// We've reached the one extra which shows that there are
 				// additional pages to be had. Stop here...
@@ -157,50 +176,50 @@ class ApiQueryWatchlistRaw extends ApiQueryGeneratorBase {
 				ApiBase::PARAM_HELP_MSG => 'api-help-param-continue',
 			],
 			'namespace' => [
-				ApiBase::PARAM_ISMULTI => true,
-				ApiBase::PARAM_TYPE => 'namespace'
+				ParamValidator::PARAM_ISMULTI => true,
+				ParamValidator::PARAM_TYPE => 'namespace'
 			],
 			'limit' => [
-				ApiBase::PARAM_DFLT => 10,
-				ApiBase::PARAM_TYPE => 'limit',
-				ApiBase::PARAM_MIN => 1,
-				ApiBase::PARAM_MAX => ApiBase::LIMIT_BIG1,
-				ApiBase::PARAM_MAX2 => ApiBase::LIMIT_BIG2
+				ParamValidator::PARAM_DEFAULT => 10,
+				ParamValidator::PARAM_TYPE => 'limit',
+				IntegerDef::PARAM_MIN => 1,
+				IntegerDef::PARAM_MAX => ApiBase::LIMIT_BIG1,
+				IntegerDef::PARAM_MAX2 => ApiBase::LIMIT_BIG2
 			],
 			'prop' => [
-				ApiBase::PARAM_ISMULTI => true,
-				ApiBase::PARAM_TYPE => [
+				ParamValidator::PARAM_ISMULTI => true,
+				ParamValidator::PARAM_TYPE => [
 					'changed',
 				],
 				ApiBase::PARAM_HELP_MSG_PER_VALUE => [],
 			],
 			'show' => [
-				ApiBase::PARAM_ISMULTI => true,
-				ApiBase::PARAM_TYPE => [
+				ParamValidator::PARAM_ISMULTI => true,
+				ParamValidator::PARAM_TYPE => [
 					WatchedItemQueryService::FILTER_CHANGED,
 					WatchedItemQueryService::FILTER_NOT_CHANGED
 				]
 			],
 			'owner' => [
-				ApiBase::PARAM_TYPE => 'user',
+				ParamValidator::PARAM_TYPE => 'user',
 				UserDef::PARAM_ALLOWED_USER_TYPES => [ 'name' ],
 			],
 			'token' => [
-				ApiBase::PARAM_TYPE => 'string',
-				ApiBase::PARAM_SENSITIVE => true,
+				ParamValidator::PARAM_TYPE => 'string',
+				ParamValidator::PARAM_SENSITIVE => true,
 			],
 			'dir' => [
-				ApiBase::PARAM_DFLT => 'ascending',
-				ApiBase::PARAM_TYPE => [
+				ParamValidator::PARAM_DEFAULT => 'ascending',
+				ParamValidator::PARAM_TYPE => [
 					'ascending',
 					'descending'
 				],
 			],
 			'fromtitle' => [
-				ApiBase::PARAM_TYPE => 'string'
+				ParamValidator::PARAM_TYPE => 'string'
 			],
 			'totitle' => [
-				ApiBase::PARAM_TYPE => 'string'
+				ParamValidator::PARAM_TYPE => 'string'
 			],
 		];
 	}
@@ -218,3 +237,6 @@ class ApiQueryWatchlistRaw extends ApiQueryGeneratorBase {
 		return 'https://www.mediawiki.org/wiki/Special:MyLanguage/API:Watchlistraw';
 	}
 }
+
+/** @deprecated class alias since 1.43 */
+class_alias( ApiQueryWatchlistRaw::class, 'ApiQueryWatchlistRaw' );

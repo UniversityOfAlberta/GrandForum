@@ -1,4 +1,7 @@
 <?php
+
+use MediaWiki\MediaWikiServices;
+
 require_once("includes/specialpage/SpecialPage.php");
 
 /**
@@ -86,7 +89,7 @@ class NamespaceManager extends SpecialPage {
 			return;
 		}
 
-		$dbw = wfGetDB( DB_PRIMARY );
+		$dbw = MediaWikiServices::getInstance()->getConnectionProvider()->getPrimaryDatabase();
 		$dbw->update("${egAnnokiTablePrefix}extranamespaces", array("public" => $newValue), array("nsId" => $nsId));
 		
 		$wgOut->redirect($redirect);

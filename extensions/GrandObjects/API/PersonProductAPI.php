@@ -58,7 +58,7 @@ class PersonProductAPI extends RESTAPI {
     
     function doPOST(){
         global $wgUser;
-        if($wgUser->isLoggedIn()){
+        if($wgUser->isRegistered()){
             if($this->getParam(0) == "person"){
                 $person = Person::newFromId($this->getParam('id'));
                 $product = Paper::newFromId($this->getParam('productId'));
@@ -97,7 +97,7 @@ class PersonProductAPI extends RESTAPI {
     
     function doDELETE(){
         global $wgUser;
-        if($wgUser->isLoggedIn()){
+        if($wgUser->isRegistered()){
             if($this->getParam(0) == "person"){
                 $person = Person::newFromId($this->getParam('id'));
                 $product = Paper::newFromId($this->getParam('productId'));

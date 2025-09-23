@@ -3,9 +3,12 @@
 namespace MediaWiki\Hook;
 
 use Article;
-use IContextSource;
+use MediaWiki\Context\IContextSource;
 
 /**
+ * This is a hook handler interface, see docs/Hooks.md.
+ * Use the hook name "PageHistoryBeforeList" to register handlers implementing this interface.
+ *
  * @stable to implement
  * @ingroup Hooks
  */

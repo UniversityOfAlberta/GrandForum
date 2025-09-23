@@ -1,10 +1,11 @@
 <?php
+declare( strict_types = 1 );
 
 namespace Wikimedia\Parsoid\Mocks;
 
 use Wikimedia\Parsoid\Config\PageContent;
 
-class MockPageContent implements PageContent {
+class MockPageContent extends PageContent {
 
 	/**
 	 * Alas, this is public because parserTests is reaching in and altering
@@ -39,9 +40,6 @@ class MockPageContent implements PageContent {
 		return isset( $this->data[$role] );
 	}
 
-	/**
-	 * @param string $role
-	 */
 	private function checkRole( string $role ): void {
 		if ( !isset( $this->data[$role] ) ) {
 			throw new \InvalidArgumentException( "Unknown role \"$role\"" );
@@ -67,11 +65,6 @@ class MockPageContent implements PageContent {
 			throw new \InvalidArgumentException( 'Unknown role or missing content failure' );
 		}
 		return $this->data[$role]['content'];
-	}
-
-	/** @inheritDoc */
-	public function getRedirectTarget(): ?string {
-		return $this->data['main']['redirect'] ?? null;
 	}
 
 }

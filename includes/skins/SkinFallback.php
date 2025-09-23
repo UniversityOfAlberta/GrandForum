@@ -5,12 +5,17 @@
  * @since 1.24
  * @file
  */
+
+use MediaWiki\Html\Html;
+use MediaWiki\MainConfigNames;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Output\OutputPage;
 
 /**
  * SkinTemplate class for the fallback skin
  */
 class SkinFallback extends SkinMustache {
+	/** @inheritDoc */
 	public $skinname = 'fallback';
 
 	/**
@@ -18,7 +23,7 @@ class SkinFallback extends SkinMustache {
 	 */
 	public function initPage( OutputPage $out ) {
 		parent::initPage( $out );
-		$out->enableClientCache( false );
+		$out->disableClientCache();
 	}
 
 	/**
@@ -26,15 +31,15 @@ class SkinFallback extends SkinMustache {
 	 */
 	private function findInstalledSkins() {
 		$config = $this->getConfig();
-		$styleDirectory = $config->get( 'StyleDirectory' );
+		$styleDirectory = $config->get( MainConfigNames::StyleDirectory );
 		// Get all subdirectories which might contains skins
 		$possibleSkins = scandir( $styleDirectory );
-		$possibleSkins = array_filter( $possibleSkins, function ( $maybeDir ) use ( $styleDirectory ) {
+		$possibleSkins = array_filter( $possibleSkins, static function ( $maybeDir ) use ( $styleDirectory ) {
 			return $maybeDir !== '.' && $maybeDir !== '..' && is_dir( "$styleDirectory/$maybeDir" );
 		} );
 
 		// Filter out skins that aren't installed
-		$possibleSkins = array_filter( $possibleSkins, function ( $skinDir ) use ( $styleDirectory ) {
+		$possibleSkins = array_filter( $possibleSkins, static function ( $skinDir ) use ( $styleDirectory ) {
 			return is_file( "$styleDirectory/$skinDir/skin.json" )
 				|| is_file( "$styleDirectory/$skinDir/$skinDir.php" );
 		} );
@@ -49,10 +54,10 @@ class SkinFallback extends SkinMustache {
 	 */
 	private function buildHelpfulInformationMessage() {
 		$config = $this->getConfig();
-		$defaultSkin = $config->get( 'DefaultSkin' );
+		$defaultSkin = $config->get( MainConfigNames::DefaultSkin );
 		$installedSkins = $this->findInstalledSkins();
 		$skinFactory = MediaWikiServices::getInstance()->getSkinFactory();
-		$enabledSkins = $skinFactory->getSkinNames();
+		$enabledSkins = $skinFactory->getInstalledSkins();
 		$enabledSkins = array_change_key_case( $enabledSkins, CASE_LOWER );
 
 		if ( $installedSkins ) {
@@ -116,7 +121,9 @@ class SkinFallback extends SkinMustache {
 		$data = parent::getTemplateData();
 		// If the default skin isn't configured correctly, append a warning to the
 		// subtitle to alert a sysadmin.
-		if ( !isset( $skinFactory->getSkinNames()[$config->get( 'DefaultSkin' )] ) ) {
+		if ( !isset(
+			$skinFactory->getInstalledSkins()[$config->get( MainConfigNames::DefaultSkin )]
+		) ) {
 			$data['html-fallback-warning'] = Html::warningBox( $this->buildHelpfulInformationMessage() );
 		}
 		return $data;

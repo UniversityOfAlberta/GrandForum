@@ -1,14 +1,5 @@
 <?php
-
-namespace Cdb;
-
 /**
- * This is a port of D.J. Bernstein's CDB to PHP. It's based on the copy that
- * appears in PHP 5.3. Changes are:
- *    * Error returns replaced with exceptions
- *    * Exception thrown if sizes or offsets are between 2GB and 4GB
- *    * Some variables renamed
- *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -23,12 +14,15 @@ namespace Cdb;
  * with this program; if not, write to the Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  * http://www.gnu.org/copyleft/gpl.html
- *
- * @file
  */
+
+namespace Cdb;
 
 /**
  * Common functions for readers and writers
+ *
+ * This is a port of D.J. Bernstein's CDB to PHP. It's based on the copy that
+ * appears in PHP 5.3.
  */
 class Util {
 	/**
@@ -37,10 +31,9 @@ class Util {
 	 *
 	 * @param int $a
 	 * @param int $b
-	 *
 	 * @return int
 	 */
-	public static function unsignedMod( $a, $b ) {
+	public static function unsignedMod( $a, $b ): int {
 		if ( $a & 0x80000000 ) {
 			$m = ( $a & 0x7fffffff ) % $b + 2 * ( 0x40000000 % $b );
 
@@ -52,11 +45,12 @@ class Util {
 
 	/**
 	 * Shift a signed integer right as if it were unsigned
+	 *
 	 * @param int $a
 	 * @param int $b
 	 * @return int
 	 */
-	public static function unsignedShiftRight( $a, $b ) {
+	public static function unsignedShiftRight( $a, $b ): int {
 		if ( $b == 0 ) {
 			return $a;
 		}
@@ -71,10 +65,9 @@ class Util {
 	 * The CDB hash function.
 	 *
 	 * @param string $s
-	 *
 	 * @return int
 	 */
-	public static function hash( $s ) {
+	public static function hash( $s ): int {
 		$h = 5381;
 		$len = strlen( $s );
 		for ( $i = 0; $i < $len; $i++ ) {
@@ -82,15 +75,13 @@ class Util {
 			// Do a 32-bit sum
 			// Inlined here for speed
 			$sum = ( $h & 0x3fffffff ) + ( $h5 & 0x3fffffff );
-			$h =
-				(
-					( $sum & 0x40000000 ? 1 : 0 )
-					+ ( $h & 0x80000000 ? 2 : 0 )
-					+ ( $h & 0x40000000 ? 1 : 0 )
-					+ ( $h5 & 0x80000000 ? 2 : 0 )
-					+ ( $h5 & 0x40000000 ? 1 : 0 )
-				) << 30
-				| ( $sum & 0x3fffffff );
+			$h = (
+				( $sum & 0x40000000 ? 1 : 0 )
+				+ ( $h & 0x80000000 ? 2 : 0 )
+				+ ( $h & 0x40000000 ? 1 : 0 )
+				+ ( $h5 & 0x80000000 ? 2 : 0 )
+				+ ( $h5 & 0x40000000 ? 1 : 0 )
+			) << 30 | ( $sum & 0x3fffffff );
 			$h ^= ord( $s[$i] );
 			$h &= 0xffffffff;
 		}

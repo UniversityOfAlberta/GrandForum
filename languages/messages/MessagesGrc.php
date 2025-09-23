@@ -1,11 +1,8 @@
 <?php
 /** Ancient Greek (Ἀρχαία ἑλληνικὴ)
  *
- * To improve a translation please visit https://translatewiki.net
- *
- * @ingroup Language
  * @file
- *
+ * @ingroup Languages
  */
 
 $dateFormats = [

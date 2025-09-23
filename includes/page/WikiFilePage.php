@@ -1,7 +1,5 @@
 <?php
 /**
- * Special handling for file pages.
- *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -20,11 +18,14 @@
  * @file
  */
 
+use MediaWiki\Actions\FileDeleteAction;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Title\Title;
+use MediaWiki\Title\TitleArrayFromResult;
 use Wikimedia\Rdbms\FakeResultWrapper;
 
 /**
- * Special handling for file pages
+ * Special handling for representing file pages.
  *
  * @ingroup Media
  */
@@ -38,6 +39,9 @@ class WikiFilePage extends WikiPage {
 	/** @var array|null */
 	protected $mDupes = null;
 
+	/**
+	 * @param Title $title
+	 */
 	public function __construct( $title ) {
 		parent::__construct( $title );
 		$this->mDupes = null;
@@ -60,37 +64,24 @@ class WikiFilePage extends WikiPage {
 		if ( $this->mFileLoaded ) {
 			return true;
 		}
-		$this->mFileLoaded = true;
 
 		$this->mFile = $services->getRepoGroup()->findFile( $this->mTitle );
 		if ( !$this->mFile ) {
 			$this->mFile = $services->getRepoGroup()->getLocalRepo()
-				->newFile( $this->mTitle ); // always a File
+				->newFile( $this->mTitle );
 		}
+
+		if ( !$this->mFile instanceof File ) {
+			throw new RuntimeException( 'Expected to find file. See T250767' );
+		}
+
 		$this->mRepo = $this->mFile->getRepo();
+		$this->mFileLoaded = true;
 		return true;
 	}
 
 	/**
-	 * @return mixed|null|Title
-	 */
-	public function getRedirectTarget() {
-		$this->loadFile();
-		if ( $this->mFile->isLocal() ) {
-			return parent::getRedirectTarget();
-		}
-		// Foreign image page
-		$from = $this->mFile->getRedirected();
-		$to = $this->mFile->getName();
-		if ( $from == $to ) {
-			return null;
-		}
-		$this->mRedirectTarget = Title::makeTitle( NS_FILE, $to );
-		return $this->mRedirectTarget;
-	}
-
-	/**
-	 * @return bool|mixed|Title
+	 * @return bool|Title|string False, Title of in-wiki target, or string with URL
 	 */
 	public function followRedirect() {
 		$this->loadFile();
@@ -99,7 +90,7 @@ class WikiFilePage extends WikiPage {
 		}
 		$from = $this->mFile->getRedirected();
 		$to = $this->mFile->getName();
-		if ( $from == $to ) {
+		if ( $from === null || $from === $to ) {
 			return false;
 		}
 		return Title::makeTitle( NS_FILE, $to );
@@ -114,7 +105,7 @@ class WikiFilePage extends WikiPage {
 			return parent::isRedirect();
 		}
 
-		return (bool)$this->mFile->getRedirected();
+		return $this->mFile->getRedirected() !== null;
 	}
 
 	/**
@@ -126,15 +117,15 @@ class WikiFilePage extends WikiPage {
 	}
 
 	/**
-	 * @return bool|File
+	 * @return File
 	 */
-	public function getFile() {
+	public function getFile(): File {
 		$this->loadFile();
 		return $this->mFile;
 	}
 
 	/**
-	 * @return array|null
+	 * @return File[]|null
 	 */
 	public function getDuplicates() {
 		$this->loadFile();
@@ -156,10 +147,7 @@ class WikiFilePage extends WikiPage {
 		 */
 		foreach ( $dupes as $index => $file ) {
 			$key = $file->getRepoName() . ':' . $file->getName();
-			if ( $key == $self ) {
-				unset( $dupes[$index] );
-			}
-			if ( $file->getSize() != $size ) {
+			if ( $key === $self || $file->getSize() != $size ) {
 				unset( $dupes[$index] );
 			}
 		}
@@ -181,7 +169,7 @@ class WikiFilePage extends WikiPage {
 				'imagelinks',
 				[ 'causeAction' => 'file-purge' ]
 			);
-			JobQueueGroup::singleton()->lazyPush( $job );
+			MediaWikiServices::getInstance()->getJobQueueGroup()->lazyPush( $job );
 		} else {
 			wfDebug( 'ImagePage::doPurge no image for '
 				. $this->mFile->getName() . "; limiting purge to cache only" );
@@ -212,39 +200,32 @@ class WikiFilePage extends WikiPage {
 	 * For foreign API files (InstantCommons), this is not supported currently.
 	 * Results will include hidden categories.
 	 *
-	 * @return TitleArray|Title[]
+	 * @return TitleArrayFromResult
 	 * @since 1.23
 	 */
 	public function getForeignCategories() {
 		$this->loadFile();
 		$title = $this->mTitle;
 		$file = $this->mFile;
+		$titleFactory = MediaWikiServices::getInstance()->getTitleFactory();
 
 		if ( !$file instanceof LocalFile ) {
-			wfDebug( __CLASS__ . '::' . __METHOD__ . " is not supported for this file" );
-			return TitleArray::newFromResult( new FakeResultWrapper( [] ) );
+			wfDebug( __METHOD__ . " is not supported for this file" );
+			return $titleFactory->newTitleArrayFromResult( new FakeResultWrapper( [] ) );
 		}
 
 		/** @var LocalRepo $repo */
 		$repo = $file->getRepo();
 		$dbr = $repo->getReplicaDB();
 
-		$res = $dbr->select(
-			[ 'page', 'categorylinks' ],
-			[
-				'page_title' => 'cl_to',
-				'page_namespace' => NS_CATEGORY,
-			],
-			[
-				'page_namespace' => $title->getNamespace(),
-				'page_title' => $title->getDBkey(),
-			],
-			__METHOD__,
-			[],
-			[ 'categorylinks' => [ 'JOIN', 'page_id = cl_from' ] ]
-		);
+		$res = $dbr->newSelectQueryBuilder()
+			->select( [ 'page_title' => 'cl_to', 'page_namespace' => (string)NS_CATEGORY ] )
+			->from( 'page' )
+			->join( 'categorylinks', null, 'page_id = cl_from' )
+			->where( [ 'page_namespace' => $title->getNamespace(), 'page_title' => $title->getDBkey(), ] )
+			->caller( __METHOD__ )->fetchResultSet();
 
-		return TitleArray::newFromResult( $res );
+		return $titleFactory->newTitleArrayFromResult( $res );
 	}
 
 	/**
@@ -261,5 +242,18 @@ class WikiFilePage extends WikiPage {
 	 */
 	public function getSourceURL() {
 		return $this->getFile()->getDescriptionUrl();
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public function getActionOverrides() {
+		$file = $this->getFile();
+		if ( $file->exists() && $file->isLocal() && !$file->getRedirected() ) {
+			// Would be an actual file deletion
+			return [ 'delete' => FileDeleteAction::class ] + parent::getActionOverrides();
+		}
+		// It should use the normal article deletion interface
+		return parent::getActionOverrides();
 	}
 }

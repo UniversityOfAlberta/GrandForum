@@ -3,9 +3,12 @@
 namespace MediaWiki\Page\Hook;
 
 use ImagePage;
-use OutputPage;
+use MediaWiki\Output\OutputPage;
 
 /**
+ * This is a hook handler interface, see docs/Hooks.md.
+ * Use the hook name "ImageOpenShowImageInlineBefore" to register handlers implementing this interface.
+ *
  * @stable to implement
  * @ingroup Hooks
  */

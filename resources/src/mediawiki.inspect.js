@@ -15,19 +15,19 @@
 	// and subsequently setting additional properties on the function object.
 
 	/**
-	 * Tools for inspecting page composition and performance.
+	 * @classdesc Tools for inspecting page composition and performance.
 	 *
-	 * @class mw.inspect
-	 * @singleton
+	 * @class mediawiki.inspect
+	 * @hideconstructor
 	 */
 
-	var inspect = mw.inspect,
+	const inspect = mw.inspect,
 		byteLength = require( 'mediawiki.String' ).byteLength,
 		hasOwn = Object.prototype.hasOwnProperty;
 
 	function sortByProperty( array, prop, descending ) {
-		var order = descending ? -1 : 1;
-		return array.sort( function ( a, b ) {
+		const order = descending ? -1 : 1;
+		return array.sort( ( a, b ) => {
 			if ( a[ prop ] === undefined || b[ prop ] === undefined ) {
 				// Sort undefined to the end, regardless of direction
 				return a[ prop ] !== undefined ? -1 : b[ prop ] !== undefined ? 1 : 0;
@@ -37,18 +37,18 @@
 	}
 
 	function humanSize( bytesInput ) {
-		var i,
-			bytes = +bytesInput,
-			units = [ '', ' KiB', ' MiB', ' GiB', ' TiB', ' PiB' ];
+		let bytes = +bytesInput;
+		const units = [ '', ' KiB', ' MiB', ' GiB', ' TiB', ' PiB' ];
 
 		if ( bytes === 0 || isNaN( bytes ) ) {
 			return bytesInput;
 		}
 
+		let i;
 		for ( i = 0; bytes >= 1024; bytes /= 1024 ) {
 			i++;
 		}
-		// Maintain one decimal for kB and above, but don't
+		// Maintain one decimal for KiB and above, but don't
 		// add ".0" for bytes.
 		return bytes.toFixed( i > 0 ? 1 : 0 ) + units[ i ];
 	}
@@ -58,20 +58,22 @@
 	 *
 	 * @return {Object} Maps module names to objects. Each sub-object has
 	 *  two properties, 'requires' and 'requiredBy'.
+	 * @memberof mediawiki.inspect
+	 * @method mediawiki.inspect.getDependencyGraph
 	 */
 	inspect.getDependencyGraph = function () {
-		var modules = inspect.getLoadedModules(),
+		const modules = inspect.getLoadedModules(),
 			graph = {};
 
-		modules.forEach( function ( moduleName ) {
-			var dependencies = mw.loader.moduleRegistry[ moduleName ].dependencies || [];
+		modules.forEach( ( moduleName ) => {
+			const dependencies = mw.loader.moduleRegistry[ moduleName ].dependencies || [];
 
 			if ( !hasOwn.call( graph, moduleName ) ) {
 				graph[ moduleName ] = { requiredBy: [] };
 			}
 			graph[ moduleName ].requires = dependencies;
 
-			dependencies.forEach( function ( depName ) {
+			dependencies.forEach( ( depName ) => {
 				if ( !hasOwn.call( graph, depName ) ) {
 					graph[ depName ] = { requiredBy: [] };
 				}
@@ -86,60 +88,25 @@
 	 *
 	 * @param {string} moduleName The name of the module
 	 * @return {number|null} Module size in bytes or null
+	 * @memberof mediawiki.inspect
+	 * @method mediawiki.inspect.getModuleSize
 	 */
 	inspect.getModuleSize = function ( moduleName ) {
-		var module = mw.loader.moduleRegistry[ moduleName ],
-			args, i, size;
+		// We typically receive them from the server through batches from load.php,
+		// or embedded as inline scripts (handled in PHP by ResourceLoader::makeModuleResponse
+		// and ResourceLoader\ClientHtml respectively).
+		//
+		// The module declarator function is stored by mw.loader.implement(), allowing easy
+		// computation of the exact size.
+		const module = mw.loader.moduleRegistry[ moduleName ];
 
 		if ( module.state !== 'ready' ) {
 			return null;
 		}
-
-		if ( !module.style && !module.script ) {
+		if ( !module.declarator ) {
 			return 0;
 		}
-
-		function getFunctionBody( func ) {
-			return String( func )
-				// To ensure a deterministic result, replace the start of the function
-				// declaration with a fixed string. For example, in Chrome 55, it seems
-				// V8 seemingly-at-random decides to sometimes put a line break between
-				// the opening brace and first statement of the function body. T159751.
-				.replace( /^\s*function\s*\([^)]*\)\s*{\s*/, 'function(){' )
-				.replace( /\s*}\s*$/, '}' );
-		}
-
-		// Based on the load.php response for this module.
-		// For example: `mw.loader.implement("example", function(){}, {"css":[".x{color:red}"]});`
-		// @see mw.loader.store.set().
-		args = [
-			moduleName,
-			module.script,
-			module.style,
-			module.messages,
-			module.templates
-		];
-		// Trim trailing null or empty object, as load.php would have done.
-		// @see ResourceLoader::makeLoaderImplementScript and ResourceLoader::trimArray.
-		i = args.length;
-		while ( i-- ) {
-			if ( args[ i ] === null || ( $.isPlainObject( args[ i ] ) && $.isEmptyObject( args[ i ] ) ) ) {
-				args.splice( i, 1 );
-			} else {
-				break;
-			}
-		}
-
-		size = 0;
-		for ( i = 0; i < args.length; i++ ) {
-			if ( typeof args[ i ] === 'function' ) {
-				size += byteLength( getFunctionBody( args[ i ] ) );
-			} else {
-				size += byteLength( JSON.stringify( args[ i ] ) );
-			}
-		}
-
-		return size;
+		return byteLength( module.declarator.toString() );
 	};
 
 	/**
@@ -151,15 +118,18 @@
 	 * @return {Object} Selector counts
 	 * @return {number} return.selectors Total number of selectors
 	 * @return {number} return.matched Number of matched selectors
+	 * @memberof mediawiki.inspect
+	 * @method mediawiki.inspect.auditSelectors
 	 */
 	inspect.auditSelectors = function ( css ) {
-		var selectors = { total: 0, matched: 0 },
+		const selectors = { total: 0, matched: 0 },
 			style = document.createElement( 'style' );
 
 		style.textContent = css;
 		document.body.appendChild( style );
-		// eslint-disable-next-line no-jquery/no-each-util
-		$.each( style.sheet.cssRules, function ( index, rule ) {
+		const cssRules = style.sheet.cssRules;
+		for ( const index in cssRules ) {
+			const rule = cssRules[ index ];
 			selectors.total++;
 			// document.querySelector() on prefixed pseudo-elements can throw exceptions
 			// in Firefox and Safari. Ignore these exceptions.
@@ -170,7 +140,7 @@
 					selectors.matched++;
 				}
 			} catch ( e ) {}
-		} );
+		}
 		document.body.removeChild( style );
 		return selectors;
 	};
@@ -179,33 +149,22 @@
 	 * Get a list of all loaded ResourceLoader modules.
 	 *
 	 * @return {Array} List of module names
+	 * @memberof mediawiki.inspect
+	 * @method mediawiki.inspect.getLoadedModules
 	 */
 	inspect.getLoadedModules = function () {
-		return mw.loader.getModuleNames().filter( function ( module ) {
-			return mw.loader.getState( module ) === 'ready';
-		} );
+		return mw.loader.getModuleNames().filter( ( module ) => mw.loader.getState( module ) === 'ready' );
 	};
 
 	/**
-	 * Print tabular data to the console, using console.table, console.log,
-	 * or mw.log (in declining order of preference).
+	 * Print tabular data to the console using console.table.
 	 *
 	 * @param {Array} data Tabular data represented as an array of objects
 	 *  with common properties.
+	 * @memberof mediawiki.inspect
+	 * @method mediawiki.inspect.dumpTable
 	 */
-	inspect.dumpTable = function ( data ) {
-		try {
-			// Use Function.prototype#call to force an exception on Firefox,
-			// which doesn't define console#table but doesn't complain if you
-			// try to invoke it.
-			// eslint-disable-next-line no-useless-call
-			console.table.call( console, data );
-			return;
-		} catch ( e ) {}
-		try {
-			console.log( JSON.stringify( data, null, 2 ) );
-		} catch ( e ) {}
-	};
+	inspect.dumpTable = console.table;
 
 	/**
 	 * Generate and print reports.
@@ -213,13 +172,15 @@
 	 * When invoked without arguments, prints all available reports.
 	 *
 	 * @param {...string} [reports] One or more of "size", "css", "store", or "time".
+	 * @memberof mediawiki.inspect
+	 * @method mediawiki.inspect.runReports
 	 */
 	inspect.runReports = function () {
-		var reports = arguments.length > 0 ?
+		const reports = arguments.length > 0 ?
 			Array.prototype.slice.call( arguments ) :
 			Object.keys( inspect.reports );
 
-		reports.forEach( function ( name ) {
+		reports.forEach( ( name ) => {
 			if ( console.group ) {
 				console.group( 'mw.inspect ' + name + ' report' );
 			} else {
@@ -239,14 +200,17 @@
 	 *
 	 * @param {string|RegExp} pattern String or regexp to match.
 	 * @return {Array} Array of the names of modules that matched.
+	 * @memberof mediawiki.inspect
+	 * @method mediawiki.inspect.grep
 	 */
 	inspect.grep = function ( pattern ) {
 		if ( typeof pattern.test !== 'function' ) {
+
 			pattern = new RegExp( mw.util.escapeRegExp( pattern ), 'g' );
 		}
 
-		return inspect.getLoadedModules().filter( function ( moduleName ) {
-			var module = mw.loader.moduleRegistry[ moduleName ];
+		return inspect.getLoadedModules().filter( ( moduleName ) => {
+			const module = mw.loader.moduleRegistry[ moduleName ];
 
 			// Grep module's JavaScript
 			if ( typeof module.script === 'function' && pattern.test( module.script.toString() ) ) {
@@ -274,24 +238,22 @@
 	inspect.reports = {
 		/**
 		 * Generate a breakdown of all loaded modules and their size in
-		 * kilobytes. Modules are ordered from largest to smallest.
+		 * kibibytes. Modules are ordered from largest to smallest.
 		 *
 		 * @return {Object[]} Size reports
 		 */
 		size: function () {
 			// Map each module to a descriptor object.
-			var modules = inspect.getLoadedModules().map( function ( module ) {
-				return {
-					name: module,
-					size: inspect.getModuleSize( module )
-				};
-			} );
+			const modules = inspect.getLoadedModules().map( ( module ) => ( {
+				name: module,
+				size: inspect.getModuleSize( module )
+			} ) );
 
 			// Sort module descriptors by size, largest first.
 			sortByProperty( modules, 'size', true );
 
 			// Convert size to human-readable string.
-			modules.forEach( function ( module ) {
+			modules.forEach( ( module ) => {
 				module.sizeInBytes = module.size;
 				module.size = humanSize( module.size );
 			} );
@@ -306,16 +268,20 @@
 		 * @return {Object[]} CSS reports
 		 */
 		css: function () {
-			var modules = [];
+			const modules = [];
 
-			inspect.getLoadedModules().forEach( function ( name ) {
-				var css, stats, module = mw.loader.moduleRegistry[ name ];
+			inspect.getLoadedModules().forEach( ( name ) => {
+				const module = mw.loader.moduleRegistry[ name ];
 
+				let css;
 				try {
 					css = module.style.css.join();
-				} catch ( e ) { return; } // skip
+				} catch ( e ) {
+					// skip
+					return;
+				}
 
-				stats = inspect.auditSelectors( css );
+				const stats = inspect.auditSelectors( css );
 				modules.push( {
 					module: name,
 					allSelectors: stats.total,
@@ -336,11 +302,11 @@
 		 * @return {Object[]} Store stats
 		 */
 		store: function () {
-			var raw, stats = { enabled: mw.loader.store.enabled };
+			const stats = { enabled: mw.loader.store.enabled };
 			if ( stats.enabled ) {
-				$.extend( stats, mw.loader.store.stats );
+				Object.assign( stats, mw.loader.store.stats );
 				try {
-					raw = localStorage.getItem( mw.loader.store.key );
+					const raw = localStorage.getItem( mw.loader.store.key );
 					stats.totalSizeInBytes = byteLength( raw );
 					stats.totalSize = humanSize( byteLength( raw ) );
 				} catch ( e ) {}
@@ -357,28 +323,24 @@
 		 * @return {Object[]} Table rows
 		 */
 		time: function () {
-			var modules;
-
 			if ( !mw.loader.profiler ) {
 				mw.log.warn( 'mw.inspect: The time report requires $wgResourceLoaderEnableJSProfiler.' );
 				return [];
 			}
 
-			modules = inspect.getLoadedModules()
-				.map( function ( moduleName ) {
-					return mw.loader.profiler.getProfile( moduleName );
-				} )
-				.filter( function ( perf ) {
+			const modules = inspect.getLoadedModules()
+				.map( ( moduleName ) => mw.loader.profiler.getProfile( moduleName ) )
+				.filter(
 					// Exclude modules that reached "ready" state without involvement from mw.loader.
 					// This is primarily styles-only as loaded via <link rel="stylesheet">.
-					return perf !== null;
-				} );
+					( perf ) => perf !== null
+				);
 
 			// Sort by total time spent, highest first.
 			sortByProperty( modules, 'total', true );
 
 			// Add human-readable strings
-			modules.forEach( function ( module ) {
+			modules.forEach( ( module ) => {
 				module.totalInMs = module.total;
 				module.total = module.totalInMs.toLocaleString() + ' ms';
 			} );

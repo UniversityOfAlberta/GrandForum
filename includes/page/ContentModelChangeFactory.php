@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,24 +21,27 @@
 
 namespace MediaWiki\Page;
 
-use ContentModelChange;
-use User;
-use WikiPage;
+use MediaWiki\Content\ContentModelChange;
+use MediaWiki\Permissions\Authority;
 
 /**
+ * Service for changing the content model of wiki pages.
+ *
+ * Default implementation is MediaWiki\Page\PageCommandFactory.
+ *
  * @since 1.35
  */
 interface ContentModelChangeFactory {
 
 	/**
-	 * @param User $user
-	 * @param WikiPage $wikipage
+	 * @param Authority $performer
+	 * @param PageIdentity $page
 	 * @param string $newContentModel
 	 * @return ContentModelChange
 	 */
 	public function newContentModelChange(
-		User $user,
-		WikiPage $wikipage,
+		Authority $performer,
+		PageIdentity $page,
 		string $newContentModel
-	) : ContentModelChange;
+	): ContentModelChange;
 }

@@ -1,15 +1,23 @@
 /* global moment */
 
 ( function () {
+	// Define a locale if the current language doesn't have one, so that we can apply overrides
+	// without affecting the defaults for English (T313188)
+	if ( moment.locale() === 'en' && mw.config.get( 'wgUserLanguage' ) !== 'en' ) {
+		moment.defineLocale( mw.config.get( 'wgUserLanguage' ), {
+			parentLocale: 'en'
+		} );
+	}
+
 	// HACK: Overwrite moment's i18n with MediaWiki's for the current language so that
 	// wgTranslateNumerals is respected.
 	moment.updateLocale( moment.locale(), {
 		preparse: function ( s ) {
-			var i,
-				table = mw.language.getDigitTransformTable();
+			const table = mw.language.getDigitTransformTable();
 			if ( mw.config.get( 'wgTranslateNumerals' ) ) {
-				for ( i = 0; i < 10; i++ ) {
+				for ( let i = 0; i < 10; i++ ) {
 					if ( table[ i ] !== undefined ) {
+
 						s = s.replace( new RegExp( mw.util.escapeRegExp( table[ i ] ), 'g' ), i );
 					}
 				}
@@ -23,11 +31,11 @@
 			return s;
 		},
 		postformat: function ( s ) {
-			var i,
-				table = mw.language.getDigitTransformTable();
+			const table = mw.language.getDigitTransformTable();
 			if ( mw.config.get( 'wgTranslateNumerals' ) ) {
-				for ( i = 0; i < 10; i++ ) {
+				for ( let i = 0; i < 10; i++ ) {
 					if ( table[ i ] !== undefined ) {
+
 						s = s.replace( new RegExp( i, 'g' ), table[ i ] );
 					}
 				}

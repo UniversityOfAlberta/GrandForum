@@ -2,10 +2,13 @@
 
 namespace MediaWiki\Page\Hook;
 
-use OutputPage;
-use Title;
+use MediaWiki\Output\OutputPage;
+use MediaWiki\Title\Title;
 
 /**
+ * This is a hook handler interface, see docs/Hooks.md.
+ * Use the hook name "ArticleDeleteAfterSuccess" to register handlers implementing this interface.
+ *
  * @stable to implement
  * @ingroup Hooks
  */

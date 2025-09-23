@@ -2,9 +2,12 @@
 
 namespace MediaWiki\Hook;
 
-use SpecialBlock;
+use MediaWiki\Specials\SpecialBlock;
 
 /**
+ * This is a hook handler interface, see docs/Hooks.md.
+ * Use the hook name "SpecialBlockModifyFormFields" to register handlers implementing this interface.
+ *
  * @stable to implement
  * @ingroup Hooks
  */

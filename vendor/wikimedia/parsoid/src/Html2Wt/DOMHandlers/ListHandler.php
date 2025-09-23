@@ -3,9 +3,11 @@ declare( strict_types = 1 );
 
 namespace Wikimedia\Parsoid\Html2Wt\DOMHandlers;
 
-use DOMElement;
-use DOMNode;
+use Wikimedia\Parsoid\DOM\Element;
+use Wikimedia\Parsoid\DOM\Node;
 use Wikimedia\Parsoid\Html2Wt\SerializerState;
+use Wikimedia\Parsoid\Utils\DiffDOMUtils;
+use Wikimedia\Parsoid\Utils\DOMCompat;
 use Wikimedia\Parsoid\Utils\DOMUtils;
 use Wikimedia\Parsoid\Utils\WTUtils;
 
@@ -24,28 +26,28 @@ class ListHandler extends DOMHandler {
 
 	/** @inheritDoc */
 	public function handle(
-		DOMElement $node, SerializerState $state, bool $wrapperUnmodified = false
-	): ?DOMNode {
+		Element $node, SerializerState $state, bool $wrapperUnmodified = false
+	): ?Node {
 		// Disable single-line context here so that separators aren't
 		// suppressed between nested list elements.
 		$state->singleLineContext->disable();
 
-		$firstChildElt = DOMUtils::firstNonSepChild( $node );
+		$firstChildElt = DiffDOMUtils::firstNonSepChild( $node );
 
 		// Skip builder-inserted wrappers
 		// Ex: <ul><s auto-inserted-start-and-end-><li>..</li><li>..</li></s>...</ul>
 		// output from: <s>\n*a\n*b\n*c</s>
 		while ( $firstChildElt && $this->isBuilderInsertedElt( $firstChildElt ) ) {
-			$firstChildElt = DOMUtils::firstNonSepChild( $firstChildElt );
+			$firstChildElt = DiffDOMUtils::firstNonSepChild( $firstChildElt );
 		}
 
-		if ( !$firstChildElt || !in_array( $firstChildElt->nodeName, $this->firstChildNames, true )
+		if ( !$firstChildElt || !in_array( DOMCompat::nodeName( $firstChildElt ), $this->firstChildNames, true )
 			|| WTUtils::isLiteralHTMLNode( $firstChildElt )
 		) {
 			$state->emitChunk( $this->getListBullets( $state, $node ), $node );
 		}
 
-		$liHandler = function ( $state, $text, $opts ) use ( $node ) {
+		$liHandler = static function ( $state, $text, $opts ) use ( $node ) {
 			return $state->serializer->wteHandlers->liHandler( $node, $state, $text, $opts );
 		};
 		$state->serializeChildren( $node, $liHandler );
@@ -54,8 +56,8 @@ class ListHandler extends DOMHandler {
 	}
 
 	/** @inheritDoc */
-	public function before( DOMElement $node, DOMNode $otherNode, SerializerState $state ): array {
-		if ( DOMUtils::isBody( $otherNode ) ) {
+	public function before( Element $node, Node $otherNode, SerializerState $state ): array {
+		if ( DOMUtils::atTheTop( $otherNode ) ) {
 			return [ 'min' => 0, 'max' => 0 ];
 		}
 
@@ -67,19 +69,24 @@ class ListHandler extends DOMHandler {
 
 		// A list in a block node (<div>, <td>, etc) doesn't need a leading empty line
 		// if it is the first non-separator child (ex: <div><ul>...</div>)
-		if ( DOMUtils::isBlockNode( $node->parentNode )
-			&& DOMUtils::firstNonSepChild( $node->parentNode ) === $node
+		if (
+			DOMUtils::isWikitextBlockNode( $node->parentNode ) &&
+			DiffDOMUtils::firstNonSepChild( $node->parentNode ) === $node
 		) {
 			return [ 'min' => 1, 'max' => 2 ];
 		} elseif ( DOMUtils::isFormattingElt( $otherNode ) ) {
 			return [ 'min' => 1, 'max' => 1 ];
 		} else {
-			return [ 'min' => WTUtils::isNewElt( $node ) ? 2 : 1, 'max' => 2 ];
+			return [
+				'min' => WTUtils::isNewElt( $node ) && !WTUtils::isMarkerAnnotation( $otherNode )
+					? 2 : 1,
+				'max' => 2
+			];
 		}
 	}
 
 	/** @inheritDoc */
-	public function after( DOMElement $node, DOMNode $otherNode, SerializerState $state ): array {
+	public function after( Element $node, Node $otherNode, SerializerState $state ): array {
 		return $this->wtListEOL( $node, $otherNode );
 	}
 

@@ -3,7 +3,10 @@
 namespace MediaWiki\Search\Hook;
 
 /**
- * @deprecated since 1.27 Override SearchEngine::completionSearchBackend instead
+ * This is a hook handler interface, see docs/Hooks.md.
+ * Use the hook name "PrefixSearchBackend" to register handlers implementing this interface.
+ *
+ * @deprecated since 1.27. Override SearchEngine::completionSearchBackend instead. Emitting warnings since 1.41.
  * @ingroup Hooks
  */
 interface PrefixSearchBackendHook {

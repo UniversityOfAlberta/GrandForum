@@ -20,6 +20,15 @@
  * @file
  */
 
+namespace MediaWiki\Api;
+
+use MediaWiki\Cache\LinkBatchFactory;
+use MediaWiki\Linker\LinksMigration;
+use MediaWiki\ParamValidator\TypeDef\NamespaceDef;
+use MediaWiki\Title\Title;
+use Wikimedia\ParamValidator\ParamValidator;
+use Wikimedia\ParamValidator\TypeDef\IntegerDef;
+
 /**
  * A query module to list all wiki links on a given set of pages.
  *
@@ -30,9 +39,20 @@ class ApiQueryLinks extends ApiQueryGeneratorBase {
 	private const LINKS = 'links';
 	private const TEMPLATES = 'templates';
 
-	private $table, $prefix, $titlesParam, $helpUrl;
+	private string $table;
+	private string $prefix;
+	private string $titlesParam;
+	private string $helpUrl;
 
-	public function __construct( ApiQuery $query, $moduleName ) {
+	private LinkBatchFactory $linkBatchFactory;
+	private LinksMigration $linksMigration;
+
+	public function __construct(
+		ApiQuery $query,
+		string $moduleName,
+		LinkBatchFactory $linkBatchFactory,
+		LinksMigration $linksMigration
+	) {
 		switch ( $moduleName ) {
 			case self::LINKS:
 				$this->table = 'pagelinks';
@@ -51,6 +71,8 @@ class ApiQueryLinks extends ApiQueryGeneratorBase {
 		}
 
 		parent::__construct( $query, $moduleName, $this->prefix );
+		$this->linkBatchFactory = $linkBatchFactory;
+		$this->linksMigration = $linksMigration;
 	}
 
 	public function execute() {
@@ -69,64 +91,69 @@ class ApiQueryLinks extends ApiQueryGeneratorBase {
 	 * @param ApiPageSet|null $resultPageSet
 	 */
 	private function run( $resultPageSet = null ) {
-		if ( $this->getPageSet()->getGoodTitleCount() == 0 ) {
+		$pages = $this->getPageSet()->getGoodPages();
+		if ( $pages === [] ) {
 			return; // nothing to do
 		}
 
 		$params = $this->extractRequestParams();
 
+		if ( isset( $this->linksMigration::$mapping[$this->table] ) ) {
+			[ $nsField, $titleField ] = $this->linksMigration->getTitleFields( $this->table );
+			$queryInfo = $this->linksMigration->getQueryInfo( $this->table );
+			$this->addTables( $queryInfo['tables'] );
+			$this->addJoinConds( $queryInfo['joins'] );
+		} else {
+			$this->addTables( $this->table );
+			$nsField = $this->prefix . '_namespace';
+			$titleField = $this->prefix . '_title';
+		}
+
 		$this->addFields( [
 			'pl_from' => $this->prefix . '_from',
-			'pl_namespace' => $this->prefix . '_namespace',
-			'pl_title' => $this->prefix . '_title'
+			'pl_namespace' => $nsField,
+			'pl_title' => $titleField,
 		] );
 
-		$this->addTables( $this->table );
-		$this->addWhereFld( $this->prefix . '_from', array_keys( $this->getPageSet()->getGoodTitles() ) );
+		$this->addWhereFld( $this->prefix . '_from', array_keys( $pages ) );
 
 		$multiNS = true;
 		$multiTitle = true;
 		if ( $params[$this->titlesParam] ) {
 			// Filter the titles in PHP so our ORDER BY bug avoidance below works right.
-			$filterNS = $params['namespace'] ? array_flip( $params['namespace'] ) : false;
+			$filterNS = $params['namespace'] ? array_fill_keys( $params['namespace'], true ) : false;
 
-			$lb = new LinkBatch;
+			$lb = $this->linkBatchFactory->newLinkBatch();
 			foreach ( $params[$this->titlesParam] as $t ) {
 				$title = Title::newFromText( $t );
-				if ( !$title ) {
+				if ( !$title || $title->isExternal() ) {
 					$this->addWarning( [ 'apiwarn-invalidtitle', wfEscapeWikiText( $t ) ] );
 				} elseif ( !$filterNS || isset( $filterNS[$title->getNamespace()] ) ) {
 					$lb->addObj( $title );
 				}
 			}
-			$cond = $lb->constructSet( $this->prefix, $this->getDB() );
-			if ( $cond ) {
-				$this->addWhere( $cond );
-				$multiNS = count( $lb->data ) !== 1;
-				$multiTitle = count( array_merge( ...$lb->data ) ) !== 1;
-			} else {
-				// No titles so no results
+			if ( $lb->isEmpty() ) {
+				// No titles, no results!
 				return;
 			}
+			$cond = $lb->constructSet( $this->prefix, $this->getDB() );
+			$this->addWhere( $cond );
+			$multiNS = count( $lb->data ) !== 1;
+			$multiTitle = count( array_merge( ...$lb->data ) ) !== 1;
 		} elseif ( $params['namespace'] ) {
-			$this->addWhereFld( $this->prefix . '_namespace', $params['namespace'] );
+			$this->addWhereFld( $nsField, $params['namespace'] );
 			$multiNS = $params['namespace'] === null || count( $params['namespace'] ) !== 1;
 		}
 
 		if ( $params['continue'] !== null ) {
-			$cont = explode( '|', $params['continue'] );
-			$this->dieContinueUsageIf( count( $cont ) != 3 );
-			$op = $params['dir'] == 'descending' ? '<' : '>';
-			$plfrom = (int)$cont[0];
-			$plns = (int)$cont[1];
-			$pltitle = $this->getDB()->addQuotes( $cont[2] );
-			$this->addWhere(
-				"{$this->prefix}_from $op $plfrom OR " .
-				"({$this->prefix}_from = $plfrom AND " .
-				"({$this->prefix}_namespace $op $plns OR " .
-				"({$this->prefix}_namespace = $plns AND " .
-				"{$this->prefix}_title $op= $pltitle)))"
-			);
+			$db = $this->getDB();
+			$cont = $this->parseContinueParamOrDie( $params['continue'], [ 'int', 'int', 'string' ] );
+			$op = $params['dir'] == 'descending' ? '<=' : '>=';
+			$this->addWhere( $db->buildComparison( $op, [
+				"{$this->prefix}_from" => $cont[0],
+				$nsField => $cont[1],
+				$titleField => $cont[2],
+			] ) );
 		}
 
 		$sort = ( $params['dir'] == 'descending' ? ' DESC' : '' );
@@ -136,14 +163,14 @@ class ApiQueryLinks extends ApiQueryGeneratorBase {
 		// already. To work around this, we drop constant fields in the WHERE
 		// clause from the ORDER BY clause
 		$order = [];
-		if ( count( $this->getPageSet()->getGoodTitles() ) != 1 ) {
+		if ( count( $pages ) !== 1 ) {
 			$order[] = $this->prefix . '_from' . $sort;
 		}
 		if ( $multiNS ) {
-			$order[] = $this->prefix . '_namespace' . $sort;
+			$order[] = $nsField . $sort;
 		}
 		if ( $multiTitle ) {
-			$order[] = $this->prefix . '_title' . $sort;
+			$order[] = $titleField . $sort;
 		}
 		if ( $order ) {
 			$this->addOption( 'ORDER BY', $order );
@@ -193,26 +220,26 @@ class ApiQueryLinks extends ApiQueryGeneratorBase {
 	public function getAllowedParams() {
 		return [
 			'namespace' => [
-				ApiBase::PARAM_TYPE => 'namespace',
-				ApiBase::PARAM_ISMULTI => true,
-				ApiBase::PARAM_EXTRA_NAMESPACES => [ NS_MEDIA, NS_SPECIAL ],
+				ParamValidator::PARAM_TYPE => 'namespace',
+				ParamValidator::PARAM_ISMULTI => true,
+				NamespaceDef::PARAM_EXTRA_NAMESPACES => [ NS_MEDIA, NS_SPECIAL ],
 			],
 			'limit' => [
-				ApiBase::PARAM_DFLT => 10,
-				ApiBase::PARAM_TYPE => 'limit',
-				ApiBase::PARAM_MIN => 1,
-				ApiBase::PARAM_MAX => ApiBase::LIMIT_BIG1,
-				ApiBase::PARAM_MAX2 => ApiBase::LIMIT_BIG2
+				ParamValidator::PARAM_DEFAULT => 10,
+				ParamValidator::PARAM_TYPE => 'limit',
+				IntegerDef::PARAM_MIN => 1,
+				IntegerDef::PARAM_MAX => ApiBase::LIMIT_BIG1,
+				IntegerDef::PARAM_MAX2 => ApiBase::LIMIT_BIG2
 			],
 			'continue' => [
 				ApiBase::PARAM_HELP_MSG => 'api-help-param-continue',
 			],
 			$this->titlesParam => [
-				ApiBase::PARAM_ISMULTI => true,
+				ParamValidator::PARAM_ISMULTI => true,
 			],
 			'dir' => [
-				ApiBase::PARAM_DFLT => 'ascending',
-				ApiBase::PARAM_TYPE => [
+				ParamValidator::PARAM_DEFAULT => 'ascending',
+				ParamValidator::PARAM_TYPE => [
 					'ascending',
 					'descending'
 				]
@@ -223,13 +250,15 @@ class ApiQueryLinks extends ApiQueryGeneratorBase {
 	protected function getExamplesMessages() {
 		$name = $this->getModuleName();
 		$path = $this->getModulePath();
+		$title = Title::newMainPage()->getPrefixedText();
+		$mp = rawurlencode( $title );
 
 		return [
-			"action=query&prop={$name}&titles=Main%20Page"
+			"action=query&prop={$name}&titles={$mp}"
 				=> "apihelp-{$path}-example-simple",
-			"action=query&generator={$name}&titles=Main%20Page&prop=info"
+			"action=query&generator={$name}&titles={$mp}&prop=info"
 				=> "apihelp-{$path}-example-generator",
-			"action=query&prop={$name}&titles=Main%20Page&{$this->prefix}namespace=2|10"
+			"action=query&prop={$name}&titles={$mp}&{$this->prefix}namespace=2|10"
 				=> "apihelp-{$path}-example-namespaces",
 		];
 	}
@@ -238,3 +267,6 @@ class ApiQueryLinks extends ApiQueryGeneratorBase {
 		return $this->helpUrl;
 	}
 }
+
+/** @deprecated class alias since 1.43 */
+class_alias( ApiQueryLinks::class, 'ApiQueryLinks' );

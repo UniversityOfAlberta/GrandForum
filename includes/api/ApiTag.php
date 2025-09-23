@@ -19,7 +19,15 @@
  * @file
  */
 
-use MediaWiki\MediaWikiServices;
+namespace MediaWiki\Api;
+
+use ChangeTags;
+use MediaWiki\ChangeTags\ChangeTagsStore;
+use MediaWiki\Revision\RevisionStore;
+use RecentChange;
+use Wikimedia\ParamValidator\ParamValidator;
+use Wikimedia\Rdbms\IConnectionProvider;
+use Wikimedia\Rdbms\IDatabase;
 
 /**
  * @ingroup API
@@ -29,12 +37,24 @@ class ApiTag extends ApiBase {
 
 	use ApiBlockInfoTrait;
 
-	/** @var \MediaWiki\Revision\RevisionStore */
-	private $revisionStore;
+	private IDatabase $dbr;
+	private RevisionStore $revisionStore;
+	private ChangeTagsStore $changeTagsStore;
+
+	public function __construct(
+		ApiMain $main,
+		string $action,
+		IConnectionProvider $dbProvider,
+		RevisionStore $revisionStore,
+		ChangeTagsStore $changeTagsStore
+	) {
+		parent::__construct( $main, $action );
+		$this->dbr = $dbProvider->getReplicaDatabase();
+		$this->revisionStore = $revisionStore;
+		$this->changeTagsStore = $changeTagsStore;
+	}
 
 	public function execute() {
-		$this->revisionStore = MediaWikiServices::getInstance()->getRevisionStore();
-
 		$params = $this->extractRequestParams();
 		$user = $this->getUser();
 
@@ -49,7 +69,7 @@ class ApiTag extends ApiBase {
 
 		// Check if user can add tags
 		if ( $params['tags'] ) {
-			$ableToTag = ChangeTags::canAddTagsAccompanyingChange( $params['tags'], $user );
+			$ableToTag = ChangeTags::canAddTagsAccompanyingChange( $params['tags'], $this->getAuthority() );
 			if ( !$ableToTag->isOK() ) {
 				$this->dieStatus( $ableToTag );
 			}
@@ -78,10 +98,12 @@ class ApiTag extends ApiBase {
 		$this->getResult()->addValue( null, $this->getModuleName(), $ret );
 	}
 
-	protected static function validateLogId( $logid ) {
-		$dbr = wfGetDB( DB_REPLICA );
-		$result = $dbr->selectField( 'logging', 'log_id', [ 'log_id' => $logid ],
-			__METHOD__ );
+	protected function validateLogId( $logid ) {
+		$result = $this->dbr->newSelectQueryBuilder()
+			->select( 'log_id' )
+			->from( 'logging' )
+			->where( [ 'log_id' => $logid ] )
+			->caller( __METHOD__ )->fetchField();
 		return (bool)$result;
 	}
 
@@ -94,12 +116,14 @@ class ApiTag extends ApiBase {
 		switch ( $type ) {
 			case 'rcid':
 				$valid = RecentChange::newFromId( $id );
+				// TODO: replace use of PermissionManager
 				if ( $valid && $this->getPermissionManager()->isBlockedFrom( $user, $valid->getTitle() ) ) {
 					$idResult['status'] = 'error';
 					// @phan-suppress-next-line PhanTypeMismatchArgument
 					$idResult += $this->getErrorFormatter()->formatMessage( ApiMessage::create(
 						'apierror-blocked',
 						'blocked',
+						// @phan-suppress-next-line PhanTypeMismatchArgumentNullable Block is checked and not null
 						[ 'blockinfo' => $this->getBlockDetails( $user->getBlock() ) ]
 					) );
 					return $idResult;
@@ -107,6 +131,7 @@ class ApiTag extends ApiBase {
 				break;
 			case 'revid':
 				$valid = $this->revisionStore->getRevisionById( $id );
+				// TODO: replace use of PermissionManager
 				if (
 					$valid &&
 					$this->getPermissionManager()->isBlockedFrom( $user, $valid->getPageAsLinkTarget() )
@@ -116,13 +141,14 @@ class ApiTag extends ApiBase {
 					$idResult += $this->getErrorFormatter()->formatMessage( ApiMessage::create(
 							'apierror-blocked',
 							'blocked',
+							// @phan-suppress-next-line PhanTypeMismatchArgumentNullable Block is checked and not null
 							[ 'blockinfo' => $this->getBlockDetails( $user->getBlock() ) ]
 					) );
 					return $idResult;
 				}
 				break;
 			case 'logid':
-				$valid = self::validateLogId( $id );
+				$valid = $this->validateLogId( $id );
 				break;
 		}
 
@@ -140,7 +166,8 @@ class ApiTag extends ApiBase {
 			( $type === 'logid' ? $id : null ),
 			null,
 			$params['reason'],
-			$this->getUser() );
+			$this->getAuthority()
+		);
 
 		if ( !$status->isOK() ) {
 			if ( $status->hasMessage( 'actionthrottledtext' ) ) {
@@ -161,7 +188,7 @@ class ApiTag extends ApiBase {
 				ApiResult::setIndexedTagName( $idResult['removed'], 't' );
 
 				if ( $params['tags'] ) {
-					ChangeTags::addTags( $params['tags'], null, null, $status->value->logId );
+					$this->changeTagsStore->addTags( $params['tags'], null, null, $status->value->logId );
 				}
 			}
 		}
@@ -179,31 +206,32 @@ class ApiTag extends ApiBase {
 	public function getAllowedParams() {
 		return [
 			'rcid' => [
-				ApiBase::PARAM_TYPE => 'integer',
-				ApiBase::PARAM_ISMULTI => true,
+				ParamValidator::PARAM_TYPE => 'integer',
+				ParamValidator::PARAM_ISMULTI => true,
 			],
 			'revid' => [
-				ApiBase::PARAM_TYPE => 'integer',
-				ApiBase::PARAM_ISMULTI => true,
+				ParamValidator::PARAM_TYPE => 'integer',
+				ParamValidator::PARAM_ISMULTI => true,
 			],
 			'logid' => [
-				ApiBase::PARAM_TYPE => 'integer',
-				ApiBase::PARAM_ISMULTI => true,
+				ParamValidator::PARAM_TYPE => 'integer',
+				ParamValidator::PARAM_ISMULTI => true,
 			],
 			'add' => [
-				ApiBase::PARAM_TYPE => 'tags',
-				ApiBase::PARAM_ISMULTI => true,
+				ParamValidator::PARAM_TYPE => 'tags',
+				ParamValidator::PARAM_ISMULTI => true,
 			],
 			'remove' => [
-				ApiBase::PARAM_TYPE => 'string',
-				ApiBase::PARAM_ISMULTI => true,
+				ParamValidator::PARAM_TYPE => 'string',
+				ParamValidator::PARAM_ISMULTI => true,
 			],
 			'reason' => [
-				ApiBase::PARAM_DFLT => '',
+				ParamValidator::PARAM_TYPE => 'string',
+				ParamValidator::PARAM_DEFAULT => '',
 			],
 			'tags' => [
-				ApiBase::PARAM_TYPE => 'tags',
-				ApiBase::PARAM_ISMULTI => true,
+				ParamValidator::PARAM_TYPE => 'tags',
+				ParamValidator::PARAM_ISMULTI => true,
 			],
 		];
 	}
@@ -225,3 +253,6 @@ class ApiTag extends ApiBase {
 		return 'https://www.mediawiki.org/wiki/Special:MyLanguage/API:Tag';
 	}
 }
+
+/** @deprecated class alias since 1.43 */
+class_alias( ApiTag::class, 'ApiTag' );

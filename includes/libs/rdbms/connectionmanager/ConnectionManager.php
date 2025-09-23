@@ -16,9 +16,7 @@
  * http://www.gnu.org/copyleft/gpl.html
  *
  * @file
- * @ingroup Database
  */
-
 namespace Wikimedia\Rdbms;
 
 use InvalidArgumentException;
@@ -26,10 +24,10 @@ use InvalidArgumentException;
 /**
  * Database connection manager.
  *
- * This manages access to master and replica databases.
+ * This manages access to primary and replica databases.
  *
  * @since 1.29
- *
+ * @ingroup Database
  * @author Addshore
  */
 class ConnectionManager {
@@ -53,7 +51,7 @@ class ConnectionManager {
 
 	/**
 	 * @param ILoadBalancer $loadBalancer
-	 * @param string|bool $domain Optional logical DB name, defaults to current wiki.
+	 * @param string|false $domain Optional logical DB name, defaults to current wiki.
 	 *        This follows the convention for database names used by $loadBalancer.
 	 * @param string[] $groups see LoadBalancer::getConnection
 	 *
@@ -72,84 +70,37 @@ class ConnectionManager {
 	/**
 	 * @param int $i
 	 * @param string[]|null $groups
-	 *
+	 * @param int $flags
 	 * @return IDatabase
 	 */
-	private function getConnection( $i, array $groups = null ) {
-		$groups = $groups ?? $this->groups;
-		return $this->loadBalancer->getConnection( $i, $groups, $this->domain );
+	private function getConnection( $i, ?array $groups = null, int $flags = 0 ) {
+		$groups ??= $this->groups;
+		return $this->loadBalancer->getConnection( $i, $groups, $this->domain, $flags );
 	}
 
 	/**
-	 * @param int $i
-	 * @param string[]|null $groups
-	 *
-	 * @return DBConnRef
-	 */
-	private function getConnectionRef( $i, array $groups = null ) {
-		$groups = $groups ?? $this->groups;
-		return $this->loadBalancer->getConnectionRef( $i, $groups, $this->domain );
-	}
-
-	/**
-	 * Returns a connection to the master DB, for updating. The connection should later be released
-	 * by calling releaseConnection().
+	 * Returns a connection to the primary DB, for updating.
 	 *
 	 * @since 1.29
-	 *
+	 * @since 1.37 Added optional $flags parameter
+	 * @param int $flags
 	 * @return IDatabase
 	 */
-	public function getWriteConnection() {
-		return $this->getConnection( DB_MASTER );
+	public function getWriteConnection( int $flags = 0 ) {
+		return $this->getConnection( DB_PRIMARY, null, $flags );
 	}
 
 	/**
-	 * Returns a database connection for reading. The connection should later be released by
-	 * calling releaseConnection().
+	 * Returns a database connection for reading.
 	 *
 	 * @since 1.29
-	 *
+	 * @since 1.37 Added optional $flags parameter
 	 * @param string[]|null $groups
-	 *
-	 * @return IDatabase
+	 * @param int $flags
+	 * @return IReadableDatabase
 	 */
-	public function getReadConnection( array $groups = null ) {
-		$groups = $groups ?? $this->groups;
-		return $this->getConnection( DB_REPLICA, $groups );
+	public function getReadConnection( ?array $groups = null, int $flags = 0 ) {
+		$groups ??= $this->groups;
+		return $this->getConnection( DB_REPLICA, $groups, $flags );
 	}
-
-	/**
-	 * @since 1.29
-	 *
-	 * @param IDatabase $db
-	 */
-	public function releaseConnection( IDatabase $db ) {
-		$this->loadBalancer->reuseConnection( $db );
-	}
-
-	/**
-	 * Returns a connection ref to the master DB, for updating.
-	 *
-	 * @since 1.29
-	 *
-	 * @return DBConnRef
-	 */
-	public function getWriteConnectionRef() {
-		return $this->getConnectionRef( DB_MASTER );
-	}
-
-	/**
-	 * Returns a database connection ref for reading.
-	 *
-	 * @since 1.29
-	 *
-	 * @param string[]|null $groups
-	 *
-	 * @return DBConnRef
-	 */
-	public function getReadConnectionRef( array $groups = null ) {
-		$groups = $groups ?? $this->groups;
-		return $this->getConnectionRef( DB_REPLICA, $groups );
-	}
-
 }

@@ -23,8 +23,11 @@
  * @since 1.24
  */
 
-use MediaWiki\Api\ApiHookRunner;
+namespace MediaWiki\Api;
+
 use MediaWiki\MediaWikiServices;
+use MediaWiki\User\User;
+use Wikimedia\ParamValidator\ParamValidator;
 
 /**
  * Module to fetch tokens via action=query&meta=tokens
@@ -36,9 +39,6 @@ class ApiQueryTokens extends ApiQueryBase {
 
 	public function execute() {
 		$params = $this->extractRequestParams();
-		$res = [
-			ApiResult::META_TYPE => 'assoc',
-		];
 
 		if ( $this->lacksSameOriginSecurity() ) {
 			$this->addWarning( [ 'apiwarn-tokens-origin' ] );
@@ -48,11 +48,23 @@ class ApiQueryTokens extends ApiQueryBase {
 		$user = $this->getUser();
 		$session = $this->getRequest()->getSession();
 		$salts = self::getTokenTypeSalts();
-		foreach ( $params['type'] as $type ) {
-			$res[$type . 'token'] = self::getToken( $user, $session, $salts[$type] )->toString();
-		}
 
-		$this->getResult()->addValue( 'query', $this->getModuleName(), $res );
+		$done = [];
+		$path = [ 'query', $this->getModuleName() ];
+		$this->getResult()->addArrayType( $path, 'assoc' );
+
+		foreach ( $params['type'] as $type ) {
+			$token = self::getToken( $user, $session, $salts[$type] )->toString();
+			$fit = $this->getResult()->addValue( $path, $type . 'token', $token );
+
+			if ( !$fit ) {
+				// Abuse type as a query-continue parameter and set it to all unprocessed types
+				$this->setContinueEnumParameter( 'type',
+					array_diff( $params['type'], $done ) );
+				break;
+			}
+			$done[] = $type;
+		}
 	}
 
 	/**
@@ -87,16 +99,16 @@ class ApiQueryTokens extends ApiQueryBase {
 	/**
 	 * Get a token from a salt
 	 * @param User $user
-	 * @param MediaWiki\Session\Session $session
+	 * @param \MediaWiki\Session\Session $session
 	 * @param string|array $salt A string will be used as the salt for
 	 *  User::getEditTokenObject() to fetch the token, which will give a
 	 *  LoggedOutEditToken (always "+\\") for anonymous users. An array will
 	 *  be used as parameters to MediaWiki\Session\Session::getToken(), which
 	 *  will always return a full token even for anonymous users. An array will
 	 *  also persist the session.
-	 * @return MediaWiki\Session\Token
+	 * @return \MediaWiki\Session\Token
 	 */
-	public static function getToken( User $user, MediaWiki\Session\Session $session, $salt ) {
+	public static function getToken( User $user, \MediaWiki\Session\Session $session, $salt ) {
 		if ( is_array( $salt ) ) {
 			$session->persist();
 			return $session->getToken( ...$salt );
@@ -108,9 +120,10 @@ class ApiQueryTokens extends ApiQueryBase {
 	public function getAllowedParams() {
 		return [
 			'type' => [
-				ApiBase::PARAM_DFLT => 'csrf',
-				ApiBase::PARAM_ISMULTI => true,
-				ApiBase::PARAM_TYPE => array_keys( self::getTokenTypeSalts() ),
+				ParamValidator::PARAM_DEFAULT => 'csrf',
+				ParamValidator::PARAM_ISMULTI => true,
+				ParamValidator::PARAM_TYPE => array_keys( self::getTokenTypeSalts() ),
+				ParamValidator::PARAM_ALL => true,
 			],
 		];
 	}
@@ -129,11 +142,10 @@ class ApiQueryTokens extends ApiQueryBase {
 		return false;
 	}
 
-	public function getCacheMode( $params ) {
-		return 'private';
-	}
-
 	public function getHelpUrls() {
 		return 'https://www.mediawiki.org/wiki/Special:MyLanguage/API:Tokens';
 	}
 }
+
+/** @deprecated class alias since 1.43 */
+class_alias( ApiQueryTokens::class, 'ApiQueryTokens' );

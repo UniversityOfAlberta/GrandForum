@@ -53,7 +53,7 @@ class GrandAccess {
 	    foreach($aRights as $right){
 	        //$user->mGroups[] = $right;
 	    }
-	    if($user->isLoggedIn()){
+	    if($user->isRegistered()){
 	        $aRights[$i++] = "Poster";
 	        $aRights[$i++] = "Presentation";
 	        //$user->mGroups[] = "Poster";

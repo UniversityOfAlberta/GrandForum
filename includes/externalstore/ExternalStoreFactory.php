@@ -1,15 +1,14 @@
 <?php
-/**
- * @defgroup ExternalStorage ExternalStorage
- */
 
 use MediaWiki\MediaWikiServices;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
-use Wikimedia\Assert\Assert;
 
 /**
+ * @see ExternalStoreAccess
+ * @internal Use the ExternalStoreAccess service instead.
+ * @since 1.31
  * @ingroup ExternalStorage
  */
 class ExternalStoreFactory implements LoggerAwareInterface {
@@ -21,6 +20,8 @@ class ExternalStoreFactory implements LoggerAwareInterface {
 	private $localDomainId;
 	/** @var LoggerInterface */
 	private $logger;
+	/** @var ExternalStoreMedium[] */
+	private $stores = [];
 
 	/**
 	 * @param string[] $externalStores See $wgExternalStores
@@ -31,11 +32,9 @@ class ExternalStoreFactory implements LoggerAwareInterface {
 	public function __construct(
 		array $externalStores,
 		array $defaultStores,
-		$localDomainId,
-		LoggerInterface $logger = null
+		string $localDomainId,
+		?LoggerInterface $logger = null
 	) {
-		Assert::parameterType( 'string', $localDomainId, '$localDomainId' );
-
 		$this->protocols = array_map( 'strtolower', $externalStores );
 		$this->writeBaseUrls = $defaultStores;
 		$this->localDomainId = $localDomainId;
@@ -75,12 +74,20 @@ class ExternalStoreFactory implements LoggerAwareInterface {
 	 * @throws ExternalStoreException When $proto is not recognized
 	 */
 	public function getStore( $proto, array $params = [] ) {
+		$cacheKey = $proto . ':' . json_encode( $params );
+		if ( isset( $this->stores[$cacheKey] ) ) {
+			return $this->stores[$cacheKey];
+		}
 		$protoLowercase = strtolower( $proto ); // normalize
 		if ( !$this->protocols || !in_array( $protoLowercase, $this->protocols ) ) {
 			throw new ExternalStoreException( "Protocol '$proto' is not enabled." );
 		}
 
-		$class = 'ExternalStore' . ucfirst( $proto );
+		if ( $protoLowercase === 'db' ) {
+			$class = 'ExternalStoreDB';
+		} else {
+			$class = 'ExternalStore' . ucfirst( $proto );
+		}
 		if ( isset( $params['wiki'] ) ) {
 			$params += [ 'domain' => $params['wiki'] ]; // b/c
 		}
@@ -102,7 +109,8 @@ class ExternalStoreFactory implements LoggerAwareInterface {
 		}
 
 		// Any custom modules should be added to $wgAutoLoadClasses for on-demand loading
-		return new $class( $params );
+		$this->stores[$cacheKey] = new $class( $params );
+		return $this->stores[$cacheKey];
 	}
 
 	/**
@@ -119,7 +127,7 @@ class ExternalStoreFactory implements LoggerAwareInterface {
 	 * @since 1.34
 	 */
 	public function getStoreForUrl( $url, array $params = [] ) {
-		list( $proto, $path ) = self::splitStorageUrl( $url );
+		[ $proto, $path ] = self::splitStorageUrl( $url );
 		if ( $path == '' ) { // bad URL
 			throw new ExternalStoreException( "Invalid URL '$url'" );
 		}
@@ -136,7 +144,7 @@ class ExternalStoreFactory implements LoggerAwareInterface {
 	 * @since 1.34
 	 */
 	public function getStoreLocationFromUrl( $url ) {
-		list( , $location ) = self::splitStorageUrl( $url );
+		[ , $location ] = self::splitStorageUrl( $url );
 		if ( $location == '' ) { // bad URL
 			throw new ExternalStoreException( "Invalid URL '$url'" );
 		}
@@ -146,14 +154,14 @@ class ExternalStoreFactory implements LoggerAwareInterface {
 
 	/**
 	 * @param string[] $urls
-	 * @return array[] Map of (protocol => list of URLs)
+	 * @return string[][] Map of (protocol => list of URLs)
 	 * @throws ExternalStoreException
 	 * @since 1.34
 	 */
 	public function getUrlsByProtocol( array $urls ) {
 		$urlsByProtocol = [];
 		foreach ( $urls as $url ) {
-			list( $proto, ) = self::splitStorageUrl( $url );
+			[ $proto, ] = self::splitStorageUrl( $url );
 			$urlsByProtocol[$proto][] = $url;
 		}
 

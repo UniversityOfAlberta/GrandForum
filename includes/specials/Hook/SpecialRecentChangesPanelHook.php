@@ -2,9 +2,12 @@
 
 namespace MediaWiki\Hook;
 
-use FormOptions;
+use MediaWiki\Html\FormOptions;
 
 /**
+ * This is a hook handler interface, see docs/Hooks.md.
+ * Use the hook name "SpecialRecentChangesPanel" to register handlers implementing this interface.
+ *
  * @stable to implement
  * @ingroup Hooks
  */

@@ -15,7 +15,7 @@ class PersonProfileTab extends AbstractEditableTab {
 
     function generateBody(){
         global $wgUser, $wgOut;
-        if(!$wgUser->isLoggedIn()){
+        if(!$wgUser->isRegistered()){
             $wgOut->clearHTML();
             $this->html = permissionError();
             return;
@@ -24,7 +24,7 @@ class PersonProfileTab extends AbstractEditableTab {
         $this->html .= "<table width='100%' cellpadding='0' cellspacing='0' style='margin-bottom:1px;'>";
         $this->html .= "</td><td id='firstLeft' width='60%' valign='top'>";
         $this->showContact($this->person, $this->visibility);
-        if($this->person->getProfile($wgUser->isLoggedIn()) != ""){
+        if($this->person->getProfile($wgUser->isRegistered()) != ""){
             $this->html .= "<h2 style='margin-top:0;padding-top:0;'>Profile</h2>";
             $this->showProfile($this->person, $this->visibility);
         }
@@ -223,7 +223,7 @@ class PersonProfileTab extends AbstractEditableTab {
      */
     function showProfile($person, $visibility){
         global $wgUser;
-        $this->html .= "<p style='text-align:justify;'>".nl2br($person->getProfile($wgUser->isLoggedIn()))."</p>";
+        $this->html .= "<p style='text-align:justify;'>".nl2br($person->getProfile($wgUser->isRegistered()))."</p>";
     }
     
     /**

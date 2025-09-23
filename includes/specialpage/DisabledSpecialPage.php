@@ -21,6 +21,12 @@
  * @ingroup SpecialPage
  */
 
+namespace MediaWiki\SpecialPage;
+
+use Closure;
+use MediaWiki\Html\Html;
+use MediaWiki\Message\Message;
+
 /**
  * This class is a drop-in replacement for other special pages that need to be manually
  * disabled. To use it, just put something like
@@ -44,7 +50,7 @@ class DisabledSpecialPage extends UnlistedSpecialPage {
 	 * @return Closure
 	 */
 	public static function getCallback( $name, $errorMessage = null ) {
-		return function () use ( $name, $errorMessage ) {
+		return static function () use ( $name, $errorMessage ) {
 			return new DisabledSpecialPage( $name, $errorMessage );
 		};
 	}
@@ -69,3 +75,6 @@ class DisabledSpecialPage extends UnlistedSpecialPage {
 	}
 
 }
+
+/** @deprecated class alias since 1.41 */
+class_alias( DisabledSpecialPage::class, 'DisabledSpecialPage' );

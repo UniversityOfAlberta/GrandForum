@@ -2,11 +2,14 @@
 
 namespace MediaWiki\Hook;
 
+use MediaWiki\Title\Title;
 use PageArchive;
-use Title;
 
 // phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
 /**
+ * This is a hook handler interface, see docs/Hooks.md.
+ * Use the hook name "UndeleteForm::showRevision" to register handlers implementing this interface.
+ *
  * @stable to implement
  * @ingroup Hooks
  */

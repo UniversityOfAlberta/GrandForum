@@ -4,21 +4,39 @@ declare( strict_types = 1 );
 
 namespace Wikimedia\Parsoid\Config\Api;
 
+use Wikimedia\Parsoid\Config\Api\SiteConfig as ApiSiteConfig;
 use Wikimedia\Parsoid\Config\DataAccess as IDataAccess;
 use Wikimedia\Parsoid\Config\PageConfig;
 use Wikimedia\Parsoid\Config\PageContent;
+use Wikimedia\Parsoid\Config\SiteConfig as ISiteConfig;
+use Wikimedia\Parsoid\Core\ContentMetadataCollector;
+use Wikimedia\Parsoid\Core\ContentMetadataCollectorStringSets as CMCSS;
+use Wikimedia\Parsoid\Core\LinkTarget;
 use Wikimedia\Parsoid\Mocks\MockPageContent;
 use Wikimedia\Parsoid\Utils\PHPUtils;
+use Wikimedia\Parsoid\Utils\Title;
+use Wikimedia\Parsoid\Utils\TitleValue;
 
 /**
  * DataAccess via MediaWiki's Action API
  *
  * Note this is intended for testing, not performance.
  */
-class DataAccess implements IDataAccess {
+class DataAccess extends IDataAccess {
 
 	/** @var ApiHelper */
 	private $api;
+
+	/**
+	 * @var bool Should we strip the protocol from returned URLs?
+	 * Generally this should be true, since the protocol of the API
+	 * request doesn't necessarily match the protocol of article
+	 * access; ie, we could be using https to access the API but emit
+	 * article content which can be read with http.  But for running
+	 * parserTests, we need to include the protocol in order to match
+	 * the parserTest configuration in core.
+	 */
+	private $stripProto;
 
 	/**
 	 * @name Caching
@@ -34,10 +52,7 @@ class DataAccess implements IDataAccess {
 	 */
 	private $cache = [];
 
-	/**
-	 * @var SiteConfig
-	 */
-	private $siteConfig = null;
+	private ISiteConfig $siteConfig;
 
 	/**
 	 * Get from cache
@@ -78,26 +93,32 @@ class DataAccess implements IDataAccess {
 
 	/**
 	 * @param ApiHelper $api
-	 * @param ?SiteConfig $siteConfig
+	 * @param ISiteConfig $siteConfig
 	 * @param array $opts
 	 */
-	public function __construct( ApiHelper $api, ?SiteConfig $siteConfig, array $opts ) {
+	public function __construct( ApiHelper $api, ISiteConfig $siteConfig, array $opts ) {
 		$this->api = $api;
 		$this->siteConfig = $siteConfig;
+		$this->stripProto = $opts['stripProto'] ?? true;
 	}
 
 	/** @inheritDoc */
-	public function getPageInfo( PageConfig $pageConfig, array $titles ): array {
+	public function getPageInfo( $pageConfigOrTitle, array $titles ): array {
+		$contextTitle = $pageConfigOrTitle instanceof PageConfig ?
+			$pageConfigOrTitle->getLinkTarget() : $pageConfigOrTitle;
+
 		if ( !$titles ) {
 			return [];
 		}
 
 		$ret = [];
+		$pageConfigTitle = $this->toPrefixedText( $contextTitle );
 		foreach ( array_chunk( $titles, 50 ) as $batch ) {
 			$data = $this->api->makeRequest( [
 				'action' => 'query',
-				'prop' => 'info|pageprops',
-				'ppprop' => 'disambiguation',
+				'prop' => 'info',
+				'inprop' => 'linkclasses',
+				'inlinkcontext' => $pageConfigTitle,
 				'titles' => implode( '|', $batch ),
 			] )['query'];
 			$norm = [];
@@ -126,7 +147,7 @@ class DataAccess implements IDataAccess {
 					'missing' => $page['missing'] ?? false,
 					'known' => ( $page['known'] ?? false ),
 					'redirect' => $page['redirect'] ?? false,
-					'disambiguation' => ( $page['pageprops']['disambiguation'] ?? false ) !== false,
+					'linkclasses' => $page['linkclasses'] ?? [],
 					'invalid' => $page['invalid'] ?? false,
 				];
 				if ( !( $ret[$title]['missing'] || $ret[$title]['invalid'] ) ) {
@@ -140,69 +161,103 @@ class DataAccess implements IDataAccess {
 
 	/** @inheritDoc */
 	public function getFileInfo( PageConfig $pageConfig, array $files ): array {
+		$pageConfigTitle = $this->toPrefixedText( $pageConfig->getLinkTarget() );
 		$sc = $this->siteConfig;
-		$ret = array_fill_keys( array_keys( $files ), null );
-		if ( $sc && $sc->hasVideoInfo() ) {
+		if ( $sc instanceof ApiSiteConfig && $sc->hasVideoInfo() ) {
 			$prefix = "vi";
 			$propName = "videoinfo";
 		} else {
 			$prefix = "ii";
 			$propName = "imageinfo";
 		}
-		$apiArgs = [
+		$apiArgs2 = [
 			'action' => 'query',
 			'format' => 'json',
 			'formatversion' => 2,
 			'rawcontinue' => 1,
 			'prop' => $propName,
-			"${prefix}badfilecontexttitle" => $pageConfig->getTitle(),
-			"${prefix}prop" => implode( '|', [
-				'mediatype', 'mime', 'size', 'url', 'badfile'
+			"{$prefix}badfilecontexttitle" => $pageConfigTitle,
+			"{$prefix}prop" => implode( '|', [
+				'mediatype', 'mime', 'size', 'url', 'badfile', 'sha1', 'timestamp'
 			] )
 		];
 		if ( $prefix === 'vi' ) {
-			$apiArgs["viprop"] .= '|derivatives|timedtext';
+			$apiArgs2["viprop"] .= '|derivatives|timedtext';
 		}
-		foreach ( $files as $name => $dims ) {
-			$imgNS = $sc ? $sc->namespaceName( $sc->canonicalNamespaceId( "File" ) ) : "File";
+		$ret = [];
+		foreach ( $files as $file ) {
+			$apiArgs = $apiArgs2;  // Copy since we modify it
+			$name = $file[0];
+			$dims = $file[1];
+
+			$imgNS = $sc->namespaceName( $sc->canonicalNamespaceId( 'file' ) );
 			$apiArgs['titles'] = "$imgNS:$name";
-			if ( isset( $dims['width'] ) && $dims['width'] !== null ) {
-				$apiArgs["${prefix}urlwidth"] = $dims['width'];
-				if ( isset( $dims['page'] ) ) {
-					$apiArgs["${prefix}urlparam"] = "page{$dims['page']}-{$dims['width']}px";
+			$needsWidth = isset( $dims['page'] ) || isset( $dims['lang'] );
+			if ( isset( $dims['width'] ) ) {
+				$apiArgs["{$prefix}urlwidth"] = $dims['width'];
+				if ( $needsWidth ) {
+					if ( isset( $dims['page'] ) ) {  // PDF
+						$apiArgs["{$prefix}urlparam"] = "page{$dims['page']}-{$dims['width']}px";
+					} elseif ( isset( $dims['lang'] ) ) {  // SVG
+						$apiArgs["{$prefix}urlparam"] = "lang{$dims['lang']}-{$dims['width']}px";
+					}
+					$needsWidth = false;
 				}
 			}
-			if ( isset( $dims['height'] ) && $dims['height'] !== null ) {
-				$apiArgs["${prefix}urlheight"] = $dims['height'];
+			if ( isset( $dims['height'] ) ) {
+				$apiArgs["{$prefix}urlheight"] = $dims['height'];
 			}
 			if ( isset( $dims['seek'] ) ) {
-				$apiArgs["${prefix}urlparam"] = "seek={$dims['seek']}";
+				$apiArgs["{$prefix}urlparam"] = "seek={$dims['seek']}";
 			}
-			$data = $this->api->makeRequest( $apiArgs );
 
-			$fileinfo = $data['query']['pages'][0][$propName][0]; // Expect exactly 1 row
+			do {
+				$data = $this->api->makeRequest( $apiArgs );
+				// Expect exactly 1 row
+				$fileinfo = $data['query']['pages'][0][$propName][0];
+				// Corner case: if page is set, the core ImageInfo API doesn't
+				// respect it *unless* width is set as well.  So repeat the
+				// request if necessary.
+				if ( isset( $fileinfo['pagecount'] ) && !isset( $dims['page'] ) ) {
+					$dims['page'] = 1; # also ensures we won't get here again
+					$needsWidth = true;
+				}
+				if ( $needsWidth && !isset( $fileinfo['filemissing'] ) ) {
+					$needsWidth = false; # ensure we won't get here again
+					$width = $fileinfo['width'];
+					$apiArgs["{$prefix}urlwidth"] = $width;
+					if ( isset( $dims['page'] ) ) {  // PDF
+						$apiArgs["{$prefix}urlparam"] = "page{$dims['page']}-{$width}px";
+					} elseif ( isset( $dims['lang'] ) ) {  // SVG
+						$apiArgs["{$prefix}urlparam"] = "lang{$dims['lang']}-{$width}px";
+					}
+					continue;
+				}
+				break;
+			} while ( true );
+
 			if ( isset( $fileinfo['filemissing'] ) ) {
 				$fileinfo = null;
 			} else {
-				self::stripProto( $fileinfo, 'url' );
-				self::stripProto( $fileinfo, 'thumburl' );
-				self::stripProto( $fileinfo, 'descriptionurl' );
-				self::stripProto( $fileinfo, 'descriptionshorturl' );
+				$fileinfo['badFile'] = $data['query']['pages'][0]['badfile'];
+				$this->stripProto( $fileinfo, 'url' );
+				$this->stripProto( $fileinfo, 'thumburl' );
+				$this->stripProto( $fileinfo, 'descriptionurl' );
+				$this->stripProto( $fileinfo, 'descriptionshorturl' );
 				foreach ( $fileinfo['responsiveUrls'] ?? [] as $density => $url ) {
-					self::stripProto( $fileinfo['responsiveUrls'], (string)$density );
+					$this->stripProto( $fileinfo['responsiveUrls'], (string)$density );
 				}
 				if ( $prefix === 'vi' ) {
 					foreach ( $fileinfo['thumbdata']['derivatives'] ?? [] as $j => $d ) {
-						self::stripProto( $fileinfo['thumbdata']['derivatives'][$j], 'src' );
+						$this->stripProto( $fileinfo['thumbdata']['derivatives'][$j], 'src' );
 					}
 					foreach ( $fileinfo['thumbdata']['timedtext'] ?? [] as $j => $d ) {
-						self::stripProto( $fileinfo['thumbdata']['timedtext'][$j], 'src' );
+						$this->stripProto( $fileinfo['thumbdata']['timedtext'][$j], 'src' );
 					}
 				}
 			}
-			$ret[$name] = $fileinfo;
+			$ret[] = $fileinfo;
 		}
-
 		return $ret;
 	}
 
@@ -212,20 +267,21 @@ class DataAccess implements IDataAccess {
 	 * @param ?array &$obj
 	 * @param string $key
 	 */
-	private static function stripProto( ?array &$obj, string $key ): void {
-		if ( $obj !== null && !empty( $obj[$key] ) ) {
+	private function stripProto( ?array &$obj, string $key ): void {
+		if ( $obj !== null && !empty( $obj[$key] ) && $this->stripProto ) {
 			$obj[$key] = preg_replace( '#^https?://#', '//', $obj[$key] );
 		}
 	}
 
 	/** @inheritDoc */
 	public function doPst( PageConfig $pageConfig, string $wikitext ): string {
-		$key = implode( ':', [ 'pst', md5( $pageConfig->getTitle() ) , md5( $wikitext ) ] );
+		$pageConfigTitle = $this->toPrefixedText( $pageConfig->getLinkTarget() );
+		$key = implode( ':', [ 'pst', md5( $pageConfigTitle ), md5( $wikitext ) ] );
 		$ret = $this->getCache( $key );
 		if ( $ret === null ) {
 			$data = $this->api->makeRequest( [
 				'action' => 'parse',
-				'title' => $pageConfig->getTitle(),
+				'title' => $pageConfigTitle,
 				'text' => $wikitext,
 				'contentmodel' => 'wikitext',
 				'onlypst' => 1,
@@ -236,83 +292,122 @@ class DataAccess implements IDataAccess {
 		return $ret;
 	}
 
+	/**
+	 * Transfer the metadata returned in an API result into our
+	 * ContentMetadataCollector.
+	 * @param array $data
+	 * @param ContentMetadataCollector $metadata
+	 */
+	private function mergeMetadata( array $data, ContentMetadataCollector $metadata ): void {
+		foreach ( ( $data['categories'] ?? [] ) as $c ) {
+			$tv = TitleValue::tryNew(
+				14, // NS_CATEGORY,
+				$c['category']
+			);
+			$metadata->addCategory( $tv, $c['sortkey'] );
+		}
+		$metadata->appendOutputStrings( CMCSS::MODULE, $data['modules'] ?? [] );
+		$metadata->appendOutputStrings( CMCSS::MODULE_STYLE, $data['modulestyles'] ?? [] );
+		foreach ( ( $data['jsconfigvars'] ?? [] ) as $key => $value ) {
+			$strategy = 'write-once';
+			if ( is_array( $value ) ) {
+				// Strategy value will be exposed by change
+				// I974d9ecfb4ca8b22361d25c4c70fc5e55c39d5ed in core.
+				$strategy = $value['_mw-strategy'] ?? 'write-once';
+				unset( $value['_mw-strategy'] );
+			}
+			if ( $strategy === 'union' ) {
+				foreach ( $value as $item => $ignore ) {
+					$metadata->appendJsConfigVar( $key, $item );
+				}
+			} else {
+				$metadata->setJsConfigVar( $key, $value );
+			}
+		}
+		foreach ( ( $data['externallinks'] ?? [] ) as $url ) {
+			$metadata->addExternalLink( $url );
+		}
+		foreach ( ( $data['properties'] ?? [] ) as $name => $value ) {
+			if ( is_string( $value ) ) {
+				$metadata->setUnsortedPageProperty( $name, $value );
+			} elseif ( is_numeric( $value ) ) {
+				$metadata->setNumericPageProperty( $name, $value );
+			} elseif ( is_bool( $value ) ) {
+				// Deprecated back-compat
+				$metadata->setNumericPageProperty( $name, (int)$value );
+			} else {
+				// Non-scalar values deprecatedin 1.42; drop them.
+			}
+		}
+	}
+
 	/** @inheritDoc */
-	public function parseWikitext( PageConfig $pageConfig, string $wikitext ): array {
+	public function parseWikitext(
+		PageConfig $pageConfig,
+		ContentMetadataCollector $metadata,
+		string $wikitext
+	): string {
 		$revid = $pageConfig->getRevisionId();
-		$key = implode( ':', [ 'parse', md5( $pageConfig->getTitle() ), md5( $wikitext ), $revid ] );
-		$ret = $this->getCache( $key );
-		if ( $ret === null ) {
+		$pageConfigTitle = $this->toPrefixedText( $pageConfig->getLinkTarget() );
+		$key = implode( ':', [ 'parse', md5( $pageConfigTitle ), md5( $wikitext ), $revid ] );
+		$data = $this->getCache( $key );
+		if ( $data === null ) {
 			$params = [
 				'action' => 'parse',
-				'title' => $pageConfig->getTitle(),
+				'title' => $pageConfigTitle,
 				'text' => $wikitext,
 				'contentmodel' => 'wikitext',
-				'prop' => 'text|modules|jsconfigvars|categories',
+				'prop' => 'text|modules|jsconfigvars|categories|properties|externallinks',
 				'disablelimitreport' => 1,
 				'wrapoutputclass' => '',
+				'showstrategykeys' => 1,
 			];
 			if ( $revid !== null ) {
 				$params['revid'] = $revid;
 			}
 			$data = $this->api->makeRequest( $params )['parse'];
-
-			$cats = [];
-			foreach ( $data['categories'] as $c ) {
-				$cats[$c['category']] = $c['sortkey'];
-			}
-
-			$ret = [
-				'html' => $data['text'],
-				'modules' => $data['modules'],
-				'modulescripts' => $data['modulescripts'],
-				'modulestyles' => $data['modulestyles'],
-				'categories' => $cats,
-			];
-			$this->setCache( $key, $ret );
+			$this->setCache( $key, $data );
 		}
-		return $ret;
+		$this->mergeMetadata( $data, $metadata );
+		return $data['text']; # HTML
 	}
 
 	/** @inheritDoc */
-	public function preprocessWikitext( PageConfig $pageConfig, string $wikitext ): array {
+	public function preprocessWikitext(
+		PageConfig $pageConfig,
+		ContentMetadataCollector $metadata,
+		string $wikitext
+	): string {
 		$revid = $pageConfig->getRevisionId();
-		$key = implode( ':', [ 'preprocess', md5( $pageConfig->getTitle() ), md5( $wikitext ), $revid ] );
-		$ret = $this->getCache( $key );
-		if ( $ret === null ) {
+		$pageConfigTitle = $this->toPrefixedText( $pageConfig->getLinkTarget() );
+		$key = implode( ':', [ 'preprocess', md5( $pageConfigTitle ), md5( $wikitext ), $revid ] );
+		$data = $this->getCache( $key );
+		if ( $data === null ) {
 			$params = [
 				'action' => 'expandtemplates',
-				'title' => $pageConfig->getTitle(),
+				'title' => $pageConfigTitle,
 				'text' => $wikitext,
-				'prop' => 'properties|wikitext|categories|modules|jsconfigvars',
+				'prop' => 'wikitext|modules|jsconfigvars|categories|properties',
+				'showstrategykeys' => 1,
 			];
 			if ( $revid !== null ) {
 				$params['revid'] = $revid;
 			}
 			$data = $this->api->makeRequest( $params )['expandtemplates'];
-
-			$cats = [];
-			foreach ( ( $data['categories'] ?? [] ) as $c ) {
-				$cats[$c['category']] = $c['sortkey'];
-			}
-
-			$ret = [
-				'wikitext' => $data['wikitext'],
-				'modules' => $data['modules'] ?? [],
-				'modulescripts' => $data['modulescripts'] ?? [],
-				'modulestyles' => $data['modulestyles'] ?? [],
-				'categories' => $cats,
-				'properties' => $data['properties'] ?? [],
-			];
-			$this->setCache( $key, $ret );
+			$this->setCache( $key, $data );
 		}
-		return $ret;
+
+		$this->mergeMetadata( $data, $metadata );
+
+		return $data['wikitext'];
 	}
 
 	/** @inheritDoc */
-	public function fetchPageContent(
-		PageConfig $pageConfig, string $title, int $oldid = 0
+	public function fetchTemplateSource(
+		PageConfig $pageConfig, LinkTarget $title
 	): ?PageContent {
-		$key = implode( ':', [ 'content', md5( $title ), $oldid ] );
+		$title = $this->toPrefixedText( $title );
+		$key = implode( ':', [ 'content', md5( $title ) ] );
 		$ret = $this->getCache( $key );
 		if ( $ret === null ) {
 			$params = [
@@ -320,13 +415,9 @@ class DataAccess implements IDataAccess {
 				'prop' => 'revisions',
 				'rvprop' => 'content',
 				'rvslots' => '*',
+				'titles' => $title,
+				'rvlimit' => 1,
 			];
-			if ( $oldid !== 0 ) {
-				$params['revids'] = $oldid;
-			} else {
-				$params['titles'] = $title;
-				$params['rvlimit'] = 1;
-			}
 
 			$data = $this->api->makeRequest( $params );
 			$pageData = $data['query']['pages'][0];
@@ -342,7 +433,8 @@ class DataAccess implements IDataAccess {
 	}
 
 	/** @inheritDoc */
-	public function fetchTemplateData( PageConfig $pageConfig, string $title ): ?array {
+	public function fetchTemplateData( PageConfig $pageConfig, LinkTarget $title ): ?array {
+		$title = $this->toPrefixedText( $title );
 		$key = implode( ':', [ 'templatedata', md5( $title ) ] );
 		$ret = $this->getCache( $key );
 		if ( $ret === null ) {
@@ -366,12 +458,44 @@ class DataAccess implements IDataAccess {
 	}
 
 	/**
-	 * @param array $parsoidSettings
-	 * @return DataAccess
+	 * Helper to turn a LinkTarget object into the "prefixed text" title form
+	 * expected by the MediaWiki action API.
+	 * @param LinkTarget $linkTarget
+	 * @return string The title, as prefixed text
 	 */
-	public static function fromSettings( array $parsoidSettings ): DataAccess {
-		$api = ApiHelper::fromSettings( $parsoidSettings );
-		return new DataAccess( $api, null, [] );
+	private function toPrefixedText( LinkTarget $linkTarget ): string {
+		return Title::newFromLinkTarget(
+			$linkTarget, $this->siteConfig
+		)->getPrefixedText();
 	}
 
+	/** @inheritDoc */
+	public function addTrackingCategory(
+		PageConfig $pageConfig,
+		ContentMetadataCollector $metadata,
+		string $key
+	): void {
+		$pageConfigTitle = $this->toPrefixedText( $pageConfig->getLinkTarget() );
+		$cacheKey = implode( ':', [ 'allmessages', md5( $pageConfigTitle ), md5( $key ) ] );
+		$data = $this->getCache( $cacheKey );
+		if ( $data === null ) {
+			$params = [
+				'action' => 'query',
+				'meta' => 'allmessages',
+				'amtitle' => $pageConfigTitle,
+				'ammessages' => $key,
+				'amenableparser' => 1,
+			];
+			$data = $this->api->makeRequest( $params )['query']['allmessages'][0];
+			$this->setCache( $cacheKey, $data );
+		}
+		if ( isset( $data['missing'] ) ) {
+			return;
+		}
+		$tv = TitleValue::tryNew(
+			14, // NS_CATEGORY,
+			$data['content']
+		);
+		$metadata->addCategory( $tv );
+	}
 }

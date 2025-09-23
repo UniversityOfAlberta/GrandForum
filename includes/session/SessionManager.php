@@ -23,18 +23,23 @@
 
 namespace MediaWiki\Session;
 
-use BagOStuff;
-use CachedBagOStuff;
-use Config;
-use FauxRequest;
+use InvalidArgumentException;
+use LogicException;
+use MediaWiki\Config\Config;
+use MediaWiki\Context\RequestContext;
 use MediaWiki\HookContainer\HookContainer;
 use MediaWiki\HookContainer\HookRunner;
+use MediaWiki\MainConfigNames;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Request\FauxRequest;
+use MediaWiki\Request\WebRequest;
+use MediaWiki\User\User;
+use MediaWiki\User\UserNameUtils;
 use MWException;
 use Psr\Log\LoggerInterface;
-use User;
-use WebRequest;
-use Wikimedia\ObjectFactory;
+use Psr\Log\LogLevel;
+use Wikimedia\ObjectCache\BagOStuff;
+use Wikimedia\ObjectCache\CachedBagOStuff;
 
 /**
  * This serves as the entry point to the MediaWiki session handling system.
@@ -45,11 +50,35 @@ use Wikimedia\ObjectFactory;
  *
  * To provide custom session handling, implement a MediaWiki\Session\SessionProvider.
  *
+ * @anchor SessionManager-storage-expectations
+ *
+ * ## Storage expectations
+ *
+ * The SessionManager should be configured with a very fast storage system that is
+ * optimized for holding key-value pairs. It expects:
+ *
+ * - Low latencies. Session data is read or written to during nearly all web requests from
+ *   people that have contributed to or otherwise engaged with the site, including those not
+ *   logged in with a registered account.
+ *
+ * - Locally writable data. The data must be writable from both primary and secondary
+ *   data centres.
+ *
+ * - Locally latest reads. Writes must by default be immediately consistent within
+ *   the local data centre, and visible to other reads from web servers in that data centre.
+ *
+ * - Replication. The data must be eventually consistent across all data centres. Writes
+ *   are either synced to all remote data centres, or locally overwritten by another write
+ *   that is.
+ *
+ * The SessionManager uses `set()` and `delete()` for write operations, which should be
+ * synchronous in the local data centre, and replicate asynchronously to any others.
+ *
  * @ingroup Session
  * @since 1.27
  * @see https://www.mediawiki.org/wiki/Manual:SessionManager_and_AuthManager
  */
-final class SessionManager implements SessionManagerInterface {
+class SessionManager implements SessionManagerInterface {
 	/** @var SessionManager|null */
 	private static $instance = null;
 
@@ -71,6 +100,9 @@ final class SessionManager implements SessionManagerInterface {
 	/** @var Config */
 	private $config;
 
+	/** @var UserNameUtils */
+	private $userNameUtils;
+
 	/** @var CachedBagOStuff|null */
 	private $store;
 
@@ -89,7 +121,7 @@ final class SessionManager implements SessionManagerInterface {
 	/** @var SessionId[] */
 	private $allSessionIds = [];
 
-	/** @var string[] */
+	/** @var true[] */
 	private $preventUsers = [];
 
 	/**
@@ -104,25 +136,23 @@ final class SessionManager implements SessionManagerInterface {
 	}
 
 	/**
-	 * Get the "global" session
-	 *
 	 * If PHP's session_id() has been set, returns that session. Otherwise
 	 * returns the session for RequestContext::getMain()->getRequest().
 	 *
 	 * @return Session
 	 */
-	public static function getGlobalSession() {
+	public static function getGlobalSession(): Session {
 		if ( !PHPSessionHandler::isEnabled() ) {
 			$id = '';
 		} else {
 			$id = session_id();
 		}
 
-		$request = \RequestContext::getMain()->getRequest();
+		$request = RequestContext::getMain()->getRequest();
 		if (
 			!self::$globalSession // No global session is set up yet
 			|| self::$globalSessionRequest !== $request // The global WebRequest changed
-			|| $id !== '' && self::$globalSession->getId() !== $id // Someone messed with session_id()
+			|| ( $id !== '' && self::$globalSession->getId() !== $id ) // Someone messed with session_id()
 		) {
 			self::$globalSessionRequest = $request;
 			if ( $id === '' ) {
@@ -153,20 +183,21 @@ final class SessionManager implements SessionManagerInterface {
 	 *  - store: BagOStuff to store session data in.
 	 */
 	public function __construct( $options = [] ) {
+		$services = MediaWikiServices::getInstance();
 		if ( isset( $options['config'] ) ) {
 			$this->config = $options['config'];
 			if ( !$this->config instanceof Config ) {
-				throw new \InvalidArgumentException(
+				throw new InvalidArgumentException(
 					'$options[\'config\'] must be an instance of Config'
 				);
 			}
 		} else {
-			$this->config = MediaWikiServices::getInstance()->getMainConfig();
+			$this->config = $services->getMainConfig();
 		}
 
 		if ( isset( $options['logger'] ) ) {
 			if ( !$options['logger'] instanceof LoggerInterface ) {
-				throw new \InvalidArgumentException(
+				throw new InvalidArgumentException(
 					'$options[\'logger\'] must be an instance of LoggerInterface'
 				);
 			}
@@ -178,22 +209,24 @@ final class SessionManager implements SessionManagerInterface {
 		if ( isset( $options['hookContainer'] ) ) {
 			$this->setHookContainer( $options['hookContainer'] );
 		} else {
-			$this->setHookContainer( MediaWikiServices::getInstance()->getHookContainer() );
+			$this->setHookContainer( $services->getHookContainer() );
 		}
 
 		if ( isset( $options['store'] ) ) {
 			if ( !$options['store'] instanceof BagOStuff ) {
-				throw new \InvalidArgumentException(
+				throw new InvalidArgumentException(
 					'$options[\'store\'] must be an instance of BagOStuff'
 				);
 			}
 			$store = $options['store'];
 		} else {
-			$store = \ObjectCache::getInstance( $this->config->get( 'SessionCacheType' ) );
+			$store = $services->getObjectCacheFactory()
+				->getInstance( $this->config->get( MainConfigNames::SessionCacheType ) );
 		}
 
 		$this->logger->debug( 'SessionManager using store ' . get_class( $store ) );
 		$this->store = $store instanceof CachedBagOStuff ? $store : new CachedBagOStuff( $store );
+		$this->userNameUtils = $services->getUserNameUtils();
 
 		register_shutdown_function( [ $this, 'shutdown' ] );
 	}
@@ -215,16 +248,16 @@ final class SessionManager implements SessionManagerInterface {
 		$info = $this->getSessionInfoForRequest( $request );
 
 		if ( !$info ) {
-			$session = $this->getEmptySession( $request );
+			$session = $this->getInitialSession( $request );
 		} else {
 			$session = $this->getSessionFromInfo( $info, $request );
 		}
 		return $session;
 	}
 
-	public function getSessionById( $id, $create = false, WebRequest $request = null ) {
+	public function getSessionById( $id, $create = false, ?WebRequest $request = null ) {
 		if ( !self::validateSessionId( $id ) ) {
-			throw new \InvalidArgumentException( 'Invalid session ID' );
+			throw new InvalidArgumentException( 'Invalid session ID' );
 		}
 		if ( !$request ) {
 			$request = new FauxRequest;
@@ -248,7 +281,6 @@ final class SessionManager implements SessionManagerInterface {
 		}
 
 		if ( $create && $session === null ) {
-			$ex = null;
 			try {
 				$session = $this->getEmptySessionInternal( $request, $id );
 			} catch ( \Exception $ex ) {
@@ -264,7 +296,7 @@ final class SessionManager implements SessionManagerInterface {
 		return $session;
 	}
 
-	public function getEmptySession( WebRequest $request = null ) {
+	public function getEmptySession( ?WebRequest $request = null ) {
 		return $this->getEmptySessionInternal( $request );
 	}
 
@@ -274,15 +306,15 @@ final class SessionManager implements SessionManagerInterface {
 	 * @param string|null $id ID to force on the new session
 	 * @return Session
 	 */
-	private function getEmptySessionInternal( WebRequest $request = null, $id = null ) {
+	private function getEmptySessionInternal( ?WebRequest $request = null, $id = null ) {
 		if ( $id !== null ) {
 			if ( !self::validateSessionId( $id ) ) {
-				throw new \InvalidArgumentException( 'Invalid session ID' );
+				throw new InvalidArgumentException( 'Invalid session ID' );
 			}
 
 			$key = $this->store->makeKey( 'MWSession', $id );
 			if ( is_array( $this->store->get( $key ) ) ) {
-				throw new \InvalidArgumentException( 'Session ID already exists' );
+				throw new InvalidArgumentException( 'Session ID already exists' );
 			}
 		}
 		if ( !$request ) {
@@ -331,7 +363,23 @@ final class SessionManager implements SessionManagerInterface {
 			throw new \UnexpectedValueException( 'No provider could provide an empty session!' );
 		}
 
+		// @phan-suppress-next-line PhanTypePossiblyInvalidDimOffset False positive
 		return $this->getSessionFromInfo( $infos[0], $request );
+	}
+
+	/**
+	 * Create a new session. Populate it with a default secret token, to avoid
+	 * a session replication race on a subsequent edit/save cycle (e.g. in
+	 * a multi-dc setup, ref https://phabricator.wikimedia.org/T279664#8139533).
+	 *
+	 * @param WebRequest|null $request Corresponding request. Any existing
+	 *  session associated with this WebRequest object will be overwritten.
+	 * @return Session
+	 */
+	private function getInitialSession( ?WebRequest $request = null ) {
+		$session = $this->getEmptySession( $request );
+		$session->getToken();
+		return $session;
 	}
 
 	public function invalidateSessionsForUser( User $user ) {
@@ -343,6 +391,9 @@ final class SessionManager implements SessionManagerInterface {
 		}
 	}
 
+	/**
+	 * @return array<string,null>
+	 */
 	public function getVaryHeaders() {
 		// @codeCoverageIgnoreStart
 		if ( defined( 'MW_NO_SESSION' ) && MW_NO_SESSION !== 'warn' ) {
@@ -352,9 +403,7 @@ final class SessionManager implements SessionManagerInterface {
 		if ( $this->varyHeaders === null ) {
 			$headers = [];
 			foreach ( $this->getProviders() as $provider ) {
-				foreach ( $provider->getVaryHeaders() as $header => $options ) {
-					# Note that the $options value returned has been deprecated
-					# and is ignored.
+				foreach ( $provider->getVaryHeaders() as $header => $_ ) {
 					$headers[$header] = null;
 				}
 			}
@@ -388,10 +437,9 @@ final class SessionManager implements SessionManagerInterface {
 		return is_string( $id ) && preg_match( '/^[a-zA-Z0-9_-]{32,}$/', $id );
 	}
 
-	/**
-	 * @name Internal methods
-	 * @{
-	 */
+	/***************************************************************************/
+	// region   Internal methods
+	/** @name   Internal methods */
 
 	/**
 	 * Prevent future sessions for the user
@@ -399,7 +447,7 @@ final class SessionManager implements SessionManagerInterface {
 	 * The intention is that the named account will never again be usable for
 	 * normal login (i.e. there is no way to undo the prevention of access).
 	 *
-	 * @internal For use from \User::newSystemUser only
+	 * @internal For use from \MediaWiki\User\User::newSystemUser only
 	 * @param string $username
 	 */
 	public function preventSessionsForUser( $username ) {
@@ -428,13 +476,17 @@ final class SessionManager implements SessionManagerInterface {
 	protected function getProviders() {
 		if ( $this->sessionProviders === null ) {
 			$this->sessionProviders = [];
-			foreach ( $this->config->get( 'SessionProviders' ) as $spec ) {
-				/** @var SessionProvider */
-				$provider = ObjectFactory::getObjectFromSpec( $spec );
-				$provider->setLogger( $this->logger );
-				$provider->setConfig( $this->config );
-				$provider->setManager( $this );
-				$provider->setHookContainer( $this->hookContainer );
+			$objectFactory = MediaWikiServices::getInstance()->getObjectFactory();
+			foreach ( $this->config->get( MainConfigNames::SessionProviders ) as $spec ) {
+				/** @var SessionProvider $provider */
+				$provider = $objectFactory->createObject( $spec );
+				$provider->init(
+					$this->logger,
+					$this->config,
+					$this,
+					$this->hookContainer,
+					$this->userNameUtils
+				);
 				if ( isset( $this->sessionProviders[(string)$provider] ) ) {
 					// @phan-suppress-next-line PhanTypeSuspiciousStringExpression
 					throw new \UnexpectedValueException( "Duplicate provider name \"$provider\"" );
@@ -509,6 +561,7 @@ final class SessionManager implements SessionManagerInterface {
 			if ( $this->loadSessionInfoFromStore( $info, $request ) ) {
 				$retInfos[] = $info;
 				while ( $infos ) {
+					/** @var SessionInfo $info */
 					$info = array_pop( $infos );
 					if ( SessionInfo::compare( $retInfos[0], $info ) ) {
 						// We hit a lower priority, stop checking.
@@ -520,11 +573,13 @@ final class SessionManager implements SessionManagerInterface {
 						$retInfos[] = $info;
 					} else {
 						// Session load failed, so unpersist it from this request
+						$this->logUnpersist( $info, $request );
 						$info->getProvider()->unpersistSession( $request );
 					}
 				}
 			} else {
 				// Session load failed, so unpersist it from this request
+				$this->logUnpersist( $info, $request );
 				$info->getProvider()->unpersistSession( $request );
 			}
 		}
@@ -536,7 +591,7 @@ final class SessionManager implements SessionManagerInterface {
 			);
 		}
 
-		return $retInfos ? $retInfos[0] : null;
+		return $retInfos[0] ?? null;
 	}
 
 	/**
@@ -559,7 +614,7 @@ final class SessionManager implements SessionManagerInterface {
 				return $this->loadSessionInfoFromStore( $info, $request );
 			};
 		} else {
-			$failHandler = function () {
+			$failHandler = static function () {
 				return false;
 			};
 		}
@@ -567,7 +622,7 @@ final class SessionManager implements SessionManagerInterface {
 		$newParams = [];
 
 		if ( $blob !== false ) {
-			// Sanity check: blob must be an array, if it's saved at all
+			// Double check: blob must be an array, if it's saved at all
 			if ( !is_array( $blob ) ) {
 				$this->logger->warning( 'Session "{session}": Bad data', [
 					'session' => $info->__toString(),
@@ -576,7 +631,7 @@ final class SessionManager implements SessionManagerInterface {
 				return $failHandler();
 			}
 
-			// Sanity check: blob has data and metadata arrays
+			// Double check: blob has data and metadata arrays
 			if ( !isset( $blob['data'] ) || !is_array( $blob['data'] ) ||
 				!isset( $blob['metadata'] ) || !is_array( $blob['metadata'] )
 			) {
@@ -590,7 +645,7 @@ final class SessionManager implements SessionManagerInterface {
 			$data = $blob['data'];
 			$metadata = $blob['metadata'];
 
-			// Sanity check: metadata must be an array and must contain certain
+			// Double check: metadata must be an array and must contain certain
 			// keys, if it's saved at all
 			if ( !array_key_exists( 'userId', $metadata ) ||
 				!array_key_exists( 'userName', $metadata ) ||
@@ -665,7 +720,7 @@ final class SessionManager implements SessionManagerInterface {
 					} else {
 						$userInfo = UserInfo::newAnonymous();
 					}
-				} catch ( \InvalidArgumentException $ex ) {
+				} catch ( InvalidArgumentException $ex ) {
 					$this->logger->error( 'Session "{session}": {exception}', [
 						'session' => $info->__toString(),
 						'exception' => $ex,
@@ -678,13 +733,16 @@ final class SessionManager implements SessionManagerInterface {
 				// is no saved ID and the names match.
 				if ( $metadata['userId'] ) {
 					if ( $metadata['userId'] !== $userInfo->getId() ) {
+						// Maybe something like UserMerge changed the user ID. Or it's manual tampering.
 						$this->logger->warning(
 							'Session "{session}": User ID mismatch, {uid_a} !== {uid_b}',
 							[
 								'session' => $info->__toString(),
 								'uid_a' => $metadata['userId'],
 								'uid_b' => $userInfo->getId(),
-						] );
+								'uname_a' => $metadata['userName'] ?? '<null>',
+								'uname_b' => $userInfo->getName() ?? '<null>',
+							] );
 						return $failHandler();
 					}
 
@@ -698,7 +756,7 @@ final class SessionManager implements SessionManagerInterface {
 								'session' => $info->__toString(),
 								'uname_a' => $metadata['userName'],
 								'uname_b' => $userInfo->getName(),
-						] );
+							] );
 						return $failHandler();
 					}
 
@@ -710,22 +768,25 @@ final class SessionManager implements SessionManagerInterface {
 								'session' => $info->__toString(),
 								'uname_a' => $metadata['userName'],
 								'uname_b' => $userInfo->getName(),
-						] );
+							] );
 						return $failHandler();
 					}
 				} elseif ( !$userInfo->isAnon() ) {
-					// Metadata specifies an anonymous user, but the passed-in
-					// user isn't anonymous.
+					// The metadata in the session store entry indicates this is an anonymous session,
+					// but the request metadata (e.g. the username cookie) says otherwise. Maybe the
+					// user logged out but unsetting the cookies failed?
 					$this->logger->warning(
-						'Session "{session}": Metadata has an anonymous user, but a non-anon user was provided',
+						'Session "{session}": the session store entry is for an anonymous user, '
+							. 'but the session metadata indicates a non-anonynmous user',
 						[
 							'session' => $info->__toString(),
-					] );
+						] );
 					return $failHandler();
 				}
 			}
 
 			// And if we have a token in the metadata, it must match the loaded/provided user.
+			// A mismatch probably means the session was invalidated.
 			if ( $metadata['userToken'] !== null &&
 				$userInfo->getToken() !== $metadata['userToken']
 			) {
@@ -758,7 +819,7 @@ final class SessionManager implements SessionManagerInterface {
 					'Session "{session}": Null provider and no metadata',
 					[
 						'session' => $info->__toString(),
-				] );
+					] );
 				return $failHandler();
 			}
 
@@ -767,20 +828,24 @@ final class SessionManager implements SessionManagerInterface {
 				if ( $info->getProvider()->canChangeUser() ) {
 					$newParams['userInfo'] = UserInfo::newAnonymous();
 				} else {
+					// This is a session provider bug - providers with canChangeUser() === false
+					// should never return an anonymous SessionInfo.
 					$this->logger->info(
 						'Session "{session}": No user provided and provider cannot set user',
 						[
 							'session' => $info->__toString(),
-					] );
+						] );
 					return $failHandler();
 				}
 			} elseif ( !$info->getUserInfo()->isVerified() ) {
-				// probably just a session timeout
+				// The session was not found in the session store, and the request contains no
+				// information beyond the session ID that could be used to verify it.
+				// Probably just a session timeout.
 				$this->logger->info(
 					'Session "{session}": Unverified user provided and no metadata to auth it',
 					[
 						'session' => $info->__toString(),
-				] );
+					] );
 				return $failHandler();
 			}
 
@@ -839,13 +904,15 @@ final class SessionManager implements SessionManagerInterface {
 	public function getSessionFromInfo( SessionInfo $info, WebRequest $request ) {
 		// @codeCoverageIgnoreStart
 		if ( defined( 'MW_NO_SESSION' ) ) {
+			$ep = defined( 'MW_ENTRY_POINT' ) ? MW_ENTRY_POINT : 'this';
+
 			if ( MW_NO_SESSION === 'warn' ) {
 				// Undocumented safety case for converting existing entry points
 				$this->logger->error( 'Sessions are supposed to be disabled for this entry point', [
-					'exception' => new \BadMethodCallException( 'Sessions are disabled for this entry point' ),
+					'exception' => new \BadMethodCallException( "Sessions are disabled for $ep entry point" ),
 				] );
 			} else {
-				throw new \BadMethodCallException( 'Sessions are disabled for this entry point' );
+				throw new \BadMethodCallException( "Sessions are disabled for $ep entry point" );
 			}
 		}
 		// @codeCoverageIgnoreEnd
@@ -862,7 +929,7 @@ final class SessionManager implements SessionManagerInterface {
 				$this->store,
 				$this->logger,
 				$this->hookContainer,
-				$this->config->get( 'ObjectCacheSessionExpiry' )
+				$this->config->get( MainConfigNames::ObjectCacheSessionExpiry )
 			);
 			$this->allSessionBackends[$id] = $backend;
 			$delay = $backend->delaySave();
@@ -899,7 +966,7 @@ final class SessionManager implements SessionManagerInterface {
 			$this->allSessionBackends[$id] !== $backend ||
 			$this->allSessionIds[$id] !== $backend->getSessionId()
 		) {
-			throw new \InvalidArgumentException( 'Backend was not registered with this SessionManager' );
+			throw new InvalidArgumentException( 'Backend was not registered with this SessionManager' );
 		}
 
 		unset( $this->allSessionBackends[$id] );
@@ -918,7 +985,7 @@ final class SessionManager implements SessionManagerInterface {
 			$this->allSessionBackends[$oldId] !== $backend ||
 			$this->allSessionIds[$oldId] !== $sessionId
 		) {
-			throw new \InvalidArgumentException( 'Backend was not registered with this SessionManager' );
+			throw new InvalidArgumentException( 'Backend was not registered with this SessionManager' );
 		}
 
 		$newId = $this->generateSessionId();
@@ -934,10 +1001,10 @@ final class SessionManager implements SessionManagerInterface {
 	 * @return string
 	 */
 	public function generateSessionId() {
-		do {
-			$id = \Wikimedia\base_convert( \MWCryptRand::generateHex( 40 ), 16, 32, 32 );
-			$key = $this->store->makeKey( 'MWSession', $id );
-		} while ( isset( $this->allSessionIds[$id] ) || is_array( $this->store->get( $key ) ) );
+		$id = \Wikimedia\base_convert( \MWCryptRand::generateHex( 40 ), 16, 32, 32 );
+		// Cache non-existence to avoid a later fetch
+		$key = $this->store->makeKey( 'MWSession', $id );
+		$this->store->set( $key, false, 0, BagOStuff::WRITE_CACHE_ONLY );
 		return $id;
 	}
 
@@ -956,9 +1023,9 @@ final class SessionManager implements SessionManagerInterface {
 	 * @internal
 	 */
 	public static function resetCache() {
-		if ( !defined( 'MW_PHPUNIT_TEST' ) ) {
+		if ( !defined( 'MW_PHPUNIT_TEST' ) && !defined( 'MW_PARSER_TEST' ) ) {
 			// @codeCoverageIgnoreStart
-			throw new MWException( __METHOD__ . ' may only be called from unit tests!' );
+			throw new LogicException( __METHOD__ . ' may only be called from unit tests!' );
 			// @codeCoverageIgnoreEnd
 		}
 
@@ -966,6 +1033,118 @@ final class SessionManager implements SessionManagerInterface {
 		self::$globalSessionRequest = null;
 	}
 
-	/** @} */
+	private function logUnpersist( SessionInfo $info, WebRequest $request ) {
+		$logData = [
+			'id' => $info->getId(),
+			'provider' => get_class( $info->getProvider() ),
+			'user' => '<anon>',
+			'clientip' => $request->getIP(),
+			'userAgent' => $request->getHeader( 'user-agent' ),
+		];
+		if ( $info->getUserInfo() ) {
+			if ( !$info->getUserInfo()->isAnon() ) {
+				$logData['user'] = $info->getUserInfo()->getName();
+			}
+			$logData['userVerified'] = $info->getUserInfo()->isVerified();
+		}
+		$this->logger->info( 'Failed to load session, unpersisting', $logData );
+	}
+
+	/**
+	 * If the same session is suddenly used from a different IP, that's potentially due
+	 * to a session leak, so log it. In the vast majority of cases it is a false positive
+	 * due to a user switching connections, but we are interested in an audit track where
+	 * we can look up a specific username, so a noisy log is fine.
+	 * Also log changes to the mwuser cookie, an analytics cookie set by mediawiki.user.js
+	 * which should be a little less noisy.
+	 * @private For use in Setup.php only
+	 * @param Session|null $session For testing only
+	 */
+	public function logPotentialSessionLeakage( ?Session $session = null ) {
+		$proxyLookup = MediaWikiServices::getInstance()->getProxyLookup();
+		$session = $session ?: self::getGlobalSession();
+		$suspiciousIpExpiry = $this->config->get( MainConfigNames::SuspiciousIpExpiry );
+
+		if ( $suspiciousIpExpiry === false
+			// We only care about logged-in users.
+			|| !$session->isPersistent() || $session->getUser()->isAnon()
+			// We only care about cookie-based sessions.
+			|| !( $session->getProvider() instanceof CookieSessionProvider )
+		) {
+			return;
+		}
+		try {
+			$ip = $session->getRequest()->getIP();
+		} catch ( MWException $e ) {
+			return;
+		}
+		if ( $ip === '127.0.0.1' || $proxyLookup->isConfiguredProxy( $ip ) ) {
+			return;
+		}
+		$mwuser = $session->getRequest()->getCookie( 'mwuser-sessionId' );
+		$now = (int)\MediaWiki\Utils\MWTimestamp::now( TS_UNIX );
+
+		// Record (and possibly log) that the IP is using the current session.
+		// Don't touch the stored data unless we are changing the IP or re-adding an expired one.
+		// This is slightly inaccurate (when an existing IP is seen again, the expiry is not
+		// extended) but that shouldn't make much difference and limits the session write frequency.
+		$data = $session->get( 'SessionManager-logPotentialSessionLeakage', [] )
+			+ [ 'ip' => null, 'mwuser' => null, 'timestamp' => 0 ];
+		// Ignore old IP records; users change networks over time. mwuser is a session cookie and the
+		// SessionManager session id is also a session cookie so there shouldn't be any problem there.
+		if ( $data['ip'] &&
+			( $now - $data['timestamp'] > $suspiciousIpExpiry )
+		) {
+			$data['ip'] = $data['timestamp'] = null;
+		}
+
+		if ( $data['ip'] !== $ip || $data['mwuser'] !== $mwuser ) {
+			$session->set( 'SessionManager-logPotentialSessionLeakage',
+				[ 'ip' => $ip, 'mwuser' => $mwuser, 'timestamp' => $now ] );
+		}
+
+		$ipChanged = ( $data['ip'] && $data['ip'] !== $ip );
+		$mwuserChanged = ( $data['mwuser'] && $data['mwuser'] !== $mwuser );
+		$logLevel = $message = null;
+		$logData = [];
+		// IPs change all the time. mwuser is a session cookie that's only set when missing,
+		// so it should only change when the browser session ends which ends the SessionManager
+		// session as well. Unless we are dealing with a very weird client, such as a bot that
+		//manipulates cookies and can run Javascript, it should not change.
+		// IP and mwuser changing at the same time would be *very* suspicious.
+		if ( $ipChanged ) {
+			$logLevel = LogLevel::INFO;
+			$message = 'IP change within the same session';
+			$logData += [
+				'oldIp' => $data['ip'],
+				'oldIpRecorded' => $data['timestamp'],
+			];
+		}
+		if ( $mwuserChanged ) {
+			$logLevel = LogLevel::NOTICE;
+			$message = 'mwuser change within the same session';
+			$logData += [
+				'oldMwuser' => $data['mwuser'],
+				'newMwuser' => $mwuser,
+			];
+		}
+		if ( $ipChanged && $mwuserChanged ) {
+			$logLevel = LogLevel::WARNING;
+			$message = 'IP and mwuser change within the same session';
+		}
+		if ( $logLevel ) {
+			$logData += [
+				'session' => $session->getId(),
+				'user' => $session->getUser()->getName(),
+				'clientip' => $ip,
+				'userAgent' => $session->getRequest()->getHeader( 'user-agent' ),
+			];
+			$logger = \MediaWiki\Logger\LoggerFactory::getInstance( 'session-ip' );
+			// @phan-suppress-next-line PhanTypeMismatchArgumentNullable message is set when used here
+			$logger->log( $logLevel, $message, $logData );
+		}
+	}
+
+	// endregion -- end of Internal methods
 
 }

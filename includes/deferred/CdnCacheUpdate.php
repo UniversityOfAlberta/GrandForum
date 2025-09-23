@@ -18,8 +18,17 @@
  * @file
  */
 
+namespace MediaWiki\Deferred;
+
+use CdnPurgeJob;
+use Exception;
+use InvalidArgumentException;
+use MediaWiki\MainConfigNames;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Page\PageReference;
+use RuntimeException;
 use Wikimedia\Assert\Assert;
+use Wikimedia\IPUtils;
 
 /**
  * Handles purging the appropriate CDN objects given a list of URLs or Title instances
@@ -28,14 +37,14 @@ use Wikimedia\Assert\Assert;
 class CdnCacheUpdate implements DeferrableUpdate, MergeableUpdate {
 	/** @var array[] List of (URL, rebound purge delay) tuples */
 	private $urlTuples = [];
-	/** @var array[] List of (Title, rebound purge delay) tuples */
-	private $titleTuples = [];
+	/** @var array[] List of (PageReference, rebound purge delay) tuples */
+	private $pageTuples = [];
 
-	/** @var int Maximum seconds of rebound purge delay (sanity) */
+	/** @var int Maximum seconds of rebound purge delay */
 	private const MAX_REBOUND_DELAY = 300;
 
 	/**
-	 * @param string[]|Title[] $targets Collection of URLs/titles to be purged from CDN
+	 * @param string[]|PageReference[] $targets Collection of URLs/titles to be purged from CDN
 	 * @param array $options Options map. Supports:
 	 *   - reboundDelay: how many seconds after the first purge to send a rebound purge.
 	 *      No rebound purge will be sent if this is not positive. [Default: 0]
@@ -47,8 +56,8 @@ class CdnCacheUpdate implements DeferrableUpdate, MergeableUpdate {
 		);
 
 		foreach ( $targets as $target ) {
-			if ( $target instanceof Title ) {
-				$this->titleTuples[] = [ $target, $delay ];
+			if ( $target instanceof PageReference ) {
+				$this->pageTuples[] = [ $target, $delay ];
 			} else {
 				$this->urlTuples[] = [ $target, $delay ];
 			}
@@ -61,19 +70,7 @@ class CdnCacheUpdate implements DeferrableUpdate, MergeableUpdate {
 		'@phan-var self $update';
 
 		$this->urlTuples = array_merge( $this->urlTuples, $update->urlTuples );
-		$this->titleTuples = array_merge( $this->titleTuples, $update->titleTuples );
-	}
-
-	/**
-	 * Create an update object from an array of Title objects, or a TitleArray object
-	 *
-	 * @param Traversable|Title[] $titles
-	 * @param string[] $urls
-	 * @return CdnCacheUpdate
-	 * @deprecated Since 1.35 Use HtmlCacheUpdater instead
-	 */
-	public static function newFromTitles( $titles, $urls = [] ) {
-		return new CdnCacheUpdate( array_merge( $titles, $urls ) );
+		$this->pageTuples = array_merge( $this->pageTuples, $update->pageTuples );
 	}
 
 	public function doUpdate() {
@@ -99,7 +96,7 @@ class CdnCacheUpdate implements DeferrableUpdate, MergeableUpdate {
 				'jobReleaseTimestamp' => $immediatePurgeTimestamp + $delay
 			] );
 		}
-		JobQueueGroup::singleton()->lazyPush( $jobs );
+		MediaWikiServices::getInstance()->getJobQueueGroup()->lazyPush( $jobs );
 	}
 
 	/**
@@ -110,8 +107,8 @@ class CdnCacheUpdate implements DeferrableUpdate, MergeableUpdate {
 	 * @param string[] $urls List of full URLs to purge
 	 */
 	public static function purge( array $urls ) {
-		global $wgCdnServers, $wgHTCPRouting;
-
+		$cdnServers = MediaWikiServices::getInstance()->getMainConfig()->get( MainConfigNames::CdnServers );
+		$htcpRouting = MediaWikiServices::getInstance()->getMainConfig()->get( MainConfigNames::HTCPRouting );
 		if ( !$urls ) {
 			return;
 		}
@@ -127,7 +124,7 @@ class CdnCacheUpdate implements DeferrableUpdate, MergeableUpdate {
 		$relayerGroup->getRelayer( 'cdn-url-purges' )->notifyMulti(
 			'cdn-url-purges',
 			array_map(
-				function ( $url ) use ( $ts ) {
+				static function ( $url ) use ( $ts ) {
 					return [
 						'url' => $url,
 						'timestamp' => $ts,
@@ -138,12 +135,12 @@ class CdnCacheUpdate implements DeferrableUpdate, MergeableUpdate {
 		);
 
 		// Send lossy UDP broadcasting if enabled
-		if ( $wgHTCPRouting ) {
+		if ( $htcpRouting ) {
 			self::HTCPPurge( $urls );
 		}
 
 		// Do direct server purges if enabled (this does not scale very well)
-		if ( $wgCdnServers ) {
+		if ( $cdnServers ) {
 			self::naivePurge( $urls );
 		}
 	}
@@ -159,26 +156,28 @@ class CdnCacheUpdate implements DeferrableUpdate, MergeableUpdate {
 	 * @return int[] Map of (URL => rebound purge delay)
 	 */
 	private function resolveReboundDelayByUrl() {
-		/** @var Title $title */
+		$services = MediaWikiServices::getInstance();
+		/** @var PageReference $page */
 
-		// Avoid multiple queries for getCdnUrls() call
-		$lb = MediaWikiServices::getInstance()->getLinkBatchFactory()->newLinkBatch();
-		foreach ( $this->titleTuples as list( $title, $delay ) ) {
-			$lb->addObj( $title );
+		// Avoid multiple queries for HTMLCacheUpdater::getUrls() call
+		$lb = $services->getLinkBatchFactory()->newLinkBatch();
+		foreach ( $this->pageTuples as [ $page, ] ) {
+			$lb->addObj( $page );
 		}
 		$lb->execute();
 
 		$reboundDelayByUrl = [];
 
 		// Resolve the titles into CDN URLs
-		foreach ( $this->titleTuples as list( $title, $delay ) ) {
-			foreach ( $title->getCdnUrls() as $url ) {
+		$htmlCacheUpdater = $services->getHtmlCacheUpdater();
+		foreach ( $this->pageTuples as [ $page, $delay ] ) {
+			foreach ( $htmlCacheUpdater->getUrls( $page ) as $url ) {
 				// Use the highest rebound for duplicate URLs in order to handle the most lag
 				$reboundDelayByUrl[$url] = max( $reboundDelayByUrl[$url] ?? 0, $delay );
 			}
 		}
 
-		foreach ( $this->urlTuples as list( $url, $delay ) ) {
+		foreach ( $this->urlTuples as [ $url, $delay ] ) {
 			// Use the highest rebound for duplicate URLs in order to handle the most lag
 			$reboundDelayByUrl[$url] = max( $reboundDelayByUrl[$url] ?? 0, $delay );
 		}
@@ -189,12 +188,11 @@ class CdnCacheUpdate implements DeferrableUpdate, MergeableUpdate {
 	/**
 	 * Send Hyper Text Caching Protocol (HTCP) CLR requests
 	 *
-	 * @throws MWException
 	 * @param string[] $urls Collection of URLs to purge
 	 */
 	private static function HTCPPurge( array $urls ) {
-		global $wgHTCPRouting, $wgHTCPMulticastTTL;
-
+		$htcpRouting = MediaWikiServices::getInstance()->getMainConfig()->get( MainConfigNames::HTCPRouting );
+		$htcpMulticastTTL = MediaWikiServices::getInstance()->getMainConfig()->get( MainConfigNames::HTCPMulticastTTL );
 		// HTCP CLR operation
 		$htcpOpCLR = 4;
 
@@ -217,26 +215,26 @@ class CdnCacheUpdate implements DeferrableUpdate, MergeableUpdate {
 
 		// Set socket options
 		socket_set_option( $conn, IPPROTO_IP, IP_MULTICAST_LOOP, 0 );
-		if ( $wgHTCPMulticastTTL != 1 ) {
+		if ( $htcpMulticastTTL != 1 ) {
 			// Set multicast time to live (hop count) option on socket
 			socket_set_option( $conn, IPPROTO_IP, IP_MULTICAST_TTL,
-				$wgHTCPMulticastTTL );
+				$htcpMulticastTTL );
 		}
 
 		// Get sequential trx IDs for packet loss counting
 		$idGenerator = MediaWikiServices::getInstance()->getGlobalIdGenerator();
 		$ids = $idGenerator->newSequentialPerNodeIDs(
-			'squidhtcppurge', 32,
-			count( $urls ),
-			$idGenerator::QUICK_VOLATILE
+			'squidhtcppurge',
+			32,
+			count( $urls )
 		);
 
 		foreach ( $urls as $url ) {
 			if ( !is_string( $url ) ) {
-				throw new MWException( 'Bad purge URL' );
+				throw new InvalidArgumentException( 'Bad purge URL' );
 			}
 			$url = self::expand( $url );
-			$conf = self::getRuleForURL( $url, $wgHTCPRouting );
+			$conf = self::getRuleForURL( $url, $htcpRouting );
 			if ( !$conf ) {
 				wfDebugLog( 'squid', __METHOD__ .
 					"No HTCP rule configured for URL {$url} , skipping" );
@@ -249,7 +247,7 @@ class CdnCacheUpdate implements DeferrableUpdate, MergeableUpdate {
 			}
 			foreach ( $conf as $subconf ) {
 				if ( !isset( $subconf['host'] ) || !isset( $subconf['port'] ) ) {
-					throw new MWException( "Invalid HTCP rule for URL $url\n" );
+					throw new RuntimeException( "Invalid HTCP rule for URL $url\n" );
 				}
 			}
 
@@ -289,14 +287,14 @@ class CdnCacheUpdate implements DeferrableUpdate, MergeableUpdate {
 	 * @throws Exception
 	 */
 	private static function naivePurge( array $urls ) {
-		global $wgCdnServers;
+		$cdnServers = MediaWikiServices::getInstance()->getMainConfig()->get( MainConfigNames::CdnServers );
 
 		$reqs = [];
 		foreach ( $urls as $url ) {
 			$url = self::expand( $url );
-			$urlInfo = wfParseUrl( $url );
-			$urlHost = strlen( $urlInfo['port'] ?? null )
-				? IP::combineHostAndPort( $urlInfo['host'], $urlInfo['port'] )
+			$urlInfo = wfGetUrlUtils()->parse( $url ) ?? false;
+			$urlHost = strlen( $urlInfo['port'] ?? '' )
+				? IPUtils::combineHostAndPort( $urlInfo['host'], (int)$urlInfo['port'] )
 				: $urlInfo['host'];
 			$baseReq = [
 				'method' => 'PURGE',
@@ -308,7 +306,7 @@ class CdnCacheUpdate implements DeferrableUpdate, MergeableUpdate {
 					'User-Agent' => 'MediaWiki/' . MW_VERSION . ' ' . __CLASS__
 				]
 			];
-			foreach ( $wgCdnServers as $server ) {
+			foreach ( $cdnServers as $server ) {
 				$reqs[] = ( $baseReq + [ 'proxy' => $server ] );
 			}
 		}
@@ -333,7 +331,7 @@ class CdnCacheUpdate implements DeferrableUpdate, MergeableUpdate {
 	 * @return string
 	 */
 	private static function expand( $url ) {
-		return wfExpandUrl( $url, PROTO_INTERNAL );
+		return (string)MediaWikiServices::getInstance()->getUrlUtils()->expand( $url, PROTO_INTERNAL );
 	}
 
 	/**
@@ -352,3 +350,6 @@ class CdnCacheUpdate implements DeferrableUpdate, MergeableUpdate {
 		return false;
 	}
 }
+
+/** @deprecated class alias since 1.42 */
+class_alias( CdnCacheUpdate::class, 'CdnCacheUpdate' );

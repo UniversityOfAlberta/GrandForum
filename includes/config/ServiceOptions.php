@@ -2,7 +2,6 @@
 
 namespace MediaWiki\Config;
 
-use Config;
 use InvalidArgumentException;
 use Wikimedia\Assert\Assert;
 
@@ -20,15 +19,21 @@ use Wikimedia\Assert\Assert;
  * optional options. This makes sense for services, since they shouldn't be constructed by
  * outside code.)
  *
+ * @newable since 1.36
+ *
  * @since 1.34
  */
 class ServiceOptions {
-	private $keys = [];
+	/** @var string[] */
+	private $keys;
+	/** @var array */
 	private $options = [];
 
 	/**
+	 * @stable to call since 1.36
+	 *
 	 * @param string[] $keys Which keys to extract from $sources
-	 * @param Config|array ...$sources Each source is either a Config object or an array. If the
+	 * @param Config|ServiceOptions|array ...$sources Each source is either a Config object or an array. If the
 	 *  same key is present in two sources, the first one takes precedence. Keys that are not in
 	 *  $keys are ignored.
 	 * @throws InvalidArgumentException if one of $keys is not found in any of $sources
@@ -42,11 +47,14 @@ class ServiceOptions {
 						$this->options[$key] = $source->get( $key );
 						continue 2;
 					}
-				} else {
-					if ( array_key_exists( $key, $source ) ) {
-						$this->options[$key] = $source[$key];
+				} elseif ( $source instanceof ServiceOptions ) {
+					if ( array_key_exists( $key, $source->options ) ) {
+						$this->options[$key] = $source->get( $key );
 						continue 2;
 					}
+				} elseif ( array_key_exists( $key, $source ) ) {
+					$this->options[$key] = $source[$key];
+					continue 2;
 				}
 			}
 			throw new InvalidArgumentException( "Key \"$key\" not found in input sources" );

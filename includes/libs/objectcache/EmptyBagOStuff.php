@@ -1,7 +1,5 @@
 <?php
 /**
- * Dummy object caching.
- *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -18,11 +16,15 @@
  * http://www.gnu.org/copyleft/gpl.html
  *
  * @file
- * @ingroup Cache
  */
+namespace Wikimedia\ObjectCache;
 
 /**
- * A BagOStuff object with no objects in it. Used to provide a no-op object to calling code.
+ * No-op implementation that stores nothing.
+ *
+ * Used as placeholder or fallback when disabling caching.
+ *
+ * This can be used in configuration via the CACHE_NONE constant.
  *
  * @ingroup Cache
  */
@@ -51,19 +53,16 @@ class EmptyBagOStuff extends MediumSpecificBagOStuff {
 		return true;
 	}
 
-	public function incr( $key, $value = 1, $flags = 0 ) {
-		return false;
-	}
-
-	public function decr( $key, $value = 1, $flags = 0 ) {
-		return false;
-	}
-
-	public function incrWithInit( $key, $exptime, $value = 1, $init = null, $flags = 0 ) {
-		return false; // faster
+	protected function doIncrWithInit( $key, $exptime, $step, $init, $flags ) {
+		// faster
+		return $init;
 	}
 
 	public function merge( $key, callable $callback, $exptime = 0, $attempts = 10, $flags = 0 ) {
-		return true; // faster
+		// faster
+		return true;
 	}
 }
+
+/** @deprecated class alias since 1.43 */
+class_alias( EmptyBagOStuff::class, 'EmptyBagOStuff' );

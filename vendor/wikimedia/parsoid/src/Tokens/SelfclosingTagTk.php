@@ -3,7 +3,8 @@ declare( strict_types = 1 );
 
 namespace Wikimedia\Parsoid\Tokens;
 
-use stdClass;
+use Wikimedia\Parsoid\NodeData\DataMw;
+use Wikimedia\Parsoid\NodeData\DataParsoid;
 
 /**
  * Token for a self-closing tag (HTML or otherwise)
@@ -12,31 +13,22 @@ class SelfclosingTagTk extends Token {
 	/** @var string Name of the end tag */
 	private $name;
 
-	/** @var array Attributes of this token
-	 * This is represented an array of KV objects
-	 * TODO: Expand on this.
-	 */
-	public $attribs = [];
-
-	/** @var stdClass Data attributes for this token
-	 * TODO: Expand on this.
-	 */
-	public $dataAttribs;
-
 	/**
 	 * @param string $name
 	 * @param KV[] $attribs
-	 * @param stdClass|null $dataAttribs
+	 * @param ?DataParsoid $dataParsoid
+	 * @param ?DataMw $dataMw
 	 */
-	public function __construct( string $name, array $attribs = [], stdClass $dataAttribs = null ) {
+	public function __construct(
+		string $name, array $attribs = [],
+		?DataParsoid $dataParsoid = null,
+		?DataMw $dataMw = null
+	) {
+		parent::__construct( $dataParsoid, $dataMw );
 		$this->name = $name;
 		$this->attribs = $attribs;
-		$this->dataAttribs = $dataAttribs ?? new stdClass;
 	}
 
-	/**
-	 * @return string
-	 */
 	public function getName(): string {
 		return $this->name;
 	}
@@ -49,7 +41,8 @@ class SelfclosingTagTk extends Token {
 			'type' => $this->getType(),
 			'name' => $this->name,
 			'attribs' => $this->attribs,
-			'dataAttribs' => $this->dataAttribs
+			'dataParsoid' => $this->dataParsoid,
+			'dataMw' => $this->dataMw,
 		];
 	}
 }

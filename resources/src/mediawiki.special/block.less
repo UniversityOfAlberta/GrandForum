@@ -2,27 +2,6 @@
  * Styles for Special:Block
  */
 
-// OOUIHTMLForm specifics
-@ooui-font-size-browser: 16; // Assumed browser default of `16px`.
-@ooui-font-size-base: 0.875em; // Equals `14px` at browser default of `16px`.
-
-@ooui-spacing-radio-label: 26 / @ooui-font-size-browser / @ooui-font-size-base; // Equals `1.85714286em`≈`26px`.
-
-.mw-block-editing-restriction.oo-ui-fieldLayout {
-	margin-left: @ooui-spacing-radio-label;
-	margin-top: 8px;
-}
-
-.mw-block-restriction.oo-ui-fieldLayout.oo-ui-labelElement {
-	margin-left: 2 * @ooui-spacing-radio-label;
-	margin-top: 8px;
-
-	.oo-ui-tagMultiselectWidget,
-	.oo-ui-textInputWidget {
-		max-width: 50em - 2 * @ooui-spacing-radio-label;
-	}
-}
-
 .mw-special-Block .mw-htmlform {
 	> .oo-ui-panelLayout-framed {
 		border: 0;
@@ -31,4 +10,40 @@
 	> .oo-ui-panelLayout-padded {
 		padding: 0;
 	}
+}
+
+// Affects sitewide/partial radio, partial action checkboxes, and block detail checkboxes
+.mw-block-editing-restriction.oo-ui-fieldLayout,
+.mw-block-action-restriction .oo-ui-checkboxMultioptionWidget,
+.mw-block-restriction.oo-ui-labelElement {
+	margin-top: 12px;
+}
+
+.mw-block-partial-restriction.oo-ui-fieldLayout {
+	// Match spacing of partial action checkboxes to block detail checkboxes
+	.oo-ui-checkboxMultioptionWidget {
+		padding: 0;
+	}
+}
+
+.mw-block-hideuser,
+.mw-block-confirm {
+	font-weight: bold;
+}
+
+#mw-input-wpReason {
+	.oo-ui-dropdownInputWidget,
+	.oo-ui-textInputWidget {
+		display: block;
+		max-width: 50em;
+	}
+
+	.oo-ui-textInputWidget {
+		margin-top: 0.5em;
+	}
+}
+
+.mw-ipb-conveniencelinks {
+	font-size: 90%;
+	text-align: right;
 }

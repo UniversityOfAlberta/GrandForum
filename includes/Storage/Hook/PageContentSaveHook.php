@@ -2,14 +2,16 @@
 
 namespace MediaWiki\Storage\Hook;
 
-// phpcs:disable Generic.Files.LineLength -- Remove this after doc review
-use CommentStoreComment;
-use Content;
+use MediaWiki\CommentStore\CommentStoreComment;
+use MediaWiki\Content\Content;
+use MediaWiki\User\User;
 use StatusValue;
-use User;
 use WikiPage;
 
 /**
+ * This is a hook handler interface, see docs/Hooks.md.
+ * Use the hook name "PageContentSave" to register handlers implementing this interface.
+ *
  * @deprecated since 1.35 Use MultiContentSave instead
  * @ingroup Hooks
  */
@@ -27,7 +29,7 @@ interface PageContentSaveHook {
 	 * @param null $iswatch Previously a watch flag. Currently unused, always null.
 	 * @param null $section Previously the section number being edited. Currently unused, always null.
 	 * @param int $flags All EDIT_… flags (including EDIT_MINOR) as an integer number.
-	 *   See WikiPage::doEditContent documentation for flags' definition.
+	 *   See WikiPage::doUserEditContent documentation for flags' definition.
 	 * @param StatusValue $status StatusValue object for the hook handlers resulting status.
 	 *   Either set $status->fatal() or return false to abort the save action.
 	 * @return bool|void True or no return value to continue or false to abort

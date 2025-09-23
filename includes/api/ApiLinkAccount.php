@@ -20,9 +20,11 @@
  * @file
  */
 
+namespace MediaWiki\Api;
+
 use MediaWiki\Auth\AuthenticationResponse;
 use MediaWiki\Auth\AuthManager;
-use MediaWiki\MediaWikiServices;
+use MediaWiki\Utils\UrlUtils;
 
 /**
  * Link an account with AuthManager
@@ -31,25 +33,35 @@ use MediaWiki\MediaWikiServices;
  */
 class ApiLinkAccount extends ApiBase {
 
-	public function __construct( ApiMain $main, $action ) {
+	private AuthManager $authManager;
+	private UrlUtils $urlUtils;
+
+	public function __construct(
+		ApiMain $main,
+		string $action,
+		AuthManager $authManager,
+		UrlUtils $urlUtils
+	) {
 		parent::__construct( $main, $action, 'link' );
+		$this->authManager = $authManager;
+		$this->urlUtils = $urlUtils;
 	}
 
 	public function getFinalDescription() {
 		// A bit of a hack to append 'api-help-authmanager-general-usage'
 		$msgs = parent::getFinalDescription();
-		$msgs[] = ApiBase::makeMessage( 'api-help-authmanager-general-usage', $this->getContext(), [
+		$msgs[] = $this->msg( 'api-help-authmanager-general-usage',
 			$this->getModulePrefix(),
 			$this->getModuleName(),
 			$this->getModulePath(),
 			AuthManager::ACTION_LINK,
-			self::needsToken(),
-		] );
+			$this->needsToken(),
+		);
 		return $msgs;
 	}
 
 	public function execute() {
-		if ( !$this->getUser()->isLoggedIn() ) {
+		if ( !$this->getUser()->isNamed() ) {
 			$this->dieWithError( 'apierror-mustbeloggedin-linkaccounts', 'notloggedin' );
 		}
 
@@ -58,7 +70,7 @@ class ApiLinkAccount extends ApiBase {
 		$this->requireAtLeastOneParameter( $params, 'continue', 'returnurl' );
 
 		if ( $params['returnurl'] !== null ) {
-			$bits = wfParseUrl( $params['returnurl'] );
+			$bits = $this->urlUtils->parse( $params['returnurl'] );
 			if ( !$bits || $bits['scheme'] === '' ) {
 				$encParamName = $this->encodeParamName( 'returnurl' );
 				$this->dieWithError(
@@ -68,14 +80,13 @@ class ApiLinkAccount extends ApiBase {
 			}
 		}
 
-		$manager = MediaWikiServices::getInstance()->getAuthManager();
-		$helper = new ApiAuthManagerHelper( $this, $manager );
+		$helper = new ApiAuthManagerHelper( $this, $this->authManager );
 
 		// Check security-sensitive operation status
 		$helper->securitySensitiveOperation( 'LinkAccounts' );
 
 		// Make sure it's possible to link accounts
-		if ( !$manager->canLinkAccounts() ) {
+		if ( !$this->authManager->canLinkAccounts() ) {
 			$this->getResult()->addValue( null, 'linkaccount', $helper->formatAuthenticationResponse(
 				AuthenticationResponse::newFail( $this->msg( 'userlogin-cannot-' . AuthManager::ACTION_LINK ) )
 			) );
@@ -85,10 +96,10 @@ class ApiLinkAccount extends ApiBase {
 		// Perform the link step
 		if ( $params['continue'] ) {
 			$reqs = $helper->loadAuthenticationRequests( AuthManager::ACTION_LINK_CONTINUE );
-			$res = $manager->continueAccountLink( $reqs );
+			$res = $this->authManager->continueAccountLink( $reqs );
 		} else {
 			$reqs = $helper->loadAuthenticationRequests( AuthManager::ACTION_LINK );
-			$res = $manager->beginAccountLink( $this->getUser(), $reqs, $params['returnurl'] );
+			$res = $this->authManager->beginAccountLink( $this->getUser(), $reqs, $params['returnurl'] );
 		}
 
 		$this->getResult()->addValue( null, 'linkaccount',
@@ -128,3 +139,6 @@ class ApiLinkAccount extends ApiBase {
 		return 'https://www.mediawiki.org/wiki/Special:MyLanguage/API:Linkaccount';
 	}
 }
+
+/** @deprecated class alias since 1.43 */
+class_alias( ApiLinkAccount::class, 'ApiLinkAccount' );

@@ -2,11 +2,14 @@
 
 namespace MediaWiki\Hook;
 
+use MediaWiki\Title\Title;
 use stdClass;
-use Title;
 use XmlDumpWriter;
 
 /**
+ * This is a hook handler interface, see docs/Hooks.md.
+ * Use the hook name "XmlDumpWriterOpenPage" to register handlers implementing this interface.
+ *
  * @stable to implement
  * @ingroup Hooks
  */

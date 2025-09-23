@@ -3,9 +3,12 @@
 namespace MediaWiki\Hook;
 
 use Article;
-use HTMLForm;
+use MediaWiki\HTMLForm\HTMLForm;
 
 /**
+ * This is a hook handler interface, see docs/Hooks.md.
+ * Use the hook name "ActionBeforeFormDisplay" to register handlers implementing this interface.
+ *
  * @stable to implement
  * @ingroup Hooks
  */

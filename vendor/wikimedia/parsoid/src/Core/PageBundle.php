@@ -4,46 +4,60 @@ declare( strict_types = 1 );
 namespace Wikimedia\Parsoid\Core;
 
 use Composer\Semver\Semver;
+use Wikimedia\Parsoid\DOM\Document;
+use Wikimedia\Parsoid\DOM\Element;
+use Wikimedia\Parsoid\DOM\Node;
 use Wikimedia\Parsoid\Utils\ContentUtils;
+use Wikimedia\Parsoid\Utils\DOMCompat;
 use Wikimedia\Parsoid\Utils\DOMDataUtils;
 use Wikimedia\Parsoid\Utils\DOMUtils;
+use Wikimedia\Parsoid\Utils\PHPUtils;
 
 /**
  * PORT-FIXME: This is just a placeholder for data that was previously passed
  * to entrypoint in JavaScript.  Who will construct these objects and whether
  * this is the correct interface is yet to be determined.
+ *
+ * Note that the parsoid/mw properties of the page bundle are in "serialized
+ * array" form; that is, they are flat arrays appropriate for json-encoding
+ * and do not contain DataParsoid or DataMw objects.
  */
 class PageBundle {
 	/** @var string */
 	public $html;
 
-	/** @var array|null */
+	/**
+	 * A map from ID to the array serialization of DataParsoid for the Node
+	 * with that ID.
+	 *
+	 * @var null|array{counter?:int,offsetType?:string,ids:array<string,array>}
+	 */
 	public $parsoid;
 
-	/** @var array|null */
+	/**
+	 * A map from ID to the array serialization of DataMw for the Node
+	 * with that ID.
+	 *
+	 * @var null|array{ids:array<string,array>}
+	 */
 	public $mw;
 
-	/** @var string|null */
+	/** @var ?string */
 	public $version;
 
-	/** @var array|null */
+	/**
+	 * A map of HTTP headers: both name and value should be strings.
+	 * @var array<string,string>|null
+	 */
 	public $headers;
 
 	/** @var string|null */
 	public $contentmodel;
 
-	/**
-	 * @param string $html
-	 * @param array|null $parsoid
-	 * @param array|null $mw
-	 * @param string|null $version
-	 * @param array|null $headers
-	 * @param string|null $contentmodel
-	 */
 	public function __construct(
-		string $html, array $parsoid = null, array $mw = null,
-		string $version = null, array $headers = null,
-		string $contentmodel = null
+		string $html, ?array $parsoid = null, ?array $mw = null,
+		?string $version = null, ?array $headers = null,
+		?string $contentmodel = null
 	) {
 		$this->html = $html;
 		$this->parsoid = $parsoid;
@@ -53,19 +67,25 @@ class PageBundle {
 		$this->contentmodel = $contentmodel;
 	}
 
-	public function toHtml(): string {
+	public function toDom(): Document {
 		$doc = DOMUtils::parseHTML( $this->html );
-		DOMDataUtils::applyPageBundle( $doc, $this );
-		return ContentUtils::toXML( $doc );
+		self::apply( $doc, $this );
+		return $doc;
+	}
+
+	public function toHtml(): string {
+		return ContentUtils::toXML( $this->toDom() );
 	}
 
 	/**
 	 * Check if this pagebundle is valid.
 	 * @param string $contentVersion Document content version to validate against.
-	 * @param string|null &$errorMessage Error message will be returned here.
+	 * @param ?string &$errorMessage Error message will be returned here.
 	 * @return bool
 	 */
-	public function validate( string $contentVersion, string &$errorMessage = null ) {
+	public function validate(
+		string $contentVersion, ?string &$errorMessage = null
+	) {
 		if ( !$this->parsoid || !isset( $this->parsoid['ids'] ) ) {
 			$errorMessage = 'Invalid data-parsoid was provided.';
 			return false;
@@ -114,4 +134,50 @@ class PageBundle {
 		return $responseData;
 	}
 
+	/**
+	 * Applies the `data-*` attributes JSON structure to the document.
+	 * Leaves `id` attributes behind -- they are used by citation code to
+	 * extract `<ref>` body from the DOM.
+	 *
+	 * @param Document $doc doc
+	 * @param PageBundle $pb page bundle
+	 */
+	public static function apply( Document $doc, PageBundle $pb ): void {
+		DOMUtils::visitDOM(
+			DOMCompat::getBody( $doc ),
+			static function ( Node $node ) use ( $pb ): void {
+				if ( $node instanceof Element ) {
+					$id = DOMCompat::getAttribute( $node, 'id' );
+					if ( $id === null ) {
+						return;
+					}
+					if ( isset( $pb->parsoid['ids'][$id] ) ) {
+						DOMDataUtils::setJSONAttribute(
+							$node, 'data-parsoid', $pb->parsoid['ids'][$id]
+						);
+					}
+					if ( isset( $pb->mw['ids'][$id] ) ) {
+						// Only apply if it isn't already set.  This means
+						// earlier applications of the pagebundle have higher
+						// precedence, inline data being the highest.
+						if ( !$node->hasAttribute( 'data-mw' ) ) {
+							DOMDataUtils::setJSONAttribute(
+								$node, 'data-mw', $pb->mw['ids'][$id]
+							);
+						}
+					}
+				}
+			}
+		);
+	}
+
+	/**
+	 * Encode some of these properties for emitting in the <head> element of a doc
+	 * @return string
+	 */
+	public function encodeForHeadElement(): string {
+		// Note that $this->parsoid and $this->mw are already serialized arrays
+		// so a naive jsonEncode is sufficient.  We don't need a codec.
+		return PHPUtils::jsonEncode( [ 'parsoid' => $this->parsoid ?? [], 'mw' => $this->mw ?? [] ] );
+	}
 }

@@ -1,10 +1,8 @@
 <?php
 /** Lingala (lingála)
  *
- * To improve a translation please visit https://translatewiki.net
- *
- * @ingroup Language
  * @file
+ * @ingroup Languages
  *
  * @author Bombo (on ln.wikipedia.org)
  * @author Eruedin

@@ -1,10 +1,8 @@
 <?php
 /** Navajo (Diné bizaad)
  *
- * To improve a translation please visit https://translatewiki.net
- *
- * @ingroup Language
  * @file
+ * @ingroup Languages
  *
  * @author Reedy
  * @author Seb az86556

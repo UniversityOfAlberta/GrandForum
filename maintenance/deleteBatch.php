@@ -1,7 +1,7 @@
 <?php
 /**
  * Deletes a batch of pages.
- * Usage: php deleteBatch.php [-u <user>] [-r <reason>] [-i <interval>] [listfile]
+ * Usage: php deleteBatch.php [-u <user>] [-r <reason>] [-i <interval>] [--by-id] [listfile]
  * where
  *   [listfile] is a file where each line contains the title of a page to be
  *     deleted, standard input is used if listfile is not given.
@@ -28,9 +28,13 @@
  * @ingroup Maintenance
  */
 
-use MediaWiki\MediaWikiServices;
+use MediaWiki\StubObject\StubGlobalUser;
+use MediaWiki\Title\Title;
+use MediaWiki\User\User;
 
+// @codeCoverageIgnoreStart
 require_once __DIR__ . '/Maintenance.php';
+// @codeCoverageIgnoreEnd
 
 /**
  * Maintenance script to delete a batch of pages.
@@ -42,16 +46,15 @@ class DeleteBatch extends Maintenance {
 	public function __construct() {
 		parent::__construct();
 		$this->addDescription( 'Deletes a batch of pages' );
-		$this->addOption( 'u', "User to perform deletion", false, true );
-		$this->addOption( 'r', "Reason to delete page", false, true );
-		$this->addOption( 'i', "Interval to sleep between deletions" );
+		$this->addOption( 'u', 'User to perform deletion', false, true );
+		$this->addOption( 'r', 'Reason to delete page', false, true );
+		$this->addOption( 'i', 'Interval to sleep (in seconds) between deletions' );
+		$this->addOption( 'by-id', 'Delete by page ID instead of by page name', false, false );
 		$this->addArg( 'listfile', 'File with titles to delete, separated by newlines. ' .
 			'If not given, stdin will be used.', false );
 	}
 
 	public function execute() {
-		global $wgUser;
-
 		# Change to current working directory
 		$oldCwd = getcwd();
 		chdir( $oldCwd );
@@ -60,6 +63,7 @@ class DeleteBatch extends Maintenance {
 		$username = $this->getOption( 'u', false );
 		$reason = $this->getOption( 'r', '' );
 		$interval = $this->getOption( 'i', 0 );
+		$byId = $this->hasOption( 'by-id' );
 
 		if ( $username === false ) {
 			$user = User::newSystemUser( 'Delete page script', [ 'steal' => true ] );
@@ -69,7 +73,7 @@ class DeleteBatch extends Maintenance {
 		if ( !$user ) {
 			$this->fatalError( "Invalid username" );
 		}
-		$wgUser = $user;
+		StubGlobalUser::setUser( $user );
 
 		if ( $this->hasArg( 0 ) ) {
 			$file = fopen( $this->getArg( 0 ), 'r' );
@@ -82,7 +86,10 @@ class DeleteBatch extends Maintenance {
 			$this->fatalError( "Unable to read file, exiting" );
 		}
 
-		$lbFactory = MediaWikiServices::getInstance()->getDBLoadBalancerFactory();
+		$services = $this->getServiceContainer();
+		$wikiPageFactory = $services->getWikiPageFactory();
+		$repoGroup = $services->getRepoGroup();
+		$delPageFactory = $services->getDeletePageFactory();
 
 		# Handle each entry
 		for ( $linenum = 1; !feof( $file ); $linenum++ ) {
@@ -90,38 +97,41 @@ class DeleteBatch extends Maintenance {
 			if ( $line == '' ) {
 				continue;
 			}
-			$title = Title::newFromText( $line );
-			if ( $title === null ) {
-				$this->output( "Invalid title '$line' on line $linenum\n" );
-				continue;
-			}
-			if ( !$title->exists() ) {
-				$this->output( "Skipping nonexistent page '$line'\n" );
-				continue;
-			}
-
-			$this->output( $title->getPrefixedText() );
-			if ( $title->getNamespace() == NS_FILE ) {
-				$img = MediaWikiServices::getInstance()->getRepoGroup()->findFile(
-					$title, [ 'ignoreRedirect' => true ]
-				);
-				if ( $img && $img->isLocal() && !$img->deleteFile( $reason, $user ) ) {
-					$this->output( " FAILED to delete associated file... " );
+			if ( $byId === false ) {
+				$target = Title::newFromText( $line );
+				if ( $target === null ) {
+					$this->output( "Invalid title '$line' on line $linenum\n" );
+					continue;
+				}
+				if ( !$target->exists() ) {
+					$this->output( "Skipping nonexistent page '$line'\n" );
+					continue;
+				}
+			} else {
+				$target = Title::newFromID( (int)$line );
+				if ( $target === null ) {
+					$this->output( "Invalid page ID '$line' on line $linenum\n" );
+					continue;
+				}
+				if ( !$target->exists() ) {
+					$this->output( "Skipping nonexistent page ID '$line'\n" );
+					continue;
 				}
 			}
-			$page = WikiPage::factory( $title );
-			$error = '';
-			$status = $page->doDeleteArticleReal(
-				$reason,
-				$user,
-				false,
-				null,
-				$error,
-				null,
-				[],
-				'delete',
-				true
-			);
+			if ( $target->getNamespace() === NS_FILE ) {
+				$img = $repoGroup->findFile(
+					$target, [ 'ignoreRedirect' => true ]
+				);
+				if ( $img && $img->isLocal() && !$img->deleteFile( $reason, $user ) ) {
+					$this->output( " FAILED to delete associated file..." );
+				}
+			}
+			$page = $wikiPageFactory->newFromTitle( $target );
+			$delPage = $delPageFactory->newDeletePage( $page, $user );
+			$status = $delPage
+				->forceImmediate( true )
+				->deleteUnsafe( $reason );
+
 			if ( $status->isOK() ) {
 				$this->output( " Deleted!\n" );
 			} else {
@@ -131,10 +141,12 @@ class DeleteBatch extends Maintenance {
 			if ( $interval ) {
 				sleep( $interval );
 			}
-			$lbFactory->waitForReplication();
+			$this->waitForReplication();
 		}
 	}
 }
 
+// @codeCoverageIgnoreStart
 $maintClass = DeleteBatch::class;
 require_once RUN_MAINTENANCE_IF_MAIN;
+// @codeCoverageIgnoreEnd

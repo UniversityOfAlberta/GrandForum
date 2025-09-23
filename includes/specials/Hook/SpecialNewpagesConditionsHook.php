@@ -2,10 +2,13 @@
 
 namespace MediaWiki\Hook;
 
-use FormOptions;
-use NewPagesPager;
+use MediaWiki\Html\FormOptions;
+use MediaWiki\Pager\NewPagesPager;
 
 /**
+ * This is a hook handler interface, see docs/Hooks.md.
+ * Use the hook name "SpecialNewpagesConditions" to register handlers implementing this interface.
+ *
  * @stable to implement
  * @ingroup Hooks
  */

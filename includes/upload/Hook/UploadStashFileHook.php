@@ -2,11 +2,14 @@
 
 namespace MediaWiki\Hook;
 
-use MessageSpecifier;
+use MediaWiki\User\User;
 use UploadBase;
-use User;
+use Wikimedia\Message\MessageSpecifier;
 
 /**
+ * This is a hook handler interface, see docs/Hooks.md.
+ * Use the hook name "UploadStashFile" to register handlers implementing this interface.
+ *
  * @stable to implement
  * @ingroup Hooks
  */
@@ -30,5 +33,5 @@ interface UploadStashFileHook {
 	 *   -readable details for the API.)
 	 * @return bool|void True or no return value to continue or false to abort
 	 */
-	public function onUploadStashFile( $upload, $user, $props, &$error );
+	public function onUploadStashFile( UploadBase $upload, User $user, ?array $props, &$error );
 }

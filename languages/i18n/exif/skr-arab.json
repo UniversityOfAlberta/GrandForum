@@ -60,7 +60,7 @@
 	"exif-focalplaneresolutionunit-2": "انچ",
 	"exif-customrendered-6": "پینوراما",
 	"exif-customrendered-8": "پورٹریٹ",
-	"exif-scenecapturetype-0": "معیار",
+	"exif-scenecapturetype-0": "معیاری",
 	"exif-scenecapturetype-1": "ارضی منظر",
 	"exif-scenecapturetype-2": "پورٹریٹ",
 	"exif-scenecapturetype-3": "رات دا منظر",
@@ -115,5 +115,11 @@
 	"exif-iimcategory-wea": "موسم",
 	"exif-urgency-normal": "عام ($1)",
 	"exif-urgency-low": "گھٹ ($1)",
-	"exif-urgency-high": "ودھ ($1)"
+	"exif-urgency-high": "ودھ ($1)",
+	"exif-firstphotodate": "پہلا فوٹو تریخ",
+	"exif-lastphotodate": "چھیکڑی فوٹو تریخ",
+	"exif-usepanoramaviewer-true": "جیا",
+	"exif-usepanoramaviewer-false": "کو",
+	"exif-exposurelockused-true": "جیا",
+	"exif-exposurelockused-false": "کو"
 }

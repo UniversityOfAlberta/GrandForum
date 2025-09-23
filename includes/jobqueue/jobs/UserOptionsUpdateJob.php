@@ -1,7 +1,5 @@
 <?php
 /**
- * Job that updates a user's preferences.
- *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3 of the License, or
@@ -18,17 +16,21 @@
  * http://www.gnu.org/copyleft/gpl.html
  *
  * @file
- * @ingroup JobQueue
  */
 
+use MediaWiki\MediaWikiServices;
+use MediaWiki\User\User;
+use Wikimedia\Rdbms\IDBAccessObject;
+
 /**
- * Job that updates a user's preferences
+ * Job that updates a user's preferences.
  *
  * The following job parameters are required:
  *   - userId: the user ID
  *   - options: a map of (option => value)
  *
  * @since 1.33
+ * @ingroup JobQueue
  */
 class UserOptionsUpdateJob extends Job implements GenericParameterJob {
 	public function __construct( array $params ) {
@@ -42,13 +44,15 @@ class UserOptionsUpdateJob extends Job implements GenericParameterJob {
 		}
 
 		$user = User::newFromId( $this->params['userId'] );
-		$user->load( $user::READ_EXCLUSIVE );
-		if ( !$user->getId() ) {
+		$user->load( IDBAccessObject::READ_EXCLUSIVE );
+		if ( !$user->isNamed() ) {
 			return true;
 		}
 
+		$userOptionsManager = MediaWikiServices::getInstance()
+			->getUserOptionsManager();
 		foreach ( $this->params['options'] as $name => $value ) {
-			$user->setOption( $name, $value );
+			$userOptionsManager->setOption( $user, $name, $value );
 		}
 
 		$user->saveSettings();

@@ -1,10 +1,8 @@
 <?php
 /** Waray (Winaray)
  *
- * To improve a translation please visit https://translatewiki.net
- *
- * @ingroup Language
  * @file
+ * @ingroup Languages
  *
  * @author Estudyante
  * @author Harvzsf
@@ -39,6 +37,7 @@ $namespaceAliases = [
 	'Hiruhimangraw_hiton_MediaWiki' => NS_MEDIAWIKI_TALK,
 ];
 
+/** @phpcs-require-sorted-array */
 $specialPageAliases = [
 	'Allpages'                  => [ 'NgatananngaPakli' ],
 	'Categories'                => [ 'Mga_kaarangay' ],

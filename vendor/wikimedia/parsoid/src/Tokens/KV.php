@@ -34,13 +34,13 @@ class KV implements \JsonSerializable {
 	 *     this can be an array of tokens even.
 	 * @param string|Token|array<Token|string>|KV[] $v
 	 *     The value: string, token, of an array of tokens
-	 * @param KVSourceRange|null $srcOffsets wikitext source offsets
-	 * @param string|null $ksrc
-	 * @param string|null $vsrc
+	 * @param ?KVSourceRange $srcOffsets wikitext source offsets
+	 * @param ?string $ksrc
+	 * @param ?string $vsrc
 	 */
 	public function __construct(
-		$k, $v, ?KVSourceRange $srcOffsets = null,
-		?string $ksrc = null, ?string $vsrc = null
+		$k, $v, ?KVSourceRange $srcOffsets = null, ?string $ksrc = null,
+		?string $vsrc = null
 	) {
 		$this->k = $k;
 		$this->v = $v;
@@ -54,11 +54,14 @@ class KV implements \JsonSerializable {
 	}
 
 	/**
+	 * BUG: When there are multiple matching attributes, Sanitizer lets the last one win
+	 * whereas this method is letting the first one win. This can introduce subtle bugs!
+	 *
 	 * Lookup a string key in a KV array and return the first matching KV object
 	 *
 	 * @param KV[]|null $kvs
 	 * @param string $key
-	 * @return KV|null
+	 * @return ?KV
 	 */
 	public static function lookupKV( ?array $kvs, string $key ): ?KV {
 		if ( $kvs === null ) {
@@ -82,7 +85,7 @@ class KV implements \JsonSerializable {
 	 *
 	 * @param KV[]|null $kvs
 	 * @param string $key
-	 * @return string|Token|Token[]|null
+	 * @return string|Token|array<Token|string>|null
 	 */
 	public static function lookup( ?array $kvs, string $key ) {
 		$kv = self::lookupKV( $kvs, $key );

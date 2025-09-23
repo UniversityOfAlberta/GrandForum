@@ -27,7 +27,7 @@ class PersonRelationsTab extends AbstractTab {
      */
     function showRelations($person, $visibility){
         global $wgUser, $wgOut, $wgScriptPath, $wgServer;
-        if($wgUser->isLoggedIn() && ($visibility['edit'] || (!$visibility['edit'] && (count($person->getRelations('public')) > 0 || count($person->getSupervisors(true)) > 0 || ($visibility['isMe'] && count($person->getRelations()) > 0))))){
+        if($wgUser->isRegistered() && ($visibility['edit'] || (!$visibility['edit'] && (count($person->getRelations('public')) > 0 || count($person->getSupervisors(true)) > 0 || ($visibility['isMe'] && count($person->getRelations()) > 0))))){
             if($person->isRoleAtLeast(HQP) || ($person->isRole(INACTIVE) && $person->wasLastRoleAtLeast(HQP))){
                 if(count($person->getSupervisors(true)) > 0){
                     $this->html .= "<h3>Supervisors</h3>";
@@ -142,7 +142,7 @@ class PersonRelationsTab extends AbstractTab {
                 }
             }
         }
-        if($wgUser->isLoggedIn()){
+        if($wgUser->isRegistered()){
             if($this->person->isMe() && ($this->person->isRole(HQP) || $this->person->isRole(HQP.'-Candidate'))){
                 $this->html .= "Contact your supervisor in order be added as their student";
             }

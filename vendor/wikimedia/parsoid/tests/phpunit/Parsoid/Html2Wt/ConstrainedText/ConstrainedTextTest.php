@@ -9,9 +9,9 @@ use Wikimedia\Parsoid\Html2Wt\ConstrainedText\MagicLinkText;
 use Wikimedia\Parsoid\Html2Wt\ConstrainedText\WikiLinkText;
 use Wikimedia\Parsoid\Mocks\MockEnv;
 use Wikimedia\Parsoid\Utils\ContentUtils;
+use Wikimedia\Parsoid\Utils\DOMCompat;
 use Wikimedia\Parsoid\Utils\DOMDataUtils;
 use Wikimedia\Parsoid\Utils\DOMUtils;
-use Wikimedia\Parsoid\Utils\PHPUtils;
 
 /**
  * @coversDefaultClass \Wikimedia\Parsoid\Html2Wt\ConstrainedText\ConstrainedText
@@ -25,22 +25,23 @@ class ConstrainedTextTest extends \PHPUnit\Framework\TestCase {
 	 * @covers ::escapeLine
 	 * @dataProvider provideConstrainedText
 	 */
-	public function testConstrainedText( $t ) {
-		$t = PHPUtils::arrayToObject( $t );
+	public function testConstrainedText( array $t ) {
+		$t = (object)$t;
 		// Set up environment and test data
 		$env = new MockEnv( [
 			'linkPrefixRegex' => $t->linkPrefixRegex ?? null,
 			'linkTrailRegex' => $t->linkTrailRegex ?? null,
 		] );
-		$node = ContentUtils::ppToDOM( $env, $t->html )->firstChild;
+		$doc = ContentUtils::createAndLoadDocument( $t->html );
+		$node = DOMCompat::getBody( $doc )->firstChild;
 		DOMUtils::assertElt( $node );
 		$dataParsoid = DOMDataUtils::getDataParsoid( $node );
 
 		// Test ConstrainedText.fromSelSer
 		$ct = ConstrainedText::fromSelSer( $t->text, $node, $dataParsoid, $env );
-		$this->assertTrue( is_array( $ct ) );
+		$this->assertIsArray( $ct );
 		$this->assertSameSize( $t->types, $ct );
-		$actualNames = array_map( function ( $x ) {
+		$actualNames = array_map( static function ( $x ) {
 			return get_class( $x );
 		}, $ct );
 		foreach ( $t->types as $i => $name ) {
@@ -49,7 +50,7 @@ class ConstrainedTextTest extends \PHPUnit\Framework\TestCase {
 
 		// Test ConstrainedText::escapeLine
 		foreach ( $t->escapes as $e ) {
-			$e = PHPUtils::arrayToObject( $e );
+			$e = (object)$e;
 			$nct = $ct; // copy
 			if ( isset( $e->left ) ) {
 				$n = $node->ownerDocument->createTextNode( $e->left );
@@ -65,7 +66,7 @@ class ConstrainedTextTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	// phpcs:disable Generic.Files.LineLength.TooLong
-	public function provideConstrainedText() {
+	public function provideConstrainedText(): array {
 		return [
 			[ [
 				'name' => 'WikiLinkText: Simple',
@@ -141,7 +142,7 @@ class ConstrainedTextTest extends \PHPUnit\Framework\TestCase {
 			] ],
 			[ [
 				'name' => 'ExtLinkText',
-				'html' => "<a rel=\"mw:ExtLink\" href=\"https://example.com\" class=\"external autonumber\" data-parsoid='{\"targetOff\":20,\"contentOffsets\":[20,20],\"dsr\":[0,21,20,1]}'></a>",
+				'html' => "<a rel=\"mw:ExtLink\" href=\"https://example.com\" class=\"external autonumber\"></a>",
 				'types' => [
 					ExtLinkText::class,
 				],

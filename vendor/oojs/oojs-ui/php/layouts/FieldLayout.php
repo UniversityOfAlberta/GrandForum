@@ -66,10 +66,21 @@ class FieldLayout extends Layout {
 	 */
 	protected $help;
 
-	protected $field, $header, $body, $messages;
+	/** @var Tag */
+	protected $field;
+	/** @var Tag */
+	protected $header;
+	/** @var Tag */
+	protected $body;
+	/** @var Tag */
+	protected $messages;
+	/** @var string */
+	protected $helpText;
+	/** @var string|false */
+	protected $helpInline;
 
 	/**
-	 * @param Widget $fieldWidget Field widget
+	 * @param Widget $fieldWidget Field widget. An exception is thrown if no widget is specified.
 	 * @param array $config Configuration options
 	 *      - string $config['align'] Alignment mode, either 'left', 'right', 'top' or 'inline'
 	 *          (default: 'left')
@@ -79,7 +90,6 @@ class FieldLayout extends Layout {
 	 *      - string|HtmlSnippet $config['help'] Explanatory text shown as a '?' icon, or inline.
 	 *      - bool $config['helpInline'] Whether or not the help should be inline,
 	 *          or shown when the "help" icon is clicked. (default: false)
-	 * @throws Exception An exception is thrown if no widget is specified
 	 */
 	public function __construct( $fieldWidget, array $config = [] ) {
 		// Allow passing positional parameters inside the config array
@@ -94,7 +104,11 @@ class FieldLayout extends Layout {
 		}
 
 		// Config initialization
-		$config = array_merge( [ 'align' => 'left', 'helpInline' => false ], $config );
+		if ( ( $config['help'] ?? '' ) !== '' && ( $config['label'] ?? '' ) === '' ) {
+			// Add an empty label. For some combinations of 'helpInline' and 'align'
+			// there would be no space in the interface to display the help text otherwise.
+			$config['label'] = ' ';
+		}
 
 		// Parent constructor
 		parent::__construct( $config );
@@ -110,7 +124,7 @@ class FieldLayout extends Layout {
 		$this->header = new Tag( 'span' );
 		$this->body = new Tag( 'div' );
 		$this->helpText = $config['help'] ?? '';
-		$this->helpInline = $config['helpInline'];
+		$this->helpInline = $config['helpInline'] ?? false;
 
 		// Traits
 		$this->initializeLabelElement( array_merge( [
@@ -165,7 +179,7 @@ class FieldLayout extends Layout {
 			$this->messages->appendContent( $this->makeMessage( 'notice', $text ) );
 		}
 
-		$this->setAlignment( $config['align'] );
+		$this->setAlignment( $config['align'] ?? 'left' );
 		// Call this again to take into account the widget's accessKey
 		$this->updateTitle();
 	}
@@ -270,11 +284,13 @@ class FieldLayout extends Layout {
 	 */
 	protected function formatTitleWithAccessKey( $title ) {
 		if ( $this->fieldWidget && method_exists( $this->fieldWidget, 'formatTitleWithAccessKey' ) ) {
+			// @phan-suppress-next-line PhanUndeclaredMethod
 			return $this->fieldWidget->formatTitleWithAccessKey( $title );
 		}
 		return $title;
 	}
 
+	/** @inheritDoc */
 	public function getConfig( &$config ) {
 		$config['fieldWidget'] = $this->fieldWidget;
 		if ( $this->align !== 'left' ) {

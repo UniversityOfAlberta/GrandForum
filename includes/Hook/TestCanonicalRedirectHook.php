@@ -2,11 +2,14 @@
 
 namespace MediaWiki\Hook;
 
-use OutputPage;
-use Title;
-use WebRequest;
+use MediaWiki\Output\OutputPage;
+use MediaWiki\Request\WebRequest;
+use MediaWiki\Title\Title;
 
 /**
+ * This is a hook handler interface, see docs/Hooks.md.
+ * Use the hook name "TestCanonicalRedirect" to register handlers implementing this interface.
+ *
  * @stable to implement
  * @ingroup Hooks
  */

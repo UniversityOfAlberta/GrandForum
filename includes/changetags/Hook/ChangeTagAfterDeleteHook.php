@@ -2,9 +2,12 @@
 
 namespace MediaWiki\ChangeTags\Hook;
 
-use Status;
+use MediaWiki\Status\Status;
 
 /**
+ * This is a hook handler interface, see docs/Hooks.md.
+ * Use the hook name "ChangeTagAfterDelete" to register handlers implementing this interface.
+ *
  * @stable to implement
  * @ingroup Hooks
  */

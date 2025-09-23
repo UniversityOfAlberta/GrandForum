@@ -19,13 +19,48 @@
  * @ingroup RevisionDelete
  */
 
-use MediaWiki\Revision\RevisionRecord;
-use Wikimedia\Rdbms\IDatabase;
+use MediaWiki\CommentStore\CommentStore;
+use MediaWiki\Context\IContextSource;
+use MediaWiki\MediaWikiServices;
+use MediaWiki\Page\PageIdentity;
+use MediaWiki\SpecialPage\SpecialPage;
+use Wikimedia\Rdbms\IResultWrapper;
+use Wikimedia\Rdbms\LBFactory;
+use Wikimedia\Rdbms\SelectQueryBuilder;
 
 /**
  * List for logging table items
  */
 class RevDelLogList extends RevDelList {
+
+	protected const SUPPRESS_BIT = LogPage::DELETED_RESTRICTED;
+
+	/** @var CommentStore */
+	private $commentStore;
+	private LogFormatterFactory $logFormatterFactory;
+
+	/**
+	 * @internal Use RevisionDeleter
+	 * @param IContextSource $context
+	 * @param PageIdentity $page
+	 * @param array $ids
+	 * @param LBFactory $lbFactory
+	 * @param CommentStore $commentStore
+	 * @param LogFormatterFactory $logFormatterFactory
+	 */
+	public function __construct(
+		IContextSource $context,
+		PageIdentity $page,
+		array $ids,
+		LBFactory $lbFactory,
+		CommentStore $commentStore,
+		LogFormatterFactory $logFormatterFactory
+	) {
+		parent::__construct( $context, $page, $ids, $lbFactory );
+		$this->commentStore = $commentStore;
+		$this->logFormatterFactory = $logFormatterFactory;
+	}
+
 	public function getType() {
 		return 'logging';
 	}
@@ -43,12 +78,13 @@ class RevDelLogList extends RevDelList {
 	}
 
 	public static function suggestTarget( $target, array $ids ) {
-		$result = wfGetDB( DB_REPLICA )->select( 'logging',
-			'log_type',
-			[ 'log_id' => $ids ],
-			__METHOD__,
-			[ 'DISTINCT' ]
-		);
+		$dbr = MediaWikiServices::getInstance()->getConnectionProvider()->getReplicaDatabase();
+		$result = $dbr->newSelectQueryBuilder()
+			->select( 'log_type' )
+			->distinct()
+			->from( 'logging' )
+			->where( [ 'log_id' => $ids ] )
+			->caller( __METHOD__ )->fetchResultSet();
 		if ( $result->numRows() == 1 ) {
 			// If there's only one type, the target can be set to include it.
 			return SpecialPage::getTitleFor( 'Log', $result->current()->log_type );
@@ -58,41 +94,48 @@ class RevDelLogList extends RevDelList {
 	}
 
 	/**
-	 * @param IDatabase $db
-	 * @return mixed
+	 * @param \Wikimedia\Rdbms\IReadableDatabase $db
+	 * @return IResultWrapper
 	 */
 	public function doQuery( $db ) {
 		$ids = array_map( 'intval', $this->ids );
-
-		$commentQuery = CommentStore::getStore()->getJoin( 'log_comment' );
-		$actorQuery = ActorMigration::newMigration()->getJoin( 'log_user' );
-
-		return $db->select(
-			[ 'logging' ] + $commentQuery['tables'] + $actorQuery['tables'],
-			[
+		$queryBuilder = $db->newSelectQueryBuilder()
+			->select( [
 				'log_id',
 				'log_type',
 				'log_action',
 				'log_timestamp',
+				'log_actor',
 				'log_namespace',
 				'log_title',
 				'log_page',
 				'log_params',
-				'log_deleted'
-			] + $commentQuery['fields'] + $actorQuery['fields'],
-			[ 'log_id' => $ids ],
-			__METHOD__,
-			[ 'ORDER BY' => 'log_id DESC' ],
-			$commentQuery['joins'] + $actorQuery['joins']
-		);
+				'log_deleted',
+				'log_user' => 'actor_user',
+				'log_user_text' => 'actor_name',
+				'log_comment_text' => 'comment_log_comment.comment_text',
+				'log_comment_data' => 'comment_log_comment.comment_data',
+				'log_comment_cid' => 'comment_log_comment.comment_id'
+			] )
+			->from( 'logging' )
+			->join( 'actor', null, 'actor_id=log_actor' )
+			->join( 'comment', 'comment_log_comment', 'comment_log_comment.comment_id = log_comment_id' )
+			->where( [ 'log_id' => $ids ] )
+			->orderBy( [ 'log_timestamp', 'log_id' ], SelectQueryBuilder::SORT_DESC );
+
+		MediaWikiServices::getInstance()->getChangeTagsStore()->modifyDisplayQueryBuilder( $queryBuilder, 'logging' );
+
+		return $queryBuilder->caller( __METHOD__ )->fetchResultSet();
 	}
 
 	public function newItem( $row ) {
-		return new RevDelLogItem( $this, $row );
-	}
-
-	public function getSuppressBit() {
-		return RevisionRecord::DELETED_RESTRICTED;
+		return new RevDelLogItem(
+			$this,
+			$row,
+			$this->commentStore,
+			MediaWikiServices::getInstance()->getConnectionProvider(),
+			$this->logFormatterFactory
+		);
 	}
 
 	public function getLogAction() {

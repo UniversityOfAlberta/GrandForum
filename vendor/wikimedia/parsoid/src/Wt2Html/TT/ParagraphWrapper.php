@@ -3,6 +3,8 @@ declare( strict_types = 1 );
 
 namespace Wikimedia\Parsoid\Wt2Html\TT;
 
+use Wikimedia\Assert\Assert;
+use Wikimedia\Assert\UnreachableException;
 use Wikimedia\Parsoid\Tokens\CommentTk;
 use Wikimedia\Parsoid\Tokens\EndTagTk;
 use Wikimedia\Parsoid\Tokens\EOFTk;
@@ -12,6 +14,7 @@ use Wikimedia\Parsoid\Tokens\TagTk;
 use Wikimedia\Parsoid\Tokens\Token;
 use Wikimedia\Parsoid\Utils\PHPUtils;
 use Wikimedia\Parsoid\Utils\TokenUtils;
+use Wikimedia\Parsoid\Wikitext\Consts;
 use Wikimedia\Parsoid\Wt2Html\TokenTransformManager;
 
 /**
@@ -20,17 +23,11 @@ use Wikimedia\Parsoid\Wt2Html\TokenTransformManager;
  * behavior as implemented by the PHP parser.
  */
 class ParagraphWrapper extends TokenHandler {
-	/** @var bool */
-	private $inPre;
 
-	/** @var bool */
-	private $hasOpenPTag;
-
-	/** @var bool */
-	private $inBlockElem;
-
-	/** @var bool */
-	private $inBlockquote;
+	private bool $inPre = false;
+	private bool $hasOpenPTag = false;
+	private bool $inBlockElem = false;
+	private bool $inBlockquote = false;
 
 	/**
 	 * The state machine in the PreHandler is line based and only suppresses
@@ -39,34 +36,20 @@ class ParagraphWrapper extends TokenHandler {
 	 * is mimicked here.  Rather than replicate that awareness in both passes,
 	 * we piggyback on it here to undo indent-pres when they're found to be
 	 * undesirable.
-	 *
-	 * @var bool
 	 */
-	private $undoIndentPre;
+	private bool $undoIndentPre = false;
+	private array $tokenBuffer = [];
+	private array $nlWsTokens = [];
+	private int $newLineCount = 0;
 
 	/** @var array */
-	private $tokenBuffer;
-
-	/** @var array */
-	private $nlWsTokens;
-
-	/** @var int */
-	private $newLineCount;
-
-	/** @var array */
-	private $currLine;
-
-	/** @var array */
-	private static $wgBlockElems = null;
-
-	/** @var array */
-	private static $wgAntiBlockElems = null;
-
-	/** @var array */
-	private static $wgAlwaysSuppress = null;
-
-	/** @var array */
-	private static $wgNeverSuppress = null;
+	private $currLineTokens = [];
+	/** @var bool */
+	private $currLineHasWrappableTokens = false;
+	/** @var bool */
+	private $currLineBlockTagSeen = false;
+	/** @var bool */
+	private $currLineBlockTagOpen = false;
 
 	/**
 	 * Constructor for paragraph wrapper.
@@ -75,25 +58,6 @@ class ParagraphWrapper extends TokenHandler {
 	 */
 	public function __construct( TokenTransformManager $manager, array $options ) {
 		parent::__construct( $manager, $options );
-		$this->inPre = false;
-		$this->undoIndentPre = false;
-		$this->hasOpenPTag = false;
-		$this->inBlockElem = false;
-		$this->inBlockquote = false;
-		$this->tokenBuffer = [];
-		$this->nlWsTokens = [];
-		$this->newLineCount = 0;
-		$this->currLine = null;
-
-		// These are defined in the php parser's `BlockLevelPass`
-		if ( self::$wgBlockElems === null ) {
-			self::$wgBlockElems = PHPUtils::makeSet( [ 'table', 'h1', 'h2', 'h3', 'h4',
-			'h5', 'h6', 'pre', 'p', 'ul', 'ol', 'dl' ] );
-			self::$wgAntiBlockElems = PHPUtils::makeSet( [ 'td', 'th' ] );
-			self::$wgAlwaysSuppress = PHPUtils::makeSet( [ 'tr', 'caption', 'dt', 'dd', 'li' ] );
-			self::$wgNeverSuppress = PHPUtils::makeSet( [ 'center', 'blockquote', 'div', 'hr', 'figure' ] );
-		}
-
 		// Disable p-wrapper
 		$this->disabled = !empty( $this->options['inlineContext'] );
 		$this->reset();
@@ -102,15 +66,15 @@ class ParagraphWrapper extends TokenHandler {
 	/**
 	 * @inheritDoc
 	 */
-	public function onNewline( NlTk $token ) {
-		return $this->inPre ? $token : $this->onNewLineOrEOF( $token );
+	public function onNewline( NlTk $token ): ?TokenHandlerResult {
+		return $this->inPre ? null : $this->onNewlineOrEOF( $token );
 	}
 
 	/**
 	 * @inheritDoc
 	 */
-	public function onEnd( EOFTk $token ) {
-		return $this->onNewLineOrEOF( $token );
+	public function onEnd( EOFTk $token ): ?TokenHandlerResult {
+		return $this->onNewlineOrEOF( $token );
 	}
 
 	/**
@@ -154,17 +118,13 @@ class ParagraphWrapper extends TokenHandler {
 	 *
 	 */
 	private function resetCurrLine(): void {
-		if ( $this->currLine && ( $this->currLine['openMatch'] || $this->currLine['closeMatch'] ) ) {
-			$this->inBlockElem = !$this->currLine['closeMatch'];
+		if ( $this->currLineBlockTagSeen ) {
+			$this->inBlockElem = $this->currLineBlockTagOpen;
 		}
-		$this->currLine = [
-			'tokens' => [],
-			'hasWrappableTokens' => false,
-			// These flags, along with `inBlockElem` are concepts from the
-			// php parser's `BlockLevelPass`.
-			'openMatch' => false,
-			'closeMatch' => false
-		];
+		$this->currLineTokens = [];
+		$this->currLineHasWrappableTokens = false;
+		$this->currLineBlockTagSeen = false;
+		$this->currLineBlockTagOpen = false;
 	}
 
 	/**
@@ -176,12 +136,12 @@ class ParagraphWrapper extends TokenHandler {
 	 */
 	private function processBuffers( $token, bool $flushCurrentLine ): array {
 		$res = $this->processPendingNLs();
-		$this->currLine['tokens'][] = $token;
+		$this->currLineTokens[] = $token;
 		if ( $flushCurrentLine ) {
-			$res = array_merge( $res, $this->currLine['tokens'] );
+			PHPUtils::pushArray( $res, $this->currLineTokens );
 			$this->resetCurrLine();
 		}
-		$this->env->log( 'trace/p-wrap', $this->manager->pipelineId, '---->  ', function () use( $res ) {
+		$this->env->log( 'trace/p-wrap', $this->pipelineId, '---->  ', static function () use( $res ) {
 			return PHPUtils::jsonEncode( $res );
 		} );
 		return $res;
@@ -190,44 +150,46 @@ class ParagraphWrapper extends TokenHandler {
 	/**
 	 * Process and flush existing buffer contents
 	 *
+	 * @param Token|string $token token
 	 * @return array
 	 */
-	private function flushBuffers(): array {
-		// Assertion to catch bugs in p-wrapping; both cannot be true.
-		if ( $this->newLineCount > 0 ) {
-			$this->manager->env->log( 'error/p-wrap', 'Failed assertion in flushBuffers: newline-count:',
-			$this->newLineCount, '; buffered tokens: ', PHPUtils::jsonEncode( $this->nlWsTokens ) );
-		}
-		$resToks = array_merge( $this->tokenBuffer, $this->nlWsTokens );
+	private function flushBuffers( $token ): array {
+		Assert::invariant( $this->newLineCount === 0, "PWrap: Trying to flush buffers with pending newlines" );
+
+		$this->currLineTokens[] = $token;
+		// Juggle the array reference count to allow us to append to it without
+		// copying the array
+		$resToks = $this->tokenBuffer;
+		$nlWsTokens = $this->nlWsTokens;
 		$this->resetBuffers();
-		$this->env->log( 'trace/p-wrap', $this->manager->pipelineId, '---->  ',
-			function () use( $resToks ) {
+		PHPUtils::pushArray( $resToks, $nlWsTokens );
+		$this->env->log( 'trace/p-wrap', $this->pipelineId, '---->  ',
+			static function () use( $resToks ) {
 				return PHPUtils::jsonEncode( $resToks );
 			} );
 		return $resToks;
 	}
 
 	/**
-	 * Discard a newline token from buffer
+	 * Append tokens from the newline/whitespace buffer to the output array
+	 * until a newline is encountered. Increment the offset reference. Return
+	 * the newline token.
 	 *
-	 * @param array &$out array to process and update
-	 * @return Token|string
+	 * @param array &$out array to append to
+	 * @param int &$offset The offset reference to update
+	 * @return Token
 	 */
-	public function discardOneNlTk( array &$out ) {
-		$i = 0;
+	public function processOneNlTk( array &$out, &$offset ) {
 		$n = count( $this->nlWsTokens );
-		while ( $i < $n ) {
-			$t = array_shift( $this->nlWsTokens );
+		while ( $offset < $n ) {
+			$t = $this->nlWsTokens[$offset++];
 			if ( $t instanceof NlTk ) {
 				return $t;
 			} else {
 				$out[] = $t;
 			}
-			$i++;
 		}
-
-		// FIXME: We should return null and fix callers
-		return "";
+		throw new UnreachableException( 'nlWsTokens was expected to contain an NlTk.' );
 	}
 
 	/**
@@ -253,11 +215,13 @@ class ParagraphWrapper extends TokenHandler {
 						// Let us leave them all out of the p-wrapping.
 						$tplStartIndex = -1;
 						continue;
+					} elseif ( TokenUtils::isAnnotationStartToken( $t ) ) {
+						break;
 					}
 				}
 				// Not a transclusion meta; Check for nl/sol-transparent tokens
 				// and leave them out of the p-wrapping.
-				if ( !TokenUtils::isSolTransparent( $this->env, $t ) && !$t instanceof NlTk ) {
+				if ( !TokenUtils::isSolTransparent( $this->env, $t ) && !( $t instanceof NlTk ) ) {
 					break;
 				}
 			}
@@ -292,11 +256,13 @@ class ParagraphWrapper extends TokenHandler {
 						// Let us leave them all out of the p-wrapping.
 						$tplEndIndex = $i;
 						continue;
+					} elseif ( TokenUtils::isAnnotationEndToken( $t ) ) {
+						break;
 					}
 				}
 				// Not a transclusion meta; Check for nl/sol-transparent tokens
 				// and leave them out of the p-wrapping.
-				if ( !TokenUtils::isSolTransparent( $this->env, $t ) && !$t instanceof NlTk ) {
+				if ( !TokenUtils::isSolTransparent( $this->env, $t ) && !( $t instanceof NlTk ) ) {
 					break;
 				}
 			}
@@ -312,45 +278,41 @@ class ParagraphWrapper extends TokenHandler {
 	 * Handle newline tokens
 	 *
 	 * @param Token $token token
-	 * @return array
+	 * @return TokenHandlerResult
 	 */
-	private function onNewLineOrEOF( Token $token ): array {
-		$this->manager->env->log( 'trace/p-wrap', $this->manager->pipelineId, 'NL    |',
-			function () use( $token ) {
+	private function onNewlineOrEOF( Token $token ): TokenHandlerResult {
+		$this->env->log( 'trace/p-wrap', $this->pipelineId, 'NL    |',
+			static function () use( $token ) {
 				return PHPUtils::jsonEncode( $token );
 			} );
-		$l = $this->currLine;
-		if ( $this->currLine['openMatch'] || $this->currLine['closeMatch'] ) {
-			$this->closeOpenPTag( $l['tokens'] );
-		} elseif ( !$this->inBlockElem && !$this->hasOpenPTag && $l['hasWrappableTokens'] ) {
-			$this->openPTag( $l['tokens'] );
+		if ( $this->currLineBlockTagSeen ) {
+			$this->closeOpenPTag( $this->currLineTokens );
+		} elseif ( !$this->inBlockElem && !$this->hasOpenPTag && $this->currLineHasWrappableTokens ) {
+			$this->openPTag( $this->currLineTokens );
 		}
 
 		// Assertion to catch bugs in p-wrapping; both cannot be true.
-		if ( $this->newLineCount > 0 && count( $l['tokens'] ) > 0 ) {
-			$this->env->log( 'error/p-wrap', 'Failed assertion in onNewLineOrEOF: newline-count:',
-			$this->newLineCount, '; current line tokens: ', PHPUtils::jsonEncode( $l['tokens'] ) );
+		if ( $this->newLineCount > 0 && count( $this->currLineTokens ) > 0 ) {
+			$this->env->log( 'error/p-wrap', 'Failed assertion in onNewlineOrEOF: newline-count:',
+			$this->newLineCount, '; current line tokens: ', PHPUtils::jsonEncode( $this->currLineTokens ) );
 		}
 
-		$this->tokenBuffer = array_merge( $this->tokenBuffer, $l['tokens'] );
+		PHPUtils::pushArray( $this->tokenBuffer, $this->currLineTokens );
 
 		if ( $token instanceof EOFTk ) {
 			$this->nlWsTokens[] = $token;
 			$this->closeOpenPTag( $this->tokenBuffer );
 			$res = $this->processPendingNLs();
 			$this->reset();
-			$this->env->log( 'trace/p-wrap', $this->manager->pipelineId, '---->  ', function () use( $res ) {
+			$this->env->log( 'trace/p-wrap', $this->pipelineId, '---->  ', static function () use( $res ) {
 				return PHPUtils::jsonEncode( $res );
 			} );
-			return [ 'tokens' => $res, 'skipOnAny' => true ];
+			return new TokenHandlerResult( $res, true );
 		} else {
 			$this->resetCurrLine();
 			$this->newLineCount++;
 			$this->nlWsTokens[] = $token;
-			if ( $this->undoIndentPre ) {
-				$this->currLine['tokens'][] = ' ';
-			}
-			return [ 'tokens' => [] ];
+			return new TokenHandlerResult( [] );
 		}
 	}
 
@@ -363,21 +325,22 @@ class ParagraphWrapper extends TokenHandler {
 		$resToks = $this->tokenBuffer;
 		$newLineCount = $this->newLineCount;
 		$nlTk = null;
+		$nlOffset = 0;
 
-		$this->manager->env->log( 'trace/p-wrap', $this->manager->pipelineId, '        NL-count: ',
+		$this->env->log( 'trace/p-wrap', $this->pipelineId, '        NL-count: ',
 			$newLineCount );
 
 		if ( $newLineCount >= 2 && !$this->inBlockElem ) {
 			$this->closeOpenPTag( $resToks );
 
 			// First is emitted as a literal newline
-			$resToks[] = $this->discardOneNlTk( $resToks );
+			$resToks[] = $this->processOneNlTk( $resToks, $nlOffset );
 			$newLineCount -= 1;
 
 			$remainder = $newLineCount % 2;
 
 			while ( $newLineCount > 0 ) {
-				$nlTk = $this->discardOneNlTk( $resToks );
+				$nlTk = $this->processOneNlTk( $resToks, $nlOffset );
 				if ( $newLineCount % 2 === $remainder ) {
 					if ( $this->hasOpenPTag ) {
 						$resToks[] = new EndTagTk( 'p' );
@@ -395,16 +358,17 @@ class ParagraphWrapper extends TokenHandler {
 			}
 		}
 
-		if ( $this->currLine['openMatch'] || $this->currLine['closeMatch'] ) {
+		if ( $this->currLineBlockTagSeen ) {
 			$this->closeOpenPTag( $resToks );
 			if ( $newLineCount === 1 ) {
-				$resToks[] = $this->discardOneNlTk( $resToks );
+				$resToks[] = $this->processOneNlTk( $resToks, $nlOffset );
 			}
 		}
 
 		// Gather remaining ws and nl tokens
-
-		$resToks = array_merge( $resToks, $this->nlWsTokens );
+		for ( $i = $nlOffset; $i < count( $this->nlWsTokens ); $i++ ) {
+			$resToks[] = $this->nlWsTokens[$i];
+		}
 
 		// reset buffers
 		$this->resetBuffers();
@@ -415,9 +379,9 @@ class ParagraphWrapper extends TokenHandler {
 	/**
 	 * @inheritDoc
 	 */
-	public function onAny( $token ): array {
-		$this->manager->env->log( 'trace/p-wrap', $this->manager->pipelineId, 'ANY   |',
-			function () use( $token ) {
+	public function onAny( $token ): ?TokenHandlerResult {
+		$this->env->log( 'trace/p-wrap', $this->pipelineId, 'ANY   |',
+			static function () use( $token ) {
 				return PHPUtils::jsonEncode( $token );
 			} );
 		$res = null;
@@ -426,19 +390,23 @@ class ParagraphWrapper extends TokenHandler {
 		) {
 			if ( $this->inBlockElem || $this->inBlockquote ) {
 				$this->undoIndentPre = true;
-				$this->currLine['tokens'][] = ' ';
-				return [ 'tokens' => [] ];
+				if ( $this->newLineCount === 0 ) {
+					return new TokenHandlerResult( $this->flushBuffers( '' ) );
+				} else {
+					return new TokenHandlerResult( [] );
+				}
 			} else {
 				$this->inPre = true;
 				// This will put us `inBlockElem`, so we need the extra `!inPre`
 				// condition below.  Presumably, we couldn't have entered
 				// `inBlockElem` while being `inPre`.  Alternatively, we could say
-				// that indent-pre is "never suppressing" and set the `closeMatch`
-				// flag.  The point of all this is that we want to close any open
-				// p-tags.
-				$this->currLine['openMatch'] = true;
+				// that indent-pre is "never suppressing" and set the `blockTagOpen`
+				// flag to false. The point of all this is that we want to close
+				// any open p-tags.
+				$this->currLineBlockTagSeen = true;
+				$this->currLineBlockTagOpen = true;
 				// skip ensures this doesn't hit the AnyHandler
-				return [ 'tokens' => $this->processBuffers( $token, true ), 'skipOnAny' => true ];
+				return new TokenHandlerResult( $this->processBuffers( $token, true ) );
 			}
 		} elseif ( $token instanceof EndTagTk && $token->getName() === 'pre' &&
 			!TokenUtils::isHTMLTag( $token )
@@ -446,88 +414,89 @@ class ParagraphWrapper extends TokenHandler {
 			if ( ( $this->inBlockElem && !$this->inPre ) || $this->inBlockquote ) {
 				$this->undoIndentPre = false;
 				// No pre-tokens inside block tags -- swallow it.
-				return [ 'tokens' => [] ];
+				return new TokenHandlerResult( [] );
 			} else {
-				if ( $this->inPre ) {
-					$this->inPre = false;
-				}
-				$this->currLine['closeMatch'] = true;
-				$this->env->log( 'trace/p-wrap', $this->manager->pipelineId, '---->  ',
-					function () use( $token ) {
+				$this->inPre = false;
+				$this->currLineBlockTagSeen = true;
+				$this->currLineBlockTagOpen = false;
+				$this->env->log( 'trace/p-wrap', $this->pipelineId, '---->  ',
+					static function () use( $token ) {
 						return PHPUtils::jsonEncode( $token );
 					} );
 				$res = [ $token ];
-				// skip ensures this doesn't hit the AnyHandler
-				return [ 'tokens' => $res, 'skipOnAny' => true ];
+				return new TokenHandlerResult( $res );
 			}
 		} elseif ( $token instanceof EOFTk || $this->inPre ) {
-			$this->env->log( 'trace/p-wrap', $this->manager->pipelineId, '---->  ',
-				function () use( $token ) {
+			$this->env->log( 'trace/p-wrap', $this->pipelineId, '---->  ',
+				static function () use( $token ) {
 					return PHPUtils::jsonEncode( $token );
 				}
 			 );
 			$res = [ $token ];
-			// skip ensures this doesn't hit the AnyHandler
-			return [ 'tokens' => $res, 'skipOnAny' => true ];
-		} elseif ( $token instanceof CommentTk
-			|| is_string( $token ) && preg_match( '/^[\t ]*$/D', $token )
+			return new TokenHandlerResult( $res );
+		} elseif (
+			$token instanceof CommentTk
+			|| ( is_string( $token ) && preg_match( '/^[\t ]*$/D', $token ) )
 			|| TokenUtils::isEmptyLineMetaToken( $token )
 		) {
 			if ( $this->newLineCount === 0 ) {
-				$this->currLine['tokens'][] = $token;
 				// Since we have no pending newlines to trip us up,
 				// no need to buffer -- just flush everything
-				return [ 'tokens' => $this->flushBuffers(), 'skipOnAny' => true ];
+				return new TokenHandlerResult( $this->flushBuffers( $token ) );
 			} else {
 				// We are in buffering mode waiting till we are ready to
 				// process pending newlines.
 				$this->nlWsTokens[] = $token;
-				return [ 'tokens' => [] ];
+				return new TokenHandlerResult( [] );
 			}
-		} elseif ( !is_string( $token ) &&
+		} elseif (
 			// T186965: <style> behaves similarly to sol transparent tokens in
 			// that it doesn't open/close paragraphs, but also doesn't induce
 			// a new paragraph by itself.
-			( TokenUtils::isSolTransparent( $this->env, $token ) || $token->getName() === 'style' )
+			TokenUtils::isSolTransparent( $this->env, $token ) ||
+			( !is_string( $token ) && $token->getName() === 'style' )
 		) {
-			if ( $this->newLineCount === 0 ) {
-				$this->currLine['tokens'][] = $token;
+			if ( $this->undoIndentPre && PreHandler::isIndentPreWS( $token ) ) {
+				$this->nlWsTokens[] = ' ';
+				return new TokenHandlerResult( [] );
+			} elseif ( $this->newLineCount === 0 ) {
 				// Since we have no pending newlines to trip us up,
 				// no need to buffer -- just flush everything
-				return [ 'tokens' => $this->flushBuffers(), 'skipOnAny' => true ];
+				return new TokenHandlerResult( $this->flushBuffers( $token ) );
 			} elseif ( $this->newLineCount === 1 ) {
 				// Swallow newline, whitespace, comments, and the current line
-				$this->tokenBuffer = array_merge( $this->tokenBuffer, $this->nlWsTokens );
-				$this->tokenBuffer = array_merge( $this->tokenBuffer, $this->currLine['tokens'] );
+				PHPUtils::pushArray( $this->tokenBuffer, $this->nlWsTokens );
+				PHPUtils::pushArray( $this->tokenBuffer, $this->currLineTokens );
 				$this->newLineCount = 0;
 				$this->nlWsTokens = [];
 				$this->resetCurrLine();
 
 				// But, don't process the new token yet.
-				$this->currLine['tokens'][] = $token;
-				return [ 'tokens' => [] ];
+				$this->currLineTokens[] = $token;
+				return new TokenHandlerResult( [] );
 			} else {
-				return [ 'tokens' => $this->processBuffers( $token, false ), 'skipOnAny' => true ];
+				return new TokenHandlerResult( $this->processBuffers( $token, false ) );
 			}
 		} else {
 			if ( !is_string( $token ) ) {
 				$name = $token->getName();
-				if ( ( isset( self::$wgBlockElems[$name] ) && !$token instanceof EndTagTk ) ||
-					( isset( self::$wgAntiBlockElems[$name] ) && $token instanceof EndTagTk ) ||
-					isset( self::$wgAlwaysSuppress[$name] ) ) {
-					$this->currLine['openMatch'] = true;
-				}
-				if ( ( isset( self::$wgBlockElems[$name] ) && $token instanceof EndTagTk ) ||
-					( isset( self::$wgAntiBlockElems[$name] ) && !$token instanceof EndTagTk ) ||
-					isset( self::$wgNeverSuppress[$name] ) ) {
-					$this->currLine['closeMatch'] = true;
+				if ( isset( Consts::$wikitextBlockElems[$name] ) ) {
+					$this->currLineBlockTagSeen = true;
+					$this->currLineBlockTagOpen = true;
+					if (
+						( isset( Consts::$blockElems[$name] ) && $token instanceof EndTagTk ) ||
+						( isset( Consts::$antiBlockElems[$name] ) && !$token instanceof EndTagTk ) ||
+						isset( Consts::$neverBlockElems[$name] )
+					) {
+						$this->currLineBlockTagOpen = false;
+					}
 				}
 				if ( $name === 'blockquote' ) {
-					$this->inBlockquote = ( !$token instanceof EndTagTk );
+					$this->inBlockquote = !( $token instanceof EndTagTk );
 				}
 			}
-			$this->currLine['hasWrappableTokens'] = true;
-			return [ 'tokens' => $this->processBuffers( $token, false ), 'skipOnAny' => true ];
+			$this->currLineHasWrappableTokens = true;
+			return new TokenHandlerResult( $this->processBuffers( $token, false ) );
 		}
 	}
 }

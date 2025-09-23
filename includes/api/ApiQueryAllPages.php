@@ -19,7 +19,18 @@
  *
  * @file
  */
-use MediaWiki\MediaWikiServices;
+
+namespace MediaWiki\Api;
+
+use MediaWiki\Cache\GenderCache;
+use MediaWiki\MainConfigNames;
+use MediaWiki\Permissions\RestrictionStore;
+use MediaWiki\Title\NamespaceInfo;
+use MediaWiki\Title\Title;
+use Wikimedia\ParamValidator\ParamValidator;
+use Wikimedia\ParamValidator\TypeDef\IntegerDef;
+use Wikimedia\Rdbms\IExpression;
+use Wikimedia\Rdbms\LikeValue;
 
 /**
  * Query module to enumerate all available pages.
@@ -28,8 +39,21 @@ use MediaWiki\MediaWikiServices;
  */
 class ApiQueryAllPages extends ApiQueryGeneratorBase {
 
-	public function __construct( ApiQuery $query, $moduleName ) {
+	private NamespaceInfo $namespaceInfo;
+	private GenderCache $genderCache;
+	private RestrictionStore $restrictionStore;
+
+	public function __construct(
+		ApiQuery $query,
+		string $moduleName,
+		NamespaceInfo $namespaceInfo,
+		GenderCache $genderCache,
+		RestrictionStore $restrictionStore
+	) {
 		parent::__construct( $query, $moduleName, 'ap' );
+		$this->namespaceInfo = $namespaceInfo;
+		$this->genderCache = $genderCache;
+		$this->restrictionStore = $restrictionStore;
 	}
 
 	public function execute() {
@@ -65,14 +89,12 @@ class ApiQueryAllPages extends ApiQueryGeneratorBase {
 		$this->addTables( 'page' );
 
 		if ( $params['continue'] !== null ) {
-			$cont = explode( '|', $params['continue'] );
-			$this->dieContinueUsageIf( count( $cont ) != 1 );
-			$op = $params['dir'] == 'descending' ? '<' : '>';
-			$cont_from = $db->addQuotes( $cont[0] );
-			$this->addWhere( "page_title $op= $cont_from" );
+			$cont = $this->parseContinueParamOrDie( $params['continue'], [ 'string' ] );
+			$op = $params['dir'] == 'descending' ? '<=' : '>=';
+			$this->addWhere( $db->expr( 'page_title', $op, $cont[0] ) );
 		}
 
-		$miserMode = $this->getConfig()->get( 'MiserMode' );
+		$miserMode = $this->getConfig()->get( MainConfigNames::MiserMode );
 		if ( !$miserMode ) {
 			if ( $params['filterredir'] == 'redirects' ) {
 				$this->addWhereFld( 'page_is_redirect', 1 );
@@ -92,9 +114,13 @@ class ApiQueryAllPages extends ApiQueryGeneratorBase {
 		$this->addWhereRange( 'page_title', $dir, $from, $to );
 
 		if ( isset( $params['prefix'] ) ) {
-			$this->addWhere( 'page_title' . $db->buildLike(
-				$this->titlePartToKey( $params['prefix'], $params['namespace'] ),
-				$db->anyString() ) );
+			$this->addWhere(
+				$db->expr(
+					'page_title',
+					IExpression::LIKE,
+					new LikeValue( $this->titlePartToKey( $params['prefix'], $params['namespace'] ), $db->anyString() )
+				)
+			);
 		}
 
 		if ( $resultPageSet === null ) {
@@ -135,7 +161,9 @@ class ApiQueryAllPages extends ApiQueryGeneratorBase {
 		if ( $params['prtype'] || $params['prexpiry'] != 'all' ) {
 			$this->addTables( 'page_restrictions' );
 			$this->addWhere( 'page_id=pr_page' );
-			$this->addWhere( "pr_expiry > {$db->addQuotes( $db->timestamp() )} OR pr_expiry IS NULL" );
+			$this->addWhere(
+				$db->expr( 'pr_expiry', '>', $db->timestamp() )->or( 'pr_expiry', '=', null )
+			);
 
 			if ( $params['prtype'] ) {
 				$this->addWhereFld( 'pr_type', $params['prtype'] );
@@ -157,9 +185,9 @@ class ApiQueryAllPages extends ApiQueryGeneratorBase {
 			$forceNameTitleIndex = false;
 
 			if ( $params['prexpiry'] == 'indefinite' ) {
-				$this->addWhere( "pr_expiry = {$db->addQuotes( $db->getInfinity() )} OR pr_expiry IS NULL" );
+				$this->addWhereFld( 'pr_expiry', [ $db->getInfinity(), null ] );
 			} elseif ( $params['prexpiry'] == 'definite' ) {
-				$this->addWhere( "pr_expiry != {$db->addQuotes( $db->getInfinity() )}" );
+				$this->addWhere( $db->expr( 'pr_expiry', '!=', $db->getInfinity() ) );
 			}
 
 			$this->addOption( 'DISTINCT' );
@@ -172,7 +200,7 @@ class ApiQueryAllPages extends ApiQueryGeneratorBase {
 		if ( $params['filterlanglinks'] == 'withoutlanglinks' ) {
 			$this->addTables( 'langlinks' );
 			$this->addJoinConds( [ 'langlinks' => [ 'LEFT JOIN', 'page_id=ll_from' ] ] );
-			$this->addWhere( 'll_from IS NULL' );
+			$this->addWhere( [ 'll_from' => null ] );
 			$forceNameTitleIndex = false;
 		} elseif ( $params['filterlanglinks'] == 'withlanglinks' ) {
 			$this->addTables( 'langlinks' );
@@ -183,7 +211,7 @@ class ApiQueryAllPages extends ApiQueryGeneratorBase {
 			// in the 1992 SQL standard (it doesn't like having the
 			// constant-in-WHERE page_namespace column in there). Using the
 			// 1999 rules works fine, but that breaks other DBs. Sigh.
-			/// @todo Once we drop support for 1992-rule DBs, we can simplify this.
+			// @todo Once we drop support for 1992-rule DBs, we can simplify this.
 			$dbType = $db->getType();
 			if ( $dbType === 'mysql' || $dbType === 'sqlite' ) {
 				// Ignore the rules, or 1999 rules if you count unique keys
@@ -203,7 +231,7 @@ class ApiQueryAllPages extends ApiQueryGeneratorBase {
 		}
 
 		if ( $forceNameTitleIndex ) {
-			$this->addOption( 'USE INDEX', 'name_title' );
+			$this->addOption( 'USE INDEX', 'page_name_title' );
 		}
 
 		$limit = $params['limit'];
@@ -211,13 +239,12 @@ class ApiQueryAllPages extends ApiQueryGeneratorBase {
 		$res = $this->select( __METHOD__ );
 
 		// Get gender information
-		$services = MediaWikiServices::getInstance();
-		if ( $services->getNamespaceInfo()->hasGenderDistinction( $params['namespace'] ) ) {
+		if ( $this->namespaceInfo->hasGenderDistinction( $params['namespace'] ) ) {
 			$users = [];
 			foreach ( $res as $row ) {
 				$users[] = $row->page_title;
 			}
-			$services->getGenderCache()->doQuery( $users, __METHOD__ );
+			$this->genderCache->doQuery( $users, __METHOD__ );
 			$res->rewind(); // reset
 		}
 
@@ -240,7 +267,7 @@ class ApiQueryAllPages extends ApiQueryGeneratorBase {
 				$title = Title::makeTitle( $row->page_namespace, $row->page_title );
 				$vals = [
 					'pageid' => (int)$row->page_id,
-					'ns' => (int)$title->getNamespace(),
+					'ns' => $title->getNamespace(),
 					'title' => $title->getPrefixedText()
 				];
 				$fit = $result->addValue( [ 'query', $this->getModuleName() ], null, $vals );
@@ -267,72 +294,74 @@ class ApiQueryAllPages extends ApiQueryGeneratorBase {
 			'to' => null,
 			'prefix' => null,
 			'namespace' => [
-				ApiBase::PARAM_DFLT => NS_MAIN,
-				ApiBase::PARAM_TYPE => 'namespace',
+				ParamValidator::PARAM_DEFAULT => NS_MAIN,
+				ParamValidator::PARAM_TYPE => 'namespace',
 			],
 			'filterredir' => [
-				ApiBase::PARAM_DFLT => 'all',
-				ApiBase::PARAM_TYPE => [
+				ParamValidator::PARAM_DEFAULT => 'all',
+				ParamValidator::PARAM_TYPE => [
 					'all',
 					'redirects',
 					'nonredirects'
 				]
 			],
+			'filterlanglinks' => [
+				ParamValidator::PARAM_TYPE => [
+					'withlanglinks',
+					'withoutlanglinks',
+					'all'
+				],
+				ParamValidator::PARAM_DEFAULT => 'all'
+			],
 			'minsize' => [
-				ApiBase::PARAM_TYPE => 'integer',
+				ParamValidator::PARAM_TYPE => 'integer',
 			],
 			'maxsize' => [
-				ApiBase::PARAM_TYPE => 'integer',
+				ParamValidator::PARAM_TYPE => 'integer',
 			],
 			'prtype' => [
-				ApiBase::PARAM_TYPE => Title::getFilteredRestrictionTypes( true ),
-				ApiBase::PARAM_ISMULTI => true
+				ParamValidator::PARAM_TYPE => $this->restrictionStore->listAllRestrictionTypes( true ),
+				ParamValidator::PARAM_ISMULTI => true
 			],
 			'prlevel' => [
-				ApiBase::PARAM_TYPE => $this->getConfig()->get( 'RestrictionLevels' ),
-				ApiBase::PARAM_ISMULTI => true
+				ParamValidator::PARAM_TYPE =>
+					$this->getConfig()->get( MainConfigNames::RestrictionLevels ),
+				ParamValidator::PARAM_ISMULTI => true
 			],
 			'prfiltercascade' => [
-				ApiBase::PARAM_DFLT => 'all',
-				ApiBase::PARAM_TYPE => [
+				ParamValidator::PARAM_DEFAULT => 'all',
+				ParamValidator::PARAM_TYPE => [
 					'cascading',
 					'noncascading',
 					'all'
 				],
 			],
-			'limit' => [
-				ApiBase::PARAM_DFLT => 10,
-				ApiBase::PARAM_TYPE => 'limit',
-				ApiBase::PARAM_MIN => 1,
-				ApiBase::PARAM_MAX => ApiBase::LIMIT_BIG1,
-				ApiBase::PARAM_MAX2 => ApiBase::LIMIT_BIG2
-			],
-			'dir' => [
-				ApiBase::PARAM_DFLT => 'ascending',
-				ApiBase::PARAM_TYPE => [
-					'ascending',
-					'descending'
-				]
-			],
-			'filterlanglinks' => [
-				ApiBase::PARAM_TYPE => [
-					'withlanglinks',
-					'withoutlanglinks',
-					'all'
-				],
-				ApiBase::PARAM_DFLT => 'all'
-			],
 			'prexpiry' => [
-				ApiBase::PARAM_TYPE => [
+				ParamValidator::PARAM_TYPE => [
 					'indefinite',
 					'definite',
 					'all'
 				],
-				ApiBase::PARAM_DFLT => 'all'
+				ParamValidator::PARAM_DEFAULT => 'all',
+				ApiBase::PARAM_HELP_MSG_PER_VALUE => [],
+			],
+			'limit' => [
+				ParamValidator::PARAM_DEFAULT => 10,
+				ParamValidator::PARAM_TYPE => 'limit',
+				IntegerDef::PARAM_MIN => 1,
+				IntegerDef::PARAM_MAX => ApiBase::LIMIT_BIG1,
+				IntegerDef::PARAM_MAX2 => ApiBase::LIMIT_BIG2
+			],
+			'dir' => [
+				ParamValidator::PARAM_DEFAULT => 'ascending',
+				ParamValidator::PARAM_TYPE => [
+					'ascending',
+					'descending'
+				]
 			],
 		];
 
-		if ( $this->getConfig()->get( 'MiserMode' ) ) {
+		if ( $this->getConfig()->get( MainConfigNames::MiserMode ) ) {
 			$ret['filterredir'][ApiBase::PARAM_HELP_MSG_APPEND] = [ 'api-help-param-limited-in-miser-mode' ];
 		}
 
@@ -355,3 +384,6 @@ class ApiQueryAllPages extends ApiQueryGeneratorBase {
 		return 'https://www.mediawiki.org/wiki/Special:MyLanguage/API:Allpages';
 	}
 }
+
+/** @deprecated class alias since 1.43 */
+class_alias( ApiQueryAllPages::class, 'ApiQueryAllPages' );

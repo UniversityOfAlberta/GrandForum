@@ -2,7 +2,7 @@
 /**
  * Dump output filter to include or exclude pages in a given set of namespaces.
  *
- * Copyright © 2003, 2005, 2006 Brion Vibber <brion@pobox.com>
+ * Copyright © 2003, 2005, 2006 Brooke Vibber <bvibber@wikimedia.org>
  * https://www.mediawiki.org/
  *
  * This program is free software; you can redistribute it and/or modify
@@ -36,7 +36,6 @@ class DumpNamespaceFilter extends DumpFilter {
 	/**
 	 * @param DumpOutput &$sink
 	 * @param string $param
-	 * @throws MWException
 	 */
 	public function __construct( &$sink, $param ) {
 		parent::__construct( $sink );
@@ -50,8 +49,6 @@ class DumpNamespaceFilter extends DumpFilter {
 			"NS_PROJECT_TALK"   => NS_PROJECT_TALK,
 			"NS_FILE"           => NS_FILE,
 			"NS_FILE_TALK"      => NS_FILE_TALK,
-			"NS_IMAGE"          => NS_FILE, // NS_IMAGE is an alias for NS_FILE
-			"NS_IMAGE_TALK"     => NS_FILE_TALK,
 			"NS_MEDIAWIKI"      => NS_MEDIAWIKI,
 			"NS_MEDIAWIKI_TALK" => NS_MEDIAWIKI_TALK,
 			"NS_TEMPLATE"       => NS_TEMPLATE,
@@ -75,13 +72,13 @@ class DumpNamespaceFilter extends DumpFilter {
 				$ns = intval( $key );
 				$this->namespaces[$ns] = true;
 			} else {
-				throw new MWException( "Unrecognized namespace key '$key'\n" );
+				throw new InvalidArgumentException( "Unrecognized namespace key '$key'\n" );
 			}
 		}
 	}
 
 	/**
-	 * @param object $page
+	 * @param stdClass $page
 	 * @return bool
 	 */
 	protected function pass( $page ) {

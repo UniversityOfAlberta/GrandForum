@@ -1,8 +1,10 @@
 <?php
+declare( strict_types = 1 );
 
 namespace Wikimedia\Parsoid\Language;
 
-use DOMElement;
+use Wikimedia\Bcp47Code\Bcp47Code;
+use Wikimedia\Parsoid\DOM\Element;
 
 /**
  * A simple {@link LanguageGuesser} that returns the same "source language" for every node.
@@ -10,19 +12,18 @@ use DOMElement;
  */
 class ConstantLanguageGuesser extends LanguageGuesser {
 
-	/** @var string */
+	/** @var Bcp47Code */
 	private $langCode;
 
 	/**
-	 * ConstantLanguageGuesser constructor.
-	 * @param string $langCode
+	 * @param Bcp47Code $langCode a language code
 	 */
-	public function __construct( string $langCode ) {
+	public function __construct( Bcp47Code $langCode ) {
 		$this->langCode = $langCode;
 	}
 
 	/** @inheritDoc */
-	public function guessLang( DOMElement $node ): string {
+	public function guessLang( Element $node ): Bcp47Code {
 		return $this->langCode;
 	}
 

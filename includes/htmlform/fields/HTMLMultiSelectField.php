@@ -1,11 +1,24 @@
 <?php
 
+namespace MediaWiki\HTMLForm\Field;
+
+use MediaWiki\Html\Html;
+use MediaWiki\HTMLForm\HTMLFormField;
+use MediaWiki\HTMLForm\HTMLNestedFilterable;
+use MediaWiki\HTMLForm\OOUIHTMLForm;
+use MediaWiki\Request\WebRequest;
+use MediaWiki\Xml\Xml;
+use RuntimeException;
+
 /**
  * Multi-select field
  *
  * @stable to extend
  */
 class HTMLMultiSelectField extends HTMLFormField implements HTMLNestedFilterable {
+	/** @var string */
+	private $mPlaceholder;
+
 	/**
 	 * @stable to call
 	 *
@@ -22,12 +35,17 @@ class HTMLMultiSelectField extends HTMLFormField implements HTMLNestedFilterable
 		parent::__construct( $params );
 
 		// If the disabled-options parameter is not provided, use an empty array
-		if ( isset( $this->mParams['disabled-options'] ) === false ) {
+		if ( !isset( $this->mParams['disabled-options'] ) ) {
 			$this->mParams['disabled-options'] = [];
 		}
 
 		if ( isset( $params['dropdown'] ) ) {
 			$this->mClass .= ' mw-htmlform-dropdown';
+			if ( isset( $params['placeholder'] ) ) {
+				$this->mPlaceholder = $params['placeholder'];
+			} elseif ( isset( $params['placeholder-message'] ) ) {
+				$this->mPlaceholder = $this->msg( $params['placeholder-message'] )->text();
+			}
 		}
 
 		if ( isset( $params['flatlist'] ) ) {
@@ -50,6 +68,9 @@ class HTMLMultiSelectField extends HTMLFormField implements HTMLNestedFilterable
 			return false;
 		}
 
+		// Reject nested arrays (T274955)
+		$value = array_filter( $value, 'is_scalar' );
+
 		# If all options are valid, array_intersect of the valid options
 		# and the provided options will return the provided options.
 		$validOptions = HTMLFormField::flattenOptions( $this->getOptions() );
@@ -67,10 +88,6 @@ class HTMLMultiSelectField extends HTMLFormField implements HTMLNestedFilterable
 	 * @stable to override
 	 */
 	public function getInputHTML( $value ) {
-		if ( isset( $this->mParams['dropdown'] ) ) {
-			$this->mParent->getOutput()->addModules( 'jquery.chosen' );
-		}
-
 		$value = HTMLFormField::forceToStringRecursive( $value );
 		$html = $this->formatOptions( $this->getOptions(), $value );
 
@@ -84,7 +101,6 @@ class HTMLMultiSelectField extends HTMLFormField implements HTMLNestedFilterable
 	 * @param mixed $value
 	 *
 	 * @return string
-	 * @throws MWException
 	 */
 	public function formatOptions( $options, $value ) {
 		$html = '';
@@ -120,7 +136,7 @@ class HTMLMultiSelectField extends HTMLFormField implements HTMLNestedFilterable
 
 	protected function getOneCheckbox( $checked, $attribs, $label ) {
 		if ( $this->mParent instanceof OOUIHTMLForm ) {
-			throw new MWException( 'HTMLMultiSelectField#getOneCheckbox() is not supported' );
+			throw new RuntimeException( __METHOD__ . ' is not supported' );
 		} else {
 			$elementFunc = [ Html::class, $this->mOptionsLabelsNotFromMessage ? 'rawElement' : 'element' ];
 			$checkbox =
@@ -131,11 +147,6 @@ class HTMLMultiSelectField extends HTMLFormField implements HTMLNestedFilterable
 					[ 'for' => $attribs['id'] ],
 					$label
 				);
-			if ( $this->mParent->getConfig()->get( 'UseMediaWikiUIEverywhere' ) ) {
-				$checkbox = Html::openElement( 'div', [ 'class' => 'mw-ui-checkbox' ] ) .
-					$checkbox .
-					Html::closeElement( 'div' );
-			}
 			return $checkbox;
 		}
 	}
@@ -143,11 +154,11 @@ class HTMLMultiSelectField extends HTMLFormField implements HTMLNestedFilterable
 	/**
 	 * Get options and make them into arrays suitable for OOUI.
 	 * @stable to override
-	 * @throws MWException
 	 */
 	public function getOptionsOOUI() {
+		// @phan-suppress-previous-line PhanPluginNeverReturnMethod
 		// Sections make this difficult. See getInputOOUI().
-		throw new MWException( 'HTMLMultiSelectField#getOptionsOOUI() is not supported' );
+		throw new RuntimeException( __METHOD__ . ' is not supported' );
 	}
 
 	/**
@@ -159,11 +170,14 @@ class HTMLMultiSelectField extends HTMLFormField implements HTMLNestedFilterable
 	 * @stable to override
 	 * @since 1.28
 	 * @param string[] $value
-	 * @return string|OOUI\CheckboxMultiselectInputWidget
+	 * @return string|\OOUI\CheckboxMultiselectInputWidget
 	 * @suppress PhanParamSignatureMismatch
 	 */
 	public function getInputOOUI( $value ) {
 		$this->mParent->getOutput()->addModules( 'oojs-ui-widgets' );
+
+		// Reject nested arrays (T274955)
+		$value = array_filter( $value, 'is_scalar' );
 
 		$hasSections = false;
 		$optionsOouiSections = [];
@@ -172,7 +186,7 @@ class HTMLMultiSelectField extends HTMLFormField implements HTMLNestedFilterable
 		// CheckboxMultiselectInputWidget.
 		foreach ( $options as $label => $section ) {
 			if ( is_array( $section ) ) {
-				$optionsOouiSections[ $label ] = Xml::listDropDownOptionsOoui( $section );
+				$optionsOouiSections[ $label ] = Html::listDropdownOptionsOoui( $section );
 				unset( $options[$label] );
 				$hasSections = true;
 			}
@@ -181,7 +195,7 @@ class HTMLMultiSelectField extends HTMLFormField implements HTMLNestedFilterable
 		// at the beginning.
 		if ( $options ) {
 			$optionsOouiSections = array_merge(
-				[ '' => Xml::listDropDownOptionsOoui( $options ) ],
+				[ '' => Html::listDropdownOptionsOoui( $options ) ],
 				$optionsOouiSections
 			);
 		}
@@ -200,13 +214,13 @@ class HTMLMultiSelectField extends HTMLFormField implements HTMLNestedFilterable
 			}
 			if ( $this->mOptionsLabelsNotFromMessage ) {
 				foreach ( $options as &$option ) {
-					$option['label'] = new OOUI\HtmlSnippet( $option['label'] );
+					$option['label'] = new \OOUI\HtmlSnippet( $option['label'] );
 				}
 			}
 			unset( $option );
 			$attr['options'] = $options;
 
-			$attr += OOUI\Element::configFromHtmlAttributes(
+			$attr += \OOUI\Element::configFromHtmlAttributes(
 				$this->getAttributes( [ 'disabled', 'tabindex' ] )
 			);
 
@@ -214,11 +228,15 @@ class HTMLMultiSelectField extends HTMLFormField implements HTMLNestedFilterable
 				$attr['classes'] = [ $this->mClass ];
 			}
 
-			$widget = new OOUI\CheckboxMultiselectInputWidget( $attr );
+			$widget = new \OOUI\CheckboxMultiselectInputWidget( $attr );
 			if ( $sectionLabel ) {
-				$out[] = new OOUI\FieldsetLayout( [
+				if ( $this->mOptionsLabelsNotFromMessage ) {
+					// @phan-suppress-next-line SecurityCheck-XSS Can't track conditional escaping via a property
+					$sectionLabel = new \OOUI\HtmlSnippet( $sectionLabel );
+				}
+				$out[] = new \OOUI\FieldsetLayout( [
 					'items' => [ $widget ],
-					'label' => new OOUI\HtmlSnippet( $sectionLabel ),
+					'label' => $sectionLabel,
 				] );
 			} else {
 				$out[] = $widget;
@@ -226,9 +244,14 @@ class HTMLMultiSelectField extends HTMLFormField implements HTMLNestedFilterable
 		}
 
 		if ( !$hasSections && $out ) {
+			if ( $this->mPlaceholder ) {
+				$out[0]->setData( ( $out[0]->getData() ?: [] ) + [
+					'placeholder' => $this->mPlaceholder,
+				] );
+			}
 			// Directly return the only OOUI\CheckboxMultiselectInputWidget.
 			// This allows it to be made infusable and later tweaked by JS code.
-			return $out[ 0 ];
+			return $out[0];
 		}
 
 		return implode( '', $out );
@@ -248,6 +271,7 @@ class HTMLMultiSelectField extends HTMLFormField implements HTMLNestedFilterable
 		if ( $this->isSubmitAttempt( $request ) || $fromRequest ) {
 			// Checkboxes are just not added to the request arrays if they're not checked,
 			// so it's perfectly possible for there not to be an entry at all
+			// @phan-suppress-next-line PhanTypeMismatchReturnNullable getArray does not return null
 			return $fromRequest;
 		} else {
 			// That's ok, the user has not yet submitted the form, so show the defaults
@@ -270,10 +294,11 @@ class HTMLMultiSelectField extends HTMLFormField implements HTMLNestedFilterable
 	public function filterDataForSubmit( $data ) {
 		$data = HTMLFormField::forceToStringRecursive( $data );
 		$options = HTMLFormField::flattenOptions( $this->getOptions() );
+		$forcedOn = array_intersect( $this->mParams['disabled-options'], $this->getDefault() );
 
 		$res = [];
 		foreach ( $options as $opt ) {
-			$res["$opt"] = in_array( $opt, $data, true );
+			$res["$opt"] = in_array( $opt, $forcedOn, true ) || in_array( $opt, $data, true );
 		}
 
 		return $res;
@@ -287,3 +312,6 @@ class HTMLMultiSelectField extends HTMLFormField implements HTMLNestedFilterable
 		return false;
 	}
 }
+
+/** @deprecated class alias since 1.42 */
+class_alias( HTMLMultiSelectField::class, 'HTMLMultiSelectField' );

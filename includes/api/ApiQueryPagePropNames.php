@@ -21,6 +21,11 @@
  * @since 1.21
  */
 
+namespace MediaWiki\Api;
+
+use Wikimedia\ParamValidator\ParamValidator;
+use Wikimedia\ParamValidator\TypeDef\IntegerDef;
+
 /**
  * A query module to list used page props
  *
@@ -29,7 +34,7 @@
  */
 class ApiQueryPagePropNames extends ApiQueryBase {
 
-	public function __construct( ApiQuery $query, $moduleName ) {
+	public function __construct( ApiQuery $query, string $moduleName ) {
 		parent::__construct( $query, $moduleName, 'ppn' );
 	}
 
@@ -46,9 +51,7 @@ class ApiQueryPagePropNames extends ApiQueryBase {
 		$this->addOption( 'ORDER BY', 'pp_propname' );
 
 		if ( $params['continue'] ) {
-			$cont = explode( '|', $params['continue'] );
-			$this->dieContinueUsageIf( count( $cont ) != 1 );
-
+			$cont = $this->parseContinueParamOrDie( $params['continue'], [ 'string' ] );
 			// Add a WHERE clause
 			$this->addWhereRange( 'pp_propname', 'newer', $cont[0], null );
 		}
@@ -88,11 +91,11 @@ class ApiQueryPagePropNames extends ApiQueryBase {
 				ApiBase::PARAM_HELP_MSG => 'api-help-param-continue',
 			],
 			'limit' => [
-				ApiBase::PARAM_TYPE => 'limit',
-				ApiBase::PARAM_DFLT => 10,
-				ApiBase::PARAM_MIN => 1,
-				ApiBase::PARAM_MAX => ApiBase::LIMIT_BIG1,
-				ApiBase::PARAM_MAX2 => ApiBase::LIMIT_BIG2
+				ParamValidator::PARAM_TYPE => 'limit',
+				ParamValidator::PARAM_DEFAULT => 10,
+				IntegerDef::PARAM_MIN => 1,
+				IntegerDef::PARAM_MAX => ApiBase::LIMIT_BIG1,
+				IntegerDef::PARAM_MAX2 => ApiBase::LIMIT_BIG2
 			],
 		];
 	}
@@ -108,3 +111,6 @@ class ApiQueryPagePropNames extends ApiQueryBase {
 		return 'https://www.mediawiki.org/wiki/Special:MyLanguage/API:Pagepropnames';
 	}
 }
+
+/** @deprecated class alias since 1.43 */
+class_alias( ApiQueryPagePropNames::class, 'ApiQueryPagePropNames' );

@@ -1,38 +1,35 @@
+/* stylelint-disable selector-class-pattern */
 /*!
  * Styles shared across various special pages.
  */
-@import 'mediawiki.ui/variables.less';
+@import 'mediawiki.skin.variables.less';
 @import 'mediawiki.mixins.less';
 
-/* stylelint-disable selector-class-pattern */
-
-/* Special:AllMessages */
+/* Special:AllMessages & Special:ListFiles */
 /* Visually hide repeating text, but leave in for better form navigation on screen readers */
-.mw-special-Allmessages .mw-htmlform-ooui .oo-ui-fieldsetLayout:first-child .oo-ui-fieldsetLayout-header {
+.mw-special-Allmessages .mw-htmlform-ooui .oo-ui-fieldsetLayout:first-child .oo-ui-fieldsetLayout-header,
+.mw-special-Listfiles .mw-htmlform-ooui .oo-ui-fieldsetLayout:first-child .oo-ui-fieldsetLayout-header {
 	.mixin-screen-reader-text();
 }
 
-#mw-allmessagestable tbody:hover td {
-	/* Duplicate of `.mw-datatable tr:hover td` from shared.css,
-	 * so that it also applies when hovering a lower cell
-	 * within the same rowspan */
-	background-color: #eaf3ff;
-}
+#mw-allmessagestable {
+	tbody td {
+		opacity: 0.9;
+	}
 
-#mw-allmessagestable .am_default {
-	background-color: #fcffc4;
-}
+	tbody:hover td {
+		opacity: 1;
+	}
 
-#mw-allmessagestable tbody:hover .am_default {
-	background-color: #faff90;
-}
+	.am_default,
+	body:hover .am_default {
+		background-color: @background-color-content-removed;
+	}
 
-#mw-allmessagestable .am_actual {
-	background-color: #e2ffe2;
-}
-
-#mw-allmessagestable tbody:hover .am_actual {
-	background-color: #b1ffb1;
+	.am_actual,
+	tbody:hover .am_actual {
+		background-color: @background-color-content-added;
+	}
 }
 
 /* Common for Special:Allpages and Special:PrefixIndex */
@@ -60,27 +57,6 @@
 	font-style: italic;
 }
 
-/* Special:Block */
-.mw-ipb-conveniencelinks {
-	font-size: 90%;
-	text-align: right;
-}
-
-.mw-block-hideuser,
-.mw-block-confirm {
-	font-weight: bold;
-}
-
-#mw-input-wpReason .oo-ui-dropdownInputWidget,
-#mw-input-wpReason .oo-ui-textInputWidget {
-	display: block;
-	max-width: 50em;
-}
-
-#mw-input-wpReason .oo-ui-textInputWidget {
-	margin-top: 0.5em;
-}
-
 /* Special:BlockList */
 .mw-blocklist .mw-usertoollinks,
 .mw-blocklist-actions {
@@ -99,9 +75,9 @@
 }
 
 /* Special:EditWatchlist */
-.watchlistexpiry-msg {
+.mw-watchlistexpiry-msg {
+	color: @color-subtle;
 	margin-left: 0.3em;
-	color: @color-base--subtle;
 }
 
 /* Special:EmailUser */
@@ -115,6 +91,12 @@
 	float: right;
 }
 
+/* Special:ListFiles */
+.listfiles .mw-usertoollinks {
+	white-space: nowrap;
+	font-size: 90%;
+}
+
 /* Special:ListGroupRights */
 .mw-listgrouprights-table tr {
 	vertical-align: top;
@@ -124,10 +106,25 @@
 	text-decoration: line-through;
 }
 
+/* Special:MergeHistory */
+.mw-special-MergeHistory .mw-mergehistory-explanation {
+	margin-top: 0;
+}
+
+/* Special:Undelete */
+.mw-undelete-editcomments,
+/* Special:MovePage */
+.mw-movepage-editreasons,
 /* Special:RevisionDelete */
 .mw-revdel-editreasons {
 	font-size: 90%;
 	text-align: right;
+}
+
+td.mw-revdel-checkbox,
+th.mw-revdel-checkbox {
+	padding-right: 10px;
+	text-align: center;
 }
 
 /* Special:Specialpages */
@@ -135,15 +132,19 @@
 	font-weight: bold;
 }
 
+.mw-specialpagesgroup {
+	clear: both;
+}
+
 .mw-specialpages-list {
 	-webkit-columns: 16em 2;
 	-moz-columns: 16em 2;
 	columns: 16em 2;
-}
 
-.mw-specialpages-list ul {
-	margin-top: 0;
-	margin-bottom: 0;
+	ul {
+		margin-top: 0;
+		margin-bottom: 0;
+	}
 }
 
 /* Special:Statistics */
@@ -160,7 +161,7 @@
 }
 
 .mw-protectedpages-unknown {
-	color: #72777d;
+	color: @color-subtle;
 	font-size: 90%;
 }
 
@@ -171,4 +172,41 @@
 
 .passwordpolicies-policy-flags {
 	font-size: 90%;
+}
+
+.mw-listgrouprights-table,
+.mw-passwordpolicies-table {
+	& tr:target,
+	& tr:target code {
+		background-color: @background-color-progressive-subtle;
+	}
+}
+
+.mw-grantriskgroup- {
+	&vandalism {
+		.cdx-mixin-css-icon( @cdx-icon-alert, @color-warning );
+	}
+
+	&security {
+		.cdx-mixin-css-icon( @cdx-icon-alert, @color-error );
+	}
+
+	&internal {
+		.cdx-mixin-css-icon( @cdx-icon-error, @color-error );
+	}
+
+	&vandalism,
+	&security,
+	&internal {
+		// Hide text, replaced with the icon
+		text-indent: -10000px;
+	}
+
+	.mw-htmlform-field-HTMLCheckMatrix & {
+		&vandalism,
+		&security,
+		&internal {
+			vertical-align: middle;
+		}
+	}
 }

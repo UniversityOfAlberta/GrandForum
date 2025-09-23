@@ -2,10 +2,13 @@
 
 namespace MediaWiki\Hook;
 
-use SpecialNewpages;
+use MediaWiki\Pager\NewPagesPager;
 use stdClass;
 
 /**
+ * This is a hook handler interface, see docs/Hooks.md.
+ * Use the hook name "NewPagesLineEnding" to register handlers implementing this interface.
+ *
  * @stable to implement
  * @ingroup Hooks
  */
@@ -15,7 +18,7 @@ interface NewPagesLineEndingHook {
 	 *
 	 * @since 1.35
 	 *
-	 * @param SpecialNewPages $page The SpecialNewPages object
+	 * @param NewPagesPager $pager
 	 * @param string &$ret the HTML line
 	 * @param stdClass $row The database row for this page (the recentchanges record and a few extras
 	 *   - see NewPagesPager::getQueryInfo)
@@ -25,5 +28,5 @@ interface NewPagesLineEndingHook {
 	 *   (see Sanitizer::isReservedDataAttribute).
 	 * @return bool|void True or no return value to continue or false to abort
 	 */
-	public function onNewPagesLineEnding( $page, &$ret, $row, &$classes, &$attribs );
+	public function onNewPagesLineEnding( $pager, &$ret, $row, &$classes, &$attribs );
 }

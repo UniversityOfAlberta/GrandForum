@@ -1,7 +1,5 @@
 <?php
 /**
- * Implements Special:ApiSandbox
- *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -18,16 +16,20 @@
  * http://www.gnu.org/copyleft/gpl.html
  *
  * @file
- * @ingroup SpecialPage
  */
 
-use MediaWiki\MediaWikiServices;
+namespace MediaWiki\Specials;
+
+use MediaWiki\SpecialPage\SpecialPage;
 
 /**
- * @ingroup SpecialPage
+ * Implements Special:ApiSandbox
+ *
  * @since 1.27
+ * @ingroup SpecialPage
  */
 class SpecialApiSandbox extends SpecialPage {
+
 	public function __construct() {
 		parent::__construct( 'ApiSandbox' );
 	}
@@ -37,9 +39,9 @@ class SpecialApiSandbox extends SpecialPage {
 		$out = $this->getOutput();
 		$this->addHelpLink( 'Help:ApiSandbox' );
 
-		$out->addJsConfigVars( 'apihighlimits', MediaWikiServices::getInstance()
-			->getPermissionManager()
-			->userHasRight( $this->getUser(), 'apihighlimits' )
+		$out->addJsConfigVars(
+			'apihighlimits',
+			$this->getAuthority()->isAllowed( 'apihighlimits' )
 		);
 		$out->addModuleStyles( [
 			'mediawiki.special',
@@ -59,3 +61,6 @@ class SpecialApiSandbox extends SpecialPage {
 		return 'wiki';
 	}
 }
+
+/** @deprecated class alias since 1.41 */
+class_alias( SpecialApiSandbox::class, 'SpecialApiSandbox' );

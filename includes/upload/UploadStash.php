@@ -20,6 +20,11 @@
  * @file
  */
 
+use MediaWiki\Context\RequestContext;
+use MediaWiki\MainConfigNames;
+use MediaWiki\MediaWikiServices;
+use MediaWiki\User\UserIdentity;
+
 /**
  * UploadStash is intended to accomplish a few things:
  *   - Enable applications to temporarily stash files without publishing them to
@@ -63,17 +68,17 @@ class UploadStash {
 	 */
 	public $repo;
 
-	// array of initialized repo objects
+	/** @var array array of initialized repo objects */
 	protected $files = [];
 
-	// cache of the file metadata that's stored in the database
+	/** @var array cache of the file metadata that's stored in the database */
 	protected $fileMetadata = [];
 
-	// fileprops cache
+	/** @var array fileprops cache */
 	protected $fileProps = [];
 
-	// current user
-	protected $user, $userId, $isLoggedIn;
+	/** @var UserIdentity */
+	private $user;
 
 	/**
 	 * Represents a temporary filestore, with metadata in the database.
@@ -81,21 +86,15 @@ class UploadStash {
 	 * (should replace it eventually).
 	 *
 	 * @param FileRepo $repo
-	 * @param User|null $user
+	 * @param UserIdentity|null $user
 	 */
-	public function __construct( FileRepo $repo, $user = null ) {
+	public function __construct( FileRepo $repo, ?UserIdentity $user = null ) {
 		// this might change based on wiki's configuration.
 		$this->repo = $repo;
 
-		// if a user was passed, use it. otherwise, attempt to use the global.
+		// if a user was passed, use it. otherwise, attempt to use the global request context.
 		// this keeps FileRepo from breaking when it creates an UploadStash object
-		global $wgUser;
-		$this->user = $user ?: $wgUser;
-
-		if ( is_object( $this->user ) ) {
-			$this->userId = $this->user->getId();
-			$this->isLoggedIn = $this->user->isLoggedIn();
-		}
+		$this->user = $user ?? RequestContext::getMain()->getUser();
 	}
 
 	/**
@@ -118,7 +117,7 @@ class UploadStash {
 			);
 		}
 
-		if ( !$noAuth && !$this->isLoggedIn ) {
+		if ( !$noAuth && !$this->user->isRegistered() ) {
 			throw new UploadStashNotLoggedInException(
 				wfMessage( 'uploadstash-not-logged-in' )
 			);
@@ -127,8 +126,8 @@ class UploadStash {
 		if ( !isset( $this->fileMetadata[$key] ) ) {
 			if ( !$this->fetchFileMetadata( $key ) ) {
 				// If nothing was received, it's likely due to replication lag.
-				// Check the master to see if the record is there.
-				$this->fetchFileMetadata( $key, DB_MASTER );
+				// Check the primary DB to see if the record is there.
+				$this->fetchFileMetadata( $key, DB_PRIMARY );
 			}
 
 			if ( !isset( $this->fileMetadata[$key] ) ) {
@@ -160,7 +159,7 @@ class UploadStash {
 			);
 		}
 
-		if ( !$noAuth && $this->fileMetadata[$key]['us_user'] != $this->userId ) {
+		if ( !$noAuth && $this->fileMetadata[$key]['us_user'] != $this->user->getId() ) {
 			throw new UploadStashWrongOwnerException(
 				wfMessage( 'uploadstash-wrong-owner', $key )
 			);
@@ -200,12 +199,13 @@ class UploadStash {
 	 * @param string $path Path to file you want stashed
 	 * @param string|null $sourceType The type of upload that generated this file
 	 *   (currently, I believe, 'file' or null)
+	 * @param array|null $fileProps File props or null to regenerate
 	 * @throws UploadStashBadPathException
 	 * @throws UploadStashFileException
 	 * @throws UploadStashNotLoggedInException
 	 * @return UploadStashFile|null File, or null on failure
 	 */
-	public function stashFile( $path, $sourceType = null ) {
+	public function stashFile( $path, $sourceType = null, $fileProps = null ) {
 		if ( !is_file( $path ) ) {
 			wfDebug( __METHOD__ . " tried to stash file at '$path', but it doesn't exist" );
 			throw new UploadStashBadPathException(
@@ -213,8 +213,11 @@ class UploadStash {
 			);
 		}
 
-		$mwProps = new MWFileProps( MediaWiki\MediaWikiServices::getInstance()->getMimeAnalyzer() );
-		$fileProps = $mwProps->getPropsFromPath( $path, true );
+		// File props is expensive to generate for large files, so reuse if possible.
+		if ( !$fileProps ) {
+			$mwProps = new MWFileProps( MediaWikiServices::getInstance()->getMimeAnalyzer() );
+			$fileProps = $mwProps->getPropsFromPath( $path, true );
+		}
 		wfDebug( __METHOD__ . " stashing file at '$path'" );
 
 		// we will be initializing from some tmpnam files that don't have extensions.
@@ -231,11 +234,11 @@ class UploadStash {
 		// random thing instead.  At least it's not guessable.
 		// Some things that when combined will make a suitably unique key.
 		// see: http://www.jwz.org/doc/mid.html
-		list( $usec, $sec ) = explode( ' ', microtime() );
+		[ $usec, $sec ] = explode( ' ', microtime() );
 		$usec = substr( $usec, 2 );
 		$key = Wikimedia\base_convert( $sec . $usec, 10, 36 ) . '.' .
-			Wikimedia\base_convert( mt_rand(), 10, 36 ) . '.' .
-			$this->userId . '.' .
+			Wikimedia\base_convert( (string)mt_rand(), 10, 36 ) . '.' .
+			$this->user->getId() . '.' .
 			$extension;
 
 		$this->fileProps[$key] = $fileProps;
@@ -253,31 +256,26 @@ class UploadStash {
 
 		if ( !$storeStatus->isOK() ) {
 			// It is a convention in MediaWiki to only return one error per API
-			// exception, even if multiple errors are available. We use reset()
-			// to pick the "first" thing that was wrong, preferring errors to
-			// warnings. This is a bit lame, as we may have more info in the
+			// exception, even if multiple errors are available.[citation needed]
+			// Pick the "first" thing that was wrong, preferring errors to warnings.
+			// This is a bit lame, as we may have more info in the
 			// $storeStatus and we're throwing it away, but to fix it means
 			// redesigning API errors significantly.
 			// $storeStatus->value just contains the virtual URL (if anything)
 			// which is probably useless to the caller.
-			$error = $storeStatus->getErrorsArray();
-			$error = reset( $error );
-			if ( !count( $error ) ) {
-				$error = $storeStatus->getWarningsArray();
-				$error = reset( $error );
-				if ( !count( $error ) ) {
-					$error = [ 'unknown', 'no error recorded' ];
-				}
+			foreach ( $storeStatus->getMessages( 'error' ) as $msg ) {
+				throw new UploadStashFileException( $msg );
 			}
-			// At this point, $error should contain the single "most important"
-			// error, plus any parameters.
-			$errorMsg = array_shift( $error );
-			throw new UploadStashFileException( wfMessage( $errorMsg, $error ) );
+			foreach ( $storeStatus->getMessages( 'warning' ) as $msg ) {
+				throw new UploadStashFileException( $msg );
+			}
+			// XXX: This isn't a real message, hopefully this case is unreachable
+			throw new UploadStashFileException( [ 'unknown', 'no error recorded' ] );
 		}
 		$stashPath = $storeStatus->value;
 
 		// fetch the current user ID
-		if ( !$this->isLoggedIn ) {
+		if ( !$this->user->isRegistered() ) {
 			throw new UploadStashNotLoggedInException(
 				wfMessage( 'uploadstash-not-logged-in' )
 			);
@@ -285,19 +283,19 @@ class UploadStash {
 
 		// insert the file metadata into the db.
 		wfDebug( __METHOD__ . " inserting $stashPath under $key" );
-		$dbw = $this->repo->getMasterDB();
+		$dbw = $this->repo->getPrimaryDB();
 
 		$serializedFileProps = serialize( $fileProps );
 		if ( strlen( $serializedFileProps ) > self::MAX_US_PROPS_SIZE ) {
 			// Database is going to truncate this and make the field invalid.
 			// Prioritize important metadata over file handler metadata.
 			// File handler should be prepared to regenerate invalid metadata if needed.
-			$fileProps['metadata'] = false;
+			$fileProps['metadata'] = [];
 			$serializedFileProps = serialize( $fileProps );
 		}
 
-		$this->fileMetadata[$key] = [
-			'us_user' => $this->userId,
+		$insertRow = [
+			'us_user' => $this->user->getId(),
 			'us_key' => $key,
 			'us_orig_path' => $path,
 			'us_path' => $stashPath, // virtual URL
@@ -314,15 +312,16 @@ class UploadStash {
 			'us_status' => 'finished'
 		];
 
-		$dbw->insert(
-			'uploadstash',
-			$this->fileMetadata[$key],
-			__METHOD__
-		);
+		$dbw->newInsertQueryBuilder()
+			->insertInto( 'uploadstash' )
+			->row( $insertRow )
+			->caller( __METHOD__ )->execute();
 
 		// store the insertid in the class variable so immediate retrieval
 		// (possibly laggy) isn't necessary.
-		$this->fileMetadata[$key]['us_id'] = $dbw->insertId();
+		$insertRow['us_id'] = $dbw->insertId();
+
+		$this->fileMetadata[$key] = $insertRow;
 
 		# create the UploadStashFile object for this file.
 		$this->initFile( $key );
@@ -338,19 +337,18 @@ class UploadStash {
 	 * @return bool Success
 	 */
 	public function clear() {
-		if ( !$this->isLoggedIn ) {
+		if ( !$this->user->isRegistered() ) {
 			throw new UploadStashNotLoggedInException(
 				wfMessage( 'uploadstash-not-logged-in' )
 			);
 		}
 
-		wfDebug( __METHOD__ . ' clearing all rows for user ' . $this->userId );
-		$dbw = $this->repo->getMasterDB();
-		$dbw->delete(
-			'uploadstash',
-			[ 'us_user' => $this->userId ],
-			__METHOD__
-		);
+		wfDebug( __METHOD__ . ' clearing all rows for user ' . $this->user->getId() );
+		$dbw = $this->repo->getPrimaryDB();
+		$dbw->newDeleteQueryBuilder()
+			->deleteFrom( 'uploadstash' )
+			->where( [ 'us_user' => $this->user->getId() ] )
+			->caller( __METHOD__ )->execute();
 
 		# destroy objects.
 		$this->files = [];
@@ -368,22 +366,21 @@ class UploadStash {
 	 * @return bool Success
 	 */
 	public function removeFile( $key ) {
-		if ( !$this->isLoggedIn ) {
+		if ( !$this->user->isRegistered() ) {
 			throw new UploadStashNotLoggedInException(
 				wfMessage( 'uploadstash-not-logged-in' )
 			);
 		}
 
-		$dbw = $this->repo->getMasterDB();
+		$dbw = $this->repo->getPrimaryDB();
 
-		// this is a cheap query. it runs on the master so that this function
+		// this is a cheap query. it runs on the primary DB so that this function
 		// still works when there's lag. It won't be called all that often.
-		$row = $dbw->selectRow(
-			'uploadstash',
-			'us_user',
-			[ 'us_key' => $key ],
-			__METHOD__
-		);
+		$row = $dbw->newSelectQueryBuilder()
+			->select( 'us_user' )
+			->from( 'uploadstash' )
+			->where( [ 'us_key' => $key ] )
+			->caller( __METHOD__ )->fetchRow();
 
 		if ( !$row ) {
 			throw new UploadStashNoSuchKeyException(
@@ -391,7 +388,7 @@ class UploadStash {
 			);
 		}
 
-		if ( $row->us_user != $this->userId ) {
+		if ( $row->us_user != $this->user->getId() ) {
 			throw new UploadStashWrongOwnerException(
 				wfMessage( 'uploadstash-wrong-owner', $key )
 			);
@@ -412,13 +409,12 @@ class UploadStash {
 		// Ensure we have the UploadStashFile loaded for this key
 		$this->getFile( $key, true );
 
-		$dbw = $this->repo->getMasterDB();
+		$dbw = $this->repo->getPrimaryDB();
 
-		$dbw->delete(
-			'uploadstash',
-			[ 'us_key' => $key ],
-			__METHOD__
-		);
+		$dbw->newDeleteQueryBuilder()
+			->deleteFrom( 'uploadstash' )
+			->where( [ 'us_key' => $key ] )
+			->caller( __METHOD__ )->execute();
 
 		/** @todo Look into UnregisteredLocalFile and find out why the rv here is
 		 *  sometimes wrong (false when file was removed). For now, ignore.
@@ -438,21 +434,19 @@ class UploadStash {
 	 * @return array|false
 	 */
 	public function listFiles() {
-		if ( !$this->isLoggedIn ) {
+		if ( !$this->user->isRegistered() ) {
 			throw new UploadStashNotLoggedInException(
 				wfMessage( 'uploadstash-not-logged-in' )
 			);
 		}
 
-		$dbr = $this->repo->getReplicaDB();
-		$res = $dbr->select(
-			'uploadstash',
-			'us_key',
-			[ 'us_user' => $this->userId ],
-			__METHOD__
-		);
+		$res = $this->repo->getReplicaDB()->newSelectQueryBuilder()
+			->select( 'us_key' )
+			->from( 'uploadstash' )
+			->where( [ 'us_user' => $this->user->getId() ] )
+			->caller( __METHOD__ )->fetchResultSet();
 
-		if ( !is_object( $res ) || $res->numRows() == 0 ) {
+		if ( $res->numRows() == 0 ) {
 			// nothing to do.
 			return false;
 		}
@@ -460,7 +454,7 @@ class UploadStash {
 		// finish the read before starting writes.
 		$keys = [];
 		foreach ( $res as $row ) {
-			array_push( $keys, $row->us_key );
+			$keys[] = $row->us_key;
 		}
 
 		return $keys;
@@ -476,7 +470,8 @@ class UploadStash {
 	 * @return string
 	 */
 	public static function getExtensionForPath( $path ) {
-		global $wgFileBlacklist;
+		$prohibitedFileExtensions = MediaWikiServices::getInstance()
+			->getMainConfig()->get( MainConfigNames::ProhibitedFileExtensions );
 		// Does this have an extension?
 		$n = strrpos( $path, '.' );
 
@@ -484,13 +479,13 @@ class UploadStash {
 			$extension = $n ? substr( $path, $n + 1 ) : '';
 		} else {
 			// If not, assume that it should be related to the MIME type of the original file.
-			$magic = MediaWiki\MediaWikiServices::getInstance()->getMimeAnalyzer();
+			$magic = MediaWikiServices::getInstance()->getMimeAnalyzer();
 			$mimeType = $magic->guessMimeType( $path );
-			$extension = $magic->getExtensionFromMimeTypeOrNull( $mimeType );
+			$extension = $magic->getExtensionFromMimeTypeOrNull( $mimeType ) ?? '';
 		}
 
 		$extension = File::normalizeExtension( $extension );
-		if ( in_array( $extension, $wgFileBlacklist ) ) {
+		if ( in_array( $extension, $prohibitedFileExtensions ) ) {
 			// The file should already be checked for being evil.
 			// However, if somehow we got here, we definitely
 			// don't want to give it an extension of .php and
@@ -510,25 +505,23 @@ class UploadStash {
 	 */
 	protected function fetchFileMetadata( $key, $readFromDB = DB_REPLICA ) {
 		// populate $fileMetadata[$key]
-		$dbr = null;
-		if ( $readFromDB === DB_MASTER ) {
-			// sometimes reading from the master is necessary, if there's replication lag.
-			$dbr = $this->repo->getMasterDB();
+		if ( $readFromDB === DB_PRIMARY ) {
+			// sometimes reading from the primary DB is necessary, if there's replication lag.
+			$dbr = $this->repo->getPrimaryDB();
 		} else {
 			$dbr = $this->repo->getReplicaDB();
 		}
 
-		$row = $dbr->selectRow(
-			'uploadstash',
-			[
+		$row = $dbr->newSelectQueryBuilder()
+			->select( [
 				'us_user', 'us_key', 'us_orig_path', 'us_path', 'us_props',
 				'us_size', 'us_sha1', 'us_mime', 'us_media_type',
 				'us_image_width', 'us_image_height', 'us_image_bits',
 				'us_source_type', 'us_timestamp', 'us_status',
-			],
-			[ 'us_key' => $key ],
-			__METHOD__
-		);
+			] )
+			->from( 'uploadstash' )
+			->where( [ 'us_key' => $key ] )
+			->caller( __METHOD__ )->fetchRow();
 
 		if ( !is_object( $row ) ) {
 			// key wasn't present in the database. this will happen sometimes.
@@ -549,7 +542,12 @@ class UploadStash {
 	 * @return bool
 	 */
 	protected function initFile( $key ) {
-		$file = new UploadStashFile( $this->repo, $this->fileMetadata[$key]['us_path'], $key );
+		$file = new UploadStashFile(
+			$this->repo,
+			$this->fileMetadata[$key]['us_path'],
+			$key,
+			$this->fileMetadata[$key]['us_sha1']
+		);
 		if ( $file->getSize() === 0 ) {
 			throw new UploadStashZeroLengthFileException(
 				wfMessage( 'uploadstash-zero-length' )

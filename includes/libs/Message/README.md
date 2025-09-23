@@ -21,7 +21,8 @@ contain **placeholders**, which represents a place in the message where a
 text other than these placeholders and formatting commands, or it might be in a
 **markup language** such as wikitext or Markdown.
 
-A **formatter** is used to convert the message key and parameters into a text
+A **formatter** is used to convert the message key and parameters
+(that is, a **message specifier**) into a text
 representation in a particular language and **output format**.
 
 The library itself imposes few restrictions on all of these concepts; this
@@ -44,12 +45,12 @@ $message = new MessageValue( 'message-key', [
 ] );
 
 // Fluent interface
-$message = ( new MessageValue( 'message-key' ) )
+$message = MessageValue::new( 'message-key' )
     ->params( 'parameter', new MessageValue( 'another-message' ) )
     ->numParams( 12345 );
 
 // Formatting
-$messageFormatter = $serviceContainter->get( 'MessageFormatterFactory' )->getTextFormatter( 'de' );
+$messageFormatter = $serviceContainer->get( 'MessageFormatterFactory' )->getTextFormatter( 'de' );
 $output = $messageFormatter->format( $message );
 </pre>
 
@@ -63,6 +64,12 @@ Messages and their parameters are represented by newable value objects.
 **MessageValue** represents an instance of a message, holding the key and any
 parameters. It is mutable in that parameters can be added to the object after
 creation.
+
+**MessageSpecifier** is an interface implemented by MessageValue (and, outside
+of the Wikimedia\Message namespace, also MediaWiki\Message\Message), which only
+provides getter methods for the key and parameters, and no way to mutate
+the object. It should be used in methods that output or inspect messages,
+but aren't supposed to modify them.
 
 **MessageParam** is an abstract value class representing a parameter to a message.
 It has a type (using constants defined in the **ParamType** class) and a value. It
@@ -115,8 +122,8 @@ generate the output string:
      to fall back to appropriate other languages. Details of the fallback are
      unspecified here.
    - If no translation can be found in any fallback language, a string should
-	 be returned that indicates at minimum the message key that was unable to
-	 be found.
+     be returned that indicates at minimum the message key that was unable to
+     be found.
 2. Replace placeholders with parameter values.
    - Note that placeholders must not be replaced recursively. That is, if a
      parameter's value contains text that looks like a placeholder, it must not
@@ -196,7 +203,7 @@ are to be balanced, e.g. `{{NAME:foo|{{bar|baz}}}}` has $value1 as "foo" and
 $value2 as "{{bar|baz}}". The name is always case-insensitive.
 
 Anything syntactically resembling a placeholder or formatting command that does
-not correspond to an actual paramter or known command should be left unchanged
+not correspond to an actual parameter or known command should be left unchanged
 for processing by the markup language processor.
 
 Libraries providing messages for use by externally-defined formatters should

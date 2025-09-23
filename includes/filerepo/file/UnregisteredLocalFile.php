@@ -1,7 +1,5 @@
 <?php
 /**
- * File without associated database record.
- *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -18,12 +16,17 @@
  * http://www.gnu.org/copyleft/gpl.html
  *
  * @file
- * @ingroup FileAbstraction
  */
 
+use MediaWiki\MediaWikiServices;
+use MediaWiki\Title\Title;
+use Wikimedia\FileBackend\FSFile\FSFile;
+
 /**
- * A file object referring to either a standalone local file, or a file in a
- * local repository with no database, for example an FileRepo repository.
+ * File without associated database record.
+ *
+ * Represents a standalone local file, or a file in a local repository
+ * with no database, for example a FileRepo repository.
  *
  * Read-only.
  *
@@ -40,14 +43,14 @@ class UnregisteredLocalFile extends File {
 	/** @var string */
 	protected $path;
 
-	/** @var bool|string */
+	/** @var string|false */
 	protected $mime;
 
 	/** @var array[]|bool[] Dimension data */
-	protected $dims;
+	protected $pageDims;
 
-	/** @var bool|string Handler-specific metadata which will be saved in the img_metadata field */
-	protected $metadata;
+	/** @var array|null */
+	protected $sizeAndMetadata;
 
 	/** @var MediaHandler */
 	public $handler;
@@ -74,15 +77,14 @@ class UnregisteredLocalFile extends File {
 	 * Create an UnregisteredLocalFile based on a path or a (title,repo) pair.
 	 * A FileRepo object is not required here, unlike most other File classes.
 	 *
-	 * @throws MWException
-	 * @param Title|bool $title
-	 * @param FileRepo|bool $repo
-	 * @param string|bool $path
-	 * @param string|bool $mime
+	 * @param Title|false $title
+	 * @param FileRepo|false $repo
+	 * @param string|false $path
+	 * @param string|false $mime
 	 */
 	public function __construct( $title = false, $repo = false, $path = false, $mime = false ) {
 		if ( !( $title && $repo ) && !$path ) {
-			throw new MWException( __METHOD__ .
+			throw new BadMethodCallException( __METHOD__ .
 				': not enough parameters, must specify title and repo, or a full path' );
 		}
 		if ( $title instanceof Title ) {
@@ -103,12 +105,12 @@ class UnregisteredLocalFile extends File {
 		if ( $mime ) {
 			$this->mime = $mime;
 		}
-		$this->dims = [];
+		$this->pageDims = [];
 	}
 
 	/**
 	 * @param int $page
-	 * @return array|bool
+	 * @return array|false
 	 */
 	private function cachePageDimensions( $page = 1 ) {
 		$page = (int)$page;
@@ -116,14 +118,22 @@ class UnregisteredLocalFile extends File {
 			$page = 1;
 		}
 
-		if ( !isset( $this->dims[$page] ) ) {
+		if ( !isset( $this->pageDims[$page] ) ) {
 			if ( !$this->getHandler() ) {
 				return false;
 			}
-			$this->dims[$page] = $this->handler->getPageDimensions( $this, $page );
+			if ( $this->getHandler()->isMultiPage( $this ) ) {
+				$this->pageDims[$page] = $this->handler->getPageDimensions( $this, $page );
+			} else {
+				$info = $this->getSizeAndMetadata();
+				return [
+					'width' => $info['width'],
+					'height' => $info['height']
+				];
+			}
 		}
 
-		return $this->dims[$page];
+		return $this->pageDims[$page];
 	}
 
 	/**
@@ -147,58 +157,58 @@ class UnregisteredLocalFile extends File {
 	}
 
 	/**
-	 * @return bool|string
+	 * @return string|false
 	 */
 	public function getMimeType() {
 		if ( !isset( $this->mime ) ) {
-			$magic = MediaWiki\MediaWikiServices::getInstance()->getMimeAnalyzer();
-			$this->mime = $magic->guessMimeType( $this->getLocalRefPath() );
+			$refPath = $this->getLocalRefPath();
+			if ( $refPath !== false ) {
+				$magic = MediaWikiServices::getInstance()->getMimeAnalyzer();
+				$this->mime = $magic->guessMimeType( $refPath );
+			} else {
+				$this->mime = false;
+			}
 		}
 
 		return $this->mime;
 	}
 
 	/**
-	 * @param string $filename
-	 * @return array|bool
-	 */
-	protected function getImageSize( $filename ) {
-		if ( !$this->getHandler() ) {
-			return false;
-		}
-
-		return $this->handler->getImageSize( $this, $this->getLocalRefPath() );
-	}
-
-	/**
 	 * @return int
 	 */
 	public function getBitDepth() {
-		$gis = $this->getImageSize( $this->getLocalRefPath() );
-
-		if ( !$gis || !isset( $gis['bits'] ) ) {
-			return 0;
-		}
-		return $gis['bits'];
+		$info = $this->getSizeAndMetadata();
+		return $info['bits'] ?? 0;
 	}
 
 	/**
 	 * @return string|false
 	 */
 	public function getMetadata() {
-		if ( !isset( $this->metadata ) ) {
+		$info = $this->getSizeAndMetadata();
+		return $info['metadata'] ? serialize( $info['metadata'] ) : false;
+	}
+
+	public function getMetadataArray(): array {
+		$info = $this->getSizeAndMetadata();
+		return $info['metadata'];
+	}
+
+	private function getSizeAndMetadata() {
+		if ( $this->sizeAndMetadata === null ) {
 			if ( !$this->getHandler() ) {
-				$this->metadata = false;
+				$this->sizeAndMetadata = [ 'width' => 0, 'height' => 0, 'metadata' => [] ];
 			} else {
-				$this->metadata = $this->handler->getMetadata( $this, $this->getLocalRefPath() );
+				$this->sizeAndMetadata = $this->getHandler()->getSizeAndMetadataWithFallback(
+					$this, $this->getLocalRefPath() );
 			}
 		}
 
-		return $this->metadata;
+		return $this->sizeAndMetadata;
 	}
 
 	/**
-	 * @return bool|string
+	 * @return string|false
 	 */
 	public function getURL() {
 		if ( $this->repo ) {

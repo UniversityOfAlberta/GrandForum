@@ -1,13 +1,10 @@
 <?php
 /** Southern Kurdish (کوردی خوارگ)
  *
- * To improve a translation please visit https://translatewiki.net
- *
- * @ingroup Language
  * @file
- *
+ * @ingroup Languages
  */
 
-$fallback = 'cbk, fa';
+$fallback = 'ckb, fa';
 
 $rtl = true;

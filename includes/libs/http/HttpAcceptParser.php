@@ -31,16 +31,20 @@ class HttpAcceptParser {
 		$ret = [];
 
 		foreach ( $accepts as $i => $a ) {
-			preg_match( '!^([^\s/;]+)/([^;\s]+)\s*(?:;(.*))?$!D', trim( $a ), $matches );
-			if ( !$matches ) {
+			if ( !preg_match( '!^([^\s/;]+)/([^;\s]+)\s*(?:;(.*))?$!D', trim( $a ), $matches ) ) {
 				continue;
 			}
+
 			$q = 1;
 			$params = [];
 			if ( isset( $matches[3] ) ) {
 				$kvps = explode( ';', $matches[3] );  // FIXME: Allow semi-colon in quotes
 				foreach ( $kvps as $kv ) {
-					[ $key, $val ] = explode( '=', trim( $kv ), 2 );
+					$kvArray = explode( '=', trim( $kv ), 2 );
+					if ( count( $kvArray ) != 2 ) {
+						continue;
+					}
+					[ $key, $val ] = $kvArray;
 					$key = strtolower( trim( $key ) );
 					$val = trim( $val );
 					if ( $key === 'q' ) {
@@ -63,7 +67,7 @@ class HttpAcceptParser {
 		}
 
 		// Sort list. First by q values, then by order
-		usort( $ret, function ( $a, $b ) {
+		usort( $ret, static function ( $a, $b ) {
 			if ( $b['q'] > $a['q'] ) {
 				return 1;
 			} elseif ( $b['q'] === $a['q'] ) {
@@ -100,7 +104,7 @@ class HttpAcceptParser {
 		$accepts = $this->parseAccept( $rawHeader );
 
 		// Create a list like "en" => 0.8
-		return array_reduce( $accepts, function ( $prev, $next ) {
+		return array_reduce( $accepts, static function ( $prev, $next ) {
 			$type = "{$next['type']}/{$next['subtype']}";
 			$prev[$type] = $next['q'];
 			return $prev;

@@ -25,7 +25,14 @@
  * @author Daniel Kinzler
  */
 
+namespace MediaWiki\Content;
+
+use InvalidArgumentException;
+use MediaWiki\Language\Language;
+use MediaWiki\MainConfigNames;
 use MediaWiki\MediaWikiServices;
+use MWUnknownContentModelException;
+use Wikimedia\Diff\Diff;
 
 /**
  * Content object implementation for representing flat text.
@@ -47,7 +54,6 @@ class TextContent extends AbstractContent {
 	 * @stable to call
 	 * @param string $text
 	 * @param string $model_id
-	 * @throws MWException
 	 */
 	public function __construct( $text, $model_id = CONTENT_MODEL_TEXT ) {
 		parent::__construct( $model_id );
@@ -60,7 +66,7 @@ class TextContent extends AbstractContent {
 		}
 
 		if ( !is_string( $text ) ) {
-			throw new MWException( "TextContent expects a string in the constructor." );
+			throw new InvalidArgumentException( "TextContent expects a string in the constructor." );
 		}
 
 		$this->mText = $text;
@@ -116,13 +122,14 @@ class TextContent extends AbstractContent {
 	 * @return bool
 	 */
 	public function isCountable( $hasLinks = null ) {
-		global $wgArticleCountMethod;
+		$articleCountMethod = MediaWikiServices::getInstance()->getMainConfig()->get(
+			MainConfigNames::ArticleCountMethod );
 
 		if ( $this->isRedirect() ) {
 			return false;
 		}
 
-		if ( $wgArticleCountMethod === 'any' ) {
+		if ( $articleCountMethod === 'any' ) {
 			return true;
 		}
 
@@ -173,7 +180,7 @@ class TextContent extends AbstractContent {
 	 *
 	 * @note this allows any text-based content to be transcluded as if it was wikitext.
 	 *
-	 * @return string|bool The raw text, or false if the conversion failed.
+	 * @return string|false The raw text, or false if the conversion failed.
 	 */
 	public function getWikitextForTransclusion() {
 		/** @var WikitextContent $wikitext */
@@ -205,27 +212,6 @@ class TextContent extends AbstractContent {
 	}
 
 	/**
-	 * Returns a Content object with pre-save transformations applied.
-	 *
-	 * At a minimum, subclasses should make sure to call TextContent::normalizeLineEndings()
-	 * either directly or part of Parser::preSaveTransform().
-	 *
-	 * @stable to override
-	 *
-	 * @param Title $title
-	 * @param User $user
-	 * @param ParserOptions $popts
-	 *
-	 * @return Content
-	 */
-	public function preSaveTransform( Title $title, User $user, ParserOptions $popts ) {
-		$text = $this->getText();
-		$pst = self::normalizeLineEndings( $text );
-
-		return ( $text === $pst ) ? $this : new static( $pst, $this->getModel() );
-	}
-
-	/**
 	 * Diff this content object with another content object.
 	 *
 	 * @stable to override
@@ -238,7 +224,7 @@ class TextContent extends AbstractContent {
 	 * @return Diff A diff representing the changes that would have to be
 	 *    made to this content object to make it equal to $that.
 	 */
-	public function diff( Content $that, Language $lang = null ) {
+	public function diff( Content $that, ?Language $lang = null ) {
 		$this->checkModelID( $that->getModel() );
 		/** @var self $that */
 		'@phan-var self $that';
@@ -261,67 +247,6 @@ class TextContent extends AbstractContent {
 	}
 
 	/**
-	 * Fills the provided ParserOutput object with information derived from the content.
-	 * Unless $generateHtml was false, this includes an HTML representation of the content
-	 * provided by getHtml().
-	 *
-	 * For content models listed in $wgTextModelsToParse, this method will call the MediaWiki
-	 * wikitext parser on the text to extract any (wikitext) links, magic words, etc.
-	 *
-	 * Subclasses may override this to provide custom content processing.
-	 * For custom HTML generation alone, it is sufficient to override getHtml().
-	 *
-	 * @stable to override
-	 *
-	 * @param Title $title Context title for parsing
-	 * @param int $revId Revision ID (for {{REVISIONID}})
-	 * @param ParserOptions $options
-	 * @param bool $generateHtml Whether or not to generate HTML
-	 * @param ParserOutput &$output The output object to fill (reference).
-	 */
-	protected function fillParserOutput( Title $title, $revId,
-		ParserOptions $options, $generateHtml, ParserOutput &$output
-	) {
-		global $wgTextModelsToParse;
-
-		if ( in_array( $this->getModel(), $wgTextModelsToParse ) ) {
-			// parse just to get links etc into the database, HTML is replaced below.
-			$output = MediaWikiServices::getInstance()->getParser()
-				->parse( $this->getText(), $title, $options, true, true, $revId );
-		}
-
-		if ( $generateHtml ) {
-			$html = $this->getHtml();
-		} else {
-			$html = '';
-		}
-
-		$output->clearWrapperDivClass();
-		$output->setText( $html );
-	}
-
-	/**
-	 * Generates an HTML version of the content, for display. Used by
-	 * fillParserOutput() to provide HTML for the ParserOutput object.
-	 *
-	 * Subclasses may override this to provide a custom HTML rendering.
-	 * If further information is to be derived from the content (such as
-	 * categories), the fillParserOutput() method can be overridden instead.
-	 *
-	 * @stable to override
-	 *
-	 * @return string An HTML representation of the content
-	 */
-	protected function getHtml() {
-		// TODO: Remove in MediaWiki 1.36
-		if ( method_exists( $this, 'getHighlightHtml' ) ) {
-			wfDeprecated( 'getHighlightHtml', '1.24' );
-			throw new Exception( 'getHighlightHtml() is not called any more!' );
-		}
-		return htmlspecialchars( $this->getText() );
-	}
-
-	/**
 	 * This implementation provides lossless conversion between content models based
 	 * on TextContent.
 	 *
@@ -331,7 +256,7 @@ class TextContent extends AbstractContent {
 	 * @param string $lossy Flag, set to "lossy" to allow lossy conversion. If lossy conversion is not
 	 *     allowed, full round-trip conversion is expected to work without losing information.
 	 *
-	 * @return Content|bool A content object with the content model $toModel, or false if that
+	 * @return Content|false A content object with the content model $toModel, or false if that
 	 *     conversion is not supported.
 	 * @throws MWUnknownContentModelException
 	 *
@@ -356,3 +281,5 @@ class TextContent extends AbstractContent {
 	}
 
 }
+/** @deprecated class alias since 1.43 */
+class_alias( TextContent::class, 'TextContent' );

@@ -22,11 +22,12 @@
 
 namespace MediaWiki\Revision;
 
-use CommentStoreComment;
+use MediaWiki\CommentStore\CommentStoreComment;
+use MediaWiki\Page\PageIdentity;
+use MediaWiki\Permissions\Authority;
 use MediaWiki\User\UserIdentity;
-use MWTimestamp;
-use Title;
-use User;
+use MediaWiki\Utils\MWTimestamp;
+use stdClass;
 use Wikimedia\Assert\Assert;
 
 /**
@@ -49,34 +50,33 @@ class RevisionArchiveRecord extends RevisionRecord {
 	 * @note Avoid calling this constructor directly. Use the appropriate methods
 	 * in RevisionStore instead.
 	 *
-	 * @param Title $title The title of the page this Revision is associated with.
+	 * @param PageIdentity $page The page this RevisionRecord is associated with.
 	 * @param UserIdentity $user
 	 * @param CommentStoreComment $comment
-	 * @param \stdClass $row An archive table row. Use RevisionStore::getArchiveQueryInfo() to build
+	 * @param stdClass $row An archive table row. Use RevisionStore::getArchiveQueryInfo() to build
 	 *        a query that yields the required fields.
 	 * @param RevisionSlots $slots The slots of this revision.
-	 * @param bool|string $dbDomain DB domain of the relevant wiki or false for the current one.
+	 * @param false|string $wikiId Relevant wiki or self::LOCAL for the current one.
 	 */
 	public function __construct(
-		Title $title,
+		PageIdentity $page,
 		UserIdentity $user,
 		CommentStoreComment $comment,
-		$row,
+		stdClass $row,
 		RevisionSlots $slots,
-		$dbDomain = false
+		$wikiId = self::LOCAL
 	) {
-		parent::__construct( $title, $slots, $dbDomain );
-		Assert::parameterType( \stdClass::class, $row, '$row' );
+		parent::__construct( $page, $slots, $wikiId );
 
 		$timestamp = MWTimestamp::convert( TS_MW, $row->ar_timestamp );
 		Assert::parameter( is_string( $timestamp ), '$row->rev_timestamp', 'must be a valid timestamp' );
 
 		$this->mArchiveId = intval( $row->ar_id );
 
-		// NOTE: ar_page_id may be different from $this->mTitle->getArticleID() in some cases,
+		// NOTE: ar_page_id may be different from $this->mPage->getId() in some cases,
 		// notably when a partially restored page has been moved, and a new page has been created
 		// with the same title. Archive rows for that title will then have the wrong page id.
-		$this->mPageId = isset( $row->ar_page_id ) ? intval( $row->ar_page_id ) : $title->getArticleID();
+		$this->mPageId = isset( $row->ar_page_id ) ? intval( $row->ar_page_id ) : $this->getArticleId( $this->mPage );
 
 		// NOTE: ar_parent_id = 0 indicates that there is no parent revision, while null
 		// indicates that the parent revision is unknown. As per MW 1.31, the database schema
@@ -86,7 +86,7 @@ class RevisionArchiveRecord extends RevisionRecord {
 		$this->mComment = $comment;
 		$this->mUser = $user;
 		$this->mTimestamp = $timestamp;
-		$this->mMinorEdit = boolval( $row->ar_minor_edit );
+		$this->mMinorEdit = (bool)$row->ar_minor_edit;
 		$this->mDeleted = intval( $row->ar_deleted );
 		$this->mSize = isset( $row->ar_len ) ? intval( $row->ar_len ) : null;
 		$this->mSha1 = !empty( $row->ar_sha1 ) ? $row->ar_sha1 : null;
@@ -102,12 +102,13 @@ class RevisionArchiveRecord extends RevisionRecord {
 	}
 
 	/**
+	 * @param string|false $wikiId The wiki ID expected by the caller.
 	 * @return int|null The revision id, or null if the original revision ID
 	 *         was not recorded in the archive table.
 	 */
-	public function getId() {
+	public function getId( $wikiId = self::LOCAL ) {
 		// overwritten just to refine the contract specification.
-		return parent::getId();
+		return parent::getId( $wikiId );
 	}
 
 	/**
@@ -117,9 +118,7 @@ class RevisionArchiveRecord extends RevisionRecord {
 	public function getSize() {
 		// If length is null, calculate and remember it (potentially SLOW!).
 		// This is for compatibility with old database rows that don't have the field set.
-		if ( $this->mSize === null ) {
-			$this->mSize = $this->mSlots->computeSize();
-		}
+		$this->mSize ??= $this->mSlots->computeSize();
 
 		return $this->mSize;
 	}
@@ -131,33 +130,31 @@ class RevisionArchiveRecord extends RevisionRecord {
 	public function getSha1() {
 		// If hash is null, calculate it and remember (potentially SLOW!)
 		// This is for compatibility with old database rows that don't have the field set.
-		if ( $this->mSha1 === null ) {
-			$this->mSha1 = $this->mSlots->computeSha1();
-		}
+		$this->mSha1 ??= $this->mSlots->computeSha1();
 
 		return $this->mSha1;
 	}
 
 	/**
 	 * @param int $audience
-	 * @param User|null $user
+	 * @param Authority|null $performer
 	 *
 	 * @return UserIdentity The identity of the revision author, null if access is forbidden.
 	 */
-	public function getUser( $audience = self::FOR_PUBLIC, User $user = null ) {
+	public function getUser( $audience = self::FOR_PUBLIC, ?Authority $performer = null ) {
 		// overwritten just to add a guarantee to the contract
-		return parent::getUser( $audience, $user );
+		return parent::getUser( $audience, $performer );
 	}
 
 	/**
 	 * @param int $audience
-	 * @param User|null $user
+	 * @param Authority|null $performer
 	 *
 	 * @return CommentStoreComment The revision comment, null if access is forbidden.
 	 */
-	public function getComment( $audience = self::FOR_PUBLIC, User $user = null ) {
+	public function getComment( $audience = self::FOR_PUBLIC, ?Authority $performer = null ) {
 		// overwritten just to add a guarantee to the contract
-		return parent::getComment( $audience, $user );
+		return parent::getComment( $audience, $performer );
 	}
 
 	/**
@@ -166,6 +163,47 @@ class RevisionArchiveRecord extends RevisionRecord {
 	public function getTimestamp() {
 		// overwritten just to add a guarantee to the contract
 		return parent::getTimestamp();
+	}
+
+	public function userCan( $field, Authority $performer ) {
+		// This revision belongs to a deleted page, so check the relevant permissions as well. (T345777)
+
+		// Viewing the content requires either 'deletedtext' or 'undelete' (for legacy reasons)
+		if (
+			$field === self::DELETED_TEXT &&
+			!$performer->authorizeRead( 'deletedtext', $this->getPage() ) &&
+			!$performer->authorizeRead( 'undelete', $this->getPage() )
+		) {
+			return false;
+		}
+
+		// Viewing the edit summary requires 'deletedhistory'
+		if (
+			$field === self::DELETED_COMMENT &&
+			!$performer->authorizeRead( 'deletedhistory', $this->getPage() )
+		) {
+			return false;
+		}
+
+		// Other fields of revisions of deleted pages are public, per T232389 (unless revision-deleted)
+
+		return parent::userCan( $field, $performer );
+	}
+
+	public function audienceCan( $field, $audience, ?Authority $performer = null ) {
+		// This revision belongs to a deleted page, so check the relevant permissions as well. (T345777)
+		// See userCan().
+		if (
+			$audience == self::FOR_PUBLIC &&
+			( $field === self::DELETED_TEXT || $field === self::DELETED_COMMENT )
+		) {
+			// TODO: Should this use PermissionManager::isEveryoneAllowed() or something?
+			// But RevisionRecord::audienceCan() doesn't do that either…
+			return false;
+		}
+
+		// This calls userCan(), which checks the user's permissions
+		return parent::audienceCan( $field, $audience, $performer );
 	}
 
 	/**
@@ -178,9 +216,3 @@ class RevisionArchiveRecord extends RevisionRecord {
 	}
 
 }
-
-/**
- * Retain the old class name for backwards compatibility.
- * @deprecated since 1.32
- */
-class_alias( RevisionArchiveRecord::class, 'MediaWiki\Storage\RevisionArchiveRecord' );

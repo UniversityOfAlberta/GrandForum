@@ -21,7 +21,7 @@ namespace MediaWiki\Rest\HeaderParser;
  * If-Modified-Since.
  */
 class HttpDate extends HeaderParserBase {
-	private static $dayNames = [
+	private const DAY_NAMES = [
 		'Mon' => true,
 		'Tue' => true,
 		'Wed' => true,
@@ -31,7 +31,7 @@ class HttpDate extends HeaderParserBase {
 		'Sun' => true
 	];
 
-	private static $monthsByName = [
+	private const MONTHS_BY_NAME = [
 		'Jan' => 1,
 		'Feb' => 2,
 		'Mar' => 3,
@@ -46,7 +46,7 @@ class HttpDate extends HeaderParserBase {
 		'Dec' => 12,
 	];
 
-	private static $dayNamesLong = [
+	private const DAY_NAMES_LONG = [
 		'Monday',
 		'Tuesday',
 		'Wednesday',
@@ -56,12 +56,19 @@ class HttpDate extends HeaderParserBase {
 		'Sunday',
 	];
 
+	/** @var string */
 	private $dayName;
+	/** @var string */
 	private $day;
+	/** @var int */
 	private $month;
+	/** @var int */
 	private $year;
+	/** @var string */
 	private $hour;
+	/** @var string */
 	private $minute;
+	/** @var string */
 	private $second;
 
 	/**
@@ -150,7 +157,7 @@ class HttpDate extends HeaderParserBase {
 	 */
 	private function consumeDayName() {
 		$next3 = substr( $this->input, $this->pos, 3 );
-		if ( isset( self::$dayNames[$next3] ) ) {
+		if ( isset( self::DAY_NAMES[$next3] ) ) {
 			$this->dayName = $next3;
 			$this->pos += 3;
 		} else {
@@ -187,8 +194,8 @@ class HttpDate extends HeaderParserBase {
 	 */
 	private function consumeMonth() {
 		$next3 = substr( $this->input, $this->pos, 3 );
-		if ( isset( self::$monthsByName[$next3] ) ) {
-			$this->month = self::$monthsByName[$next3];
+		if ( isset( self::MONTHS_BY_NAME[$next3] ) ) {
+			$this->month = self::MONTHS_BY_NAME[$next3];
 			$this->pos += 3;
 		} else {
 			$this->error( 'expected month' );
@@ -201,7 +208,7 @@ class HttpDate extends HeaderParserBase {
 	 * @throws HeaderParserError
 	 */
 	private function consumeYear() {
-		$this->year = $this->consumeFixedDigits( 4 );
+		$this->year = (int)$this->consumeFixedDigits( 4 );
 	}
 
 	/**
@@ -242,8 +249,8 @@ class HttpDate extends HeaderParserBase {
 		$this->consumeString( '-' );
 		$year = $this->consumeFixedDigits( 2 );
 		// RFC 2626 section 11.2
-		$currentYear = gmdate( 'Y' );
-		$startOfCentury = round( $currentYear, -2 );
+		$currentYear = (int)gmdate( 'Y' );
+		$startOfCentury = (int)round( $currentYear, -2 );
 		$this->year = $startOfCentury + intval( $year );
 		$pivot = $currentYear + 50;
 		if ( $this->year > $pivot ) {
@@ -257,7 +264,7 @@ class HttpDate extends HeaderParserBase {
 	 * @throws HeaderParserError
 	 */
 	private function consumeDayNameLong() {
-		foreach ( self::$dayNamesLong as $dayName ) {
+		foreach ( self::DAY_NAMES_LONG as $dayName ) {
 			if ( substr_compare( $this->input, $dayName, $this->pos, strlen( $dayName ) ) === 0 ) {
 				$this->dayName = substr( $dayName, 0, 3 );
 				$this->pos += strlen( $dayName );
@@ -305,7 +312,7 @@ class HttpDate extends HeaderParserBase {
 	 * @return int
 	 */
 	private function getUnixTime() {
-		return gmmktime( $this->hour, $this->minute, $this->second,
-			$this->month, $this->day, $this->year );
+		return gmmktime( (int)$this->hour, (int)$this->minute, (int)$this->second,
+			$this->month, (int)$this->day, $this->year );
 	}
 }

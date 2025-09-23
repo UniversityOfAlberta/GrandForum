@@ -1,7 +1,5 @@
 <?php
 /**
- * Implements Special:Lonelypaages
- *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -18,20 +16,48 @@
  * http://www.gnu.org/copyleft/gpl.html
  *
  * @file
- * @ingroup SpecialPage
  */
 
-use MediaWiki\MediaWikiServices;
+namespace MediaWiki\Specials;
+
+use MediaWiki\Cache\LinkBatchFactory;
+use MediaWiki\Languages\LanguageConverterFactory;
+use MediaWiki\Linker\LinksMigration;
+use MediaWiki\SpecialPage\PageQueryPage;
+use MediaWiki\Title\NamespaceInfo;
+use Wikimedia\Rdbms\IConnectionProvider;
 
 /**
- * A special page looking for articles with no article linking to them,
+ * List of articles with no article linking to them,
  * thus being lonely.
  *
  * @ingroup SpecialPage
  */
 class SpecialLonelyPages extends PageQueryPage {
-	public function __construct( $name = 'Lonelypages' ) {
-		parent::__construct( $name );
+
+	private NamespaceInfo $namespaceInfo;
+	private LinksMigration $linksMigration;
+
+	/**
+	 * @param NamespaceInfo $namespaceInfo
+	 * @param IConnectionProvider $dbProvider
+	 * @param LinkBatchFactory $linkBatchFactory
+	 * @param LanguageConverterFactory $languageConverterFactory
+	 * @param LinksMigration $linksMigration
+	 */
+	public function __construct(
+		NamespaceInfo $namespaceInfo,
+		IConnectionProvider $dbProvider,
+		LinkBatchFactory $linkBatchFactory,
+		LanguageConverterFactory $languageConverterFactory,
+		LinksMigration $linksMigration
+	) {
+		parent::__construct( 'Lonelypages' );
+		$this->namespaceInfo = $namespaceInfo;
+		$this->setDatabaseProvider( $dbProvider );
+		$this->setLinkBatchFactory( $linkBatchFactory );
+		$this->setLanguageConverter( $languageConverterFactory->getLanguageConverter( $this->getContentLanguage() ) );
+		$this->linksMigration = $linksMigration;
 	}
 
 	protected function getPageHeader() {
@@ -51,28 +77,32 @@ class SpecialLonelyPages extends PageQueryPage {
 	}
 
 	public function getQueryInfo() {
-		$tables = [ 'page', 'pagelinks', 'templatelinks' ];
+		$queryInfo = $this->linksMigration->getQueryInfo( 'pagelinks', 'pagelinks', 'LEFT JOIN' );
+		$tables = [ 'page', 'linktarget', 'templatelinks', 'pagelinks' ];
 		$conds = [
-			'pl_namespace IS NULL',
-			'page_namespace' => MediaWikiServices::getInstance()->getNamespaceInfo()->
-				getContentNamespaces(),
+			'pl_from' => null,
+			'page_namespace' => $this->namespaceInfo->getContentNamespaces(),
 			'page_is_redirect' => 0,
-			'tl_namespace IS NULL'
+			'tl_from' => null,
 		];
 		$joinConds = [
-			'pagelinks' => [
+			'templatelinks' => [ 'LEFT JOIN', [ 'tl_target_id=lt_id' ] ],
+			'linktarget' => [
 				'LEFT JOIN', [
-					'pl_namespace = page_namespace',
-					'pl_title = page_title'
-				]
-			],
-			'templatelinks' => [
-				'LEFT JOIN', [
-					'tl_namespace = page_namespace',
-					'tl_title = page_title'
+					"lt_namespace = page_namespace",
+					"lt_title = page_title"
 				]
 			]
 		];
+
+		if ( !in_array( 'linktarget', $queryInfo['tables'] ) ) {
+			$joinConds['pagelinks'] = [
+				'LEFT JOIN', [
+					"pl_namespace = page_namespace",
+					"pl_title = page_title"
+				]
+			];
+		}
 
 		// Allow extensions to modify the query
 		$this->getHookRunner()->onLonelyPagesQuery( $tables, $conds, $joinConds );
@@ -84,16 +114,14 @@ class SpecialLonelyPages extends PageQueryPage {
 				'title' => 'page_title',
 			],
 			'conds' => $conds,
-			'join_conds' => $joinConds
+			'join_conds' => array_merge( $joinConds, $queryInfo['joins'] )
 		];
 	}
 
 	protected function getOrderFields() {
 		// For some crazy reason ordering by a constant
 		// causes a filesort in MySQL 5
-		if ( count( MediaWikiServices::getInstance()->getNamespaceInfo()->
-			getContentNamespaces() ) > 1
-		) {
+		if ( count( $this->namespaceInfo->getContentNamespaces() ) > 1 ) {
 			return [ 'page_namespace', 'page_title' ];
 		} else {
 			return [ 'page_title' ];
@@ -104,3 +132,6 @@ class SpecialLonelyPages extends PageQueryPage {
 		return 'maintenance';
 	}
 }
+
+/** @deprecated class alias since 1.41 */
+class_alias( SpecialLonelyPages::class, 'SpecialLonelyPages' );

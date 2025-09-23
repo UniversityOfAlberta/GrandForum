@@ -18,7 +18,7 @@ if(PHP_SAPI != 'cli'){
         error_reporting(E_ALL);
     }
     else{
-        error_reporting(E_ALL ^ E_STRICT);
+        error_reporting(E_ALL ^ E_STRICT ^ E_DEPRECATED);
     }
     ini_set("display_errors", 1);
 
@@ -46,9 +46,10 @@ if(!defined('TESTING')){
 $path = array( $IP, "$IP/includes", "$IP/languages" );
 set_include_path( implode( PATH_SEPARATOR, $path ) . PATH_SEPARATOR . get_include_path() );
 
-require_once( "$IP/includes/DefaultSettings.php" );
+//require_once( "$IP/includes/DefaultSettings.php" );
 require_once( "$IP/config/ForumConfig.php" );
 require_once( "$IP/Classes/Inflect/Inflect.php" );
+$wgBaseDirectory = MW_INSTALL_PATH;
 
 ## Path settings
 $wgSitename         = $config->getValue("siteName");
@@ -223,8 +224,8 @@ $wgImpersonating = false;
 $wgDelegating = false;
 $wgRealUser;
 
-if (($key = array_search('application/zip', $wgMimeTypeBlacklist)) !== false) {
-    unset($wgMimeTypeBlacklist[$key]);
+if (($key = array_search('application/zip', $wgMimeTypeExclusions)) !== false) {
+    unset($wgMimeTypeExclusions[$key]);
 }
 
 // Whether or not to show custom deprication notices

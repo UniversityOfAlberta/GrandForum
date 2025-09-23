@@ -1,7 +1,5 @@
 <?php
 /**
- * Job queue task base code.
- *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -18,15 +16,23 @@
  * http://www.gnu.org/copyleft/gpl.html
  *
  * @file
- * @defgroup JobQueue JobQueue
  */
 
+use MediaWiki\Http\Telemetry;
+use MediaWiki\Json\FormatJson;
+use MediaWiki\MediaWikiServices;
+use MediaWiki\Page\PageReference;
+use MediaWiki\Title\Title;
+
 /**
- * Class to both describe a background job and handle jobs.
- * To push jobs onto queues, use JobQueueGroup::singleton()->push();
+ * Describe and execute a background job.
+ *
+ * Callers should use JobQueueGroup to enqueue jobs for deferred execution.
+ *
+ * See [the architecture doc](@ref jobqueuearch) for more information.
  *
  * @stable to extend
- *
+ * @since 1.6
  * @ingroup JobQueue
  */
 abstract class Job implements RunnableJob {
@@ -57,74 +63,34 @@ abstract class Job implements RunnableJob {
 	/**
 	 * Create the appropriate object to handle a specific job
 	 *
+	 * @deprecated since 1.40, use JobFactory instead.
+	 *
 	 * @param string $command Job command
-	 * @param array|Title $params Job parameters
-	 * @throws InvalidArgumentException
+	 * @param array|PageReference $params Job parameters
 	 * @return Job
 	 */
 	public static function factory( $command, $params = [] ) {
-		global $wgJobClasses;
+		$factory = MediaWikiServices::getInstance()->getJobFactory();
 
-		if ( $params instanceof Title ) {
-			// Backwards compatibility for old signature ($command, $title, $params)
-			$title = $params;
-			$params = func_num_args() >= 3 ? func_get_arg( 2 ) : [];
-		} elseif ( isset( $params['namespace'] ) && isset( $params['title'] ) ) {
-			// Handle job classes that take title as constructor parameter.
-			// If a newer classes like GenericParameterJob uses these parameters,
-			// then this happens in Job::__construct instead.
-			$title = Title::makeTitle( $params['namespace'], $params['title'] );
-		} else {
-			// Default title for job classes not implementing GenericParameterJob.
-			// This must be a valid title because it not directly passed to
-			// our Job constructor, but rather it's subclasses which may expect
-			// to be able to use it.
-			$title = Title::makeTitle( NS_SPECIAL, 'Blankpage' );
-		}
-
-		if ( isset( $wgJobClasses[$command] ) ) {
-			$handler = $wgJobClasses[$command];
-
-			if ( is_callable( $handler ) ) {
-				$job = call_user_func( $handler, $title, $params );
-			} elseif ( class_exists( $handler ) ) {
-				if ( is_subclass_of( $handler, GenericParameterJob::class ) ) {
-					$job = new $handler( $params );
-				} else {
-					$job = new $handler( $title, $params );
-				}
-			} else {
-				$job = null;
-			}
-
-			if ( $job instanceof Job ) {
-				$job->command = $command;
-
-				return $job;
-			} else {
-				throw new InvalidArgumentException(
-					"Could not instantiate job '$command': bad spec!"
-				);
-			}
-		}
-
-		throw new InvalidArgumentException( "Invalid job command '{$command}'" );
+		// FIXME: fix handling for legacy signature!
+		// @phan-suppress-next-line PhanParamTooFewUnpack one argument is known to be present.
+		return $factory->newJob( ...func_get_args() );
 	}
 
 	/**
 	 * @stable to call
 	 *
 	 * @param string $command
-	 * @param array|Title|null $params
+	 * @param array|PageReference|null $params
 	 */
 	public function __construct( $command, $params = null ) {
-		if ( $params instanceof Title ) {
+		if ( $params instanceof PageReference ) {
 			// Backwards compatibility for old signature ($command, $title, $params)
-			$title = $params;
+			$page = $params;
 			$params = func_num_args() >= 3 ? func_get_arg( 2 ) : [];
 		} else {
 			// Newer jobs may choose to not have a top-level title (e.g. GenericParameterJob)
-			$title = null;
+			$page = null;
 		}
 
 		if ( !is_array( $params ) ) {
@@ -132,18 +98,20 @@ abstract class Job implements RunnableJob {
 		}
 
 		if (
-			$title &&
+			$page &&
 			!isset( $params['namespace'] ) &&
 			!isset( $params['title'] )
 		) {
 			// When constructing this class for submitting to the queue,
-			// normalise the $title arg of old job classes as part of $params.
-			$params['namespace'] = $title->getNamespace();
-			$params['title'] = $title->getDBkey();
+			// normalise the $page arg of old job classes as part of $params.
+			$params['namespace'] = $page->getNamespace();
+			$params['title'] = $page->getDBkey();
 		}
 
 		$this->command = $command;
-		$this->params = $params + [ 'requestId' => WebRequest::getRequestId() ];
+		$this->params = $params + [
+			'requestId' => Telemetry::getInstance()->getRequestId(),
+		];
 
 		if ( $this->title === null ) {
 			// Set this field for access via getTitle().
@@ -224,9 +192,8 @@ abstract class Job implements RunnableJob {
 	 * @since 1.22
 	 */
 	public function getReleaseTimestamp() {
-		return isset( $this->params['jobReleaseTimestamp'] )
-			? wfTimestampOrNull( TS_UNIX, $this->params['jobReleaseTimestamp'] )
-			: null;
+		$time = wfTimestampOrNull( TS_UNIX, $this->params['jobReleaseTimestamp'] ?? null );
+		return $time ? (int)$time : null;
 	}
 
 	/**
@@ -234,9 +201,8 @@ abstract class Job implements RunnableJob {
 	 * @since 1.26
 	 */
 	public function getQueuedTimestamp() {
-		return isset( $this->metadata['timestamp'] )
-			? wfTimestampOrNull( TS_UNIX, $this->metadata['timestamp'] )
-			: null;
+		$time = wfTimestampOrNull( TS_UNIX, $this->metadata['timestamp'] ?? null );
+		return $time ? (int)$time : null;
 	}
 
 	/**
@@ -414,7 +380,7 @@ abstract class Job implements RunnableJob {
 					foreach ( $value as $k => $v ) {
 						$json = FormatJson::encode( $v );
 						if ( $json === false || mb_strlen( $json ) > 512 ) {
-							$filteredValue[$k] = gettype( $v ) . '(...)';
+							$filteredValue[$k] = get_debug_type( $v ) . '(...)';
 						} else {
 							$filteredValue[$k] = $v;
 						}
@@ -425,13 +391,17 @@ abstract class Job implements RunnableJob {
 						$value = "array(" . count( $value ) . ")";
 					}
 				} elseif ( is_object( $value ) && !method_exists( $value, '__toString' ) ) {
-					$value = "object(" . get_class( $value ) . ")";
+					$value = get_debug_type( $value );
 				}
 
 				$flatValue = (string)$value;
 				if ( mb_strlen( $flatValue ) > 1024 ) {
 					$flatValue = "string(" . mb_strlen( $value ) . ")";
 				}
+
+				// Remove newline characters from the value, since
+				// newlines indicate new job lines in log files
+				$flatValue = preg_replace( '/\s+/', ' ', $flatValue );
 
 				$paramString .= "$key={$flatValue}";
 			}
@@ -446,7 +416,7 @@ abstract class Job implements RunnableJob {
 
 		$s = $this->command;
 		if ( is_object( $this->title ) ) {
-			$s .= " {$this->title->getPrefixedDBkey()}";
+			$s .= ' ' . $this->title->getPrefixedDBkey();
 		}
 		if ( $paramString != '' ) {
 			$s .= " $paramString";

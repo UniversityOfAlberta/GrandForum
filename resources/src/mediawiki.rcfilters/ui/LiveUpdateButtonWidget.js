@@ -1,20 +1,20 @@
 /**
- * Widget for toggling live updates
+ * Widget for toggling live updates.
  *
  * @class mw.rcfilters.ui.LiveUpdateButtonWidget
+ * @ignore
  * @extends OO.ui.ToggleButtonWidget
  *
- * @constructor
  * @param {mw.rcfilters.Controller} controller
  * @param {mw.rcfilters.dm.ChangesListViewModel} changesListModel
  * @param {Object} [config] Configuration object
  */
-var LiveUpdateButtonWidget = function MwRcfiltersUiLiveUpdateButtonWidget( controller, changesListModel, config ) {
+const LiveUpdateButtonWidget = function MwRcfiltersUiLiveUpdateButtonWidget( controller, changesListModel, config ) {
 	config = config || {};
 
 	// Parent
-	LiveUpdateButtonWidget.parent.call( this, $.extend( {
-		label: mw.message( 'rcfilters-liveupdates-button' ).text()
+	LiveUpdateButtonWidget.super.call( this, Object.assign( {
+		label: mw.msg( 'rcfilters-liveupdates-button' )
 	}, config ) );
 
 	this.controller = controller;
@@ -50,11 +50,11 @@ LiveUpdateButtonWidget.prototype.onClick = function () {
 LiveUpdateButtonWidget.prototype.setState = function ( enable ) {
 	this.setValue( enable );
 	this.setIcon( enable ? 'stop' : 'play' );
-	this.setTitle( mw.message(
+	this.setTitle( mw.msg(
 		enable ?
 			'rcfilters-liveupdates-button-title-on' :
 			'rcfilters-liveupdates-button-title-off'
-	).text() );
+	) );
 };
 
 /**

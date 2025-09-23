@@ -2,7 +2,7 @@
 /**
  * MediaWiki page data importer.
  *
- * Copyright © 2003,2005 Brion Vibber <brion@pobox.com>
+ * Copyright © 2003,2005 Brooke Vibber <bvibber@wikimedia.org>
  * https://www.mediawiki.org/
  *
  * This program is free software; you can redistribute it and/or modify
@@ -23,7 +23,11 @@
  * @file
  * @ingroup SpecialPage
  */
+
+use MediaWiki\MainConfigNames;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Status\Status;
+use Wikimedia\AtEase\AtEase;
 
 /**
  * Imports a XML dump from a file (either from file upload, files on disk, or HTTP)
@@ -55,13 +59,28 @@ class ImportStreamSource implements ImportSource {
 	}
 
 	/**
+	 * @return bool
+	 */
+	public function isSeekable() {
+		return stream_get_meta_data( $this->mHandle )['seekable'] ?? false;
+	}
+
+	/**
+	 * @param int $offset
+	 * @return int
+	 */
+	public function seek( int $offset ) {
+		return fseek( $this->mHandle, $offset );
+	}
+
+	/**
 	 * @param string $filename
 	 * @return Status
 	 */
 	public static function newFromFile( $filename ) {
-		Wikimedia\suppressWarnings();
+		AtEase::suppressWarnings();
 		$file = fopen( $filename, 'rt' );
-		Wikimedia\restoreWarnings();
+		AtEase::restoreWarnings();
 		if ( !$file ) {
 			return Status::newFatal( "importcantopen" );
 		}
@@ -73,6 +92,7 @@ class ImportStreamSource implements ImportSource {
 	 * @return Status
 	 */
 	public static function newFromUpload( $fieldname = "xmlimport" ) {
+		// phpcs:ignore MediaWiki.Usage.SuperGlobalsUsage.SuperGlobals
 		$upload =& $_FILES[$fieldname];
 
 		if ( $upload === null || !$upload['name'] ) {
@@ -112,7 +132,8 @@ class ImportStreamSource implements ImportSource {
 	 * @return Status
 	 */
 	public static function newFromURL( $url, $method = 'GET' ) {
-		global $wgHTTPImportTimeout;
+		$httpImportTimeout = MediaWikiServices::getInstance()->getMainConfig()->get(
+			MainConfigNames::HTTPImportTimeout );
 		wfDebug( __METHOD__ . ": opening $url" );
 		# Use the standard HTTP fetch function; it times out
 		# quicker and sorts out user-agent problems which might
@@ -123,7 +144,7 @@ class ImportStreamSource implements ImportSource {
 			$url,
 			[
 				'followRedirects' => true,
-				'timeout' => $wgHTTPImportTimeout
+				'timeout' => $httpImportTimeout
 			],
 			__METHOD__
 		);

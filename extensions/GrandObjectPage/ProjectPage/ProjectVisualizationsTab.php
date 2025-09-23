@@ -19,7 +19,7 @@ class ProjectVisualizationsTab extends AbstractTab {
     function generateBody(){
         global $wgUser, $wgOut, $wgServer, $wgScriptPath;
         $this->html = "";
-        if($wgUser->isLoggedIn()){
+        if($wgUser->isRegistered()){
             $wgOut->addScript("<script type='text/javascript'>
                 $(document).ready(function(){
                     $('#projectVis').tabs({selected: 0});
@@ -72,7 +72,7 @@ class ProjectVisualizationsTab extends AbstractTab {
     
     function showTimeline($project, $visibility){
         global $wgServer, $wgScriptPath, $wgTitle, $wgOut, $wgUser;
-        if($wgUser->isLoggedIn()){
+        if($wgUser->isRegistered()){
             $dataUrl = "$wgServer$wgScriptPath/index.php/{$wgTitle->getNSText()}:{$wgTitle->getText()}?action=getProjectTimelineData&project={$project->getId()}";
             $timeline = new VisTimeline($dataUrl);
             
@@ -98,7 +98,7 @@ class ProjectVisualizationsTab extends AbstractTab {
     
     function showDoughnut($project, $visibility){
         global $wgServer, $wgScriptPath, $wgTitle, $wgOut, $wgUser;
-        if($wgUser->isLoggedIn()){
+        if($wgUser->isRegistered()){
             $dataUrl = "$wgServer$wgScriptPath/index.php/{$wgTitle->getNSText()}:{$wgTitle->getText()}?action=getProjectDoughnutData&project={$project->getId()}";
             $doughnut = new Doughnut($dataUrl);
             $wgOut->addScript("<script type='text/javascript'>
@@ -120,7 +120,7 @@ class ProjectVisualizationsTab extends AbstractTab {
     
     function showChord($project, $visibility){
         global $wgServer, $wgScriptPath, $wgTitle, $wgOut, $wgUser;
-        if($wgUser->isLoggedIn()){
+        if($wgUser->isRegistered()){
             $dataUrl = "$wgServer$wgScriptPath/index.php/{$wgTitle->getNSText()}:{$wgTitle->getText()}?action=getProjectChordData&project={$project->getId()}";
             $chord = new Chord($dataUrl);
             $wgOut->addScript("<script type='text/javascript'>
@@ -142,7 +142,7 @@ class ProjectVisualizationsTab extends AbstractTab {
     
     function showWordle($project, $visibility){
         global $wgServer, $wgScriptPath, $wgTitle, $wgOut, $wgUser;
-        if($wgUser->isLoggedIn()){
+        if($wgUser->isRegistered()){
             $dataUrl = "$wgServer$wgScriptPath/index.php/{$wgTitle->getNSText()}:{$wgTitle->getText()}?action=getProjectWordleData&project={$project->getId()}";
             $wordle = new Wordle($dataUrl);
             $wordle->width = "100%";

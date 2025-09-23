@@ -1,5 +1,40 @@
 # Release History
 
+## v3.0.0
+
+### Changes for users
+
+* [BREAKING CHANGE] Drop PHP 7.2 and PHP 7.3 support
+* [BREAKING CHANGE] Drop functions not in class
+* AtEase: Stop setting E_STRICT on PHP >= 8.4
+
+### Build changes
+
+* Fix coverage of AtEase::suppressWarnings()
+* Simplify file structure
+* AtEaseTest: Minor cleanup
+* build: Add phan
+* build: Upgrade mediawiki/mediawiki-codesniffer from 35.0.0 to 44.0.0
+* build: Upgrade mediawiki/minus-x from 1.1.1 to 1.1.3
+* build: Upgrade ockcyp/covers-validator from 1.3.3 to 1.6.0
+* build: Upgrade php-parallel-lint/php-console-highlighter from 0.5.0 to 1.0.0
+* build: Upgrade php-parallel-lint/php-parallel-lint from 1.2.0 to 1.4.0
+* build: Upgrade phpunit/phpunit from ^8.5 to 9.6.16
+
+## v2.1.0
+
+### Changed
+
+* Dropped support for PHP 7.0/7.1 and HHVM
+* build: Updated several dev dependencies
+* src: Started using real variadic arguments
+* doc: Restore Doxygen welcome page
+* build: Dropped Travis testing
+
+### Fixed
+* src: AtEase::quietCall should restore error level in exception case
+* README: Fix markdown display of code
+
 ## v2.0.0
 
 ### Added

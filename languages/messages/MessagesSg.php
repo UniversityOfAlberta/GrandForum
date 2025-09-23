@@ -1,10 +1,8 @@
 <?php
 /** Sango (Sängö)
  *
- * To improve a translation please visit https://translatewiki.net
- *
- * @ingroup Language
  * @file
+ * @ingroup Languages
  *
  * @author Ice201 (on sg.wikipedia.org)
  * @author Mdkidiri

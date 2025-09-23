@@ -19,12 +19,20 @@
  * @ingroup Parser
  */
 
+namespace MediaWiki\Parser;
+
+use InvalidArgumentException;
+use MediaWiki\Message\Message;
+use MediaWiki\Title\Title;
+use RuntimeException;
+use Stringable;
+
 /**
  * An expansion frame, used as a context to expand the result of preprocessToObj()
  * @ingroup Parser
  */
 // phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class PPFrame_Hash implements PPFrame {
+class PPFrame_Hash implements Stringable, PPFrame {
 
 	/**
 	 * @var Parser
@@ -40,21 +48,29 @@ class PPFrame_Hash implements PPFrame {
 	 * @var Title
 	 */
 	public $title;
+
+	/**
+	 * @var (string|false)[]
+	 */
 	public $titleCache;
 
 	/**
 	 * Hashtable listing templates which are disallowed for expansion in this frame,
 	 * having been encountered previously in parent frames.
+	 * @var true[]
 	 */
 	public $loopCheckHash;
 
 	/**
 	 * Recursion depth of this frame, top = 0
 	 * Note that this is NOT the same as expansion depth in expand()
+	 * @var int
 	 */
 	public $depth;
 
+	/** @var bool */
 	private $volatile = false;
+	/** @var int|null */
 	private $ttl = null;
 
 	/**
@@ -89,10 +105,9 @@ class PPFrame_Hash implements PPFrame {
 	 * Create a new child frame
 	 * $args is optionally a multi-root PPNode or array containing the template arguments
 	 *
-	 * @param array|bool|PPNode_Hash_Array $args
-	 * @param Title|bool $title
+	 * @param PPNode[]|false|PPNode_Hash_Array $args
+	 * @param Title|false $title
 	 * @param int $indexOffset
-	 * @throws MWException
 	 * @return PPTemplateFrame_Hash
 	 */
 	public function newChild( $args = false, $title = false, $indexOffset = 0 ) {
@@ -105,7 +120,7 @@ class PPFrame_Hash implements PPFrame {
 			if ( $args instanceof PPNode_Hash_Array ) {
 				$args = $args->value;
 			} elseif ( !is_array( $args ) ) {
-				throw new MWException( __METHOD__ . ': $args must be array or PPNode_Hash_Array' );
+				throw new InvalidArgumentException( __METHOD__ . ': $args must be array or PPNode_Hash_Array' );
 			}
 			foreach ( $args as $arg ) {
 				$bits = $arg->splitArg();
@@ -113,10 +128,12 @@ class PPFrame_Hash implements PPFrame {
 					// Numbered parameter
 					$index = $bits['index'] - $indexOffset;
 					if ( isset( $namedArgs[$index] ) || isset( $numberedArgs[$index] ) ) {
-						$this->parser->getOutput()->addWarning( wfMessage( 'duplicate-args-warning',
-							wfEscapeWikiText( $this->title ),
-							wfEscapeWikiText( $title ),
-							wfEscapeWikiText( $index ) )->text() );
+						$this->parser->getOutput()->addWarningMsg(
+							'duplicate-args-warning',
+							Message::plaintextParam( (string)$this->title ),
+							Message::plaintextParam( (string)$title ),
+							Message::numParam( $index )
+						);
 						$this->parser->addTrackingCategory( 'duplicate-args-category' );
 					}
 					$numberedArgs[$index] = $bits['value'];
@@ -125,10 +142,12 @@ class PPFrame_Hash implements PPFrame {
 					// Named parameter
 					$name = trim( $this->expand( $bits['name'], PPFrame::STRIP_COMMENTS ) );
 					if ( isset( $namedArgs[$name] ) || isset( $numberedArgs[$name] ) ) {
-						$this->parser->getOutput()->addWarning( wfMessage( 'duplicate-args-warning',
-							wfEscapeWikiText( $this->title ),
-							wfEscapeWikiText( $title ),
-							wfEscapeWikiText( $name ) )->text() );
+						$this->parser->getOutput()->addWarningMsg(
+							'duplicate-args-warning',
+							Message::plaintextParam( (string)$this->title ),
+							Message::plaintextParam( (string)$title ),
+							Message::plaintextParam( $name )
+						);
 						$this->parser->addTrackingCategory( 'duplicate-args-category' );
 					}
 					$namedArgs[$name] = $bits['value'];
@@ -140,7 +159,6 @@ class PPFrame_Hash implements PPFrame {
 	}
 
 	/**
-	 * @throws MWException
 	 * @param string|int $key
 	 * @param string|PPNode $root
 	 * @param int $flags
@@ -152,7 +170,6 @@ class PPFrame_Hash implements PPFrame {
 	}
 
 	/**
-	 * @throws MWException
 	 * @param string|PPNode $root
 	 * @param int $flags
 	 * @return string
@@ -237,12 +254,12 @@ class PPFrame_Hash implements PPFrame {
 			} elseif ( is_array( $contextNode ) ) {
 				// Node descriptor array
 				if ( count( $contextNode ) !== 2 ) {
-					throw new MWException( __METHOD__ .
+					throw new RuntimeException( __METHOD__ .
 						': found an array where a node descriptor should be' );
 				}
-				list( $contextName, $contextChildren ) = $contextNode;
+				[ $contextName, $contextChildren ] = $contextNode;
 			} else {
-				throw new MWException( __METHOD__ . ': Invalid parameter type' );
+				throw new RuntimeException( __METHOD__ . ': Invalid parameter type' );
 			}
 
 			// Handle node descriptor array or tree object
@@ -288,13 +305,17 @@ class PPFrame_Hash implements PPFrame {
 				# HTML-style comment
 				# Remove it in HTML, pre+remove and STRIP_COMMENTS modes
 				# Not in RECOVER_COMMENTS mode (msgnw) though.
-				if ( ( $this->parser->ot['html']
-					|| ( $this->parser->ot['pre'] && $this->parser->mOptions->getRemoveComments() )
+				if ( ( $this->parser->getOutputType() === Parser::OT_HTML
+					|| ( $this->parser->getOutputType() === Parser::OT_PREPROCESS &&
+						$this->parser->getOptions()->getRemoveComments() )
 					|| ( $flags & PPFrame::STRIP_COMMENTS )
 					) && !( $flags & PPFrame::RECOVER_COMMENTS )
 				) {
 					$out .= '';
-				} elseif ( $this->parser->ot['wiki'] && !( $flags & PPFrame::RECOVER_COMMENTS ) ) {
+				} elseif (
+					$this->parser->getOutputType() === Parser::OT_WIKI &&
+					!( $flags & PPFrame::RECOVER_COMMENTS )
+				) {
 					# Add a strip marker in PST mode so that pstPass2() can
 					# run some old-fashioned regexes on the result.
 					# Not in RECOVER_COMMENTS mode (extractSections) though.
@@ -308,7 +329,7 @@ class PPFrame_Hash implements PPFrame {
 				# OT_WIKI will only respect <ignore> in substed templates.
 				# The other output types respect it unless NO_IGNORE is set.
 				# extractSections() sets NO_IGNORE and so never respects it.
-				if ( ( !isset( $this->parent ) && $this->parser->ot['wiki'] )
+				if ( ( !isset( $this->parent ) && $this->parser->getOutputType() === Parser::OT_WIKI )
 					|| ( $flags & PPFrame::NO_IGNORE )
 				) {
 					$out .= $contextChildren[0];
@@ -337,11 +358,12 @@ class PPFrame_Hash implements PPFrame {
 					}
 					$out .= $s;
 				} else {
-					$out .= $this->parser->extensionSubstitution( $bits, $this );
+					$out .= $this->parser->extensionSubstitution( $bits, $this,
+						(bool)( $flags & PPFrame::PROCESS_NOWIKI ) );
 				}
 			} elseif ( $contextName === 'h' ) {
 				# Heading
-				if ( $this->parser->ot['html'] ) {
+				if ( $this->parser->getOutputType() === Parser::OT_HTML ) {
 					# Expand immediately and insert heading index marker
 					$s = $this->expand( $contextChildren, $flags );
 					$bits = PPNode_Hash_Tree::splitRawHeading( $contextChildren );
@@ -350,7 +372,7 @@ class PPFrame_Hash implements PPFrame {
 					$serial = count( $this->parser->mHeadings ) - 1;
 					$marker = Parser::MARKER_PREFIX . "-h-$serial-" . Parser::MARKER_SUFFIX;
 					$s = substr( $s, 0, $bits['level'] ) . $marker . substr( $s, $bits['level'] );
-					$this->parser->mStripState->addGeneral( $marker, '' );
+					$this->parser->getStripState()->addGeneral( $marker, '' );
 					$out .= $s;
 				} else {
 					# Expand in virtual stack
@@ -507,8 +529,8 @@ class PPFrame_Hash implements PPFrame {
 	}
 
 	/**
-	 * @param bool $level
-	 * @return array|bool|string
+	 * @param string|false $level
+	 * @return false|string
 	 */
 	public function getPDBK( $level = false ) {
 		if ( $level === false ) {
@@ -604,8 +626,6 @@ class PPFrame_Hash implements PPFrame {
 	}
 
 	/**
-	 * Set the TTL
-	 *
 	 * @param int $ttl
 	 */
 	public function setTTL( $ttl ) {
@@ -615,11 +635,12 @@ class PPFrame_Hash implements PPFrame {
 	}
 
 	/**
-	 * Get the TTL
-	 *
 	 * @return int|null
 	 */
 	public function getTTL() {
 		return $this->ttl;
 	}
 }
+
+/** @deprecated class alias since 1.43 */
+class_alias( PPFrame_Hash::class, 'PPFrame_Hash' );

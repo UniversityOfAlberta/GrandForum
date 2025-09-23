@@ -18,14 +18,18 @@
  * @file
  */
 
+namespace MediaWiki\Title;
+
 /**
  * A parser that translates page titles into ForeignTitle objects.
  */
 interface ForeignTitleFactory {
 	/**
-	 * Creates a ForeignTitle object based on the page title, and optionally the
-	 * namespace ID, of a page on a foreign wiki. These values could be, for
-	 * example, the <title> and <ns> attributes found in an XML dump.
+	 * Create a ForeignTitle object.
+	 *
+	 * Based on the page title and optionally the namespace ID, of a page on a foreign wiki.
+	 * These values could be, for example, the `<title>` and `<ns>` attributes found in an
+	 * XML dump.
 	 *
 	 * @param string $title The page title
 	 * @param int|null $ns The namespace ID, or null if this data is not available
@@ -33,3 +37,6 @@ interface ForeignTitleFactory {
 	 */
 	public function createForeignTitle( $title, $ns = null );
 }
+
+/** @deprecated class alias since 1.41 */
+class_alias( ForeignTitleFactory::class, 'ForeignTitleFactory' );

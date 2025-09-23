@@ -3,28 +3,30 @@ declare( strict_types = 1 );
 
 namespace Wikimedia\Parsoid\Config;
 
-use DOMDocument;
-use DOMElement;
-use DOMNode;
+use Wikimedia\Assert\Assert;
+use Wikimedia\Bcp47Code\Bcp47Code;
+use Wikimedia\Parsoid\Core\ContentMetadataCollector;
 use Wikimedia\Parsoid\Core\ContentModelHandler;
 use Wikimedia\Parsoid\Core\ResourceLimitExceededException;
+use Wikimedia\Parsoid\Core\Sanitizer;
+use Wikimedia\Parsoid\Core\TOCData;
+use Wikimedia\Parsoid\DOM\Document;
+use Wikimedia\Parsoid\DOM\DocumentFragment;
 use Wikimedia\Parsoid\Logger\ParsoidLogger;
 use Wikimedia\Parsoid\Parsoid;
 use Wikimedia\Parsoid\Tokens\Token;
-use Wikimedia\Parsoid\Utils\DataBag;
-use Wikimedia\Parsoid\Utils\DOMCompat;
-use Wikimedia\Parsoid\Utils\DOMUtils;
+use Wikimedia\Parsoid\Utils\DOMDataUtils;
+use Wikimedia\Parsoid\Utils\PHPUtils;
 use Wikimedia\Parsoid\Utils\Title;
 use Wikimedia\Parsoid\Utils\TitleException;
-use Wikimedia\Parsoid\Utils\TitleNamespace;
 use Wikimedia\Parsoid\Utils\TokenUtils;
+use Wikimedia\Parsoid\Utils\UrlUtils;
 use Wikimedia\Parsoid\Utils\Utils;
+use Wikimedia\Parsoid\Wikitext\ContentModelHandler as WikitextContentModelHandler;
 use Wikimedia\Parsoid\Wt2Html\Frame;
 use Wikimedia\Parsoid\Wt2Html\PageConfigFrame;
 use Wikimedia\Parsoid\Wt2Html\ParserPipelineFactory;
-use Wikimedia\Parsoid\Wt2Html\TT\Sanitizer;
-
-// phpcs:disable MediaWiki.Commenting.FunctionComment.MissingDocumentationPublic
+use Wikimedia\Parsoid\Wt2Html\TreeBuilder\RemexPipeline;
 
 /**
  * Environment/Envelope class for Parsoid
@@ -43,6 +45,12 @@ class Env {
 	/** @var DataAccess */
 	private $dataAccess;
 
+	/** @var ContentMetadataCollector */
+	private $metadata;
+
+	/** @var TOCData Table of Contents metadata for the article */
+	private $tocData;
+
 	/**
 	 * The top-level frame for this conversion.  This largely wraps the
 	 * PageConfig.
@@ -57,14 +65,6 @@ class Env {
 	// we've removed async parsing.
 
 	/**
-	 * @var bool Are data accesses disabled?
-	 *
-	 * FIXME: This can probably moved to a NoDataAccess instance, rather than
-	 * being an explicit mode of Parsoid.  See T229469
-	 */
-	private $noDataAccess;
-
-	/**
 	 * @var bool Are we using native template expansion?
 	 *
 	 * Parsoid implements native template expansion, which is currently
@@ -76,17 +76,20 @@ class Env {
 	 */
 	private $nativeTemplateExpansion;
 
-	/** @phan-var array<string,int> */
+	/** @var array<string,int> */
 	private $wt2htmlUsage = [];
 
-	/** @phan-var array<string,int> */
+	/** @var array<string,int> */
 	private $html2wtUsage = [];
 
-	/** @var DOMDocument[] */
-	private $liveDocs = [];
+	/** @var bool */
+	private $profiling = false;
+
+	/** @var array<Profile> */
+	private $profileStack = [];
 
 	/** @var bool */
-	private $wrapSections = true;
+	private $wrapSections;
 
 	/** @var string */
 	private $requestOffsetType = 'byte';
@@ -94,12 +97,15 @@ class Env {
 	/** @var string */
 	private $currentOffsetType = 'byte';
 
+	/** @var bool */
+	private $skipLanguageConversionPass = false;
+
 	/** @var array<string,mixed> */
 	private $behaviorSwitches = [];
 
 	/**
-	 * Maps fragment id to the fragment forest (array of DOMNodes).
-	 * @var array<string,DOMNode[]>
+	 * Maps fragment id to the fragment forest (array of Nodes).
+	 * @var array<string,DocumentFragment>
 	 */
 	private $fragmentMap = [];
 
@@ -111,11 +117,17 @@ class Env {
 	/** @var int used to generate uids as needed during this parse */
 	private $uid = 1;
 
+	/** @var int used to generate annotation uids as needed during this parse */
+	private $annUid = 0;
+
 	/** @var array[] Lints recorded */
 	private $lints = [];
 
 	/** @var bool logLinterData */
 	public $logLinterData = false;
+
+	/** @var array linterOverrides */
+	private $linterOverrides = [];
 
 	/** @var bool[] */
 	private $traceFlags;
@@ -128,12 +140,6 @@ class Env {
 
 	/** @var ParsoidLogger */
 	private $parsoidLogger;
-
-	/** @var float */
-	public $startTime;
-
-	/** @var bool */
-	private $scrubWikitext = false;
 
 	/**
 	 * The default content version that Parsoid assumes it's serializing or
@@ -153,7 +159,7 @@ class Env {
 	/**
 	 * If non-null, the language variant used for Parsoid HTML;
 	 * we convert to this if wt2html, or from this if html2wt.
-	 * @var string
+	 * @var ?Bcp47Code
 	 */
 	private $htmlVariantLanguage;
 
@@ -161,7 +167,7 @@ class Env {
 	 * If non-null, the language variant to be used for wikitext.
 	 * If null, heuristics will be used to identify the original wikitext variant
 	 * in wt2html mode, and in html2wt mode new or edited HTML will be left unconverted.
-	 * @var string
+	 * @var ?Bcp47Code
 	 */
 	private $wtVariantLanguage;
 
@@ -175,22 +181,16 @@ class Env {
 	public $styleTagKeys = [];
 
 	/** @var bool */
-	public $pageBundle = false;
+	public $pageBundle;
 
 	/** @var bool */
 	public $discardDataParsoid = false;
 
-	/** @var DOMNode */
-	private $origDOM;
-
-	/** @var DOMDocument */
+	/** @var Document */
 	private $domDiff;
 
-	/**
-	 * Page properties (module resources primarily) that need to be output
-	 * @var array
-	 */
-	private $outputProps = [];
+	/** @var bool */
+	public $hasAnnotations;
 
 	/**
 	 * PORT-FIXME: public currently
@@ -224,49 +224,78 @@ class Env {
 	public $extensionCache = [];
 
 	/**
+	 * The current top-level document. During wt2html, this will be the document
+	 * associated with the RemexPipeline. During html2wt, this will be the
+	 * input document, typically passed as a constructor option.
+	 *
+	 * @var Document
+	 */
+	public $topLevelDoc;
+
+	/**
+	 * The RemexPipeline used during a wt2html operation.
+	 *
+	 * @var RemexPipeline|null
+	 */
+	private $remexPipeline;
+
+	/**
+	 * @var WikitextContentModelHandler
+	 */
+	private $wikitextContentModelHandler;
+
+	private ?Title $cachedContextTitle = null;
+
+	/**
 	 * @param SiteConfig $siteConfig
 	 * @param PageConfig $pageConfig
 	 * @param DataAccess $dataAccess
-	 * @param array|null $options
+	 * @param ContentMetadataCollector $metadata
+	 * @param ?array $options
 	 *  - wrapSections: (bool) Whether `<section>` wrappers should be added.
 	 *  - pageBundle: (bool) Sets ids on nodes and stores data-* attributes in a JSON blob.
-	 *  - scrubWikitext: (bool) Indicates emit "clean" wikitext.
 	 *  - traceFlags: (array) Flags indicating which components need to be traced
 	 *  - dumpFlags: (bool[]) Dump flags
 	 *  - debugFlags: (bool[]) Debug flags
-	 *  - noDataAccess: boolean
 	 *  - nativeTemplateExpansion: boolean
 	 *  - discardDataParsoid: boolean
 	 *  - offsetType: 'byte' (default), 'ucs2', 'char'
-	 *                See `Parsoid\Wt2Html\PP\Processors\ConvertOffsets`.
+	 *                See `Parsoid\Wt2Html\DOM\Processors\ConvertOffsets`.
 	 *  - logLinterData: (bool) Should we log linter data if linting is enabled?
-	 *  - htmlVariantLanguage: string|null
-	 *      If non-null, the language variant used for Parsoid HTML;
-	 *      we convert to this if wt2html, or from this if html2wt.
-	 *  - wtVariantLanguage: string|null
-	 *      If non-null, the language variant to be used for wikitext.
+	 *  - linterOverrides: (array) Override the site linting configs.
+	 *  - skipLanguageConversionPass: (bool) Should we skip the language
+	 *      conversion pass? (defaults to false)
+	 *  - htmlVariantLanguage: Bcp47Code|null
+	 *      If non-null, the language variant used for Parsoid HTML
+	 *      as a BCP 47 object.
+	 *      We convert to this if wt2html, or from this if html2wt.
+	 *  - wtVariantLanguage: Bcp47Code|null
+	 *      If non-null, the language variant to be used for wikitext
+	 *      as a BCP 47 object.
 	 *      If null, heuristics will be used to identify the original
 	 *      wikitext variant in wt2html mode, and in html2wt mode new
 	 *      or edited HTML will be left unconverted.
 	 *  - logLevels: (string[]) Levels to log
+	 *  - topLevelDoc: (Document) Set explicitly when serializing otherwise
+	 *      it gets initialized for parsing.
 	 */
 	public function __construct(
-		SiteConfig $siteConfig, PageConfig $pageConfig, DataAccess $dataAccess, array $options = null
+		SiteConfig $siteConfig,
+		PageConfig $pageConfig,
+		DataAccess $dataAccess,
+		ContentMetadataCollector $metadata,
+		?array $options = null
 	) {
-		$options = $options ?? [];
+		self::checkPlatform();
+		$options ??= [];
 		$this->siteConfig = $siteConfig;
 		$this->pageConfig = $pageConfig;
 		$this->dataAccess = $dataAccess;
+		$this->metadata = $metadata;
+		$this->tocData = new TOCData();
 		$this->topFrame = new PageConfigFrame( $this, $pageConfig, $siteConfig );
-		if ( isset( $options['scrubWikitext'] ) ) {
-			$this->scrubWikitext = !empty( $options['scrubWikitext'] );
-		}
-		if ( isset( $options['wrapSections'] ) ) {
-			$this->wrapSections = !empty( $options['wrapSections'] );
-		}
-		if ( isset( $options['pageBundle'] ) ) {
-			$this->pageBundle = !empty( $options['pageBundle'] );
-		}
+		$this->wrapSections = (bool)( $options['wrapSections'] ?? true );
+		$this->pageBundle = (bool)( $options['pageBundle'] ?? false );
 		$this->pipelineFactory = new ParserPipelineFactory( $this );
 		$defaultContentVersion = Parsoid::defaultHTMLVersion();
 		$this->inputContentVersion = $options['inputContentVersion'] ?? $defaultContentVersion;
@@ -277,13 +306,25 @@ class Env {
 			throw new \UnexpectedValueException(
 				$this->outputContentVersion . ' is not an available content version.' );
 		}
-		$this->htmlVariantLanguage = $options['htmlVariantLanguage'] ?? null;
-		$this->wtVariantLanguage = $options['wtVariantLanguage'] ?? null;
-		$this->noDataAccess = !empty( $options['noDataAccess'] );
+		$this->skipLanguageConversionPass =
+			$options['skipLanguageConversionPass'] ?? false;
+		$this->htmlVariantLanguage = !empty( $options['htmlVariantLanguage'] ) ?
+			Utils::mwCodeToBcp47(
+				$options['htmlVariantLanguage'],
+				// Be strict in what we accept here.
+				true, $this->siteConfig->getLogger()
+			) : null;
+		$this->wtVariantLanguage = !empty( $options['wtVariantLanguage'] ) ?
+			Utils::mwCodeToBcp47(
+				$options['wtVariantLanguage'],
+				// Be strict in what we accept here.
+				true, $this->siteConfig->getLogger()
+			) : null;
 		$this->nativeTemplateExpansion = !empty( $options['nativeTemplateExpansion'] );
 		$this->discardDataParsoid = !empty( $options['discardDataParsoid'] );
 		$this->requestOffsetType = $options['offsetType'] ?? 'byte';
 		$this->logLinterData = !empty( $options['logLinterData'] );
+		$this->linterOverrides = $options['linterOverrides'] ?? [];
 		$this->traceFlags = $options['traceFlags'] ?? [];
 		$this->dumpFlags = $options['dumpFlags'] ?? [];
 		$this->debugFlags = $options['debugFlags'] ?? [];
@@ -293,11 +334,96 @@ class Env {
 			'dumpFlags' => $this->dumpFlags,
 			'traceFlags' => $this->traceFlags
 		] );
+		if ( $this->hasTraceFlag( 'time' ) ) {
+			$this->profiling = true;
+		}
+		$this->setupTopLevelDoc( $options['topLevelDoc'] ?? null );
+		// NOTE:
+		// Don't try to do this in setupTopLevelDoc since it is called on existing Env objects
+		// in a couple of places. That then leads to a multiple-write to tocdata property on
+		// the metadata object.
+		//
+		// setupTopLevelDoc is called outside Env in these couple cases:
+		// 1. html2wt in ContentModelHandler for dealing with
+		//    missing original HTML.
+		// 2. ParserTestRunner's html2html tests
+		//
+		// That is done to either reuse an existing Env object (as in 1.)
+		// OR to refresh the attached DOC (html2html as in 2.).
+		// Constructing a new Env in both cases could eliminate this issue.
+		$this->metadata->setTOCData( $this->tocData );
+
+		$this->wikitextContentModelHandler = new WikitextContentModelHandler( $this );
 	}
 
 	/**
+	 * Check to see if the PHP platform is sensible
+	 */
+	private static function checkPlatform() {
+		static $checked;
+		if ( !$checked ) {
+			$highBytes =
+				"\x80\x81\x82\x83\x84\x85\x86\x87\x88\x89\x8a\x8b\x8c\x8d\x8e\x8f" .
+				"\x90\x91\x92\x93\x94\x95\x96\x97\x98\x99\x9a\x9b\x9c\x9d\x9e\x9f" .
+				"\xa0\xa1\xa2\xa3\xa4\xa5\xa6\xa7\xa8\xa9\xaa\xab\xac\xad\xae\xaf" .
+				"\xb0\xb1\xb2\xb3\xb4\xb5\xb6\xb7\xb8\xb9\xba\xbb\xbc\xbd\xbe\xbf" .
+				"\xc0\xc1\xc2\xc3\xc4\xc5\xc6\xc7\xc8\xc9\xca\xcb\xcc\xcd\xce\xcf" .
+				"\xd0\xd1\xd2\xd3\xd4\xd5\xd6\xd7\xd8\xd9\xda\xdb\xdc\xdd\xde\xdf" .
+				"\xe0\xe1\xe2\xe3\xe4\xe5\xe6\xe7\xe8\xe9\xea\xeb\xec\xed\xee\xef" .
+				"\xf0\xf1\xf2\xf3\xf4\xf5\xf6\xf7\xf8\xf9\xfa\xfb\xfc\xfd\xfe\xff";
+			if ( strtolower( 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' . $highBytes )
+				!== 'abcdefghijklmnopqrstuvwxyz' . $highBytes
+			) {
+				throw new \RuntimeException( 'strtolower() doesn\'t work -- ' .
+					'please set the locale to C or a UTF-8 variant such as C.UTF-8' );
+			}
+			$checked = true;
+		}
+	}
+
+	/**
+	 * Is profiling enabled?
 	 * @return bool
 	 */
+	public function profiling(): bool {
+		return $this->profiling;
+	}
+
+	/**
+	 * Get the profile at the top of the stack
+	 *
+	 * FIXME: This implicitly assumes sequential in-order processing
+	 * This wouldn't have worked in Parsoid/JS and may not work in the future
+	 * depending on how / if we restructure the pipeline for concurrency, etc.
+	 *
+	 * @return Profile
+	 */
+	public function getCurrentProfile(): Profile {
+		return PHPUtils::lastItem( $this->profileStack );
+	}
+
+	/**
+	 * New pipeline started. Push profile.
+	 * @return Profile
+	 */
+	public function pushNewProfile(): Profile {
+		$currProfile = count( $this->profileStack ) > 0 ? $this->getCurrentProfile() : null;
+		$profile = new Profile();
+		$this->profileStack[] = $profile;
+		if ( $currProfile !== null ) {
+			$currProfile->pushNestedProfile( $profile );
+		}
+		return $profile;
+	}
+
+	/**
+	 * Pipeline ended. Pop profile.
+	 * @return Profile
+	 */
+	public function popProfile(): Profile {
+		return array_pop( $this->profileStack );
+	}
+
 	public function hasTraceFlags(): bool {
 		return !empty( $this->traceFlags );
 	}
@@ -312,9 +438,6 @@ class Env {
 		return isset( $this->traceFlags[$flag] );
 	}
 
-	/**
-	 * @return bool
-	 */
 	public function hasDumpFlags(): bool {
 		return !empty( $this->dumpFlags );
 	}
@@ -327,6 +450,14 @@ class Env {
 	 */
 	public function hasDumpFlag( string $flag ): bool {
 		return isset( $this->dumpFlags[$flag] );
+	}
+
+	/**
+	 * Write out a string (because it was requested by dumpFlags)
+	 * @param string $str
+	 */
+	public function writeDump( string $str ) {
+		$this->log( 'dump', $str );
 	}
 
 	/**
@@ -353,8 +484,20 @@ class Env {
 		return $this->dataAccess;
 	}
 
-	public function noDataAccess(): bool {
-		return $this->noDataAccess;
+	/**
+	 * Return the ContentMetadataCollector.
+	 * @return ContentMetadataCollector
+	 */
+	public function getMetadata(): ContentMetadataCollector {
+		return $this->metadata;
+	}
+
+	/**
+	 * Return the Table of Contents information for the article.
+	 * @return TOCData
+	 */
+	public function getTOCData(): TOCData {
+		return $this->tocData;
 	}
 
 	public function nativeTemplateExpansionEnabled(): bool {
@@ -386,6 +529,10 @@ class Env {
 		return $this->wrapSections;
 	}
 
+	/**
+	 * Get the pipeline factory.
+	 * @return ParserPipelineFactory
+	 */
 	public function getPipelineFactory(): ParserPipelineFactory {
 		return $this->pipelineFactory;
 	}
@@ -397,7 +544,7 @@ class Env {
 	 * representation), but for external use we can convert these to
 	 * other formats when we output wt2html or input for html2wt.
 	 *
-	 * @see Parsoid\Wt2Html\PP\Processors\ConvertOffsets
+	 * @see Parsoid\Wt2Html\DOM\Processors\ConvertOffsets
 	 * @return string 'byte', 'ucs2', or 'char'
 	 */
 	public function getRequestOffsetType(): string {
@@ -410,7 +557,7 @@ class Env {
 	 * been converted to the external format (as returned by
 	 * `getRequestOffsetType`) yet.
 	 *
-	 * @see Parsoid\Wt2Html\PP\Processors\ConvertOffsets
+	 * @see Parsoid\Wt2Html\DOM\Processors\ConvertOffsets
 	 * @return string 'byte', 'ucs2', or 'char'
 	 */
 	public function getCurrentOffsetType(): string {
@@ -419,7 +566,7 @@ class Env {
 
 	/**
 	 * Update the current offset type. Only
-	 * Parsoid\Wt2Html\PP\Processors\ConvertOffsets should be doing this.
+	 * Parsoid\Wt2Html\DOM\Processors\ConvertOffsets should be doing this.
 	 * @param string $offsetType 'byte', 'ucs2', or 'char'
 	 */
 	public function setCurrentOffsetType( string $offsetType ) {
@@ -427,11 +574,21 @@ class Env {
 	}
 
 	/**
+	 * Return the title from the PageConfig, as a Parsoid title.
+	 * @return Title
+	 */
+	public function getContextTitle(): Title {
+		if ( $this->cachedContextTitle === null ) {
+			$this->cachedContextTitle = Title::newFromLinkTarget(
+				$this->pageConfig->getLinkTarget(), $this->siteConfig
+			);
+		}
+		return $this->cachedContextTitle;
+	}
+
+	/**
 	 * Resolve strings that are page-fragments or subpage references with
 	 * respect to the current page name.
-	 *
-	 * TODO: Handle namespaces relative links like [[User:../../]] correctly, they
-	 * shouldn't be treated like links at all.
 	 *
 	 * @param string $str Page fragment or subpage reference. Not URL encoded.
 	 * @param bool $resolveOnly If true, only trim and add the current title to
@@ -440,24 +597,29 @@ class Env {
 	 */
 	public function resolveTitle( string $str, bool $resolveOnly = false ): string {
 		$origName = $str;
-		$str = trim( $str ); // PORT-FIXME: Care about non-ASCII whitespace?
+		$str = trim( $str );
 
 		$pageConfig = $this->getPageConfig();
+		$title = $this->getContextTitle();
 
 		// Resolve lonely fragments (important if the current page is a subpage,
 		// otherwise the relative link will be wrong)
 		if ( $str !== '' && $str[0] === '#' ) {
-			$str = $pageConfig->getTitle() . $str;
+			return $title->getPrefixedText() . $str;
 		}
 
 		// Default return value
 		$titleKey = $str;
-		if ( $this->getSiteConfig()->namespaceHasSubpages( $pageConfig->getNs() ) ) {
+		if ( $this->getSiteConfig()->namespaceHasSubpages( $title->getNamespace() ) ) {
 			// Resolve subpages
 			$reNormalize = false;
 			if ( preg_match( '!^(?:\.\./)+!', $str, $relUp ) ) {
 				$levels = strlen( $relUp[0] ) / 3;  // Levels are indicated by '../'.
-				$titleBits = explode( '/', $pageConfig->getTitle() );
+				$titleBits = explode( '/', $title->getPrefixedText() );
+				if ( $titleBits[0] === '' ) {
+					// FIXME: Punt on subpages of titles starting with "/" for now
+					return $origName;
+				}
 				if ( count( $titleBits ) <= $levels ) {
 					// Too many levels -- invalid relative link
 					return $origName;
@@ -470,7 +632,7 @@ class Env {
 				$reNormalize = true;
 			} elseif ( $str !== '' && $str[0] === '/' ) {
 				// Resolve absolute subpage links
-				$str = $pageConfig->getTitle() . $str;
+				$str = $title->getPrefixedText() . $str;
 				$reNormalize = true;
 			}
 
@@ -498,7 +660,7 @@ class Env {
 	private function titleToString( Title $title, bool $ignoreFragment = false ): string {
 		$ret = $title->getPrefixedDBKey();
 		if ( !$ignoreFragment ) {
-			$fragment = $title->getFragment() ?? '';
+			$fragment = $title->getFragment();
 			if ( $fragment !== '' ) {
 				$ret .= '#' . $fragment;
 			}
@@ -525,25 +687,16 @@ class Env {
 	}
 
 	/**
-	 * Normalize and resolve the page title
-	 * @deprecated Just use $this->getPageConfig()->getTitle() directly
-	 * @return string
-	 */
-	public function normalizeAndResolvePageTitle(): string {
-		return $this->getPageConfig()->getTitle();
-	}
-
-	/**
 	 * Create a Title object
 	 * @param string $text URL-decoded text
-	 * @param int|TitleNamespace $defaultNs
+	 * @param ?int $defaultNs
 	 * @param bool $noExceptions
 	 * @return Title|null
 	 */
-	private function makeTitle( string $text, $defaultNs = 0, bool $noExceptions = false ): ?Title {
+	private function makeTitle( string $text, ?int $defaultNs = null, bool $noExceptions = false ): ?Title {
 		try {
 			if ( preg_match( '!^(?:[#/]|\.\./)!', $text ) ) {
-				$defaultNs = $this->getPageConfig()->getNs();
+				$defaultNs = $this->getContextTitle()->getNamespace();
 			}
 			$text = $this->resolveTitle( $text );
 			return Title::newFromText( $text, $this->getSiteConfig(), $defaultNs );
@@ -559,12 +712,12 @@ class Env {
 	 * Create a Title object
 	 * @see Title::newFromURL in MediaWiki
 	 * @param string $str URL-encoded text
-	 * @param int|TitleNamespace $defaultNs
+	 * @param ?int $defaultNs
 	 * @param bool $noExceptions
 	 * @return Title|null
 	 */
 	public function makeTitleFromText(
-		string $str, $defaultNs = 0, bool $noExceptions = false
+		string $str, ?int $defaultNs = null, bool $noExceptions = false
 	): ?Title {
 		return $this->makeTitle( Utils::decodeURIComponent( $str ), $defaultNs, $noExceptions );
 	}
@@ -573,12 +726,12 @@ class Env {
 	 * Create a Title object
 	 * @see Title::newFromText in MediaWiki
 	 * @param string $str URL-decoded text
-	 * @param int|TitleNamespace $defaultNs
+	 * @param ?int $defaultNs
 	 * @param bool $noExceptions
 	 * @return Title|null
 	 */
 	public function makeTitleFromURLDecodedStr(
-		string $str, $defaultNs = 0, bool $noExceptions = false
+		string $str, ?int $defaultNs = null, bool $noExceptions = false
 	): ?Title {
 		return $this->makeTitle( $str, $defaultNs, $noExceptions );
 	}
@@ -589,8 +742,8 @@ class Env {
 	 * @return string
 	 */
 	public function makeLink( Title $title ): string {
-		return Sanitizer::sanitizeTitleURI(
-			$this->getSiteConfig()->relativeLinkPrefix() . $this->titleToString( $title ),
+		return $this->getSiteConfig()->relativeLinkPrefix() . Sanitizer::sanitizeTitleURI(
+			$this->titleToString( $title ),
 			false
 		);
 	}
@@ -626,6 +779,22 @@ class Env {
 	}
 
 	/**
+	 * Generate a new annotation uid
+	 * @return int
+	 */
+	public function generateAnnotationUID(): int {
+		return $this->annUid++;
+	}
+
+	/**
+	 * Generate a new annotation id
+	 * @return string
+	 */
+	public function newAnnotationId(): string {
+		return "mwa" . $this->generateAnnotationUID();
+	}
+
+	/**
 	 * Generate a new about id
 	 * @return string
 	 */
@@ -634,24 +803,8 @@ class Env {
 	}
 
 	/**
-	 * Store reference to original DOM (body)
-	 * @param DOMElement $domBody
-	 */
-	public function setOrigDOM( DOMElement $domBody ): void {
-		$this->origDOM = $domBody;
-	}
-
-	/**
-	 * Return reference to original DOM (body)
-	 * @return DOMElement
-	 */
-	public function getOrigDOM(): DOMElement {
-		return $this->origDOM;
-	}
-
-	/**
 	 * Store reference to DOM diff document
-	 * @param DOMDocument $doc
+	 * @param Document $doc
 	 */
 	public function setDOMDiff( $doc ): void {
 		$this->domDiff = $doc;
@@ -659,9 +812,9 @@ class Env {
 
 	/**
 	 * Return reference to DOM diff document
-	 * @return DOMDocument|null
+	 * @return Document|null
 	 */
-	public function getDOMDiff(): ?DOMDocument {
+	public function getDOMDiff(): ?Document {
 		return $this->domDiff;
 	}
 
@@ -674,52 +827,39 @@ class Env {
 	}
 
 	/**
-	 * FIXME: This function could be given a better name to reflect what it does.
+	 * When an environment is constructed, we initialize a document (and
+	 * RemexPipeline) to be used throughout the parse.
 	 *
-	 * @param DOMDocument $doc
-	 * @param DataBag|null $bag
+	 * @param ?Document $topLevelDoc
 	 */
-	public function referenceDataObject( DOMDocument $doc, ?DataBag $bag = null ): void {
-		// `bag` is a deliberate dynamic property; see DOMDataUtils::getBag()
-		// @phan-suppress-next-line PhanUndeclaredProperty dynamic property
-		$doc->bag = $bag ?? new DataBag();
-
-		// Prevent GC from collecting the PHP wrapper around the libxml doc
-		$this->liveDocs[] = $doc;
+	public function setupTopLevelDoc( ?Document $topLevelDoc = null ) {
+		if ( $topLevelDoc ) {
+			$this->remexPipeline = null;
+			$this->topLevelDoc = $topLevelDoc;
+		} else {
+			$this->remexPipeline = new RemexPipeline( $this );
+			$this->topLevelDoc = $this->remexPipeline->doc;
+		}
+		DOMDataUtils::prepareDoc( $this->topLevelDoc );
 	}
 
-	/**
-	 * @param string $html
-	 * @param bool $validateXMLNames
-	 * @return DOMDocument
-	 */
-	public function createDocument(
-		string $html = '', bool $validateXMLNames = false
-	): DOMDocument {
-		$doc = DOMUtils::parseHTML( $html, $validateXMLNames );
-		// Cache the head and body.
-		DOMCompat::getHead( $doc );
-		DOMCompat::getBody( $doc );
-		$this->referenceDataObject( $doc );
-		return $doc;
-	}
-
-	/**
-	 * BehaviorSwitchHandler support function that adds a property named by
-	 * $variable and sets it to $state
-	 *
-	 * @deprecated Use setBehaviorSwitch() instead.
-	 * @param string $variable
-	 * @param mixed $state
-	 */
-	public function setVariable( string $variable, $state ): void {
-		$this->setBehaviorSwitch( $variable, $state );
+	public function fetchRemexPipeline( bool $toFragment ): RemexPipeline {
+		if ( !$toFragment ) {
+			return $this->remexPipeline;
+		} else {
+			$pipeline = new RemexPipeline( $this );
+			// Attach the top-level bag to the document, for the convenience
+			// of code that modifies the data within the RemexHtml TreeBuilder
+			// pipeline, prior to the migration of nodes to the top-level
+			// document.
+			DOMDataUtils::prepareChildDoc( $this->topLevelDoc, $pipeline->doc );
+			return $pipeline;
+		}
 	}
 
 	/**
 	 * Record a behavior switch.
 	 *
-	 * @todo Does this belong here, or on some equivalent to MediaWiki's ParserOutput?
 	 * @param string $switch Switch name
 	 * @param mixed $state Relevant state data to record
 	 */
@@ -730,9 +870,8 @@ class Env {
 	/**
 	 * Fetch the state of a previously-recorded behavior switch.
 	 *
-	 * @todo Does this belong here, or on some equivalent to MediaWiki's ParserOutput?
 	 * @param string $switch Switch name
-	 * @param mixed|null $default Default value if the switch was never set
+	 * @param mixed $default Default value if the switch was never set
 	 * @return mixed State data that was previously passed to setBehaviorSwitch(), or $default
 	 */
 	public function getBehaviorSwitch( string $switch, $default = null ) {
@@ -740,7 +879,7 @@ class Env {
 	}
 
 	/**
-	 * @return array<string,DOMNode[]>
+	 * @return array<string,DocumentFragment>
 	 */
 	public function getDOMFragmentMap(): array {
 		return $this->fragmentMap;
@@ -748,19 +887,29 @@ class Env {
 
 	/**
 	 * @param string $id Fragment id
-	 * @return DOMNode[]
+	 * @return DocumentFragment
 	 */
-	public function getDOMFragment( string $id ): array {
+	public function getDOMFragment( string $id ): DocumentFragment {
 		return $this->fragmentMap[$id];
 	}
 
 	/**
 	 * @param string $id Fragment id
-	 * @param DOMNode[] $forest DOM forest (contiguous array of DOM trees)
+	 * @param DocumentFragment $forest DOM forest
 	 *   to store against the fragment id
 	 */
-	public function setDOMFragment( string $id, array $forest ): void {
+	public function setDOMFragment(
+		string $id, DocumentFragment $forest
+	): void {
 		$this->fragmentMap[$id] = $forest;
+	}
+
+	public function removeDOMFragment( string $id ): void {
+		$domFragment = $this->fragmentMap[$id];
+		Assert::invariant(
+			!$domFragment->hasChildNodes(), 'Fragment should be empty.'
+		);
+		unset( $this->fragmentMap[$id] );
 	}
 
 	/**
@@ -772,10 +921,9 @@ class Env {
 	 *  - templateInfo: (array|null)
 	 */
 	public function recordLint( string $type, array $lintData ): void {
-		// Parsoid-JS tests don't like getting null properties where JS had undefined.
-		$lintData = array_filter( $lintData, function ( $v ) {
-			return $v !== null;
-		} );
+		if ( !$this->linting( $type ) ) {
+			return;
+		}
 
 		if ( empty( $lintData['dsr'] ) ) {
 			$this->log( 'error/lint', "Missing DSR; msg=", $lintData );
@@ -783,12 +931,8 @@ class Env {
 		}
 
 		// This will always be recorded as a native 'byte' offset
-		$lintData['dsr'] = $lintData['dsr']->jsonSerialize();
-
-		// Ensure a "params" array
-		if ( !isset( $lintData['params'] ) ) {
-			$lintData['params'] = [];
-		}
+		$lintData['dsr'] = $lintData['dsr']->toJsonArray();
+		$lintData['params'] ??= [];
 
 		$this->lints[] = [ 'type' => $type ] + $lintData;
 	}
@@ -816,32 +960,11 @@ class Env {
 	}
 
 	/**
+	 * @param string $prefix
 	 * @param mixed ...$args
 	 */
-	public function log( ...$args ): void {
-		$this->parsoidLogger->log( ...$args );
-	}
-
-	/**
-	 * Update a profile timer.
-	 *
-	 * @param string $resource
-	 * @param mixed $time
-	 * @param mixed $cat
-	 */
-	public function bumpTimeUse( string $resource, $time, $cat ): void {
-		// --trace ttm:* trip on this if we throw an exception
-		// throw new \BadMethodCallException( 'not yet ported' );
-	}
-
-	/**
-	 * Update a profile counter.
-	 *
-	 * @param string $resource
-	 * @param int $n The amount to increment the counter; defaults to 1.
-	 */
-	public function bumpCount( string $resource, int $n = 1 ): void {
-		throw new \BadMethodCallException( 'not yet ported' );
+	public function log( string $prefix, ...$args ): void {
+		$this->parsoidLogger->log( $prefix, ...$args );
 	}
 
 	/**
@@ -850,22 +973,26 @@ class Env {
 	 *
 	 * @param string $resource
 	 * @param int $count How much of the resource is used?
-	 * @throws ResourceLimitExceededException
+	 * @return ?bool Returns `null` if the limit was already reached, `false` when exceeded
 	 */
-	public function bumpWt2HtmlResourceUse( string $resource, int $count = 1 ): void {
+	public function bumpWt2HtmlResourceUse( string $resource, int $count = 1 ): ?bool {
 		$n = $this->wt2htmlUsage[$resource] ?? 0;
+		if ( !$this->compareWt2HtmlLimit( $resource, $n ) ) {
+			return null;
+		}
 		$n += $count;
 		$this->wt2htmlUsage[$resource] = $n;
+		return $this->compareWt2HtmlLimit( $resource, $n );
+	}
+
+	/**
+	 * @param string $resource
+	 * @param int $n
+	 * @return bool Return `false` when exceeded
+	 */
+	public function compareWt2HtmlLimit( string $resource, int $n ): bool {
 		$wt2htmlLimits = $this->siteConfig->getWt2HtmlLimits();
-		if (
-			isset( $wt2htmlLimits[$resource] ) &&
-			$n > $wt2htmlLimits[$resource]
-		) {
-			// TODO: re-evaluate whether throwing an exception is really
-			// the right failure strategy when Parsoid is integrated into MW
-			// (T221238)
-			throw new ResourceLimitExceededException( "wt2html: $resource limit exceeded: $n" );
-		}
+		return !( isset( $wt2htmlLimits[$resource] ) && $n > $wt2htmlLimits[$resource] );
 	}
 
 	/**
@@ -892,7 +1019,7 @@ class Env {
 	/**
 	 * Get an appropriate content handler, given a contentmodel.
 	 *
-	 * @param string|null &$contentmodel An optional content model which
+	 * @param ?string &$contentmodel An optional content model which
 	 *   will override whatever the source specifies.  It gets set to the
 	 *   handler which is used.
 	 * @return ContentModelHandler An appropriate content handler
@@ -900,14 +1027,15 @@ class Env {
 	public function getContentHandler(
 		?string &$contentmodel = null
 	): ContentModelHandler {
-		$contentmodel = $contentmodel ?? $this->pageConfig->getContentModel();
+		$contentmodel ??= $this->pageConfig->getContentModel();
 		$handler = $this->siteConfig->getContentModelHandler( $contentmodel );
-		if ( !$handler ) {
-			$this->log( 'warn', "Unknown contentmodel $contentmodel" );
-			$contentmodel = 'wikitext';
-			$handler = $this->siteConfig->getContentModelHandler( $contentmodel );
+		if ( !$handler && $contentmodel !== 'wikitext' ) {
+			// For now, fallback to 'wikitext' as the default handler
+			// FIXME: This is bogus, but this is just so suppress noise in our
+			// logs till we get around to handling all these other content models.
+			// $this->log( 'warn', "Unknown contentmodel $contentmodel" );
 		}
-		return $handler;
+		return $handler ?? $this->wikitextContentModelHandler;
 	}
 
 	/**
@@ -916,23 +1044,15 @@ class Env {
 	 * @return bool
 	 */
 	public function langConverterEnabled(): bool {
-		return $this->siteConfig->langConverterEnabledForLanguage(
-			$this->pageConfig->getPageLanguage()
+		return $this->siteConfig->langConverterEnabledBcp47(
+			$this->pageConfig->getPageLanguageBcp47()
 		);
-	}
-
-	/**
-	 * Indicates emit "clean" wikitext compared to what we would if we didn't normalize HTML
-	 * @return bool
-	 */
-	public function shouldScrubWikitext(): bool {
-		return $this->scrubWikitext;
 	}
 
 	/**
 	 * The HTML content version of the input document (for html2wt and html2html conversions).
 	 * @see https://www.mediawiki.org/wiki/Parsoid/API#Content_Negotiation
-	 * @see https://www.mediawiki.org/wiki/Specs/HTML/2.1.0#Versioning
+	 * @see https://www.mediawiki.org/wiki/Specs/HTML#Versioning
 	 * @return string A semver version number
 	 */
 	public function getInputContentVersion(): string {
@@ -942,7 +1062,7 @@ class Env {
 	/**
 	 * The HTML content version of the input document (for html2wt and html2html conversions).
 	 * @see https://www.mediawiki.org/wiki/Parsoid/API#Content_Negotiation
-	 * @see https://www.mediawiki.org/wiki/Specs/HTML/2.1.0#Versioning
+	 * @see https://www.mediawiki.org/wiki/Specs/HTML#Versioning
 	 * @return string A semver version number
 	 */
 	public function getOutputContentVersion(): string {
@@ -953,10 +1073,10 @@ class Env {
 	 * If non-null, the language variant used for Parsoid HTML; we convert
 	 * to this if wt2html, or from this (if html2wt).
 	 *
-	 * @return string|null
+	 * @return ?Bcp47Code a BCP-47 language code
 	 */
-	public function getHtmlVariantLanguage(): ?string {
-		return $this->htmlVariantLanguage;
+	public function getHtmlVariantLanguageBcp47(): ?Bcp47Code {
+		return $this->htmlVariantLanguage; // Stored as BCP-47
 	}
 
 	/**
@@ -965,31 +1085,14 @@ class Env {
 	 * in wt2html mode, and in html2wt mode new or edited HTML will be left
 	 * unconverted.
 	 *
-	 * @return string|null
+	 * @return ?Bcp47Code a BCP-47 language code
 	 */
-	public function getWtVariantLanguage(): ?string {
+	public function getWtVariantLanguageBcp47(): ?Bcp47Code {
 		return $this->wtVariantLanguage;
 	}
 
-	/**
-	 * Update K=[V1,V2,...] that might need to be output as part of the
-	 * generated HTML.  Ex: module styles, modules scripts, ...
-	 *
-	 * @param string $key
-	 * @param array $value
-	 */
-	public function addOutputProperty( string $key, array $value ): void {
-		if ( !isset( $this->outputProps[$key] ) ) {
-			$this->outputProps[$key] = [];
-		}
-		$this->outputProps[$key] = array_merge( $this->outputProps[$key], $value );
-	}
-
-	/**
-	 * @return array
-	 */
-	public function getOutputProperties(): array {
-		return $this->outputProps;
+	public function getSkipLanguageConversionPass(): bool {
+		return $this->skipLanguageConversionPass;
 	}
 
 	/**
@@ -1008,12 +1111,90 @@ class Env {
 
 	/**
 	 * Determine an appropriate content-language for the HTML form of this page.
-	 * @return string
+	 * @return Bcp47Code a BCP-47 language code.
 	 */
-	public function htmlContentLanguage(): string {
+	public function htmlContentLanguageBcp47(): Bcp47Code {
 		// PageConfig::htmlVariant is set iff we do variant conversion on the
 		// HTML
-		return $this->pageConfig->getVariant() ??
-			$this->pageConfig->getPageLanguage();
+		return $this->pageConfig->getVariantBcp47() ??
+			$this->pageConfig->getPageLanguageBcp47();
+	}
+
+	/**
+	 * Get an array of attributes to apply to an anchor linking to $url
+	 */
+	public function getExternalLinkAttribs( string $url ): array {
+		$siteConfig = $this->getSiteConfig();
+		$noFollowConfig = $siteConfig->getNoFollowConfig();
+		$attribs = [];
+		$ns = $this->getContextTitle()->getNamespace();
+		if (
+			$noFollowConfig['nofollow'] &&
+			!in_array( $ns, $noFollowConfig['nsexceptions'], true ) &&
+			!UrlUtils::matchesDomainList(
+				$url,
+				// Cast to an array because parserTests sets it as a string
+				(array)$noFollowConfig['domainexceptions']
+			)
+		) {
+			$attribs['rel'] = [ 'nofollow' ];
+		}
+		$target = $siteConfig->getExternalLinkTarget();
+		if ( $target ) {
+			$attribs['target'] = $target;
+			if ( !in_array( $target, [ '_self', '_parent', '_top' ], true ) ) {
+				// T133507. New windows can navigate parent cross-origin.
+				// Including noreferrer due to lacking browser
+				// support of noopener. Eventually noreferrer should be removed.
+				if ( !isset( $attribs['rel'] ) ) {
+					$attribs['rel'] = [];
+				}
+				array_push( $attribs['rel'], 'noreferrer', 'noopener' );
+			}
+		}
+		return $attribs;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getLinterConfig(): array {
+		return $this->linterOverrides + $this->getSiteConfig()->getLinterSiteConfig();
+	}
+
+	/**
+	 * Whether to enable linter Backend.
+	 * Consults the allow list and block list from ::getLinterConfig().
+	 *
+	 * @param null $type If $type is null or omitted, returns true if *any* linting
+	 *   type is enabled; otherwise returns true only if the specified
+	 *   linting type is enabled.
+	 * @return bool If $type is null or omitted, returns true if *any* linting
+	 *   type is enabled; otherwise returns true only if the specified
+	 *   linting type is enabled.
+	 */
+	public function linting( ?string $type = null ) {
+		if ( !$this->getSiteConfig()->linterEnabled() ) {
+			return false;
+		}
+		$lintConfig = $this->getLinterConfig();
+		// Allow list
+		$allowList = $lintConfig['enabled'] ?? null;
+		if ( is_array( $allowList ) ) {
+			if ( $type === null ) {
+				return count( $allowList ) > 0;
+			}
+			return in_array( $type, $allowList, true );
+		}
+		// Block list
+		if ( $type === null ) {
+			return true;
+		}
+		$blockList = $lintConfig['disabled'] ?? null;
+		if ( is_array( $blockList ) ) {
+			return !in_array( $type, $blockList, true );
+		}
+		// No specific configuration
+		return true;
 	}
 }

@@ -2,54 +2,34 @@
 
 namespace MediaWiki\Rest\Handler;
 
-use Config;
-use IApiMessage;
+use MediaWiki\Api\IApiMessage;
+use MediaWiki\Config\Config;
 use MediaWiki\Content\IContentHandlerFactory;
-use MediaWiki\Rest\HttpException;
+use MediaWiki\MainConfigNames;
+use MediaWiki\Request\WebResponse;
 use MediaWiki\Rest\LocalizedHttpException;
 use MediaWiki\Rest\Response;
+use MediaWiki\Rest\TokenAwareHandlerTrait;
+use MediaWiki\Rest\Validator\Validator;
 use MediaWiki\Revision\RevisionLookup;
 use MediaWiki\Revision\SlotRecord;
-use TitleFormatter;
-use TitleParser;
-use WebResponse;
+use MediaWiki\Title\TitleFormatter;
+use MediaWiki\Title\TitleParser;
+use RuntimeException;
 use Wikimedia\Message\MessageValue;
 
 /**
  * Base class for REST API handlers that perform page edits (main slot only).
  */
 abstract class EditHandler extends ActionModuleBasedHandler {
+	use TokenAwareHandlerTrait;
 
-	/** @var Config */
-	protected $config;
+	protected Config $config;
+	protected IContentHandlerFactory $contentHandlerFactory;
+	protected TitleParser $titleParser;
+	protected TitleFormatter $titleFormatter;
+	protected RevisionLookup $revisionLookup;
 
-	/**
-	 * @var IContentHandlerFactory
-	 */
-	protected $contentHandlerFactory;
-
-	/**
-	 * @var TitleParser
-	 */
-	protected $titleParser;
-
-	/**
-	 * @var TitleFormatter
-	 */
-	protected $titleFormatter;
-
-	/**
-	 * @var RevisionLookup
-	 */
-	protected $revisionLookup;
-
-	/**
-	 * @param Config $config
-	 * @param IContentHandlerFactory $contentHandlerFactory
-	 * @param TitleParser $titleParser
-	 * @param TitleFormatter $titleFormatter
-	 * @param RevisionLookup $revisionLookup
-	 */
 	public function __construct(
 		Config $config,
 		IContentHandlerFactory $contentHandlerFactory,
@@ -78,19 +58,30 @@ abstract class EditHandler extends ActionModuleBasedHandler {
 	/**
 	 * @inheritDoc
 	 */
+	public function validate( Validator $restValidator ) {
+			parent::validate( $restValidator );
+			$this->validateToken( true );
+	}
+
+	/**
+	 * @inheritDoc
+	 */
 	protected function mapActionModuleResult( array $data ) {
 		if ( isset( $data['error'] ) ) {
 			throw new LocalizedHttpException( new MessageValue( 'apierror-' . $data['error'] ), 400 );
 		}
 
 		if ( !isset( $data['edit'] ) || !$data['edit']['result'] ) {
-			throw new HttpException( 'Bad result structure received from ApiEditPage' );
+			throw new RuntimeException( 'Bad result structure received from ApiEditPage' );
 		}
 
 		if ( $data['edit']['result'] !== 'Success' ) {
 			// Probably an edit conflict
 			// TODO: which code for null edits?
-			throw new HttpException( $data['edit']['result'], 409 );
+			throw new LocalizedHttpException(
+				new MessageValue( "rest-edit-conflict", [ $data['edit']['result'] ] ),
+				409
+			);
 		}
 
 		$title = $this->titleParser->parseTitle( $data['edit']['title'] );
@@ -109,8 +100,8 @@ abstract class EditHandler extends ActionModuleBasedHandler {
 				'timestamp' => $data['edit']['newtimestamp'],
 			],
 			'license' => [
-				'url' => $this->config->get( 'RightsUrl' ),
-				'title' => $this->config->get( 'RightsText' )
+				'url' => $this->config->get( MainConfigNames::RightsUrl ),
+				'title' => $this->config->get( MainConfigNames::RightsText )
 			],
 			'content_model' => $data['edit']['contentmodel'],
 			'source' => $content->serialize(),
@@ -149,36 +140,6 @@ abstract class EditHandler extends ActionModuleBasedHandler {
 
 		// Fall through to generic handling of the error (status 400).
 		parent::throwHttpExceptionForActionModuleError( $msg, $statusCode );
-	}
-
-	/**
-	 * Determines the CSRF token to be passed to the action module.
-	 *
-	 * This could be taken from a request parameter, or a known-good token
-	 * can be computed, if the request has been determined to be safe against
-	 * CSRF attacks, e.g. when an OAuth Authentication header is present.
-	 *
-	 * Most return an empty string if the request isn't known to be safe and
-	 * no token was supplied by the client.
-	 *
-	 * @return string
-	 */
-	protected function getActionModuleToken() {
-		$body = $this->getValidatedBody();
-
-		if ( $this->getSession()->getProvider()->safeAgainstCsrf() ) {
-			if ( !empty( $body['token'] ) ) {
-				throw new LocalizedHttpException(
-					new MessageValue( 'rest-extraneous-csrf-token' ),
-					400
-				);
-			}
-
-			// Since the session is safe against CSRF, just use a known-good token.
-			return $this->getUser()->getEditToken();
-		} else {
-			return $body['token'] ?? '';
-		}
 	}
 
 	protected function mapActionModuleResponse(

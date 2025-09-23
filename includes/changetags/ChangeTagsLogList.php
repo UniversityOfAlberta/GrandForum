@@ -16,14 +16,19 @@
  * http://www.gnu.org/copyleft/gpl.html
  *
  * @file
- * @ingroup Change tagging
  */
 
-use Wikimedia\Rdbms\IDatabase;
+use MediaWiki\MediaWikiServices;
+use MediaWiki\Permissions\Authority;
+use MediaWiki\Status\Status;
+use Wikimedia\Rdbms\IResultWrapper;
+use Wikimedia\Rdbms\SelectQueryBuilder;
 
 /**
- * Stores a list of taggable log entries.
+ * Store a list of taggable log entries.
+ *
  * @since 1.25
+ * @ingroup ChangeTags
  */
 class ChangeTagsLogList extends ChangeTagsList {
 	public function getType() {
@@ -31,30 +36,17 @@ class ChangeTagsLogList extends ChangeTagsList {
 	}
 
 	/**
-	 * @param IDatabase $db
-	 * @return mixed
+	 * @param \Wikimedia\Rdbms\IReadableDatabase $db
+	 * @return IResultWrapper
 	 */
 	public function doQuery( $db ) {
 		$ids = array_map( 'intval', $this->ids );
-		$queryInfo = DatabaseLogEntry::getSelectQueryData();
-		$queryInfo['conds'] += [ 'log_id' => $ids ];
-		$queryInfo['options'] += [ 'ORDER BY' => 'log_id DESC' ];
-		ChangeTags::modifyDisplayQuery(
-			$queryInfo['tables'],
-			$queryInfo['fields'],
-			$queryInfo['conds'],
-			$queryInfo['join_conds'],
-			$queryInfo['options'],
-			''
-		);
-		return $db->select(
-			$queryInfo['tables'],
-			$queryInfo['fields'],
-			$queryInfo['conds'],
-			__METHOD__,
-			$queryInfo['options'],
-			$queryInfo['join_conds']
-		);
+		$queryBuilder = DatabaseLogEntry::newSelectQueryBuilder( $db )
+			->where( [ 'log_id' => $ids ] )
+			->orderBy( [ 'log_timestamp', 'log_id' ], SelectQueryBuilder::SORT_DESC );
+
+		MediaWikiServices::getInstance()->getChangeTagsStore()->modifyDisplayQueryBuilder( $queryBuilder, 'logging' );
+		return $queryBuilder->caller( __METHOD__ )->fetchResultSet();
 	}
 
 	public function newItem( $row ) {
@@ -64,18 +56,25 @@ class ChangeTagsLogList extends ChangeTagsList {
 	/**
 	 * Add/remove change tags from all the log entries in the list.
 	 *
-	 * @param array $tagsToAdd
-	 * @param array $tagsToRemove
+	 * @param string[] $tagsToAdd
+	 * @param string[] $tagsToRemove
 	 * @param string|null $params
 	 * @param string $reason
-	 * @param User $user
+	 * @param Authority $performer
 	 * @return Status
 	 */
-	public function updateChangeTagsOnAll( $tagsToAdd, $tagsToRemove, $params, $reason, $user ) {
+	public function updateChangeTagsOnAll(
+		array $tagsToAdd,
+		array $tagsToRemove,
+		?string $params,
+		string $reason,
+		Authority $performer
+	) {
+		$status = Status::newGood();
 		for ( $this->reset(); $this->current(); $this->next() ) {
 			$item = $this->current();
 			$status = ChangeTags::updateTagsWithChecks( $tagsToAdd, $tagsToRemove,
-				null, null, $item->getId(), $params, $reason, $user );
+				null, null, $item->getId(), $params, $reason, $performer );
 			// Should only fail on second and subsequent times if the user trips
 			// the rate limiter
 			if ( !$status->isOK() ) {

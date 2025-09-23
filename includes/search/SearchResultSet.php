@@ -21,18 +21,22 @@
  * @ingroup Search
  */
 
+use MediaWiki\Title\Title;
+
 /**
  * @ingroup Search
  */
 class SearchResultSet extends BaseSearchResultSet {
+
 	use SearchResultSetTrait;
 
+	/** @var bool */
 	protected $containedSyntax = false;
 
 	/**
 	 * Cache of titles.
 	 * Lists titles of the result set, in the same order as results.
-	 * @var Title[]
+	 * @var Title[]|null
 	 */
 	private $titles;
 
@@ -44,7 +48,7 @@ class SearchResultSet extends BaseSearchResultSet {
 	protected $results;
 
 	/**
-	 * @var boolean True when there are more pages of search results available.
+	 * @var bool True when there are more pages of search results available.
 	 */
 	private $hasMoreResults;
 
@@ -81,7 +85,7 @@ class SearchResultSet extends BaseSearchResultSet {
 	 *
 	 * Return null if no total hits number is supported.
 	 *
-	 * @return int
+	 * @return int|null
 	 */
 	public function getTotalHits() {
 		return null;
@@ -143,7 +147,7 @@ class SearchResultSet extends BaseSearchResultSet {
 	 * Return a result set of hits on other (multiple) wikis associated with this one
 	 *
 	 * @param int $type
-	 * @return ISearchResultSet[]
+	 * @return ISearchResultSet[]|null
 	 */
 	public function getInterwikiResults( $type = self::SECONDARY_RESULTS ) {
 		return null;
@@ -210,7 +214,7 @@ class SearchResultSet extends BaseSearchResultSet {
 				return $this->results;
 			}
 			$this->rewind();
-			while ( ( $result = $this->next() ) != false ) {
+			foreach ( $this as $result ) {
 				$this->results[] = $result;
 			}
 			$this->rewind();
@@ -229,7 +233,7 @@ class SearchResultSet extends BaseSearchResultSet {
 				$this->titles = [];
 			} else {
 				$this->titles = array_map(
-					function ( SearchResult $result ) {
+					static function ( SearchResult $result ) {
 						return $result->getTitle();
 					},
 					$this->extractResults() );

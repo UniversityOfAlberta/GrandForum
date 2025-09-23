@@ -2,7 +2,7 @@
 /**
  * 7z stream wrapper
  *
- * Copyright © 2005 Brion Vibber <brion@pobox.com>
+ * Copyright © 2005 Brooke Vibber <bvibber@wikimedia.org>
  * https://www.mediawiki.org/
  *
  * This program is free software; you can redistribute it and/or modify
@@ -24,6 +24,8 @@
  * @ingroup Maintenance
  */
 
+namespace MediaWiki\Maintenance;
+
 use MediaWiki\Shell\Shell;
 
 /**
@@ -34,7 +36,19 @@ use MediaWiki\Shell\Shell;
  * @ingroup Maintenance
  */
 class SevenZipStream {
+	/** @var resource|false */
 	protected $stream;
+
+	/** @var resource|null Must exists on stream wrapper class */
+	public $context;
+
+	public static function register() {
+		static $done = false;
+		if ( !$done ) {
+			$done = true;
+			stream_wrapper_register( 'mediawiki.compress.7z', self::class );
+		}
+	}
 
 	private function stripPath( $path ) {
 		$prefix = 'mediawiki.compress.7z://';
@@ -94,4 +108,5 @@ class SevenZipStream {
 	}
 }
 
-stream_wrapper_register( 'mediawiki.compress.7z', SevenZipStream::class );
+/** @deprecated class alias since 1.43 */
+class_alias( SevenZipStream::class, 'SevenZipStream' );

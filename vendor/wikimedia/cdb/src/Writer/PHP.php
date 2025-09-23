@@ -1,18 +1,5 @@
 <?php
-
-namespace Cdb\Writer;
-
-use Cdb\Exception;
-use Cdb\Util;
-use Cdb\Writer;
-
 /**
- * This is a port of D.J. Bernstein's CDB to PHP. It's based on the copy that
- * appears in PHP 5.3. Changes are:
- *    * Error returns replaced with exceptions
- *    * Exception thrown if sizes or offsets are between 2GB and 4GB
- *    * Some variables renamed
- *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -27,24 +14,41 @@ use Cdb\Writer;
  * with this program; if not, write to the Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  * http://www.gnu.org/copyleft/gpl.html
- *
- * @file
  */
+
+namespace Cdb\Writer;
+
+use Cdb\Exception;
+use Cdb\Util;
+use Cdb\Writer;
 
 /**
  * CDB writer class
+ *
+ * This is a port of D.J. Bernstein's CDB to PHP. It's based on the copy that
+ * appears in PHP 5.3.
  */
 class PHP extends Writer {
-	protected $hplist;
+	/**
+	 * @var resource|false|null The file handle
+	 */
+	protected $handle;
 
-	protected $numentries;
+	/** @var int[][] */
+	protected $hplist = [];
 
+	/** @var int */
+	protected $numentries = 0;
+
+	/** @var int */
 	protected $pos;
 
 	/**
+	 * Create the object and open the file.
+	 *
 	 * @param string $fileName
 	 */
-	public function __construct( $fileName ) {
+	public function __construct( string $fileName ) {
 		$this->realFileName = $fileName;
 		$this->tmpFileName = $fileName . '.tmp.' . mt_rand( 0, 0x7fffffff );
 		$this->handle = fopen( $this->tmpFileName, 'wb' );
@@ -52,8 +56,6 @@ class PHP extends Writer {
 			$this->throwException(
 				'Unable to open CDB file "' . $this->tmpFileName . '" for write.' );
 		}
-		$this->hplist = array();
-		$this->numentries = 0;
 		$this->pos = 2048; // leaving space for the pointer array, 256 * 8
 		if ( fseek( $this->handle, $this->pos ) == -1 ) {
 			$this->throwException( 'fseek failed in file "' . $this->tmpFileName . '".' );
@@ -64,39 +66,54 @@ class PHP extends Writer {
 	 * @param string $key
 	 * @param string $value
 	 */
-	public function set( $key, $value ) {
-		if ( strval( $key ) === '' ) {
+	public function set( $key, $value ): void {
+		$key = (string)$key;
+		if ( $key === '' ) {
 			// DBA cross-check hack
 			return;
 		}
-		$this->addbegin( strlen( $key ), strlen( $value ) );
-		$this->write( $key );
-		$this->write( $value );
-		$this->addend( strlen( $key ), strlen( $value ), Util::hash( $key ) );
+
+		// Based on cdb_make_addbegin
+		$keylen = strlen( $key );
+		$datalen = strlen( $value );
+		if ( $keylen > 0x7fffffff ) {
+			$this->throwException( 'Key length too long in file "' . $this->tmpFileName . '".' );
+		}
+		if ( $datalen > 0x7fffffff ) {
+			$this->throwException( 'Data length too long in file "' . $this->tmpFileName . '".' );
+		}
+		$begin = pack( 'VV', $keylen, $datalen );
+
+		$this->write( $begin . $key . $value );
+
+		// Based on cdb_make_addend
+		$this->hplist[] = [
+			'h' => Util::hash( $key ),
+			'p' => $this->pos
+		];
+		$this->numentries++;
+		$this->posplus( 8 + $keylen + $datalen );
 	}
 
-	/**
-	 * @throws Exception
-	 */
-	public function close() {
-		$this->finish();
-		if ( isset( $this->handle ) ) {
+	public function close(): void {
+		if ( $this->handle ) {
+			$this->finish();
 			fclose( $this->handle );
+
+			if ( $this->isWindows() && file_exists( $this->realFileName ) ) {
+				unlink( $this->realFileName );
+			}
+			if ( !rename( $this->tmpFileName, $this->realFileName ) ) {
+				$this->throwException( 'Unable to move the new CDB file into place.' );
+			}
 		}
-		if ( $this->isWindows() && file_exists( $this->realFileName ) ) {
-			unlink( $this->realFileName );
-		}
-		if ( !rename( $this->tmpFileName, $this->realFileName ) ) {
-			$this->throwException( 'Unable to move the new CDB file into place.' );
-		}
-		unset( $this->handle );
+		$this->handle = null;
 	}
 
 	/**
-	 * @throws Exception
 	 * @param string $buf
 	 */
-	protected function write( $buf ) {
+	protected function write( $buf ): void {
 		$len = fwrite( $this->handle, $buf );
 		if ( $len !== strlen( $buf ) ) {
 			$this->throwException( 'Error writing to CDB file "' . $this->tmpFileName . '".' );
@@ -104,7 +121,6 @@ class PHP extends Writer {
 	}
 
 	/**
-	 * @throws Exception
 	 * @param int $len
 	 */
 	protected function posplus( $len ) {
@@ -116,43 +132,7 @@ class PHP extends Writer {
 		$this->pos = $newpos;
 	}
 
-	/**
-	 * @param int $keylen
-	 * @param int $datalen
-	 * @param int $h
-	 */
-	protected function addend( $keylen, $datalen, $h ) {
-		$this->hplist[] = array(
-			'h' => $h,
-			'p' => $this->pos
-		);
-
-		$this->numentries++;
-		$this->posplus( 8 );
-		$this->posplus( $keylen );
-		$this->posplus( $datalen );
-	}
-
-	/**
-	 * @throws Exception
-	 * @param int $keylen
-	 * @param int $datalen
-	 */
-	protected function addbegin( $keylen, $datalen ) {
-		if ( $keylen > 0x7fffffff ) {
-			$this->throwException( 'Key length too long in file "' . $this->tmpFileName . '".' );
-		}
-		if ( $datalen > 0x7fffffff ) {
-			$this->throwException( 'Data length too long in file "' . $this->tmpFileName . '".' );
-		}
-		$buf = pack( 'VV', $keylen, $datalen );
-		$this->write( $buf );
-	}
-
-	/**
-	 * @throws Exception
-	 */
-	protected function finish() {
+	protected function finish(): void {
 		// Hack for DBA cross-check
 		$this->hplist = array_reverse( $this->hplist );
 
@@ -163,7 +143,7 @@ class PHP extends Writer {
 		}
 
 		// Fill in $starts with the *end* indexes
-		$starts = array();
+		$starts = [];
 		$pos = 0;
 		for ( $i = 0; $i < 256; ++$i ) {
 			$pos += $counts[$i];
@@ -173,7 +153,12 @@ class PHP extends Writer {
 		// Excessively clever and indulgent code to simultaneously fill $packedTables
 		// with the packed hashtables, and adjust the elements of $starts
 		// to actually point to the starts instead of the ends.
-		$packedTables = array_fill( 0, $this->numentries, false );
+		if ( $this->numentries > 0 ) {
+			$packedTables = array_fill( 0, $this->numentries, false );
+		} else {
+			// array_fill(): Number of elements must be positive
+			$packedTables = [];
+		}
 		foreach ( $this->hplist as $item ) {
 			$packedTables[--$starts[255 & $item['h']]] = $item;
 		}
@@ -187,14 +172,12 @@ class PHP extends Writer {
 			$len = $count + $count;
 			$final .= pack( 'VV', $this->pos, $len );
 
-			$hashtable = array();
-			for ( $u = 0; $u < $len; ++$u ) {
-				$hashtable[$u] = array( 'h' => 0, 'p' => 0 );
-			}
+			$hashtable = array_fill( 0, $len, [ 'h' => 0, 'p' => 0 ] );
 
 			// Fill the hashtable, using the next empty slot if the hashed slot
 			// is taken.
 			for ( $u = 0; $u < $count; ++$u ) {
+				// @phan-suppress-next-line PhanTypePossiblyInvalidDimOffset
 				$hp = $packedTables[$starts[$i] + $u];
 				$where = Util::unsignedMod(
 					Util::unsignedShiftRight( $hp['h'], 8 ), $len );
@@ -207,14 +190,15 @@ class PHP extends Writer {
 			}
 
 			// Write the hashtable
+			$buf = '';
 			for ( $u = 0; $u < $len; ++$u ) {
-				$buf = pack( 'vvV',
+				$buf .= pack( 'vvV',
 					$hashtable[$u]['h'] & 0xffff,
 					Util::unsignedShiftRight( $hashtable[$u]['h'], 16 ),
 					$hashtable[$u]['p'] );
-				$this->write( $buf );
-				$this->posplus( 8 );
 			}
+			$this->write( $buf );
+			$this->posplus( strlen( $buf ) );
 		}
 
 		// Write the pointer array at the start of the file
@@ -229,6 +213,7 @@ class PHP extends Writer {
 	 * Clean up the temp file and throw an exception
 	 *
 	 * @param string $msg
+	 * @return never
 	 * @throws Exception
 	 */
 	protected function throwException( $msg ) {

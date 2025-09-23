@@ -1,25 +1,20 @@
 /*!
  * JavaScript for Special:UserRights
  */
-( function () {
-	var convertmessagebox = require( 'mediawiki.notification.convertmessagebox' ),
-		summaryCodePointLimit = mw.config.get( 'wgCommentCodePointLimit' ),
-		summaryByteLimit = mw.config.get( 'wgCommentByteLimit' ),
-		$wpReason = $( '#wpReason' );
-
+$( () => {
 	// Replace successbox with notifications
-	convertmessagebox();
+	require( 'mediawiki.notification.convertmessagebox' )();
 
 	// Dynamically show/hide the "other time" input under each dropdown
-	$( '.mw-userrights-nested select' ).on( 'change', function ( e ) {
+	$( '.mw-userrights-nested select' ).on( 'change', ( e ) => {
 		$( e.target.parentNode ).find( 'input' ).toggle( $( e.target ).val() === 'other' );
 	} );
 
-	// Limit to bytes or UTF-8 codepoints, depending on MediaWiki's configuration
-	if ( summaryCodePointLimit ) {
-		$wpReason.codePointLimit( summaryCodePointLimit );
-	} else if ( summaryByteLimit ) {
-		$wpReason.byteLimit( summaryByteLimit );
-	}
+	$( '#wpReason' ).codePointLimit( mw.config.get( 'wgCommentCodePointLimit' ) );
 
-}() );
+	// Disable the watch field for cross-wiki userright changes
+	const userrightsInterwikiDelimiter = require( './config.json' ).UserrightsInterwikiDelimiter;
+	$( '#username' ).on( 'change', ( e ) => {
+		$( '#wpWatch' ).prop( 'disabled', e.target.value.indexOf( userrightsInterwikiDelimiter ) !== -1 );
+	} ).trigger( 'change' );
+} );

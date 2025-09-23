@@ -3,10 +3,10 @@ declare( strict_types = 1 );
 
 namespace Wikimedia\Parsoid\Html2Wt\DOMHandlers;
 
-use DOMElement;
-use DOMNode;
+use Wikimedia\Parsoid\DOM\Element;
+use Wikimedia\Parsoid\DOM\Node;
 use Wikimedia\Parsoid\Html2Wt\SerializerState;
-use Wikimedia\Parsoid\Utils\DOMUtils;
+use Wikimedia\Parsoid\Utils\DiffDOMUtils;
 use Wikimedia\Parsoid\Utils\WTUtils;
 
 class HeadingHandler extends DOMHandler {
@@ -24,8 +24,8 @@ class HeadingHandler extends DOMHandler {
 
 	/** @inheritDoc */
 	public function handle(
-		DOMElement $node, SerializerState $state, bool $wrapperUnmodified = false
-	): ?DOMNode {
+		Element $node, SerializerState $state, bool $wrapperUnmodified = false
+	): ?Node {
 		// For new elements, for prettier wikitext serialization,
 		// emit a space after the last '=' char.
 		$space = $this->getLeadingSpace( $state, $node, ' ' );
@@ -33,7 +33,7 @@ class HeadingHandler extends DOMHandler {
 		$state->singleLineContext->enforce();
 
 		if ( $node->hasChildNodes() ) {
-			$state->serializeChildren( $node, null, DOMUtils::firstNonDeletedChild( $node ) );
+			$state->serializeChildren( $node, null, DiffDOMUtils::firstNonDeletedChild( $node ) );
 		} else {
 			// Deal with empty headings
 			$state->emitChunk( '<nowiki/>', $node );
@@ -48,15 +48,20 @@ class HeadingHandler extends DOMHandler {
 	}
 
 	/** @inheritDoc */
-	public function before( DOMElement $node, DOMNode $otherNode, SerializerState $state ): array {
-		if ( WTUtils::isNewElt( $node ) && DOMUtils::previousNonSepSibling( $node ) ) {
+	public function before( Element $node, Node $otherNode, SerializerState $state ): array {
+		if ( WTUtils::isNewElt( $node ) && DiffDOMUtils::previousNonSepSibling( $node ) &&
+			!WTUtils::isAnnotationStartMarkerMeta( $otherNode )
+		) {
 			// Default to two preceding newlines for new content
 			return [ 'min' => 2, 'max' => 2 ];
 		} elseif ( WTUtils::isNewElt( $otherNode )
-			&& DOMUtils::previousNonSepSibling( $node ) === $otherNode
+			&& DiffDOMUtils::previousNonSepSibling( $node ) === $otherNode
 		) {
 			// T72791: The previous node was newly inserted, separate
-			// them for readability
+			// them for readability, except if it's an annotation tag
+			if ( WTUtils::isAnnotationStartMarkerMeta( $otherNode ) ) {
+				return [ 'min' => 1, 'max' => 2 ];
+			}
 			return [ 'min' => 2, 'max' => 2 ];
 		} else {
 			return [ 'min' => 1, 'max' => 2 ];
@@ -64,7 +69,7 @@ class HeadingHandler extends DOMHandler {
 	}
 
 	/** @inheritDoc */
-	public function after( DOMElement $node, DOMNode $otherNode, SerializerState $state ): array {
+	public function after( Element $node, Node $otherNode, SerializerState $state ): array {
 		return [ 'min' => 1, 'max' => 2 ];
 	}
 

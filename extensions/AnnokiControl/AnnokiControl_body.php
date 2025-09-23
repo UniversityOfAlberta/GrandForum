@@ -52,7 +52,7 @@ You should log in and change your password now.';
   
     static function onUserGetLanguageObject($user, &$code){
         if(@$_GET['lang'] == 'fr' || @$_GET['lang'] == 'en'){
-            if($user->isLoggedIn()){
+            if($user->isRegistered()){
                 $user->setOption("language", $_GET['lang']);
                 $user->saveSettings();
                 DBFunctions::commit();
@@ -64,7 +64,7 @@ You should log in and change your password now.';
                 $code = $_GET['lang'];
             }
         }
-        else if(!$user->isLoggedIn() && isset($_COOKIE['lang'])){
+        else if(!$user->isRegistered() && isset($_COOKIE['lang'])){
             $code = $_COOKIE['lang'];
         }
         return true;

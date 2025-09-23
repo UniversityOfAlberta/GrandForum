@@ -2,7 +2,7 @@
 /**
  * BackupDumper that postprocesses XML dumps from dumpBackup.php to add page text
  *
- * Copyright (C) 2005 Brion Vibber <brion@pobox.com>
+ * Copyright (C) 2005 Brooke Vibber <bvibber@wikimedia.org>
  * https://www.mediawiki.org/
  *
  * This program is free software; you can redistribute it and/or modify
@@ -25,80 +25,112 @@
  * @ingroup Maintenance
  */
 
-require_once __DIR__ . '/BackupDumper.php';
-require_once __DIR__ . '/SevenZipStream.php';
-require_once __DIR__ . '/../../includes/export/WikiExporter.php';
+namespace MediaWiki\Maintenance;
 
-use MediaWiki\MediaWikiServices;
+// @codeCoverageIgnoreStart
+require_once __DIR__ . '/BackupDumper.php';
+require_once __DIR__ . '/../../includes/export/WikiExporter.php';
+// @codeCoverageIgnoreEnd
+
+use BaseDump;
+use Exception;
+use ExportProgressFilter;
 use MediaWiki\Revision\SlotRecord;
+use MediaWiki\Settings\SettingsBuilder;
 use MediaWiki\Shell\Shell;
 use MediaWiki\Storage\BlobAccessException;
+use MediaWiki\Storage\BlobStore;
 use MediaWiki\Storage\SqlBlobStore;
+use MediaWiki\WikiMap\WikiMap;
+use MediaWiki\Xml\Xml;
+use MWException;
+use MWUnknownContentModelException;
+use RuntimeException;
+use WikiExporter;
+use Wikimedia\AtEase\AtEase;
 use Wikimedia\Rdbms\IMaintainableDatabase;
+use XmlDumpWriter;
 
 /**
  * @ingroup Maintenance
  */
 class TextPassDumper extends BackupDumper {
-	/** @var BaseDump */
+	/** @var BaseDump|null */
 	public $prefetch = null;
-	/** @var string|bool */
+	/** @var string */
 	private $thisPage;
-	/** @var string|bool */
+	/** @var string */
 	private $thisRev;
-	/** @var string|bool */
+	/** @var string|null */
 	private $thisRole = null;
 
-	// when we spend more than maxTimeAllowed seconds on this run, we continue
-	// processing until we write out the next complete page, then save output file(s),
-	// rename it/them and open new one(s)
-	public $maxTimeAllowed = 0; // 0 = no limit
+	/**
+	 * @var int when we spend more than maxTimeAllowed seconds on this run, we continue
+	 * processing until we write out the next complete page, then save output file(s),
+	 * rename it/them and open new one(s); 0 = no limit
+	 */
+	public $maxTimeAllowed = 0;
 
+	/** @var string */
 	protected $input = "php://stdin";
+	/** @var int */
 	protected $history = WikiExporter::FULL;
+	/** @var int */
 	protected $fetchCount = 0;
+	/** @var int */
 	protected $prefetchCount = 0;
+	/** @var int */
 	protected $prefetchCountLast = 0;
+	/** @var int */
 	protected $fetchCountLast = 0;
 
+	/** @var int */
 	protected $maxFailures = 5;
+	/** @var int */
 	protected $maxConsecutiveFailedTextRetrievals = 200;
-	protected $failureTimeout = 5; // Seconds to sleep after db failure
+	/** @var int Seconds to sleep after db failure */
+	protected $failureTimeout = 5;
 
-	protected $bufferSize = 524288; // In bytes. Maximum size to read from the stub in on go.
+	/** @var int In bytes. Maximum size to read from the stub in on go. */
+	protected $bufferSize = 524_288;
 
 	/** @var array */
 	protected $php = [ PHP_BINARY ];
+	/** @var bool */
 	protected $spawn = false;
 
 	/**
-	 * @var bool|resource
+	 * @var resource|false
 	 */
 	protected $spawnProc = false;
 
 	/**
-	 * @var resource
+	 * @var resource|null
 	 */
 	protected $spawnWrite;
 
 	/**
-	 * @var resource
+	 * @var resource|null
 	 */
 	protected $spawnRead;
 
 	/**
-	 * @var bool|resource
+	 * @var resource|false
 	 */
 	protected $spawnErr = false;
 
 	/**
-	 * @var bool|XmlDumpWriter
+	 * @var XmlDumpWriter|false
 	 */
 	protected $xmlwriterobj = false;
 
+	/** @var bool */
 	protected $timeExceeded = false;
+	/** @var string|false */
 	protected $firstPageWritten = false;
+	/** @var string|false */
 	protected $lastPageWritten = false;
+	/** @var bool */
 	protected $checkpointJustWritten = false;
 	/** @var string[] */
 	protected $checkpointFiles = [];
@@ -141,7 +173,7 @@ TEXT
 		$this->addOption( 'spawn', 'Spawn a subprocess for loading text records, optionally specify ' .
 			'php[,mwscript] paths' );
 		$this->addOption( 'buffersize', 'Buffer size in bytes to use for reading the stub. ' .
-			'(Default: 512KB, Minimum: 4KB)', false, true );
+			'(Default: 512 KiB, Minimum: 4 KiB)', false, true );
 
 		if ( $args ) {
 			$this->loadWithArgv( $args );
@@ -149,11 +181,17 @@ TEXT
 		}
 	}
 
+	public function finalSetup( SettingsBuilder $settingsBuilder ) {
+		parent::finalSetup( $settingsBuilder );
+
+		SevenZipStream::register();
+	}
+
 	/**
-	 * @return SqlBlobStore
+	 * @return BlobStore
 	 */
 	private function getBlobStore() {
-		return MediaWikiServices::getInstance()->getBlobStore();
+		return $this->getServiceContainer()->getBlobStore();
 	}
 
 	public function execute() {
@@ -211,7 +249,6 @@ TEXT
 	 *
 	 * This function resets $this->lb and closes all connections on it.
 	 *
-	 * @throws MWException
 	 * @suppress PhanTypeObjectUnsetDeclaredProperty
 	 */
 	protected function rotateDb() {
@@ -228,7 +265,7 @@ TEXT
 		}
 
 		if ( isset( $this->db ) && $this->db->isOpen() ) {
-			throw new MWException( 'DB is set and has not been closed by the Load Balancer' );
+			throw new RuntimeException( 'DB is set and has not been closed by the Load Balancer' );
 		}
 
 		unset( $this->db );
@@ -238,17 +275,17 @@ TEXT
 		// individually retrying at different layers of code.
 
 		try {
-			$lbFactory = MediaWikiServices::getInstance()->getDBLoadBalancerFactory();
+			$lbFactory = $this->getServiceContainer()->getDBLoadBalancerFactory();
 			$this->lb = $lbFactory->newMainLB();
 		} catch ( Exception $e ) {
-			throw new MWException( __METHOD__
+			throw new RuntimeException( __METHOD__
 				. " rotating DB failed to obtain new load balancer (" . $e->getMessage() . ")" );
 		}
 
 		try {
 			$this->db = $this->lb->getMaintenanceConnectionRef( DB_REPLICA, 'dump' );
 		} catch ( Exception $e ) {
-			throw new MWException( __METHOD__
+			throw new RuntimeException( __METHOD__
 				. " rotating DB failed to obtain new database (" . $e->getMessage() . ")" );
 		}
 	}
@@ -415,12 +452,12 @@ TEXT
 		if ( ( $this->checkpointFiles && !$this->maxTimeAllowed )
 			|| ( $this->maxTimeAllowed && !$this->checkpointFiles )
 		) {
-			throw new MWException( "Options checkpointfile and maxtime must be specified together.\n" );
+			throw new RuntimeException( "Options checkpointfile and maxtime must be specified together.\n" );
 		}
 		foreach ( $this->checkpointFiles as $checkpointFile ) {
 			$count = substr_count( $checkpointFile, "%s" );
-			if ( $count != 2 ) {
-				throw new MWException( "Option checkpointfile must contain two '%s' "
+			if ( $count !== 2 ) {
+				throw new RuntimeException( "Option checkpointfile must contain two '%s' "
 					. "for substitution of first and last pageids, count is $count instead, "
 					. "file is $checkpointFile.\n" );
 			}
@@ -428,8 +465,8 @@ TEXT
 
 		if ( $this->checkpointFiles ) {
 			$filenameList = (array)$this->egress->getFilenames();
-			if ( count( $filenameList ) != count( $this->checkpointFiles ) ) {
-				throw new MWException( "One checkpointfile must be specified "
+			if ( count( $filenameList ) !== count( $this->checkpointFiles ) ) {
+				throw new RuntimeException( "One checkpointfile must be specified "
 					. "for each output option, if maxtime is used.\n" );
 			}
 		}
@@ -446,14 +483,14 @@ TEXT
 		$this->atStart = true;
 		$this->state = "";
 		$this->lastName = "";
-		$this->thisPage = 0;
-		$this->thisRev = 0;
+		$this->thisPage = "";
+		$this->thisRev = "";
 		$this->thisRole = null;
 		$this->thisRevModel = null;
 		$this->thisRevFormat = null;
 
 		$parser = xml_parser_create( "UTF-8" );
-		xml_parser_set_option( $parser, XML_OPTION_CASE_FOLDING, false );
+		xml_parser_set_option( $parser, XML_OPTION_CASE_FOLDING, 0 );
 
 		xml_set_element_handler(
 			$parser,
@@ -476,7 +513,7 @@ TEXT
 					'XML import parse failure',
 					xml_get_current_line_number( $parser ),
 					xml_get_current_column_number( $parser ),
-					$byte . ( $chunk === null ? null : ( '; "' . substr( $chunk, $byte - $offset, 16 ) . '"' ) ),
+					$byte . ( $chunk === false ? '' : ( '; "' . substr( $chunk, $byte - $offset, 16 ) . '"' ) ),
 					xml_error_string( xml_get_error_code( $parser ) ) )->escaped();
 
 				xml_parser_free( $parser );
@@ -496,8 +533,8 @@ TEXT
 				# for deciding what to do with a file containing only the
 				# siteinfo information and the mw tags.
 				if ( !$this->firstPageWritten ) {
-					$firstPageID = str_pad( 0, 9, "0", STR_PAD_LEFT );
-					$lastPageID = str_pad( 0, 9, "0", STR_PAD_LEFT );
+					$firstPageID = str_pad( '0', 9, "0", STR_PAD_LEFT );
+					$lastPageID = str_pad( '0', 9, "0", STR_PAD_LEFT );
 				} else {
 					$firstPageID = str_pad( $this->firstPageWritten, 9, "0", STR_PAD_LEFT );
 					$lastPageID = str_pad( $this->lastPageWritten, 9, "0", STR_PAD_LEFT );
@@ -528,12 +565,10 @@ TEXT
 	 */
 	private function exportTransform( $text, $model, $format = null ) {
 		try {
-			$text = MediaWikiServices::getInstance()
+			$contentHandler = $this->getServiceContainer()
 				->getContentHandlerFactory()
-				->getContentHandler( $model )
-				->exportTransform( $text, $format );
-		}
-		catch ( MWException $ex ) {
+				->getContentHandler( $model );
+		} catch ( MWUnknownContentModelException $ex ) {
 			wfWarn( "Unable to apply export transformation for content model '$model': " .
 				$ex->getMessage() );
 
@@ -541,9 +576,10 @@ TEXT
 				"Unable to apply export transformation for content model '$model': " .
 				$ex->getMessage()
 			);
+			return $text;
 		}
 
-		return $text;
+		return $contentHandler->exportTransform( $text, $format );
 	}
 
 	/**
@@ -558,10 +594,10 @@ TEXT
 	 * is thrown.
 	 *
 	 * @param int|string $id Content address, or text row ID.
-	 * @param string|bool|null $model The content model used to determine
+	 * @param string|false|null $model The content model used to determine
 	 *  applicable export transformations. If $model is null, no transformation is applied.
 	 * @param string|null $format The content format used when applying export transformations.
-	 * @param int|null $expSize Expected length of the text, for sanity checks
+	 * @param int|null $expSize Expected length of the text, for checks
 	 *
 	 * @return string The revision text for $id, or ""
 	 * @throws MWException
@@ -607,11 +643,7 @@ TEXT
 						(int)$this->thisPage,
 						(int)$this->thisRev,
 						trim( $this->thisRole )
-					);
-
-					if ( $text === null ) {
-						$text = false;
-					}
+					) ?? false;
 
 					if ( is_string( $text ) && $model !== null ) {
 						// Apply export transformation to text coming from an old dump.
@@ -647,7 +679,7 @@ TEXT
 				}
 
 				if ( $text === false ) {
-					throw new MWException( "Generic error while obtaining text for id " . $id );
+					throw new RuntimeException( "Generic error while obtaining text for id " . $id );
 				}
 
 				// We received a good candidate for the text of $id via some method
@@ -656,6 +688,7 @@ TEXT
 				//         plausible
 
 				if ( $expSize === null || strlen( $text ) == $expSize ) {
+					// @phan-suppress-next-line PhanPossiblyUndeclaredVariable Set when text is not false
 					if ( $tryIsPrefetch ) {
 						$this->prefetchCount++;
 					}
@@ -664,7 +697,7 @@ TEXT
 				}
 
 				$text = false;
-				throw new MWException( "Received text is unplausible for id " . $id );
+				throw new RuntimeException( "Received text is unplausible for id " . $id );
 			} catch ( Exception $e ) {
 				$msg = "getting/checking text " . $id . " failed (" . $e->getMessage()
 					. ") for revision " . $this->thisRev;
@@ -678,6 +711,7 @@ TEXT
 			$failures++;
 
 			// A failure in a prefetch hit does not warrant resetting db connection etc.
+			// @phan-suppress-next-line PhanPossiblyUndeclaredVariable Control flow is hard to understand here.
 			if ( !$tryIsPrefetch ) {
 				// After backing off for some time, we try to reboot the whole process as
 				// much as possible to not carry over failures from one part to the other
@@ -696,7 +730,7 @@ TEXT
 			}
 		}
 
-		// Retirieving a good text for $id failed (at least) maxFailures times.
+		// Retrieving a good text for $id failed (at least) maxFailures times.
 		// We abort for this $id.
 
 		// Restoring the consecutive failures, and maybe aborting, if the dump
@@ -713,7 +747,7 @@ TEXT
 	 * Loads the serialized content from storage.
 	 *
 	 * @param int|string $id Content address, or text row ID.
-	 * @return bool|string
+	 * @return string|false
 	 */
 	private function getTextDb( $id ) {
 		$store = $this->getBlobStore();
@@ -725,7 +759,7 @@ TEXT
 			$text = $store->getBlob( $address );
 
 			$stripped = str_replace( "\r", "", $text );
-			$normalized = MediaWikiServices::getInstance()->getContentLanguage()
+			$normalized = $this->getServiceContainer()->getContentLanguage()
 				->normalize( $stripped );
 
 			return $normalized;
@@ -737,16 +771,16 @@ TEXT
 
 	/**
 	 * @param int|string $address Content address, or text row ID.
-	 * @return bool|string
+	 * @return string|false
 	 */
 	private function getTextSpawned( $address ) {
-		Wikimedia\suppressWarnings();
+		AtEase::suppressWarnings();
 		if ( !$this->spawnProc ) {
 			// First time?
 			$this->openSpawn();
 		}
 		$text = $this->getTextSpawnedOnce( $address );
-		Wikimedia\restoreWarnings();
+		AtEase::restoreWarnings();
 
 		return $text;
 	}
@@ -798,7 +832,7 @@ TEXT
 	}
 
 	private function closeSpawn() {
-		Wikimedia\suppressWarnings();
+		AtEase::suppressWarnings();
 		if ( $this->spawnRead ) {
 			fclose( $this->spawnRead );
 		}
@@ -812,15 +846,15 @@ TEXT
 		}
 		$this->spawnErr = false;
 		if ( $this->spawnProc ) {
-			pclose( $this->spawnProc );
+			proc_close( $this->spawnProc );
 		}
 		$this->spawnProc = false;
-		Wikimedia\restoreWarnings();
+		AtEase::restoreWarnings();
 	}
 
 	/**
 	 * @param int|string $address Content address, or text row ID.
-	 * @return bool|string
+	 * @return string|false
 	 */
 	private function getTextSpawnedOnce( $address ) {
 		if ( is_int( $address ) || intval( $address ) ) {
@@ -886,7 +920,7 @@ TEXT
 
 		// Do normalization in the dump thread...
 		$stripped = str_replace( "\r", "", $text );
-		$normalized = MediaWikiServices::getInstance()->getContentLanguage()->
+		$normalized = $this->getServiceContainer()->getContentLanguage()->
 			normalize( $stripped );
 
 		return $normalized;
@@ -912,7 +946,7 @@ TEXT
 		} elseif ( $name === 'mediawiki' ) {
 			if ( isset( $attribs['version'] ) ) {
 				if ( $attribs['version'] !== $this->schemaVersion ) {
-					throw new MWException( 'Mismatching schema version. '
+					throw new RuntimeException( 'Mismatching schema version. '
 						. 'Use the --schema-version option to set the output schema version to '
 						. 'the version declared by the stub file, namely ' . $attribs['version'] );
 				}
@@ -1036,7 +1070,7 @@ TEXT
 			}
 			$this->checkpointJustWritten = false;
 		}
-		$this->buffer .= htmlspecialchars( $data );
+		$this->buffer .= htmlspecialchars( $data, ENT_COMPAT );
 	}
 
 	protected function clearOpenElement( $style ) {
@@ -1057,3 +1091,6 @@ TEXT
 	}
 
 }
+
+/** @deprecated class alias since 1.43 */
+class_alias( TextPassDumper::class, 'TextPassDumper' );

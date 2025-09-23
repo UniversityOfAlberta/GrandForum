@@ -51,7 +51,7 @@ class ArrayUtils {
 		foreach ( $array as $elt ) {
 			$hashes[$elt] = md5( $elt . $separator . $key );
 		}
-		uasort( $array, function ( $a, $b ) use ( $hashes ) {
+		uasort( $array, static function ( $a, $b ) use ( $hashes ) {
 			return strcmp( $hashes[$a], $hashes[$b] );
 		} );
 	}
@@ -61,7 +61,7 @@ class ArrayUtils {
 	 * an element and return the appropriate key
 	 *
 	 * @param array $weights
-	 * @return bool|int|string
+	 * @return int|string|false
 	 */
 	public static function pickRandom( $weights ) {
 		if ( !is_array( $weights ) || count( $weights ) == 0 ) {
@@ -104,7 +104,7 @@ class ArrayUtils {
 	 *     indexed from 0 to $valueCount - 1
 	 * @param callable $comparisonCallback A callback to compare two values, returning
 	 *     -1, 0 or 1 in the style of strcmp().
-	 * @param string $target The target value to find.
+	 * @param mixed $target The target value to find.
 	 *
 	 * @return int|bool The item index of the lower bound, or false if the target value
 	 *     sorts before all items.
@@ -227,7 +227,7 @@ class ArrayUtils {
 		while ( !$done ) {
 			// Construct the output array element
 			$element = [];
-			foreach ( $inputArrays as $paramIndex => $inputArray ) {
+			foreach ( $inputArrays as $inputArray ) {
 				$element[] = current( $inputArray );
 			}
 			$outputArrays[] = $element;

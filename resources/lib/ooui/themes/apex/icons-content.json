@@ -50,6 +50,9 @@
 				"rtl": "../wikimediaui/images/icons/articleRedirect-rtl.svg"
 			}
 		},
+		"database": {
+			"file": "../wikimediaui/images/icons/database.svg"
+		},
 		"die": {
 			"file": "../wikimediaui/images/icons/die.svg"
 		},
@@ -81,8 +84,14 @@
 				}
 			}
 		},
+		"qrCode": {
+			"file": "../wikimediaui/images/icons/qrCode.svg"
+		},
 		"robot": {
 			"file": "../wikimediaui/images/icons/robot.svg"
+		},
+		"share": {
+			"file": "../wikimediaui/images/icons/share.svg"
 		},
 		"specialPages": {
 			"file": {

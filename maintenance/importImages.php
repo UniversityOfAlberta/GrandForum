@@ -32,9 +32,17 @@
  * @author Mij <mij@bitchx.it>
  */
 
+// @codeCoverageIgnoreStart
 require_once __DIR__ . '/Maintenance.php';
+// @codeCoverageIgnoreEnd
 
-use MediaWiki\MediaWikiServices;
+use MediaWiki\MainConfigNames;
+use MediaWiki\Maintenance\Maintenance;
+use MediaWiki\Specials\SpecialUpload;
+use MediaWiki\StubObject\StubGlobalUser;
+use MediaWiki\Title\Title;
+use MediaWiki\User\User;
+use Wikimedia\FileBackend\FSFile\FSFile;
 
 class ImportImages extends Maintenance {
 
@@ -117,7 +125,7 @@ class ImportImages extends Maintenance {
 		$this->addOption( 'unprotect', 'Unprotects all uploaded images' );
 		$this->addOption( 'source-wiki-url',
 			'If specified, take User and Comment data for each imported file from this URL. '
-				. 'For example, --source-wiki-url="http://en.wikipedia.org/',
+				. 'For example, --source-wiki-url="https://en.wikipedia.org/w/',
 			false,
 			true
 		);
@@ -125,11 +133,18 @@ class ImportImages extends Maintenance {
 	}
 
 	public function execute() {
-		global $wgFileExtensions, $wgUser, $wgRestrictionLevels;
+		$services = $this->getServiceContainer();
+		$permissionManager = $services->getPermissionManager();
 
-		$permissionManager = MediaWikiServices::getInstance()->getPermissionManager();
-
-		$processed = $added = $ignored = $skipped = $overwritten = $failed = 0;
+		$found = 0;
+		$processed = 0;
+		$statistics = [
+			'ignored' => 0,
+			'added' => 0,
+			'skipped' => 0,
+			'overwritten' => 0,
+			'failed' => 0,
+		];
 
 		$this->output( "Importing Files\n\n" );
 
@@ -147,19 +162,24 @@ class ImportImages extends Maintenance {
 		# Prepare the list of allowed extensions
 		$extensions = $this->hasOption( 'extensions' )
 			? explode( ',', strtolower( $this->getOption( 'extensions' ) ) )
-			: $wgFileExtensions;
+			: $this->getConfig()->get( MainConfigNames::FileExtensions );
 
 		# Search the path provided for candidates for import
 		$files = $this->findFiles( $dir, $extensions, $this->hasOption( 'search-recursively' ) );
+		if ( !$files->valid() ) {
+			$this->output( "No suitable files could be found for import.\n" );
+			return false;
+		}
 
 		# Initialise the user for this operation
 		$user = $this->hasOption( 'user' )
 			? User::newFromName( $this->getOption( 'user' ) )
-			: User::newSystemUser( 'Maintenance script', [ 'steal' => true ] );
+			: User::newSystemUser( User::MAINTENANCE_SCRIPT_USER, [ 'steal' => true ] );
 		if ( !$user instanceof User ) {
-			$user = User::newSystemUser( 'Maintenance script', [ 'steal' => true ] );
+			$user = User::newSystemUser( User::MAINTENANCE_SCRIPT_USER, [ 'steal' => true ] );
 		}
-		$wgUser = $user;
+		'@phan-var User $user';
+		StubGlobalUser::setUser( $user );
 
 		# Get block check. If a value is given, this specified how often the check is performed
 		$checkUserBlock = (int)$this->getOption( 'check-userblock' );
@@ -181,276 +201,268 @@ class ImportImages extends Maintenance {
 		}
 		$commentExt = $this->getOption( 'comment-ext' );
 		$summary = $this->getOption( 'summary', '' );
-
 		$license = $this->getOption( 'license', '' );
-
 		$sourceWikiUrl = $this->getOption( 'source-wiki-url' );
 
+		$tags = in_array(
+			ChangeTags::TAG_SERVER_SIDE_UPLOAD,
+			$this->getServiceContainer()->getChangeTagsStore()->getSoftwareTags()
+		)
+			? [ ChangeTags::TAG_SERVER_SIDE_UPLOAD ]
+			: [];
+
 		# Batch "upload" operation
-		$count = count( $files );
-		if ( $count > 0 ) {
-			$lbFactory = MediaWikiServices::getInstance()->getDBLoadBalancerFactory();
-			foreach ( $files as $file ) {
-				if ( $sleep && ( $processed > 0 ) ) {
-					sleep( $sleep );
-				}
+		$restrictionStore = $services->getRestrictionStore();
+		foreach ( $files as $file ) {
+			$found++;
+			if ( $sleep && ( $processed > 0 ) ) {
+				sleep( $sleep );
+			}
 
-				$base = UtfNormal\Validator::cleanUp( wfBaseName( $file ) );
+			$base = UtfNormal\Validator::cleanUp( wfBaseName( $file ) );
 
-				# Validate a title
-				$title = Title::makeTitleSafe( NS_FILE, $base );
-				if ( !is_object( $title ) ) {
-					$this->output(
-						"{$base} could not be imported; a valid title cannot be produced\n"
-					);
+			# Validate a title
+			$title = Title::makeTitleSafe( NS_FILE, $base );
+			if ( !$title ) {
+				$this->output(
+					"{$base} could not be imported; a valid title cannot be produced\n"
+				);
+				continue;
+			}
+
+			if ( $from ) {
+				if ( $from !== $title->getDBkey() ) {
+					$statistics['ignored']++;
 					continue;
 				}
+				// Found the requested file, continue from here
+				$from = null;
+			}
 
-				if ( $from ) {
-					if ( $from == $title->getDBkey() ) {
-						$from = null;
-					} else {
-						$ignored++;
-						continue;
-					}
-				}
-
-				if ( $checkUserBlock && ( ( $processed % $checkUserBlock ) == 0 ) ) {
-					$user->clearInstanceCache( 'name' ); // reload from DB!
-					if ( $permissionManager->isBlockedFrom( $user, $title ) ) {
-						$this->output(
-							"{$user->getName()} is blocked from {$title->getPrefixedText()}! skipping.\n"
-						);
-						$skipped++;
-						continue;
-					}
-				}
-
-				# Check existence
-				$image = MediaWikiServices::getInstance()->getRepoGroup()->getLocalRepo()
-					->newFile( $title );
-				if ( $image->exists() ) {
-					if ( $this->hasOption( 'overwrite' ) ) {
-						$this->output( "{$base} exists, overwriting..." );
-						$svar = 'overwritten';
-					} else {
-						$this->output( "{$base} exists, skipping\n" );
-						$skipped++;
-						continue;
-					}
-				} else {
-					if ( $this->hasOption( 'skip-dupes' ) ) {
-						$repo = $image->getRepo();
-						# XXX: we end up calculating this again when actually uploading. that sucks.
-						$sha1 = FSFile::getSha1Base36FromPath( $file );
-
-						$dupes = $repo->findBySha1( $sha1 );
-
-						if ( $dupes ) {
-							$this->output(
-								"{$base} already exists as {$dupes[0]->getName()}, skipping\n"
-							);
-							$skipped++;
-							continue;
-						}
-					}
-
-					$this->output( "Importing {$base}..." );
-					$svar = 'added';
-				}
-
-				if ( $sourceWikiUrl ) {
-					/* find comment text directly from source wiki, through MW's API */
-					$real_comment = $this->getFileCommentFromSourceWiki( $sourceWikiUrl, $base );
-					if ( $real_comment === false ) {
-						$commentText = $comment;
-					} else {
-						$commentText = $real_comment;
-					}
-
-					/* find user directly from source wiki, through MW's API */
-					$real_user = $this->getFileUserFromSourceWiki( $sourceWikiUrl, $base );
-					if ( $real_user === false ) {
-						$wgUser = $user;
-					} else {
-						$wgUser = User::newFromName( $real_user );
-						if ( $wgUser === false ) {
-							# user does not exist in target wiki
-							$this->output(
-								"failed: user '$real_user' does not exist in target wiki."
-							);
-							continue;
-						}
-					}
-				} else {
-					# Find comment text
-					$commentText = false;
-
-					if ( $commentExt ) {
-						$f = $this->findAuxFile( $file, $commentExt );
-						if ( !$f ) {
-							$this->output( " No comment file with extension {$commentExt} found "
-								 . "for {$file}, using default comment. " );
-						} else {
-							$commentText = file_get_contents( $f );
-							if ( !$commentText ) {
-								$this->output(
-									" Failed to load comment file {$f}, using default comment. "
-								);
-							}
-						}
-					}
-
-					if ( !$commentText ) {
-						$commentText = $comment;
-					}
-				}
-
-				# Import the file
-				if ( $this->hasOption( 'dry' ) ) {
+			if ( $checkUserBlock && ( ( $processed % $checkUserBlock ) == 0 ) ) {
+				$user->clearInstanceCache( 'name' ); // reload from DB!
+				if ( $permissionManager->isBlockedFrom( $user, $title ) ) {
 					$this->output(
-						" publishing {$file} by '{$wgUser->getName()}', comment '$commentText'... "
+						"{$user->getName()} is blocked from {$title->getPrefixedText()}! skipping.\n"
 					);
-				} else {
-					$mwProps = new MWFileProps( MediaWiki\MediaWikiServices::getInstance()->getMimeAnalyzer() );
-					$props = $mwProps->getPropsFromPath( $file, true );
-					$flags = 0;
-					$publishOptions = [];
-					$handler = MediaHandler::getHandler( $props['mime'] );
-					if ( $handler ) {
-						$metadata = \Wikimedia\AtEase\AtEase::quietCall( 'unserialize', $props['metadata'] );
+					$statistics['skipped']++;
+					continue;
+				}
+			}
 
-						$publishOptions['headers'] = $handler->getContentHeaders( $metadata );
-					} else {
-						$publishOptions['headers'] = [];
-					}
-					$archive = $image->publish( $file, $flags, $publishOptions );
-					if ( !$archive->isGood() ) {
-						$this->output( "failed. (" .
-							 $archive->getMessage( false, false, 'en' )->text() .
-							 ")\n" );
-						$failed++;
+			# Check existence
+			$image = $services->getRepoGroup()->getLocalRepo()
+				->newFile( $title );
+			if ( $image->exists() ) {
+				if ( $this->hasOption( 'overwrite' ) ) {
+					$this->output( "{$base} exists, overwriting..." );
+					$svar = 'overwritten';
+				} else {
+					$this->output( "{$base} exists, skipping\n" );
+					$statistics['skipped']++;
+					continue;
+				}
+			} else {
+				if ( $this->hasOption( 'skip-dupes' ) ) {
+					$repo = $image->getRepo();
+					# XXX: we end up calculating this again when actually uploading. that sucks.
+					$sha1 = FSFile::getSha1Base36FromPath( $file );
+					$dupes = $repo->findBySha1( $sha1 );
+					if ( $dupes ) {
+						$this->output(
+							"{$base} already exists as {$dupes[0]->getName()}, skipping\n"
+						);
+						$statistics['skipped']++;
 						continue;
 					}
 				}
 
-				$commentText = SpecialUpload::getInitialPageText( $commentText, $license );
-				if ( !$this->hasOption( 'summary' ) ) {
-					$summary = $commentText;
+				$this->output( "Importing {$base}..." );
+				$svar = 'added';
+			}
+
+			if ( $sourceWikiUrl ) {
+				/* find comment text directly from source wiki, through MW's API */
+				$real_comment = $this->getFileCommentFromSourceWiki( $sourceWikiUrl, $base );
+				$commentText = $real_comment !== false ? $real_comment : $comment;
+
+				/* find user directly from source wiki, through MW's API */
+				$real_user = $this->getFileUserFromSourceWiki( $sourceWikiUrl, $base );
+				if ( $real_user !== false ) {
+					$realUser = User::newFromName( $real_user );
+					if ( $realUser === false ) {
+						# user does not exist in target wiki
+						$this->output(
+							"failed: user '$real_user' does not exist in target wiki."
+						);
+						continue;
+					}
+					StubGlobalUser::setUser( $realUser );
+					$user = $realUser;
 				}
+			} else {
+				# Find comment text
+				$commentText = false;
 
-				if ( $this->hasOption( 'dry' ) ) {
-					$this->output( "done.\n" );
-				} elseif ( $image->recordUpload2(
-					$archive->value,
-					$summary,
-					$commentText,
-					$props,
-					$timestamp
-				)->isOK() ) {
-					$this->output( "done.\n" );
-
-					$doProtect = false;
-
-					$protectLevel = $this->getOption( 'protect' );
-
-					if ( $protectLevel && in_array( $protectLevel, $wgRestrictionLevels ) ) {
-						$doProtect = true;
-					}
-					if ( $this->hasOption( 'unprotect' ) ) {
-						$protectLevel = '';
-						$doProtect = true;
-					}
-
-					if ( $doProtect ) {
-						# Protect the file
-						$this->output( "\nWaiting for replica DBs...\n" );
-						// Wait for replica DBs.
-						sleep( 2 ); # Why this sleep?
-						$lbFactory->waitForReplication();
-
-						$this->output( "\nSetting image restrictions ... " );
-
-						$cascade = false;
-						$restrictions = [];
-						foreach ( $title->getRestrictionTypes() as $type ) {
-							$restrictions[$type] = $protectLevel;
+				if ( $commentExt ) {
+					$f = $this->findAuxFile( $file, $commentExt );
+					if ( !$f ) {
+						$this->output( " No comment file with extension {$commentExt} found "
+							. "for {$file}, using default comment." );
+					} else {
+						$commentText = file_get_contents( $f );
+						if ( !$commentText ) {
+							$this->output(
+								" Failed to load comment file {$f}, using default comment."
+							);
 						}
-
-						$page = WikiPage::factory( $title );
-						$status = $page->doUpdateRestrictions( $restrictions, [], $cascade, '', $user );
-						$this->output( ( $status->isOK() ? 'done' : 'failed' ) . "\n" );
 					}
+				}
+
+				if ( !$commentText ) {
+					$commentText = $comment;
+				}
+			}
+
+			# Import the file
+			if ( $this->hasOption( 'dry' ) ) {
+				$this->output(
+					" publishing {$file} by '{$user->getName()}', comment '$commentText'..."
+				);
+			} else {
+				$mwProps = new MWFileProps( $services->getMimeAnalyzer() );
+				$props = $mwProps->getPropsFromPath( $file, true );
+				$flags = 0;
+				$publishOptions = [];
+				$handler = MediaHandler::getHandler( $props['mime'] );
+				if ( $handler ) {
+					$publishOptions['headers'] = $handler->getContentHeaders( $props['metadata'] );
 				} else {
-					$this->output( "failed. (at recordUpload stage)\n" );
-					$svar = 'failed';
+					$publishOptions['headers'] = [];
 				}
-
-				$$svar++;
-				$processed++;
-
-				if ( $limit && $processed >= $limit ) {
-					break;
-				}
-			}
-
-			# Print out some statistics
-			$this->output( "\n" );
-			foreach (
-				[
-					'count' => 'Found',
-					'limit' => 'Limit',
-					'ignored' => 'Ignored',
-					'added' => 'Added',
-					'skipped' => 'Skipped',
-					'overwritten' => 'Overwritten',
-					'failed' => 'Failed'
-				] as $var => $desc
-			) {
-				if ( $$var > 0 ) {
-					$this->output( "{$desc}: {$$var}\n" );
+				$archive = $image->publish( $file, $flags, $publishOptions );
+				if ( !$archive->isGood() ) {
+					$this->output( "failed. (" .
+						$archive->getMessage( false, false, 'en' )->text() .
+						")\n" );
+					$statistics['failed']++;
+					continue;
 				}
 			}
-		} else {
-			$this->output( "No suitable files could be found for import.\n" );
+
+			$commentText = SpecialUpload::getInitialPageText( $commentText, $license );
+			if ( !$this->hasOption( 'summary' ) ) {
+				$summary = $commentText;
+			}
+
+			if ( $this->hasOption( 'dry' ) ) {
+				$this->output( "done.\n" );
+			} elseif ( $image->recordUpload3(
+				// @phan-suppress-next-line PhanPossiblyUndeclaredVariable
+				$archive->value,
+				$summary,
+				$commentText,
+				$user,
+				// @phan-suppress-next-line PhanTypeMismatchArgumentNullable,PhanPossiblyUndeclaredVariable
+				$props,
+				$timestamp,
+				$tags
+			)->isOK() ) {
+				$this->output( "done.\n" );
+
+				$doProtect = false;
+
+				$protectLevel = $this->getOption( 'protect' );
+				$restrictionLevels = $this->getConfig()->get( MainConfigNames::RestrictionLevels );
+
+				if ( $protectLevel && in_array( $protectLevel, $restrictionLevels ) ) {
+					$doProtect = true;
+				}
+				if ( $this->hasOption( 'unprotect' ) ) {
+					$protectLevel = '';
+					$doProtect = true;
+				}
+
+				if ( $doProtect ) {
+					# Protect the file
+					$this->output( "\nWaiting for replica DBs...\n" );
+					// Wait for replica DBs.
+					sleep( 2 ); # Why this sleep?
+					$this->waitForReplication();
+
+					$this->output( "\nSetting image restrictions ..." );
+
+					$cascade = false;
+					$restrictions = [];
+					foreach ( $restrictionStore->listApplicableRestrictionTypes( $title ) as $type ) {
+						$restrictions[$type] = $protectLevel;
+					}
+
+					$page = $services->getWikiPageFactory()->newFromTitle( $title );
+					$status = $page->doUpdateRestrictions( $restrictions, [], $cascade, '', $user );
+					$this->output( ( $status->isOK() ? 'done' : 'failed' ) . "\n" );
+				}
+			} else {
+				$this->output( "failed. (at recordUpload stage)\n" );
+				$svar = 'failed';
+			}
+
+			$statistics[$svar]++;
+			$processed++;
+
+			if ( $limit && $processed >= $limit ) {
+				break;
+			}
 		}
+
+		# Print out some statistics
+		$this->output( "\n" );
+		foreach ( array_merge(
+			[
+				'Found' => $found,
+				'Limit' => $limit,
+			],
+			$statistics
+		) as $desc => $number ) {
+			if ( $number > 0 ) {
+				$this->output( ucfirst( $desc ) . ": $number\n" );
+			}
+		}
+
+		// Return true if there are no failed imports (= zero exit code), or
+		// return false if there are any failed imports (= non-zero exit code)
+		return $statistics['failed'] === 0;
 	}
 
 	/**
 	 * Search a directory for files with one of a set of extensions
 	 *
 	 * @param string $dir Path to directory to search
-	 * @param array $exts Array of extensions to search for
+	 * @param array $exts Array of lowercase extensions to search for
 	 * @param bool $recurse Search subdirectories recursively
-	 * @return array|bool Array of filenames on success, or false on failure
+	 * @return \Generator<string> Generator that iterating filenames
 	 */
 	private function findFiles( $dir, $exts, $recurse = false ) {
-		if ( is_dir( $dir ) ) {
-			$dhl = opendir( $dir );
-			if ( $dhl ) {
-				$files = [];
-				while ( ( $file = readdir( $dhl ) ) !== false ) {
-					if ( is_file( $dir . '/' . $file ) ) {
-						$ext = pathinfo( $file, PATHINFO_EXTENSION );
-						if ( array_search( strtolower( $ext ), $exts ) !== false ) {
-							$files[] = $dir . '/' . $file;
-						}
-					} elseif ( $recurse && is_dir( $dir . '/' . $file ) && $file !== '..' && $file !== '.' ) {
-						$files = array_merge( $files, $this->findFiles( $dir . '/' . $file, $exts, true ) );
-					}
-				}
+		$dhl = is_dir( $dir ) ? opendir( $dir ) : false;
+		if ( !$dhl ) {
+			return;
+		}
 
-				return $files;
-			} else {
-				return [];
+		// phpcs:ignore Generic.CodeAnalysis.AssignmentInCondition.FoundInWhileCondition
+		while ( ( $file = readdir( $dhl ) ) !== false ) {
+			if ( is_file( $dir . '/' . $file ) ) {
+				$ext = pathinfo( $file, PATHINFO_EXTENSION );
+				if ( in_array( strtolower( $ext ), $exts ) ) {
+					yield $dir . '/' . $file;
+				}
+			} elseif ( $recurse && is_dir( $dir . '/' . $file ) && $file !== '..' && $file !== '.' ) {
+				yield from $this->findFiles( $dir . '/' . $file, $exts, true );
 			}
-		} else {
-			return [];
 		}
 	}
 
 	/**
-	 * Find an auxilliary file with the given extension, matching
+	 * Find an auxiliary file with the given extension, matching
 	 * the give base file path. $maxStrip determines how many extensions
 	 * may be stripped from the original file name before appending the
 	 * new extension. For example, with $maxStrip = 1 (the default),
@@ -461,10 +473,10 @@ class ImportImages extends Maintenance {
 	 * @param string $file Base path
 	 * @param string $auxExtension The extension to be appended to the base path
 	 * @param int $maxStrip The maximum number of extensions to strip from the base path (default: 1)
-	 * @return string|bool
+	 * @return string|false
 	 */
 	private function findAuxFile( $file, $auxExtension, $maxStrip = 1 ) {
-		if ( strpos( $auxExtension, '.' ) !== 0 ) {
+		if ( !str_starts_with( $auxExtension, '.' ) ) {
 			$auxExtension = '.' . $auxExtension;
 		}
 
@@ -491,18 +503,18 @@ class ImportImages extends Maintenance {
 	}
 
 	/**
-	 * @todo FIXME: Access the api in a saner way and performing just one query
+	 * @todo FIXME: Access the api in a better way and performing just one query
 	 * (preferably batching files too).
 	 *
 	 * @param string $wiki_host
 	 * @param string $file
 	 *
-	 * @return string|bool
+	 * @return string|false
 	 */
 	private function getFileCommentFromSourceWiki( $wiki_host, $file ) {
 		$url = $wiki_host . '/api.php?action=query&format=xml&titles=File:'
 			. rawurlencode( $file ) . '&prop=imageinfo&&iiprop=comment';
-		$body = Http::get( $url, [], __METHOD__ );
+		$body = $this->getServiceContainer()->getHttpRequestFactory()->get( $url, [], __METHOD__ );
 		if ( preg_match( '#<ii comment="([^"]*)" />#', $body, $matches ) == 0 ) {
 			return false;
 		}
@@ -513,7 +525,7 @@ class ImportImages extends Maintenance {
 	private function getFileUserFromSourceWiki( $wiki_host, $file ) {
 		$url = $wiki_host . '/api.php?action=query&format=xml&titles=File:'
 			. rawurlencode( $file ) . '&prop=imageinfo&&iiprop=user';
-		$body = Http::get( $url, [], __METHOD__ );
+		$body = $this->getServiceContainer()->getHttpRequestFactory()->get( $url, [], __METHOD__ );
 		if ( preg_match( '#<ii user="([^"]*)" />#', $body, $matches ) == 0 ) {
 			return false;
 		}
@@ -523,5 +535,7 @@ class ImportImages extends Maintenance {
 
 }
 
+// @codeCoverageIgnoreStart
 $maintClass = ImportImages::class;
 require_once RUN_MAINTENANCE_IF_MAIN;
+// @codeCoverageIgnoreEnd

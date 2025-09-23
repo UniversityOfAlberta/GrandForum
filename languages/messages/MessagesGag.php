@@ -1,11 +1,8 @@
 <?php
 /** Gagauz (Gagauz)
  *
- * To improve a translation please visit https://translatewiki.net
- *
- * @ingroup Language
  * @file
- *
+ * @ingroup Languages
  */
 
 $fallback = 'tr';
@@ -49,6 +46,7 @@ $namespaceAliases = [
 	'Kategori_tartışma'  => NS_CATEGORY_TALK,
 ];
 
+/** @phpcs-require-sorted-array */
 $specialPageAliases = [
 	'Allpages'                  => [ 'HepsiYazılar', 'HepsiSayfalar', 'HepsiYapraklar' ],
 	'Ancientpages'              => [ 'EskiYazılar', 'EskiSayfalar', 'EskiYapraklar' ],
@@ -85,6 +83,7 @@ $specialPageAliases = [
 	'Withoutinterwiki'          => [ 'İntervikisiz' ],
 ];
 
+/** @phpcs-require-sorted-array */
 $magicWords = [
 	'redirect'                  => [ '0', '#YÖNNENDİRMÄKLER', '#YÖNNENDİR', '#YÖNNENDİRMÄ', '#YÖNLENDİRME', '#YÖNLENDİR', '#REDIRECT' ],
 ];

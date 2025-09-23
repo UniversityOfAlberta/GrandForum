@@ -1,10 +1,8 @@
 <?php
-/** Nederlands (informeel)‎ (Nederlands (informeel)‎)
+/** Nederlands (informeel) (Nederlands (informeel))
  *
- * To improve a translation please visit https://translatewiki.net
- *
- * @ingroup Language
  * @file
+ * @ingroup Languages
  *
  * @author HanV
  * @author MarkvA
@@ -13,3 +11,4 @@
  */
 
 $fallback = 'nl';
+$formalityIndex = 0;

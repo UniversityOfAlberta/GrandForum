@@ -282,7 +282,7 @@ class MaterialPage {
                 $wgOut->addHTML(implode(", ", $projectList));
             }
             $wgOut->addHTML("<br />");
-            if($wgUser->isLoggedIn()){
+            if($wgUser->isRegistered()){
                 if($create){
                     $wgOut->addHTML("<input type='submit' name='submit' value='Create Material' />");
                     $wgOut->addHTML("</form>");

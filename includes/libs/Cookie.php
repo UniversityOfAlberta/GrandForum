@@ -22,13 +22,19 @@
  */
 
 class Cookie {
+	/** @var string */
 	protected $name;
+	/** @var string */
 	protected $value;
+	/** @var int|false */
 	protected $expires;
+	/** @var string|null */
 	protected $path;
+	/** @var string|null */
 	protected $domain;
+	/** @var bool */
 	protected $isSessionKey = true;
-	// TO IMPLEMENT	 protected $secure
+	// TO IMPLEMENT  protected $secure
 	// TO IMPLEMENT? protected $maxAge (add onto expires)
 	// TO IMPLEMENT? protected $version
 	// TO IMPLEMENT? protected $comment
@@ -48,7 +54,6 @@ class Cookie {
 	 *        expires A date string
 	 *        path    The path this cookie is used on
 	 *        domain  Domain this cookie is used on
-	 * @throws InvalidArgumentException
 	 */
 	public function set( $value, $attr ) {
 		$this->value = $value;
@@ -74,7 +79,7 @@ class Cookie {
 	 * false.  The uses a method similar to IE cookie security
 	 * described here:
 	 * http://kuza55.blogspot.com/2008/02/understanding-cookie-security.html
-	 * A better method might be to use a blacklist like
+	 * A better method might be to use a list like
 	 * http://publicsuffix.org/
 	 *
 	 * @todo fixme fails to detect 3-letter top-level domains
@@ -91,25 +96,20 @@ class Cookie {
 		// Don't allow a trailing dot or addresses without a or just a leading dot
 		if ( substr( $domain, -1 ) == '.' ||
 			count( $dc ) <= 1 ||
-			count( $dc ) == 2 && $dc[0] === ''
+			( count( $dc ) == 2 && $dc[0] === '' )
 		) {
 			return false;
 		}
 
 		// Only allow full, valid IP addresses
 		if ( preg_match( '/^[0-9.]+$/', $domain ) ) {
-			if ( count( $dc ) != 4 ) {
-				return false;
-			}
-
-			if ( ip2long( $domain ) === false ) {
+			if ( count( $dc ) !== 4 || ip2long( $domain ) === false ) {
 				return false;
 			}
 
 			if ( $originDomain == null || $originDomain == $domain ) {
 				return true;
 			}
-
 		}
 
 		// Don't allow cookies for "co.uk" or "gov.uk", etc, but allow "supermarket.uk"
@@ -171,7 +171,7 @@ class Cookie {
 	protected function canServeDomain( $domain ) {
 		if ( $domain == $this->domain
 			|| ( strlen( $domain ) > strlen( $this->domain )
-				&& substr( $this->domain, 0, 1 ) == '.'
+				&& str_starts_with( $this->domain, '.' )
 				&& substr_compare(
 					$domain,
 					$this->domain,

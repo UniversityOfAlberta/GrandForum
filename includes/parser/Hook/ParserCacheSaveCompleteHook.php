@@ -2,12 +2,15 @@
 
 namespace MediaWiki\Hook;
 
-use ParserCache;
-use ParserOptions;
-use ParserOutput;
-use Title;
+use MediaWiki\Parser\ParserCache;
+use MediaWiki\Parser\ParserOptions;
+use MediaWiki\Parser\ParserOutput;
+use MediaWiki\Title\Title;
 
 /**
+ * This is a hook handler interface, see docs/Hooks.md.
+ * Use the hook name "ParserCacheSaveComplete" to register handlers implementing this interface.
+ *
  * @stable to implement
  * @ingroup Hooks
  */

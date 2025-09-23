@@ -1,7 +1,5 @@
 <?php
 /**
- * Implements Special:Unusedtemplates
- *
  * Copyright © 2006 Rob Church
  *
  * This program is free software; you can redistribute it and/or modify
@@ -20,18 +18,40 @@
  * http://www.gnu.org/copyleft/gpl.html
  *
  * @file
+ */
+
+namespace MediaWiki\Specials;
+
+use MediaWiki\Linker\LinksMigration;
+use MediaWiki\SpecialPage\QueryPage;
+use MediaWiki\SpecialPage\SpecialPage;
+use MediaWiki\Title\Title;
+use Skin;
+use stdClass;
+use Wikimedia\Rdbms\IConnectionProvider;
+
+/**
+ * Lists of unused templates
+ *
+ * @see SpecialMostLinkedTemplates
  * @ingroup SpecialPage
  * @author Rob Church <robchur@gmail.com>
  */
-
-/**
- * A special page that lists unused templates
- *
- * @ingroup SpecialPage
- */
 class SpecialUnusedTemplates extends QueryPage {
-	public function __construct( $name = 'Unusedtemplates' ) {
-		parent::__construct( $name );
+
+	private LinksMigration $linksMigration;
+
+	/**
+	 * @param IConnectionProvider $dbProvider
+	 * @param LinksMigration $linksMigration
+	 */
+	public function __construct(
+		IConnectionProvider $dbProvider,
+		LinksMigration $linksMigration
+	) {
+		parent::__construct( 'Unusedtemplates' );
+		$this->setDatabaseProvider( $dbProvider );
+		$this->linksMigration = $linksMigration;
 	}
 
 	public function isExpensive() {
@@ -51,37 +71,51 @@ class SpecialUnusedTemplates extends QueryPage {
 	}
 
 	public function getQueryInfo() {
+		$queryInfo = $this->linksMigration->getQueryInfo(
+			'templatelinks',
+			'templatelinks',
+			'LEFT JOIN'
+		);
+		[ $ns, $title ] = $this->linksMigration->getTitleFields( 'templatelinks' );
+		$joinConds = [];
+		$templatelinksJoin = [
+			'LEFT JOIN', [ "$title = page_title",
+				"$ns = page_namespace" ] ];
+		if ( in_array( 'linktarget', $queryInfo['tables'] ) ) {
+			$joinConds['linktarget'] = $templatelinksJoin;
+		} else {
+			$joinConds['templatelinks'] = $templatelinksJoin;
+		}
+		$joinConds['page_props'] = [ 'LEFT JOIN', [ 'page_id = pp_page', 'pp_propname' => 'expectunusedtemplate' ] ];
 		return [
-			'tables' => [ 'page', 'templatelinks' ],
+			'tables' => array_merge( $queryInfo['tables'], [ 'page' ], [ 'page_props' ] ),
 			'fields' => [
 				'namespace' => 'page_namespace',
 				'title' => 'page_title',
 			],
 			'conds' => [
 				'page_namespace' => NS_TEMPLATE,
-				'tl_from IS NULL',
-				'page_is_redirect' => 0
+				'tl_from' => null,
+				'page_is_redirect' => 0,
+				'pp_page' => null
 			],
-			'join_conds' => [ 'templatelinks' => [
-				'LEFT JOIN', [ 'tl_title = page_title',
-					'tl_namespace = page_namespace' ] ] ]
+			'join_conds' => array_merge( $joinConds, $queryInfo['joins'] )
 		];
+	}
+
+	public function preprocessResults( $db, $res ) {
+		$this->executeLBFromResultWrapper( $res );
 	}
 
 	/**
 	 * @param Skin $skin
-	 * @param object $result Result row
+	 * @param stdClass $result Result row
 	 * @return string
 	 */
 	public function formatResult( $skin, $result ) {
 		$linkRenderer = $this->getLinkRenderer();
 		$title = Title::makeTitle( NS_TEMPLATE, $result->title );
-		$pageLink = $linkRenderer->makeKnownLink(
-			$title,
-			null,
-			[],
-			[ 'redirect' => 'no' ]
-		);
+		$pageLink = $linkRenderer->makeKnownLink( $title );
 		$wlhLink = $linkRenderer->makeKnownLink(
 			SpecialPage::getTitleFor( 'Whatlinkshere', $title->getPrefixedText() ),
 			$this->msg( 'unusedtemplateswlh' )->text()
@@ -98,3 +132,9 @@ class SpecialUnusedTemplates extends QueryPage {
 		return 'maintenance';
 	}
 }
+
+/**
+ * Retain the old class name for backwards compatibility.
+ * @deprecated since 1.41
+ */
+class_alias( SpecialUnusedTemplates::class, 'SpecialUnusedTemplates' );

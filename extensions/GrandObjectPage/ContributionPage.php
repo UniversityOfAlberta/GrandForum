@@ -29,7 +29,7 @@ class ContributionPage {
             if($name != "Contribution"){
                 return true;
             }
-            if($wgUser->isLoggedIn() && $me->isRoleAtLeast(HQP)){
+            if($wgUser->isRegistered() && $me->isRoleAtLeast(HQP)){
                 $cName = $title;
                 $contribution = Contribution::newFromId($cName);
                 if($contribution != null && $contribution->getId() !== null && isset($_GET['create'])){
@@ -585,7 +585,7 @@ class ContributionPage {
                         $wgOut->addHTML(implode(", ", $projectList));
                     }
                     $wgOut->addHTML("<br />");
-                    if($wgUser->isLoggedIn()){
+                    if($wgUser->isRegistered()){
                         if($create){
                             $wgOut->addHTML("<input type='submit' name='submit' value='Create Contribution' />");
                             $wgOut->addHTML("</form>");
@@ -611,7 +611,7 @@ class ContributionPage {
                     $wgOut->disable();
                 }
             }
-            else if(!$wgUser->isLoggedIn()){
+            else if(!$wgUser->isRegistered()){
                 $wgOut->setPageTitle("Permission Error");
                 $wgOut->addHTML("This page is not public.  <a href='$wgScriptPath/index.php?title=Special:UserLogin&returnto={$wgTitle->getNsText()}:{$wgTitle->getText()}'>Click Here</a> to login.");
                 $wgOut->output();

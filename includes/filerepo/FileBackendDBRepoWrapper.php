@@ -1,7 +1,5 @@
 <?php
 /**
- * Proxy backend that manages file layout rewriting for FileRepo.
- *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -18,14 +16,15 @@
  * http://www.gnu.org/copyleft/gpl.html
  *
  * @file
- * @ingroup FileRepo
- * @ingroup FileBackend
  */
 
-use Wikimedia\Rdbms\DBConnRef;
+use MediaWiki\Output\StreamFile;
+use Shellbox\Command\BoxedCommand;
+use Wikimedia\FileBackend\FileBackend;
+use Wikimedia\Rdbms\IDatabase;
 
 /**
- * @brief Proxy backend that manages file layout rewriting for FileRepo.
+ * Proxy backend that manages file layout rewriting for FileRepo.
  *
  * LocalRepo may be configured to store files under their title names or by SHA-1.
  * This acts as a shim in the latter case, providing backwards compatability for
@@ -47,7 +46,7 @@ class FileBackendDBRepoWrapper extends FileBackend {
 	protected $dbHandleFunc;
 	/** @var MapCacheLRU */
 	protected $resolvedPathCache;
-	/** @var DBConnRef[] */
+	/** @var IDatabase[] */
 	protected $dbs;
 
 	public function __construct( array $config ) {
@@ -72,7 +71,7 @@ class FileBackendDBRepoWrapper extends FileBackend {
 	}
 
 	/**
-	 * Translate a legacy "title" path to it's "sha1" counterpart
+	 * Translate a legacy "title" path to its "sha1" counterpart
 	 *
 	 * E.g. mwstore://local-backend/local-public/a/ab/<name>.jpg
 	 * => mwstore://local-backend/local-original/x/y/z/<sha1>.jpg
@@ -97,7 +96,7 @@ class FileBackendDBRepoWrapper extends FileBackend {
 	 * @return string[] Translated paths in same order
 	 */
 	public function getBackendPaths( array $paths, $latest = true ) {
-		$db = $this->getDB( $latest ? DB_MASTER : DB_REPLICA );
+		$db = $this->getDB( $latest ? DB_PRIMARY : DB_REPLICA );
 
 		// @TODO: batching
 		$resolved = [];
@@ -107,20 +106,22 @@ class FileBackendDBRepoWrapper extends FileBackend {
 				continue;
 			}
 
-			list( , $container ) = FileBackend::splitStoragePath( $path );
+			[ , $container ] = FileBackend::splitStoragePath( $path );
 
 			if ( $container === "{$this->repoName}-public" ) {
 				$name = basename( $path );
-				if ( strpos( $path, '!' ) !== false ) {
-					$sha1 = $db->selectField( 'oldimage', 'oi_sha1',
-						[ 'oi_archive_name' => $name ],
-						__METHOD__
-					);
+				if ( str_contains( $path, '!' ) ) {
+					$sha1 = $db->newSelectQueryBuilder()
+						->select( 'oi_sha1' )
+						->from( 'oldimage' )
+						->where( [ 'oi_archive_name' => $name ] )
+						->caller( __METHOD__ )->fetchField();
 				} else {
-					$sha1 = $db->selectField( 'image', 'img_sha1',
-						[ 'img_name' => $name ],
-						__METHOD__
-					);
+					$sha1 = $db->newSelectQueryBuilder()
+						->select( 'img_sha1' )
+						->from( 'image' )
+						->where( [ 'img_name' => $name ] )
+						->caller( __METHOD__ )->fetchField();
 				}
 				if ( $sha1 === null || !strlen( $sha1 ) ) {
 					$resolved[$i] = $path; // give up
@@ -230,6 +231,13 @@ class FileBackendDBRepoWrapper extends FileBackend {
 		return $this->translateSrcParams( __FUNCTION__, $params );
 	}
 
+	public function addShellboxInputFile( BoxedCommand $command, string $boxedName,
+		array $params
+	) {
+		$params['src'] = $this->getBackendPath( $params['src'], !empty( $params['latest'] ) );
+		return $this->backend->addShellboxInputFile( $command, $boxedName, $params );
+	}
+
 	public function directoryExists( array $params ) {
 		return $this->backend->directoryExists( $params );
 	}
@@ -246,7 +254,7 @@ class FileBackendDBRepoWrapper extends FileBackend {
 		return $this->backend->getFeatures();
 	}
 
-	public function clearCache( array $paths = null ) {
+	public function clearCache( ?array $paths = null ) {
 		$this->backend->clearCache( null ); // clear all
 	}
 
@@ -283,7 +291,7 @@ class FileBackendDBRepoWrapper extends FileBackend {
 	 * Get a connection to the repo file registry DB
 	 *
 	 * @param int $index
-	 * @return DBConnRef
+	 * @return IDatabase
 	 */
 	protected function getDB( $index ) {
 		if ( !isset( $this->dbs[$index] ) ) {

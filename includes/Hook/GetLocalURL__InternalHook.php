@@ -3,9 +3,12 @@
 namespace MediaWiki\Hook;
 
 // phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
-use Title;
+use MediaWiki\Title\Title;
 
 /**
+ * This is a hook handler interface, see docs/Hooks.md.
+ * Use the hook name "GetLocalURL::Internal" to register handlers implementing this interface.
+ *
  * @stable to implement
  * @ingroup Hooks
  */

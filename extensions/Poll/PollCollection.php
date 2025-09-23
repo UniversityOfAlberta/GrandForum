@@ -97,7 +97,7 @@ class PollCollection {
 	}
 	
 	function canUserViewPoll($user){
-		if($user->isLoggedIn()){
+		if($user->isRegistered()){
 		    $person = Person::newFromUser($user);
 			$groups = $user->getGroups();
 			foreach($this->groups as $group){

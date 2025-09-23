@@ -1,6 +1,6 @@
 <?php
 /**
- * (C) 2019 Kunal Mehta <legoktm@member.fsf.org>
+ * (C) 2019 Kunal Mehta <legoktm@debian.org>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,7 +20,13 @@
  * @file
  */
 
+use MediaWiki\MainConfigNames;
+use MediaWiki\Registration\ExtensionDependencyError;
+use MediaWiki\Registration\ExtensionRegistry;
+
+// @codeCoverageIgnoreStart
 require_once __DIR__ . '/Maintenance.php';
+// @codeCoverageIgnoreEnd
 
 /**
  * Checks dependencies for extensions, mostly without loading them
@@ -29,6 +35,7 @@ require_once __DIR__ . '/Maintenance.php';
  */
 class CheckDependencies extends Maintenance {
 
+	/** @var bool */
 	private $checkDev;
 
 	public function __construct() {
@@ -79,8 +86,8 @@ class CheckDependencies extends Maintenance {
 	}
 
 	private function loadThing( &$dependencies, $name, $extensions, $skins ) {
-		$extDir = $this->getConfig()->get( 'ExtensionDirectory' );
-		$styleDir = $this->getConfig()->get( 'StyleDirectory' );
+		$extDir = $this->getConfig()->get( MainConfigNames::ExtensionDirectory );
+		$styleDir = $this->getConfig()->get( MainConfigNames::StyleDirectory );
 		$queue = [];
 		$missing = false;
 		foreach ( $extensions as $extension ) {
@@ -126,17 +133,18 @@ class CheckDependencies extends Maintenance {
 			} elseif ( $e->missingExtensions || $e->missingSkins ) {
 				// There's an extension missing in the dependency tree,
 				// so add those to the dependency list and try again
-				return $this->loadThing(
+				$this->loadThing(
 					$dependencies,
 					$name,
 					array_merge( $extensions, $e->missingExtensions ),
 					array_merge( $skins, $e->missingSkins )
 				);
+				return;
 			} else {
 				// missing-phpExtension
 				// missing-ability
 				// XXX: ???
-				throw $e;
+				$this->fatalError( $e->getMessage() );
 			}
 
 			$this->addToDependencies( $dependencies, $extensions, $skins, $name, $reason, $e->getMessage() );
@@ -199,5 +207,7 @@ class CheckDependencies extends Maintenance {
 	}
 }
 
+// @codeCoverageIgnoreStart
 $maintClass = CheckDependencies::class;
 require_once RUN_MAINTENANCE_IF_MAIN;
+// @codeCoverageIgnoreEnd

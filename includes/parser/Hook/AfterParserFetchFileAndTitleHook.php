@@ -3,9 +3,12 @@
 namespace MediaWiki\Hook;
 
 use ImageGalleryBase;
-use Parser;
+use MediaWiki\Parser\Parser;
 
 /**
+ * This is a hook handler interface, see docs/Hooks.md.
+ * Use the hook name "AfterParserFetchFileAndTitle" to register handlers implementing this interface.
+ *
  * @stable to implement
  * @ingroup Hooks
  */

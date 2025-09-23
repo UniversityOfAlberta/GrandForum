@@ -1,10 +1,8 @@
 <?php
 /** Megleno-Romanian (Vlăheşte)
  *
- * To improve a translation please visit https://translatewiki.net
- *
- * @ingroup Language
  * @file
+ * @ingroup Languages
  * @comment falls back to Megleno-Romanian (Latin)
  *
  */

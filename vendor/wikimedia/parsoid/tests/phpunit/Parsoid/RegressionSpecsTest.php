@@ -1,16 +1,18 @@
 <?php
+// phpcs:disable Generic.Files.LineLength.TooLong
 declare( strict_types = 1 );
 
 namespace Test\Parsoid;
 
-use DOMElement;
 use PHPUnit\Framework\TestCase;
-use Wikimedia\Parsoid\Core\SelserData;
+use Wikimedia\Parsoid\Core\SelectiveUpdateData;
+use Wikimedia\Parsoid\DOM\Element;
 use Wikimedia\Parsoid\Mocks\MockDataAccess;
 use Wikimedia\Parsoid\Mocks\MockPageConfig;
 use Wikimedia\Parsoid\Mocks\MockPageContent;
 use Wikimedia\Parsoid\Mocks\MockSiteConfig;
 use Wikimedia\Parsoid\Parsoid;
+use Wikimedia\Parsoid\Utils\DiffDOMUtils;
 use Wikimedia\Parsoid\Utils\DOMCompat;
 use Wikimedia\Parsoid\Utils\DOMUtils;
 
@@ -21,17 +23,18 @@ use Wikimedia\Parsoid\Utils\DOMUtils;
 class RegressionSpecsTest extends TestCase {
 	/**
 	 * @param string $wt
-	 * @param array $opts
-	 * @return DOMElement
+	 * @param array $pageOpts
+	 * @param bool $wrapSections
+	 * @return Element
 	 */
-	private function parseWT( string $wt, array $opts = [] ): DOMElement {
+	private function parseWT( string $wt, array $pageOpts = [], $wrapSections = false ): Element {
 		$siteConfig = new MockSiteConfig( [] );
-		$dataAccess = new MockDataAccess( [] );
+		$dataAccess = new MockDataAccess( $siteConfig, [] );
 		$parsoid = new Parsoid( $siteConfig, $dataAccess );
 
 		$content = new MockPageContent( [ 'main' => $wt ] );
-		$pageConfig = new MockPageConfig( $opts, $content );
-		$html = $parsoid->wikitext2html( $pageConfig, [ "wrapSections" => false ] );
+		$pageConfig = new MockPageConfig( $siteConfig, $pageOpts, $content );
+		$html = $parsoid->wikitext2html( $pageConfig, [ "wrapSections" => $wrapSections ] );
 
 		$doc = DOMUtils::parseHTML( $html );
 
@@ -40,24 +43,16 @@ class RegressionSpecsTest extends TestCase {
 		return( $docBody );
 	}
 
-	/**
-	 * @param string $description
-	 * @param string $wt
-	 * @param array $search
-	 * @param array $replace
-	 * @param string $withoutSelser
-	 * @param string $withSelser
-	 */
 	private function sharedTest(
 		string $description, string $wt, array $search, array $replace,
 		string $withoutSelser, string $withSelser
 	): void {
 		$siteConfig = new MockSiteConfig( [] );
-		$dataAccess = new MockDataAccess( [] );
+		$dataAccess = new MockDataAccess( $siteConfig, [] );
 		$parsoid = new Parsoid( $siteConfig, $dataAccess );
 
 		$content = new MockPageContent( [ 'main' => $wt ] );
-		$pageConfig = new MockPageConfig( [], $content );
+		$pageConfig = new MockPageConfig( $siteConfig, [], $content );
 		$html = $parsoid->wikitext2html( $pageConfig, [ "wrapSections" => false ] );
 
 		// This is mimicking a copy/paste in an editor
@@ -68,30 +63,9 @@ class RegressionSpecsTest extends TestCase {
 		$this->assertEquals( $withoutSelser, $editedWT, $description );
 
 		// With selser
-		$selserData = new SelserData( $wt, $html );
+		$selserData = new SelectiveUpdateData( $wt, $html );
 		$editedWT = $parsoid->html2wikitext( $pageConfig, $editedHTML, [], $selserData );
 		$this->assertEquals( $withSelser, $editedWT, $description );
-	}
-
-	/**
-	 * Wikilinks use ./ prefixed urls. For reasons of consistency,
-	 * we should use a similar format for internal cite urls.
-	 * This spec ensures that we don't inadvertently break that requirement.
-	 * should use ./ prefixed urls for cite links
-	 * @covers \Wikimedia\Parsoid\Wt2Html\ParserPipeline
-	 */
-	public function testWikilinkUseDotSlashPrefix(): void {
-		$description = "Regression Specs: should use ./ prefixed urls for cite links";
-		$wt = "a [[Foo]] <ref>b</ref>";
-		$docBody = $this->parseWT( $wt, [ 'title' => 'Main_Page' ] );
-
-		$attrib = DOMCompat::querySelectorAll( $docBody, ".mw-ref a" )[0]->
-			getAttribute( 'href' );
-		$this->assertEquals( './Main_Page#cite_note-1', $attrib, $description );
-
-		$attrib = DOMCompat::querySelectorAll( $docBody, "#cite_note-1 a" )[0]->
-			getAttribute( 'href' );
-		$this->assertEquals( './Main_Page#cite_ref-1', $attrib, $description );
 	}
 
 	/**
@@ -105,6 +79,22 @@ class RegressionSpecsTest extends TestCase {
 		$replaceItems = [ 'Foo' ];
 		$withoutSelser = "[[Foo|Foo]]";
 		$withSelser = "[[Foo]]";
+
+		$this->sharedTest( $description, $wt, $searchItems, $replaceItems,
+			$withoutSelser, $withSelser );
+	}
+
+	/**
+	 * should prevent regression of T268737
+	 * @covers \Wikimedia\Parsoid\Html2Wt\Separators::recoverTrimmedWhitespace
+	 */
+	public function testPreventRegressionT268737(): void {
+		$description = "Regression Specs: should prevent regression of T262737";
+		$wt = "* [[Foo]]--[[Bar]]";
+		$searchItems = [ '--' ];
+		$replaceItems = [ '..' ];
+		$withoutSelser = "*[[Foo]]..[[Bar]]";
+		$withSelser = "* [[Foo]]..[[Bar]]";
 
 		$this->sharedTest( $description, $wt, $searchItems, $replaceItems,
 			$withoutSelser, $withSelser );
@@ -179,8 +169,8 @@ class RegressionSpecsTest extends TestCase {
 			"| <!--cmt-->edited cell",
 			"| <div>edited cell</div>",
 			"| [[Link|edited cell]]",
-			"|  unedited c1  || edited cell || unedited c3 || edited cell",
-			"|  unedited c1  || edited cell || unedited c3 ||   unedited c4",
+			"|  unedited c1  || edited cell ||  unedited c3  || edited cell",
+			"|  unedited c1  || edited cell ||  unedited c3  ||   unedited c4",
 			"|}"
 		] );
 
@@ -213,11 +203,11 @@ class RegressionSpecsTest extends TestCase {
 		] );
 
 		$siteConfig = new MockSiteConfig( [] );
-		$dataAccess = new MockDataAccess( [] );
+		$dataAccess = new MockDataAccess( $siteConfig, [] );
 		$parsoid = new Parsoid( $siteConfig, $dataAccess );
 
 		$content = new MockPageContent( [ 'main' => $wt ] );
-		$pageConfig = new MockPageConfig( [], $content );
+		$pageConfig = new MockPageConfig( $siteConfig, [], $content );
 
 		$html = $parsoid->wikitext2html( $pageConfig, [ "wrapSections" => false ] );
 
@@ -244,7 +234,7 @@ class RegressionSpecsTest extends TestCase {
 			"|}"
 		] );
 
-		$selserData = new SelserData( $wt, $html );
+		$selserData = new SelectiveUpdateData( $wt, $html );
 		$editedWT = $parsoid->html2wikitext( $pageConfig, $editedBody, [], $selserData );
 		$this->assertEquals( $newVersion, $editedWT, $description );
 
@@ -271,7 +261,7 @@ class RegressionSpecsTest extends TestCase {
 		// Pretend we are in 1.6.1 version to disable whitespace heuristics
 		$htmlVersion = '1.6.1';
 
-		$selserData = new SelserData( $wt, $html );
+		$selserData = new SelectiveUpdateData( $wt, $html );
 		$editedWT = $parsoid->html2wikitext( $pageConfig, $editedBody,
 			[ 'inputContentVersion' => $htmlVersion ], $selserData );
 		$this->assertEquals( $oldVersion, $editedWT, $description );
@@ -285,9 +275,9 @@ class RegressionSpecsTest extends TestCase {
 		$description = "Regression Specs: should not wrap templatestyles style tags in p-wrappers";
 		$wt = "<templatestyles src='Template:Quote/styles.css'/><div>foo</div>";
 		$docBody = $this->parseWT( $wt );
-		$node = $docBody->firstChild->nodeName;
+		$node = DOMCompat::nodeName( $docBody->firstChild );
 
-		$this->assertEquals( "style",  $node, $description );
+		$this->assertEquals( "style", $node, $description );
 	}
 
 	/**
@@ -301,11 +291,11 @@ class RegressionSpecsTest extends TestCase {
 			'[[File:Thumb.png|thumb|250px]]';
 		$docBody = $this->parseWT( $wt );
 
-		$node = $docBody->firstChild->nodeName;
-		$this->assertEquals( "p",  $node, $description );
+		$node = DOMCompat::nodeName( $docBody->firstChild );
+		$this->assertEquals( "p", $node, $description );
 
-		$node = DOMUtils::nextNonSepSibling( $docBody->firstChild )->nodeName;
-		$this->assertEquals( "figure",  $node, $description );
+		$node = DOMCompat::nodeName( DiffDOMUtils::nextNonSepSibling( $docBody->firstChild ) );
+		$this->assertEquals( "figure", $node, $description );
 	}
 
 	/**
@@ -322,21 +312,124 @@ class RegressionSpecsTest extends TestCase {
 		$docBody = $this->parseWT( $wt );
 
 		$firstStyle = $docBody->firstChild->firstChild;
-		$this->assertEquals( "style",  $firstStyle->nodeName, $description );
+		$this->assertEquals( "style", DOMCompat::nodeName( $firstStyle ), $description );
 
 		$secondStyle = $firstStyle->nextSibling->nextSibling->nextSibling;
-		$this->assertEquals( "link",  $secondStyle->nodeName, $description );
+		$this->assertEquals( "link", DOMCompat::nodeName( $secondStyle ), $description );
 
 		$this->assertEquals( "mw-deduplicated-inline-style",
-			$secondStyle->getAttribute( 'rel' ), $description );
+			DOMCompat::getAttribute( $secondStyle, 'rel' ), $description );
 
 		$this->assertEquals( 'mw-data:' .
-			$firstStyle->getAttribute( 'data-mw-deduplicate' ),
-			$secondStyle->getAttribute( 'href' ), $description );
+			DOMCompat::getAttribute( $firstStyle, 'data-mw-deduplicate' ),
+			DOMCompat::getAttribute( $secondStyle, 'href' ), $description );
 
-		$keys = [ 'about','typeof','data-mw','data-parsoid' ];
+		$keys = [ 'about', 'typeof', 'data-mw', 'data-parsoid' ];
 		foreach ( $keys as $key ) {
 			$this->assertTrue( $secondStyle->hasAttribute( $key ), $description );
 		}
 	}
+
+	/**
+	 * @covers \Wikimedia\Parsoid\Ext\Gallery\Gallery::domToWikitext
+	 */
+	public function testGalleryLineWithTemplatestyleInCaption(): void {
+		$description = "Deduplicated templatestyles shouldn't lead to differing alt and caption text.";
+		$wt = <<<EOT
+The first instance ensures the one in the caption is deduped <templatestyles src="Template:Quote/styles.css" />
+<gallery>
+File:Foobar.jpg|caption with <templatestyles src="Template:Quote/styles.css" />
+</gallery>
+EOT;
+		$docBody = $this->parseWT( $wt );
+
+		$siteConfig = new MockSiteConfig( [] );
+		$dataAccess = new MockDataAccess( $siteConfig, [] );
+		$parsoid = new Parsoid( $siteConfig, $dataAccess );
+		$content = new MockPageContent( [ 'main' => $wt ] );
+		$pageConfig = new MockPageConfig( $siteConfig, [], $content );
+
+		$editedWt = $parsoid->html2wikitext( $pageConfig, DOMCompat::getOuterHTML( $docBody ), [], null );
+
+		$this->assertEquals( $wt, $editedWt );
+	}
+
+	/**
+	 * @covers \Wikimedia\Parsoid\Config\SiteConfig::getMagicWordForMediaOption
+	 */
+	public function testSub(): void {
+		$wt = <<<EOT
+[[File:Foobar.jpg|sub|caption]]
+EOT;
+		$docBody = $this->parseWT( $wt );
+		$figure = DOMCompat::querySelector( $docBody, 'span[typeof~="mw:File"]' );
+		$this->assertInstanceOf( Element::class, $figure );
+		$this->assertTrue( DOMUtils::hasClass( $figure, 'mw-valign-sub' ) );
+	}
+
+	/**
+	 * Tests TOC edge cases in T350625 and T352467
+	 * Cannot test some of this via parser tests because that framework strips
+	 * about attributes and here, we want to assert the presence of 'about'.
+	 * @covers \Wikimedia\Parsoid\Wt2Html\DOM\Processors\WrapSectionsState
+	 */
+	public function testTocEdgeCases(): void {
+		// For the test below,
+		// - Synthetic meta should get an about id
+		//   matching the surrounding template
+		// - Synthetic section shoult not get an about id
+		$wt = <<<EOT
+<div>
+{{1x|1=
+foo
+==h1==
+}}
+a
+==h2==
+b
+==h3==
+c
+==h4==
+d
+</div>
+EOT;
+		$docBody = $this->parseWT( $wt, [], true );
+
+		$syntheticMeta = DOMCompat::querySelector( $docBody, 'meta[property=mw:PageProp/toc]' );
+		$about = DOMCompat::getAttribute( $syntheticMeta, 'about' );
+		$this->assertNotNull( $about );
+
+		$syntheticSection = $syntheticMeta->parentNode;
+		$this->assertSame( '-2', DOMCompat::getAttribute( $syntheticSection, 'data-mw-section-id' ) );
+		$this->assertSame( $about, DOMCompat::getAttribute( $syntheticSection->previousSibling, 'about' ) ); // <span> for \n after 'foo'
+		$this->assertSame( $about, DOMCompat::getAttribute( $syntheticSection->nextSibling->firstChild, 'about' ) ); // <h1>
+		$this->assertNull( DOMCompat::getAttribute( $syntheticSection, 'about' ) );
+
+		// For the test below,
+		// - Synthetic meta and synthetic section should not get an about id
+		// - The synthetic section should be nested in a <div> tag
+		$wt = <<<EOT
+{{1x|foo
+<div>}}
+==h1==
+a
+==h2==
+b
+==h3==
+c
+==h4==
+d
+==h5==
+e
+EOT;
+		$docBody = $this->parseWT( $wt, [], true );
+		$syntheticMeta = DOMCompat::querySelector( $docBody, 'meta[property=mw:PageProp/toc]' );
+		$this->assertNull( DOMCompat::getAttribute( $syntheticMeta, 'about' ) );
+
+		$syntheticSection = $syntheticMeta->parentNode;
+		$this->assertSame( '-2', DOMCompat::getAttribute( $syntheticSection, 'data-mw-section-id' ) );
+		$this->assertSame( 'div', DOMCompat::nodeName( $syntheticSection->parentNode ) );
+		$this->assertNull( DOMCompat::getAttribute( $syntheticSection, 'about' ) );
+	}
+
 }

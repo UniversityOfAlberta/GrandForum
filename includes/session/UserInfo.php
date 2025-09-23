@@ -23,7 +23,11 @@
 
 namespace MediaWiki\Session;
 
-use User;
+use InvalidArgumentException;
+use MediaWiki\MediaWikiServices;
+use MediaWiki\User\User;
+use MediaWiki\User\UserRigorOptions;
+use Stringable;
 
 /**
  * Object holding data about a session's user
@@ -48,7 +52,7 @@ use User;
  * @ingroup Session
  * @since 1.27
  */
-final class UserInfo {
+final class UserInfo implements Stringable {
 	/** @var bool */
 	private $verified = false;
 
@@ -56,7 +60,8 @@ final class UserInfo {
 	private $user = null;
 
 	private function __construct( ?User $user, $verified ) {
-		if ( $user && $user->isAnon() && !User::isUsableName( $user->getName() ) ) {
+		$userNameUtils = MediaWikiServices::getInstance()->getUserNameUtils();
+		if ( $user && $user->isAnon() && !$userNameUtils->isUsable( $user->getName() ) ) {
 			$this->verified = true;
 			$this->user = null;
 		} else {
@@ -83,12 +88,12 @@ final class UserInfo {
 	 * @return UserInfo
 	 */
 	public static function newFromId( $id, $verified = false ) {
-		$user = User::newFromId( $id );
+		$user = MediaWikiServices::getInstance()->getUserFactory()->newFromId( (int)$id );
 
 		// Ensure the ID actually exists
 		$user->load();
 		if ( $user->isAnon() ) {
-			throw new \InvalidArgumentException( 'Invalid ID' );
+			throw new InvalidArgumentException( 'Invalid ID' );
 		}
 
 		return new self( $user, $verified );
@@ -101,9 +106,12 @@ final class UserInfo {
 	 * @return UserInfo
 	 */
 	public static function newFromName( $name, $verified = false ) {
-		$user = User::newFromName( $name, 'usable' );
+		$user = MediaWikiServices::getInstance()->getUserFactory()->newFromName(
+			(string)$name,
+			UserRigorOptions::RIGOR_USABLE
+		);
 		if ( !$user ) {
-			throw new \InvalidArgumentException( 'Invalid user name' );
+			throw new InvalidArgumentException( 'Invalid user name' );
 		}
 		return new self( $user, $verified );
 	}
@@ -164,7 +172,7 @@ final class UserInfo {
 	 * @return User
 	 */
 	public function getUser() {
-		return $this->user === null ? new User : $this->user;
+		return $this->user ?? MediaWikiServices::getInstance()->getUserFactory()->newAnonymous();
 	}
 
 	/**

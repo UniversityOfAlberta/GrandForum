@@ -4,9 +4,9 @@ namespace MediaWiki\Search\SearchWidgets;
 
 use ISearchResultSet;
 use MediaWiki\MediaWikiServices;
-use Message;
-use SpecialSearch;
-use Status;
+use MediaWiki\Message\Message;
+use MediaWiki\Specials\SpecialSearch;
+use MediaWiki\Status\Status;
 
 /**
  * Renders the search result area. Handles Title and Full-Text search results,
@@ -40,25 +40,27 @@ class BasicSearchResultSetWidget {
 	public function render(
 		$term,
 		$offset,
-		ISearchResultSet $titleResultSet = null,
-		ISearchResultSet $textResultSet = null
+		?ISearchResultSet $titleResultSet = null,
+		?ISearchResultSet $textResultSet = null
 	) {
-		$hasTitle = $titleResultSet ? $titleResultSet->numRows() > 0 : false;
-		$hasText = $textResultSet ? $textResultSet->numRows() > 0 : false;
-		$hasSecondary = $textResultSet
-			? $textResultSet->hasInterwikiResults( ISearchResultSet::SECONDARY_RESULTS )
-			: false;
-		$hasSecondaryInline = $textResultSet
-			? $textResultSet->hasInterwikiResults( ISearchResultSet::INLINE_RESULTS )
-			: false;
+		$hasTitle = $titleResultSet && $titleResultSet->numRows() > 0;
+		$hasText = $textResultSet && $textResultSet->numRows() > 0;
+		$hasSecondary =
+			$textResultSet &&
+			$textResultSet->hasInterwikiResults( ISearchResultSet::SECONDARY_RESULTS );
+		$hasSecondaryInline =
+			$textResultSet &&
+			$textResultSet->hasInterwikiResults( ISearchResultSet::INLINE_RESULTS );
 
 		if ( !$hasTitle && !$hasText && !$hasSecondary && !$hasSecondaryInline ) {
 			return '';
 		}
 
-		$out = '';
+		$out = '<div class="mw-search-results-container">';
+
 		if ( $hasTitle ) {
 			$out .= $this->header( $this->specialPage->msg( 'titlematches' ) )
+				// @phan-suppress-next-line PhanTypeMismatchArgumentNullable titleResultSet is set when used here
 				. $this->renderResultSet( $titleResultSet, $offset );
 		}
 
@@ -67,6 +69,7 @@ class BasicSearchResultSetWidget {
 				$out .= "<div class='mw-search-visualclear'></div>" .
 					$this->header( $this->specialPage->msg( 'textmatches' ) );
 			}
+			// @phan-suppress-next-line PhanTypeMismatchArgumentNullable textResultSet is set when used
 			$out .= $this->renderResultSet( $textResultSet, $offset );
 		}
 
@@ -81,9 +84,15 @@ class BasicSearchResultSetWidget {
 					"<h2 class='mw-search-interwiki-header mw-search-visualclear'>" .
 						$this->specialPage->msg( "search-interwiki-results-{$interwiki}" )->parse() .
 					"</h2>";
-				$out .= $this->renderResultSet( $results, $offset );
+				$out .=
+					"<div class='mw-search-interwiki-results'>" .
+						$this->renderResultSet( $results, $offset ) .
+					"</div>";
 			}
 		}
+
+		// Close <div class='mw-search-results-container'>
+		$out .= '</div>';
 
 		if ( $hasSecondary ) {
 			$out .= $this->sidebarWidget->render(
@@ -108,9 +117,7 @@ class BasicSearchResultSetWidget {
 	 * @return string HTML
 	 */
 	protected function header( Message $msg ) {
-		return "<h2>" .
-			"<span class='mw-headline'>" . $msg->escaped() . "</span>" .
-		"</h2>";
+		return "<h2>" . $msg->escaped() . "</h2>";
 	}
 
 	/**

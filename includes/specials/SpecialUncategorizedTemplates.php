@@ -1,7 +1,5 @@
 <?php
 /**
- * Implements Special:Uncategorizedtemplates
- *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -18,19 +16,48 @@
  * http://www.gnu.org/copyleft/gpl.html
  *
  * @file
+ */
+
+namespace MediaWiki\Specials;
+
+use MediaWiki\Cache\LinkBatchFactory;
+use MediaWiki\Languages\LanguageConverterFactory;
+use MediaWiki\Title\NamespaceInfo;
+use Wikimedia\Rdbms\IConnectionProvider;
+
+/**
+ * List of all uncategorised pages in the Template namespace.
+ *
  * @ingroup SpecialPage
  * @author Rob Church <robchur@gmail.com>
  */
-
-/**
- * Special page lists all uncategorised pages in the
- * template namespace
- *
- * @ingroup SpecialPage
- */
 class SpecialUncategorizedTemplates extends SpecialUncategorizedPages {
-	public function __construct( $name = 'Uncategorizedtemplates' ) {
-		parent::__construct( $name );
+
+	/**
+	 * @param NamespaceInfo $namespaceInfo
+	 * @param IConnectionProvider $dbProvider
+	 * @param LinkBatchFactory $linkBatchFactory
+	 * @param LanguageConverterFactory $languageConverterFactory
+	 */
+	public function __construct(
+		NamespaceInfo $namespaceInfo,
+		IConnectionProvider $dbProvider,
+		LinkBatchFactory $linkBatchFactory,
+		LanguageConverterFactory $languageConverterFactory
+	) {
+		parent::__construct(
+			$namespaceInfo,
+			$dbProvider,
+			$linkBatchFactory,
+			$languageConverterFactory
+		);
+		$this->mName = 'Uncategorizedtemplates';
 		$this->requestedNamespace = NS_TEMPLATE;
 	}
 }
+
+/**
+ * Retain the old class name for backwards compatibility.
+ * @deprecated since 1.41
+ */
+class_alias( SpecialUncategorizedTemplates::class, 'SpecialUncategorizedTemplates' );

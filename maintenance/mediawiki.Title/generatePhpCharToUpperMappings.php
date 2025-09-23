@@ -22,10 +22,12 @@
  * @ingroup Maintenance
  */
 
-use MediaWiki\MediaWikiServices;
+use MediaWiki\Maintenance\Maintenance;
 use MediaWiki\Shell\Shell;
 
+// @codeCoverageIgnoreStart
 require_once __DIR__ . '/../Maintenance.php';
+// @codeCoverageIgnoreEnd
 
 /**
  * Update list of upper case differences between JS and PHP
@@ -60,19 +62,20 @@ class GeneratePhpCharToUpperMappings extends Maintenance {
 		$jsUpperChars = json_decode( $result->getStdout() );
 		'@phan-var string[] $jsUpperChars';
 
+		$contentLanguage = $this->getServiceContainer()->getContentLanguage();
 		for ( $i = 0; $i <= 0x10ffff; $i++ ) {
 			if ( $i >= 0xd800 && $i <= 0xdfff ) {
 				// Skip surrogate pairs
 				continue;
 			}
 			$char = \UtfNormal\Utils::codepointToUtf8( $i );
-			$phpUpper = MediaWikiServices::getInstance()->getContentLanguage()->ucfirst( $char );
+			$phpUpper = $contentLanguage->ucfirst( $char );
 			$jsUpper = $jsUpperChars[$i];
 			if ( $jsUpper !== $phpUpper ) {
 				if ( $char === $phpUpper ) {
-					// Optimisation: Use the empty string to signal "leave character unchanged".
+					// Optimisation: Use 0 to signal "leave character unchanged".
 					// Reduces the transfer size by ~50%. Reduces browser memory cost as well.
-					$data[$char] = '';
+					$data[$char] = 0;
 				} else {
 					$data[$char] = $phpUpper;
 				}
@@ -94,5 +97,7 @@ class GeneratePhpCharToUpperMappings extends Maintenance {
 	}
 }
 
+// @codeCoverageIgnoreStart
 $maintClass = GeneratePhpCharToUpperMappings::class;
 require_once RUN_MAINTENANCE_IF_MAIN;
+// @codeCoverageIgnoreEnd

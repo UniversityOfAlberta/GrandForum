@@ -1,10 +1,8 @@
 <?php
 /** Megleno-Romanian (Latin script) (Vlăheşte)
  *
- * To improve a translation please visit https://translatewiki.net
- *
- * @ingroup Language
  * @file
+ * @ingroup Languages
  *
  * @author Andrijko Z.
  * @author Кумулај Маркус

@@ -55,5 +55,9 @@
 	"exif-iimcategory-rel": "دین و باوەڕ",
 	"exif-iimcategory-sci": "زانست و تێکنۆلۆژی",
 	"exif-iimcategory-spo": "وەرزشت",
-	"exif-iimcategory-wea": "ئاو و هەوا"
+	"exif-iimcategory-wea": "ئاو و هەوا",
+	"exif-usepanoramaviewer-true": "ئەرێ",
+	"exif-usepanoramaviewer-false": "نە",
+	"exif-exposurelockused-true": "ئەرێ",
+	"exif-exposurelockused-false": "نە"
 }

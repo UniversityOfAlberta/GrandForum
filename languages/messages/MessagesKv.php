@@ -1,10 +1,8 @@
 <?php
 /** Komi (коми)
  *
- * To improve a translation please visit https://translatewiki.net
- *
- * @ingroup Language
  * @file
+ * @ingroup Languages
  *
  * @author Comp1089
  * @author Yufereff

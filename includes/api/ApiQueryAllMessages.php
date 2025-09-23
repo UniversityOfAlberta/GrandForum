@@ -20,7 +20,16 @@
  * @file
  */
 
-use MediaWiki\MediaWikiServices;
+namespace MediaWiki\Api;
+
+use LocalisationCache;
+use MediaWiki\Language\Language;
+use MediaWiki\Languages\LanguageFactory;
+use MediaWiki\Languages\LanguageNameUtils;
+use MediaWiki\Pager\AllMessagesTablePager;
+use MediaWiki\Title\Title;
+use MessageCache;
+use Wikimedia\ParamValidator\ParamValidator;
 
 /**
  * A query action to return messages from site message cache
@@ -29,21 +38,39 @@ use MediaWiki\MediaWikiServices;
  */
 class ApiQueryAllMessages extends ApiQueryBase {
 
-	public function __construct( ApiQuery $query, $moduleName ) {
+	private Language $contentLanguage;
+	private LanguageFactory $languageFactory;
+	private LanguageNameUtils $languageNameUtils;
+	private LocalisationCache $localisationCache;
+	private MessageCache $messageCache;
+
+	public function __construct(
+		ApiQuery $query,
+		string $moduleName,
+		Language $contentLanguage,
+		LanguageFactory $languageFactory,
+		LanguageNameUtils $languageNameUtils,
+		LocalisationCache $localisationCache,
+		MessageCache $messageCache
+	) {
 		parent::__construct( $query, $moduleName, 'am' );
+		$this->contentLanguage = $contentLanguage;
+		$this->languageFactory = $languageFactory;
+		$this->languageNameUtils = $languageNameUtils;
+		$this->localisationCache = $localisationCache;
+		$this->messageCache = $messageCache;
 	}
 
 	public function execute() {
 		$params = $this->extractRequestParams();
-		$services = MediaWikiServices::getInstance();
 		if ( $params['lang'] === null ) {
 			$langObj = $this->getLanguage();
-		} elseif ( !$services->getLanguageNameUtils()->isValidCode( $params['lang'] ) ) {
+		} elseif ( !$this->languageNameUtils->isValidCode( $params['lang'] ) ) {
 			$this->dieWithError(
 				[ 'apierror-invalidlang', $this->encodeParamName( 'lang' ) ], 'invalidlang'
 			);
 		} else {
-			$langObj = $services->getLanguageFactory()->getLanguage( $params['lang'] );
+			$langObj = $this->languageFactory->getLanguage( $params['lang'] );
 		}
 
 		if ( $params['enableparser'] ) {
@@ -57,12 +84,11 @@ class ApiQueryAllMessages extends ApiQueryBase {
 			}
 		}
 
-		$prop = array_flip( (array)$params['prop'] );
+		$prop = array_fill_keys( (array)$params['prop'], true );
 
 		// Determine which messages should we print
 		if ( in_array( '*', $params['messages'] ) ) {
-			$message_names = $services->getLocalisationCache()
-				->getSubitemList( $langObj->getCode(), 'messages' );
+			$message_names = $this->localisationCache->getSubitemList( $langObj->getCode(), 'messages' ) ?? [];
 			if ( $params['includelocal'] ) {
 				$message_names = array_unique( array_merge(
 					$message_names,
@@ -70,8 +96,7 @@ class ApiQueryAllMessages extends ApiQueryBase {
 					// MediaWiki:msgkey page. We might theoretically miss messages that have no
 					// MediaWiki:msgkey page but do have a MediaWiki:msgkey/lang page, but that's
 					// just a stupid case.
-					$services->getMessageCache()
-						->getAllMessageKeys( $this->getConfig()->get( 'LanguageCode' ) )
+					$this->messageCache->getAllMessageKeys( $this->contentLanguage->getCode() )
 				) );
 			}
 			sort( $message_names );
@@ -86,8 +111,7 @@ class ApiQueryAllMessages extends ApiQueryBase {
 			$skip = false;
 			$messages_filtered = [];
 			foreach ( $messages_target as $message ) {
-				// === 0: must be at beginning of string (position 0)
-				if ( strpos( $message, $params['prefix'] ) === 0 ) {
+				if ( str_starts_with( $message, $params['prefix'] ) ) {
 					if ( !$skip ) {
 						$skip = true;
 					}
@@ -103,8 +127,7 @@ class ApiQueryAllMessages extends ApiQueryBase {
 		if ( isset( $params['filter'] ) ) {
 			$messages_filtered = [];
 			foreach ( $messages_target as $message ) {
-				// !== is used because filter can be at the beginning of the string
-				if ( strpos( $message, $params['filter'] ) !== false ) {
+				if ( str_contains( $message, $params['filter'] ) ) {
 					$messages_filtered[] = $message;
 				}
 			}
@@ -120,7 +143,8 @@ class ApiQueryAllMessages extends ApiQueryBase {
 					$messages_target
 				),
 				$langObj->getCode(),
-				!$langObj->equals( MediaWikiServices::getInstance()->getContentLanguage() )
+				!$langObj->equals( $this->contentLanguage ),
+				$this->getDB()
 			);
 
 			$customised = $params['customised'] === 'modified';
@@ -153,7 +177,9 @@ class ApiQueryAllMessages extends ApiQueryBase {
 
 				if ( $customiseFilterEnabled ) {
 					$messageIsCustomised = isset( $customisedMessages['pages'][$langObj->ucfirst( $message )] );
+					// @phan-suppress-next-line PhanPossiblyUndeclaredVariable customised is set when used
 					if ( $customised === $messageIsCustomised ) {
+						// @phan-suppress-next-line PhanPossiblyUndeclaredVariable customised is set when used
 						if ( $customised ) {
 							$a['customised'] = true;
 						}
@@ -162,14 +188,15 @@ class ApiQueryAllMessages extends ApiQueryBase {
 					}
 				}
 
-				$msg = wfMessage( $message, $args )->inLanguage( $langObj );
+				$msg = $this->msg( $message, $args )->inLanguage( $langObj );
 
 				if ( !$msg->exists() ) {
 					$a['missing'] = true;
 				} else {
 					// Check if the parser is enabled:
 					if ( $params['enableparser'] ) {
-						$msgString = $msg->title( $title )->text();
+						// @phan-suppress-next-line PhanPossiblyUndeclaredVariable title is set when used
+						$msgString = $msg->page( $title )->text();
 					} else {
 						$msgString = $msg->plain();
 					}
@@ -177,7 +204,7 @@ class ApiQueryAllMessages extends ApiQueryBase {
 						ApiResult::setContentValue( $a, 'content', $msgString );
 					}
 					if ( isset( $prop['default'] ) ) {
-						$default = wfMessage( $message )->inLanguage( $langObj )->useDatabase( false );
+						$default = $this->msg( $message )->inLanguage( $langObj )->useDatabase( false );
 						if ( !$default->exists() ) {
 							$a['defaultmissing'] = true;
 						} elseif ( $default->plain() != $msgString ) {
@@ -211,12 +238,12 @@ class ApiQueryAllMessages extends ApiQueryBase {
 	public function getAllowedParams() {
 		return [
 			'messages' => [
-				ApiBase::PARAM_DFLT => '*',
-				ApiBase::PARAM_ISMULTI => true,
+				ParamValidator::PARAM_DEFAULT => '*',
+				ParamValidator::PARAM_ISMULTI => true,
 			],
 			'prop' => [
-				ApiBase::PARAM_ISMULTI => true,
-				ApiBase::PARAM_TYPE => [
+				ParamValidator::PARAM_ISMULTI => true,
+				ParamValidator::PARAM_TYPE => [
 					'default'
 				]
 			],
@@ -224,13 +251,13 @@ class ApiQueryAllMessages extends ApiQueryBase {
 			'nocontent' => false,
 			'includelocal' => false,
 			'args' => [
-				ApiBase::PARAM_ISMULTI => true,
-				ApiBase::PARAM_ALLOW_DUPLICATES => true,
+				ParamValidator::PARAM_ISMULTI => true,
+				ParamValidator::PARAM_ALLOW_DUPLICATES => true,
 			],
 			'filter' => [],
 			'customised' => [
-				ApiBase::PARAM_DFLT => 'all',
-				ApiBase::PARAM_TYPE => [
+				ParamValidator::PARAM_DEFAULT => 'all',
+				ParamValidator::PARAM_TYPE => [
 					'all',
 					'modified',
 					'unmodified'
@@ -257,3 +284,6 @@ class ApiQueryAllMessages extends ApiQueryBase {
 		return 'https://www.mediawiki.org/wiki/Special:MyLanguage/API:Allmessages';
 	}
 }
+
+/** @deprecated class alias since 1.43 */
+class_alias( ApiQueryAllMessages::class, 'ApiQueryAllMessages' );

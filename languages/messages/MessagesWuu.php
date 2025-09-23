@@ -1,15 +1,14 @@
 <?php
 /** Wu (吴语)
  *
- * To improve a translation please visit https://translatewiki.net
- *
- * @ingroup Language
  * @file
+ * @ingroup Languages
  *
  * @author Benojan
  * @author Hercule
  * @author O
  * @author Reedy
+ * @author Winston Sung
  * @author Wu-chinese.com
  * @author Xiaomingyan
  * @author Yfdyh000
@@ -17,7 +16,7 @@
  * @author 十弌
  */
 
-$fallback = 'zh-hans';
+$fallback = 'wuu-hans, wuu-hant, zh-hans, zh, zh-hant';
 
 $datePreferences = [
 	'default',

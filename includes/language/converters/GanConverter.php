@@ -1,7 +1,5 @@
 <?php
 /**
- * Gan Chinese specific code.
- *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -21,53 +19,59 @@
  */
 
 /**
- * @ingroup Language
+ * Gan Chinese specific code.
+ *
+ * @ingroup Languages
  */
 class GanConverter extends LanguageConverter {
-	/**
-	 * @param Language $langobj
-	 */
-	public function __construct( $langobj ) {
-		$this->mDescCodeSep = '：';
-		$this->mDescVarSep = '；';
 
-		$variants = [ 'gan', 'gan-hans', 'gan-hant' ];
-		$variantfallbacks = [
+	public function getMainCode(): string {
+		return 'gan';
+	}
+
+	public function getLanguageVariants(): array {
+		return [ 'gan', 'gan-hans', 'gan-hant' ];
+	}
+
+	public function getVariantsFallbacks(): array {
+		return [
 			'gan' => [ 'gan-hans', 'gan-hant' ],
 			'gan-hans' => [ 'gan' ],
 			'gan-hant' => [ 'gan' ],
 		];
-		$ml = [
-			'gan' => 'disable',
-		];
+	}
 
-		parent::__construct( $langobj, 'gan',
-			$variants,
-			$variantfallbacks,
-			[],
-			$ml
-		);
+	/**
+	 * Get manual level limit for supported variants.
+	 * @since 1.36
+	 *
+	 * @return array
+	 */
+	protected function getAdditionalManualLevel(): array {
+		return [ 'gan' => 'disable' ];
+	}
 
+	public function getDescVarSeparator(): string {
+		return '; ';
+	}
+
+	public function getVariantNames(): array {
 		$names = [
 			'gan' => '原文',
 			'gan-hans' => '简体',
 			'gan-hant' => '繁體',
 		];
-		$this->mVariantNames = array_merge( $this->mVariantNames, $names );
+		return array_merge( parent::getVariantNames(), $names );
 	}
 
-	protected function loadDefaultTables() {
-		$this->mTables = [
-			'gan-hans' => new ReplacementArray( MediaWiki\Languages\Data\ZhConversion::$zh2Hans ),
-			'gan-hant' => new ReplacementArray( MediaWiki\Languages\Data\ZhConversion::$zh2Hant ),
+	protected function loadDefaultTables(): array {
+		return [
+			'gan-hans' => new ReplacementArray( MediaWiki\Languages\Data\ZhConversion::ZH_TO_HANS ),
+			'gan-hant' => new ReplacementArray( MediaWiki\Languages\Data\ZhConversion::ZH_TO_HANT ),
 			'gan' => new ReplacementArray
 		];
 	}
 
-	/**
-	 * @param string $key
-	 * @return string
-	 */
 	public function convertCategoryKey( $key ) {
 		return $this->autoConvert( $key, 'gan' );
 	}

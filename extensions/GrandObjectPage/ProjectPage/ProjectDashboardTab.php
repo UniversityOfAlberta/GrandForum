@@ -45,7 +45,7 @@ class ProjectDashboardTab extends AbstractEditableTab {
     
     function generateBody(){
         global $wgUser, $wgServer, $wgScriptPath;
-        if(!$wgUser->isLoggedIn()){
+        if(!$wgUser->isRegistered()){
             return;
         }
         if(!$this->project->isSubProject()){

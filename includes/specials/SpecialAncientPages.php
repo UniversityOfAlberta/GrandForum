@@ -1,7 +1,5 @@
 <?php
 /**
- * Implements Special:Ancientpages
- *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -18,10 +16,19 @@
  * http://www.gnu.org/copyleft/gpl.html
  *
  * @file
- * @ingroup SpecialPage
  */
 
-use MediaWiki\MediaWikiServices;
+namespace MediaWiki\Specials;
+
+use HtmlArmor;
+use MediaWiki\Cache\LinkBatchFactory;
+use MediaWiki\Language\ILanguageConverter;
+use MediaWiki\Languages\LanguageConverterFactory;
+use MediaWiki\SpecialPage\QueryPage;
+use MediaWiki\Title\NamespaceInfo;
+use MediaWiki\Title\Title;
+use Skin;
+use Wikimedia\Rdbms\IConnectionProvider;
 
 /**
  * Implements Special:Ancientpages
@@ -30,8 +37,26 @@ use MediaWiki\MediaWikiServices;
  */
 class SpecialAncientPages extends QueryPage {
 
-	public function __construct( $name = 'Ancientpages' ) {
-		parent::__construct( $name );
+	private NamespaceInfo $namespaceInfo;
+	private ILanguageConverter $languageConverter;
+
+	/**
+	 * @param NamespaceInfo $namespaceInfo
+	 * @param IConnectionProvider $dbProvider
+	 * @param LinkBatchFactory $linkBatchFactory
+	 * @param LanguageConverterFactory $languageConverterFactory
+	 */
+	public function __construct(
+		NamespaceInfo $namespaceInfo,
+		IConnectionProvider $dbProvider,
+		LinkBatchFactory $linkBatchFactory,
+		LanguageConverterFactory $languageConverterFactory
+	) {
+		parent::__construct( 'Ancientpages' );
+		$this->namespaceInfo = $namespaceInfo;
+		$this->setDatabaseProvider( $dbProvider );
+		$this->setLinkBatchFactory( $linkBatchFactory );
+		$this->languageConverter = $languageConverterFactory->getLanguageConverter( $this->getContentLanguage() );
 	}
 
 	public function isExpensive() {
@@ -45,8 +70,7 @@ class SpecialAncientPages extends QueryPage {
 	public function getQueryInfo() {
 		$tables = [ 'page', 'revision' ];
 		$conds = [
-			'page_namespace' =>
-				MediaWikiServices::getInstance()->getNamespaceInfo()->getContentNamespaces(),
+			'page_namespace' => $this->namespaceInfo->getContentNamespaces(),
 			'page_is_redirect' => 0
 		];
 		$joinConds = [
@@ -86,7 +110,7 @@ class SpecialAncientPages extends QueryPage {
 
 	/**
 	 * @param Skin $skin
-	 * @param object $result Result row
+	 * @param \stdClass $result Result row
 	 * @return string
 	 */
 	public function formatResult( $skin, $result ) {
@@ -96,7 +120,7 @@ class SpecialAncientPages extends QueryPage {
 
 		$link = $linkRenderer->makeKnownLink(
 			$title,
-			new HtmlArmor( $this->getLanguageConverter()->convertHtml( $title->getPrefixedText() ) )
+			new HtmlArmor( $this->languageConverter->convertHtml( $title->getPrefixedText() ) )
 		);
 
 		return $this->getLanguage()->specialList( $link, htmlspecialchars( $d ) );
@@ -106,3 +130,6 @@ class SpecialAncientPages extends QueryPage {
 		return 'maintenance';
 	}
 }
+
+/** @deprecated class alias since 1.41 */
+class_alias( SpecialAncientPages::class, 'SpecialAncientPages' );

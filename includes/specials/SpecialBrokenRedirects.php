@@ -1,7 +1,5 @@
 <?php
 /**
- * Implements Special:Brokenredirects
- *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -18,22 +16,49 @@
  * http://www.gnu.org/copyleft/gpl.html
  *
  * @file
- * @ingroup SpecialPage
  */
 
-use MediaWiki\MediaWikiServices;
+namespace MediaWiki\Specials;
+
+use MediaWiki\Cache\LinkBatchFactory;
+use MediaWiki\Content\IContentHandlerFactory;
+use MediaWiki\Page\RedirectLookup;
+use MediaWiki\SpecialPage\QueryPage;
+use MediaWiki\Title\Title;
+use Skin;
+use Wikimedia\Rdbms\IConnectionProvider;
 use Wikimedia\Rdbms\IDatabase;
 use Wikimedia\Rdbms\IResultWrapper;
 
 /**
- * A special page listing redirects to non existent page. Those should be
- * fixed to point to an existing page.
+ * List of redirects to non-existent pages.
+ *
+ * Editors are encouraged to fix these by editing them to redirect to
+ * an existing page instead.
  *
  * @ingroup SpecialPage
  */
 class SpecialBrokenRedirects extends QueryPage {
-	public function __construct( $name = 'BrokenRedirects' ) {
-		parent::__construct( $name );
+
+	private IContentHandlerFactory $contentHandlerFactory;
+	private RedirectLookup $redirectLookup;
+
+	/**
+	 * @param IContentHandlerFactory $contentHandlerFactory
+	 * @param IConnectionProvider $dbProvider
+	 * @param LinkBatchFactory $linkBatchFactory
+	 */
+	public function __construct(
+		IContentHandlerFactory $contentHandlerFactory,
+		IConnectionProvider $dbProvider,
+		LinkBatchFactory $linkBatchFactory,
+		RedirectLookup $redirectLookup
+	) {
+		parent::__construct( 'BrokenRedirects' );
+		$this->contentHandlerFactory = $contentHandlerFactory;
+		$this->setDatabaseProvider( $dbProvider );
+		$this->setLinkBatchFactory( $linkBatchFactory );
+		$this->redirectLookup = $redirectLookup;
 	}
 
 	public function isExpensive() {
@@ -53,7 +78,7 @@ class SpecialBrokenRedirects extends QueryPage {
 	}
 
 	public function getQueryInfo() {
-		$dbr = wfGetDB( DB_REPLICA );
+		$dbr = $this->getDatabaseProvider()->getReplicaDatabase();
 
 		return [
 			'tables' => [
@@ -69,12 +94,11 @@ class SpecialBrokenRedirects extends QueryPage {
 				'rd_fragment',
 			],
 			'conds' => [
-				// Exclude pages that don't exist locally as wiki pages,
-				// but aren't "broken" either.
-				// Special pages and interwiki links
-				'rd_namespace >= 0',
-				'rd_interwiki IS NULL OR rd_interwiki = ' . $dbr->addQuotes( '' ),
-				'p2.page_namespace IS NULL',
+				// Exclude pages that don't exist locally as wiki pages, but aren't "broken" either: special
+				// pages and interwiki links.
+				$dbr->expr( 'rd_namespace', '>=', 0 ),
+				'rd_interwiki' => '',
+				'p2.page_namespace' => null,
 			],
 			'join_conds' => [
 				'p1' => [ 'JOIN', [
@@ -97,27 +121,26 @@ class SpecialBrokenRedirects extends QueryPage {
 
 	/**
 	 * @param Skin $skin
-	 * @param object $result Result row
+	 * @param \stdClass $result Result row
 	 * @return string
 	 */
 	public function formatResult( $skin, $result ) {
 		$fromObj = Title::makeTitle( $result->namespace, $result->title );
 		if ( isset( $result->rd_title ) ) {
-			$toObj = Title::makeTitle( $result->rd_namespace, $result->rd_title, $result->rd_fragment );
+			$toObj = Title::makeTitle(
+				$result->rd_namespace,
+				$result->rd_title,
+				$result->rd_fragment
+			);
 		} else {
-			$blinks = $fromObj->getBrokenLinksFrom(); # TODO: check for redirect, not for links
-			if ( $blinks ) {
-				$toObj = $blinks[0];
-			} else {
-				$toObj = false;
-			}
+			$toObj = Title::castFromLinkTarget(
+				$this->redirectLookup->getRedirectTarget( $fromObj )
+			);
 		}
 
 		$linkRenderer = $this->getLinkRenderer();
-		$permissionManager = MediaWikiServices::getInstance()->getPermissionManager();
 
-		// $toObj may very easily be false if the $result list is cached
-		if ( !is_object( $toObj ) ) {
+		if ( !is_object( $toObj ) || $toObj->exists() ) {
 			return '<del>' . $linkRenderer->makeLink( $fromObj ) . '</del>';
 		}
 
@@ -131,11 +154,9 @@ class SpecialBrokenRedirects extends QueryPage {
 		// if the page is editable, add an edit link
 		if (
 			// check user permissions
-			$permissionManager->userHasRight( $this->getUser(), 'edit' ) &&
+			$this->getAuthority()->isAllowed( 'edit' ) &&
 			// check, if the content model is editable through action=edit
-			MediaWikiServices::getInstance()
-				->getContentHandlerFactory()
-				->getContentHandler( $fromObj->getContentModel() )
+			$this->contentHandlerFactory->getContentHandler( $fromObj->getContentModel() )
 				->supportsDirectEditing()
 		) {
 			$links[] = $linkRenderer->makeKnownLink(
@@ -150,7 +171,7 @@ class SpecialBrokenRedirects extends QueryPage {
 
 		$out = $from . $this->msg( 'word-separator' )->escaped();
 
-		if ( $permissionManager->userHasRight( $this->getUser(), 'delete' ) ) {
+		if ( $this->getAuthority()->isAllowed( 'delete' ) ) {
 			$links[] = $linkRenderer->makeKnownLink(
 				$fromObj,
 				$this->msg( 'brokenredirects-delete' )->text(),
@@ -192,3 +213,6 @@ class SpecialBrokenRedirects extends QueryPage {
 		return 'maintenance';
 	}
 }
+
+/** @deprecated class alias since 1.41 */
+class_alias( SpecialBrokenRedirects::class, 'SpecialBrokenRedirects' );

@@ -24,7 +24,20 @@
  * @file
  */
 
+namespace MediaWiki\Api;
+
+use ArchivedFile;
+use File;
+use MediaWiki\CommentFormatter\CommentFormatter;
+use MediaWiki\CommentFormatter\CommentItem;
+use MediaWiki\CommentStore\CommentStore;
 use MediaWiki\Revision\RevisionRecord;
+use MediaWiki\Title\Title;
+use MediaWiki\Title\TitleValue;
+use Wikimedia\ParamValidator\ParamValidator;
+use Wikimedia\ParamValidator\TypeDef\IntegerDef;
+use Wikimedia\Rdbms\IExpression;
+use Wikimedia\Rdbms\LikeValue;
 
 /**
  * Query module to enumerate all deleted files.
@@ -33,38 +46,44 @@ use MediaWiki\Revision\RevisionRecord;
  */
 class ApiQueryFilearchive extends ApiQueryBase {
 
-	public function __construct( ApiQuery $query, $moduleName ) {
+	private CommentStore $commentStore;
+	private CommentFormatter $commentFormatter;
+
+	public function __construct(
+		ApiQuery $query,
+		string $moduleName,
+		CommentStore $commentStore,
+		CommentFormatter $commentFormatter
+	) {
 		parent::__construct( $query, $moduleName, 'fa' );
+		$this->commentStore = $commentStore;
+		$this->commentFormatter = $commentFormatter;
 	}
 
 	public function execute() {
 		$user = $this->getUser();
 		$db = $this->getDB();
-		$commentStore = CommentStore::getStore();
 
 		$params = $this->extractRequestParams();
 
-		$prop = array_flip( $params['prop'] );
+		$prop = array_fill_keys( $params['prop'], true );
 		$fld_sha1 = isset( $prop['sha1'] );
 		$fld_timestamp = isset( $prop['timestamp'] );
 		$fld_user = isset( $prop['user'] );
 		$fld_size = isset( $prop['size'] );
 		$fld_dimensions = isset( $prop['dimensions'] );
 		$fld_description = isset( $prop['description'] ) || isset( $prop['parseddescription'] );
+		$fld_parseddescription = isset( $prop['parseddescription'] );
 		$fld_mime = isset( $prop['mime'] );
 		$fld_mediatype = isset( $prop['mediatype'] );
 		$fld_metadata = isset( $prop['metadata'] );
 		$fld_bitdepth = isset( $prop['bitdepth'] );
 		$fld_archivename = isset( $prop['archivename'] );
 
-		if ( $fld_description &&
-			!$this->getPermissionManager()->userHasRight( $user, 'deletedhistory' )
-		) {
+		if ( $fld_description && !$this->getAuthority()->isAllowed( 'deletedhistory' ) ) {
 			$this->dieWithError( 'apierror-cantview-deleted-description', 'permissiondenied' );
 		}
-		if ( $fld_metadata &&
-			!$this->getPermissionManager()->userHasAnyRight( $user, 'deletedtext', 'undelete' )
-		) {
+		if ( $fld_metadata && !$this->getAuthority()->isAllowedAny( 'deletedtext', 'undelete' ) ) {
 			$this->dieWithError( 'apierror-cantview-deleted-metadata', 'permissiondenied' );
 		}
 
@@ -74,19 +93,13 @@ class ApiQueryFilearchive extends ApiQueryBase {
 		$this->addJoinConds( $fileQuery['joins'] );
 
 		if ( $params['continue'] !== null ) {
-			$cont = explode( '|', $params['continue'] );
-			$this->dieContinueUsageIf( count( $cont ) != 3 );
-			$op = $params['dir'] == 'descending' ? '<' : '>';
-			$cont_from = $db->addQuotes( $cont[0] );
-			$cont_timestamp = $db->addQuotes( $db->timestamp( $cont[1] ) );
-			$cont_id = (int)$cont[2];
-			$this->dieContinueUsageIf( $cont[2] !== (string)$cont_id );
-			$this->addWhere( "fa_name $op $cont_from OR " .
-				"(fa_name = $cont_from AND " .
-				"(fa_timestamp $op $cont_timestamp OR " .
-				"(fa_timestamp = $cont_timestamp AND " .
-				"fa_id $op= $cont_id )))"
-			);
+			$cont = $this->parseContinueParamOrDie( $params['continue'], [ 'string', 'timestamp', 'int' ] );
+			$op = $params['dir'] == 'descending' ? '<=' : '>=';
+			$this->addWhere( $db->buildComparison( $op, [
+				'fa_name' => $cont[0],
+				'fa_timestamp' => $db->timestamp( $cont[1] ),
+				'fa_id' => $cont[2],
+			] ) );
 		}
 
 		// Image filters
@@ -95,9 +108,13 @@ class ApiQueryFilearchive extends ApiQueryBase {
 		$to = ( $params['to'] === null ? null : $this->titlePartToKey( $params['to'], NS_FILE ) );
 		$this->addWhereRange( 'fa_name', $dir, $from, $to );
 		if ( isset( $params['prefix'] ) ) {
-			$this->addWhere( 'fa_name' . $db->buildLike(
-				$this->titlePartToKey( $params['prefix'], NS_FILE ),
-				$db->anyString() ) );
+			$this->addWhere(
+				$db->expr(
+					'fa_name',
+					IExpression::LIKE,
+					new LikeValue( $this->titlePartToKey( $params['prefix'], NS_FILE ), $db->anyString() )
+				)
+			);
 		}
 
 		$sha1Set = isset( $params['sha1'] );
@@ -109,7 +126,7 @@ class ApiQueryFilearchive extends ApiQueryBase {
 				if ( !$this->validateSha1Hash( $sha1 ) ) {
 					$this->dieWithError( 'apierror-invalidsha1hash' );
 				}
-				$sha1 = Wikimedia\base_convert( $sha1, 16, 36, 31 );
+				$sha1 = \Wikimedia\base_convert( $sha1, 16, 36, 31 );
 			} elseif ( $sha1base36Set ) {
 				$sha1 = strtolower( $params['sha1base36'] );
 				if ( !$this->validateSha1Base36Hash( $sha1 ) ) {
@@ -119,11 +136,9 @@ class ApiQueryFilearchive extends ApiQueryBase {
 			if ( $sha1 ) {
 				$this->addWhereFld( 'fa_sha1', $sha1 );
 				// Paranoia: avoid brute force searches (T19342)
-				if ( !$this->getPermissionManager()->userHasRight( $user, 'deletedtext' ) ) {
+				if ( !$this->getAuthority()->isAllowed( 'deletedtext' ) ) {
 					$bitmask = File::DELETED_FILE;
-				} elseif ( !$this->getPermissionManager()
-					->userHasAnyRight( $user, 'suppressrevision', 'viewsuppressed' )
-				) {
+				} elseif ( !$this->getAuthority()->isAllowedAny( 'suppressrevision', 'viewsuppressed' ) ) {
 					$bitmask = File::DELETED_FILE | File::DELETED_RESTRICTED;
 				} else {
 					$bitmask = 0;
@@ -145,6 +160,22 @@ class ApiQueryFilearchive extends ApiQueryBase {
 
 		$res = $this->select( __METHOD__ );
 
+		// Format descriptions in a batch
+		$formattedDescriptions = [];
+		$descriptions = [];
+		if ( $fld_parseddescription ) {
+			$commentItems = [];
+			foreach ( $res as $row ) {
+				$desc = $this->commentStore->getComment( 'fa_description', $row )->text;
+				$descriptions[$row->fa_id] = $desc;
+				$commentItems[$row->fa_id] = ( new CommentItem( $desc ) )
+					->selfLinkTarget( new TitleValue( NS_FILE, $row->fa_name ) );
+			}
+			$formattedDescriptions = $this->commentFormatter->createBatch()
+				->comments( $commentItems )
+				->execute();
+		}
+
 		$count = 0;
 		$result = $this->getResult();
 		foreach ( $res as $row ) {
@@ -157,6 +188,7 @@ class ApiQueryFilearchive extends ApiQueryBase {
 				break;
 			}
 
+			$exists = $row->fa_archive_name !== '';
 			$canViewFile = RevisionRecord::userCanBitfield( $row->fa_deleted, File::DELETED_FILE, $user );
 
 			$file = [];
@@ -168,10 +200,11 @@ class ApiQueryFilearchive extends ApiQueryBase {
 			if ( $fld_description &&
 				RevisionRecord::userCanBitfield( $row->fa_deleted, File::DELETED_COMMENT, $user )
 			) {
-				$file['description'] = $commentStore->getComment( 'fa_description', $row )->text;
 				if ( isset( $prop['parseddescription'] ) ) {
-					$file['parseddescription'] = Linker::formatComment(
-						$file['description'], $title );
+					$file['parseddescription'] = $formattedDescriptions[$row->fa_id];
+					$file['description'] = $descriptions[$row->fa_id];
+				} else {
+					$file['description'] = $this->commentStore->getComment( 'fa_description', $row )->text;
 				}
 			}
 			if ( $fld_user &&
@@ -180,13 +213,16 @@ class ApiQueryFilearchive extends ApiQueryBase {
 				$file['userid'] = (int)$row->fa_user;
 				$file['user'] = $row->fa_user_text;
 			}
-			if ( $fld_sha1 && $canViewFile ) {
-				$file['sha1'] = Wikimedia\base_convert( $row->fa_sha1, 36, 16, 40 );
+			if ( !$exists ) {
+				$file['filemissing'] = true;
+			}
+			if ( $fld_sha1 && $canViewFile && $exists ) {
+				$file['sha1'] = \Wikimedia\base_convert( $row->fa_sha1, 36, 16, 40 );
 			}
 			if ( $fld_timestamp ) {
 				$file['timestamp'] = wfTimestamp( TS_ISO_8601, $row->fa_timestamp );
 			}
-			if ( ( $fld_size || $fld_dimensions ) && $canViewFile ) {
+			if ( ( $fld_size || $fld_dimensions ) && $canViewFile && $exists ) {
 				$file['size'] = $row->fa_size;
 
 				$pageCount = ArchivedFile::newFromRow( $row )->pageCount();
@@ -197,18 +233,19 @@ class ApiQueryFilearchive extends ApiQueryBase {
 				$file['height'] = $row->fa_height;
 				$file['width'] = $row->fa_width;
 			}
-			if ( $fld_mediatype && $canViewFile ) {
+			if ( $fld_mediatype && $canViewFile && $exists ) {
 				$file['mediatype'] = $row->fa_media_type;
 			}
-			if ( $fld_metadata && $canViewFile ) {
+			if ( $fld_metadata && $canViewFile && $exists ) {
+				$metadataArray = ArchivedFile::newFromRow( $row )->getMetadataArray();
 				$file['metadata'] = $row->fa_metadata
-					? ApiQueryImageInfo::processMetaData( unserialize( $row->fa_metadata ), $result )
+					? ApiQueryImageInfo::processMetaData( $metadataArray, $result )
 					: null;
 			}
-			if ( $fld_bitdepth && $canViewFile ) {
+			if ( $fld_bitdepth && $canViewFile && $exists ) {
 				$file['bitdepth'] = $row->fa_bits;
 			}
-			if ( $fld_mime && $canViewFile ) {
+			if ( $fld_mime && $canViewFile && $exists ) {
 				$file['mime'] = "$row->fa_major_mime/$row->fa_minor_mime";
 			}
 			if ( $fld_archivename && $row->fa_archive_name !== null ) {
@@ -247,8 +284,8 @@ class ApiQueryFilearchive extends ApiQueryBase {
 			'to' => null,
 			'prefix' => null,
 			'dir' => [
-				ApiBase::PARAM_DFLT => 'ascending',
-				ApiBase::PARAM_TYPE => [
+				ParamValidator::PARAM_DEFAULT => 'ascending',
+				ParamValidator::PARAM_TYPE => [
 					'ascending',
 					'descending'
 				]
@@ -256,9 +293,9 @@ class ApiQueryFilearchive extends ApiQueryBase {
 			'sha1' => null,
 			'sha1base36' => null,
 			'prop' => [
-				ApiBase::PARAM_DFLT => 'timestamp',
-				ApiBase::PARAM_ISMULTI => true,
-				ApiBase::PARAM_TYPE => [
+				ParamValidator::PARAM_DEFAULT => 'timestamp',
+				ParamValidator::PARAM_ISMULTI => true,
+				ParamValidator::PARAM_TYPE => [
 					'sha1',
 					'timestamp',
 					'user',
@@ -275,11 +312,11 @@ class ApiQueryFilearchive extends ApiQueryBase {
 				ApiBase::PARAM_HELP_MSG_PER_VALUE => [],
 			],
 			'limit' => [
-				ApiBase::PARAM_DFLT => 10,
-				ApiBase::PARAM_TYPE => 'limit',
-				ApiBase::PARAM_MIN => 1,
-				ApiBase::PARAM_MAX => ApiBase::LIMIT_BIG1,
-				ApiBase::PARAM_MAX2 => ApiBase::LIMIT_BIG2
+				ParamValidator::PARAM_DEFAULT => 10,
+				ParamValidator::PARAM_TYPE => 'limit',
+				IntegerDef::PARAM_MIN => 1,
+				IntegerDef::PARAM_MAX => ApiBase::LIMIT_BIG1,
+				IntegerDef::PARAM_MAX2 => ApiBase::LIMIT_BIG2
 			],
 			'continue' => [
 				ApiBase::PARAM_HELP_MSG => 'api-help-param-continue',
@@ -298,3 +335,6 @@ class ApiQueryFilearchive extends ApiQueryBase {
 		return 'https://www.mediawiki.org/wiki/Special:MyLanguage/API:Filearchive';
 	}
 }
+
+/** @deprecated class alias since 1.43 */
+class_alias( ApiQueryFilearchive::class, 'ApiQueryFilearchive' );

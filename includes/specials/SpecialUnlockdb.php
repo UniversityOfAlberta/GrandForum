@@ -1,7 +1,5 @@
 <?php
 /**
- * Implements Special:Unlockdb
- *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -18,12 +16,22 @@
  * http://www.gnu.org/copyleft/gpl.html
  *
  * @file
- * @ingroup SpecialPage
  */
+
+namespace MediaWiki\Specials;
+
+use ErrorPageError;
+use MediaWiki\HTMLForm\HTMLForm;
+use MediaWiki\MainConfigNames;
+use MediaWiki\SpecialPage\FormSpecialPage;
+use MediaWiki\Status\Status;
+use MediaWiki\User\User;
+use Wikimedia\AtEase\AtEase;
 
 /**
  * Implements Special:Unlockdb
  *
+ * @see SpecialLockDb
  * @ingroup SpecialPage
  */
 class SpecialUnlockdb extends FormSpecialPage {
@@ -43,7 +51,7 @@ class SpecialUnlockdb extends FormSpecialPage {
 	public function checkExecutePermissions( User $user ) {
 		parent::checkExecutePermissions( $user );
 		# If the lock file isn't writable, we can do sweet bugger all
-		if ( !file_exists( $this->getConfig()->get( 'ReadOnlyFile' ) ) ) {
+		if ( !file_exists( $this->getConfig()->get( MainConfigNames::ReadOnlyFile ) ) ) {
 			throw new ErrorPageError( 'lockdb', 'databasenotlocked' );
 		}
 	}
@@ -59,7 +67,7 @@ class SpecialUnlockdb extends FormSpecialPage {
 
 	protected function alterForm( HTMLForm $form ) {
 		$form->setWrapperLegend( false )
-			->setHeaderText( $this->msg( 'unlockdbtext' )->parseAsBlock() )
+			->setHeaderHtml( $this->msg( 'unlockdbtext' )->parseAsBlock() )
 			->setSubmitTextMsg( 'unlockbtn' );
 	}
 
@@ -68,10 +76,10 @@ class SpecialUnlockdb extends FormSpecialPage {
 			return Status::newFatal( 'locknoconfirm' );
 		}
 
-		$readOnlyFile = $this->getConfig()->get( 'ReadOnlyFile' );
-		Wikimedia\suppressWarnings();
+		$readOnlyFile = $this->getConfig()->get( MainConfigNames::ReadOnlyFile );
+		AtEase::suppressWarnings();
 		$res = unlink( $readOnlyFile );
-		Wikimedia\restoreWarnings();
+		AtEase::restoreWarnings();
 
 		if ( $res ) {
 			return Status::newGood();
@@ -94,3 +102,9 @@ class SpecialUnlockdb extends FormSpecialPage {
 		return 'wiki';
 	}
 }
+
+/**
+ * Retain the old class name for backwards compatibility.
+ * @deprecated since 1.41
+ */
+class_alias( SpecialUnlockdb::class, 'SpecialUnlockdb' );

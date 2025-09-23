@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Base class for the output of file transformation methods.
  *
@@ -21,6 +22,13 @@
  * @ingroup Media
  */
 
+use MediaWiki\MainConfigNames;
+use MediaWiki\MediaWikiServices;
+use MediaWiki\Status\Status;
+use MediaWiki\Xml\Xml;
+use Wikimedia\FileBackend\FileBackend;
+use Wikimedia\FileBackend\HTTPFileStreamer;
+
 /**
  * Base class for the output of MediaHandler::doTransform() and File::transform().
  *
@@ -42,19 +50,19 @@ abstract class MediaTransformOutput {
 	/** @var int Image height */
 	protected $height;
 
-	/** @var string URL path to the thumb */
+	/** @var string|false URL path to the thumb */
 	protected $url;
 
-	/** @var bool|string */
+	/** @var string|false */
 	protected $page;
 
-	/** @var bool|string Filesystem path to the thumb */
+	/** @var string|null|false Filesystem path to the thumb */
 	protected $path;
 
-	/** @var bool|string Language code, false if not set */
+	/** @var string|false Language code, false if not set */
 	protected $lang;
 
-	/** @var bool|string Permanent storage path */
+	/** @var string|false Permanent storage path */
 	protected $storagePath = false;
 
 	/**
@@ -83,7 +91,7 @@ abstract class MediaTransformOutput {
 	 * Returns false for scripted transformations.
 	 * @stable to override
 	 *
-	 * @return string|bool
+	 * @return string|false
 	 */
 	public function getExtension() {
 		return $this->path ? FileBackend::extensionFromPath( $this->path ) : false;
@@ -92,7 +100,7 @@ abstract class MediaTransformOutput {
 	/**
 	 * @stable to override
 	 *
-	 * @return string|bool The thumbnail URL
+	 * @return string|false The thumbnail URL
 	 */
 	public function getUrl() {
 		return $this->url;
@@ -101,7 +109,7 @@ abstract class MediaTransformOutput {
 	/**
 	 * @stable to override
 	 *
-	 * @return string|bool The permanent thumbnail storage path
+	 * @return string|false The permanent thumbnail storage path
 	 */
 	public function getStoragePath() {
 		return $this->storagePath;
@@ -181,22 +189,24 @@ abstract class MediaTransformOutput {
 	 * Get the path of a file system copy of the thumbnail.
 	 * Callers should never write to this path.
 	 *
-	 * @return string|bool Returns false if there isn't one
+	 * @return string|false Returns false if there isn't one
 	 */
 	public function getLocalCopyPath() {
 		if ( $this->isError() ) {
 			return false;
-		} elseif ( $this->path === null ) {
+		}
+
+		if ( $this->path === null ) {
 			return $this->file->getLocalRefPath(); // assume thumb was not scaled
-		} elseif ( FileBackend::isStoragePath( $this->path ) ) {
+		}
+		if ( FileBackend::isStoragePath( $this->path ) ) {
 			$be = $this->file->getRepo()->getBackend();
 			// The temp file will be process cached by FileBackend
 			$fsFile = $be->getLocalReference( [ 'src' => $this->path ] );
 
 			return $fsFile ? $fsFile->getPath() : false;
-		} else {
-			return $this->path; // may return false
 		}
+		return $this->path; // may return false
 	}
 
 	/**
@@ -209,13 +219,25 @@ abstract class MediaTransformOutput {
 	public function streamFileWithStatus( $headers = [] ) {
 		if ( !$this->path ) {
 			return Status::newFatal( 'backend-fail-stream', '<no path>' );
-		} elseif ( FileBackend::isStoragePath( $this->path ) ) {
-			$be = $this->file->getRepo()->getBackend();
+		}
+
+		$repo = $this->file->getRepo();
+
+		if ( $repo && FileBackend::isStoragePath( $this->path ) ) {
 			return Status::wrap(
-				$be->streamFile( [ 'src' => $this->path, 'headers' => $headers ] ) );
-		} else { // FS-file
-			$success = StreamFile::stream( $this->getLocalCopyPath(), $headers );
-			return $success ? Status::newGood() : Status::newFatal( 'backend-fail-stream', $this->path );
+				$repo->getBackend()->streamFile(
+					[ 'src' => $this->path, 'headers' => $headers, ]
+				)
+			);
+		} else {
+			$streamer = new HTTPFileStreamer(
+				$this->getLocalCopyPath(),
+				$repo ? $repo->getBackend()->getStreamerOptions() : []
+			);
+
+			$success = $streamer->stream( $headers );
+			return $success ? Status::newGood()
+				: Status::newFatal( 'backend-fail-stream', $this->path );
 		}
 	}
 
@@ -232,17 +254,22 @@ abstract class MediaTransformOutput {
 
 	/**
 	 * Wrap some XHTML text in an anchor tag with the given attributes
+	 * or, fallback to a span in the absence thereof.
 	 *
 	 * @param array $linkAttribs
 	 * @param string $contents
 	 * @return string
 	 */
 	protected function linkWrap( $linkAttribs, $contents ) {
-		if ( $linkAttribs ) {
+		if ( isset( $linkAttribs['href'] ) ) {
 			return Xml::tags( 'a', $linkAttribs, $contents );
-		} else {
+		}
+		$parserEnableLegacyMediaDOM = MediaWikiServices::getInstance()
+			->getMainConfig()->get( MainConfigNames::ParserEnableLegacyMediaDOM );
+		if ( $parserEnableLegacyMediaDOM ) {
 			return $contents;
 		}
+		return Xml::tags( 'span', $linkAttribs ?: null, $contents );
 	}
 
 	/**
@@ -269,8 +296,16 @@ abstract class MediaTransformOutput {
 
 		$attribs = [
 			'href' => $this->file->getTitle()->getLocalURL( $query ),
-			'class' => 'image',
 		];
+
+		$parserEnableLegacyMediaDOM = MediaWikiServices::getInstance()
+			->getMainConfig()->get( MainConfigNames::ParserEnableLegacyMediaDOM );
+		if ( $parserEnableLegacyMediaDOM ) {
+			$attribs['class'] = 'image';
+		} else {
+			$attribs['class'] = 'mw-file-description';
+		}
+
 		if ( $title ) {
 			$attribs['title'] = $title;
 		}

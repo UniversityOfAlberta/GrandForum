@@ -21,89 +21,134 @@
  * @ingroup Database
  */
 
+use Liuggio\StatsdClient\Factory\StatsdDataFactoryInterface;
+use MediaWiki\Config\Config;
 use MediaWiki\Config\ServiceOptions;
+use MediaWiki\Debug\MWDebug;
+use MediaWiki\Deferred\DeferredUpdates;
 use MediaWiki\Logger\LoggerFactory;
+use MediaWiki\MainConfigNames;
+use Wikimedia\ObjectCache\BagOStuff;
+use Wikimedia\ObjectCache\WANObjectCache;
+use Wikimedia\Rdbms\ChronologyProtector;
+use Wikimedia\Rdbms\ConfiguredReadOnlyMode;
 use Wikimedia\Rdbms\DatabaseDomain;
+use Wikimedia\Rdbms\IDatabase;
 use Wikimedia\Rdbms\ILBFactory;
+use Wikimedia\RequestTimeout\CriticalSectionProvider;
+use Wikimedia\Stats\IBufferingStatsdDataFactory;
 
 /**
  * MediaWiki-specific class for generating database load balancers
+ *
+ * @internal For use by core ServiceWiring only.
  * @ingroup Database
  */
-abstract class MWLBFactory {
+class MWLBFactory {
 
-	/** @var array Cache of already-logged deprecation messages */
-	private static $loggedDeprecations = [];
+	/** Cache of already-logged deprecation messages */
+	private static array $loggedDeprecations = [];
+
+	public const CORE_VIRTUAL_DOMAINS = [ 'virtual-botpasswords' ];
 
 	/**
-	 * @var array
-	 * @since 1.34
+	 * @internal For use by ServiceWiring
 	 */
 	public const APPLY_DEFAULT_CONFIG_OPTIONS = [
-		'DBcompress',
-		'DBDefaultGroup',
-		'DBmwschema',
-		'DBname',
-		'DBpassword',
-		'DBport',
-		'DBprefix',
-		'DBserver',
-		'DBservers',
-		'DBssl',
-		'DBtype',
-		'DBuser',
-		'DebugDumpSql',
-		'DebugLogFile',
-		'DebugToolbar',
-		'ExternalServers',
-		'SQLiteDataDir',
-		'SQLMode',
+		MainConfigNames::DBcompress,
+		MainConfigNames::DBDefaultGroup,
+		MainConfigNames::DBmwschema,
+		MainConfigNames::DBname,
+		MainConfigNames::DBpassword,
+		MainConfigNames::DBport,
+		MainConfigNames::DBprefix,
+		MainConfigNames::DBserver,
+		MainConfigNames::DBservers,
+		MainConfigNames::DBssl,
+		MainConfigNames::DBStrictWarnings,
+		MainConfigNames::DBtype,
+		MainConfigNames::DBuser,
+		MainConfigNames::DebugDumpSql,
+		MainConfigNames::DebugLogFile,
+		MainConfigNames::DebugToolbar,
+		MainConfigNames::ExternalServers,
+		MainConfigNames::SQLiteDataDir,
+		MainConfigNames::SQLMode,
+		MainConfigNames::VirtualDomainsMapping,
 	];
+	private ServiceOptions $options;
+	private ConfiguredReadOnlyMode $readOnlyMode;
+	private ChronologyProtector $chronologyProtector;
+	private BagOStuff $srvCache;
+	private WANObjectCache $wanCache;
+	private CriticalSectionProvider $csProvider;
+	private StatsdDataFactoryInterface $statsdDataFactory;
+	/** @var string[] */
+	private array $virtualDomains;
+
+	/**
+	 * @param ServiceOptions $options
+	 * @param ConfiguredReadOnlyMode $readOnlyMode
+	 * @param ChronologyProtector $chronologyProtector
+	 * @param BagOStuff $srvCache
+	 * @param WANObjectCache $wanCache
+	 * @param CriticalSectionProvider $csProvider
+	 * @param StatsdDataFactoryInterface $statsdDataFactory
+	 * @param string[] $virtualDomains
+	 */
+	public function __construct(
+		ServiceOptions $options,
+		ConfiguredReadOnlyMode $readOnlyMode,
+		ChronologyProtector $chronologyProtector,
+		BagOStuff $srvCache,
+		WANObjectCache $wanCache,
+		CriticalSectionProvider $csProvider,
+		StatsdDataFactoryInterface $statsdDataFactory,
+		array $virtualDomains
+	) {
+		$this->options = $options;
+		$this->readOnlyMode = $readOnlyMode;
+		$this->chronologyProtector = $chronologyProtector;
+		$this->srvCache = $srvCache;
+		$this->wanCache = $wanCache;
+		$this->csProvider = $csProvider;
+		$this->statsdDataFactory = $statsdDataFactory;
+		$this->virtualDomains = $virtualDomains;
+	}
 
 	/**
 	 * @param array $lbConf Config for LBFactory::__construct()
-	 * @param ServiceOptions $options
-	 * @param ConfiguredReadOnlyMode $readOnlyMode
-	 * @param BagOStuff $srvCache
-	 * @param BagOStuff $mainStash
-	 * @param WANObjectCache $wanCache
 	 * @return array
 	 * @internal For use with service wiring
 	 */
-	public static function applyDefaultConfig(
-		array $lbConf,
-		ServiceOptions $options,
-		ConfiguredReadOnlyMode $readOnlyMode,
-		BagOStuff $srvCache,
-		BagOStuff $mainStash,
-		WANObjectCache $wanCache
-	) {
-		$options->assertRequiredOptions( self::APPLY_DEFAULT_CONFIG_OPTIONS );
-
-		global $wgCommandLineMode;
+	public function applyDefaultConfig( array $lbConf ): array {
+		$this->options->assertRequiredOptions( self::APPLY_DEFAULT_CONFIG_OPTIONS );
 
 		$typesWithSchema = self::getDbTypesWithSchemas();
+		if ( Profiler::instance() instanceof ProfilerStub ) {
+			$profilerCallback = null;
+		} else {
+			$profilerCallback = static function ( $section ) {
+				return Profiler::instance()->scopedProfileIn( $section );
+			};
+		}
 
 		$lbConf += [
 			'localDomain' => new DatabaseDomain(
-				$options->get( 'DBname' ),
-				$options->get( 'DBmwschema' ),
-				$options->get( 'DBprefix' )
+				$this->options->get( MainConfigNames::DBname ),
+				$this->options->get( MainConfigNames::DBmwschema ),
+				$this->options->get( MainConfigNames::DBprefix )
 			),
-			'profiler' => function ( $section ) {
-				return Profiler::instance()->scopedProfileIn( $section );
-			},
+			'profiler' => $profilerCallback,
 			'trxProfiler' => Profiler::instance()->getTransactionProfiler(),
-			'replLogger' => LoggerFactory::getInstance( 'DBReplication' ),
-			'queryLogger' => LoggerFactory::getInstance( 'DBQuery' ),
-			'connLogger' => LoggerFactory::getInstance( 'DBConnection' ),
-			'perfLogger' => LoggerFactory::getInstance( 'DBPerformance' ),
+			'logger' => LoggerFactory::getInstance( 'rdbms' ),
 			'errorLogger' => [ MWExceptionHandler::class, 'logException' ],
 			'deprecationLogger' => [ static::class, 'logDeprecation' ],
-			'cliMode' => $wgCommandLineMode,
-			'hostname' => wfHostname(),
-			'readOnlyReason' => $readOnlyMode->getReason(),
-			'defaultGroup' => $options->get( 'DBDefaultGroup' ),
+			'statsdDataFactory' => $this->statsdDataFactory,
+			'cliMode' => MW_ENTRY_POINT === 'cli',
+			'readOnlyReason' => $this->readOnlyMode->getReason(),
+			'defaultGroup' => $this->options->get( MainConfigNames::DBDefaultGroup ),
+			'criticalSectionProvider' => $this->csProvider
 		];
 
 		$serversCheck = [];
@@ -113,53 +158,60 @@ abstract class MWLBFactory {
 		if ( $lbConf['class'] === Wikimedia\Rdbms\LBFactorySimple::class ) {
 			if ( isset( $lbConf['servers'] ) ) {
 				// Server array is already explicitly configured
-			} elseif ( is_array( $options->get( 'DBservers' ) ) ) {
+			} elseif ( is_array( $this->options->get( MainConfigNames::DBservers ) ) ) {
 				$lbConf['servers'] = [];
-				foreach ( $options->get( 'DBservers' ) as $i => $server ) {
-					$lbConf['servers'][$i] = self::initServerInfo( $server, $options );
+				foreach ( $this->options->get( MainConfigNames::DBservers ) as $i => $server ) {
+					$lbConf['servers'][$i] = self::initServerInfo( $server, $this->options );
 				}
 			} else {
 				$server = self::initServerInfo(
 					[
-						'host' => $options->get( 'DBserver' ),
-						'user' => $options->get( 'DBuser' ),
-						'password' => $options->get( 'DBpassword' ),
-						'dbname' => $options->get( 'DBname' ),
-						'type' => $options->get( 'DBtype' ),
+						'host' => $this->options->get( MainConfigNames::DBserver ),
+						'user' => $this->options->get( MainConfigNames::DBuser ),
+						'password' => $this->options->get( MainConfigNames::DBpassword ),
+						'dbname' => $this->options->get( MainConfigNames::DBname ),
+						'type' => $this->options->get( MainConfigNames::DBtype ),
 						'load' => 1
 					],
-					$options
+					$this->options
 				);
 
-				$server['flags'] |= $options->get( 'DBssl' ) ? DBO_SSL : 0;
-				$server['flags'] |= $options->get( 'DBcompress' ) ? DBO_COMPRESS : 0;
+				if ( $this->options->get( MainConfigNames::DBssl ) ) {
+					$server['ssl'] = true;
+				}
+				$server['flags'] |= $this->options->get( MainConfigNames::DBcompress ) ? DBO_COMPRESS : 0;
+				if ( $this->options->get( MainConfigNames::DBStrictWarnings ) ) {
+					$server['strictWarnings'] = true;
+				}
 
 				$lbConf['servers'] = [ $server ];
 			}
 			if ( !isset( $lbConf['externalClusters'] ) ) {
-				$lbConf['externalClusters'] = $options->get( 'ExternalServers' );
+				$lbConf['externalClusters'] = $this->options->get( MainConfigNames::ExternalServers );
 			}
 
 			$serversCheck = $lbConf['servers'];
 		} elseif ( $lbConf['class'] === Wikimedia\Rdbms\LBFactoryMulti::class ) {
 			if ( isset( $lbConf['serverTemplate'] ) ) {
 				if ( in_array( $lbConf['serverTemplate']['type'], $typesWithSchema, true ) ) {
-					$lbConf['serverTemplate']['schema'] = $options->get( 'DBmwschema' );
+					$lbConf['serverTemplate']['schema'] = $this->options->get( MainConfigNames::DBmwschema );
 				}
-				$lbConf['serverTemplate']['sqlMode'] = $options->get( 'SQLMode' );
+				$lbConf['serverTemplate']['sqlMode'] = $this->options->get( MainConfigNames::SQLMode );
 				$serversCheck = [ $lbConf['serverTemplate'] ];
 			}
 		}
 
 		self::assertValidServerConfigs(
 			$serversCheck,
-			$options->get( 'DBname' ),
-			$options->get( 'DBprefix' )
+			$this->options->get( MainConfigNames::DBname ),
+			$this->options->get( MainConfigNames::DBprefix )
 		);
 
-		$lbConf['srvCache'] = $srvCache;
-		$lbConf['memStash'] = $mainStash;
-		$lbConf['wanCache'] = $wanCache;
+		$lbConf['chronologyProtector'] = $this->chronologyProtector;
+		$lbConf['srvCache'] = $this->srvCache;
+		$lbConf['wanCache'] = $this->wanCache;
+		$lbConf['virtualDomains'] = array_merge( $this->virtualDomains, self::CORE_VIRTUAL_DOMAINS );
+		$lbConf['virtualDomainsMapping'] = $this->options->get( MainConfigNames::VirtualDomainsMapping );
 
 		return $lbConf;
 	}
@@ -167,7 +219,7 @@ abstract class MWLBFactory {
 	/**
 	 * @return array
 	 */
-	private static function getDbTypesWithSchemas() {
+	private function getDbTypesWithSchemas(): array {
 		return [ 'postgres' ];
 	}
 
@@ -176,7 +228,7 @@ abstract class MWLBFactory {
 	 * @param ServiceOptions $options
 	 * @return array
 	 */
-	private static function initServerInfo( array $server, ServiceOptions $options ) {
+	private function initServerInfo( array $server, ServiceOptions $options ): array {
 		if ( $server['type'] === 'sqlite' ) {
 			$httpMethod = $_SERVER['REQUEST_METHOD'] ?? null;
 			// T93097: hint for how file-based databases (e.g. sqlite) should go about locking.
@@ -192,33 +244,29 @@ abstract class MWLBFactory {
 				}
 			}
 			$server += [
-				'dbDirectory' => $options->get( 'SQLiteDataDir' ),
+				'dbDirectory' => $options->get( MainConfigNames::SQLiteDataDir ),
 				'trxMode' => $isHttpRead ? 'DEFERRED' : 'IMMEDIATE'
 			];
 		} elseif ( $server['type'] === 'postgres' ) {
-			$server += [
-				'port' => $options->get( 'DBport' ),
-				// Work around the reserved word usage in MediaWiki schema
-				'keywordTableMap' => [ 'user' => 'mwuser', 'text' => 'pagecontent' ]
-			];
+			$server += [ 'port' => $options->get( MainConfigNames::DBport ) ];
 		}
 
 		if ( in_array( $server['type'], self::getDbTypesWithSchemas(), true ) ) {
-			$server += [ 'schema' => $options->get( 'DBmwschema' ) ];
+			$server += [ 'schema' => $options->get( MainConfigNames::DBmwschema ) ];
 		}
 
 		$flags = $server['flags'] ?? DBO_DEFAULT;
-		if ( $options->get( 'DebugDumpSql' )
-			|| $options->get( 'DebugLogFile' )
-			|| $options->get( 'DebugToolbar' )
+		if ( $options->get( MainConfigNames::DebugDumpSql )
+			|| $options->get( MainConfigNames::DebugLogFile )
+			|| $options->get( MainConfigNames::DebugToolbar )
 		) {
 			$flags |= DBO_DEBUG;
 		}
 		$server['flags'] = $flags;
 
 		$server += [
-			'tablePrefix' => $options->get( 'DBprefix' ),
-			'sqlMode' => $options->get( 'SQLMode' ),
+			'tablePrefix' => $options->get( MainConfigNames::DBprefix ),
+			'sqlMode' => $options->get( MainConfigNames::SQLMode ),
 		];
 
 		return $server;
@@ -229,7 +277,7 @@ abstract class MWLBFactory {
 	 * @param string $ldDB Local domain database name
 	 * @param string $ldTP Local domain prefix
 	 */
-	private static function assertValidServerConfigs( array $servers, $ldDB, $ldTP ) {
+	private function assertValidServerConfigs( array $servers, string $ldDB, string $ldTP ): void {
 		foreach ( $servers as $server ) {
 			$type = $server['type'] ?? null;
 			$srvDB = $server['dbname'] ?? null; // server DB
@@ -256,21 +304,23 @@ abstract class MWLBFactory {
 	/**
 	 * @param string $prefix Table prefix
 	 * @param string $dbType Database type
+	 * @return never
 	 */
-	private static function reportIfPrefixSet( $prefix, $dbType ) {
+	private function reportIfPrefixSet( string $prefix, string $dbType ) {
 		$e = new UnexpectedValueException(
 			"\$wgDBprefix is set to '$prefix' but the database type is '$dbType'. " .
 			"MediaWiki does not support using a table prefix with this RDBMS type."
 		);
-		MWExceptionRenderer::output( $e, MWExceptionRenderer::AS_PRETTY );
+		MWExceptionRenderer::output( $e, MWExceptionRenderer::AS_RAW );
 		exit;
 	}
 
 	/**
 	 * @param string $srvDB Server config database
 	 * @param string $ldDB Local DB domain database
+	 * @return never
 	 */
-	private static function reportMismatchedDBs( $srvDB, $ldDB ) {
+	private function reportMismatchedDBs( string $srvDB, string $ldDB ) {
 		$e = new UnexpectedValueException(
 			"\$wgDBservers has dbname='$srvDB' but \$wgDBname='$ldDB'. " .
 			"Set \$wgDBname to the database used by this wiki project. " .
@@ -279,15 +329,16 @@ abstract class MWLBFactory {
 			"use of Database::getDomainId(), and other features are not reliable when " .
 			"\$wgDBservers does not match the local wiki database/prefix."
 		);
-		MWExceptionRenderer::output( $e, MWExceptionRenderer::AS_PRETTY );
+		MWExceptionRenderer::output( $e, MWExceptionRenderer::AS_RAW );
 		exit;
 	}
 
 	/**
 	 * @param string $srvTP Server config table prefix
 	 * @param string $ldTP Local DB domain database
+	 * @return never
 	 */
-	private static function reportMismatchedPrefixes( $srvTP, $ldTP ) {
+	private function reportMismatchedPrefixes( string $srvTP, string $ldTP ) {
 		$e = new UnexpectedValueException(
 			"\$wgDBservers has tablePrefix='$srvTP' but \$wgDBprefix='$ldTP'. " .
 			"Set \$wgDBprefix to the table prefix used by this wiki project. " .
@@ -296,7 +347,7 @@ abstract class MWLBFactory {
 			"use of Database::getDomainId(), and other features are not reliable when " .
 			"\$wgDBservers does not match the local wiki database/prefix."
 		);
-		MWExceptionRenderer::output( $e, MWExceptionRenderer::AS_PRETTY );
+		MWExceptionRenderer::output( $e, MWExceptionRenderer::AS_RAW );
 		exit;
 	}
 
@@ -307,7 +358,7 @@ abstract class MWLBFactory {
 	 * @param array $config (e.g. $wgLBFactoryConf)
 	 * @return string Class name
 	 */
-	public static function getLBFactoryClass( array $config ) {
+	public function getLBFactoryClass( array $config ): string {
 		$compat = [
 			// For LocalSettings.php compat after removing underscores (since 1.23).
 			'LBFactory_Single' => Wikimedia\Rdbms\LBFactorySingle::class,
@@ -326,7 +377,7 @@ abstract class MWLBFactory {
 	/**
 	 * @param ILBFactory $lbFactory
 	 */
-	public static function setDomainAliases( ILBFactory $lbFactory ) {
+	public function setDomainAliases( ILBFactory $lbFactory ): void {
 		$domain = DatabaseDomain::newFromId( $lbFactory->getLocalDomainID() );
 		// For compatibility with hyphenated $wgDBname values on older wikis, handle callers
 		// that assume corresponding database domain IDs and wiki IDs have identical values
@@ -338,11 +389,65 @@ abstract class MWLBFactory {
 	}
 
 	/**
-	 * Log a database deprecation warning
-	 * @param string $msg Deprecation message
-	 * @internal For use with service wiring
+	 * Apply global state from the current web request or other PHP process.
+	 *
+	 * This technically violates the principle constraint on ServiceWiring to be
+	 * deterministic for a given site configuration. The exemption made here
+	 * is solely to aid in debugging and influence non-nominal behaviour such
+	 * as ChronologyProtector. That is, the state applied here must never change
+	 * the logical destination or meaning of any database-related methods, it
+	 * merely applies preferences and debugging information.
+	 *
+	 * The code here must be non-essential, with LBFactory behaving the same toward
+	 * its consumers regardless of whether this is applied or not.
+	 *
+	 * For example, something may instantiate LBFactory for the current wiki without
+	 * calling this, and its consumers must not be able to tell the difference.
+	 * Likewise, in the future MediaWiki may instantiate service wiring and LBFactory
+	 * for a foreign wiki in the same farm and apply the current global state to that,
+	 * and that should be fine as well.
+	 *
+	 * @param ILBFactory $lbFactory
+	 * @param Config $config
+	 * @param IBufferingStatsdDataFactory $stats
 	 */
-	public static function logDeprecation( $msg ) {
+	public function applyGlobalState(
+		ILBFactory $lbFactory,
+		Config $config,
+		IBufferingStatsdDataFactory $stats
+	): void {
+		if ( MW_ENTRY_POINT === 'cli' ) {
+			$lbFactory->getMainLB()->setTransactionListener(
+				__METHOD__,
+				static function ( $trigger ) use ( $stats, $config ) {
+					// During maintenance scripts and PHPUnit integration tests, we let
+					// DeferredUpdates run immediately from addUpdate(), unless a transaction
+					// is active. Notify DeferredUpdates after any commit to try now.
+					// See DeferredUpdates::tryOpportunisticExecute for why.
+					if ( $trigger === IDatabase::TRIGGER_COMMIT ) {
+						DeferredUpdates::tryOpportunisticExecute();
+					}
+					// Flush stats periodically in long-running CLI scripts to avoid OOM (T181385)
+					MediaWiki::emitBufferedStatsdData( $stats, $config );
+				}
+			);
+			$lbFactory->setWaitForReplicationListener(
+				__METHOD__,
+				static function () use ( $stats, $config ) {
+					// Flush stats periodically in long-running CLI scripts to avoid OOM (T181385)
+					MediaWiki::emitBufferedStatsdData( $stats, $config );
+				}
+			);
+
+		}
+	}
+
+	/**
+	 * Log a database deprecation warning
+	 *
+	 * @param string $msg Deprecation message
+	 */
+	public static function logDeprecation( string $msg ): void {
 		if ( isset( self::$loggedDeprecations[$msg] ) ) {
 			return;
 		}

@@ -1,16 +1,12 @@
 /**
- * jQuery confirmable plugin
+ * Enable inline confirmation for clickable elements.
  *
- * Released under the MIT License.
- *
+ * @module jquery.confirmable
  * @author Bartosz Dziewoński
- *
- * @class jQuery.plugin.confirmable
+ * @license MIT
  */
 ( function () {
-	var identity = function ( data ) {
-		return data;
-	};
+	const identity = ( data ) => data;
 
 	/**
 	 * Enable inline confirmation for given clickable element (like `<a />` or `<button />`).
@@ -26,6 +22,14 @@
 	 * If the computed values for the element are different when you make it confirmable, you might
 	 * encounter unexpected behavior.
 	 *
+	 * To use this {@link jQuery} plugin, load the `jquery.confirmable` module with {@link mw.loader}.
+	 *
+	 * @example
+	 * mw.loader.using( 'jquery.confirmable' ).then( () => {
+	 *       $( 'button' ).confirmable();
+	 * } );
+	 * @memberof module:jquery.confirmable
+	 * @method
 	 * @param {Object} [options]
 	 * @param {string} [options.events='click'] Events to hook to.
 	 * @param {Function} [options.wrapperCallback] Callback to fire when preparing confirmable
@@ -37,34 +41,30 @@
 	 *     the 'Yes' button).
 	 * @param {string} [options.delegate] Optional selector used for jQuery event delegation
 	 * @param {string} [options.i18n] Text to use for interface elements.
-	 * @param {string} [options.i18n.space] Word separator to place between the three text messages.
-	 * @param {string} [options.i18n.confirm] Text to use for the confirmation question.
-	 * @param {string} [options.i18n.yes] Text to use for the 'Yes' button.
-	 * @param {string} [options.i18n.no] Text to use for the 'No' button.
-	 * @param {string} [options.i18n.yesTitle] Title text to use for the 'Yes' button.
-	 * @param {string} [options.i18n.noTitle] Title text to use for the 'No' button.
-	 *
-	 * @chainable
+	 * @param {string} [options.i18n.space=' '] Word separator to place between the three text messages.
+	 * @param {string} [options.i18n.confirm='Are you sure?'] Text to use for the confirmation question.
+	 * @param {string} [options.i18n.yes='Yes'] Text to use for the 'Yes' button.
+	 * @param {string} [options.i18n.no='No'] Text to use for the 'No' button.
+	 * @param {string} [options.i18n.yesTitle] Optional title text to use for the 'Yes' button.
+	 * @param {string} [options.i18n.noTitle] Optional title text to use for the 'No' button.
+	 * @return {jQuery}
 	 */
 	$.fn.confirmable = function ( options ) {
 		options = $.extend( true, {}, $.fn.confirmable.defaultOptions, options || {} );
 
 		if ( options.delegate === null ) {
-			return this.on( options.events, function ( e ) {
+			return this.on( options.events, ( e ) => {
 				$.fn.confirmable.handler( e, options );
 			} );
 		}
 
-		return this.on( options.events, options.delegate, function ( e ) {
+		return this.on( options.events, options.delegate, ( e ) => {
 			$.fn.confirmable.handler( e, options );
 		} );
 	};
 
 	$.fn.confirmable.handler = function ( event, options ) {
-		var $element, $text, $buttonYes, $buttonNo, $wrapper, $interface, $elementClone,
-			interfaceWidth, elementWidth, rtl, positionOffscreen, positionRestore, sideMargin;
-
-		$element = $( event.target );
+		const $element = $( event.target );
 
 		if ( $element.data( 'jquery-confirmable-button' ) ) {
 			// We're running on a clone of this element that represents the 'Yes' or 'No' button.
@@ -76,17 +76,22 @@
 		// is impossible because they might have already run (we have no control over the order).
 		event.preventDefault();
 
-		rtl = $element.css( 'direction' ) === 'rtl';
+		const rtl = $element.css( 'direction' ) === 'rtl';
+		let positionOffscreen, positionRestore, sideMargin, elementSideMargin;
 		if ( rtl ) {
 			positionOffscreen = { position: 'absolute', right: '-9999px' };
 			positionRestore = { position: '', right: '' };
 			sideMargin = 'marginRight';
+			elementSideMargin = parseInt( $element.css( 'margin-right' ) );
 		} else {
 			positionOffscreen = { position: 'absolute', left: '-9999px' };
 			positionRestore = { position: '', left: '' };
 			sideMargin = 'marginLeft';
+			elementSideMargin = parseInt( $element.css( 'margin-left' ) );
 		}
 
+		$element.addClass( 'hidden' );
+		let $wrapper, $interface, interfaceWidth, elementWidth, elementPadding;
 		// eslint-disable-next-line no-jquery/no-class-state
 		if ( $element.hasClass( 'jquery-confirmable-element' ) ) {
 			$wrapper = $element.closest( '.jquery-confirmable-wrapper' );
@@ -94,27 +99,34 @@
 
 			interfaceWidth = $interface.data( 'jquery-confirmable-width' );
 			elementWidth = $element.data( 'jquery-confirmable-width' );
+			elementPadding = $element.data( 'jquery-confirmable-padding' );
+			// Restore visibility to interface text if it is opened again after being cancelled.
+			const $existingText = $interface.find( '.jquery-confirmable-text' );
+			$existingText.removeClass( 'hidden' );
 		} else {
-			$elementClone = $element.clone( true );
+			const $elementClone = $element.clone( true );
 			$element.addClass( 'jquery-confirmable-element' );
 
 			elementWidth = $element.width();
+			elementPadding = parseInt( $element.css( 'padding-left' ) ) + parseInt( $element.css( 'padding-right' ) );
 			$element.data( 'jquery-confirmable-width', elementWidth );
+			$element.data( 'jquery-confirmable-padding', elementPadding );
 
 			$wrapper = $( '<span>' )
 				.addClass( 'jquery-confirmable-wrapper' );
 			$element.wrap( $wrapper );
 
 			// Build the mini-dialog
-			$text = $( '<span>' )
+			const $text = $( '<span>' )
 				.addClass( 'jquery-confirmable-text' )
 				.text( options.i18n.confirm );
 
 			// Clone original element along with event handlers to easily replicate its behavior.
 			// We could fiddle with .trigger() etc., but that is troublesome especially since
 			// Safari doesn't implement .click() on <a> links and jQuery follows suit.
-			$buttonYes = $elementClone.clone( true )
+			let $buttonYes = $elementClone.clone( true )
 				.addClass( 'jquery-confirmable-button jquery-confirmable-button-yes' )
+				.removeClass( 'hidden' )
 				.data( 'jquery-confirmable-button', true )
 				.text( options.i18n.yes );
 			if ( options.handler ) {
@@ -126,12 +138,15 @@
 			$buttonYes = options.buttonCallback( $buttonYes, 'yes' );
 
 			// Clone it without any events and prevent default action to represent the 'No' button.
-			$buttonNo = $elementClone.clone( false )
+			let $buttonNo = $elementClone.clone( false )
 				.addClass( 'jquery-confirmable-button jquery-confirmable-button-no' )
+				.removeClass( 'hidden' )
 				.data( 'jquery-confirmable-button', true )
 				.text( options.i18n.no )
-				.on( options.events, function ( e ) {
-					$element.css( sideMargin, 0 );
+				.on( options.events, ( e ) => {
+					$element
+						.css( sideMargin, elementSideMargin )
+						.removeClass( 'hidden' );
 					$interface.css( 'width', 0 );
 					e.preventDefault();
 				} );
@@ -155,18 +170,20 @@
 			// Insert it in the correct place while we're at it
 			$element.after( $interface );
 			interfaceWidth = $interface.width();
-			$interface.data( 'jquery-confirmable-width', interfaceWidth );
-			$interface.css( positionRestore );
-
-			// Hide to animate the transition later
-			$interface.css( 'width', 0 );
+			$interface
+				.data( 'jquery-confirmable-width', interfaceWidth )
+				.css( positionRestore )
+				// Hide to animate the transition later
+				.css( 'width', 0 );
 		}
 
 		// Hide element, show interface. This triggers both transitions.
 		// In a timeout to trigger the 'width' transition.
-		setTimeout( function () {
-			$element.css( sideMargin, -elementWidth );
-			$interface.css( 'width', interfaceWidth );
+		setTimeout( () => {
+			$element.css( sideMargin, -elementWidth - elementPadding );
+			$interface
+				.css( 'width', interfaceWidth )
+				.css( sideMargin, elementSideMargin );
 		}, 1 );
 	};
 

@@ -2,37 +2,65 @@
 
 namespace MediaWiki\Search\SearchWidgets;
 
-use Category;
+use File;
 use HtmlArmor;
+use MediaTransformOutput;
+use MediaWiki\Category\Category;
 use MediaWiki\HookContainer\HookContainer;
 use MediaWiki\HookContainer\HookRunner;
+use MediaWiki\Html\Html;
 use MediaWiki\Linker\LinkRenderer;
-use MediaWiki\MediaWikiServices;
+use MediaWiki\MainConfigNames;
+use MediaWiki\Parser\Sanitizer;
+use MediaWiki\Search\Entity\SearchResultThumbnail;
+use MediaWiki\Search\SearchResultThumbnailProvider;
+use MediaWiki\Specials\SpecialSearch;
+use MediaWiki\Title\Title;
+use MediaWiki\User\Options\UserOptionsManager;
+use RepoGroup;
 use SearchResult;
-use SpecialSearch;
-use Title;
+use ThumbnailImage;
 
 /**
  * Renders a 'full' multi-line search result with metadata.
  *
  *  The Title
  *  some *highlighted* *text* about the search result
- *  5KB (651 words) - 12:40, 6 Aug 2016
+ *  5 KiB (651 words) - 12:40, 6 Aug 2016
  */
 class FullSearchResultWidget implements SearchResultWidget {
+
+	public const THUMBNAIL_SIZE = 90;
+
 	/** @var SpecialSearch */
 	protected $specialPage;
 	/** @var LinkRenderer */
 	protected $linkRenderer;
 	/** @var HookRunner */
 	private $hookRunner;
+	/** @var RepoGroup */
+	private $repoGroup;
+	/** @var SearchResultThumbnailProvider */
+	private $thumbnailProvider;
+	/** @var string */
+	private $thumbnailPlaceholderHtml;
+	/** @var UserOptionsManager */
+	private $userOptionsManager;
 
-	public function __construct( SpecialSearch $specialPage, LinkRenderer $linkRenderer,
-		HookContainer $hookContainer
+	public function __construct(
+		SpecialSearch $specialPage,
+		LinkRenderer $linkRenderer,
+		HookContainer $hookContainer,
+		RepoGroup $repoGroup,
+		SearchResultThumbnailProvider $thumbnailProvider,
+		UserOptionsManager $userOptionsManager
 	) {
 		$this->specialPage = $specialPage;
 		$this->linkRenderer = $linkRenderer;
 		$this->hookRunner = new HookRunner( $hookContainer );
+		$this->repoGroup = $repoGroup;
+		$this->thumbnailProvider = $thumbnailProvider;
+		$this->userOptionsManager = $userOptionsManager;
 	}
 
 	/**
@@ -53,11 +81,8 @@ class FullSearchResultWidget implements SearchResultWidget {
 		// This is not quite safe, but better than showing excerpts from
 		// non-readable pages. Note that hiding the entry entirely would
 		// screw up paging (really?).
-		$permissionManager = MediaWikiServices::getInstance()->getPermissionManager();
-		if ( !$permissionManager->userCan(
-			'read', $this->specialPage->getUser(), $result->getTitle()
-		) ) {
-			return "<li>{$link}</li>";
+		if ( !$this->specialPage->getAuthority()->definitelyCan( 'read', $result->getTitle() ) ) {
+			return Html::rawElement( 'li', [], $link );
 		}
 
 		$redirect = $this->generateRedirectHtml( $result );
@@ -69,16 +94,17 @@ class FullSearchResultWidget implements SearchResultWidget {
 				$this->specialPage->getUser()
 			)
 		);
-		list( $file, $desc, $thumb ) = $this->generateFileHtml( $result );
+		[ $file, $desc, $thumb ] = $this->generateFileHtml( $result );
 		$snippet = $result->getTextSnippet();
 		if ( $snippet ) {
-			$extract = "<div class='searchresult'>$snippet</div>";
+			$snippetWithEllipsis = $snippet . $this->specialPage->msg( 'ellipsis' );
+			$extract = Html::rawElement( 'div', [ 'class' => 'searchresult' ], $snippetWithEllipsis );
 		} else {
 			$extract = '';
 		}
 
-		if ( $thumb === null ) {
-			// If no thumb, then the description is about size
+		if ( $result->getTitle() && $result->getTitle()->getNamespace() !== NS_FILE ) {
+			// If no file, then the description is about size
 			$desc = $this->generateSizeHtml( $result );
 
 			// Let hooks do their own final construction if desired.
@@ -92,6 +118,7 @@ class FullSearchResultWidget implements SearchResultWidget {
 			$terms = $result instanceof \SqlSearchResult ? $result->getTermMatches() : [];
 			if ( !$this->hookRunner->onShowSearchHit( $this->specialPage, $result,
 				$terms, $link, $redirect, $section, $extract, $score,
+				// @phan-suppress-next-line PhanTypeMismatchArgument Type mismatch on pass-by-ref args
 				$desc, $date, $related, $html )
 			) {
 				return $html;
@@ -102,25 +129,37 @@ class FullSearchResultWidget implements SearchResultWidget {
 		$joined = "{$link} {$redirect} {$category} {$section} {$file}";
 		$meta = $this->buildMeta( $desc, $date );
 
-		if ( $thumb === null ) {
-			$html =
-				"<div class='mw-search-result-heading'>{$joined}</div>" .
-				"{$extract} {$meta}";
-		} else {
-			$html =
-				"<table class='searchResultImage'>" .
-					"<tr>" .
-						"<td style='width: 120px; text-align: center; vertical-align: top'>" .
-							$thumb .
-						"</td>" .
-						"<td style='vertical-align: top'>" .
-							"{$joined} {$extract} {$meta}" .
-						"</td>" .
-					"</tr>" .
-				"</table>";
+		// Text portion of the search result
+		$html = Html::rawElement(
+			'div',
+			[ 'class' => 'mw-search-result-heading' ],
+			$joined
+		);
+		$html .= $extract . ' ' . $meta;
+
+		// If the result has a thumbnail, place it next to the text block
+		if ( $thumb ) {
+			$gridCells = Html::rawElement(
+				'div',
+				[ 'class' => 'searchResultImage-thumbnail' ],
+				$thumb
+			) . Html::rawElement(
+				'div',
+				[ 'class' => 'searchResultImage-text' ],
+				$html
+			);
+			$html = Html::rawElement(
+				'div',
+				[ 'class' => 'searchResultImage' ],
+				$gridCells
+			);
 		}
 
-		return "<li class='mw-search-result'>{$html}</li>";
+		return Html::rawElement(
+			'li',
+			[ 'class' => [ 'mw-search-result', 'mw-search-result-ns-' . $result->getTitle()->getNamespace() ] ],
+			$html
+		);
 	}
 
 	/**
@@ -148,6 +187,7 @@ class FullSearchResultWidget implements SearchResultWidget {
 		$attributes = [ 'data-serp-pos' => $position ];
 		$this->hookRunner->onShowSearchHitTitle( $title, $snippet, $result,
 			$result instanceof \SqlSearchResult ? $result->getTermMatches() : [],
+			// @phan-suppress-next-line PhanTypeMismatchArgument Type mismatch on pass-by-ref args
 			$this->specialPage, $query, $attributes );
 
 		$link = $this->linkRenderer->makeLink(
@@ -222,16 +262,13 @@ class FullSearchResultWidget implements SearchResultWidget {
 		if ( $title->getNamespace() === NS_CATEGORY ) {
 			$cat = Category::newFromTitle( $title );
 			return $this->specialPage->msg( 'search-result-category-size' )
-				->numParams( $cat->getPageCount(), $cat->getSubcatCount(), $cat->getFileCount() )
+				->numParams( $cat->getMemberCount(), $cat->getSubcatCount(), $cat->getFileCount() )
 				->escaped();
 		// TODO: This is a bit odd...but requires changing the i18n message to fix
 		} elseif ( $result->getByteSize() !== null || $result->getWordCount() > 0 ) {
-			$lang = $this->specialPage->getLanguage();
-			$bytes = $lang->formatSize( $result->getByteSize() );
-			$words = $result->getWordCount();
-
-			return $this->specialPage->msg( 'search-result-size', $bytes )
-				->numParams( $words )
+			return $this->specialPage->msg( 'search-result-size' )
+				->sizeParams( $result->getByteSize() )
+				->numParams( $result->getWordCount() )
 				->escaped();
 		}
 
@@ -246,34 +283,183 @@ class FullSearchResultWidget implements SearchResultWidget {
 	 */
 	protected function generateFileHtml( SearchResult $result ) {
 		$title = $result->getTitle();
-		if ( $title->getNamespace() !== NS_FILE ) {
+		// don't assume that result is a valid title; e.g. could be an interwiki link target
+		if ( $title === null || !$title->canExist() ) {
 			return [ '', null, null ];
 		}
 
+		$html = '';
 		if ( $result->isFileMatch() ) {
-			$html = "<span class='searchalttitle'>" .
-					$this->specialPage->msg( 'search-file-match' )->escaped() .
-				"</span>";
-		} else {
-			$html = '';
+			$html = Html::rawElement(
+				'span',
+				[ 'class' => 'searchalttitle' ],
+				$this->specialPage->msg( 'search-file-match' )->escaped()
+			);
 		}
 
-		$descHtml = null;
-		$thumbHtml = null;
+		$allowExtraThumbsFromRequest = $this->specialPage->getRequest()->getVal( 'search-thumbnail-extra-namespaces' );
+		$allowExtraThumbsFromPreference = $this->userOptionsManager->getOption(
+			$this->specialPage->getUser(),
+			'search-thumbnail-extra-namespaces'
+		);
+		$allowExtraThumbs = (bool)( $allowExtraThumbsFromRequest ?? $allowExtraThumbsFromPreference );
+		if ( !$allowExtraThumbs && $title->getNamespace() !== NS_FILE ) {
+			return [ $html, null, null ];
+		}
 
-		$img = $result->getFile() ?: MediaWikiServices::getInstance()->getRepoGroup()
-			->findFile( $title );
-		if ( $img ) {
-			$thumb = $img->transform( [ 'width' => 120, 'height' => 120 ] );
-			if ( $thumb ) {
-				$descHtml = $this->specialPage->msg( 'parentheses' )
-					->rawParams( $img->getShortDesc() )
-					->escaped();
-				$thumbHtml = $thumb->toHtml( [ 'desc-link' => true ] );
+		$thumbnail = $this->getThumbnail( $result, self::THUMBNAIL_SIZE );
+		$thumbnailName = $thumbnail ? $thumbnail->getName() : null;
+		if ( !$thumbnailName ) {
+			return [ $html, null, $this->generateThumbnailHtml( $result ) ];
+		}
+
+		$img = $this->repoGroup->findFile( $thumbnailName );
+		if ( !$img ) {
+			return [ $html, null, $this->generateThumbnailHtml( $result ) ];
+		}
+
+		// File::getShortDesc() is documented to return HTML, but many handlers used to incorrectly
+		// return plain text (T395834), so sanitize it in case the same bug is present in extensions.
+		$unsafeShortDesc = $img->getShortDesc();
+		$shortDesc = Sanitizer::removeSomeTags( $unsafeShortDesc );
+
+		return [
+			$html,
+			$this->specialPage->msg( 'parentheses' )->rawParams( $shortDesc )->escaped(),
+			$this->generateThumbnailHtml( $result, $thumbnail )
+		];
+	}
+
+	/**
+	 * @param SearchResult $result
+	 * @param int $size
+	 * @return SearchResultThumbnail|null
+	 */
+	private function getThumbnail( SearchResult $result, int $size ): ?SearchResultThumbnail {
+		$title = $result->getTitle();
+		// don't assume that result is a valid title; e.g. could be an interwiki link target
+		if ( $title === null || !$title->canExist() ) {
+			return null;
+		}
+
+		$thumbnails = $this->thumbnailProvider->getThumbnails( [ $title->getArticleID() => $title ], $size );
+
+		return $thumbnails[ $title->getArticleID() ] ?? null;
+	}
+
+	/**
+	 * @param SearchResult $result
+	 * @param SearchResultThumbnail|null $thumbnail
+	 * @return string|null
+	 */
+	private function generateThumbnailHtml( SearchResult $result, ?SearchResultThumbnail $thumbnail = null ): ?string {
+		$title = $result->getTitle();
+		// don't assume that result is a valid title; e.g. could be an interwiki link target
+		if ( $title === null || !$title->canExist() ) {
+			return null;
+		}
+
+		$namespacesWithThumbnails = $this->specialPage->getConfig()->get( MainConfigNames::ThumbnailNamespaces );
+		$showThumbnail = in_array( $title->getNamespace(), $namespacesWithThumbnails );
+		if ( !$showThumbnail ) {
+			return null;
+		}
+
+		$thumbnailName = $thumbnail ? $thumbnail->getName() : null;
+		if ( !$thumbnail || !$thumbnailName ) {
+			return $this->generateThumbnailPlaceholderHtml();
+		}
+
+		$img = $this->repoGroup->findFile( $thumbnailName );
+		if ( !$img ) {
+			return $this->generateThumbnailPlaceholderHtml();
+		}
+
+		$thumb = $this->transformThumbnail( $img, $thumbnail );
+		if ( $thumb ) {
+			if ( $title->getNamespace() === NS_FILE ) {
+				// don't use a custom link, just use traditional thumbnail HTML
+				return $thumb->toHtml( [
+					'desc-link' => true,
+					'loading' => 'lazy',
+					'alt' => $this->specialPage->msg( 'search-thumbnail-alt' )->params( $title ),
+				] );
 			}
+
+			// thumbnails for non-file results should link to the relevant title
+			return $thumb->toHtml( [
+				'desc-link' => true,
+				'custom-title-link' => $title,
+				'loading' => 'lazy',
+				'alt' => $this->specialPage->msg( 'search-thumbnail-alt' )->params( $title ),
+			] );
 		}
 
-		return [ $html, $descHtml, $thumbHtml ];
+		return $this->generateThumbnailPlaceholderHtml();
+	}
+
+	/**
+	 * @param File $img
+	 * @param SearchResultThumbnail $thumbnail
+	 * @return ThumbnailImage|MediaTransformOutput|bool False on failure
+	 */
+	private function transformThumbnail( File $img, SearchResultThumbnail $thumbnail ) {
+		$optimalThumbnailWidth = $thumbnail->getWidth();
+
+		// $thumb will have rescaled to fit within a <$size>x<$size> bounding
+		// box, but we want it to cover a full square (at the cost of losing
+		// some of the edges)
+		// instead of the largest side matching up with $size, we want the
+		// smallest size to match (or exceed) $size
+		$thumbnailMaxDimension = max( $thumbnail->getWidth(), $thumbnail->getHeight() );
+		$thumbnailMinDimension = min( $thumbnail->getWidth(), $thumbnail->getHeight() );
+		$rescaleCoefficient = $thumbnailMinDimension
+			? $thumbnailMaxDimension / $thumbnailMinDimension : 1;
+
+		// we'll only deal with width from now on since conventions for
+		// standard sizes have formed around width; height will simply
+		// follow according to aspect ratio
+		$rescaledWidth = (int)round( $rescaleCoefficient * $thumbnail->getWidth() );
+
+		// we'll also be looking at $wgThumbLimits to ensure that we pick
+		// from within the predefined list of sizes
+		// NOTE: only do this when there is a difference in the rescaled
+		// size vs the original thumbnail size - some media types are
+		// different and thumb limits don't matter (e.g. for audio, the
+		// player must remain at the size we want, regardless of whether or
+		// not it fits the thumb limits, which in this case are irrelevant)
+		if ( $rescaledWidth !== $thumbnail->getWidth() ) {
+			$thumbLimits = $this->specialPage->getConfig()->get( MainConfigNames::ThumbLimits );
+			$largerThumbLimits = array_filter(
+				$thumbLimits,
+				static function ( $limit ) use ( $rescaledWidth ) {
+					return $limit >= $rescaledWidth;
+				}
+			);
+			$optimalThumbnailWidth = $largerThumbLimits ? min( $largerThumbLimits ) : max( $thumbLimits );
+		}
+
+		return $img->transform( [ 'width' => $optimalThumbnailWidth ] );
+	}
+
+	/**
+	 * @return string
+	 */
+	private function generateThumbnailPlaceholderHtml(): string {
+		if ( $this->thumbnailPlaceholderHtml ) {
+			return $this->thumbnailPlaceholderHtml;
+		}
+
+		$path = MW_INSTALL_PATH . '/resources/lib/ooui/themes/wikimediaui/images/icons/imageLayoutFrameless.svg';
+		$this->thumbnailPlaceholderHtml = Html::rawElement(
+			'div',
+			[
+				'class' => 'searchResultImage-thumbnail-placeholder',
+				'aria-hidden' => 'true',
+			],
+			file_get_contents( $path )
+		);
+		return $this->thumbnailPlaceholderHtml;
 	}
 
 	/**

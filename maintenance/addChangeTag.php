@@ -22,7 +22,13 @@
  * @ingroup Maintenance
  */
 
+use MediaWiki\Maintenance\Maintenance;
+use MediaWiki\Permissions\UltimateAuthority;
+use MediaWiki\User\User;
+
+// @codeCoverageIgnoreStart
 require_once __DIR__ . '/Maintenance.php';
+// @codeCoverageIgnoreEnd
 
 /**
  * Adds a change tag to the wiki
@@ -41,23 +47,25 @@ class AddChangeTag extends Maintenance {
 	}
 
 	public function execute() {
-		$user = User::newSystemUser( 'Maintenance script', [ 'steal' => true ] );
+		$user = User::newSystemUser( User::MAINTENANCE_SCRIPT_USER, [ 'steal' => true ] );
 
 		$tag = $this->getOption( 'tag' );
 
 		$status = ChangeTags::createTagWithChecks(
 			$tag,
 			$this->getOption( 'reason' ),
-			$user
+			new UltimateAuthority( $user )
 		);
 
 		if ( !$status->isGood() ) {
-			$this->fatalError( $status->getMessage( false, false, 'en' )->text() );
+			$this->fatalError( $status );
 		}
 
 		$this->output( "$tag was created.\n" );
 	}
 }
 
+// @codeCoverageIgnoreStart
 $maintClass = AddChangeTag::class;
 require_once RUN_MAINTENANCE_IF_MAIN;
+// @codeCoverageIgnoreEnd

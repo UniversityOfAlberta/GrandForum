@@ -22,6 +22,8 @@
 
 namespace MediaWiki\Block\Restriction;
 
+use MediaWiki\Title\Title;
+
 class PageRestriction extends AbstractRestriction {
 
 	/**
@@ -35,14 +37,14 @@ class PageRestriction extends AbstractRestriction {
 	public const TYPE_ID = 1;
 
 	/**
-	 * @var \Title|bool
+	 * @var Title|false|null
 	 */
 	protected $title;
 
 	/**
 	 * @inheritDoc
 	 */
-	public function matches( \Title $title ) {
+	public function matches( Title $title ) {
 		if ( !$this->getTitle() ) {
 			return false;
 		}
@@ -51,36 +53,26 @@ class PageRestriction extends AbstractRestriction {
 	}
 
 	/**
-	 * Set the title.
-	 *
 	 * @since 1.33
-	 * @param \Title $title
+	 * @param Title $title
 	 * @return self
 	 */
-	public function setTitle( \Title $title ) {
+	public function setTitle( Title $title ) {
 		$this->title = $title;
 
 		return $this;
 	}
 
 	/**
-	 * Get Title.
-	 *
 	 * @since 1.33
-	 * @return \Title|null
+	 * @return Title|false
 	 */
 	public function getTitle() {
-		if ( $this->title === null ) {
-			$this->title = \Title::newFromID( $this->value );
+		// If the title does not exist, set to false to prevent multiple database
+		// queries.
+		$this->title ??= Title::newFromID( $this->value ) ?? false;
 
-			// If the title does not exist, set to false to prevent multiple database
-			// queries.
-			if ( $this->title === null ) {
-				$this->title = false;
-			}
-		}
-
-		return $this->title ?? null;
+		return $this->title;
 	}
 
 	/**
@@ -97,9 +89,27 @@ class PageRestriction extends AbstractRestriction {
 			// Clone the row so it is not mutated.
 			$row = clone $row;
 			$row->page_id = $row->ir_value;
-			$title = \Title::newFromRow( $row );
+			$title = Title::newFromRow( $row );
 			$restriction->setTitle( $title );
 		}
+
+		return $restriction;
+	}
+
+	/**
+	 * @internal
+	 * @since 1.36
+	 * @param string|Title $title
+	 * @return self
+	 */
+	public static function newFromTitle( $title ) {
+		if ( is_string( $title ) ) {
+			$title = Title::newFromText( $title );
+		}
+
+		$restriction = new self( 0, $title->getArticleID() );
+		// @phan-suppress-next-line PhanTypeMismatchArgumentNullable Title is always valid
+		$restriction->setTitle( $title );
 
 		return $restriction;
 	}

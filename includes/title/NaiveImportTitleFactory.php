@@ -18,7 +18,9 @@
  * @file
  */
 
-use MediaWiki\MediaWikiServices;
+namespace MediaWiki\Title;
+
+use MediaWiki\Language\Language;
 
 /**
  * A class to convert page titles on a foreign wiki (ForeignTitle objects) into
@@ -32,6 +34,20 @@ use MediaWiki\MediaWikiServices;
  * main namespace as a last resort.
  */
 class NaiveImportTitleFactory implements ImportTitleFactory {
+	private Language $contentLanguage;
+	private NamespaceInfo $namespaceInfo;
+	private TitleFactory $titleFactory;
+
+	public function __construct(
+		Language $contentLanguage,
+		NamespaceInfo $namespaceInfo,
+		TitleFactory $titleFactory
+	) {
+		$this->contentLanguage = $contentLanguage;
+		$this->namespaceInfo = $namespaceInfo;
+		$this->titleFactory = $titleFactory;
+	}
+
 	/**
 	 * Determines which local title best corresponds to the given foreign title.
 	 * If such a title can't be found or would be locally invalid, null is
@@ -48,21 +64,23 @@ class NaiveImportTitleFactory implements ImportTitleFactory {
 			// the same namespace ID
 			if (
 				$foreignNs < 100 &&
-				MediaWikiServices::getInstance()->getNamespaceInfo()->exists( $foreignNs )
+				$this->namespaceInfo->exists( $foreignNs )
 			) {
-				return Title::makeTitleSafe( $foreignNs, $foreignTitle->getText() );
+				return $this->titleFactory->makeTitleSafe( $foreignNs, $foreignTitle->getText() );
 			}
 		}
 
 		// Do we have a local namespace by the same name as the foreign
 		// namespace?
-		$targetNs = MediaWikiServices::getInstance()->getContentLanguage()->getNsIndex(
-			$foreignTitle->getNamespaceName() );
+		$targetNs = $this->contentLanguage->getNsIndex( $foreignTitle->getNamespaceName() );
 		if ( $targetNs !== false ) {
-			return Title::makeTitleSafe( $targetNs, $foreignTitle->getText() );
+			return $this->titleFactory->makeTitleSafe( $targetNs, $foreignTitle->getText() );
 		}
 
 		// Otherwise, just fall back to main namespace
-		return Title::makeTitleSafe( 0, $foreignTitle->getFullText() );
+		return $this->titleFactory->makeTitleSafe( 0, $foreignTitle->getFullText() );
 	}
 }
+
+/** @deprecated class alias since 1.41 */
+class_alias( NaiveImportTitleFactory::class, 'NaiveImportTitleFactory' );

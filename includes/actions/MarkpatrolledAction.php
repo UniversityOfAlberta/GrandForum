@@ -20,7 +20,11 @@
  * @ingroup Actions
  */
 
-use MediaWiki\MediaWikiServices;
+use MediaWiki\Context\IContextSource;
+use MediaWiki\HTMLForm\HTMLForm;
+use MediaWiki\Linker\LinkRenderer;
+use MediaWiki\Message\Message;
+use MediaWiki\SpecialPage\SpecialPage;
 
 /**
  * Mark a revision as patrolled on a page
@@ -28,6 +32,22 @@ use MediaWiki\MediaWikiServices;
  * @ingroup Actions
  */
 class MarkpatrolledAction extends FormAction {
+
+	private LinkRenderer $linkRenderer;
+
+	/**
+	 * @param Article $article
+	 * @param IContextSource $context
+	 * @param LinkRenderer $linkRenderer
+	 */
+	public function __construct(
+		Article $article,
+		IContextSource $context,
+		LinkRenderer $linkRenderer
+	) {
+		parent::__construct( $article, $context );
+		$this->linkRenderer = $linkRenderer;
+	}
 
 	public function getName() {
 		return 'markpatrolled';
@@ -62,7 +82,6 @@ class MarkpatrolledAction extends FormAction {
 	protected function preText() {
 		$rc = $this->getRecentChange();
 		$title = $rc->getTitle();
-		$linkRenderer = MediaWikiServices::getInstance()->getLinkRenderer();
 
 		// Based on logentry-patrol-patrol (see PatrolLogFormatter)
 		$revId = $rc->getAttribute( 'rc_this_oldid' );
@@ -71,8 +90,8 @@ class MarkpatrolledAction extends FormAction {
 			'diff' => $revId,
 			'oldid' => $rc->getAttribute( 'rc_last_oldid' )
 		];
-		$revlink = $linkRenderer->makeLink( $title, $revId, [], $query );
-		$pagelink = $linkRenderer->makeLink( $title, $title->getPrefixedText() );
+		$revlink = $this->linkRenderer->makeLink( $title, $revId, [], $query );
+		$pagelink = $this->linkRenderer->makeLink( $title, $title->getPrefixedText() );
 
 		return $this->msg( 'confirm-markpatrolled-top' )->params(
 			$title->getPrefixedText(),
@@ -90,14 +109,13 @@ class MarkpatrolledAction extends FormAction {
 
 	/**
 	 * @param array $data
-	 * @return bool|array True for success, false for didn't-try, array of errors on failure
+	 * @return bool|StatusValue True for success, false for didn't-try, StatusValue on failure
 	 */
 	public function onSubmit( $data ) {
-		$user = $this->getUser();
 		$rc = $this->getRecentChange( $data );
-		$errors = $rc->doMarkPatrolled( $user );
+		$status = $rc->markPatrolled( $this->getAuthority() );
 
-		if ( in_array( [ 'rcpatroldisabled' ], $errors ) ) {
+		if ( $status->hasMessage( 'rcpatroldisabled' ) ) {
 			throw new ErrorPageError( 'rcpatroldisabled', 'rcpatroldisabledtext' );
 		}
 
@@ -112,22 +130,22 @@ class MarkpatrolledAction extends FormAction {
 		}
 		$return = SpecialPage::getTitleFor( $returnTo );
 
-		if ( in_array( [ 'markedaspatrollederror-noautopatrol' ], $errors ) ) {
-			$this->getOutput()->setPageTitle( $this->msg( 'markedaspatrollederror' ) );
+		if ( $status->hasMessage( 'markedaspatrollederror-noautopatrol' ) ) {
+			$this->getOutput()->setPageTitleMsg( $this->msg( 'markedaspatrollederror' ) );
 			$this->getOutput()->addWikiMsg( 'markedaspatrollederror-noautopatrol' );
 			$this->getOutput()->returnToMain( null, $return );
 			return true;
 		}
 
-		if ( $errors ) {
-			if ( !in_array( [ 'hookaborted' ], $errors ) ) {
-				throw new PermissionsError( 'patrol', $errors );
+		if ( !$status->isGood() ) {
+			if ( !$status->hasMessage( 'hookaborted' ) ) {
+				throw new PermissionsError( 'patrol', $status );
 			}
-			// The hook itself has handled any output
-			return $errors;
+			// The MarkPatrolled hook itself has handled any output
+			return $status;
 		}
 
-		$this->getOutput()->setPageTitle( $this->msg( 'markedaspatrolled' ) );
+		$this->getOutput()->setPageTitleMsg( $this->msg( 'markedaspatrolled' ) );
 		$this->getOutput()->addWikiMsg( 'markedaspatrolledtext', $rc->getTitle()->getPrefixedText() );
 		$this->getOutput()->returnToMain( null, $return );
 		return true;

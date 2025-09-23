@@ -17,7 +17,7 @@ class ProjectMainTab extends AbstractEditableTab {
         $me = Person::newFromId($wgUser->getId());
         $edit = (isset($_POST['edit']) && $this->canEdit() && !isset($this->visibility['overrideEdit']));
         
-        if($me->isLoggedIn() && 
+        if($me->isRegistered() && 
            !$project->isDeleted() && 
            !$project->isSubProject() && 
            !$edit && 
@@ -55,7 +55,7 @@ class ProjectMainTab extends AbstractEditableTab {
             </div>";
         }
         
-        if(!$project->isSubProject() && $wgUser->isLoggedIn()){
+        if(!$project->isSubProject() && $wgUser->isRegistered()){
             // Show a mailing list link if the person is subscribed
             $this->html .="<h3><a href='$wgServer$wgScriptPath/index.php/Mail:{$project->getName()}'>{$project->getName()} Mailing List</a></h3>";
         }
@@ -172,7 +172,7 @@ EOF;
             $this->showRole(CI);
             $this->showRole(AR);
             $this->html .= "</td><td width='50%' valign='top'>";
-            if($wgUser->isLoggedIn()){
+            if($wgUser->isRegistered()){
                 $this->showRole(HQP);
             }
             $this->html .= "</td></tr>";

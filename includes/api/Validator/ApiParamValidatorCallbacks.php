@@ -2,7 +2,8 @@
 
 namespace MediaWiki\Api\Validator;
 
-use ApiMain;
+use MediaWiki\Api\ApiBase;
+use MediaWiki\Api\ApiMain;
 use MediaWiki\Message\Converter as MessageConverter;
 use Wikimedia\Message\DataMessageValue;
 use Wikimedia\ParamValidator\Callbacks;
@@ -39,6 +40,10 @@ class ApiParamValidatorCallbacks implements Callbacks {
 		$request = $this->apiMain->getRequest();
 		$rawValue = $request->getRawVal( $name );
 
+		if ( $options['raw'] ?? false ) {
+			// Bypass NFC normalization
+			return $rawValue;
+		}
 		if ( is_string( $rawValue ) ) {
 			// Preserve U+001F for multi-values
 			if ( substr( $rawValue, 0, 1 ) === "\x1f" ) {
@@ -77,7 +82,7 @@ class ApiParamValidatorCallbacks implements Callbacks {
 	public function recordCondition(
 		DataMessageValue $message, $name, $value, array $settings, array $options
 	) {
-		/** @var \ApiBase $module */
+		/** @var ApiBase $module */
 		$module = $options['module'];
 
 		$code = $message->getCode();

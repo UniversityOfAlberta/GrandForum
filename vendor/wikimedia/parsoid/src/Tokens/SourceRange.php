@@ -4,29 +4,32 @@ declare( strict_types = 1 );
 namespace Wikimedia\Parsoid\Tokens;
 
 use Wikimedia\Assert\Assert;
+use Wikimedia\JsonCodec\JsonCodecable;
+use Wikimedia\JsonCodec\JsonCodecableTrait;
 use Wikimedia\Parsoid\Utils\PHPUtils;
 
 /**
  * Represents a source offset range.
  */
-class SourceRange implements \JsonSerializable {
+class SourceRange implements JsonCodecable {
+	use JsonCodecableTrait;
 
 	/**
 	 * Offset of the first character (range start is inclusive).
-	 * @var int|null
+	 * @var ?int
 	 */
 	public $start;
 
 	/**
 	 * Offset just past the last character (range end is exclusive).
-	 * @var int|null
+	 * @var ?int
 	 */
 	public $end;
 
 	/**
 	 * Create a new source offset range.
-	 * @param int|null $start The starting index (UTF-8 byte count, inclusive)
-	 * @param int|null $end The ending index (UTF-8 byte count, exclusive)
+	 * @param ?int $start The starting index (UTF-8 byte count, inclusive)
+	 * @param ?int $end The ending index (UTF-8 byte count, exclusive)
 	 */
 	public function __construct( ?int $start, ?int $end ) {
 		$this->start = $start;
@@ -87,10 +90,18 @@ class SourceRange implements \JsonSerializable {
 	 * @param int $amount The amount to shift by
 	 * @return SourceRange
 	 */
-	public function offset( int $amount ) {
-		/* PHP 7.3 won't allow a return type declaration on this static
-		* function, since DomSourceRange::offset's return differs */
+	public function offset( int $amount ): SourceRange {
 		return new SourceRange( $this->start + $amount, $this->end + $amount );
+	}
+
+	/**
+	 * Return a range from the end of this range to the start of the given
+	 * range.
+	 * @param SourceRange $sr
+	 * @return SourceRange
+	 */
+	public function to( SourceRange $sr ): SourceRange {
+		return new SourceRange( $this->end, $sr->start );
 	}
 
 	/**
@@ -106,21 +117,24 @@ class SourceRange implements \JsonSerializable {
 	 * integers (such as created during JSON serialization).
 	 * @param int[] $sr
 	 * @return SourceRange
+	 * @deprecated
 	 */
-	public static function fromArray( array $sr ) {
-		/* PHP 7.3 won't allow a return type declaration on this static
-		* function, since DomSourceRange::fromArray's return differs */
-		Assert::invariant(
-			count( $sr ) === 2,
-			'Wrong # of elements in SourceRange array'
-		);
-		return new SourceRange( $sr[0], $sr[1] );
+	public static function fromArray( array $sr ): SourceRange {
+		// Dynamic dispatch (DomSourceRange subclasses this)
+		return static::newFromJsonArray( $sr );
 	}
 
-	/**
-	 * @inheritDoc
-	 */
-	public function jsonSerialize(): array {
+	/** @inheritDoc */
+	public function toJsonArray(): array {
 		return [ $this->start, $this->end ];
+	}
+
+	/** @inheritDoc */
+	public static function newFromJsonArray( array $json ): SourceRange {
+		Assert::invariant(
+			count( $json ) === 2,
+			'Wrong # of elements in SourceRange array'
+		);
+		return new SourceRange( $json[0], $json[1] );
 	}
 }

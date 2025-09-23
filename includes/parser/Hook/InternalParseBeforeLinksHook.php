@@ -2,10 +2,13 @@
 
 namespace MediaWiki\Hook;
 
-use Parser;
-use StripState;
+use MediaWiki\Parser\Parser;
+use MediaWiki\Parser\StripState;
 
 /**
+ * This is a hook handler interface, see docs/Hooks.md.
+ * Use the hook name "InternalParseBeforeLinks" to register handlers implementing this interface.
+ *
  * @stable to implement
  * @ingroup Hooks
  */

@@ -22,66 +22,57 @@
 
 namespace MediaWiki\Block;
 
+use MediaWiki\Block\Restriction\ActionRestriction;
 use MediaWiki\Block\Restriction\NamespaceRestriction;
 use MediaWiki\Block\Restriction\PageRestriction;
 use MediaWiki\Block\Restriction\Restriction;
-use MWException;
+use MediaWiki\DAO\WikiAwareEntity;
 use stdClass;
-use Wikimedia\Rdbms\IDatabase;
-use Wikimedia\Rdbms\ILoadBalancer;
+use Wikimedia\Rdbms\IConnectionProvider;
 use Wikimedia\Rdbms\IResultWrapper;
 
 class BlockRestrictionStore {
 
-	/**
-	 * Map of all of the restriction types.
-	 */
-	private $types = [
-		PageRestriction::TYPE_ID => PageRestriction::class,
-		NamespaceRestriction::TYPE_ID => NamespaceRestriction::class,
-	];
+	private IConnectionProvider $dbProvider;
 
 	/**
-	 * @var ILoadBalancer
+	 * @var string|false
 	 */
-	private $loadBalancer;
+	private $wikiId;
 
-	/**
-	 * @param ILoadBalancer $loadBalancer load balancer for acquiring database connections
-	 */
-	public function __construct( ILoadBalancer $loadBalancer ) {
-		$this->loadBalancer = $loadBalancer;
+	public function __construct(
+		IConnectionProvider $dbProvider,
+		/* string|false */ $wikiId = WikiAwareEntity::LOCAL
+	) {
+		$this->dbProvider = $dbProvider;
+		$this->wikiId = $wikiId;
 	}
 
 	/**
-	 * Retrieves the restrictions from the database by block id.
+	 * Retrieve the restrictions from the database by block ID.
 	 *
 	 * @since 1.33
-	 * @param int|array $blockId
-	 * @param IDatabase|null $db
+	 * @param int|int[] $blockId
 	 * @return Restriction[]
 	 */
-	public function loadByBlockId( $blockId, IDatabase $db = null ) {
+	public function loadByBlockId( $blockId ) {
 		if ( $blockId === null || $blockId === [] ) {
 			return [];
 		}
 
-		$db = $db ?: $this->loadBalancer->getConnectionRef( DB_REPLICA );
-
-		$result = $db->select(
-			[ 'ipblocks_restrictions', 'page' ],
-			[ 'ir_ipb_id', 'ir_type', 'ir_value', 'page_namespace', 'page_title' ],
-			[ 'ir_ipb_id' => $blockId ],
-			__METHOD__,
-			[],
-			[ 'page' => [ 'LEFT JOIN', [ 'ir_type' => PageRestriction::TYPE_ID, 'ir_value=page_id' ] ] ]
-		);
+		$result = $this->dbProvider->getReplicaDatabase( $this->wikiId )
+			->newSelectQueryBuilder()
+			->select( [ 'ir_ipb_id', 'ir_type', 'ir_value', 'page_namespace', 'page_title' ] )
+			->from( 'ipblocks_restrictions' )
+			->leftJoin( 'page', null, [ 'ir_type' => PageRestriction::TYPE_ID, 'ir_value=page_id' ] )
+			->where( [ 'ir_ipb_id' => $blockId ] )
+			->caller( __METHOD__ )->fetchResultSet();
 
 		return $this->resultToRestrictions( $result );
 	}
 
 	/**
-	 * Inserts the restrictions into the database.
+	 * Insert the restrictions into the database.
 	 *
 	 * @since 1.33
 	 * @param Restriction[] $restrictions
@@ -94,58 +85,49 @@ class BlockRestrictionStore {
 
 		$rows = [];
 		foreach ( $restrictions as $restriction ) {
-			if ( !$restriction instanceof Restriction ) {
-				continue;
-			}
 			$rows[] = $restriction->toRow();
 		}
 
-		if ( !$rows ) {
-			return false;
-		}
+		$dbw = $this->dbProvider->getPrimaryDatabase( $this->wikiId );
 
-		$dbw = $this->loadBalancer->getConnectionRef( DB_MASTER );
-
-		$dbw->insert(
-			'ipblocks_restrictions',
-			$rows,
-			__METHOD__,
-			[ 'IGNORE' ]
-		);
+		$dbw->newInsertQueryBuilder()
+			->insertInto( 'ipblocks_restrictions' )
+			->ignore()
+			->rows( $rows )
+			->caller( __METHOD__ )->execute();
 
 		return true;
 	}
 
 	/**
-	 * Updates the list of restrictions. This method does not allow removing all
+	 * Update the list of restrictions. This method does not allow removing all
 	 * of the restrictions. To do that, use ::deleteByBlockId().
 	 *
 	 * @since 1.33
 	 * @param Restriction[] $restrictions
-	 * @return bool
+	 * @return bool Whether all operations were successful
 	 */
 	public function update( array $restrictions ) {
-		$dbw = $this->loadBalancer->getConnectionRef( DB_MASTER );
+		$dbw = $this->dbProvider->getPrimaryDatabase( $this->wikiId );
 
 		$dbw->startAtomic( __METHOD__ );
 
-		// Organize the restrictions by blockid.
+		// Organize the restrictions by block ID.
 		$restrictionList = $this->restrictionsByBlockId( $restrictions );
 
-		// Load the existing restrictions and organize by block id. Any block ids
+		// Load the existing restrictions and organize by block ID. Any block IDs
 		// that were passed into this function will be used to load all of the
 		// existing restrictions. This list might be the same, or may be completely
 		// different.
 		$existingList = [];
 		$blockIds = array_keys( $restrictionList );
-		if ( !empty( $blockIds ) ) {
-			$result = $dbw->select(
-				[ 'ipblocks_restrictions' ],
-				[ 'ir_ipb_id', 'ir_type', 'ir_value' ],
-				[ 'ir_ipb_id' => $blockIds ],
-				__METHOD__,
-				[ 'FOR UPDATE' ]
-			);
+		if ( $blockIds ) {
+			$result = $dbw->newSelectQueryBuilder()
+				->select( [ 'ir_ipb_id', 'ir_type', 'ir_value' ] )
+				->forUpdate()
+				->from( 'ipblocks_restrictions' )
+				->where( [ 'ir_ipb_id' => $blockIds ] )
+				->caller( __METHOD__ )->fetchResultSet();
 
 			$existingList = $this->restrictionsByBlockId(
 				$this->resultToRestrictions( $result )
@@ -153,12 +135,11 @@ class BlockRestrictionStore {
 		}
 
 		$result = true;
-		// Perform the actions on a per block-id basis.
+		// Perform the actions on a per block-ID basis.
 		foreach ( $restrictionList as $blockId => $blockRestrictions ) {
 			// Insert all of the restrictions first, ignoring ones that already exist.
 			$success = $this->insert( $blockRestrictions );
 
-			// Update the result. The first false is the result, otherwise, true.
 			$result = $success && $result;
 
 			$restrictionsToRemove = $this->restrictionsToRemove(
@@ -166,13 +147,12 @@ class BlockRestrictionStore {
 				$restrictions
 			);
 
-			if ( empty( $restrictionsToRemove ) ) {
+			if ( !$restrictionsToRemove ) {
 				continue;
 			}
 
 			$success = $this->delete( $restrictionsToRemove );
 
-			// Update the result. The first false is the result, otherwise, true.
 			$result = $success && $result;
 		}
 
@@ -182,37 +162,39 @@ class BlockRestrictionStore {
 	}
 
 	/**
-	 * Updates the list of restrictions by parent id.
+	 * Updates the list of restrictions by parent ID.
 	 *
 	 * @since 1.33
 	 * @param int $parentBlockId
 	 * @param Restriction[] $restrictions
-	 * @return bool
+	 * @return bool Whether all updates were successful
 	 */
 	public function updateByParentBlockId( $parentBlockId, array $restrictions ) {
-		// If removing all of the restrictions, then just delete them all.
-		if ( empty( $restrictions ) ) {
-			return $this->deleteByParentBlockId( $parentBlockId );
-		}
-
 		$parentBlockId = (int)$parentBlockId;
 
-		$db = $this->loadBalancer->getConnectionRef( DB_MASTER );
+		$db = $this->dbProvider->getPrimaryDatabase( $this->wikiId );
+
+		$blockIds = $db->newSelectQueryBuilder()
+			->select( 'bl_id' )
+			->forUpdate()
+			->from( 'block' )
+			->where( [ 'bl_parent_block_id' => $parentBlockId ] )
+			->caller( __METHOD__ )->fetchFieldValues();
+		if ( !$blockIds ) {
+			return true;
+		}
+
+		// If removing all of the restrictions, then just delete them all.
+		if ( !$restrictions ) {
+			$blockIds = array_map( 'intval', $blockIds );
+			return $this->deleteByBlockId( $blockIds );
+		}
 
 		$db->startAtomic( __METHOD__ );
-
-		$blockIds = $db->selectFieldValues(
-			'ipblocks',
-			'ipb_id',
-			[ 'ipb_parent_block_id' => $parentBlockId ],
-			__METHOD__,
-			[ 'FOR UPDATE' ]
-		);
 
 		$result = true;
 		foreach ( $blockIds as $id ) {
 			$success = $this->update( $this->setBlockId( $id, $restrictions ) );
-			// Update the result. The first false is the result, otherwise, true.
 			$result = $success && $result;
 		}
 
@@ -226,72 +208,42 @@ class BlockRestrictionStore {
 	 *
 	 * @since 1.33
 	 * @param Restriction[] $restrictions
-	 * @throws MWException
 	 * @return bool
 	 */
 	public function delete( array $restrictions ) {
-		$dbw = $this->loadBalancer->getConnectionRef( DB_MASTER );
-		$result = true;
+		$dbw = $this->dbProvider->getPrimaryDatabase( $this->wikiId );
 		foreach ( $restrictions as $restriction ) {
-			if ( !$restriction instanceof Restriction ) {
-				continue;
-			}
-
-			$success = $dbw->delete(
-				'ipblocks_restrictions',
+			$dbw->newDeleteQueryBuilder()
+				->deleteFrom( 'ipblocks_restrictions' )
 				// The restriction row is made up of a compound primary key. Therefore,
 				// the row and the delete conditions are the same.
-				$restriction->toRow(),
-				__METHOD__
-			);
-			// Update the result. The first false is the result, otherwise, true.
-			$result = $success && $result;
+				->where( $restriction->toRow() )
+				->caller( __METHOD__ )->execute();
 		}
 
-		return $result;
+		return true;
 	}
 
 	/**
 	 * Delete the restrictions by block ID.
 	 *
 	 * @since 1.33
-	 * @param int|array $blockId
-	 * @throws MWException
+	 * @param int|int[] $blockId
 	 * @return bool
 	 */
 	public function deleteByBlockId( $blockId ) {
-		$dbw = $this->loadBalancer->getConnectionRef( DB_MASTER );
-		return $dbw->delete(
-			'ipblocks_restrictions',
-			[ 'ir_ipb_id' => $blockId ],
-			__METHOD__
-		);
+		$this->dbProvider->getPrimaryDatabase( $this->wikiId )
+			->newDeleteQueryBuilder()
+			->deleteFrom( 'ipblocks_restrictions' )
+			->where( [ 'ir_ipb_id' => $blockId ] )
+			->caller( __METHOD__ )->execute();
+		return true;
 	}
 
 	/**
-	 * Delete the restrictions by parent block ID.
-	 *
-	 * @since 1.33
-	 * @param int|array $parentBlockId
-	 * @throws MWException
-	 * @return bool
-	 */
-	public function deleteByParentBlockId( $parentBlockId ) {
-		$dbw = $this->loadBalancer->getConnectionRef( DB_MASTER );
-		return $dbw->deleteJoin(
-			'ipblocks_restrictions',
-			'ipblocks',
-			'ir_ipb_id',
-			'ipb_id',
-			[ 'ipb_parent_block_id' => $parentBlockId ],
-			__METHOD__
-		);
-	}
-
-	/**
-	 * Checks if two arrays of Restrictions are effectively equal. This is a loose
+	 * Check if two arrays of Restrictions are effectively equal. This is a loose
 	 * equality check as the restrictions do not have to contain the same block
-	 * ids.
+	 * IDs.
 	 *
 	 * @since 1.33
 	 * @param Restriction[] $a
@@ -299,16 +251,6 @@ class BlockRestrictionStore {
 	 * @return bool
 	 */
 	public function equals( array $a, array $b ) {
-		$filter = function ( $restriction ) {
-			return $restriction instanceof Restriction;
-		};
-
-		// Ensure that every item in the array is a Restriction. This prevents a
-		// fatal error from calling Restriction::getHash if something in the array
-		// is not a restriction.
-		$a = array_filter( $a, $filter );
-		$b = array_filter( $b, $filter );
-
 		$aCount = count( $a );
 		$bCount = count( $b );
 
@@ -322,7 +264,7 @@ class BlockRestrictionStore {
 			return true;
 		}
 
-		$hasher = function ( $r ) {
+		$hasher = static function ( Restriction $r ) {
 			return $r->getHash();
 		};
 
@@ -347,10 +289,6 @@ class BlockRestrictionStore {
 		$blockRestrictions = [];
 
 		foreach ( $restrictions as $restriction ) {
-			if ( !$restriction instanceof Restriction ) {
-				continue;
-			}
-
 			// Clone the restriction so any references to the current restriction are
 			// not suddenly changed to a different blockId.
 			$restriction = clone $restriction;
@@ -371,24 +309,19 @@ class BlockRestrictionStore {
 	 * @return array
 	 */
 	private function restrictionsToRemove( array $existing, array $new ) {
-		return array_filter( $existing, function ( $e ) use ( $new ) {
-			foreach ( $new as $restriction ) {
-				if ( !$restriction instanceof Restriction ) {
-					continue;
-				}
-
-				if ( $restriction->equals( $e ) ) {
-					return false;
-				}
-			}
-
-			return true;
-		} );
+		$restrictionsByHash = [];
+		foreach ( $existing as $restriction ) {
+			$restrictionsByHash[$restriction->getHash()] = $restriction;
+		}
+		foreach ( $new as $restriction ) {
+			unset( $restrictionsByHash[$restriction->getHash()] );
+		}
+		return array_values( $restrictionsByHash );
 	}
 
 	/**
 	 * Converts an array of restrictions to an associative array of restrictions
-	 * where the keys are the block ids.
+	 * where the keys are the block IDs.
 	 *
 	 * @param Restriction[] $restrictions
 	 * @return array
@@ -397,15 +330,6 @@ class BlockRestrictionStore {
 		$blockRestrictions = [];
 
 		foreach ( $restrictions as $restriction ) {
-			// Ensure that all of the items in the array are restrictions.
-			if ( !$restriction instanceof Restriction ) {
-				continue;
-			}
-
-			if ( !isset( $blockRestrictions[$restriction->getBlockId()] ) ) {
-				$blockRestrictions[$restriction->getBlockId()] = [];
-			}
-
 			$blockRestrictions[$restriction->getBlockId()][] = $restriction;
 		}
 
@@ -413,7 +337,7 @@ class BlockRestrictionStore {
 	}
 
 	/**
-	 * Convert an Result Wrapper to an array of restrictions.
+	 * Convert a result wrapper to an array of restrictions.
 	 *
 	 * @param IResultWrapper $result
 	 * @return Restriction[]
@@ -440,11 +364,15 @@ class BlockRestrictionStore {
 	 * @return Restriction|null
 	 */
 	private function rowToRestriction( stdClass $row ) {
-		if ( array_key_exists( (int)$row->ir_type, $this->types ) ) {
-			$class = $this->types[ (int)$row->ir_type ];
-			return call_user_func( [ $class, 'newFromRow' ], $row );
+		switch ( (int)$row->ir_type ) {
+			case PageRestriction::TYPE_ID:
+				return PageRestriction::newFromRow( $row );
+			case NamespaceRestriction::TYPE_ID:
+				return NamespaceRestriction::newFromRow( $row );
+			case ActionRestriction::TYPE_ID:
+				return ActionRestriction::newFromRow( $row );
+			default:
+				return null;
 		}
-
-		return null;
 	}
 }

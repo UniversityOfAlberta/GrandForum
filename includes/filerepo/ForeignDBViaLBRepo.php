@@ -1,7 +1,5 @@
 <?php
 /**
- * A foreign repository with a MediaWiki database accessible via the configured LBFactory.
- *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -18,29 +16,22 @@
  * http://www.gnu.org/copyleft/gpl.html
  *
  * @file
- * @ingroup FileRepo
  */
 
 use MediaWiki\MediaWikiServices;
-use Wikimedia\Rdbms\ILoadBalancer;
+use Wikimedia\Rdbms\IConnectionProvider;
 
 /**
- * A foreign repository with a MediaWiki database accessible via the configured LBFactory
+ * A foreign repository with a MediaWiki database accessible via the configured LBFactory.
  *
  * @ingroup FileRepo
  */
-class ForeignDBViaLBRepo extends LocalRepo {
-	/** @var string */
-	protected $wiki;
-
+class ForeignDBViaLBRepo extends LocalRepo implements IForeignRepoWithDB {
 	/** @var array */
 	protected $fileFactory = [ ForeignDBFile::class, 'newFromTitle' ];
 
 	/** @var array */
 	protected $fileFromRowFactory = [ ForeignDBFile::class, 'newFromRow' ];
-
-	/** @var bool */
-	protected $hasSharedCache;
 
 	/**
 	 * @param array|null $info
@@ -48,16 +39,16 @@ class ForeignDBViaLBRepo extends LocalRepo {
 	public function __construct( $info ) {
 		parent::__construct( $info );
 		'@phan-var array $info';
-		$this->wiki = $info['wiki'];
-		$this->hasSharedCache = $info['hasSharedCache'];
+		$this->dbDomain = $info['wiki'];
+		$this->hasAccessibleSharedCache = $info['hasSharedCache'];
 	}
 
-	public function getMasterDB() {
-		return $this->getDBLoadBalancer()->getConnectionRef( DB_MASTER, [], $this->wiki );
+	public function getPrimaryDB() {
+		return $this->getDbProvider()->getPrimaryDatabase( $this->dbDomain );
 	}
 
 	public function getReplicaDB() {
-		return $this->getDBLoadBalancer()->getConnectionRef( DB_REPLICA, [], $this->wiki );
+		return $this->getDbProvider()->getReplicaDatabase( $this->dbDomain );
 	}
 
 	/**
@@ -65,33 +56,26 @@ class ForeignDBViaLBRepo extends LocalRepo {
 	 */
 	protected function getDBFactory() {
 		return function ( $index ) {
-			return $this->getDBLoadBalancer()->getConnectionRef( $index, [], $this->wiki );
+			if ( $index == DB_PRIMARY ) {
+				return $this->getDbProvider()->getPrimaryDatabase( $this->dbDomain );
+			} else {
+				return $this->getDbProvider()->getReplicaDatabase( $this->dbDomain );
+			}
 		};
 	}
 
 	/**
-	 * @return ILoadBalancer
+	 * @return IConnectionProvider
 	 */
-	protected function getDBLoadBalancer() {
-		$lbFactory = MediaWikiServices::getInstance()->getDBLoadBalancerFactory();
-
-		return $lbFactory->getMainLB( $this->wiki );
+	protected function getDbProvider(): IConnectionProvider {
+		return MediaWikiServices::getInstance()->getConnectionProvider();
 	}
 
-	private function hasSharedCache() {
-		return $this->hasSharedCache;
-	}
-
-	public function getSharedCacheKey( ...$args ) {
-		if ( $this->hasSharedCache() ) {
-			return $this->wanCache->makeGlobalKey( $this->wiki, ...$args );
-		} else {
-			return false;
-		}
-	}
-
+	/**
+	 * @return never
+	 */
 	protected function assertWritableRepo() {
-		throw new MWException( static::class . ': write operations are not supported.' );
+		throw new LogicException( static::class . ': write operations are not supported.' );
 	}
 
 	public function getInfo() {

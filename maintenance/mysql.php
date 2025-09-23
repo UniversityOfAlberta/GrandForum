@@ -23,11 +23,14 @@
  * @ingroup Maintenance
  */
 
-use MediaWiki\MediaWikiServices;
 use MediaWiki\Shell\Shell;
+use Wikimedia\FileBackend\FSFile\TempFSFile;
 use Wikimedia\IPUtils;
+use Wikimedia\Rdbms\ServerInfo;
 
+// @codeCoverageIgnoreStart
 require_once __DIR__ . '/Maintenance.php';
+// @codeCoverageIgnoreEnd
 
 /**
  * @ingroup Maintenance
@@ -37,13 +40,23 @@ class MysqlMaintenance extends Maintenance {
 		parent::__construct();
 		$this->addDescription( "Execute the MySQL client binary. " .
 			"Non-option arguments will be passed through to mysql." );
-		$this->addOption( 'write', 'Connect to the master database', false, false );
-		$this->addOption( 'group', 'Specify query group', false, false );
-		$this->addOption( 'host', 'Connect to a specific MySQL server', false, true );
+		$this->addOption( 'write', 'Connect to the primary database', false, false );
+		$this->addOption( 'group', 'Specify query group', false, true );
+		$this->addOption( 'host', 'Connect to a known MySQL server', false, true );
+		$this->addOption( 'raw-host',
+			'Connect directly to a specific MySQL server, even if not known to MediaWiki '
+				. 'via wgLBFactoryConf (e.g. parser cache or depooled host). '
+				. 'Credentails will be chosen based on --cluster and --wikidb.',
+			false,
+			true
+		);
 		$this->addOption( 'list-hosts', 'List the available DB hosts', false, false );
 		$this->addOption( 'cluster', 'Use an external cluster by name', false, true );
 		$this->addOption( 'wikidb',
-			'The database wiki ID to use if not the current one', false, true );
+			'The database wiki ID to use if not the current one',
+			false,
+			true
+		);
 
 		// Fake argument for help message
 		$this->addArg( '-- mysql_option ...', 'Options to pass to mysql', false );
@@ -51,23 +64,26 @@ class MysqlMaintenance extends Maintenance {
 
 	public function execute() {
 		$dbName = $this->getOption( 'wikidb', false );
-		$lbf = MediaWikiServices::getInstance()->getDBLoadBalancerFactory();
+		$lbf = $this->getServiceContainer()->getDBLoadBalancerFactory();
+
+		// Pick LB
 		if ( $this->hasOption( 'cluster' ) ) {
 			try {
 				$lb = $lbf->getExternalLB( $this->getOption( 'cluster' ) );
 			} catch ( InvalidArgumentException $e ) {
-				$this->error( "Error: invalid cluster" );
-				exit( 1 );
+				$this->fatalError( 'Error: invalid cluster' );
 			}
 		} else {
 			$lb = $lbf->getMainLB( $dbName );
 		}
+
+		// List hosts, or pick host
 		if ( $this->hasOption( 'list-hosts' ) ) {
 			$serverCount = $lb->getServerCount();
 			for ( $index = 0; $index < $serverCount; ++$index ) {
 				echo $lb->getServerName( $index ) . "\n";
 			}
-			exit( 0 );
+			return;
 		}
 		if ( $this->hasOption( 'host' ) ) {
 			$host = $this->getOption( 'host' );
@@ -78,27 +94,34 @@ class MysqlMaintenance extends Maintenance {
 				}
 			}
 			if ( $index >= $serverCount ) {
-				$this->error( "Error: Host not configured: \"$host\"" );
-				exit( 1 );
+				$this->fatalError( "Error: Host not configured: \"$host\"" );
 			}
 		} elseif ( $this->hasOption( 'write' ) ) {
-			$index = $lb->getWriterIndex();
+			$index = ServerInfo::WRITER_INDEX;
 		} else {
 			$group = $this->getOption( 'group', false );
-			$index = $lb->getReaderIndex( $group, $dbName );
+			$index = $lb->getReaderIndex( $group );
+			if ( $index === false && $group ) {
+				// retry without the group; it may not exist
+				$index = $lb->getReaderIndex( false );
+			}
 			if ( $index === false ) {
-				$this->error( "Error: unable to get reader index" );
-				exit( 1 );
+				$this->fatalError( 'Error: unable to get reader index' );
 			}
 		}
-
 		if ( $lb->getServerType( $index ) !== 'mysql' ) {
-			$this->error( "Error: this script only works with MySQL/MariaDB" );
-			exit( 1 );
+			$this->fatalError( 'Error: this script only works with MySQL/MariaDB' );
 		}
 
-		$status = $this->runMysql( $lb->getServerInfo( $index ), $dbName );
-		exit( $status );
+		$serverInfo = $lb->getServerInfo( $index );
+		// Override host. This uses the server info of the host determined
+		// by the other options for the purposes of user/password.
+		if ( $this->hasOption( 'raw-host' ) ) {
+			$host = $this->getOption( 'raw-host' );
+			$serverInfo = [ 'host' => $host ] + $serverInfo;
+		}
+
+		$this->runMysql( $serverInfo, $dbName );
 	}
 
 	/**
@@ -106,8 +129,6 @@ class MysqlMaintenance extends Maintenance {
 	 *
 	 * @param array $info
 	 * @param string|false $dbName The DB name, or false to use the main wiki DB
-	 *
-	 * @return int The desired exit status
 	 */
 	private function runMysql( $info, $dbName ) {
 		// Write the password to an option file to avoid disclosing it to other
@@ -125,7 +146,7 @@ class MysqlMaintenance extends Maintenance {
 			2 => STDERR,
 		];
 
-		// Split host and port as in DatabaseMysqli::mysqlConnect()
+		// Split host and port as in DatabaseMySQL::mysqlConnect()
 		$realServer = $info['host'];
 		$hostAndPort = IPUtils::splitHostAndPort( $realServer );
 		$socket = false;
@@ -138,7 +159,7 @@ class MysqlMaintenance extends Maintenance {
 		} elseif ( substr_count( $realServer, ':' ) == 1 ) {
 			// If we have a colon and something that's not a port number
 			// inside the hostname, assume it's the socket location
-			list( $realServer, $socket ) = explode( ':', $realServer, 2 );
+			[ $realServer, $socket ] = explode( ':', $realServer, 2 );
 		}
 
 		if ( $dbName === false ) {
@@ -160,7 +181,7 @@ class MysqlMaintenance extends Maintenance {
 			$args[] = "--port={$port}";
 		}
 
-		$args = array_merge( $args, $this->mArgs );
+		$args = array_merge( $args, $this->getArgs() );
 
 		// Ignore SIGINT if possible, otherwise the wrapper terminates when the user presses
 		// ctrl-C to kill a query.
@@ -171,17 +192,19 @@ class MysqlMaintenance extends Maintenance {
 		$pipes = [];
 		$proc = proc_open( Shell::escape( $args ), $desc, $pipes );
 		if ( $proc === false ) {
-			$this->error( "Unable to execute mysql" );
-			return 1;
+			$this->fatalError( 'Unable to execute mysql' );
 		}
+
 		$ret = proc_close( $proc );
 		if ( $ret === -1 ) {
-			$this->error( "proc_close() returned -1" );
-			return 1;
+			$this->fatalError( 'proc_close() returned -1' );
+		} elseif ( $ret ) {
+			$this->fatalError( 'Failed.', $ret );
 		}
-		return $ret;
 	}
 }
 
+// @codeCoverageIgnoreStart
 $maintClass = MysqlMaintenance::class;
 require_once RUN_MAINTENANCE_IF_MAIN;
+// @codeCoverageIgnoreEnd

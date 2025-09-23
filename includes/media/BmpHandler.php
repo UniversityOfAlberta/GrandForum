@@ -21,6 +21,8 @@
  * @ingroup Media
  */
 
+use MediaWiki\Libs\UnpackFailedException;
+
 /**
  * Handler for Microsoft's bitmap format; getimagesize() doesn't
  * support these files
@@ -51,14 +53,14 @@ class BmpHandler extends BitmapHandler {
 	/**
 	 * Get width and height from the bmp header.
 	 *
-	 * @param File|FSFile $image
+	 * @param MediaHandlerState $state
 	 * @param string $filename
-	 * @return array|false
+	 * @return array
 	 */
-	public function getImageSize( $image, $filename ) {
+	public function getSizeAndMetadata( $state, $filename ) {
 		$f = fopen( $filename, 'rb' );
 		if ( !$f ) {
-			return false;
+			return [];
 		}
 		$header = fread( $f, 54 );
 		fclose( $f );
@@ -69,12 +71,15 @@ class BmpHandler extends BitmapHandler {
 
 		// Convert the unsigned long 32 bits (little endian):
 		try {
-			$w = wfUnpack( 'V', $w, 4 );
-			$h = wfUnpack( 'V', $h, 4 );
-		} catch ( Exception $e ) {
-			return false;
+			$w = StringUtils::unpack( 'V', $w, 4 );
+			$h = StringUtils::unpack( 'V', $h, 4 );
+		} catch ( UnpackFailedException $e ) {
+			return [];
 		}
 
-		return [ $w[1], $h[1] ];
+		return [
+			'width' => $w[1],
+			'height' => $h[1]
+		];
 	}
 }

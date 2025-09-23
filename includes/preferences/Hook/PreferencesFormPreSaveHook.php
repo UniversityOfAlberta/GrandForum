@@ -2,10 +2,13 @@
 
 namespace MediaWiki\Preferences\Hook;
 
-use HTMLForm;
-use User;
+use MediaWiki\HTMLForm\HTMLForm;
+use MediaWiki\User\User;
 
 /**
+ * This is a hook handler interface, see docs/Hooks.md.
+ * Use the hook name "PreferencesFormPreSave" to register handlers implementing this interface.
+ *
  * @stable to implement
  * @ingroup Hooks
  */

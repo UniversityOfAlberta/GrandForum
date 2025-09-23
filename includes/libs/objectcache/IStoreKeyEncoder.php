@@ -1,27 +1,34 @@
 <?php
 
+namespace Wikimedia\ObjectCache;
+
 /**
- * Generic interface for object stores with key encoding methods.
+ * Key-encoding methods for object caching (BagOStuff and WANObjectCache)
  *
  * @ingroup Cache
  * @since 1.34
  */
 interface IStoreKeyEncoder {
 	/**
-	 * Make a global cache key.
+	 * @see BagOStuff::makeGlobalKey
 	 *
-	 * @param string $class Key class
-	 * @param string|int ...$components Key components (starting with a key collection name)
-	 * @return string Colon-delimited list of $keyspace followed by escaped components
+	 * @param string $keygroup
+	 * @param string|int ...$components
+	 *
+	 * @return string
 	 */
-	public function makeGlobalKey( $class, ...$components );
+	public function makeGlobalKey( $keygroup, ...$components );
 
 	/**
-	 * Make a cache key, scoped to this instance's keyspace.
+	 * @see BagOStuff::makeKey
 	 *
-	 * @param string $class Key class
-	 * @param string|int ...$components Key components (starting with a key collection name)
-	 * @return string Colon-delimited list of $keyspace followed by escaped components
+	 * @param string $keygroup
+	 * @param string|int ...$components
+	 *
+	 * @return string
 	 */
-	public function makeKey( $class, ...$components );
+	public function makeKey( $keygroup, ...$components );
 }
+
+/** @deprecated class alias since 1.43 */
+class_alias( IStoreKeyEncoder::class, 'IStoreKeyEncoder' );

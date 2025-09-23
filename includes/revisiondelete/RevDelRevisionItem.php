@@ -19,8 +19,12 @@
  * @ingroup RevisionDelete
  */
 
+use MediaWiki\Api\ApiResult;
+use MediaWiki\Linker\Linker;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Revision\RevisionRecord;
+use MediaWiki\RevisionList\RevisionListBase;
+use MediaWiki\Xml\Xml;
 
 /**
  * Item class for a live revision table row
@@ -37,7 +41,7 @@ class RevDelRevisionItem extends RevDelItem {
 	}
 
 	/**
-	 * Create revision object from $row sourced from $list
+	 * Create RevisionRecord object from $row sourced from $list
 	 *
 	 * @param RevisionListBase $list
 	 * @param mixed $row
@@ -54,7 +58,7 @@ class RevDelRevisionItem extends RevDelItem {
 	 *
 	 * @return RevisionRecord
 	 */
-	protected function getRevisionRecord() : RevisionRecord {
+	protected function getRevisionRecord(): RevisionRecord {
 		return $this->revisionRecord;
 	}
 
@@ -79,18 +83,16 @@ class RevDelRevisionItem extends RevDelItem {
 	}
 
 	public function canView() {
-		return RevisionRecord::userCanBitfield(
-			$this->getRevisionRecord()->getVisibility(),
+		return $this->getRevisionRecord()->userCan(
 			RevisionRecord::DELETED_RESTRICTED,
-			$this->list->getUser()
+			$this->list->getAuthority()
 		);
 	}
 
 	public function canViewContent() {
-		return RevisionRecord::userCanBitfield(
-			$this->getRevisionRecord()->getVisibility(),
+		return $this->getRevisionRecord()->userCan(
 			RevisionRecord::DELETED_TEXT,
-			$this->list->getUser()
+			$this->list->getAuthority()
 		);
 	}
 
@@ -101,32 +103,31 @@ class RevDelRevisionItem extends RevDelItem {
 	public function setBits( $bits ) {
 		$revRecord = $this->getRevisionRecord();
 
-		$dbw = wfGetDB( DB_MASTER );
+		$dbw = MediaWikiServices::getInstance()->getConnectionProvider()->getPrimaryDatabase();
 		// Update revision table
-		$dbw->update( 'revision',
-			[ 'rev_deleted' => $bits ],
-			[
+		$dbw->newUpdateQueryBuilder()
+			->update( 'revision' )
+			->set( [ 'rev_deleted' => $bits ] )
+			->where( [
 				'rev_id' => $revRecord->getId(),
 				'rev_page' => $revRecord->getPageId(),
 				'rev_deleted' => $this->getBits() // cas
-			],
-			__METHOD__
-		);
+			] )
+			->caller( __METHOD__ )->execute();
+
 		if ( !$dbw->affectedRows() ) {
 			// Concurrent fail!
 			return false;
 		}
 		// Update recentchanges table
-		$dbw->update( 'recentchanges',
-			[
+		$dbw->newUpdateQueryBuilder()
+			->update( 'recentchanges' )
+			->set( [
 				'rc_deleted' => $bits,
 				'rc_patrolled' => RecentChange::PRC_AUTOPATROLLED
-			],
-			[
-				'rc_this_oldid' => $revRecord->getId(), // condition
-			],
-			__METHOD__
-		);
+			] )
+			->where( [ 'rc_this_oldid' => $revRecord->getId() ] )
+			->caller( __METHOD__ )->execute();
 
 		return true;
 	}
@@ -156,7 +157,7 @@ class RevDelRevisionItem extends RevDelItem {
 		}
 
 		return $this->getLinkRenderer()->makeKnownLink(
-			$this->list->title,
+			$this->list->getPage(),
 			$date,
 			[],
 			[
@@ -176,7 +177,7 @@ class RevDelRevisionItem extends RevDelItem {
 			return $this->list->msg( 'diff' )->escaped();
 		} else {
 			return $this->getLinkRenderer()->makeKnownLink(
-				$this->list->title,
+				$this->list->getPage(),
 				$this->list->msg( 'diff' )->text(),
 				[],
 				[
@@ -199,15 +200,17 @@ class RevDelRevisionItem extends RevDelItem {
 			->rawParams( $this->getDiffLink() )->escaped();
 		$revlink = $this->getRevisionLink();
 		$userlink = Linker::revUserLink( $revRecord );
-		$comment = Linker::revComment( $revRecord );
+		$comment = MediaWikiServices::getInstance()->getCommentFormatter()
+			->formatRevision( $revRecord, $this->list->getAuthority() );
 		if ( $this->isDeleted() ) {
-			$revlink = "<span class=\"history-deleted\">$revlink</span>";
+			$class = Linker::getRevisionDeletedClass( $revRecord );
+			$revlink = "<span class=\"$class\">$revlink</span>";
 		}
 		$content = "$difflink $revlink $userlink $comment";
 		$attribs = [];
 		$tags = $this->getTags();
 		if ( $tags ) {
-			list( $tagSummary, $classes ) = ChangeTags::formatSummaryRow(
+			[ $tagSummary, $classes ] = ChangeTags::formatSummaryRow(
 				$tags,
 				'revisiondelete',
 				$this->list->getContext()
@@ -227,7 +230,7 @@ class RevDelRevisionItem extends RevDelItem {
 
 	public function getApiData( ApiResult $result ) {
 		$revRecord = $this->getRevisionRecord();
-		$user = $this->list->getUser();
+		$authority = $this->list->getAuthority();
 		$ret = [
 			'id' => $revRecord->getId(),
 			'timestamp' => wfTimestamp( TS_ISO_8601, $revRecord->getTimestamp() ),
@@ -235,23 +238,15 @@ class RevDelRevisionItem extends RevDelItem {
 			'commenthidden' => (bool)$revRecord->isDeleted( RevisionRecord::DELETED_COMMENT ),
 			'texthidden' => (bool)$revRecord->isDeleted( RevisionRecord::DELETED_TEXT ),
 		];
-		if ( RevisionRecord::userCanBitfield(
-			$revRecord->getVisibility(),
-			RevisionRecord::DELETED_USER,
-			$user
-		) ) {
-			$revUser = $revRecord->getUser( RevisionRecord::FOR_THIS_USER, $user );
+		if ( $revRecord->userCan( RevisionRecord::DELETED_USER, $authority ) ) {
+			$revUser = $revRecord->getUser( RevisionRecord::FOR_THIS_USER, $authority );
 			$ret += [
 				'userid' => $revUser ? $revUser->getId() : 0,
 				'user' => $revUser ? $revUser->getName() : '',
 			];
 		}
-		if ( RevisionRecord::userCanBitfield(
-			$revRecord->getVisibility(),
-			RevisionRecord::DELETED_COMMENT,
-			$user
-		) ) {
-			$revComment = $revRecord->getComment( RevisionRecord::FOR_THIS_USER, $user );
+		if ( $revRecord->userCan( RevisionRecord::DELETED_COMMENT, $authority ) ) {
+			$revComment = $revRecord->getComment( RevisionRecord::FOR_THIS_USER, $authority );
 			$ret += [
 				'comment' => $revComment ? $revComment->text : ''
 			];

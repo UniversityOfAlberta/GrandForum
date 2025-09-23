@@ -3,26 +3,27 @@ declare( strict_types = 1 );
 
 namespace Wikimedia\Parsoid\Core;
 
-use DOMDocument;
-
-use Wikimedia\Parsoid\Config\Env;
+use Wikimedia\Parsoid\DOM\Document;
+use Wikimedia\Parsoid\Ext\ParsoidExtensionAPI;
 
 abstract class ContentModelHandler {
 
 	/**
-	 * @param Env $env
-	 * @return DOMDocument
+	 * @param ParsoidExtensionAPI $extApi
+	 * @param ?SelectiveUpdateData $selectiveUpdateData
+	 * @return Document
 	 */
-	abstract public function toDOM( Env $env ): DOMDocument;
+	abstract public function toDOM(
+		ParsoidExtensionAPI $extApi, ?SelectiveUpdateData $selectiveUpdateData = null
+	): Document;
 
 	/**
-	 * @param Env $env
-	 * @param DOMDocument $doc
-	 * @param SelserData|null $selserData
+	 * @param ParsoidExtensionAPI $extApi
+	 * @param ?SelectiveUpdateData $selectiveUpdateData
 	 * @return string
 	 */
 	abstract public function fromDOM(
-		Env $env, DOMDocument $doc, ?SelserData $selserData = null
+		ParsoidExtensionAPI $extApi, ?SelectiveUpdateData $selectiveUpdateData = null
 	): string;
 
 }

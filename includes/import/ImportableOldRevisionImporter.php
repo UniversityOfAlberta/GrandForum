@@ -1,103 +1,95 @@
 <?php
 
+use MediaWiki\CommentStore\CommentStoreComment;
+use MediaWiki\Context\RequestContext;
+use MediaWiki\MediaWikiServices;
+use MediaWiki\Page\WikiPageFactory;
 use MediaWiki\Revision\MutableRevisionRecord;
 use MediaWiki\Revision\RevisionStore;
 use MediaWiki\Revision\SlotRoleRegistry;
+use MediaWiki\Storage\PageUpdaterFactory;
+use MediaWiki\Title\Title;
+use MediaWiki\User\UserFactory;
 use Psr\Log\LoggerInterface;
-use Wikimedia\Rdbms\ILoadBalancer;
+use Wikimedia\Rdbms\IConnectionProvider;
+use Wikimedia\Rdbms\IDBAccessObject;
+use Wikimedia\Rdbms\SelectQueryBuilder;
 
 /**
  * @since 1.31
  */
 class ImportableOldRevisionImporter implements OldRevisionImporter {
 
-	/**
-	 * @var LoggerInterface
-	 */
-	private $logger;
+	private bool $doUpdates;
+	private LoggerInterface $logger;
+	private IConnectionProvider $dbProvider;
+	private RevisionStore $revisionStore;
+	private SlotRoleRegistry $slotRoleRegistry;
+	private WikiPageFactory $wikiPageFactory;
+	private PageUpdaterFactory $pageUpdaterFactory;
+	private UserFactory $userFactory;
 
-	/**
-	 * @var bool
-	 */
-	private $doUpdates;
-
-	/**
-	 * @var ILoadBalancer
-	 */
-	private $loadBalancer;
-
-	/**
-	 * @var RevisionStore
-	 */
-	private $revisionStore;
-
-	/**
-	 * @var SlotRoleRegistry
-	 */
-	private $slotRoleRegistry;
-
-	/**
-	 * @param bool $doUpdates
-	 * @param LoggerInterface $logger
-	 * @param ILoadBalancer $loadBalancer
-	 * @param RevisionStore $revisionStore
-	 * @param SlotRoleRegistry|null $slotRoleRegistry
-	 */
 	public function __construct(
 		$doUpdates,
 		LoggerInterface $logger,
-		ILoadBalancer $loadBalancer,
+		IConnectionProvider $dbProvider,
 		RevisionStore $revisionStore,
-		SlotRoleRegistry $slotRoleRegistry = null
+		SlotRoleRegistry $slotRoleRegistry,
+		?WikiPageFactory $wikiPageFactory = null,
+		?PageUpdaterFactory $pageUpdaterFactory = null,
+		?UserFactory $userFactory = null
 	) {
 		$this->doUpdates = $doUpdates;
 		$this->logger = $logger;
-		$this->loadBalancer = $loadBalancer;
+		$this->dbProvider = $dbProvider;
 		$this->revisionStore = $revisionStore;
-		// @todo: temporary - remove when FileImporter extension is updated
-		if ( !$slotRoleRegistry ) {
-			$slotRoleRegistry = \MediaWiki\MediaWikiServices::getInstance()->getSlotRoleRegistry();
-		}
 		$this->slotRoleRegistry = $slotRoleRegistry;
+
+		$services = MediaWikiServices::getInstance();
+		// @todo: temporary - remove when FileImporter extension is updated
+		$this->wikiPageFactory = $wikiPageFactory ?? $services->getWikiPageFactory();
+		$this->pageUpdaterFactory = $pageUpdaterFactory ?? $services->getPageUpdaterFactory();
+		$this->userFactory = $userFactory ?? $services->getUserFactory();
 	}
 
+	/** @inheritDoc */
 	public function import( ImportableOldRevision $importableRevision, $doUpdates = true ) {
-		$dbw = $this->loadBalancer->getConnectionRef( DB_MASTER );
+		$dbw = $this->dbProvider->getPrimaryDatabase();
 
 		# Sneak a single revision into place
-		$user = $importableRevision->getUserObj() ?: User::newFromName( $importableRevision->getUser() );
+		$user = $importableRevision->getUserObj() ?: $this->userFactory->newFromName( $importableRevision->getUser() );
 		if ( $user ) {
-			$userId = intval( $user->getId() );
+			$userId = $user->getId();
 			$userText = $user->getName();
 		} else {
 			$userId = 0;
 			$userText = $importableRevision->getUser();
-			$user = new User;
+			$user = $this->userFactory->newAnonymous();
 		}
 
 		// avoid memory leak...?
 		Title::clearCaches();
 
-		$page = WikiPage::factory( $importableRevision->getTitle() );
-		$page->loadPageData( 'fromdbmaster' );
-		if ( !$page->exists() ) {
-			// must create the page...
+		$page = $this->wikiPageFactory->newFromTitle( $importableRevision->getTitle() );
+		$page->loadPageData( IDBAccessObject::READ_LATEST );
+		$mustCreatePage = !$page->exists();
+		if ( $mustCreatePage ) {
 			$pageId = $page->insertOn( $dbw );
-			$created = true;
-			$oldcountable = null;
 		} else {
 			$pageId = $page->getId();
-			$created = false;
 
 			// Note: sha1 has been in XML dumps since 2012. If you have an
 			// older dump, the duplicate detection here won't work.
 			if ( $importableRevision->getSha1Base36() !== false ) {
-				$prior = $dbw->selectField( 'revision', '1',
-					[ 'rev_page' => $pageId,
-					'rev_timestamp' => $dbw->timestamp( $importableRevision->getTimestamp() ),
-					'rev_sha1' => $importableRevision->getSha1Base36() ],
-					__METHOD__
-				);
+				$prior = (bool)$dbw->newSelectQueryBuilder()
+					->select( '1' )
+					->from( 'revision' )
+					->where( [
+						'rev_page' => $pageId,
+						'rev_timestamp' => $dbw->timestamp( $importableRevision->getTimestamp() ),
+						'rev_sha1' => $importableRevision->getSha1Base36()
+					] )
+					->caller( __METHOD__ )->fetchField();
 				if ( $prior ) {
 					// @todo FIXME: This could fail slightly for multiple matches :P
 					$this->logger->debug( __METHOD__ . ": skipping existing revision for [[" .
@@ -120,20 +112,14 @@ class ImportableOldRevisionImporter implements OldRevisionImporter {
 		// Select previous version to make size diffs correct
 		// @todo This assumes that multiple revisions of the same page are imported
 		// in order from oldest to newest.
-		$qi = $this->revisionStore->getQueryInfo();
-		$prevRevRow = $dbw->selectRow( $qi['tables'], $qi['fields'],
-			[
-				'rev_page' => $pageId,
-				'rev_timestamp <= ' . $dbw->addQuotes( $dbw->timestamp( $importableRevision->getTimestamp() ) ),
-			],
-			__METHOD__,
-			[ 'ORDER BY' => [
-				'rev_timestamp DESC',
-				'rev_id DESC', // timestamp is not unique per page
-			]
-			],
-			$qi['joins']
-		);
+		$queryBuilder = $this->revisionStore->newSelectQueryBuilder( $dbw )
+			->joinComment()
+			->where( [ 'rev_page' => $pageId ] )
+			->andWhere( $dbw->expr(
+				'rev_timestamp', '<=', $dbw->timestamp( $importableRevision->getTimestamp() )
+			) )
+			->orderBy( [ 'rev_timestamp', 'rev_id' ], SelectQueryBuilder::SORT_DESC );
+		$prevRevRow = $queryBuilder->caller( __METHOD__ )->fetchRow();
 
 		# @todo FIXME: Use original rev_id optionally (better for backups)
 		# Insert the row
@@ -144,11 +130,7 @@ class ImportableOldRevisionImporter implements OldRevisionImporter {
 		);
 
 		try {
-			$revUser = User::newFromAnyId(
-				$userId,
-				$userText,
-				null
-			);
+			$revUser = $this->userFactory->newFromAnyId( $userId, $userText );
 		} catch ( InvalidArgumentException $ex ) {
 			$revUser = RequestContext::getMain()->getUser();
 		}
@@ -164,7 +146,7 @@ class ImportableOldRevisionImporter implements OldRevisionImporter {
 
 		foreach ( $importableRevision->getSlotRoles() as $role ) {
 			if ( !$this->slotRoleRegistry->isDefinedRole( $role ) ) {
-				throw new MWException( "Undefined slot role $role" );
+				throw new RuntimeException( "Undefined slot role $role" );
 			}
 
 			$newContent = $importableRevision->getContent( $role );
@@ -192,12 +174,12 @@ class ImportableOldRevisionImporter implements OldRevisionImporter {
 			// Just to be on the safe side, even though it should always be found
 			$latestRevTimestamp = (int)$this->revisionStore->getTimestampFromId(
 				$latestRevId,
-				RevisionStore::READ_LATEST
+				IDBAccessObject::READ_LATEST
 			);
 		} else {
 			$latestRevTimestamp = 0;
 		}
-		if ( $importableRevision->getTimestamp() > $latestRevTimestamp ) {
+		if ( $importableRevision->getTimestamp() >= $latestRevTimestamp ) {
 			$changed = $page->updateRevisionOn( $dbw, $inserted, $latestRevId );
 		} else {
 			$changed = false;
@@ -205,18 +187,23 @@ class ImportableOldRevisionImporter implements OldRevisionImporter {
 
 		$tags = $importableRevision->getTags();
 		if ( $tags !== [] ) {
-			ChangeTags::addTags( $tags, null, $inserted->getId() );
+			MediaWikiServices::getInstance()->getChangeTagsStore()->addTags( $tags, null, $inserted->getId() );
 		}
 
 		if ( $changed !== false && $this->doUpdates ) {
 			$this->logger->debug( __METHOD__ . ": running updates" );
 			// countable/oldcountable stuff is handled in WikiImporter::finishImportPage
-			// @todo replace deprecated function
-			$page->doEditUpdates(
-				$inserted,
-				$user,
-				[ 'created' => $created, 'oldcountable' => 'no-change' ]
-			);
+
+			$options = [
+				'created' => $mustCreatePage,
+				'oldcountable' => 'no-change',
+				'causeAction' => 'import-page',
+				'causeAgent' => $user->getName(),
+			];
+
+			$updater = $this->pageUpdaterFactory->newDerivedPageDataUpdater( $page );
+			$updater->prepareUpdate( $inserted, $options );
+			$updater->doUpdates();
 		}
 
 		return true;

@@ -1,5 +1,9 @@
 <?php
 
+namespace MediaWiki\HTMLForm\Field;
+
+use MediaWiki\MediaWikiServices;
+use MediaWiki\User\ExternalUserNames;
 use MediaWiki\Widget\UserInputWidget;
 use Wikimedia\IPUtils;
 
@@ -9,27 +13,36 @@ use Wikimedia\IPUtils;
  *
  * Optional parameters:
  * 'exists' - Whether to validate that the user already exists
- * 'ipallowed' - Whether an IP adress is interpreted as "valid"
- * 'iprange' - Whether an IP adress range is interpreted as "valid"
+ * 'external' - Whether an external user (imported actor) is interpreted as "valid"
+ * 'ipallowed' - Whether an IP address is interpreted as "valid"
+ * 'usemodwiki-ipallowed' - Whether an IP address in the usemod wiki format (e.g. 300.300.300.xxx) is accepted. The
+ *    'ipallowed' parameter must be set to true if this parameter is set to true.
+ * 'iprange' - Whether an IP address range is interpreted as "valid"
  * 'iprangelimits' - Specifies the valid IP ranges for IPv4 and IPv6 in an array.
- *  defaults to IPv4 => 16; IPv6 => 32.
+ * 'excludenamed' - Whether to exclude named users or not.
+ * 'excludetemp' - Whether to exclude temporary users or not.
  *
  * @stable to extend
  * @since 1.26
  */
 class HTMLUserTextField extends HTMLTextField {
-	/*
+	/**
 	 * @stable to call
+	 * @inheritDoc
 	 */
 	public function __construct( $params ) {
 		$params = wfArrayPlus2d( $params, [
 				'exists' => false,
+				'external' => false,
 				'ipallowed' => false,
+				'usemodwiki-ipallowed' => false,
 				'iprange' => false,
 				'iprangelimits' => [
-					'IPv4' => '16',
-					'IPv6' => '32',
+					'IPv4' => 0,
+					'IPv6' => 0,
 				],
+				'excludenamed' => false,
+				'excludetemp' => false,
 			]
 		);
 
@@ -38,37 +51,59 @@ class HTMLUserTextField extends HTMLTextField {
 
 	public function validate( $value, $alldata ) {
 		// If the value is null, reset it to an empty string which is what is expected by the parent.
-		if ( $value === null ) {
-			$value = '';
-		}
+		$value ??= '';
 
 		// If the value is empty, there are no additional checks that can be performed.
 		if ( $value === '' ) {
 			return parent::validate( $value, $alldata );
 		}
 
-		// check, if a user exists with the given username
-		$user = User::newFromName( $value, false );
-		$rangeError = null;
-
-		if ( !$user ) {
-			return $this->msg( 'htmlform-user-not-valid', $value );
-		} elseif (
-			// check, if the user exists, if requested
-			( $this->mParams['exists'] && !(
+		// check if the input is a valid username
+		$user = MediaWikiServices::getInstance()->getUserFactory()->newFromName( $value );
+		if ( $user ) {
+			// check if the user exists, if requested
+			if ( $this->mParams['exists'] && !(
 				$user->isRegistered() &&
 				// Treat hidden users as unregistered if current user can't view them (T309894)
 				!( $user->isHidden() && !( $this->mParent && $this->mParent->getUser()->isAllowed( 'hideuser' ) ) )
-			) ) &&
-			// check, if the username is a valid IP address, otherwise save the error message
-			!( $this->mParams['ipallowed'] && IPUtils::isValid( $value ) ) &&
-			// check, if the username is a valid IP range, otherwise save the error message
-			!( $this->mParams['iprange'] && ( $rangeError = $this->isValidIPRange( $value ) ) === true )
-		) {
-			if ( is_string( $rangeError ) ) {
-				return $rangeError;
+			) ) {
+				return $this->msg( 'htmlform-user-not-exists', wfEscapeWikiText( $user->getName() ) );
 			}
-			return $this->msg( 'htmlform-user-not-exists', $user->getName() );
+
+			// check if the user account type matches the account type filter
+			$excludeNamed = $this->mParams['excludenamed'] ?? null;
+			$excludeTemp = $this->mParams['excludetemp'] ?? null;
+			if ( ( $excludeTemp && $user->isTemp() ) || ( $excludeNamed && $user->isNamed() ) ) {
+				return $this->msg( 'htmlform-user-not-valid', wfEscapeWikiText( $user->getName() ) );
+			}
+		} else {
+			// not a valid username
+			$valid = false;
+			// check if the input is a valid external user
+			if ( $this->mParams['external'] && ExternalUserNames::isExternal( $value ) ) {
+				$valid = true;
+			}
+			// check if the input is a valid IP address, optionally also checking for usemod wiki IPs
+			if ( $this->mParams['ipallowed'] ) {
+				$b = IPUtils::RE_IP_BYTE;
+				if ( IPUtils::isValid( $value ) ) {
+					$valid = true;
+				} elseif ( $this->mParams['usemodwiki-ipallowed'] && preg_match( "/^$b\.$b\.$b\.xxx$/", $value ) ) {
+					$valid = true;
+				}
+			}
+			// check if the input is a valid IP range
+			if ( $this->mParams['iprange'] ) {
+				$rangeError = $this->isValidIPRange( $value );
+				if ( $rangeError === true ) {
+					$valid = true;
+				} elseif ( $rangeError !== false ) {
+					return $rangeError;
+				}
+			}
+			if ( !$valid ) {
+				return $this->msg( 'htmlform-user-not-valid', wfEscapeWikiText( $value ) );
+			}
 		}
 
 		return parent::validate( $value, $alldata );
@@ -81,14 +116,14 @@ class HTMLUserTextField extends HTMLTextField {
 			return false;
 		}
 
-		list( $ip, $range ) = explode( '/', $value, 2 );
+		[ $ip, $range ] = explode( '/', $value, 2 );
 
 		if (
 			( IPUtils::isIPv4( $ip ) && $cidrIPRanges['IPv4'] == 32 ) ||
 			( IPUtils::isIPv6( $ip ) && $cidrIPRanges['IPv6'] == 128 )
 		) {
 			// Range block effectively disabled
-			return $this->msg( 'ip_range_toolow' )->parse();
+			return $this->msg( 'ip_range_toolow' );
 		}
 
 		if (
@@ -96,21 +131,29 @@ class HTMLUserTextField extends HTMLTextField {
 			( IPUtils::isIPv6( $ip ) && $range > 128 )
 		) {
 			// Dodgy range
-			return $this->msg( 'ip_range_invalid' )->parse();
+			return $this->msg( 'ip_range_invalid' );
 		}
 
 		if ( IPUtils::isIPv4( $ip ) && $range < $cidrIPRanges['IPv4'] ) {
-			return $this->msg( 'ip_range_exceeded', $cidrIPRanges['IPv4'] )->parse();
+			return $this->msg( 'ip_range_exceeded', $cidrIPRanges['IPv4'] );
 		}
 
 		if ( IPUtils::isIPv6( $ip ) && $range < $cidrIPRanges['IPv6'] ) {
-			return $this->msg( 'ip_range_exceeded', $cidrIPRanges['IPv6'] )->parse();
+			return $this->msg( 'ip_range_exceeded', $cidrIPRanges['IPv6'] );
 		}
 
 		return true;
 	}
 
 	protected function getInputWidget( $params ) {
+		if ( isset( $this->mParams['excludenamed'] ) ) {
+			$params['excludenamed'] = $this->mParams['excludenamed'];
+		}
+
+		if ( isset( $this->mParams['excludetemp'] ) ) {
+			$params['excludetemp'] = $this->mParams['excludetemp'];
+		}
+
 		return new UserInputWidget( $params );
 	}
 
@@ -131,3 +174,6 @@ class HTMLUserTextField extends HTMLTextField {
 		return parent::getInputHTML( $value );
 	}
 }
+
+/** @deprecated class alias since 1.42 */
+class_alias( HTMLUserTextField::class, 'HTMLUserTextField' );

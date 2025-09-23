@@ -16,7 +16,7 @@ class XmlRdfWriter extends RdfWriterBase {
 	 * @param string $role
 	 * @param BNodeLabeler|null $labeler
 	 */
-	public function __construct( $role = parent::DOCUMENT_ROLE, BNodeLabeler $labeler = null ) {
+	public function __construct( $role = parent::DOCUMENT_ROLE, ?BNodeLabeler $labeler = null ) {
 		parent::__construct( $role, $labeler );
 
 		$this->transitionTable[self::STATE_START][self::STATE_DOCUMENT] = function () {
@@ -42,18 +42,30 @@ class XmlRdfWriter extends RdfWriterBase {
 		return htmlspecialchars( $text, ENT_QUOTES );
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	protected function expandSubject( &$base, &$local ) {
 		$this->expandQName( $base, $local );
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	protected function expandPredicate( &$base, &$local ) {
 		$this->expandShorthand( $base, $local );
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	protected function expandResource( &$base, &$local ) {
 		$this->expandQName( $base, $local );
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	protected function expandType( &$base, &$local ) {
 		$this->expandQName( $base, $local );
 	}
@@ -126,6 +138,7 @@ class XmlRdfWriter extends RdfWriterBase {
 		}
 
 		return [
+			// @phan-suppress-next-line PhanTypeMismatchReturn
 			"rdf:$name" => $value
 		];
 	}

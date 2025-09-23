@@ -21,6 +21,8 @@
  * @ingroup Media
  */
 
+use Wikimedia\AtEase\AtEase;
+
 /**
  * Media handler abstract base class for images
  *
@@ -53,20 +55,13 @@ abstract class ImageHandler extends MediaHandler {
 	 * @stable to override
 	 */
 	public function validateParam( $name, $value ) {
-		if ( in_array( $name, [ 'width', 'height' ] ) ) {
-			if ( $value <= 0 ) {
-				return false;
-			} else {
-				return true;
-			}
-		} else {
-			return false;
-		}
+		return in_array( $name, [ 'width', 'height' ] ) && $value > 0;
 	}
 
 	/**
 	 * @inheritDoc
 	 * @stable to override
+	 * @throws MediaTransformInvalidParametersException
 	 */
 	public function makeParamString( $params ) {
 		if ( isset( $params['physicalWidth'] ) ) {
@@ -90,14 +85,14 @@ abstract class ImageHandler extends MediaHandler {
 		$m = false;
 		if ( preg_match( '/^(\d+)px$/', $str, $m ) ) {
 			return [ 'width' => $m[1] ];
-		} else {
-			return false;
 		}
+		return false;
 	}
 
 	/**
-	 * @inheritDoc
 	 * @stable to override
+	 * @param array $params
+	 * @return array
 	 */
 	protected function getScriptParams( $params ) {
 		return [ 'width' => $params['width'] ];
@@ -107,12 +102,11 @@ abstract class ImageHandler extends MediaHandler {
 	 * @inheritDoc
 	 * @stable to override
 	 * @param File $image
-	 * @param array &$params
+	 * @param array &$params @phan-ignore-reference
 	 * @return bool
+	 * @phan-assert array{width:int,physicalWidth:int,height:int,physicalHeight:int,page:int} $params
 	 */
 	public function normaliseParams( $image, &$params ) {
-		$mimeType = $image->getMimeType();
-
 		if ( !isset( $params['width'] ) ) {
 			return false;
 		}
@@ -120,7 +114,7 @@ abstract class ImageHandler extends MediaHandler {
 		if ( !isset( $params['page'] ) ) {
 			$params['page'] = 1;
 		} else {
-			$params['page'] = intval( $params['page'] );
+			$params['page'] = (int)$params['page'];
 			if ( $params['page'] > $image->pageCount() ) {
 				$params['page'] = $image->pageCount();
 			}
@@ -133,7 +127,7 @@ abstract class ImageHandler extends MediaHandler {
 		$srcWidth = $image->getWidth( $params['page'] );
 		$srcHeight = $image->getHeight( $params['page'] );
 
-		if ( isset( $params['height'] ) && $params['height'] != -1 ) {
+		if ( isset( $params['height'] ) && $params['height'] !== -1 ) {
 			# Height & width were both set
 			if ( $params['width'] * $srcHeight > $params['height'] * $srcWidth ) {
 				# Height is the relative smaller dimension, so scale width accordingly
@@ -153,6 +147,7 @@ abstract class ImageHandler extends MediaHandler {
 
 		if ( !isset( $params['physicalWidth'] ) ) {
 			# Passed all validations, so set the physicalWidth
+			// @phan-suppress-next-line PhanTypePossiblyInvalidDimOffset False positive, checked above
 			$params['physicalWidth'] = $params['width'];
 		}
 
@@ -163,12 +158,12 @@ abstract class ImageHandler extends MediaHandler {
 			$params['physicalWidth'] );
 
 		# Set the height if it was not validated in the if block higher up
-		if ( !isset( $params['height'] ) || $params['height'] == -1 ) {
+		if ( !isset( $params['height'] ) || $params['height'] === -1 ) {
 			$params['height'] = $params['physicalHeight'];
 		}
 
 		if ( !$this->validateThumbParams( $params['physicalWidth'],
-			$params['physicalHeight'], $srcWidth, $srcHeight, $mimeType )
+			$params['physicalHeight'], $srcWidth, $srcHeight )
 		) {
 			return false;
 		}
@@ -183,13 +178,11 @@ abstract class ImageHandler extends MediaHandler {
 	 * @param int &$height Height (output only)
 	 * @param int $srcWidth Width of the source image
 	 * @param int $srcHeight Height of the source image
-	 * @param string $mimeType Unused
 	 * @return bool False to indicate that an error should be returned to the user.
 	 */
-	private function validateThumbParams( &$width, &$height, $srcWidth, $srcHeight, $mimeType ) {
-		$width = intval( $width );
+	private function validateThumbParams( &$width, &$height, $srcWidth, $srcHeight ) {
+		$width = (int)$width;
 
-		# Sanity check $width
 		if ( $width <= 0 ) {
 			wfDebug( __METHOD__ . ": Invalid destination width: $width" );
 
@@ -216,7 +209,7 @@ abstract class ImageHandler extends MediaHandler {
 	 * @param File $image
 	 * @param string $script
 	 * @param array $params
-	 * @return bool|MediaTransformOutput
+	 * @return MediaTransformOutput|false
 	 */
 	public function getScriptedTransform( $image, $script, $params ) {
 		if ( !$this->normaliseParams( $image, $params ) ) {
@@ -229,16 +222,29 @@ abstract class ImageHandler extends MediaHandler {
 		}
 	}
 
-	/**
-	 * @inheritDoc
-	 * @stable to override
-	 */
 	public function getImageSize( $image, $path ) {
-		Wikimedia\suppressWarnings();
+		AtEase::suppressWarnings();
 		$gis = getimagesize( $path );
-		Wikimedia\restoreWarnings();
+		AtEase::restoreWarnings();
 
 		return $gis;
+	}
+
+	public function getSizeAndMetadata( $state, $path ) {
+		// phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged
+		$gis = @getimagesize( $path );
+		if ( $gis ) {
+			$info = [
+				'width' => $gis[0],
+				'height' => $gis[1],
+			];
+			if ( isset( $gis['bits'] ) ) {
+				$info['bits'] = $gis['bits'];
+			}
+		} else {
+			$info = [];
+		}
+		return $info;
 	}
 
 	/**
@@ -277,16 +283,14 @@ abstract class ImageHandler extends MediaHandler {
 	 * @return string
 	 */
 	public function getLongDesc( $file ) {
-		global $wgLang;
 		$pages = $file->pageCount();
-		$size = htmlspecialchars( $wgLang->formatSize( $file->getSize() ) );
 		if ( $pages === false || $pages <= 1 ) {
 			$msg = wfMessage( 'file-info-size' )->numParams( $file->getWidth(),
-				$file->getHeight() )->params( $size,
+				$file->getHeight() )->sizeParams( $file->getSize() )->params(
 					'<span class="mime-type">' . $file->getMimeType() . '</span>' )->parse();
 		} else {
 			$msg = wfMessage( 'file-info-size-pages' )->numParams( $file->getWidth(),
-				$file->getHeight() )->params( $size,
+				$file->getHeight() )->sizeParams( $file->getSize() )->params(
 					'<span class="mime-type">' . $file->getMimeType() . '</span>' )->numParams( $pages )->parse();
 		}
 
@@ -304,10 +308,9 @@ abstract class ImageHandler extends MediaHandler {
 		if ( $pages > 1 ) {
 			return wfMessage( 'widthheightpage' )
 				->numParams( $file->getWidth(), $file->getHeight(), $pages )->text();
-		} else {
-			return wfMessage( 'widthheight' )
-				->numParams( $file->getWidth(), $file->getHeight() )->text();
 		}
+		return wfMessage( 'widthheight' )
+			->numParams( $file->getWidth(), $file->getHeight() )->text();
 	}
 
 	/**
@@ -319,13 +322,8 @@ abstract class ImageHandler extends MediaHandler {
 
 		// We unset the height parameters in order to let normaliseParams recalculate them
 		// Otherwise there might be a height discrepancy
-		if ( isset( $params['height'] ) ) {
-			unset( $params['height'] );
-		}
-
-		if ( isset( $params['physicalHeight'] ) ) {
-			unset( $params['physicalHeight'] );
-		}
+		unset( $params['height'] );
+		unset( $params['physicalHeight'] );
 
 		return $params;
 	}

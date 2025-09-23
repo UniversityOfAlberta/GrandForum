@@ -3,10 +3,13 @@
 namespace MediaWiki\Api\Hook;
 
 // phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
-use ApiMain;
+use MediaWiki\Api\ApiMain;
 use Throwable;
 
 /**
+ * This is a hook handler interface, see docs/Hooks.md.
+ * Use the hook name "ApiMain::onException" to register handlers implementing this interface.
+ *
  * @stable to implement
  * @ingroup Hooks
  */

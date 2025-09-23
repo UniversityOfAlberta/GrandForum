@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © 2006 Yuri Astrakhan "<Firstname><Lastname>@gmail.com"
  *
@@ -20,13 +21,29 @@
  * @file
  */
 
+namespace MediaWiki\Api;
+
+use MediaWiki\ExternalLinks\LinkFilter;
+use MediaWiki\MainConfigNames;
+use MediaWiki\Parser\Parser;
+use MediaWiki\Title\Title;
+use MediaWiki\Utils\UrlUtils;
+use Wikimedia\ParamValidator\ParamValidator;
+use Wikimedia\ParamValidator\TypeDef\IntegerDef;
+use Wikimedia\Rdbms\IExpression;
+use Wikimedia\Rdbms\LikeValue;
+
 /**
  * @ingroup API
  */
 class ApiQueryExtLinksUsage extends ApiQueryGeneratorBase {
 
-	public function __construct( ApiQuery $query, $moduleName ) {
+	private UrlUtils $urlUtils;
+
+	public function __construct( ApiQuery $query, string $moduleName, UrlUtils $urlUtils ) {
 		parent::__construct( $query, $moduleName, 'eu' );
+
+		$this->urlUtils = $urlUtils;
 	}
 
 	public function execute() {
@@ -50,30 +67,23 @@ class ApiQueryExtLinksUsage extends ApiQueryGeneratorBase {
 		$db = $this->getDB();
 
 		$query = $params['query'];
-		$protocol = self::getProtocolPrefix( $params['protocol'] );
+		$protocol = LinkFilter::getProtocolPrefix( $params['protocol'] );
 
 		$this->addTables( [ 'externallinks', 'page' ] );
 		$this->addJoinConds( [ 'page' => [ 'JOIN', 'page_id=el_from' ] ] );
+		$fields = [ 'el_to_domain_index', 'el_to_path' ];
 
 		$miser_ns = [];
-		if ( $this->getConfig()->get( 'MiserMode' ) ) {
+		if ( $this->getConfig()->get( MainConfigNames::MiserMode ) ) {
 			$miser_ns = $params['namespace'] ?: [];
 		} else {
 			$this->addWhereFld( 'page_namespace', $params['namespace'] );
 		}
-
-		$orderBy = [];
-
 		if ( $query !== null && $query !== '' ) {
-			if ( $protocol === null ) {
-				$protocol = 'http://';
-			}
-
 			// Normalize query to match the normalization applied for the externallinks table
-			$query = Parser::normalizeLinkUrl( $protocol . $query );
-
+			$query = Parser::normalizeLinkUrl( $query );
 			$conds = LinkFilter::getQueryConditions( $query, [
-				'protocol' => '',
+				'protocol' => $protocol,
 				'oneWildcard' => true,
 				'db' => $db
 			] );
@@ -81,28 +91,19 @@ class ApiQueryExtLinksUsage extends ApiQueryGeneratorBase {
 				$this->dieWithError( 'apierror-badquery' );
 			}
 			$this->addWhere( $conds );
-			if ( !isset( $conds['el_index_60'] ) ) {
-				$orderBy[] = 'el_index_60';
-			}
 		} else {
-			$orderBy[] = 'el_index_60';
-
 			if ( $protocol !== null ) {
-				$this->addWhere( 'el_index_60' . $db->buildLike( "$protocol", $db->anyString() ) );
-			} else {
-				// We're querying all protocols, filter out duplicate protocol-relative links
-				$this->addWhere( $db->makeList( [
-					'el_to NOT' . $db->buildLike( '//', $db->anyString() ),
-					'el_index_60 ' . $db->buildLike( 'http://', $db->anyString() ),
-				], LIST_OR ) );
+				$this->addWhere(
+					$db->expr( 'el_to_domain_index', IExpression::LIKE, new LikeValue( "$protocol", $db->anyString() ) )
+				);
 			}
 		}
+		$orderBy = [ 'el_id' ];
 
-		$orderBy[] = 'el_id';
 		$this->addOption( 'ORDER BY', $orderBy );
 		$this->addFields( $orderBy ); // Make sure
 
-		$prop = array_flip( $params['prop'] );
+		$prop = array_fill_keys( $params['prop'], true );
 		$fld_ids = isset( $prop['ids'] );
 		$fld_title = isset( $prop['title'] );
 		$fld_url = isset( $prop['url'] );
@@ -113,7 +114,9 @@ class ApiQueryExtLinksUsage extends ApiQueryGeneratorBase {
 				'page_namespace',
 				'page_title'
 			] );
-			$this->addFieldsIf( 'el_to', $fld_url );
+			foreach ( $fields as $field ) {
+				$this->addFieldsIf( $field, $fld_url );
+			}
 		} else {
 			$this->addFields( $resultPageSet->getPageTableFields() );
 		}
@@ -125,16 +128,10 @@ class ApiQueryExtLinksUsage extends ApiQueryGeneratorBase {
 		$this->addOption( 'STRAIGHT_JOIN' );
 
 		if ( $params['continue'] !== null ) {
-			$cont = explode( '|', $params['continue'] );
-			$this->dieContinueUsageIf( count( $cont ) !== count( $orderBy ) );
-			$i = count( $cont ) - 1;
-			$cond = $orderBy[$i] . ' >= ' . $db->addQuotes( rawurldecode( $cont[$i] ) );
-			while ( $i-- > 0 ) {
-				$field = $orderBy[$i];
-				$v = $db->addQuotes( rawurldecode( $cont[$i] ) );
-				$cond = "($field > $v OR ($field = $v AND $cond))";
-			}
-			$this->addWhere( $cond );
+			$cont = $this->parseContinueParamOrDie( $params['continue'],
+				array_fill( 0, count( $orderBy ), 'string' ) );
+			$conds = array_combine( $orderBy, array_map( 'rawurldecode', $cont ) );
+			$this->addWhere( $db->buildComparison( '>=', $conds ) );
 		}
 
 		$res = $this->select( __METHOD__ );
@@ -170,10 +167,10 @@ class ApiQueryExtLinksUsage extends ApiQueryGeneratorBase {
 					ApiQueryBase::addTitleInfo( $vals, $title );
 				}
 				if ( $fld_url ) {
-					$to = $row->el_to;
+					$to = LinkFilter::reverseIndexes( $row->el_to_domain_index ) . $row->el_to_path;
 					// expand protocol-relative urls
 					if ( $params['expandurl'] ) {
-						$to = wfExpandUrl( $to, PROTO_CANONICAL );
+						$to = (string)$this->urlUtils->expand( $to, PROTO_CANONICAL );
 					}
 					$vals['url'] = $to;
 				}
@@ -204,9 +201,9 @@ class ApiQueryExtLinksUsage extends ApiQueryGeneratorBase {
 	public function getAllowedParams() {
 		$ret = [
 			'prop' => [
-				ApiBase::PARAM_ISMULTI => true,
-				ApiBase::PARAM_DFLT => 'ids|title|url',
-				ApiBase::PARAM_TYPE => [
+				ParamValidator::PARAM_ISMULTI => true,
+				ParamValidator::PARAM_DEFAULT => 'ids|title|url',
+				ParamValidator::PARAM_TYPE => [
 					'ids',
 					'title',
 					'url'
@@ -217,60 +214,35 @@ class ApiQueryExtLinksUsage extends ApiQueryGeneratorBase {
 				ApiBase::PARAM_HELP_MSG => 'api-help-param-continue',
 			],
 			'protocol' => [
-				ApiBase::PARAM_TYPE => self::prepareProtocols(),
-				ApiBase::PARAM_DFLT => '',
+				ParamValidator::PARAM_TYPE => LinkFilter::prepareProtocols(),
+				ParamValidator::PARAM_DEFAULT => '',
 			],
 			'query' => null,
 			'namespace' => [
-				ApiBase::PARAM_ISMULTI => true,
-				ApiBase::PARAM_TYPE => 'namespace'
+				ParamValidator::PARAM_ISMULTI => true,
+				ParamValidator::PARAM_TYPE => 'namespace'
 			],
 			'limit' => [
-				ApiBase::PARAM_DFLT => 10,
-				ApiBase::PARAM_TYPE => 'limit',
-				ApiBase::PARAM_MIN => 1,
-				ApiBase::PARAM_MAX => ApiBase::LIMIT_BIG1,
-				ApiBase::PARAM_MAX2 => ApiBase::LIMIT_BIG2
+				ParamValidator::PARAM_DEFAULT => 10,
+				ParamValidator::PARAM_TYPE => 'limit',
+				IntegerDef::PARAM_MIN => 1,
+				IntegerDef::PARAM_MAX => ApiBase::LIMIT_BIG1,
+				IntegerDef::PARAM_MAX2 => ApiBase::LIMIT_BIG2
 			],
-			'expandurl' => false,
+			'expandurl' => [
+				ParamValidator::PARAM_TYPE => 'boolean',
+				ParamValidator::PARAM_DEFAULT => false,
+				ParamValidator::PARAM_DEPRECATED => true,
+			],
 		];
 
-		if ( $this->getConfig()->get( 'MiserMode' ) ) {
+		if ( $this->getConfig()->get( MainConfigNames::MiserMode ) ) {
 			$ret['namespace'][ApiBase::PARAM_HELP_MSG_APPEND] = [
 				'api-help-param-limited-in-miser-mode',
 			];
 		}
 
 		return $ret;
-	}
-
-	public static function prepareProtocols() {
-		global $wgUrlProtocols;
-		$protocols = [ '' ];
-		foreach ( $wgUrlProtocols as $p ) {
-			if ( $p !== '//' ) {
-				$protocols[] = substr( $p, 0, strpos( $p, ':' ) );
-			}
-		}
-
-		return $protocols;
-	}
-
-	public static function getProtocolPrefix( $protocol ) {
-		// Find the right prefix
-		global $wgUrlProtocols;
-		if ( $protocol && !in_array( $protocol, $wgUrlProtocols ) ) {
-			foreach ( $wgUrlProtocols as $p ) {
-				if ( substr( $p, 0, strlen( $protocol ) ) === $protocol ) {
-					$protocol = $p;
-					break;
-				}
-			}
-
-			return $protocol;
-		} else {
-			return null;
-		}
 	}
 
 	protected function getExamplesMessages() {
@@ -284,3 +256,6 @@ class ApiQueryExtLinksUsage extends ApiQueryGeneratorBase {
 		return 'https://www.mediawiki.org/wiki/Special:MyLanguage/API:Exturlusage';
 	}
 }
+
+/** @deprecated class alias since 1.43 */
+class_alias( ApiQueryExtLinksUsage::class, 'ApiQueryExtLinksUsage' );

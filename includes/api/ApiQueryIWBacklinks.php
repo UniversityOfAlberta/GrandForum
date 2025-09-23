@@ -23,13 +23,19 @@
  * @file
  */
 
+namespace MediaWiki\Api;
+
+use MediaWiki\Title\Title;
+use Wikimedia\ParamValidator\ParamValidator;
+use Wikimedia\ParamValidator\TypeDef\IntegerDef;
+
 /**
  * This gives links pointing to the given interwiki
  * @ingroup API
  */
 class ApiQueryIWBacklinks extends ApiQueryGeneratorBase {
 
-	public function __construct( ApiQuery $query, $moduleName ) {
+	public function __construct( ApiQuery $query, string $moduleName ) {
 		parent::__construct( $query, $moduleName, 'iwbl' );
 	}
 
@@ -60,24 +66,17 @@ class ApiQueryIWBacklinks extends ApiQueryGeneratorBase {
 		}
 
 		if ( $params['continue'] !== null ) {
-			$cont = explode( '|', $params['continue'] );
-			$this->dieContinueUsageIf( count( $cont ) != 3 );
-
+			$cont = $this->parseContinueParamOrDie( $params['continue'], [ 'string', 'string', 'int' ] );
 			$db = $this->getDB();
-			$op = $params['dir'] == 'descending' ? '<' : '>';
-			$prefix = $db->addQuotes( $cont[0] );
-			$title = $db->addQuotes( $cont[1] );
-			$from = (int)$cont[2];
-			$this->addWhere(
-				"iwl_prefix $op $prefix OR " .
-				"(iwl_prefix = $prefix AND " .
-				"(iwl_title $op $title OR " .
-				"(iwl_title = $title AND " .
-				"iwl_from $op= $from)))"
-			);
+			$op = $params['dir'] == 'descending' ? '<=' : '>=';
+			$this->addWhere( $db->buildComparison( $op, [
+				'iwl_prefix' => $cont[0],
+				'iwl_title' => $cont[1],
+				'iwl_from' => $cont[2],
+			] ) );
 		}
 
-		$prop = array_flip( $params['prop'] );
+		$prop = array_fill_keys( $params['prop'], true );
 		$iwprefix = isset( $prop['iwprefix'] );
 		$iwtitle = isset( $prop['iwtitle'] );
 
@@ -183,24 +182,24 @@ class ApiQueryIWBacklinks extends ApiQueryGeneratorBase {
 				ApiBase::PARAM_HELP_MSG => 'api-help-param-continue',
 			],
 			'limit' => [
-				ApiBase::PARAM_DFLT => 10,
-				ApiBase::PARAM_TYPE => 'limit',
-				ApiBase::PARAM_MIN => 1,
-				ApiBase::PARAM_MAX => ApiBase::LIMIT_BIG1,
-				ApiBase::PARAM_MAX2 => ApiBase::LIMIT_BIG2
+				ParamValidator::PARAM_DEFAULT => 10,
+				ParamValidator::PARAM_TYPE => 'limit',
+				IntegerDef::PARAM_MIN => 1,
+				IntegerDef::PARAM_MAX => ApiBase::LIMIT_BIG1,
+				IntegerDef::PARAM_MAX2 => ApiBase::LIMIT_BIG2
 			],
 			'prop' => [
-				ApiBase::PARAM_ISMULTI => true,
-				ApiBase::PARAM_DFLT => '',
-				ApiBase::PARAM_TYPE => [
+				ParamValidator::PARAM_ISMULTI => true,
+				ParamValidator::PARAM_DEFAULT => '',
+				ParamValidator::PARAM_TYPE => [
 					'iwprefix',
 					'iwtitle',
 				],
 				ApiBase::PARAM_HELP_MSG_PER_VALUE => [],
 			],
 			'dir' => [
-				ApiBase::PARAM_DFLT => 'ascending',
-				ApiBase::PARAM_TYPE => [
+				ParamValidator::PARAM_DEFAULT => 'ascending',
+				ParamValidator::PARAM_TYPE => [
 					'ascending',
 					'descending'
 				]
@@ -221,3 +220,6 @@ class ApiQueryIWBacklinks extends ApiQueryGeneratorBase {
 		return 'https://www.mediawiki.org/wiki/Special:MyLanguage/API:Iwbacklinks';
 	}
 }
+
+/** @deprecated class alias since 1.43 */
+class_alias( ApiQueryIWBacklinks::class, 'ApiQueryIWBacklinks' );

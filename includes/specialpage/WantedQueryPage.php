@@ -1,7 +1,5 @@
 <?php
 /**
- * Class definition for a wanted query page.
- *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -18,15 +16,19 @@
  * http://www.gnu.org/copyleft/gpl.html
  *
  * @file
- * @ingroup SpecialPage
  */
 
+namespace MediaWiki\SpecialPage;
+
+use MediaWiki\Title\Title;
+use Skin;
+use stdClass;
 use Wikimedia\Rdbms\IDatabase;
 use Wikimedia\Rdbms\IResultWrapper;
 
 /**
- * Class definition for a wanted query page like
- * WantedPages, WantedTemplates, etc
+ * Base class for a "wanted" query page like WantedPages, WantedTemplates, etc
+ *
  * @stable to extend
  * @ingroup SpecialPage
  */
@@ -68,7 +70,7 @@ abstract class WantedQueryPage extends QueryPage {
 	 * @stable to override
 	 *
 	 * @param Skin $skin Skin to use for UI elements
-	 * @param object $result Result row
+	 * @param stdClass $result Result row
 	 * @return string
 	 */
 	public function formatResult( $skin, $result ) {
@@ -114,7 +116,7 @@ abstract class WantedQueryPage extends QueryPage {
 	 * Make a "what links here" link for a given title
 	 *
 	 * @param Title $title Title to make the link for
-	 * @param object $result Result row
+	 * @param stdClass $result Result row
 	 * @return string
 	 */
 	protected function makeWlhLink( $title, $result ) {
@@ -137,7 +139,7 @@ abstract class WantedQueryPage extends QueryPage {
 	/**
 	 * Do not order descending for all order fields.  We will use DESC only on one field, see
 	 * getOrderFields above. This overwrites sortDescending from QueryPage::getOrderFields().
-	 * Do NOT change this to true unless you remove the phrase DESC in getOrderFiels above.
+	 * Do NOT change this to true unless you remove the phrase DESC in getOrderFields above.
 	 * If you do a database error will be thrown due to double adding DESC to query!
 	 *
 	 * @stable to override
@@ -159,3 +161,6 @@ abstract class WantedQueryPage extends QueryPage {
 	}
 
 }
+
+/** @deprecated class alias since 1.41 */
+class_alias( WantedQueryPage::class, 'WantedQueryPage' );

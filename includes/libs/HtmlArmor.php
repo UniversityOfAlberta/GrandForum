@@ -17,7 +17,7 @@
  *
  * @file
  * @license GPL-2.0-or-later
- * @author Kunal Mehta <legoktm@member.fsf.org>
+ * @author Kunal Mehta <legoktm@debian.org>
  */
 
 /**
@@ -38,6 +38,7 @@ class HtmlArmor {
 	 * @stable to call
 	 *
 	 * @param string|null $value
+	 * @param-taint $value exec_html
 	 */
 	public function __construct( $value ) {
 		$this->value = $value;

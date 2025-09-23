@@ -21,12 +21,26 @@
  * @ingroup FileBackend
  */
 
+namespace MediaWiki\FileBackend;
+
+use InvalidArgumentException;
+use LogicException;
 use MediaWiki\Config\ServiceOptions;
 use MediaWiki\FileBackend\FSFile\TempFSFileFactory;
 use MediaWiki\FileBackend\LockManager\LockManagerGroupFactory;
 use MediaWiki\Logger\LoggerFactory;
-use MediaWiki\MediaWikiServices;
-use Wikimedia\ObjectFactory;
+use MediaWiki\MainConfigNames;
+use MediaWiki\Output\StreamFile;
+use MediaWiki\Status\Status;
+use Profiler;
+use Wikimedia\FileBackend\FileBackend;
+use Wikimedia\FileBackend\FileBackendMultiWrite;
+use Wikimedia\FileBackend\FSFileBackend;
+use Wikimedia\Mime\MimeAnalyzer;
+use Wikimedia\ObjectCache\BagOStuff;
+use Wikimedia\ObjectCache\WANObjectCache;
+use Wikimedia\ObjectFactory\ObjectFactory;
+use Wikimedia\Rdbms\ReadOnlyMode;
 
 /**
  * Class to handle file backend registration
@@ -63,36 +77,19 @@ class FileBackendGroup {
 	private $objectFactory;
 
 	/**
-	 * @internal
+	 * @internal For use by ServiceWiring
 	 */
 	public const CONSTRUCTOR_OPTIONS = [
-		'DirectoryMode',
-		'FileBackends',
-		'ForeignFileRepos',
-		'LocalFileRepo',
+		MainConfigNames::DirectoryMode,
+		MainConfigNames::FileBackends,
+		MainConfigNames::ForeignFileRepos,
+		MainConfigNames::LocalFileRepo,
 		'fallbackWikiId',
 	];
 
 	/**
-	 * @deprecated since 1.35, inject the service instead
-	 * @return FileBackendGroup
-	 */
-	public static function singleton() : FileBackendGroup {
-		return MediaWikiServices::getInstance()->getFileBackendGroup();
-	}
-
-	/**
-	 * Destroy the singleton instance
-	 *
-	 * @deprecated since 1.35, test framework should reset services between tests instead
-	 */
-	public static function destroySingleton() {
-		MediaWikiServices::getInstance()->resetServiceForTesting( 'FileBackendGroup' );
-	}
-
-	/**
 	 * @param ServiceOptions $options
-	 * @param ConfiguredReadOnlyMode $configuredReadOnlyMode
+	 * @param ReadOnlyMode $readOnlyMode
 	 * @param BagOStuff $srvCache
 	 * @param WANObjectCache $wanCache
 	 * @param MimeAnalyzer $mimeAnalyzer
@@ -102,7 +99,7 @@ class FileBackendGroup {
 	 */
 	public function __construct(
 		ServiceOptions $options,
-		ConfiguredReadOnlyMode $configuredReadOnlyMode,
+		ReadOnlyMode $readOnlyMode,
 		BagOStuff $srvCache,
 		WANObjectCache $wanCache,
 		MimeAnalyzer $mimeAnalyzer,
@@ -119,12 +116,12 @@ class FileBackendGroup {
 		$this->objectFactory = $objectFactory;
 
 		// Register explicitly defined backends
-		$this->register( $options->get( 'FileBackends' ), $configuredReadOnlyMode->getReason() );
+		$this->register( $options->get( MainConfigNames::FileBackends ), $readOnlyMode->getConfiguredReason() );
 
 		$autoBackends = [];
 		// Automatically create b/c backends for file repos...
 		$repos = array_merge(
-			$options->get( 'ForeignFileRepos' ), [ $options->get( 'LocalFileRepo' ) ] );
+			$options->get( MainConfigNames::ForeignFileRepos ), [ $options->get( MainConfigNames::LocalFileRepo ) ] );
 		foreach ( $repos as $info ) {
 			$backendName = $info['backend'];
 			if ( is_object( $backendName ) || isset( $this->backends[$backendName] ) ) {
@@ -136,11 +133,12 @@ class FileBackendGroup {
 			$deletedDir = $info['deletedDir'] ?? false; // deletion disabled
 			$thumbDir = $info['thumbDir'] ?? "{$directory}/thumb";
 			$transcodedDir = $info['transcodedDir'] ?? "{$directory}/transcoded";
+			$lockManager = $info['lockManager'] ?? 'fsLockManager';
 			// Get the FS backend configuration
 			$autoBackends[] = [
 				'name' => $backendName,
 				'class' => FSFileBackend::class,
-				'lockManager' => 'fsLockManager',
+				'lockManager' => $lockManager,
 				'containerPaths' => [
 					"{$repoName}-public" => "{$directory}",
 					"{$repoName}-thumb" => $thumbDir,
@@ -149,12 +147,12 @@ class FileBackendGroup {
 					"{$repoName}-temp" => "{$directory}/temp"
 				],
 				'fileMode' => $info['fileMode'] ?? 0644,
-				'directoryMode' => $options->get( 'DirectoryMode' ),
+				'directoryMode' => $options->get( MainConfigNames::DirectoryMode ),
 			];
 		}
 
 		// Register implicitly defined backends
-		$this->register( $autoBackends, $configuredReadOnlyMode->getReason() );
+		$this->register( $autoBackends, $readOnlyMode->getConfiguredReason() );
 	}
 
 	/**
@@ -162,7 +160,6 @@ class FileBackendGroup {
 	 *
 	 * @param array[] $configs
 	 * @param string|null $readOnlyReason
-	 * @throws InvalidArgumentException
 	 */
 	protected function register( array $configs, $readOnlyReason = null ) {
 		foreach ( $configs as $config ) {
@@ -177,9 +174,8 @@ class FileBackendGroup {
 			}
 			$class = $config['class'];
 
-			$config['domainId'] =
-				$config['domainId'] ?? $config['wikiId'] ?? $this->options->get( 'fallbackWikiId' );
-			$config['readOnly'] = $config['readOnly'] ?? $readOnlyReason;
+			$config['domainId'] ??= $config['wikiId'] ?? $this->options->get( 'fallbackWikiId' );
+			$config['readOnly'] ??= $readOnlyReason;
 
 			unset( $config['class'] ); // backend won't need this
 			$this->backends[$name] = [
@@ -195,7 +191,6 @@ class FileBackendGroup {
 	 *
 	 * @param string $name
 	 * @return FileBackend
-	 * @throws InvalidArgumentException
 	 */
 	public function get( $name ) {
 		// Lazy-load the actual backend instance
@@ -203,7 +198,8 @@ class FileBackendGroup {
 			$config = $this->config( $name );
 
 			$class = $config['class'];
-			if ( $class === FileBackendMultiWrite::class ) {
+			// Checking old alias for compatibility with unchanged config
+			if ( $class === FileBackendMultiWrite::class || $class === \FileBackendMultiWrite::class ) {
 				// @todo How can we test this? What's the intended use-case?
 				foreach ( $config['backends'] as $index => $beConfig ) {
 					if ( isset( $beConfig['template'] ) ) {
@@ -225,7 +221,6 @@ class FileBackendGroup {
 	 *
 	 * @param string $name
 	 * @return array Parameters to FileBackend::__construct()
-	 * @throws InvalidArgumentException
 	 */
 	public function config( $name ) {
 		if ( !isset( $this->backends[$name] ) ) {
@@ -245,7 +240,7 @@ class FileBackendGroup {
 				'wanCache' => $this->wanCache,
 				'srvCache' => $this->srvCache,
 				'logger' => LoggerFactory::getInstance( 'FileOperation' ),
-				'profiler' => function ( $section ) {
+				'profiler' => static function ( $section ) {
 					return Profiler::instance()->scopedProfileIn( $section );
 				}
 			],
@@ -257,11 +252,6 @@ class FileBackendGroup {
 				'lockManager' =>
 					$this->lmgFactory->getLockManagerGroup( $config['domainId'] )
 						->get( $config['lockManager'] ),
-				'fileJournal' => isset( $config['fileJournal'] )
-					? $this->objectFactory->createObject(
-						$config['fileJournal'] + [ 'backend' => $name ],
-						[ 'specIsArg' => true, 'assertClass' => FileJournal::class ] )
-					: new NullFileJournal
 			]
 		);
 	}
@@ -273,7 +263,7 @@ class FileBackendGroup {
 	 * @return FileBackend|null Backend or null on failure
 	 */
 	public function backendFromPath( $storagePath ) {
-		list( $backend, , ) = FileBackend::splitStoragePath( $storagePath );
+		[ $backend, , ] = FileBackend::splitStoragePath( $storagePath );
 		if ( $backend !== null && isset( $this->backends[$backend] ) ) {
 			return $this->get( $backend );
 		}
@@ -303,3 +293,5 @@ class FileBackendGroup {
 		return $type ?: 'unknown/unknown';
 	}
 }
+/** @deprecated class alias since 1.43 */
+class_alias( FileBackendGroup::class, 'FileBackendGroup' );

@@ -1,9 +1,5 @@
 <?php
-
 /**
- * This file deals with database interface functions
- * and query specifics/optimisations.
- *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -37,64 +33,6 @@ use RuntimeException;
  */
 interface IMaintainableDatabase extends IDatabase {
 	/**
-	 * Format a table name ready for use in constructing an SQL query
-	 *
-	 * This does two important things: it quotes the table names to clean them up,
-	 * and it adds a table prefix if only given a table name with no quotes.
-	 *
-	 * All functions of this object which require a table name call this function
-	 * themselves. Pass the canonical name to such functions. This is only needed
-	 * when calling query() directly.
-	 *
-	 * @note This function does not sanitize user input. It is not safe to use
-	 *   this function to escape user input.
-	 * @param string $name Database table name
-	 * @param string $format One of:
-	 *   quoted - Automatically pass the table name through addIdentifierQuotes()
-	 *            so that it can be used in a query.
-	 *   raw - Do not add identifier quotes to the table name
-	 * @return string Full database name
-	 */
-	public function tableName( $name, $format = 'quoted' );
-
-	/**
-	 * Fetch a number of table names into an array
-	 * This is handy when you need to construct SQL for joins
-	 *
-	 * Example:
-	 * list( $user, $watchlist ) = $dbr->tableNames( 'user', 'watchlist' ) );
-	 * $sql = "SELECT wl_namespace, wl_title FROM $watchlist, $user
-	 *         WHERE wl_user=user_id AND wl_user=$nameWithQuotes";
-	 *
-	 * @param string ...$tables
-	 * @return array
-	 */
-	public function tableNames( ...$tables );
-
-	/**
-	 * Fetch a number of table names into an zero-indexed numerical array
-	 * This is handy when you need to construct SQL for joins
-	 *
-	 * Example:
-	 * list( $user, $watchlist ) = $dbr->tableNamesN( 'user', 'watchlist' );
-	 * $sql = "SELECT wl_namespace,wl_title FROM $watchlist,$user
-	 *         WHERE wl_user=user_id AND wl_user=$nameWithQuotes";
-	 *
-	 * @param string ...$tables
-	 * @return array
-	 */
-	public function tableNamesN( ...$tables );
-
-	/**
-	 * Returns the size of a text field, or -1 for "unlimited"
-	 *
-	 * @param string $table
-	 * @param string $field
-	 * @return int
-	 */
-	public function textFieldSize( $table, $field );
-
-	/**
 	 * Read and execute SQL commands from a file.
 	 *
 	 * Returns true on success, error string or exception on failure (depending
@@ -103,7 +41,7 @@ interface IMaintainableDatabase extends IDatabase {
 	 * @param string $filename File name to open
 	 * @param callable|null $lineCallback Optional function called before reading each line
 	 * @param callable|null $resultCallback Optional function called for each MySQL result
-	 * @param bool|string $fname Calling function name or false if name should be
+	 * @param string|false $fname Calling function name or false if name should be
 	 *   generated dynamically using $filename
 	 * @param callable|null $inputCallback Optional function called for each
 	 *   complete line sent
@@ -112,10 +50,10 @@ interface IMaintainableDatabase extends IDatabase {
 	 */
 	public function sourceFile(
 		$filename,
-		callable $lineCallback = null,
-		callable $resultCallback = null,
+		?callable $lineCallback = null,
+		?callable $resultCallback = null,
 		$fname = false,
-		callable $inputCallback = null
+		?callable $inputCallback = null
 	);
 
 	/**
@@ -127,16 +65,16 @@ interface IMaintainableDatabase extends IDatabase {
 	 * @param resource $fp File handle
 	 * @param callable|null $lineCallback Optional function called before reading each query
 	 * @param callable|null $resultCallback Optional function called for each MySQL result
-	 * @param string $fname Calling function name
+	 * @param string $fname Calling function name @phan-mandatory-param
 	 * @param callable|null $inputCallback Optional function called for each complete query sent
 	 * @return bool|string
 	 */
 	public function sourceStream(
 		$fp,
-		callable $lineCallback = null,
-		callable $resultCallback = null,
+		?callable $lineCallback = null,
+		?callable $resultCallback = null,
 		$fname = __METHOD__,
-		callable $inputCallback = null
+		?callable $inputCallback = null
 	);
 
 	/**
@@ -151,59 +89,22 @@ interface IMaintainableDatabase extends IDatabase {
 	/**
 	 * Delete a table
 	 *
-	 * @param string $table
-	 * @param string $fname
+	 * @param string $table The unqualified name of a table
+	 * @param string $fname @phan-mandatory-param
 	 * @return bool Whether the table already existed
 	 * @throws DBError If an error occurs
 	 */
 	public function dropTable( $table, $fname = __METHOD__ );
 
 	/**
-	 * Delete all data in a table(s) and reset any sequences owned by that table(s)
+	 * Delete all data in a table and reset any sequences owned by that table
 	 *
-	 * @param string|string[] $tables
-	 * @param string $fname
+	 * @param string $table The unqualified name of a table
+	 * @param string $fname @phan-mandatory-param
 	 * @throws DBError If an error occurs
-	 * @since 1.35
+	 * @since 1.42
 	 */
-	public function truncate( $tables, $fname = __METHOD__ );
-
-	/**
-	 * Perform a deadlock-prone transaction.
-	 *
-	 * This function invokes a callback function to perform a set of write
-	 * queries. If a deadlock occurs during the processing, the transaction
-	 * will be rolled back and the callback function will be called again.
-	 *
-	 * Avoid using this method outside of Job or Maintenance classes.
-	 *
-	 * Usage:
-	 *   $dbw->deadlockLoop( callback, ... );
-	 *
-	 * Extra arguments are passed through to the specified callback function.
-	 * This method requires that no transactions are already active to avoid
-	 * causing premature commits or exceptions.
-	 *
-	 * Returns whatever the callback function returned on its successful,
-	 * iteration, or false on error, for example if the retry limit was
-	 * reached.
-	 *
-	 * @param mixed ...$args
-	 * @return mixed
-	 * @throws DBUnexpectedError
-	 * @throws Exception
-	 */
-	public function deadlockLoop( ...$args );
-
-	/**
-	 * Lists all the VIEWs in the database
-	 *
-	 * @param string|null $prefix Only show VIEWs with this prefix, eg. unit_test_
-	 * @param string $fname Name of calling function
-	 * @throws RuntimeException
-	 * @return array
-	 */
-	public function listViews( $prefix = null, $fname = __METHOD__ );
+	public function truncateTable( $table, $fname = __METHOD__ );
 
 	/**
 	 * Creates a new table with structure copied from existing table
@@ -216,7 +117,7 @@ interface IMaintainableDatabase extends IDatabase {
 	 * @param string $oldName Name of table whose structure should be copied
 	 * @param string $newName Name of table to be created
 	 * @param bool $temporary Whether the new table should be temporary
-	 * @param string $fname Calling function name
+	 * @param string $fname Calling function name @phan-mandatory-param
 	 * @return bool True if operation was successful
 	 * @throws RuntimeException
 	 */
@@ -225,103 +126,68 @@ interface IMaintainableDatabase extends IDatabase {
 	);
 
 	/**
-	 * Checks if table locks acquired by lockTables() are transaction-bound in their scope
+	 * List all tables on the database.
 	 *
-	 * Transaction-bound table locks will be released when the current transaction terminates.
-	 * Table locks that are not bound to a transaction are not effected by BEGIN/COMMIT/ROLLBACK
-	 * and will last until either lockTables()/unlockTables() is called or the TCP connection to
-	 * the database is closed.
-	 *
-	 * @return bool
-	 * @since 1.29
-	 */
-	public function tableLocksHaveTransactionScope();
-
-	/**
-	 * Lock specific tables
-	 *
-	 * Any pending transaction should be resolved before calling this method, since:
-	 *   a) Doing so resets any REPEATABLE-READ snapshot of the data to a fresh one.
-	 *   b) Previous row and table locks from the transaction or session may be released
-	 *      by LOCK TABLES, which may be unsafe for the changes in such a transaction.
-	 *   c) The main use case of lockTables() is to avoid deadlocks and timeouts by locking
-	 *      entire tables in order to do long-running, batched, and lag-aware, updates. Batching
-	 *      and replication lag checks do not work when all the updates happen in a transaction.
-	 *
-	 * Always get all relevant table locks up-front in one call, since LOCK TABLES might release
-	 * any prior table locks on some RDBMes (e.g MySQL).
-	 *
-	 * For compatibility, callers should check tableLocksHaveTransactionScope() before using
-	 * this method. If locks are scoped specifically to transactions then caller must either:
-	 *   - a) Start a new transaction and acquire table locks for the scope of that transaction,
-	 *        doing all row updates within that transaction. It will not be possible to update
-	 *        rows in batches; this might result in high replication lag.
-	 *   - b) Forgo table locks entirely and avoid calling this method. Careful use of hints like
-	 *        LOCK IN SHARE MODE and FOR UPDATE and the use of query batching may be preferrable
-	 *        to using table locks with a potentially large transaction. Use of MySQL and Postges
-	 *        style REPEATABLE-READ (Snapshot Isolation with or without First-Committer-Rule) can
-	 *        also be considered for certain tasks that require a consistent view of entire tables.
-	 *
-	 * If session scoped locks are not supported, then calling lockTables() will trigger
-	 * startAtomic(), with unlockTables() triggering endAtomic(). This will automatically
-	 * start a transaction if one is not already present and cause the locks to be released
-	 * when the transaction finishes (normally during the unlockTables() call).
-	 *
-	 * In any case, avoid using begin()/commit() in code that runs while such table locks are
-	 * acquired, as that breaks in case when a transaction is needed. The startAtomic() and
-	 * endAtomic() methods are safe, however, since they will join any existing transaction.
-	 *
-	 * @param array $read Array of tables to lock for read access
-	 * @param array $write Array of tables to lock for write access
-	 * @param string $method Name of caller
-	 * @return bool
-	 * @since 1.29
-	 */
-	public function lockTables( array $read, array $write, $method );
-
-	/**
-	 * Unlock all tables locked via lockTables()
-	 *
-	 * If table locks are scoped to transactions, then locks might not be released until the
-	 * transaction ends, which could happen after this method is called.
-	 *
-	 * @param string $method The caller
-	 * @return bool
-	 * @since 1.29
-	 */
-	public function unlockTables( $method );
-
-	/**
-	 * List all tables on the database
+	 * Since MW 1.42, this will no longer include MySQL views.
 	 *
 	 * @param string|null $prefix Only show tables with this prefix, e.g. mw_
-	 * @param string $fname Calling function name
+	 * @param string $fname Calling function name @phan-mandatory-param
 	 * @throws DBError
 	 * @return array
 	 */
 	public function listTables( $prefix = null, $fname = __METHOD__ );
 
 	/**
-	 * Determines if a given index is unique
-	 *
-	 * @param string $table
-	 * @param string $index
-	 * @param string $fname Calling function name
-	 *
-	 * @return bool
-	 */
-	public function indexUnique( $table, $index, $fname = __METHOD__ );
-
-	/**
-	 * mysql_fetch_field() wrapper
+	 * Get information about a field
 	 * Returns false if the field doesn't exist
 	 *
-	 * @param string $table Table name
+	 * @param string $table The unqualified name of a table
 	 * @param string $field Field name
 	 *
 	 * @return false|Field
 	 */
 	public function fieldInfo( $table, $field );
-}
 
-class_alias( IMaintainableDatabase::class, 'IMaintainableDatabase' );
+	/**
+	 * Determines whether a field exists in a table
+	 *
+	 * @param string $table The unqualified name of a table
+	 * @param string $field Field to check on that table
+	 * @param string $fname Calling function name @phan-mandatory-param
+	 * @return bool Whether $table has field $field
+	 * @throws DBError If an error occurs, {@see query}
+	 */
+	public function fieldExists( $table, $field, $fname = __METHOD__ );
+
+	/**
+	 * Determines whether an index exists
+	 *
+	 * @param string $table The unqualified name of a table
+	 * @param string $index
+	 * @param string $fname @phan-mandatory-param
+	 * @return bool
+	 * @throws DBError If an error occurs, {@see query}
+	 */
+	public function indexExists( $table, $index, $fname = __METHOD__ );
+
+	/**
+	 * Determines if a given index is unique
+	 *
+	 * @param string $table The unqualified name of a table
+	 * @param string $index
+	 * @param string $fname Calling function name @phan-mandatory-param
+	 * @return bool|null Returns null if the index does not exist
+	 * @throws DBError If an error occurs, {@see query}
+	 */
+	public function indexUnique( $table, $index, $fname = __METHOD__ );
+
+	/**
+	 * Query whether a given table exists
+	 *
+	 * @param string $table The unqualified name of a table
+	 * @param string $fname @phan-mandatory-param
+	 * @return bool
+	 * @throws DBError If an error occurs, {@see query}
+	 */
+	public function tableExists( $table, $fname = __METHOD__ );
+}

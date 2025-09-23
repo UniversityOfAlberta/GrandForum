@@ -19,12 +19,45 @@
  * @ingroup RevisionDelete
  */
 
-use MediaWiki\Revision\RevisionRecord;
+use MediaWiki\Api\ApiResult;
+use MediaWiki\CommentStore\CommentStore;
+use MediaWiki\Html\Html;
+use MediaWiki\RevisionList\RevisionListBase;
+use MediaWiki\SpecialPage\SpecialPage;
+use MediaWiki\Title\Title;
+use MediaWiki\Xml\Xml;
+use Wikimedia\Rdbms\IConnectionProvider;
 
 /**
  * Item class for a logging table row
  */
 class RevDelLogItem extends RevDelItem {
+
+	/** @var CommentStore */
+	private $commentStore;
+	private IConnectionProvider $dbProvider;
+	private LogFormatterFactory $logFormatterFactory;
+
+	/**
+	 * @param RevisionListBase $list
+	 * @param stdClass $row DB result row
+	 * @param CommentStore $commentStore
+	 * @param IConnectionProvider $dbProvider
+	 * @param LogFormatterFactory $logFormatterFactory
+	 */
+	public function __construct(
+		RevisionListBase $list,
+		$row,
+		CommentStore $commentStore,
+		IConnectionProvider $dbProvider,
+		LogFormatterFactory $logFormatterFactory
+	) {
+		parent::__construct( $list, $row );
+		$this->commentStore = $commentStore;
+		$this->dbProvider = $dbProvider;
+		$this->logFormatterFactory = $logFormatterFactory;
+	}
+
 	public function getIdField() {
 		return 'log_id';
 	}
@@ -47,7 +80,7 @@ class RevDelLogItem extends RevDelItem {
 
 	public function canView() {
 		return LogEventsList::userCan(
-			$this->row, RevisionRecord::DELETED_RESTRICTED, $this->list->getUser()
+			$this->row, LogPage::DELETED_RESTRICTED, $this->list->getAuthority()
 		);
 	}
 
@@ -60,33 +93,33 @@ class RevDelLogItem extends RevDelItem {
 	}
 
 	public function setBits( $bits ) {
-		$dbw = wfGetDB( DB_MASTER );
+		$dbw = $this->dbProvider->getPrimaryDatabase();
 
-		$dbw->update( 'logging',
-			[ 'log_deleted' => $bits ],
-			[
+		$dbw->newUpdateQueryBuilder()
+			->update( 'logging' )
+			->set( [ 'log_deleted' => $bits ] )
+			->where( [
 				'log_id' => $this->row->log_id,
 				'log_deleted' => $this->getBits() // cas
-			],
-			__METHOD__
-		);
+			] )
+			->caller( __METHOD__ )->execute();
 
 		if ( !$dbw->affectedRows() ) {
 			// Concurrent fail!
 			return false;
 		}
 
-		$dbw->update( 'recentchanges',
-			[
+		$dbw->newUpdateQueryBuilder()
+			->update( 'recentchanges' )
+			->set( [
 				'rc_deleted' => $bits,
 				'rc_patrolled' => RecentChange::PRC_AUTOPATROLLED
-			],
-			[
+			] )
+			->where( [
 				'rc_logid' => $this->row->log_id,
 				'rc_timestamp' => $this->row->log_timestamp // index
-			],
-			__METHOD__
-		);
+			] )
+			->caller( __METHOD__ )->execute();
 
 		return true;
 	}
@@ -95,7 +128,7 @@ class RevDelLogItem extends RevDelItem {
 		$date = htmlspecialchars( $this->list->getLanguage()->userTimeAndDate(
 			$this->row->log_timestamp, $this->list->getUser() ) );
 		$title = Title::makeTitle( $this->row->log_namespace, $this->row->log_title );
-		$formatter = LogFormatter::newFromRow( $this->row );
+		$formatter = $this->logFormatterFactory->newFromRow( $this->row );
 		$formatter->setContext( $this->list->getContext() );
 		$formatter->setAudience( LogFormatter::FOR_THIS_USER );
 
@@ -110,20 +143,26 @@ class RevDelLogItem extends RevDelItem {
 		// User links and action text
 		$action = $formatter->getActionText();
 
-		$comment = CommentStore::getStore()->getComment( 'log_comment', $this->row )->text;
-		$comment = $this->list->getLanguage()->getDirMark()
-			. Linker::commentBlock( $comment );
+		$dir = $this->list->getLanguage()->getDir();
+		$comment = Html::rawElement( 'bdi', [ 'dir' => $dir ], $formatter->getComment() );
 
-		if ( LogEventsList::isDeleted( $this->row, LogPage::DELETED_COMMENT ) ) {
-			$comment = '<span class="history-deleted">' . $comment . '</span>';
+		$content = "$loglink $date $action $comment";
+		$attribs = [];
+		if ( $this->row->ts_tags ) {
+			[ $tagSummary, $classes ] = ChangeTags::formatSummaryRow(
+				$this->row->ts_tags,
+				'revisiondelete',
+				$this->list->getContext()
+			);
+			$content .= " $tagSummary";
+			$attribs['class'] = implode( ' ', $classes );
 		}
-
-		return "<li>$loglink $date $action $comment</li>";
+		return Xml::tags( 'li', $attribs, $content );
 	}
 
 	public function getApiData( ApiResult $result ) {
 		$logEntry = DatabaseLogEntry::newFromRow( $this->row );
-		$user = $this->list->getUser();
+		$user = $this->list->getAuthority();
 		$ret = [
 			'id' => $logEntry->getId(),
 			'type' => $logEntry->getType(),
@@ -134,18 +173,17 @@ class RevDelLogItem extends RevDelItem {
 		];
 
 		if ( LogEventsList::userCan( $this->row, LogPage::DELETED_ACTION, $user ) ) {
-			$ret['params'] = LogFormatter::newFromEntry( $logEntry )->formatParametersForApi();
+			$ret['params'] = $this->logFormatterFactory->newFromEntry( $logEntry )->formatParametersForApi();
 		}
 		if ( LogEventsList::userCan( $this->row, LogPage::DELETED_USER, $user ) ) {
 			$ret += [
-				'userid' => $this->row->log_user,
+				'userid' => $this->row->log_user ?? 0,
 				'user' => $this->row->log_user_text,
 			];
 		}
 		if ( LogEventsList::userCan( $this->row, LogPage::DELETED_COMMENT, $user ) ) {
 			$ret += [
-				'comment' => CommentStore::getStore()->getComment( 'log_comment', $this->row )
-					->text,
+				'comment' => $this->commentStore->getComment( 'log_comment', $this->row )->text,
 			];
 		}
 

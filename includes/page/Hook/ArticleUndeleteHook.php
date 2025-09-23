@@ -2,12 +2,15 @@
 
 namespace MediaWiki\Page\Hook;
 
-// phpcs:disable Generic.Files.LineLength -- Remove this after doc review
-use Title;
+use MediaWiki\Title\Title;
 
 /**
- * @stable to implement
+ * This is a hook handler interface, see docs/Hooks.md.
+ * Use the hook name "ArticleUndelete" to register handlers implementing this interface.
+ *
  * @ingroup Hooks
+ * @deprecated since 1.40, use PageUndeleteComplete instead. New hook follows consistent naming style and exposes
+ * variable similar to its counterpart PageDeleteComplete.
  */
 interface ArticleUndeleteHook {
 	/**

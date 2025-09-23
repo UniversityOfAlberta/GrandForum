@@ -19,6 +19,10 @@
  * @ingroup Parser
  */
 
+namespace MediaWiki\Parser;
+
+use MediaWiki\Title\Title;
+
 /**
  * Expansion frame with template arguments
  * @ingroup Parser
@@ -26,21 +30,29 @@
 // phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
 class PPTemplateFrame_Hash extends PPFrame_Hash {
 
-	public $numberedArgs, $namedArgs, $parent;
-	public $numberedExpansionCache, $namedExpansionCache;
+	/** @var array */
+	public $numberedArgs;
+	/** @var array */
+	public $namedArgs;
+	/** @var PPFrame_Hash */
+	public $parent;
+	/** @var array */
+	public $numberedExpansionCache;
+	/** @var array */
+	public $namedExpansionCache;
 
 	/**
 	 * @param Preprocessor $preprocessor
-	 * @param bool|PPFrame $parent
+	 * @param false|PPFrame $parent
 	 * @param array $numberedArgs
 	 * @param array $namedArgs
-	 * @param bool|Title $title
+	 * @param false|Title $title
 	 */
 	public function __construct( $preprocessor, $parent = false, $numberedArgs = [],
 		$namedArgs = [], $title = false
 	) {
 		parent::__construct( $preprocessor );
-		/** @var PPFrame_Hash parent */
+		/** @var PPFrame_Hash $parent */
 		'@phan-var PPFrame_Hash $parent';
 
 		$this->parent = $parent;
@@ -76,7 +88,6 @@ class PPTemplateFrame_Hash extends PPFrame_Hash {
 	}
 
 	/**
-	 * @throws MWException
 	 * @param string|int $key
 	 * @param string|PPNode $root
 	 * @param int $flags
@@ -120,7 +131,7 @@ class PPTemplateFrame_Hash extends PPFrame_Hash {
 	 */
 	public function getNumberedArguments() {
 		$arguments = [];
-		foreach ( array_keys( $this->numberedArgs ) as $key ) {
+		foreach ( $this->numberedArgs as $key => $_ ) {
 			$arguments[$key] = $this->getArgument( $key );
 		}
 		return $arguments;
@@ -131,7 +142,7 @@ class PPTemplateFrame_Hash extends PPFrame_Hash {
 	 */
 	public function getNamedArguments() {
 		$arguments = [];
-		foreach ( array_keys( $this->namedArgs ) as $key ) {
+		foreach ( $this->namedArgs as $key => $_ ) {
 			$arguments[$key] = $this->getArgument( $key );
 		}
 		return $arguments;
@@ -139,7 +150,7 @@ class PPTemplateFrame_Hash extends PPFrame_Hash {
 
 	/**
 	 * @param int $index
-	 * @return string|bool
+	 * @return string|false
 	 */
 	public function getNumberedArgument( $index ) {
 		if ( !isset( $this->numberedArgs[$index] ) ) {
@@ -157,7 +168,7 @@ class PPTemplateFrame_Hash extends PPFrame_Hash {
 
 	/**
 	 * @param string $name
-	 * @return string|bool
+	 * @return string|false
 	 */
 	public function getNamedArgument( $name ) {
 		if ( !isset( $this->namedArgs[$name] ) ) {
@@ -173,7 +184,7 @@ class PPTemplateFrame_Hash extends PPFrame_Hash {
 
 	/**
 	 * @param int|string $name
-	 * @return string|bool
+	 * @return string|false
 	 */
 	public function getArgument( $name ) {
 		$text = $this->getNumberedArgument( $name );
@@ -202,3 +213,6 @@ class PPTemplateFrame_Hash extends PPFrame_Hash {
 		$this->parent->setTTL( $ttl );
 	}
 }
+
+/** @deprecated class alias since 1.43 */
+class_alias( PPTemplateFrame_Hash::class, 'PPTemplateFrame_Hash' );

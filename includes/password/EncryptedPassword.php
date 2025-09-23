@@ -22,6 +22,8 @@
 
 declare( strict_types = 1 );
 
+namespace MediaWiki\Password;
+
 /**
  * Helper class for passwords that use another password hash underneath it
  * and encrypts that hash with a configured secret.
@@ -29,19 +31,19 @@ declare( strict_types = 1 );
  * @since 1.24
  */
 class EncryptedPassword extends ParameterizedPassword {
-	protected function getDelimiter() : string {
+	protected function getDelimiter(): string {
 		return ':';
 	}
 
-	protected function getDefaultParams() : array {
+	protected function getDefaultParams(): array {
 		return [
 			'cipher' => $this->config['cipher'],
-			'secret' => count( $this->config['secrets'] ) - 1
+			'secret' => (string)( count( $this->config['secrets'] ) - 1 )
 		];
 	}
 
-	public function crypt( string $password ) : void {
-		$secret = $this->config['secrets'][$this->params['secret']];
+	public function crypt( string $password ): void {
+		$secret = $this->config['secrets'][(int)$this->params['secret']];
 
 		// Clear error string
 		while ( openssl_error_string() !== false );
@@ -76,10 +78,10 @@ class EncryptedPassword extends ParameterizedPassword {
 	/**
 	 * Updates the underlying hash by encrypting it with the newest secret.
 	 *
-	 * @throws MWException If the configuration is not valid
+	 * @throws PasswordError If the configuration is not valid
 	 * @return bool True if the password was updated
 	 */
-	public function update() : bool {
+	public function update(): bool {
 		if ( count( $this->args ) != 1 || $this->params == $this->getDefaultParams() ) {
 			// Hash does not need updating
 			return false;
@@ -92,7 +94,7 @@ class EncryptedPassword extends ParameterizedPassword {
 		$underlyingHash = openssl_decrypt(
 			$this->hash,
 			$this->params['cipher'],
-			$this->config['secrets'][$this->params['secret']],
+			$this->config['secrets'][(int)$this->params['secret']],
 			0,
 			base64_decode( $this->args[0] )
 		);
@@ -108,7 +110,7 @@ class EncryptedPassword extends ParameterizedPassword {
 		$this->hash = openssl_encrypt(
 				$underlyingHash,
 				$this->params['cipher'],
-				$this->config['secrets'][$this->params['secret']],
+				$this->config['secrets'][(int)$this->params['secret']],
 				0,
 				$iv
 			);
@@ -120,4 +122,30 @@ class EncryptedPassword extends ParameterizedPassword {
 
 		return true;
 	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public function verify( string $password ): bool {
+		// Clear error string
+		while ( openssl_error_string() !== false );
+
+		// Decrypt the underlying hash
+		$underlyingHash = openssl_decrypt(
+			$this->hash,
+			$this->params['cipher'],
+			$this->config['secrets'][(int)$this->params['secret']],
+			0,
+			base64_decode( $this->args[0] )
+		);
+		if ( $underlyingHash === false ) {
+			throw new PasswordError( 'Error decrypting password: ' . openssl_error_string() );
+		}
+
+		$storedPassword = $this->factory->newFromCiphertext( $underlyingHash );
+		return $storedPassword->verify( $password );
+	}
 }
+
+/** @deprecated since 1.43 use MediaWiki\\Password\\EncryptedPassword */
+class_alias( EncryptedPassword::class, 'EncryptedPassword' );

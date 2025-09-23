@@ -1,8 +1,10 @@
 <?php
 
-$basePath = getenv( 'MW_INSTALL_PATH' ) !== false ? getenv( 'MW_INSTALL_PATH' ) : __DIR__ . '/..';
+// @codeCoverageIgnoreStart
+require_once __DIR__ . '/Maintenance.php';
+// @codeCoverageIgnoreEnd
 
-require_once $basePath . '/maintenance/Maintenance.php';
+use MediaWiki\Site\SiteImporter;
 
 /**
  * Maintenance script for importing site definitions from XML into the sites table.
@@ -15,13 +17,13 @@ require_once $basePath . '/maintenance/Maintenance.php';
 class ImportSites extends Maintenance {
 
 	public function __construct() {
+		parent::__construct();
+
 		$this->addDescription( 'Imports site definitions from XML into the sites table.' );
 
 		$this->addArg( 'file', 'An XML file containing site definitions (see docs/sitelist.md). ' .
 			'Use "php://stdin" to read from stdin.', true
 		);
-
-		parent::__construct();
 	}
 
 	/**
@@ -30,7 +32,7 @@ class ImportSites extends Maintenance {
 	public function execute() {
 		$file = $this->getArg( 0 );
 
-		$siteStore = \MediaWiki\MediaWikiServices::getInstance()->getSiteStore();
+		$siteStore = $this->getServiceContainer()->getSiteStore();
 		$importer = new SiteImporter( $siteStore );
 		$importer->setExceptionCallback( [ $this, 'reportException' ] );
 
@@ -50,5 +52,7 @@ class ImportSites extends Maintenance {
 	}
 }
 
+// @codeCoverageIgnoreStart
 $maintClass = ImportSites::class;
 require_once RUN_MAINTENANCE_IF_MAIN;
+// @codeCoverageIgnoreEnd

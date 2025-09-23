@@ -16,11 +16,11 @@
  * http://www.gnu.org/copyleft/gpl.html
  *
  * @file
- * @ingroup Database
  */
 namespace Wikimedia\Rdbms;
 
 use InvalidArgumentException;
+use Stringable;
 
 /**
  * Class to handle database/schema/prefix specifications for IDatabase
@@ -36,8 +36,10 @@ use InvalidArgumentException;
  *
  * The above criteria should determine how components should map to RDBMS specific keywords
  * rather than "database"/"schema" always mapping to "DATABASE"/"SCHEMA" as used by the RDBMS.
+ *
+ * @ingroup Database
  */
-class DatabaseDomain {
+class DatabaseDomain implements Stringable {
 	/** @var string|null */
 	private $database;
 	/** @var string|null */
@@ -74,12 +76,19 @@ class DatabaseDomain {
 	 * @param DatabaseDomain|string $domain Result of DatabaseDomain::toString()
 	 * @return DatabaseDomain
 	 */
-	public static function newFromId( $domain ) {
+	public static function newFromId( $domain ): self {
 		if ( $domain instanceof self ) {
 			return $domain;
 		}
 
-		$parts = array_map( [ __CLASS__, 'decode' ], explode( '-', $domain ) );
+		if ( !is_string( $domain ) ) {
+			throw new InvalidArgumentException( "Domain must be a string or " . __CLASS__ );
+		}
+
+		$parts = explode( '-', $domain );
+		foreach ( $parts as &$part ) {
+			$part = strtr( $part, [ '?h' => '-', '??' => '?' ] );
+		}
 
 		$schema = null;
 		$prefix = '';
@@ -87,9 +96,9 @@ class DatabaseDomain {
 		if ( count( $parts ) == 1 ) {
 			$database = $parts[0];
 		} elseif ( count( $parts ) == 2 ) {
-			list( $database, $prefix ) = $parts;
+			[ $database, $prefix ] = $parts;
 		} elseif ( count( $parts ) == 3 ) {
-			list( $database, $schema, $prefix ) = $parts;
+			[ $database, $schema, $prefix ] = $parts;
 		} else {
 			throw new InvalidArgumentException( "Domain '$domain' has too few or too many parts." );
 		}
@@ -103,7 +112,7 @@ class DatabaseDomain {
 		}
 
 		$instance = new self( $database, $schema, $prefix );
-		$instance->equivalentString = (string)$domain;
+		$instance->equivalentString = $domain;
 
 		return $instance;
 	}
@@ -193,10 +202,8 @@ class DatabaseDomain {
 	/**
 	 * @return string
 	 */
-	public function getId() {
-		if ( $this->equivalentString === null ) {
-			$this->equivalentString = $this->convertToString();
-		}
+	public function getId(): string {
+		$this->equivalentString ??= $this->convertToString();
 
 		return $this->equivalentString;
 	}
@@ -204,7 +211,7 @@ class DatabaseDomain {
 	/**
 	 * @return string
 	 */
-	private function convertToString() {
+	private function convertToString(): string {
 		$parts = [ (string)$this->database ];
 		if ( $this->schema !== null ) {
 			$parts[] = $this->schema;
@@ -218,50 +225,10 @@ class DatabaseDomain {
 			$parts[] = $this->prefix;
 		}
 
-		return implode( '-', array_map( [ __CLASS__, 'encode' ], $parts ) );
-	}
-
-	private static function encode( $decoded ) {
-		$encoded = '';
-
-		$length = strlen( $decoded );
-		for ( $i = 0; $i < $length; ++$i ) {
-			$char = $decoded[$i];
-			if ( $char === '-' ) {
-				$encoded .= '?h';
-			} elseif ( $char === '?' ) {
-				$encoded .= '??';
-			} else {
-				$encoded .= $char;
-			}
+		foreach ( $parts as &$part ) {
+			$part = strtr( $part, [ '-' => '?h', '?' => '??' ] );
 		}
-
-		return $encoded;
-	}
-
-	private static function decode( $encoded ) {
-		$decoded = '';
-
-		$length = strlen( $encoded );
-		for ( $i = 0; $i < $length; ++$i ) {
-			$char = $encoded[$i];
-			if ( $char === '?' ) {
-				$nextChar = $encoded[$i + 1] ?? null;
-				if ( $nextChar === 'h' ) {
-					$decoded .= '-';
-					++$i;
-				} elseif ( $nextChar === '?' ) {
-					$decoded .= '?';
-					++$i;
-				} else {
-					$decoded .= $char;
-				}
-			} else {
-				$decoded .= $char;
-			}
-		}
-
-		return $decoded;
+		return implode( '-', $parts );
 	}
 
 	/**

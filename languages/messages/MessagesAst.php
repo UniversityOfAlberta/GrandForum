@@ -1,11 +1,8 @@
 <?php
 /** Asturian (asturianu)
  *
- * To improve a translation please visit https://translatewiki.net
- *
- * @ingroup Language
  * @file
- *
+ * @ingroup Languages
  */
 
 $fallback = 'es';
@@ -53,6 +50,7 @@ $namespaceGenderAliases = [
 	NS_USER_TALK => [ 'male' => 'Usuariu_alderique', 'female' => 'Usuaria_alderique' ],
 ];
 
+/** @phpcs-require-sorted-array */
 $specialPageAliases = [
 	'Block'                     => [ 'Bloquiar', 'BloquiarIP', 'BloquiarUsuariu' ],
 	'Log'                       => [ 'Rexistru', 'Rexistros' ],

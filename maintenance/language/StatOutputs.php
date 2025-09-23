@@ -23,16 +23,17 @@
  * @author Antoine Musso <hashar at free dot fr>
  */
 
-use MediaWiki\MediaWikiServices;
+use MediaWiki\Specials\SpecialVersion;
+use Wikimedia\AtEase\AtEase;
 
 /**
  * A general output object. Need to be overridden
  */
 class StatsOutput {
 	public function formatPercent( $subset, $total, $revert = false, $accuracy = 2 ) {
-		Wikimedia\suppressWarnings();
+		AtEase::suppressWarnings();
 		$return = sprintf( '%.' . $accuracy . 'f%%', 100 * $subset / $total );
-		Wikimedia\restoreWarnings();
+		AtEase::restoreWarnings();
 
 		return $return;
 	}
@@ -63,7 +64,7 @@ class WikiStatsOutput extends StatsOutput {
 		if ( is_array( $wgDummyLanguageCodes ) ) {
 			$dummyCodes = [];
 			foreach ( $wgDummyLanguageCodes as $dummyCode => $correctCode ) {
-				$dummyCodes[] = MediaWikiServices::getInstance()
+				$dummyCodes[] = $this->getServiceContainer()
 					->getLanguageNameUtils()
 					->getLanguageName( $dummyCode ) . ' (' . $dummyCode . ')';
 			}
@@ -94,9 +95,9 @@ class WikiStatsOutput extends StatsOutput {
 	}
 
 	public function formatPercent( $subset, $total, $revert = false, $accuracy = 2 ) {
-		Wikimedia\suppressWarnings();
+		AtEase::suppressWarnings();
 		$v = round( 255 * $subset / $total );
-		Wikimedia\restoreWarnings();
+		AtEase::restoreWarnings();
 
 		if ( $revert ) {
 			# Weigh reverse with factor 20 so coloring takes effect more quickly as

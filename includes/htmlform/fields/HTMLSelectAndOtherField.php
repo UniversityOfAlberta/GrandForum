@@ -1,5 +1,12 @@
 <?php
 
+namespace MediaWiki\HTMLForm\Field;
+
+use InvalidArgumentException;
+use MediaWiki\Html\Html;
+use MediaWiki\Request\WebRequest;
+use MediaWiki\Widget\SelectWithInputWidget;
+
 /**
  * Double field with a dropdown list constructed from a system message in the format
  *     * Optgroup header
@@ -13,11 +20,13 @@
  * @todo FIXME: If made 'required', only the text field should be compulsory.
  */
 class HTMLSelectAndOtherField extends HTMLSelectField {
+	private const FIELD_CLASS = 'mw-htmlform-select-and-other-field';
 	/** @var string[] */
 	private $mFlatOptions;
 
-	/*
+	/**
 	 * @stable to call
+	 * @inheritDoc
 	 */
 	public function __construct( $params ) {
 		if ( array_key_exists( 'other', $params ) ) {
@@ -31,8 +40,7 @@ class HTMLSelectAndOtherField extends HTMLSelectField {
 		parent::__construct( $params );
 
 		if ( $this->getOptions() === null ) {
-			// Sulk
-			throw new MWException( 'HTMLSelectAndOtherField called without any options' );
+			throw new InvalidArgumentException( 'HTMLSelectAndOtherField called without any options' );
 		}
 		if ( !in_array( 'other', $this->mOptions, true ) ) {
 			// Have 'other' always as first element
@@ -45,15 +53,8 @@ class HTMLSelectAndOtherField extends HTMLSelectField {
 		$select = parent::getInputHTML( $value[1] );
 
 		$textAttribs = [
-			'id' => $this->mID . '-other',
 			'size' => $this->getSize(),
-			'class' => [ 'mw-htmlform-select-and-other-field' ],
-			'data-id-select' => $this->mID,
 		];
-
-		if ( $this->mClass !== '' ) {
-			$textAttribs['class'][] = $this->mClass;
-		}
 
 		if ( isset( $this->mParams['maxlength-unit'] ) ) {
 			$textAttribs['data-mw-maxlength-unit'] = $this->mParams['maxlength-unit'];
@@ -73,7 +74,18 @@ class HTMLSelectAndOtherField extends HTMLSelectField {
 
 		$textbox = Html::input( $this->mName . '-other', $value[2], 'text', $textAttribs );
 
-		return "$select<br />\n$textbox";
+		$wrapperAttribs = [
+			'id' => $this->mID,
+			'class' => self::FIELD_CLASS
+		];
+		if ( $this->mClass !== '' ) {
+			$wrapperAttribs['class'] .= ' ' . $this->mClass;
+		}
+		return Html::rawElement(
+			'div',
+			$wrapperAttribs,
+			"$select<br />\n$textbox"
+		);
 	}
 
 	protected function getOOUIModules() {
@@ -98,18 +110,13 @@ class HTMLSelectAndOtherField extends HTMLSelectField {
 			'maxlength',
 		];
 
-		$textAttribs += OOUI\Element::configFromHtmlAttributes(
+		$textAttribs += \OOUI\Element::configFromHtmlAttributes(
 			$this->getAttributes( $allowedParams )
 		);
-
-		if ( $this->mClass !== '' ) {
-			$textAttribs['classes'] = [ $this->mClass ];
-		}
 
 		# DropdownInput
 		$dropdownInputAttribs = [
 			'name' => $this->mName,
-			'id' => $this->mID . '-select',
 			'options' => $this->getOptionsOOUI(),
 			'value' => $value[1],
 		];
@@ -119,19 +126,19 @@ class HTMLSelectAndOtherField extends HTMLSelectField {
 			'disabled',
 		];
 
-		$dropdownInputAttribs += OOUI\Element::configFromHtmlAttributes(
+		$dropdownInputAttribs += \OOUI\Element::configFromHtmlAttributes(
 			$this->getAttributes( $allowedParams )
 		);
-
-		if ( $this->mClass !== '' ) {
-			$dropdownInputAttribs['classes'] = [ $this->mClass ];
-		}
 
 		$disabled = false;
 		if ( isset( $this->mParams[ 'disabled' ] ) && $this->mParams[ 'disabled' ] ) {
 			$disabled = true;
 		}
 
+		$inputClasses = [ self::FIELD_CLASS ];
+		if ( $this->mClass !== '' ) {
+			$inputClasses = array_merge( $inputClasses, explode( ' ', $this->mClass ) );
+		}
 		return $this->getInputWidget( [
 			'id' => $this->mID,
 			'disabled' => $disabled,
@@ -139,7 +146,7 @@ class HTMLSelectAndOtherField extends HTMLSelectField {
 			'dropdowninput' => $dropdownInputAttribs,
 			'or' => false,
 			'required' => $this->mParams[ 'required' ] ?? false,
-			'classes' => [ 'mw-htmlform-select-and-other-field' ],
+			'classes' => $inputClasses,
 			'data' => [
 				'maxlengthUnit' => $this->mParams['maxlength-unit'] ?? 'bytes'
 			],
@@ -147,11 +154,61 @@ class HTMLSelectAndOtherField extends HTMLSelectField {
 	}
 
 	/**
-	 * @inheritDoc
 	 * @stable to override
+	 * @param array $params
+	 * @return \MediaWiki\Widget\SelectWithInputWidget
 	 */
 	public function getInputWidget( $params ) {
-		return new MediaWiki\Widget\SelectWithInputWidget( $params );
+		return new SelectWithInputWidget( $params );
+	}
+
+	public function getInputCodex( $value, $hasErrors ) {
+		$select = parent::getInputCodex( $value[1], $hasErrors );
+
+		// Set up attributes for the text input.
+		$textInputAttribs = [
+			'size' => $this->getSize(),
+			'name' => $this->mName . '-other'
+		];
+
+		if ( isset( $this->mParams['maxlength-unit'] ) ) {
+			$textInputAttribs['data-mw-maxlength-unit'] = $this->mParams['maxlength-unit'];
+		}
+
+		$allowedParams = [
+			'required',
+			'autofocus',
+			'multiple',
+			'disabled',
+			'tabindex',
+			'maxlength', // gets dynamic with javascript, see mediawiki.htmlform.js
+			'maxlength-unit', // 'bytes' or 'codepoints', see mediawiki.htmlform.js
+		];
+
+		$textInputAttribs += $this->getAttributes( $allowedParams );
+
+		// Get text input HTML.
+		$textInput = HTMLTextField::buildCodexComponent(
+			$value[2],
+			$hasErrors,
+			'text',
+			$this->mName . '-other',
+			$textInputAttribs
+		);
+
+		// Set up the wrapper element and return the entire component.
+		$wrapperAttribs = [
+			'id' => $this->mID,
+			'class' => [ self::FIELD_CLASS ]
+		];
+		if ( $this->mClass !== '' ) {
+			$wrapperAttribs['class'][] = $this->mClass;
+		}
+		return Html::rawElement(
+			'div',
+			$wrapperAttribs,
+			"$select<br />\n$textInput"
+		);
 	}
 
 	/**
@@ -172,7 +229,7 @@ class HTMLSelectAndOtherField extends HTMLSelectField {
 			$text = $final;
 			foreach ( $this->mFlatOptions as $option ) {
 				$match = $option . $this->msg( 'colon-separator' )->inContentLanguage()->text();
-				if ( strpos( $final, $match ) === 0 ) {
+				if ( str_starts_with( $final, $match ) ) {
 					$list = $option;
 					$text = substr( $final, strlen( $match ) );
 					break;
@@ -234,3 +291,6 @@ class HTMLSelectAndOtherField extends HTMLSelectField {
 		return true;
 	}
 }
+
+/** @deprecated class alias since 1.42 */
+class_alias( HTMLSelectAndOtherField::class, 'HTMLSelectAndOtherField' );

@@ -1,15 +1,30 @@
 <?php
 
+namespace MediaWiki\Specials;
+
+use ErrorPageError;
 use MediaWiki\Auth\AuthenticationResponse;
 use MediaWiki\Auth\AuthManager;
-use MediaWiki\MediaWikiServices;
+use MediaWiki\MainConfigNames;
 use MediaWiki\Session\SessionManager;
+use MediaWiki\SpecialPage\AuthManagerSpecialPage;
+use MediaWiki\Status\Status;
+use StatusValue;
 
+/**
+ * @ingroup SpecialPage
+ * @ingroup Auth
+ */
 class SpecialUnlinkAccounts extends AuthManagerSpecialPage {
+	/** @inheritDoc */
 	protected static $allowedActions = [ AuthManager::ACTION_UNLINK ];
 
-	public function __construct() {
+	/**
+	 * @param AuthManager $authManager
+	 */
+	public function __construct( AuthManager $authManager ) {
 		parent::__construct( 'UnlinkAccounts' );
+		$this->setAuthManager( $authManager );
 	}
 
 	protected function getLoginSecurityLevel() {
@@ -25,15 +40,15 @@ class SpecialUnlinkAccounts extends AuthManagerSpecialPage {
 	 * @return string
 	 */
 	protected function getGroupName() {
-		return 'users';
+		return 'login';
 	}
 
 	public function isListed() {
-		return MediaWikiServices::getInstance()->getAuthManager()->canLinkAccounts();
+		return $this->getAuthManager()->canLinkAccounts();
 	}
 
 	protected function getRequestBlacklist() {
-		return $this->getConfig()->get( 'RemoveCredentialsBlacklist' );
+		return $this->getConfig()->get( MainConfigNames::RemoveCredentialsBlacklist );
 	}
 
 	public function execute( $subPage ) {
@@ -93,3 +108,9 @@ class SpecialUnlinkAccounts extends AuthManagerSpecialPage {
 		return Status::newGood( $response );
 	}
 }
+
+/**
+ * Retain the old class name for backwards compatibility.
+ * @deprecated since 1.41
+ */
+class_alias( SpecialUnlinkAccounts::class, 'SpecialUnlinkAccounts' );

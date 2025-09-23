@@ -1,7 +1,5 @@
 <?php
 /**
- * Implements Special:ListDuplicatedFiles
- *
  * Copyright © 2013 Brian Wolff
  *
  * This program is free software; you can redistribute it and/or modify
@@ -20,21 +18,40 @@
  * http://www.gnu.org/copyleft/gpl.html
  *
  * @file
- * @ingroup SpecialPage
- * @author Brian Wolff
  */
 
+namespace MediaWiki\Specials;
+
+use MediaWiki\Cache\LinkBatchFactory;
+use MediaWiki\SpecialPage\QueryPage;
+use MediaWiki\SpecialPage\SpecialPage;
+use MediaWiki\Title\Title;
+use Skin;
+use stdClass;
+use Wikimedia\Rdbms\IConnectionProvider;
 use Wikimedia\Rdbms\IDatabase;
 use Wikimedia\Rdbms\IResultWrapper;
 
 /**
- * Special:ListDuplicatedFiles Lists all files where the current version is
- *   a duplicate of the current version of some other file.
+ * List all files where the current version is a duplicate of the current
+ * version of another file.
+ *
  * @ingroup SpecialPage
+ * @author Brian Wolff
  */
 class SpecialListDuplicatedFiles extends QueryPage {
-	public function __construct( $name = 'ListDuplicatedFiles' ) {
-		parent::__construct( $name );
+
+	/**
+	 * @param IConnectionProvider $dbProvider
+	 * @param LinkBatchFactory $linkBatchFactory
+	 */
+	public function __construct(
+		IConnectionProvider $dbProvider,
+		LinkBatchFactory $linkBatchFactory
+	) {
+		parent::__construct( 'ListDuplicatedFiles' );
+		$this->setDatabaseProvider( $dbProvider );
+		$this->setLinkBatchFactory( $linkBatchFactory );
 	}
 
 	public function isExpensive() {
@@ -83,7 +100,7 @@ class SpecialListDuplicatedFiles extends QueryPage {
 
 	/**
 	 * @param Skin $skin
-	 * @param object $result Result row
+	 * @param stdClass $result Result row
 	 * @return string
 	 */
 	public function formatResult( $skin, $result ) {
@@ -109,3 +126,6 @@ class SpecialListDuplicatedFiles extends QueryPage {
 		return 'media';
 	}
 }
+
+/** @deprecated class alias since 1.41 */
+class_alias( SpecialListDuplicatedFiles::class, 'SpecialListDuplicatedFiles' );

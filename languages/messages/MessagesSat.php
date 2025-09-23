@@ -1,17 +1,13 @@
 <?php
 /** ᱥᱟᱱᱛᱟᱲᱤ (Santali)
  *
- * To improve a translation please visit https://translatewiki.net
- *
- * @ingroup Language
  * @file
- *
+ * @ingroup Languages
  */
 
 $namespaceNames = [
 	NS_MEDIA            => 'ᱢᱤᱰᱤᱭᱟ',
 	NS_SPECIAL          => 'ᱟᱥᱚᱠᱟᱭ',
-	NS_MAIN             => 'ᱢᱩᱬᱩᱛ',
 	NS_TALK             => 'ᱜᱟᱞᱢᱟᱨᱟᱣ',
 	NS_USER             => 'ᱵᱮᱵᱷᱟᱨᱤᱭᱟᱹ',
 	NS_USER_TALK        => 'ᱵᱮᱵᱷᱟᱨᱤᱭᱟᱹ_ᱜᱟᱞᱢᱟᱨᱟᱣ',

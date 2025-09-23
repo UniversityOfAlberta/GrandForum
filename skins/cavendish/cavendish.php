@@ -698,7 +698,7 @@ $(function(){
 </script>";
             echo "<div class='smallLogo'><a href='{$this->data['nav_urls']['mainpage']['href']}' title='$wgSitename'><img src='$wgServer$wgScriptPath/{$config->getValue('logo')}' /></a></div>";
             echo "<div class='search'><div id='globalSearch'></div></div>";
-            if($wgUser->isLoggedIn()){
+            if($wgUser->isRegistered()){
                 echo "<div class='settings'>";
             }
             else{
@@ -744,7 +744,7 @@ $(function(){
             if(count($config->getValue("socialLinks")) > 0){
                 echo "<a id='share' style='cursor:pointer;' name='share_16x16' class='menuTooltipHTML changeImg'><img src='$wgServer$wgScriptPath/{$config->getValue('iconPath')}share_16x16.png' />&nbsp;▼</a>";
             }
-            if($wgUser->isLoggedIn()){
+            if($wgUser->isRegistered()){
                 $p = Person::newFromId($wgUser->getId());
                 
                 $smallNotificationText = "";
@@ -756,7 +756,7 @@ $(function(){
                 echo "<a id='status_notifications' name='mail_16x12' class='menuTooltip changeImg' title='Notifications$notificationText' href='$wgServer$wgScriptPath/index.php?action=viewNotifications' style='color:#EE0000;'><img src='$wgServer$wgScriptPath/{$config->getValue('iconPath')}mail_16x12.png' />$smallNotificationText</a>";
             }
             echo "</div>";
-            if($wgUser->isLoggedIn()){
+            if($wgUser->isRegistered()){
                 echo "<div class='login'>";
                 echo "<a id='status_profile_photo' class='menuTooltip' style='padding-left:0;margin-left:10px; width:26px;' title='Profile' href='{$p->getUrl()}'><img class='photo' src='{$p->getPhoto()}' /></a>";
                 if(!$wgImpersonating && !$wgDelegating){
@@ -985,7 +985,7 @@ $(function(){
         $GLOBALS['toolbox']['Other2'] = TabUtils::createToolboxHeader($title);
         $message = "";
         $emailPassword = "";
-		if($wgUser->isLoggedIn()){
+		if($wgUser->isRegistered()){
 		    echo "
 			<ul class='pBodyLogin'>";
 		    
@@ -996,7 +996,7 @@ $(function(){
 		    Hooks::run('ToolboxHeaders', array(&$GLOBALS['toolbox']));
 	        Hooks::run('ToolboxLinks', array(&$GLOBALS['toolbox']));
 	        //$GLOBALS['toolbox']['Other']['links'][1000] = TabUtils::createToolboxLink("Upload File", "$wgServer$wgScriptPath/index.php/Special:Upload");
-	        if($wgUser->isLoggedIn() && $config->getValue('networkName') == "AGE-WELL"){ 
+	        if($wgUser->isRegistered() && $config->getValue('networkName') == "AGE-WELL"){ 
 	            $resources = TabUtils::createToolboxHeader("Resources");
 	            $resources['links'][1001] = TabUtils::createToolboxLink("Network Management", "$wgServer$wgScriptPath/index.php/Network_Resources/Network_Management_Office");
 	            $resources['links'][1002] = TabUtils::createToolboxLink("HQP Resources", "$wgServer$wgScriptPath/index.php/HQP_Wiki:HQP Resources");
@@ -1016,7 +1016,7 @@ $(function(){
 	            $resources['links'][1007] = TabUtils::createToolboxLink("Weekly Digest", "$wgServer$wgScriptPath/index.php/Network_Resources/Weekly_Digest");
 	            array_splice($GLOBALS['toolbox'], 2, 0, array($resources));
 	        }
-	        if($wgUser->isLoggedIn() && $config->getValue('networkName') == "GlycoNet"){
+	        if($wgUser->isRegistered() && $config->getValue('networkName') == "GlycoNet"){
 	            $GLOBALS['toolbox']['Other']['links'][] = TabUtils::createToolboxLink("Logos/Templates", "$wgServer$wgScriptPath/index.php/Logos_Templates");
 	            $GLOBALS['toolbox']['Other']['links'][] = TabUtils::createToolboxLink("Forum Help and FAQs", "$wgServer$wgScriptPath/index.php/FAQ");
 	        }
@@ -1029,7 +1029,7 @@ $(function(){
                 $GLOBALS['toolbox']['People']['links'][9999] = TabUtils::createToolboxLink("Reset Password", "$wgServer$wgScriptPath/index.php/Special:PasswordReset");
             }
 		    $person = Person::newFromId($wgUser->getId());
-		    /*if($wgUser->isLoggedIn() && $person->isRoleAtLeast(MANAGER)){
+		    /*if($wgUser->isRegistered() && $person->isRoleAtLeast(MANAGER)){
                 $title = "Other Tools";
                 if($wgLang->getCode() == "fr"){
                     $title = "Autres Outils";

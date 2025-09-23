@@ -1,7 +1,5 @@
 <?php
 /**
- * Job to update link tables for pages
- *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -18,18 +16,20 @@
  * http://www.gnu.org/copyleft/gpl.html
  *
  * @file
- * @ingroup JobQueue
  */
 
+use MediaWiki\Deferred\LinksUpdate\LinksDeletionUpdate;
+use MediaWiki\Deferred\LinksUpdate\LinksUpdate;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Title\Title;
+use Wikimedia\Rdbms\IDBAccessObject;
 
 /**
  * Job to prune link tables for pages that were deleted
  *
- * Only DataUpdate classes should construct these jobs
- *
- * @ingroup JobQueue
+ * @internal For use by core in LinksDeletionUpdate only.
  * @since 1.27
+ * @ingroup JobQueue
  */
 class DeleteLinksJob extends Job {
 	public function __construct( Title $title, array $params ) {
@@ -46,24 +46,27 @@ class DeleteLinksJob extends Job {
 		$pageId = $this->params['pageId'];
 
 		// Serialize links updates by page ID so they see each others' changes
-		$scopedLock = LinksUpdate::acquirePageLock( wfGetDB( DB_MASTER ), $pageId, 'job' );
+		$dbw = MediaWikiServices::getInstance()->getConnectionProvider()->getPrimaryDatabase();
+		$scopedLock = LinksUpdate::acquirePageLock( $dbw, $pageId, 'job' );
 		if ( $scopedLock === null ) {
 			$this->setLastError( 'LinksUpdate already running for this page, try again later.' );
 			return false;
 		}
 
-		if ( WikiPage::newFromID( $pageId, WikiPage::READ_LATEST ) ) {
+		$services = MediaWikiServices::getInstance();
+		$wikiPageFactory = $services->getWikiPageFactory();
+		if ( $wikiPageFactory->newFromID( $pageId, IDBAccessObject::READ_LATEST ) ) {
 			// The page was restored somehow or something went wrong
 			$this->setLastError( "deleteLinks: Page #$pageId exists" );
 			return false;
 		}
 
-		$factory = MediaWikiServices::getInstance()->getDBLoadBalancerFactory();
+		$dbProvider = $services->getConnectionProvider();
 		$timestamp = $this->params['timestamp'] ?? null;
-		$page = WikiPage::factory( $this->title ); // title when deleted
+		$page = $wikiPageFactory->newFromTitle( $this->title ); // title when deleted
 
 		$update = new LinksDeletionUpdate( $page, $pageId, $timestamp );
-		$update->setTransactionTicket( $factory->getEmptyTransactionTicket( __METHOD__ ) );
+		$update->setTransactionTicket( $dbProvider->getEmptyTransactionTicket( __METHOD__ ) );
 		$update->doUpdate();
 
 		return true;

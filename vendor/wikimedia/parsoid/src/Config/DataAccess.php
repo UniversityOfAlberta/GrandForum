@@ -1,28 +1,43 @@
 <?php
+declare( strict_types = 1 );
 
 namespace Wikimedia\Parsoid\Config;
 
+use Wikimedia\Parsoid\Core\ContentMetadataCollector;
+use Wikimedia\Parsoid\Core\LinkTarget;
+
 /**
- * MediaWiki data access interface for Parsoid
+ * MediaWiki data access abstract class for Parsoid
  */
-interface DataAccess {
+abstract class DataAccess {
+	/**
+	 * Base constructor.
+	 *
+	 * This constructor is public because it is used to create mock objects
+	 * in our test suite.
+	 */
+	public function __construct() {
+	}
 
 	/**
 	 * Return target data for formatting links.
 	 *
 	 * Replaces Batcher.getPageProps()
 	 *
-	 * @param PageConfig $pageConfig
+	 * @param PageConfig|LinkTarget $pageConfigOrTitle
+	 *  Either a PageConfig or else just the context title from the PageConfig
+	 *  (as a LinkTarget)
 	 * @param string[] $titles
-	 * @return array [ string Title => array ], where the array contains
+	 * @return array<string,array> [ string Title => array ], where the array contains
 	 *  - pageId: (int|null) Page ID
 	 *  - revId: (int|null) Current revision of the page
 	 *  - missing: (bool) Whether the page is missing
 	 *  - known: (bool) Whether the special page is known
 	 *  - redirect: (bool) Whether the page is a redirect
-	 *  - disambiguation: (bool) Whether the page is a disambiguation page
+	 *  - linkclasses: (string[]) Extensible "link color" information; see
+	 *      ApiQueryInfo::getLinkClasses() in MediaWiki core
 	 */
-	public function getPageInfo( PageConfig $pageConfig, array $titles ): array;
+	abstract public function getPageInfo( $pageConfigOrTitle, array $titles ): array;
 
 	/**
 	 * Return information about files (images)
@@ -30,12 +45,12 @@ interface DataAccess {
 	 * This replaces ImageInfoRequest and Batcher.imageinfo()
 	 *
 	 * @param PageConfig $pageConfig
-	 * @param array $files [ string Name => array Dims ]. The array may contain
+	 * @param array $files [ [string Name, array Dims] ]. The array may contain
 	 *  - width: (int) Requested thumbnail width
 	 *  - height: (int) Requested thumbnail height
 	 *  - page: (int) Requested thumbnail page number
 	 *  - seek: (int) Requested thumbnail time offset
-	 * @return array [ string Title => array|null ], where the array contains
+	 * @return array [ array|null ], where the array contains
 	 *  - width: (int|false) File width, false if unknown
 	 *  - height: (int|false) File height, false if unknown
 	 *  - size: (int|false) File size in bytes, false if unknown
@@ -51,8 +66,10 @@ interface DataAccess {
 	 *  - thumburl: (string, optional) Thumbnail URL
 	 *  - thumbwidth: (int, optional) Thumbnail width
 	 *  - thumbheight: (int, optional) Thumbnail height
+	 *  - timestamp: (string, optional) Timestamp
+	 *  - sha1: (string, optional) SHA-1
 	 */
-	public function getFileInfo( PageConfig $pageConfig, array $files ): array;
+	abstract public function getFileInfo( PageConfig $pageConfig, array $files ): array;
 
 	/**
 	 * Perform a pre-save transform on wikitext
@@ -64,7 +81,7 @@ interface DataAccess {
 	 * @param string $wikitext
 	 * @return string Processed wikitext
 	 */
-	public function doPst( PageConfig $pageConfig, string $wikitext ): string;
+	abstract public function doPst( PageConfig $pageConfig, string $wikitext ): string;
 
 	/**
 	 * Perform a parse on wikitext
@@ -72,17 +89,17 @@ interface DataAccess {
 	 * This replaces PHPParseRequest with onlypst = false, and Batcher.parse()
 	 *
 	 * @todo Parsoid should be able to do this itself.
-	 * @todo ParsoidBatchAPI also returns page properties, but they don't seem to be used in Parsoid?
 	 * @param PageConfig $pageConfig
+	 * @param ContentMetadataCollector $metadata Will collect metadata about
+	 *   the parsed content.
 	 * @param string $wikitext
-	 * @return array
-	 *  - html: (string) Output HTML.
-	 *  - modules: (string[]) ResourceLoader module names
-	 *  - modulescripts: (string[]) ResourceLoader module names to load scripts-only
-	 *  - modulestyles: (string[]) ResourceLoader module names to load styles-only
-	 *  - categories: (array) [ Category name => sortkey ]
+	 * @return string Output HTML
 	 */
-	public function parseWikitext( PageConfig $pageConfig, string $wikitext ): array;
+	abstract public function parseWikitext(
+		PageConfig $pageConfig,
+		ContentMetadataCollector $metadata,
+		string $wikitext
+	): string;
 
 	/**
 	 * Preprocess wikitext
@@ -90,32 +107,37 @@ interface DataAccess {
 	 * This replaces PreprocessorRequest and Batcher.preprocess()
 	 *
 	 * @todo Parsoid should be able to do this itself.
-	 * @todo ParsoidBatchAPI also returns page properties, but they don't seem to be used in Parsoid?
 	 * @param PageConfig $pageConfig
+	 * @param ContentMetadataCollector $metadata Will collect metadata about
+	 *   the preprocessed content.
 	 * @param string $wikitext
-	 * @return array
-	 *  - wikitext: (string) Expanded wikitext
-	 *  - modules: (string[]) ResourceLoader module names
-	 *  - modulescripts: (string[]) ResourceLoader module names to load scripts-only
-	 *  - modulestyles: (string[]) ResourceLoader module names to load styles-only
-	 *  - categories: (array) [ Category name => sortkey ]
+	 * @return string Expanded wikitext
 	 */
-	public function preprocessWikitext( PageConfig $pageConfig, string $wikitext ): array;
+	abstract public function preprocessWikitext(
+		PageConfig $pageConfig,
+		ContentMetadataCollector $metadata,
+		string $wikitext
+	): string;
 
 	/**
-	 * Fetch page content, e.g. for transclusion
+	 * Fetch latest revision of article/template content for transclusion.
+	 *
+	 * Technically, the ParserOptions might select a different
+	 * revision other than the latest via
+	 * ParserOptions::getTemplateCallback() (used for FlaggedRevisions,
+	 * etc), but the point is that template lookups are by title, not
+	 * revision id.
 	 *
 	 * This replaces TemplateRequest
 	 *
 	 * @todo TemplateRequest also returns a bunch of other data, but seems to never use it except for
 	 *   TemplateRequest.setPageSrcInfo() which is replaced by PageConfig.
 	 * @param PageConfig $pageConfig
-	 * @param string $title Title of the page to fetch
-	 * @param int $oldid Revision ID to fetch. Set 0 for the current revision
+	 * @param LinkTarget $title Title of the page to fetch
 	 * @return PageContent|null
 	 */
-	public function fetchPageContent(
-		PageConfig $pageConfig, string $title, int $oldid = 0
+	abstract public function fetchTemplateSource(
+		PageConfig $pageConfig, LinkTarget $title
 	): ?PageContent;
 
 	/**
@@ -124,10 +146,10 @@ interface DataAccess {
 	 * This replaces TemplateDataRequest
 	 *
 	 * @param PageConfig $pageConfig
-	 * @param string $title
+	 * @param LinkTarget $title
 	 * @return array|null
 	 */
-	public function fetchTemplateData( PageConfig $pageConfig, string $title ): ?array;
+	abstract public function fetchTemplateData( PageConfig $pageConfig, LinkTarget $title ): ?array;
 
 	/**
 	 * Log linter data.
@@ -135,5 +157,20 @@ interface DataAccess {
 	 * @param PageConfig $pageConfig
 	 * @param array $lints
 	 */
-	public function logLinterData( PageConfig $pageConfig, array $lints ): void;
+	abstract public function logLinterData( PageConfig $pageConfig, array $lints ): void;
+
+	/**
+	 * Add a tracking category with the given key to the metadata for the page.
+	 *
+	 * @param PageConfig $pageConfig the page on which the tracking category
+	 *   is to be added
+	 * @param ContentMetadataCollector $metadata The metadata for the page
+	 * @param string $key Message key (not localized)
+	 */
+	abstract public function addTrackingCategory(
+		PageConfig $pageConfig,
+		ContentMetadataCollector $metadata,
+		string $key
+	): void;
+
 }

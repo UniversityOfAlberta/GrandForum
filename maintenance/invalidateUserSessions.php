@@ -22,10 +22,12 @@
  * @ingroup Maintenance
  */
 
-use MediaWiki\MediaWikiServices;
 use MediaWiki\Session\SessionManager;
+use MediaWiki\User\User;
 
+// @codeCoverageIgnoreStart
 require_once __DIR__ . '/Maintenance.php';
+// @codeCoverageIgnoreEnd
 
 /**
  * Invalidate the sessions of certain users on the wiki.
@@ -33,7 +35,7 @@ require_once __DIR__ . '/Maintenance.php';
  *
  * @ingroup Maintenance
  */
-class InvalidateUserSesssions extends Maintenance {
+class InvalidateUserSessions extends Maintenance {
 	public function __construct() {
 		parent::__construct();
 		$this->addDescription(
@@ -65,14 +67,13 @@ class InvalidateUserSesssions extends Maintenance {
 		}
 
 		$i = 0;
-		$lbFactory = MediaWikiServices::getInstance()->getDBLoadBalancerFactory();
 		$sessionManager = SessionManager::singleton();
 		foreach ( $usernames as $username ) {
 			$i++;
 			$user = User::newFromName( $username );
 			try {
 				$sessionManager->invalidateSessionsForUser( $user );
-				if ( $user->getId() ) {
+				if ( $user->isRegistered() ) {
 					$this->output( "Invalidated sessions for user $username\n" );
 				} else {
 					# session invalidation might still work if there is a central identity provider
@@ -84,11 +85,13 @@ class InvalidateUserSesssions extends Maintenance {
 			}
 
 			if ( $i % $this->getBatchSize() ) {
-				$lbFactory->waitForReplication();
+				$this->waitForReplication();
 			}
 		}
 	}
 }
 
-$maintClass = InvalidateUserSesssions::class;
+// @codeCoverageIgnoreStart
+$maintClass = InvalidateUserSessions::class;
 require_once RUN_MAINTENANCE_IF_MAIN;
+// @codeCoverageIgnoreEnd

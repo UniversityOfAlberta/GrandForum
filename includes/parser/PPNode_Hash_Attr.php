@@ -19,14 +19,26 @@
  * @ingroup Parser
  */
 
+namespace MediaWiki\Parser;
+
+use InvalidArgumentException;
+use LogicException;
+use Stringable;
+
 /**
  * @ingroup Parser
  */
 // phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class PPNode_Hash_Attr implements PPNode {
+class PPNode_Hash_Attr implements Stringable, PPNode {
 
-	public $name, $value;
-	private $store, $index;
+	/** @var string */
+	public $name;
+	/** @var string */
+	public $value;
+	/** @var array */
+	private $store;
+	/** @var int */
+	private $index;
 
 	/**
 	 * Construct an object using the data from $store[$index]. The rest of the
@@ -38,7 +50,7 @@ class PPNode_Hash_Attr implements PPNode {
 	public function __construct( array $store, $index ) {
 		$descriptor = $store[$index];
 		if ( $descriptor[PPNode_Hash_Tree::NAME][0] !== '@' ) {
-			throw new MWException( __METHOD__ . ': invalid name in attribute descriptor' );
+			throw new InvalidArgumentException( __METHOD__ . ': invalid name in attribute descriptor' );
 		}
 		$this->name = substr( $descriptor[PPNode_Hash_Tree::NAME], 1 );
 		$this->value = $descriptor[PPNode_Hash_Tree::CHILDREN][0];
@@ -47,7 +59,7 @@ class PPNode_Hash_Attr implements PPNode {
 	}
 
 	public function __toString() {
-		return "<@{$this->name}>" . htmlspecialchars( $this->value ) . "</@{$this->name}>";
+		return "<@{$this->name}>" . htmlspecialchars( $this->value, ENT_COMPAT ) . "</@{$this->name}>";
 	}
 
 	public function getName() {
@@ -79,14 +91,20 @@ class PPNode_Hash_Attr implements PPNode {
 	}
 
 	public function splitArg() {
-		throw new MWException( __METHOD__ . ': not supported' );
+		// @phan-suppress-previous-line PhanPluginNeverReturnMethod
+		throw new LogicException( __METHOD__ . ': not supported' );
 	}
 
 	public function splitExt() {
-		throw new MWException( __METHOD__ . ': not supported' );
+		// @phan-suppress-previous-line PhanPluginNeverReturnMethod
+		throw new LogicException( __METHOD__ . ': not supported' );
 	}
 
 	public function splitHeading() {
-		throw new MWException( __METHOD__ . ': not supported' );
+		// @phan-suppress-previous-line PhanPluginNeverReturnMethod
+		throw new LogicException( __METHOD__ . ': not supported' );
 	}
 }
+
+/** @deprecated class alias since 1.43 */
+class_alias( PPNode_Hash_Attr::class, 'PPNode_Hash_Attr' );

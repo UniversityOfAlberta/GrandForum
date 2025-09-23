@@ -15,10 +15,26 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  * http://www.gnu.org/copyleft/gpl.html
  *
- * @author Happy-melon
  * @file
  */
-use MediaWiki\MediaWikiServices;
+
+namespace MediaWiki\Context;
+
+use MediaWiki\Config\Config;
+use MediaWiki\Language\Language;
+use MediaWiki\Message\Message;
+use MediaWiki\Output\OutputPage;
+use MediaWiki\Permissions\Authority;
+use MediaWiki\Request\WebRequest;
+use MediaWiki\Session\CsrfTokenSet;
+use MediaWiki\Title\Title;
+use MediaWiki\User\User;
+use Skin;
+use Timing;
+use Wikimedia\Bcp47Code\Bcp47Code;
+use Wikimedia\Message\MessageSpecifier;
+use Wikimedia\NonSerializable\NonSerializableTrait;
+use WikiPage;
 
 /**
  * The simplest way of implementing IContextSource is to hold a RequestContext as a
@@ -26,8 +42,11 @@ use MediaWiki\MediaWikiServices;
  *
  * @stable to extend
  * @since 1.18
+ * @author Happy-melon
  */
 abstract class ContextSource implements IContextSource {
+	use NonSerializableTrait;
+
 	/**
 	 * @var IContextSource
 	 */
@@ -43,7 +62,7 @@ abstract class ContextSource implements IContextSource {
 		if ( $this->context === null ) {
 			$class = static::class;
 			wfDebug( __METHOD__ . " ($class): called and \$context is null. " .
-				"Using RequestContext::getMain() for sanity" );
+				"Using RequestContext::getMain()" );
 			$this->context = RequestContext::getMain();
 		}
 
@@ -114,6 +133,17 @@ abstract class ContextSource implements IContextSource {
 	}
 
 	/**
+	 * Get the action name for the current web request.
+	 *
+	 * @since 1.38
+	 * @stable to override
+	 * @return string
+	 */
+	public function getActionName(): string {
+		return $this->getContext()->getActionName();
+	}
+
+	/**
 	 * @since 1.18
 	 * @stable to override
 	 * @return OutputPage
@@ -133,12 +163,30 @@ abstract class ContextSource implements IContextSource {
 	}
 
 	/**
+	 * @since 1.36
+	 * @return Authority
+	 */
+	public function getAuthority(): Authority {
+		return $this->getContext()->getAuthority();
+	}
+
+	/**
 	 * @since 1.19
 	 * @stable to override
 	 * @return Language
 	 */
 	public function getLanguage() {
 		return $this->getContext()->getLanguage();
+	}
+
+	/**
+	 * @since 1.42
+	 * @stable to override
+	 * @note When overriding, keep consistent with getLanguage()!
+	 * @return Bcp47Code
+	 */
+	public function getLanguageCode(): Bcp47Code {
+		return $this->getLanguage();
 	}
 
 	/**
@@ -157,17 +205,6 @@ abstract class ContextSource implements IContextSource {
 	 */
 	public function getTiming() {
 		return $this->getContext()->getTiming();
-	}
-
-	/**
-	 * @deprecated since 1.27 use a StatsdDataFactory from MediaWikiServices (preferably injected)
-	 *
-	 * @since 1.25
-	 * @stable to override
-	 * @return IBufferingStatsdDataFactory
-	 */
-	public function getStats() {
-		return MediaWikiServices::getInstance()->getStatsdDataFactory();
 	}
 
 	/**
@@ -196,4 +233,17 @@ abstract class ContextSource implements IContextSource {
 	public function exportSession() {
 		return $this->getContext()->exportSession();
 	}
+
+	/**
+	 * Get a repository to obtain and match CSRF tokens.
+	 *
+	 * @return CsrfTokenSet
+	 * @since 1.37
+	 */
+	public function getCsrfTokenSet(): CsrfTokenSet {
+		return $this->getContext()->getCsrfTokenSet();
+	}
 }
+
+/** @deprecated class alias since 1.42 */
+class_alias( ContextSource::class, 'ContextSource' );

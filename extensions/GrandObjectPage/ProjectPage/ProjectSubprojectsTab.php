@@ -16,7 +16,7 @@ class ProjectSubprojectsTab extends AbstractTab {
     
     function generateBody(){
         global $wgUser, $wgOut, $wgMessage, $wgServer, $wgScriptPath;
-        if($wgUser->isLoggedIn()){
+        if($wgUser->isRegistered()){
             $project = $this->project;
             $me = Person::newFromId($wgUser->getId());
             if($me->isMemberOf($project) || $me->isRoleAtLeast(STAFF) || $me->isThemeLeaderOf($this->project) || $me->isThemeCoordinatorOf($this->project)){

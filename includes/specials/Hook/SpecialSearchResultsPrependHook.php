@@ -2,10 +2,13 @@
 
 namespace MediaWiki\Hook;
 
-use OutputPage;
-use SpecialSearch;
+use MediaWiki\Output\OutputPage;
+use MediaWiki\Specials\SpecialSearch;
 
 /**
+ * This is a hook handler interface, see docs/Hooks.md.
+ * Use the hook name "SpecialSearchResultsPrepend" to register handlers implementing this interface.
+ *
  * @stable to implement
  * @ingroup Hooks
  */

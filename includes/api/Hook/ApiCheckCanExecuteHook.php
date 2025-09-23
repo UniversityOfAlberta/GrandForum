@@ -2,12 +2,15 @@
 
 namespace MediaWiki\Api\Hook;
 
-use ApiBase;
-use IApiMessage;
-use Message;
-use User;
+use MediaWiki\Api\ApiBase;
+use MediaWiki\Api\IApiMessage;
+use MediaWiki\Message\Message;
+use MediaWiki\User\User;
 
 /**
+ * This is a hook handler interface, see docs/Hooks.md.
+ * Use the hook name "ApiCheckCanExecute" to register handlers implementing this interface.
+ *
  * @stable to implement
  * @ingroup Hooks
  */
@@ -18,7 +21,7 @@ interface ApiCheckCanExecuteHook {
 	 *
 	 * @since 1.35
 	 *
-	 * @param ApiBase $module Module object
+	 * @param ApiBase $module
 	 * @param User $user Current user
 	 * @param IApiMessage|Message|string|array &$message API message to die with.
 	 *  Specific values accepted depend on the MediaWiki version:

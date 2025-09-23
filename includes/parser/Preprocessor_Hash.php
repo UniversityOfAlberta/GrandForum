@@ -21,6 +21,10 @@
  * @ingroup Parser
  */
 
+namespace MediaWiki\Parser;
+
+use Wikimedia\ObjectCache\WANObjectCache;
+
 /**
  * Differences from DOM schema:
  *   * attribute nodes are children
@@ -41,14 +45,27 @@
  */
 // phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
 class Preprocessor_Hash extends Preprocessor {
-	public const CACHE_PREFIX = 'preprocess-hash';
-	public const CACHE_VERSION = 2;
+	/** Cache format version */
+	protected const CACHE_VERSION = 4;
+
+	/** @var int|false Min wikitext size for which to cache DOM tree */
+	protected $cacheThreshold;
 
 	/**
+	 * @see Preprocessor::__construct()
 	 * @param Parser $parser
+	 * @param WANObjectCache|null $wanCache
+	 * @param array $options Additional options include:
+	 *   - cacheThreshold: min text size for which to cache DOMs. [Default: false]
 	 */
-	public function __construct( $parser ) {
-		$this->parser = $parser;
+	public function __construct(
+		Parser $parser,
+		?WANObjectCache $wanCache = null,
+		array $options = []
+	) {
+		parent::__construct( $parser, $wanCache, $options );
+
+		$this->cacheThreshold = $options['cacheThreshold'] ?? false;
 	}
 
 	/**
@@ -90,40 +107,50 @@ class Preprocessor_Hash extends Preprocessor {
 			$list[] = new PPNode_Hash_Tree( $store, 0 );
 		}
 
-		$node = new PPNode_Hash_Array( $list );
-		return $node;
+		return new PPNode_Hash_Array( $list );
+	}
+
+	public function preprocessToObj( $text, $flags = 0 ) {
+		if ( $this->disableLangConversion ) {
+			// Language conversions are globally disabled; implicitly set flag
+			$flags |= self::DOM_LANG_CONVERSION_DISABLED;
+		}
+
+		$domTreeArray = null;
+		if (
+			$this->cacheThreshold !== false &&
+			strlen( $text ) >= $this->cacheThreshold &&
+			( $flags & self::DOM_UNCACHED ) != self::DOM_UNCACHED
+		) {
+			$domTreeJson = $this->wanCache->getWithSetCallback(
+				$this->wanCache->makeKey( 'preprocess-hash', sha1( $text ), $flags ),
+				$this->wanCache::TTL_DAY,
+				function () use ( $text, $flags, &$domTreeArray ) {
+					$domTreeArray = $this->buildDomTreeArrayFromText( $text, $flags );
+
+					return json_encode(
+						$domTreeArray,
+						JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE
+					);
+				},
+				[ 'version' => self::CACHE_VERSION, 'segmentable' => true ]
+			);
+			$domTreeArray ??= json_decode( $domTreeJson );
+		}
+
+		$domTreeArray ??= $this->buildDomTreeArrayFromText( $text, $flags );
+
+		return new PPNode_Hash_Tree( $domTreeArray, 0 );
 	}
 
 	/**
-	 * Preprocess some wikitext and return the document tree.
-	 *
-	 * @param string $text The text to parse
-	 * @param int $flags Bitwise combination of:
-	 *    Parser::PTD_FOR_INCLUSION    Handle "<noinclude>" and "<includeonly>" as if the text is being
-	 *                                 included. Default is to assume a direct page view.
-	 *
-	 * The generated DOM tree must depend only on the input text and the flags.
-	 * The DOM tree must be the same in OT_HTML and OT_WIKI mode, to avoid a regression of T6899.
-	 *
-	 * Any flag added to the $flags parameter here, or any other parameter liable to cause a
-	 * change in the DOM tree for a given text, must be passed through the section identifier
-	 * in the section edit link and thus back to extractSections().
-	 *
-	 * @throws MWException
-	 * @return PPNode_Hash_Tree
+	 * @param string $text Wikitext
+	 * @param int $flags Bit field of Preprocessor::DOM_* flags
+	 * @return array JSON-serializable document object model array
 	 */
-	public function preprocessToObj( $text, $flags = 0 ) {
-		global $wgDisableLangConversion;
-
-		$tree = $this->cacheGetTree( $text, $flags );
-		if ( $tree !== false ) {
-			$store = json_decode( $tree );
-			if ( is_array( $store ) ) {
-				return new PPNode_Hash_Tree( $store, 0 );
-			}
-		}
-
-		$forInclusion = $flags & Parser::PTD_FOR_INCLUSION;
+	private function buildDomTreeArrayFromText( $text, $flags ) {
+		$forInclusion = ( $flags & self::DOM_FOR_INCLUSION );
+		$langConversionDisabled = ( $flags & self::DOM_LANG_CONVERSION_DISABLED );
 
 		$xmlishElements = $this->parser->getStripList();
 		$xmlishAllowMissingEndTag = [ 'includeonly', 'noinclude', 'onlyinclude' ];
@@ -132,8 +159,8 @@ class Preprocessor_Hash extends Preprocessor {
 			$ignoredTags = [ 'includeonly', '/includeonly' ];
 			$ignoredElements = [ 'noinclude' ];
 			$xmlishElements[] = 'noinclude';
-			if ( strpos( $text, '<onlyinclude>' ) !== false
-				&& strpos( $text, '</onlyinclude>' ) !== false
+			if ( str_contains( $text, '<onlyinclude>' )
+				&& str_contains( $text, '</onlyinclude>' )
 			) {
 				$enableOnlyinclude = true;
 			}
@@ -145,12 +172,12 @@ class Preprocessor_Hash extends Preprocessor {
 		$xmlishRegex = implode( '|', array_merge( $xmlishElements, $ignoredTags ) );
 
 		// Use "A" modifier (anchored) instead of "^", because ^ doesn't work with an offset
-		$elementsRegex = "~($xmlishRegex)(?:\s|\/>|>)|(!--)~iA";
+		$elementsRegex = "~(?:$xmlishRegex)(?=\s|\/>|>)|!--~iA";
 
 		$stack = new PPDStack_Hash;
 
 		$searchBase = "[{<\n";
-		if ( !$wgDisableLangConversion ) {
+		if ( !$langConversionDisabled ) {
 			$searchBase .= '-';
 		}
 
@@ -179,8 +206,6 @@ class Preprocessor_Hash extends Preprocessor {
 		$fakeLineStart = true;
 
 		while ( true ) {
-			// $this->memCheck();
-
 			if ( $findOnlyinclude ) {
 				// Ignore all input up to the next <onlyinclude>
 				$startPos = strpos( $text, '<onlyinclude>', $i );
@@ -189,7 +214,7 @@ class Preprocessor_Hash extends Preprocessor {
 					$accum[] = [ 'ignore', [ substr( $text, $i ) ] ];
 					break;
 				}
-				$tagEndPos = $startPos + strlen( '<onlyinclude>' ); // past-the-end
+				$tagEndPos = $startPos + 13; // past-the-end of <onlyinclude>
 				$accum[] = [ 'ignore', [ substr( $text, $i, $tagEndPos - $i ) ] ];
 				$i = $tagEndPos;
 				$findOnlyinclude = false;
@@ -222,7 +247,7 @@ class Preprocessor_Hash extends Preprocessor {
 					$i += $literalLength;
 				}
 				if ( $i >= $lengthText ) {
-					if ( $currentClosing == "\n" ) {
+					if ( $currentClosing === "\n" ) {
 						// Do a past-the-end run to finish off the heading
 						$curChar = '';
 						$found = 'line-end';
@@ -232,25 +257,25 @@ class Preprocessor_Hash extends Preprocessor {
 					}
 				} else {
 					$curChar = $curTwoChar = $text[$i];
-					if ( ( $i + 1 ) < $lengthText ) {
+					if ( $i + 1 < $lengthText ) {
 						$curTwoChar .= $text[$i + 1];
 					}
-					if ( $curChar == '|' ) {
+					if ( $curChar === '|' ) {
 						$found = 'pipe';
-					} elseif ( $curChar == '=' ) {
+					} elseif ( $curChar === '=' ) {
 						$found = 'equals';
-					} elseif ( $curChar == '<' ) {
+					} elseif ( $curChar === '<' ) {
 						$found = 'angle';
-					} elseif ( $curChar == "\n" ) {
+					} elseif ( $curChar === "\n" ) {
 						if ( $inHeading ) {
 							$found = 'line-end';
 						} else {
 							$found = 'line-start';
 						}
-					} elseif ( $curTwoChar == $currentClosing ) {
+					} elseif ( $curTwoChar === $currentClosing ) {
 						$found = 'close';
 						$curChar = $curTwoChar;
-					} elseif ( $curChar == $currentClosing ) {
+					} elseif ( $curChar === $currentClosing ) {
 						$found = 'close';
 					} elseif ( isset( $this->rules[$curTwoChar] ) ) {
 						$curChar = $curTwoChar;
@@ -265,7 +290,7 @@ class Preprocessor_Hash extends Preprocessor {
 						# We also may get '-' and '}' characters here which
 						# don't match -{ or $currentClosing.  Add these to
 						# output and continue.
-						if ( $curChar == '-' || $curChar == '}' ) {
+						if ( $curChar === '-' || $curChar === '}' ) {
 							self::addLiteral( $accum, $curChar );
 						}
 						++$i;
@@ -274,11 +299,10 @@ class Preprocessor_Hash extends Preprocessor {
 				}
 			}
 
-			if ( $found == 'angle' ) {
-				$matches = false;
+			if ( $found === 'angle' ) {
 				// Handle </onlyinclude>
 				if ( $enableOnlyinclude
-					&& substr( $text, $i, strlen( '</onlyinclude>' ) ) == '</onlyinclude>'
+					&& substr_compare( $text, '</onlyinclude>', $i, 14 ) === 0
 				) {
 					$findOnlyinclude = true;
 					continue;
@@ -291,8 +315,9 @@ class Preprocessor_Hash extends Preprocessor {
 					++$i;
 					continue;
 				}
+				$name = $matches[0];
 				// Handle comments
-				if ( isset( $matches[2] ) && $matches[2] == '!--' ) {
+				if ( $name === '!--' ) {
 					// To avoid leaving blank lines, when a sequence of
 					// space-separated comments is both preceded and followed by
 					// a newline (ignoring spaces), then
@@ -307,37 +332,39 @@ class Preprocessor_Hash extends Preprocessor {
 						$i = $lengthText;
 					} else {
 						// Search backwards for leading whitespace
+						// $wsStart is the first char of the comment (first of the leading space or '<')
 						$wsStart = $i ? ( $i - strspn( $revText, " \t", $lengthText - $i ) ) : 0;
 
+						// $wsEnd will be the char *after* the comment (after last space or the '>' if there's no space)
+						$wsEnd = $endPos + 3; // add length of -->
 						// Search forwards for trailing whitespace
-						// $wsEnd will be the position of the last space (or the '>' if there's none)
-						$wsEnd = $endPos + 2 + strspn( $text, " \t", $endPos + 3 );
+						$wsEnd += strspn( $text, " \t", $wsEnd );
 
-						// Keep looking forward as long as we're finding more
-						// comments.
+						// Keep looking forward as long as we're finding more comments on the line
 						$comments = [ [ $wsStart, $wsEnd ] ];
-						while ( substr( $text, $wsEnd + 1, 4 ) == '<!--' ) {
+						while ( substr_compare( $text, '<!--', $wsEnd, 4 ) === 0 ) {
 							$c = strpos( $text, '-->', $wsEnd + 4 );
 							if ( $c === false ) {
 								break;
 							}
-							$c = $c + 2 + strspn( $text, " \t", $c + 3 );
-							$comments[] = [ $wsEnd + 1, $c ];
+							$c += 3; // add length of -->
+							// Search forwards for trailing whitespace
+							$c += strspn( $text, " \t", $c );
+							$comments[] = [ $wsEnd, $c ];
 							$wsEnd = $c;
 						}
 
 						// Eat the line if possible
-						// TODO: This could theoretically be done if $wsStart == 0, i.e. for comments at
+						// TODO: This could theoretically be done if $wsStart === 0, i.e. for comments at
 						// the overall start. That's not how Sanitizer::removeHTMLcomments() did it, but
 						// it's a possible beneficial b/c break.
-						if ( $wsStart > 0 && substr( $text, $wsStart - 1, 1 ) == "\n"
-							&& substr( $text, $wsEnd + 1, 1 ) == "\n"
+						if ( $wsStart > 0 && substr_compare( $text, "\n", $wsStart - 1, 1 ) === 0
+							&& substr_compare( $text, "\n", $wsEnd, 1 ) === 0
 						) {
 							// Remove leading whitespace from the end of the accumulator
 							$wsLength = $i - $wsStart;
 							$endIndex = count( $accum ) - 1;
 
-							// Sanity check
 							if ( $wsLength > 0
 								&& $endIndex >= 0
 								&& is_string( $accum[$endIndex] )
@@ -347,13 +374,11 @@ class Preprocessor_Hash extends Preprocessor {
 							}
 
 							// Dump all but the last comment to the accumulator
-							foreach ( $comments as $j => $com ) {
-								$startPos = $com[0];
-								$endPos = $com[1] + 1;
-								if ( $j == ( count( $comments ) - 1 ) ) {
-									break;
-								}
-								$inner = substr( $text, $startPos, $endPos - $startPos );
+							// $endPos includes the newline from the if above, want also eat that
+							[ $startPos, $endPos ] = array_pop( $comments );
+							foreach ( $comments as [ $cStartPos, $cEndPos ] ) {
+								// $cEndPos is the next char, no +1 needed to get correct length between start/end
+								$inner = substr( $text, $cStartPos, $cEndPos - $cStartPos );
 								$accum[] = [ 'comment', [ $inner ] ];
 							}
 
@@ -367,7 +392,7 @@ class Preprocessor_Hash extends Preprocessor {
 
 						if ( $stack->top ) {
 							$part = $stack->top->getCurrentPart();
-							if ( !( isset( $part->commentEnd ) && $part->commentEnd == $wsStart - 1 ) ) {
+							if ( $part->commentEnd !== $wsStart - 1 ) {
 								$part->visualEnd = $wsStart;
 							}
 							// Else comments abutting, no change in visual end
@@ -379,8 +404,6 @@ class Preprocessor_Hash extends Preprocessor {
 					}
 					continue;
 				}
-				$name = $matches[1];
-				$lowerName = strtolower( $name );
 				$attrStart = $i + strlen( $name ) + 1;
 
 				// Find end of tag
@@ -394,6 +417,7 @@ class Preprocessor_Hash extends Preprocessor {
 					continue;
 				}
 
+				$lowerName = strtolower( $name );
 				// Handle ignored tags
 				if ( in_array( $lowerName, $ignoredTags ) ) {
 					$accum[] = [ 'ignore', [ substr( $text, $i, $tagEndPos - $i + 1 ) ] ];
@@ -402,7 +426,7 @@ class Preprocessor_Hash extends Preprocessor {
 				}
 
 				$tagStartPos = $i;
-				if ( $text[$tagEndPos - 1] == '/' ) {
+				if ( $text[$tagEndPos - 1] === '/' ) {
 					// Short end tag
 					$attrEnd = $tagEndPos - 1;
 					$inner = null;
@@ -412,13 +436,13 @@ class Preprocessor_Hash extends Preprocessor {
 					$attrEnd = $tagEndPos;
 					// Find closing tag
 					if (
-						!isset( $noMoreClosingTag[$name] ) &&
+						!isset( $noMoreClosingTag[$lowerName] ) &&
 						preg_match( "/<\/" . preg_quote( $name, '/' ) . "\s*>/i",
 							$text, $matches, PREG_OFFSET_CAPTURE, $tagEndPos + 1 )
 					) {
-						$inner = substr( $text, $tagEndPos + 1, $matches[0][1] - $tagEndPos - 1 );
-						$i = $matches[0][1] + strlen( $matches[0][0] );
-						$close = $matches[0][0];
+						[ $close, $closeTagStartPos ] = $matches[0];
+						$inner = substr( $text, $tagEndPos + 1, $closeTagStartPos - $tagEndPos - 1 );
+						$i = $closeTagStartPos + strlen( $close );
 					} else {
 						// No end tag
 						if ( in_array( $name, $xmlishAllowMissingEndTag ) ) {
@@ -429,10 +453,9 @@ class Preprocessor_Hash extends Preprocessor {
 						} else {
 							// Don't match the tag, treat opening tag as literal and resume parsing.
 							$i = $tagEndPos + 1;
-							self::addLiteral( $accum,
-								substr( $text, $tagStartPos, $tagEndPos + 1 - $tagStartPos ) );
+							self::addLiteral( $accum, substr( $text, $tagStartPos, $tagEndPos + 1 - $tagStartPos ) );
 							// Cache results, otherwise we have O(N^2) performance for input like <foo><foo><foo>...
-							$noMoreClosingTag[$name] = true;
+							$noMoreClosingTag[$lowerName] = true;
 							continue;
 						}
 					}
@@ -453,7 +476,8 @@ class Preprocessor_Hash extends Preprocessor {
 
 				$children = [
 					[ 'name', [ $name ] ],
-					[ 'attr', [ $attr ] ] ];
+					[ 'attr', [ $attr ] ],
+				];
 				if ( $inner !== null ) {
 					$children[] = [ 'inner', [ $inner ] ];
 				}
@@ -461,7 +485,7 @@ class Preprocessor_Hash extends Preprocessor {
 					$children[] = [ 'close', [ $close ] ];
 				}
 				$accum[] = [ 'ext', $children ];
-			} elseif ( $found == 'line-start' ) {
+			} elseif ( $found === 'line-start' ) {
 				// Is this the start of a heading?
 				// Line break belongs before the heading element in any case
 				if ( $fakeLineStart ) {
@@ -472,8 +496,8 @@ class Preprocessor_Hash extends Preprocessor {
 				}
 
 				// Examine upto 6 characters
-				$count = strspn( $text, '=', $i, min( strlen( $text ), 6 ) );
-				if ( $count == 1 && $findEquals ) {
+				$count = strspn( $text, '=', $i, min( $lengthText, 6 ) );
+				if ( $count === 1 && $findEquals ) {
 					// DWIM: This looks kind of like a name/value separator.
 					// Let's let the equals handler have it and break the potential
 					// heading. This is heuristic, but AFAICT the methods for
@@ -484,7 +508,8 @@ class Preprocessor_Hash extends Preprocessor {
 						'close' => "\n",
 						'parts' => [ new PPDPart_Hash( str_repeat( '=', $count ) ) ],
 						'startPos' => $i,
-						'count' => $count ];
+						'count' => $count,
+					];
 					$stack->push( $piece );
 					$accum =& $stack->getAccum();
 					$stackFlags = $stack->getFlags();
@@ -499,7 +524,7 @@ class Preprocessor_Hash extends Preprocessor {
 					}
 					$i += $count;
 				}
-			} elseif ( $found == 'line-end' ) {
+			} elseif ( $found === 'line-end' ) {
 				$piece = $stack->top;
 				// A heading must be open, otherwise \n wouldn't have been in the search list
 				// FIXME: Don't use assert()
@@ -511,27 +536,25 @@ class Preprocessor_Hash extends Preprocessor {
 				// (end anchor, etc.) are inefficient.
 				$wsLength = strspn( $revText, " \t", $lengthText - $i );
 				$searchStart = $i - $wsLength;
-				if ( isset( $part->commentEnd ) && $searchStart - 1 == $part->commentEnd ) {
+				if ( $part->commentEnd === $searchStart - 1 ) {
 					// Comment found at line end
 					// Search for equals signs before the comment
 					$searchStart = $part->visualEnd;
 					$searchStart -= strspn( $revText, " \t", $lengthText - $searchStart );
 				}
-				$count = $piece->count;
 				$equalsLength = strspn( $revText, '=', $lengthText - $searchStart );
 				if ( $equalsLength > 0 ) {
-					if ( $searchStart - $equalsLength == $piece->startPos ) {
+					if ( $searchStart - $equalsLength === $piece->startPos ) {
 						// This is just a single string of equals signs on its own line
 						// Replicate the doHeadings behavior /={count}(.+)={count}/
 						// First find out how many equals signs there really are (don't stop at 6)
-						$count = $equalsLength;
-						if ( $count < 3 ) {
+						if ( $equalsLength < 3 ) {
 							$count = 0;
 						} else {
-							$count = min( 6, intval( ( $count - 1 ) / 2 ) );
+							$count = min( 6, intval( ( $equalsLength - 1 ) / 2 ) );
 						}
 					} else {
-						$count = min( $equalsLength, $count );
+						$count = min( $equalsLength, $piece->count );
 					}
 					if ( $count > 0 ) {
 						// Normal match, output <h>
@@ -574,16 +597,16 @@ class Preprocessor_Hash extends Preprocessor {
 				// another heading. Infinite loops are avoided because the next iteration MUST
 				// hit the heading open case above, which unconditionally increments the
 				// input pointer.
-			} elseif ( $found == 'open' ) {
+			} elseif ( $found === 'open' ) {
 				# count opening brace characters
 				$curLen = strlen( $curChar );
-				$count = ( $curLen > 1 ) ?
+				$count = $curLen > 1
 					# allow the final character to repeat
-					strspn( $text, $curChar[$curLen - 1], $i + 1 ) + 1 :
-					strspn( $text, $curChar, $i );
+					? strspn( $text, $curChar[$curLen - 1], $i + 1 ) + 1
+					: strspn( $text, $curChar, $i );
 
 				$savedPrefix = '';
-				$lineStart = ( $i > 0 && $text[$i - 1] == "\n" );
+				$lineStart = $i > 0 && $text[$i - 1] === "\n";
 
 				if ( $curChar === "-{" && $count > $curLen ) {
 					// -{ => {{ transition because rightmost wins
@@ -622,7 +645,7 @@ class Preprocessor_Hash extends Preprocessor {
 					self::addLiteral( $accum, $savedPrefix . str_repeat( $curChar, $count ) );
 				}
 				$i += $count;
-			} elseif ( $found == 'close' ) {
+			} elseif ( $found === 'close' ) {
 				/** @var PPDStackElement_Hash $piece */
 				$piece = $stack->top;
 				'@phan-var PPDStackElement_Hash $piece';
@@ -632,8 +655,9 @@ class Preprocessor_Hash extends Preprocessor {
 					$maxCount--; # don't try to match closing '-' as a '}'
 				}
 				$curLen = strlen( $curChar );
-				$count = ( $curLen > 1 ) ? $curLen :
-					strspn( $text, $curChar, $i, $maxCount );
+				$count = $curLen > 1
+					? $curLen
+					: strspn( $text, $curChar, $i, $maxCount );
 
 				# check for maximum matching characters (if there are 5 closing
 				# characters, we will probably need only 3 - depending on the rules)
@@ -660,6 +684,7 @@ class Preprocessor_Hash extends Preprocessor {
 					$i += $count;
 					continue;
 				}
+				// @phan-suppress-next-line PhanTypeArraySuspiciousNullable
 				$name = $rule['names'][$matchingCount];
 				if ( $name === null ) {
 					// No element, just literal text
@@ -676,9 +701,10 @@ class Preprocessor_Hash extends Preprocessor {
 
 					# The invocation is at the start of the line if lineStart is set in
 					# the stack, and all opening brackets are used up.
-					if ( $maxCount == $matchingCount &&
-							!empty( $piece->lineStart ) &&
-							strlen( $piece->savedPrefix ) == 0 ) {
+					if ( $maxCount === $matchingCount &&
+						$piece->lineStart &&
+						$piece->savedPrefix === ''
+					) {
 						$children[] = [ '@lineStart', [ 1 ] ];
 					}
 					$titleNode = [ 'title', $titleAccum ];
@@ -717,7 +743,7 @@ class Preprocessor_Hash extends Preprocessor {
 					if ( $piece->count >= $min ) {
 						$stack->push( $piece );
 						$accum =& $stack->getAccum();
-					} elseif ( $piece->count == 1 && $piece->open === '{' && $piece->savedPrefix === '-' ) {
+					} elseif ( $piece->count === 1 && $piece->open === '{' && $piece->savedPrefix === '-' ) {
 						$piece->savedPrefix = '';
 						$piece->open = '-{';
 						$piece->count = 2;
@@ -749,12 +775,12 @@ class Preprocessor_Hash extends Preprocessor {
 
 				# Add XML element to the enclosing accumulator
 				array_splice( $accum, count( $accum ), 0, $element );
-			} elseif ( $found == 'pipe' ) {
+			} elseif ( $found === 'pipe' ) {
 				$findEquals = true; // shortcut for getFlags()
 				$stack->addPart();
 				$accum =& $stack->getAccum();
 				++$i;
-			} elseif ( $found == 'equals' ) {
+			} elseif ( $found === 'equals' ) {
 				$findEquals = false; // shortcut for getFlags()
 				$accum[] = [ 'equals', [ '=' ] ];
 				$stack->getCurrentPart()->eqpos = count( $accum ) - 1;
@@ -774,16 +800,7 @@ class Preprocessor_Hash extends Preprocessor {
 			}
 		}
 
-		$rootStore = [ [ 'root', $stack->rootAccum ] ];
-		$rootNode = new PPNode_Hash_Tree( $rootStore, 0 );
-
-		// Cache
-		$tree = json_encode( $rootStore, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE );
-		if ( $tree !== false ) {
-			$this->cacheSetTree( $text, $flags, $tree );
-		}
-
-		return $rootNode;
+		return [ [ 'root', $stack->rootAccum ] ];
 	}
 
 	private static function addLiteral( array &$accum, $text ) {
@@ -795,3 +812,6 @@ class Preprocessor_Hash extends Preprocessor {
 		}
 	}
 }
+
+/** @deprecated class alias since 1.43 */
+class_alias( Preprocessor_Hash::class, 'Preprocessor_Hash' );

@@ -21,9 +21,15 @@
  * @ingroup Maintenance
  */
 
-use MediaWiki\MediaWikiServices;
+use MediaWiki\Content\ContentHandler;
+use MediaWiki\Json\FormatJson;
+use MediaWiki\StubObject\StubGlobalUser;
+use MediaWiki\Title\Title;
+use MediaWiki\User\User;
 
+// @codeCoverageIgnoreStart
 require_once __DIR__ . '/Maintenance.php';
+// @codeCoverageIgnoreEnd
 
 /**
  * Maintenance script to import all scripts in the MediaWiki namespace from a
@@ -41,19 +47,21 @@ class ImportSiteScripts extends Maintenance {
 	}
 
 	public function execute() {
-		global $wgUser;
-
 		$username = $this->getOption( 'username', false );
 		if ( $username === false ) {
 			$user = User::newSystemUser( 'ScriptImporter', [ 'steal' => true ] );
 		} else {
 			$user = User::newFromName( $username );
 		}
-		$wgUser = $user;
+		'@phan-var User $user';
+		StubGlobalUser::setUser( $user );
 
 		$baseUrl = $this->getArg( 1 );
 		$pageList = $this->fetchScriptList();
 		$this->output( 'Importing ' . count( $pageList ) . " pages\n" );
+		$services = $this->getServiceContainer();
+		$wikiPageFactory = $services->getWikiPageFactory();
+		$httpRequestFactory = $services->getHttpRequestFactory();
 
 		foreach ( $pageList as $page ) {
 			$title = Title::makeTitleSafe( NS_MEDIAWIKI, $page );
@@ -66,12 +74,11 @@ class ImportSiteScripts extends Maintenance {
 			$url = wfAppendQuery( $baseUrl, [
 				'action' => 'raw',
 				'title' => "MediaWiki:{$page}" ] );
-			$text = MediaWikiServices::getInstance()->getHttpRequestFactory()->
-				get( $url, [], __METHOD__ );
+			$text = $httpRequestFactory->get( $url, [], __METHOD__ );
 
-			$wikiPage = WikiPage::factory( $title );
+			$wikiPage = $wikiPageFactory->newFromTitle( $title );
 			$content = ContentHandler::makeContent( $text, $wikiPage->getTitle() );
-			$wikiPage->doEditContent( $content, "Importing from $url", 0, false, $user );
+			$wikiPage->doUserEditContent( $content, $user, "Importing from $url" );
 		}
 	}
 
@@ -89,13 +96,13 @@ class ImportSiteScripts extends Maintenance {
 
 		while ( true ) {
 			$url = wfAppendQuery( $baseUrl, $data );
-			$strResult = MediaWikiServices::getInstance()->getHttpRequestFactory()->
+			$strResult = $this->getServiceContainer()->getHttpRequestFactory()->
 				get( $url, [], __METHOD__ );
 			$result = FormatJson::decode( $strResult, true );
 
 			$page = null;
 			foreach ( $result['query']['allpages'] as $page ) {
-				if ( substr( $page['title'], -3 ) === '.js' ) {
+				if ( str_ends_with( $page['title'], '.js' ) ) {
 					strtok( $page['title'], ':' );
 					$pages[] = strtok( '' );
 				}
@@ -118,5 +125,7 @@ class ImportSiteScripts extends Maintenance {
 	}
 }
 
+// @codeCoverageIgnoreStart
 $maintClass = ImportSiteScripts::class;
 require_once RUN_MAINTENANCE_IF_MAIN;
+// @codeCoverageIgnoreEnd

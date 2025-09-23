@@ -1,4 +1,5 @@
 <?php
+declare( strict_types = 1 );
 
 namespace Wikimedia\Parsoid\Mocks;
 
@@ -6,14 +7,22 @@ use Error;
 use Wikimedia\Parsoid\Config\DataAccess;
 use Wikimedia\Parsoid\Config\PageConfig;
 use Wikimedia\Parsoid\Config\PageContent;
+use Wikimedia\Parsoid\Config\SiteConfig;
+use Wikimedia\Parsoid\Core\ContentMetadataCollector;
+use Wikimedia\Parsoid\Core\LinkTarget;
+use Wikimedia\Parsoid\ParserTests\MockApiHelper;
 use Wikimedia\Parsoid\Utils\PHPUtils;
+use Wikimedia\Parsoid\Utils\Title;
+use Wikimedia\Parsoid\Utils\TitleValue;
 
 /**
  * This implements some of the functionality that the tests/ParserTests/MockAPIHelper.php
  * provides. While originally implemented to support ParserTests, this is no longer used
  * by parser tests.
  */
-class MockDataAccess implements DataAccess {
+class MockDataAccess extends DataAccess {
+	private SiteConfig $siteConfig;
+
 	private static $PAGE_DATA = [
 		"Main_Page" => [
 			"title" => "Main Page",
@@ -183,8 +192,8 @@ class MockDataAccess implements DataAccess {
 					'*' => "This is a mock disambiguation page with no more info!"
 				]
 			],
-			"pageprops" => [
-				"disambiguation" => "",
+			"linkclasses" => [
+				"mw-disambig",
 			]
 		],
 		"Special:Version" => [
@@ -262,7 +271,8 @@ class MockDataAccess implements DataAccess {
 		'File:Thumb.png' => 'Thumb.png',
 		'File:LoremIpsum.djvu' => 'LoremIpsum.djvu',
 		'File:Video.ogv' => 'Video.ogv',
-		'File:Audio.oga' => 'Audio.oga'
+		'File:Audio.oga' => 'Audio.oga',
+		'File:Bad.jpg' => 'Bad.jpg',
 	];
 
 	private const PNAMES = [
@@ -272,9 +282,9 @@ class MockDataAccess implements DataAccess {
 	];
 
 	// configuration to match PHP parserTests
-	// although protocol-relative; see T235217 and
-	// If52d21b50cdbb466395ca64ac9877d992e19ce40
-	private const IMAGE_BASE_URL = '//example.com/images';
+	// Note that parserTests use a MockLocalRepo with
+	// url=>'http://example.com/images' although $wgServer="http://example.org"
+	private const IMAGE_BASE_URL = 'http://example.com/images';
 	private const IMAGE_DESC_URL = self::IMAGE_BASE_URL;
 	private const FILE_PROPS = [
 		'Foobar.jpg' => [
@@ -282,68 +292,105 @@ class MockDataAccess implements DataAccess {
 			'width' => 1941,
 			'height' => 220,
 			'bits' => 8,
-			'mime' => 'image/jpeg'
+			'mime' => 'image/jpeg',
+			'sha1' => '0000000000000000000000000000001', // Wikimedia\base_convert( '1', 16, 36, 31 )
+			'timestamp' => '20010115123500',
 		],
 		'Thumb.png' => [
 			'size' => 22589,
 			'width' => 135,
 			'height' => 135,
 			'bits' => 8,
-			'mime' => 'image/png'
+			'mime' => 'image/png',
+			'sha1' => '0000000000000000000000000000002', // Wikimedia\base_convert( '2', 16, 36, 31 )
+			'timestamp' => '20130225203040',
 		],
 		'Foobar.svg' => [
 			'size' => 12345,
 			'width' => 240,
 			'height' => 180,
 			'bits' => 24,
-			'mime' => 'image/svg+xml'
+			'mime' => 'image/svg+xml',
+			'sha1' => null, // Wikimedia\base_convert( '', 16, 36, 31 ) returns false
+			'timestamp' => '20010115123500',
+		],
+		'Bad.jpg' => [
+			'size' => 12345,
+			'width' => 320,
+			'height' => 240,
+			'bits' => 24,
+			'mime' => 'image/jpeg',
+			'sha1' => '0000000000000000000000000000003', // Wikimedia\base_convert( '3', 16, 36, 31 )
+			'timestamp' => '20010115123500',
 		],
 		'LoremIpsum.djvu' => [
 			'size' => 3249,
 			'width' => 2480,
 			'height' => 3508,
 			'bits' => 8,
-			'mime' => 'image/vnd.djvu'
+			'mime' => 'image/vnd.djvu',
+			'sha1' => null, // Wikimedia\base_convert( '', 16, 36, 31 ) returns false
+			'timestamp' => '20010115123600',
 		],
 		'Video.ogv' => [
 			'size' => 12345,
 			'width' => 320,
 			'height' => 240,
 			'bits' => 0,
-			'duration' => 160.733333333333,
-			'mime' => 'application/ogg',
-			'mediatype' => 'VIDEO'
+			# duration comes from
+			# TimedMediaHandler/tests/phpunit/mocks/MockOggHandler::getLength()
+			'duration' => 4.3666666666667,
+			'mime' => 'video/ogg; codecs="theora"',
+			'mediatype' => 'VIDEO',
+			'thumbtimes' => [
+				'1.2' => 'seek%3D1.2',
+				'85' => 'seek%3D3.3666666666667', # hard limited by duration
+			],
+			'sha1' => null, // Wikimedia\base_convert( '', 16, 36, 31 ) returns false
+			'timestamp' => '20010115123500',
 		],
 		'Audio.oga' => [
 			'size' => 12345,
 			'width' => 0,
 			'height' => 0,
 			'bits' => 0,
-			'duration' => 160.733333333333,
-			'mime' => 'application/ogg',
-			'mediatype' => 'AUDIO'
+			# duration comes from
+			# TimedMediaHandler/tests/phpunit/mocks/MockOggHandler::getLength()
+			'duration' => 0.99875,
+			'mime' => 'audio/ogg; codecs="vorbis"',
+			'mediatype' => 'AUDIO',
+			'sha1' => null, // Wikimedia\base_convert( '', 16, 36, 31 ) returns false
+			'timestamp' => '20010115123500',
 		]
 	];
 
 	/**
-	 * @param string $title
+	 * @param string|LinkTarget $title
 	 * @return string
 	 */
-	private function normTitle( string $title ): string {
+	private function normTitle( $title ): string {
+		if ( !is_string( $title ) ) {
+			$title = Title::newFromLinkTarget(
+				$title, $this->siteConfig
+			);
+			return $title->getPrefixedDBKey();
+		}
 		return strtr( $title, ' ', '_' );
 	}
 
 	/**
+	 * @param SiteConfig $siteConfig
 	 * @param array $opts
 	 */
-	public function __construct( array $opts ) {
+	public function __construct( SiteConfig $siteConfig, array $opts ) {
+		$this->siteConfig = $siteConfig;
 		// Update data of the large page
 		$mainSlot = &self::$PAGE_DATA['Large_Page']['slots']['main'];
 		$mainSlot['*'] = str_repeat( 'a', $opts['maxWikitextSize'] ?? 1000000 );
 	}
 
 	/** @inheritDoc */
-	public function getPageInfo( PageConfig $pageConfig, array $titles ): array {
+	public function getPageInfo( $pageConfigOrTitle, array $titles ): array {
 		$ret = [];
 		foreach ( $titles as $title ) {
 			$normTitle = $this->normTitle( $title );
@@ -354,7 +401,7 @@ class MockDataAccess implements DataAccess {
 				'missing' => $pageData === null,
 				'known' => $pageData !== null || ( $pageData['known'] ?? false ),
 				'redirect' => $pageData['redirect'] ?? false,
-				'disambiguation' => ( $pageData['pageprops']['disambiguation'] ?? false ) !== false,
+				'linkclasses' => $pageData['linkclasses'] ?? [],
 			];
 		}
 
@@ -364,13 +411,16 @@ class MockDataAccess implements DataAccess {
 	/** @inheritDoc */
 	public function getFileInfo( PageConfig $pageConfig, array $files ): array {
 		$ret = [];
-		foreach ( $files as $name => $dims ) {
+		foreach ( $files as $f ) {
+			$name = $f[0];
+			$dims = $f[1];
+
 			// From mockAPI.js
-			$normPageName = self::PNAMES[$name] ?? $name;
 			$normFileName = self::FNAMES[$name] ?? $name;
 			$props = self::FILE_PROPS[$normFileName] ?? null;
 			if ( $props === null ) {
 				// We don't have info for this file
+				$ret[] = null;
 				continue;
 			}
 
@@ -381,11 +431,8 @@ class MockDataAccess implements DataAccess {
 			$width = $props['width'] ?? 1941;
 			$turl = self::IMAGE_BASE_URL . '/thumb/' . $md5prefix . $normFileName;
 			$durl = self::IMAGE_DESC_URL . '/' . $normFileName;
-			if ( isset( $props['mediatype'] ) ) {
-				$mediatype = $props['mime'] === 'image/svg+xml' ? 'DRAWING' : 'BITMAP';
-			} else {
-				$mediatype = null;
-			}
+			$mediatype = $props['mediatype'] ??
+				( $props['mime'] === 'image/svg+xml' ? 'DRAWING' : 'BITMAP' );
 
 			$info = [
 				'size' => $props['size'] ?? 12345,
@@ -394,7 +441,10 @@ class MockDataAccess implements DataAccess {
 				'url' => $baseurl,
 				'descriptionurl' => $durl,
 				'mediatype' => $mediatype,
-				'mime' => $props['mime']
+				'mime' => $props['mime'],
+				'badFile' => ( $normFileName === 'Bad.jpg' ),
+				'sha1' => $props['sha1'],
+				'timestamp' => $props['timestamp'],
 			];
 
 			if ( isset( $props['duration'] ) ) {
@@ -411,6 +461,9 @@ class MockDataAccess implements DataAccess {
 				if ( isset( $dims['page'] ) ) {
 					$txopts['page'] = $dims['page'];
 				}
+				if ( isset( $dims['lang'] ) ) {
+					$txopts['lang'] = $dims['lang'];
+				}
 			}
 			if ( isset( $dims['height'] ) && $dims['height'] !== null ) {
 				$txopts['height'] = $dims['height'];
@@ -426,26 +479,11 @@ class MockDataAccess implements DataAccess {
 			}
 
 			if ( !empty( $txopts['height'] ) || !empty( $txopts['width'] ) ) {
-				if ( $txopts['height'] === null ) {
-					// File::scaleHeight in PHP
-					$txopts['height'] = round( $height * $txopts['width'] / $width );
-				} elseif ( $txopts['width'] === null ) {
-					// MediaHandler::fitBoxWidth in PHP
-					// This is crazy!
-					$idealWidth = $width * $txopts['height'] / $height;
-					$roundedUp = ceil( $idealWidth );
-					if ( round( $roundedUp * $height / $width ) > $txopts['height'] ) {
-						$txopts['width'] = floor( $idealWidth );
-					} else {
-						$txopts['width'] = $roundedUp;
-					}
-				} else {
-					if ( round( $height * $txopts['width'] / $width ) > $txopts['height'] ) {
-						$txopts['width'] = ceil( $width * $txopts['height'] / $height );
-					} else {
-						$txopts['height'] = round( $height * $txopts['width'] / $width );
-					}
-				}
+
+				// Set $txopts['width'] and $txopts['height']
+				$rtwidth = &$txopts['width'];
+				$rtheight = &$txopts['height'];
+				MockApiHelper::transformHelper( $width, $height, $rtwidth, $rtheight );
 
 				$urlWidth = $txopts['width'];
 				if ( $txopts['width'] > $width ) {
@@ -456,7 +494,15 @@ class MockDataAccess implements DataAccess {
 					}
 				}
 				if ( $urlWidth !== $width || $mediatype === 'AUDIO' || $mediatype === 'VIDEO' ) {
-					$turl .= '/' . $urlWidth . 'px-' . $normFileName;
+					$turl .= '/' . $urlWidth . 'px-';
+					if ( $mediatype === 'VIDEO' ) {
+						// Hack in a 'seek' option, if provided (T258767)
+						if ( isset( $txopts['thumbtime'] ) ) {
+							$turl .= $props['thumbtimes'][strval( $txopts['thumbtime'] )] ?? '';
+						}
+						$turl .= '-';
+					}
+					$turl .= $normFileName;
 					switch ( $mediatype ) {
 						case 'AUDIO':
 							// No thumbs are generated for audio
@@ -477,10 +523,10 @@ class MockDataAccess implements DataAccess {
 				$info['thumburl'] = $turl;
 			}
 
-			$ret = array_merge( $ret, [ $normFileName => $info ] );
+			$ret[] = $info;
 		}
 
-	return $ret;
+		return $ret;
 	}
 
 	/** @inheritDoc */
@@ -490,7 +536,11 @@ class MockDataAccess implements DataAccess {
 	}
 
 	/** @inheritDoc */
-	public function parseWikitext( PageConfig $pageConfig, string $wikitext ): array {
+	public function parseWikitext(
+		PageConfig $pageConfig,
+		ContentMetadataCollector $metadata,
+		string $wikitext
+	): string {
 		// Render to html the contents of known extension tags
 		preg_match( '#<([A-Za-z][^\t\n\v />\0]*)#', $wikitext, $match );
 		switch ( $match[1] ) {
@@ -506,56 +556,55 @@ class MockDataAccess implements DataAccess {
 
 			case 'indicator':
 			case 'section':
-				$html = "\n";
+				$html = "";
 				break;
 
 			default:
 				throw new Error( 'Unhandled extension type encountered in: ' . $wikitext );
 		}
 
-		return [
-			'html' => $html,
-			'modules' => [],
-			'modulescripts' => [],
-			'modulestyles' => [],
-			'categories' => [],
-		];
+		return $html;
 	}
 
 	/** @inheritDoc */
-	public function preprocessWikitext( PageConfig $pageConfig, string $wikitext ): array {
+	public function preprocessWikitext(
+		PageConfig $pageConfig,
+		ContentMetadataCollector $metadata,
+		string $wikitext
+	): string {
 		$revid = $pageConfig->getRevisionId();
-		$ret = [
-			'modules' => [],
-			'modulescripts' => [],
-			'modulestyles' => [],
-			'categories' => [],
-			'properties' => [],
-		];
 
 		$expanded = str_replace( '{{!}}', '|', $wikitext );
-		preg_match( '/{{1x\|(.*?)}}/s', $expanded, $match );
+		preg_match( '/{{1x\|(.*?)}}/s', $expanded, $match1 );
+		preg_match( '/{{#tag:ref\|(.*?)\|(.*?)}}/s', $expanded, $match2 );
 
-		if ( $match ) {
-			$ret['wikitext'] = $match[1];
+		if ( $match1 ) {
+			$ret = $match1[1];
+		} elseif ( $match2 ) {
+			$ret = "<ref {$match2[2]}>{$match2[1]}</ref>";
 		} elseif ( $wikitext === '{{colours of the rainbow}}' ) {
-			$ret['wikitext'] = 'purple';
+			$ret = 'purple';
 		} elseif ( $wikitext === '{{REVISIONID}}' ) {
-			$ret['wikitext'] = (string)$revid;
+			$ret = (string)$revid;
+		} elseif ( $wikitext === '{{mangle}}' ) {
+			$ret = 'hi';
+			$metadata->addCategory(
+				Title::newFromText( 'Category:Mangle', $this->siteConfig ),
+				'ho'
+			);
 		} else {
-			$ret['wikitext'] = '';
+			$ret = '';
 		}
 
 		return $ret;
 	}
 
 	/** @inheritDoc */
-	public function fetchPageContent(
-		PageConfig $pageConfig, string $title, int $oldid = 0
+	public function fetchTemplateSource(
+		PageConfig $pageConfig, LinkTarget $title
 	): ?PageContent {
 		$normTitle = $this->normTitle( $title );
 		$pageData = self::$PAGE_DATA[$normTitle] ?? null;
-		// FIXME: Ignoring revid / oldid checks
 		if ( $pageData ) {
 			$content = [];
 			foreach ( $pageData['slots'] as $role => $data ) {
@@ -568,7 +617,7 @@ class MockDataAccess implements DataAccess {
 	}
 
 	/** @inheritDoc */
-	public function fetchTemplateData( PageConfig $pageConfig, string $title ): ?array {
+	public function fetchTemplateData( PageConfig $pageConfig, LinkTarget $title ): ?array {
 		return self::TEMPLATE_DATA[$this->normTitle( $title )] ?? null;
 	}
 
@@ -579,5 +628,28 @@ class MockDataAccess implements DataAccess {
 		foreach ( $lints as $l ) {
 			error_log( PHPUtils::jsonEncode( $l ) );
 		}
+	}
+
+	private const TRACKING_CATEGORIES = [
+		'broken-file-category' => 'Pages with broken file links',
+		'magiclink-tracking-rfc' => 'Pages using RFC magic links',
+		'magiclink-tracking-isbn' => 'Pages using ISBN magic links',
+		'magiclink-tracking-pmid' => 'Pages using PMID magic links',
+	];
+
+	/** @inheritDoc */
+	public function addTrackingCategory(
+		PageConfig $pageConfig,
+		ContentMetadataCollector $metadata,
+		string $key
+	): void {
+		if ( !isset( self::TRACKING_CATEGORIES[$key] ) ) {
+			throw new Error( 'Unknown tracking category: ' . $key );
+		}
+		$tv = TitleValue::tryNew(
+			14, // NS_CATEGORY,
+			self::TRACKING_CATEGORIES[$key]
+		);
+		$metadata->addCategory( $tv );
 	}
 }

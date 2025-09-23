@@ -1,7 +1,13 @@
 <?php
 
+use MediaWiki\Config\Config;
+use MediaWiki\Config\ServiceOptions;
 use MediaWiki\HookContainer\HookContainer;
 use MediaWiki\HookContainer\HookRunner;
+use MediaWiki\Language\Language;
+use MediaWiki\MainConfigNames;
+use MediaWiki\User\Options\UserOptionsLookup;
+use MediaWiki\User\UserIdentity;
 
 /**
  * Configuration handling class for SearchEngine.
@@ -11,11 +17,19 @@ use MediaWiki\HookContainer\HookRunner;
  */
 class SearchEngineConfig {
 
+	/** @internal For use by ServiceWiring.php ONLY */
+	public const CONSTRUCTOR_OPTIONS = [
+		MainConfigNames::NamespacesToBeSearchedDefault,
+		MainConfigNames::SearchTypeAlternatives,
+		MainConfigNames::SearchType,
+	];
+
 	/**
 	 * Config object from which the settings will be derived.
 	 * @var Config
 	 */
 	private $config;
+	private ServiceOptions $options;
 
 	/**
 	 * Current language
@@ -39,30 +53,44 @@ class SearchEngineConfig {
 	private $hookRunner;
 
 	/**
-	 * @param Config $config
+	 * @var UserOptionsLookup
+	 */
+	private $userOptionsLookup;
+
+	/**
+	 * @param ServiceOptions $options
 	 * @param Language $lang
 	 * @param HookContainer $hookContainer
 	 * @param array $mappings
+	 * @param UserOptionsLookup $userOptionsLookup
 	 */
-	public function __construct( Config $config, Language $lang,
-		HookContainer $hookContainer, array $mappings
+	public function __construct(
+		ServiceOptions $options,
+		Language $lang,
+		HookContainer $hookContainer,
+		array $mappings,
+		UserOptionsLookup $userOptionsLookup
 	) {
-		$this->config = $config;
+		$options->assertRequiredOptions( self::CONSTRUCTOR_OPTIONS );
+		$this->options = $options;
 		$this->language = $lang;
 		$this->engineMappings = $mappings;
 		$this->hookRunner = new HookRunner( $hookContainer );
+		$this->userOptionsLookup = $userOptionsLookup;
 	}
 
 	/**
 	 * Retrieve original config.
+	 * @deprecated since 1.43, use ServiceOptions instead with DI.
 	 * @return Config
 	 */
 	public function getConfig() {
+		wfDeprecated( __METHOD__, '1.43' );
 		return $this->config;
 	}
 
 	/**
-	 * Make a list of searchable namespaces and their canonical names.
+	 * Make a list of searchable namespaces and their localized names.
 	 * @return string[] Namespace ID => name
 	 * @phan-return array<int,string>
 	 */
@@ -82,13 +110,13 @@ class SearchEngineConfig {
 	 * Extract default namespaces to search from the given user's
 	 * settings, returning a list of index numbers.
 	 *
-	 * @param user $user
+	 * @param UserIdentity $user
 	 * @return int[]
 	 */
 	public function userNamespaces( $user ) {
 		$arr = [];
 		foreach ( $this->searchableNamespaces() as $ns => $name ) {
-			if ( $user->getOption( 'searchNs' . $ns ) ) {
+			if ( $this->userOptionsLookup->getOption( $user, 'searchNs' . $ns ) ) {
 				$arr[] = $ns;
 			}
 		}
@@ -102,7 +130,8 @@ class SearchEngineConfig {
 	 * @return int[] Namespace IDs
 	 */
 	public function defaultNamespaces() {
-		return array_keys( $this->config->get( 'NamespacesToBeSearchedDefault' ), true );
+		return array_keys( $this->options->get( MainConfigNames::NamespacesToBeSearchedDefault ),
+			true );
 	}
 
 	/**
@@ -112,8 +141,8 @@ class SearchEngineConfig {
 	 * @return array
 	 */
 	public function getSearchTypes() {
-		$alternatives = $this->config->get( 'SearchTypeAlternatives' ) ?: [];
-		array_unshift( $alternatives, $this->config->get( 'SearchType' ) );
+		$alternatives = $this->options->get( MainConfigNames::SearchTypeAlternatives ) ?: [];
+		array_unshift( $alternatives, $this->options->get( MainConfigNames::SearchType ) );
 
 		return $alternatives;
 	}
@@ -124,7 +153,7 @@ class SearchEngineConfig {
 	 * @return string|null
 	 */
 	public function getSearchType() {
-		return $this->config->get( 'SearchType' );
+		return $this->options->get( MainConfigNames::SearchType );
 	}
 
 	/**
@@ -135,12 +164,12 @@ class SearchEngineConfig {
 	 *
 	 * For example to be able to use 'foobarsearch' in $wgSearchType and
 	 * $wgSearchTypeAlternatives but the PHP class for 'foobarsearch'
-	 * is 'MediaWiki\Extensions\FoobarSearch\FoobarSearch' set:
+	 * is 'MediaWiki\Extension\FoobarSearch\FoobarSearch' set:
 	 *
 	 * @par extension.json Example:
 	 * @code
 	 * "SearchMappings": {
-	 * 	"foobarsearch": { "class": "MediaWiki\\Extensions\\FoobarSearch\\FoobarSearch" }
+	 * 	"foobarsearch": { "class": "MediaWiki\\Extension\\FoobarSearch\\FoobarSearch" }
 	 * }
 	 * @endcode
 	 *
@@ -161,7 +190,7 @@ class SearchEngineConfig {
 	public function namespacesAsText( $namespaces ) {
 		$formatted = array_map( [ $this->language, 'getFormattedNsText' ], $namespaces );
 		foreach ( $formatted as $key => $ns ) {
-			if ( empty( $ns ) ) {
+			if ( !$ns ) {
 				$formatted[$key] = wfMessage( 'blanknamespace' )->text();
 			}
 		}

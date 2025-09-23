@@ -2,11 +2,14 @@
 
 namespace MediaWiki\Page\Hook;
 
+use MediaWiki\Output\OutputPage;
 use MediaWiki\Revision\RevisionRecord;
-use OutputPage;
-use Title;
+use MediaWiki\Title\Title;
 
 /**
+ * This is a hook handler interface, see docs/Hooks.md.
+ * Use the hook name "ArticleRevisionViewCustom" to register handlers implementing this interface.
+ *
  * @stable to implement
  * @ingroup Hooks
  */

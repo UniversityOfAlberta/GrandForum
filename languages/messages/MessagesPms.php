@@ -1,10 +1,8 @@
 <?php
 /** Piedmontese (Piemontèis)
  *
- * To improve a translation please visit https://translatewiki.net
- *
- * @ingroup Language
  * @file
+ * @ingroup Languages
  *
  * @author Borichèt
  * @author Bèrto 'd Sèra

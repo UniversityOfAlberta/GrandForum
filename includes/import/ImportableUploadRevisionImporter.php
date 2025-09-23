@@ -1,32 +1,21 @@
 <?php
 
 use MediaWiki\MediaWikiServices;
+use MediaWiki\User\User;
 use Psr\Log\LoggerInterface;
+use Wikimedia\FileBackend\FSFile\TempFSFile;
+use Wikimedia\Rdbms\IDBAccessObject;
 
 /**
  * @since 1.31
  */
 class ImportableUploadRevisionImporter implements UploadRevisionImporter {
 
-	/**
-	 * @var LoggerInterface
-	 */
-	private $logger;
+	private bool $enableUploads;
+	private LoggerInterface $logger;
 
-	/**
-	 * @var bool
-	 */
-	private $enableUploads;
+	private bool $shouldCreateNullRevision = true;
 
-	/**
-	 * @var bool
-	 */
-	private $shouldCreateNullRevision = true;
-
-	/**
-	 * @param bool $enableUploads
-	 * @param LoggerInterface $logger
-	 */
 	public function __construct(
 		$enableUploads,
 		LoggerInterface $logger
@@ -37,7 +26,7 @@ class ImportableUploadRevisionImporter implements UploadRevisionImporter {
 
 	/**
 	 * Setting this to false will deactivate the creation of a null revision as part of the upload
-	 * process logging in LocalFile::recordUpload2, see T193621
+	 * process logging in LocalFile::recordUpload3, see T193621
 	 *
 	 * @param bool $shouldCreateNullRevision
 	 */
@@ -54,23 +43,24 @@ class ImportableUploadRevisionImporter implements UploadRevisionImporter {
 		return $statusValue;
 	}
 
+	/** @inheritDoc */
 	public function import( ImportableUploadRevision $importableRevision ) {
 		# Construct a file
 		$archiveName = $importableRevision->getArchiveName();
 		$localRepo = MediaWikiServices::getInstance()->getRepoGroup()->getLocalRepo();
 		if ( $archiveName ) {
-			$this->logger->debug( __METHOD__ . "Importing archived file as $archiveName" );
+			$this->logger->debug( __METHOD__ . ": Importing archived file as $archiveName" );
 			$file = OldLocalFile::newFromArchiveName( $importableRevision->getTitle(),
 				$localRepo, $archiveName );
 		} else {
 			$file = $localRepo->newFile( $importableRevision->getTitle() );
-			$file->load( File::READ_LATEST );
-			$this->logger->debug( __METHOD__ . 'Importing new file as ' . $file->getName() );
+			$file->load( IDBAccessObject::READ_LATEST );
+			$this->logger->debug( __METHOD__ . ': Importing new file as ' . $file->getName() );
 			if ( $file->exists() && $file->getTimestamp() > $importableRevision->getTimestamp() ) {
 				$archiveName = $importableRevision->getTimestamp() . '!' . $file->getName();
 				$file = OldLocalFile::newFromArchiveName( $importableRevision->getTitle(),
 					$localRepo, $archiveName );
-				$this->logger->debug( __METHOD__ . "File already exists; importing as $archiveName" );
+				$this->logger->debug( __METHOD__ . ": File already exists; importing as $archiveName" );
 			}
 		}
 		if ( !$file ) {
@@ -138,16 +128,11 @@ class ImportableUploadRevisionImporter implements UploadRevisionImporter {
 	}
 
 	/**
-	 * @deprecated DO NOT CALL ME.
-	 * This method was introduced when factoring (Importable)UploadRevisionImporter out of
-	 * WikiRevision. It only has 1 use by the deprecated downloadSource method in WikiRevision.
-	 * Do not use this in new code, it will be made private soon.
-	 *
 	 * @param ImportableUploadRevision $wikiRevision
 	 *
-	 * @return bool|string
+	 * @return string|false
 	 */
-	public function downloadSource( ImportableUploadRevision $wikiRevision ) {
+	private function downloadSource( ImportableUploadRevision $wikiRevision ) {
 		if ( !$this->enableUploads ) {
 			return false;
 		}

@@ -18,22 +18,27 @@
  *
  * Attribution notice: when this file was created, much of its content was taken
  * from the Revision.php file as present in release 1.30. Refer to the history
- * of that file for original authorship.
+ * of that file for original authorship (that file was removed entirely in 1.37,
+ * but its history can still be found in prior versions of MediaWiki).
  *
  * @file
  */
 
 namespace MediaWiki\Revision;
 
-use ActorMigration;
-use CommentStore;
+use MediaWiki\CommentStore\CommentStore;
 use MediaWiki\Content\IContentHandlerFactory;
 use MediaWiki\HookContainer\HookContainer;
+use MediaWiki\Page\PageStoreFactory;
 use MediaWiki\Storage\BlobStoreFactory;
 use MediaWiki\Storage\NameTableStoreFactory;
+use MediaWiki\Title\TitleFactory;
+use MediaWiki\User\ActorStore;
+use MediaWiki\User\ActorStoreFactory;
 use Psr\Log\LoggerInterface;
-use WANObjectCache;
 use Wikimedia\Assert\Assert;
+use Wikimedia\ObjectCache\BagOStuff;
+use Wikimedia\ObjectCache\WANObjectCache;
 use Wikimedia\Rdbms\ILBFactory;
 
 /**
@@ -56,14 +61,15 @@ class RevisionStoreFactory {
 	private $dbLoadBalancerFactory;
 	/** @var WANObjectCache */
 	private $cache;
+	/** @var BagOStuff */
+	private $localCache;
 	/** @var LoggerInterface */
 	private $logger;
 
 	/** @var CommentStore */
 	private $commentStore;
-	/** @var ActorMigration */
-	private $actorMigration;
-
+	/** @var ActorStoreFactory */
+	private $actorStoreFactory;
 	/** @var NameTableStoreFactory */
 	private $nameTables;
 
@@ -72,6 +78,12 @@ class RevisionStoreFactory {
 
 	/** @var IContentHandlerFactory */
 	private $contentHandlerFactory;
+
+	/** @var PageStoreFactory */
+	private $pageStoreFactory;
+
+	/** @var TitleFactory */
+	private $titleFactory;
 
 	/** @var HookContainer */
 	private $hookContainer;
@@ -82,10 +94,13 @@ class RevisionStoreFactory {
 	 * @param NameTableStoreFactory $nameTables
 	 * @param SlotRoleRegistry $slotRoleRegistry
 	 * @param WANObjectCache $cache
+	 * @param BagOStuff $localCache
 	 * @param CommentStore $commentStore
-	 * @param ActorMigration $actorMigration
+	 * @param ActorStoreFactory $actorStoreFactory
 	 * @param LoggerInterface $logger
 	 * @param IContentHandlerFactory $contentHandlerFactory
+	 * @param PageStoreFactory $pageStoreFactory
+	 * @param TitleFactory $titleFactory
 	 * @param HookContainer $hookContainer
 	 */
 	public function __construct(
@@ -94,10 +109,13 @@ class RevisionStoreFactory {
 		NameTableStoreFactory $nameTables,
 		SlotRoleRegistry $slotRoleRegistry,
 		WANObjectCache $cache,
+		BagOStuff $localCache,
 		CommentStore $commentStore,
-		ActorMigration $actorMigration,
+		ActorStoreFactory $actorStoreFactory,
 		LoggerInterface $logger,
 		IContentHandlerFactory $contentHandlerFactory,
+		PageStoreFactory $pageStoreFactory,
+		TitleFactory $titleFactory,
 		HookContainer $hookContainer
 	) {
 		$this->dbLoadBalancerFactory = $dbLoadBalancerFactory;
@@ -105,33 +123,80 @@ class RevisionStoreFactory {
 		$this->slotRoleRegistry = $slotRoleRegistry;
 		$this->nameTables = $nameTables;
 		$this->cache = $cache;
+		$this->localCache = $localCache;
 		$this->commentStore = $commentStore;
-		$this->actorMigration = $actorMigration;
+		$this->actorStoreFactory = $actorStoreFactory;
 		$this->logger = $logger;
 		$this->contentHandlerFactory = $contentHandlerFactory;
+		$this->pageStoreFactory = $pageStoreFactory;
+		$this->titleFactory = $titleFactory;
 		$this->hookContainer = $hookContainer;
 	}
 
 	/**
 	 * @since 1.32
 	 *
-	 * @param bool|string $dbDomain DB domain of the relevant wiki or false for the current one
+	 * @param false|string $dbDomain DB domain of the relevant wiki or false for the current one
 	 *
 	 * @return RevisionStore for the given wikiId with all necessary services
 	 */
-	public function getRevisionStore( $dbDomain = false ) {
-		Assert::parameterType( 'string|boolean', $dbDomain, '$dbDomain' );
+	public function getRevisionStore( $dbDomain = false ): RevisionStore {
+		return $this->getStore(
+			$dbDomain,
+			$this->actorStoreFactory->getActorStore( $dbDomain )
+		);
+	}
+
+	/**
+	 * @since 1.42
+	 *
+	 * @param false|string $dbDomain DB domain of the relevant wiki or false for the current one
+	 *
+	 * @return RevisionStore for the given wikiId with all necessary services
+	 */
+	public function getRevisionStoreForImport( $dbDomain = false ): RevisionStore {
+		return $this->getStore(
+			$dbDomain,
+			$this->actorStoreFactory->getActorStoreForImport( $dbDomain )
+		);
+	}
+
+	/**
+	 * @since 1.43
+	 *
+	 * @param false|string $dbDomain DB domain of the relevant wiki or false for the current one
+	 *
+	 * @return RevisionStore for the given wikiId with all necessary services
+	 */
+	public function getRevisionStoreForUndelete( $dbDomain = false ): RevisionStore {
+		return $this->getStore(
+			$dbDomain,
+			$this->actorStoreFactory->getActorStoreForUndelete( $dbDomain )
+		);
+	}
+
+	/**
+	 * @param false|string $dbDomain
+	 * @param ActorStore $actorStore
+	 *
+	 * @return RevisionStore
+	 */
+	private function getStore( $dbDomain, ActorStore $actorStore ) {
+		Assert::parameterType( [ 'string', 'false' ], $dbDomain, '$dbDomain' );
 
 		$store = new RevisionStore(
 			$this->dbLoadBalancerFactory->getMainLB( $dbDomain ),
 			$this->blobStoreFactory->newSqlBlobStore( $dbDomain ),
-			$this->cache, // Pass local cache instance; Leave cache sharing to RevisionStore.
+			$this->cache, // Pass cache local to wiki; Leave cache sharing to RevisionStore.
+			$this->localCache,
 			$this->commentStore,
 			$this->nameTables->getContentModels( $dbDomain ),
 			$this->nameTables->getSlotRoles( $dbDomain ),
 			$this->slotRoleRegistry,
-			$this->actorMigration,
+			$actorStore,
 			$this->contentHandlerFactory,
+			$this->pageStoreFactory->getPageStore( $dbDomain ),
+			$this->titleFactory,
 			$this->hookContainer,
 			$dbDomain
 		);

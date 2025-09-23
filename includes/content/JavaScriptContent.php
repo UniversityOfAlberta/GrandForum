@@ -25,7 +25,9 @@
  * @author Daniel Kinzler
  */
 
-use MediaWiki\MediaWikiServices;
+namespace MediaWiki\Content;
+
+use MediaWiki\Title\Title;
 
 /**
  * Content for JavaScript pages.
@@ -36,7 +38,7 @@ use MediaWiki\MediaWikiServices;
 class JavaScriptContent extends TextContent {
 
 	/**
-	 * @var bool|Title|null
+	 * @var Title|null|false
 	 */
 	private $redirectTarget = false;
 
@@ -47,37 +49,6 @@ class JavaScriptContent extends TextContent {
 	 */
 	public function __construct( $text, $modelId = CONTENT_MODEL_JAVASCRIPT ) {
 		parent::__construct( $text, $modelId );
-	}
-
-	/**
-	 * Returns a Content object with pre-save transformations applied using
-	 * Parser::preSaveTransform().
-	 *
-	 * @param Title $title
-	 * @param User $user
-	 * @param ParserOptions $popts
-	 *
-	 * @return JavaScriptContent
-	 */
-	public function preSaveTransform( Title $title, User $user, ParserOptions $popts ) {
-		// @todo Make pre-save transformation optional for script pages
-		// See T34858
-
-		$text = $this->getText();
-		$pst = MediaWikiServices::getInstance()->getParser()
-			->preSaveTransform( $text, $title, $user, $popts );
-
-		return new static( $pst );
-	}
-
-	/**
-	 * @return string JavaScript wrapped in a <pre> tag.
-	 */
-	protected function getHtml() {
-		return Html::element( 'pre',
-			[ 'class' => 'mw-code mw-js', 'dir' => 'ltr' ],
-			"\n" . $this->getText() . "\n"
-		) . "\n";
 	}
 
 	/**
@@ -92,6 +63,7 @@ class JavaScriptContent extends TextContent {
 			return $this;
 		}
 
+		// @phan-suppress-next-line PhanTypeMismatchReturnSuperType False positive
 		return $this->getContentHandler()->makeRedirectContent( $target );
 	}
 
@@ -105,14 +77,18 @@ class JavaScriptContent extends TextContent {
 		$this->redirectTarget = null;
 		$text = $this->getText();
 		if ( strpos( $text, '/* #REDIRECT */' ) === 0 ) {
+			// Compatiblity with pages created by MW 1.41 and earlier:
+			// Older redirects use an over-escaped \u0026 instead of a literal ampersand (T107289)
+			$text = str_replace( '\u0026', '&', $text );
 			// Extract the title from the url
-			preg_match( '/title=(.*?)\\\\u0026action=raw/', $text, $matches );
-			if ( isset( $matches[1] ) ) {
+			if ( preg_match( '/title=(.*?)&action=raw/', $text, $matches ) ) {
 				$title = Title::newFromText( urldecode( $matches[1] ) );
 				if ( $title ) {
 					// Have a title, check that the current content equals what
 					// the redirect content should be
-					if ( $this->equals( $this->getContentHandler()->makeRedirectContent( $title ) ) ) {
+					$expected = $this->getContentHandler()->makeRedirectContent( $title );
+					'@phan-var JavaScriptContent $expected';
+					if ( $expected->getText() === $text ) {
 						$this->redirectTarget = $title;
 					}
 				}
@@ -123,3 +99,5 @@ class JavaScriptContent extends TextContent {
 	}
 
 }
+/** @deprecated class alias since 1.43 */
+class_alias( JavaScriptContent::class, 'JavaScriptContent' );

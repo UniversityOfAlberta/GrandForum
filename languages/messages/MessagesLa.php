@@ -1,10 +1,8 @@
 <?php
 /** Latin (Latina)
  *
- * To improve a translation please visit https://translatewiki.net
- *
- * @ingroup Language
  * @file
+ * @ingroup Languages
  *
  * @author Amahoney
  * @author Andrew Dalby
@@ -51,7 +49,7 @@ $namespaceAliases = [
 	'Disputatio_Imaginis' => NS_FILE_TALK,
 ];
 
-$separatorTransformTable = [ ',' => "\u{00A0}" ];
+$separatorTransformTable = [ ',' => "\u{00A0}", '.' => '.' ];
 
 $dateFormats = [
 	'mdy time' => 'H:i',
@@ -71,12 +69,14 @@ $dateFormats = [
 	'ISO 8601 both' => 'xnY-xnm-xnd"T"xnH:xni:xns',
 ];
 
+/** @phpcs-require-sorted-array */
 $specialPageAliases = [
 	'Allmessages'               => [ 'Nuntia_systematis' ],
 	'Allpages'                  => [ 'Paginae_omnes', 'Omnes_paginae' ],
 	'Ancientpages'              => [ 'Paginae_veterrimae' ],
 	'Blankpage'                 => [ 'Pagina_vacua' ],
 	'Block'                     => [ 'Usorem_obstruere' ],
+	'BlockList'                 => [ 'Usores_obstructi' ],
 	'Booksources'               => [ 'Librorum_fontes' ],
 	'BrokenRedirects'           => [ 'Redirectiones_fractae' ],
 	'Categories'                => [ 'Categoriae' ],
@@ -94,7 +94,6 @@ $specialPageAliases = [
 	'FileDuplicateSearch'       => [ 'Quaerere_fasciculos_duplices', 'Quaerere_imagines_duplices' ],
 	'Import'                    => [ 'Importare', 'Paginas_importare' ],
 	'Invalidateemail'           => [ 'Adfimationem_inscriptionis_electronicae_abrogare' ],
-	'BlockList'                 => [ 'Usores_obstructi' ],
 	'LinkSearch'                => [ 'Quaerere_nexus_externos' ],
 	'Listadmins'                => [ 'Magistratus' ],
 	'Listbots'                  => [ 'Automata' ],
@@ -129,6 +128,7 @@ $specialPageAliases = [
 	'Recentchanges'             => [ 'Nuper_mutata', 'Mutationes_recentes' ],
 	'Recentchangeslinked'       => [ 'Nuper_mutata_annexorum' ],
 	'Redirect'                  => [ 'Redirectio' ],
+	'Renameuser'                => [ 'Usorem_renominare' ],
 	'Revisiondelete'            => [ 'Emendationem_delere' ],
 	'Search'                    => [ 'Quaerere' ],
 	'Shortpages'                => [ 'Paginae_breves' ],

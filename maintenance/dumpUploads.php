@@ -21,9 +21,9 @@
  * @ingroup Maintenance
  */
 
-use MediaWiki\MediaWikiServices;
-
+// @codeCoverageIgnoreStart
 require_once __DIR__ . '/Maintenance.php';
+// @codeCoverageIgnoreEnd
 
 /**
  * Maintenance script to dump a the list of files uploaded,
@@ -80,15 +80,15 @@ By default, outputs relative paths against the parent directory of $wgUploadDire
 	 * @param bool $shared True to pass shared-dir settings to hash func
 	 */
 	private function fetchUsed( $shared ) {
-		$dbr = $this->getDB( DB_REPLICA );
-		$image = $dbr->tableName( 'image' );
-		$imagelinks = $dbr->tableName( 'imagelinks' );
+		$dbr = $this->getReplicaDB();
 
-		$sql = "SELECT DISTINCT il_to, img_name
-			FROM $imagelinks
-			LEFT JOIN $image
-			ON il_to=img_name";
-		$result = $dbr->query( $sql, __METHOD__ );
+		$result = $dbr->newSelectQueryBuilder()
+			->select( [ 'il_to', 'img_name' ] )
+			->distinct()
+			->from( 'imagelinks' )
+			->leftJoin( 'image', null, 'il_to=img_name' )
+			->caller( __METHOD__ )
+			->fetchResultSet();
 
 		foreach ( $result as $row ) {
 			$this->outputItem( $row->il_to, $shared );
@@ -101,11 +101,12 @@ By default, outputs relative paths against the parent directory of $wgUploadDire
 	 * @param bool $shared True to pass shared-dir settings to hash func
 	 */
 	private function fetchLocal( $shared ) {
-		$dbr = $this->getDB( DB_REPLICA );
-		$result = $dbr->select( 'image',
-			[ 'img_name' ],
-			'',
-			__METHOD__ );
+		$dbr = $this->getReplicaDB();
+		$result = $dbr->newSelectQueryBuilder()
+			->select( 'img_name' )
+			->from( 'image' )
+			->caller( __METHOD__ )
+			->fetchResultSet();
 
 		foreach ( $result as $row ) {
 			$this->outputItem( $row->img_name, $shared );
@@ -113,7 +114,7 @@ By default, outputs relative paths against the parent directory of $wgUploadDire
 	}
 
 	private function outputItem( $name, $shared ) {
-		$file = MediaWikiServices::getInstance()->getRepoGroup()->findFile( $name );
+		$file = $this->getServiceContainer()->getRepoGroup()->findFile( $name );
 		if ( $file && $this->filterItem( $file, $shared ) ) {
 			$filename = $file->getLocalRefPath();
 			$rel = wfRelativePath( $filename, $this->mBasePath );
@@ -128,5 +129,7 @@ By default, outputs relative paths against the parent directory of $wgUploadDire
 	}
 }
 
+// @codeCoverageIgnoreStart
 $maintClass = DumpUploads::class;
 require_once RUN_MAINTENANCE_IF_MAIN;
+// @codeCoverageIgnoreEnd

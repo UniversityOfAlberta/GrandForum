@@ -5,6 +5,7 @@ namespace MediaWiki\Widget;
 use OOUI\LabelWidget;
 use OOUI\RadioSelectInputWidget;
 use OOUI\TextInputWidget;
+use OOUI\Widget;
 
 /**
  * Select and input widget.
@@ -12,7 +13,7 @@ use OOUI\TextInputWidget;
  * @copyright 2011-2018 MediaWiki Widgets Team and others; see AUTHORS.txt
  * @license MIT
  */
-class SizeFilterWidget extends \OOUI\Widget {
+class SizeFilterWidget extends Widget {
 	/** @var array */
 	protected $config;
 	/** @var LabelWidget */
@@ -28,7 +29,7 @@ class SizeFilterWidget extends \OOUI\Widget {
 	 * @param array $config Configuration options
 	 *   - array $config['textinput'] Configuration for the TextInputWidget
 	 *   - array $config['radioselectinput'] Configuration for the RadioSelectWidget
-	 *   - bool $congif['selectMin'] Whether to select 'min', false would select 'max'
+	 *   - bool $config['selectMin'] Whether to select 'min', false would select 'max'
 	 */
 	public function __construct( array $config = [] ) {
 		// Configuration initialization

@@ -3,12 +3,16 @@ declare( strict_types = 1 );
 
 namespace Wikimedia\Parsoid\Ext;
 
-use DOMElement;
+use Wikimedia\Parsoid\DOM\DocumentFragment;
+use Wikimedia\Parsoid\DOM\Element;
+use Wikimedia\Parsoid\DOM\Node;
 
 /**
  * A Parsoid extension module may contain one or more DOMProcessors,
  * which allow Parsoid to post-process the DOM in the wt2html direction,
  * or pre-process the DOM in the html2wt direction.
+ *
+ * @phan-file-suppress PhanEmptyPublicMethod
  */
 abstract class DOMProcessor {
 
@@ -16,16 +20,13 @@ abstract class DOMProcessor {
 	 * Post-process DOM in the wt2html direction.
 	 *
 	 * @param ParsoidExtensionAPI $extApi
-	 * @param DOMElement $root The root of the tree to process
+	 * @param DocumentFragment|Element $root The root of the tree to process
 	 * @param array $options
-	 * @param bool $atTopLevel Is this processor invoked on the top level page?
-	 *   If false, this is being invoked in a sub-pipeline (ex: extensions)
 	 */
 	public function wtPostprocess(
 		ParsoidExtensionAPI $extApi,
-		DOMElement $root,
-		array $options,
-		bool $atTopLevel
+		Node $root,
+		array $options
 	): void {
 		/* do nothing by default */
 	}
@@ -34,12 +35,11 @@ abstract class DOMProcessor {
 	 * Pre-process DOM in the html2wt direction.
 	 *
 	 * @param ParsoidExtensionAPI $extApi
-	 * @param DOMElement $root
-	 * @suppress PhanEmptyPublicMethod
+	 * @param Element $root
 	 */
 	public function htmlPreprocess(
 		ParsoidExtensionAPI $extApi,
-		DOMElement $root
+		Element $root
 	): void {
 		/* do nothing by default */
 	}

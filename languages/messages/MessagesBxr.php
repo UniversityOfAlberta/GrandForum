@@ -1,11 +1,8 @@
 <?php
 /** буряад (буряад)
  *
- * To improve a translation please visit https://translatewiki.net
- *
- * @ingroup Language
  * @file
- *
+ * @ingroup Languages
  */
 
 $fallback = 'ru';
@@ -46,6 +43,7 @@ $namespaceAliases = [
 // Remove Russian gender aliases
 $namespaceGenderAliases = [];
 
+/** @phpcs-require-sorted-array */
 $specialPageAliases = [
 	'Activeusers'               => [ 'Эдэбхитэй_хэрэглэгшэд' ],
 	'Allmessages'               => [ 'Бүхы_зурбас' ],

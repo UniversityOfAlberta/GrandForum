@@ -3,11 +3,14 @@
 namespace MediaWiki\Search\Hook;
 
 use HtmlArmor;
+use MediaWiki\Specials\SpecialSearch;
+use MediaWiki\Title\Title;
 use SearchResult;
-use SpecialSearch;
-use Title;
 
 /**
+ * This is a hook handler interface, see docs/Hooks.md.
+ * Use the hook name "ShowSearchHitTitle" to register handlers implementing this interface.
+ *
  * @stable to implement
  * @ingroup Hooks
  */

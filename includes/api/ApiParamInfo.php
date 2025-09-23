@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2008 Roan Kattouw "<Firstname>.<Lastname>@gmail.com"
+ * Copyright © 2008 Roan Kattouw <roan.kattouw@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,20 +20,37 @@
  * @file
  */
 
-use MediaWiki\ExtensionInfo;
+namespace MediaWiki\Api;
+
+use MediaWiki\Context\RequestContext;
+use MediaWiki\Message\Message;
+use MediaWiki\Parser\Parser;
+use MediaWiki\SpecialPage\SpecialPage;
+use MediaWiki\User\UserFactory;
+use MediaWiki\Utils\ExtensionInfo;
+use Wikimedia\ParamValidator\ParamValidator;
 
 /**
  * @ingroup API
  */
 class ApiParamInfo extends ApiBase {
 
+	/** @var string */
 	private $helpFormat;
 
 	/** @var RequestContext */
 	private $context;
 
-	public function __construct( ApiMain $main, $action ) {
+	/** @var UserFactory */
+	private $userFactory;
+
+	public function __construct(
+		ApiMain $main,
+		string $action,
+		UserFactory $userFactory
+	) {
 		parent::__construct( $main, $action );
+		$this->userFactory = $userFactory;
 	}
 
 	public function execute() {
@@ -42,7 +59,7 @@ class ApiParamInfo extends ApiBase {
 
 		$this->helpFormat = $params['helpformat'];
 		$this->context = new RequestContext;
-		$this->context->setUser( new User ); // anon to avoid caching issues
+		$this->context->setUser( $this->userFactory->newAnonymous() ); // anon to avoid caching issues
 		$this->context->setLanguage( $this->getMain()->getLanguage() );
 
 		if ( is_array( $params['modules'] ) ) {
@@ -51,11 +68,11 @@ class ApiParamInfo extends ApiBase {
 				if ( $path === '*' || $path === '**' ) {
 					$path = "main+$path";
 				}
-				if ( substr( $path, -2 ) === '+*' || substr( $path, -2 ) === ' *' ) {
+				if ( str_ends_with( $path, '+*' ) || str_ends_with( $path, ' *' ) ) {
 					$submodules = true;
 					$path = substr( $path, 0, -2 );
 					$recursive = false;
-				} elseif ( substr( $path, -3 ) === '+**' || substr( $path, -3 ) === ' **' ) {
+				} elseif ( str_ends_with( $path, '+**' ) || str_ends_with( $path, ' **' ) ) {
 					$submodules = true;
 					$path = substr( $path, 0, -3 );
 					$recursive = true;
@@ -67,11 +84,13 @@ class ApiParamInfo extends ApiBase {
 					try {
 						$module = $this->getModuleFromPath( $path );
 					} catch ( ApiUsageException $ex ) {
-						foreach ( $ex->getStatusValue()->getErrors() as $error ) {
+						foreach ( $ex->getStatusValue()->getMessages() as $error ) {
 							$this->addWarning( $error );
 						}
 						continue;
 					}
+					// @phan-suppress-next-next-line PhanTypeMismatchArgumentNullable,PhanPossiblyUndeclaredVariable
+					// recursive is set when used
 					$submodules = $this->listAllSubmodules( $module, $recursive );
 					if ( $submodules ) {
 						$modules = array_merge( $modules, $submodules );
@@ -112,7 +131,7 @@ class ApiParamInfo extends ApiBase {
 			try {
 				$module = $this->getModuleFromPath( $m );
 			} catch ( ApiUsageException $ex ) {
-				foreach ( $ex->getStatusValue()->getErrors() as $error ) {
+				foreach ( $ex->getStatusValue()->getMessages() as $error ) {
 					$this->addWarning( $error );
 				}
 				continue;
@@ -167,9 +186,9 @@ class ApiParamInfo extends ApiBase {
 	 * @return string[]
 	 */
 	private function listAllSubmodules( ApiBase $module, $recursive ) {
+		$paths = [];
 		$manager = $module->getModuleManager();
 		if ( $manager ) {
-			$paths = [];
 			$names = $manager->getNames();
 			sort( $names );
 			foreach ( $names as $name ) {
@@ -282,6 +301,7 @@ class ApiParamInfo extends ApiBase {
 		if ( isset( $ret['helpurls'][0] ) && $ret['helpurls'][0] === false ) {
 			$ret['helpurls'] = [];
 		}
+		// @phan-suppress-next-line PhanTypePossiblyInvalidDimOffset False positive
 		ApiResult::setIndexedTagName( $ret['helpurls'], 'helpurl' );
 
 		if ( $this->helpFormat !== 'none' ) {
@@ -291,11 +311,12 @@ class ApiParamInfo extends ApiBase {
 				$item = [
 					'query' => $qs
 				];
-				$msg = ApiBase::makeMessage( $msg, $this->context, [
+				$msg = $this->msg(
+					Message::newFromSpecifier( $msg ),
 					$module->getModulePrefix(),
 					$module->getModuleName(),
 					$module->getModulePath()
-				] );
+				);
 				$this->formatHelpMessages( $item, 'description', [ $msg ] );
 				if ( isset( $item['description'] ) ) {
 					if ( is_array( $item['description'] ) ) {
@@ -381,11 +402,12 @@ class ApiParamInfo extends ApiBase {
 			if ( $this->helpFormat === 'none' ) {
 				$ret['dynamicparameters'] = true;
 			} else {
-				$dynamicParams = ApiBase::makeMessage( $dynamicParams, $this->context, [
+				$dynamicParams = $this->msg(
+					Message::newFromSpecifier( $dynamicParams ),
 					$module->getModulePrefix(),
 					$module->getModuleName(),
 					$module->getModulePath()
-				] );
+				);
 				$this->formatHelpMessages( $ret, 'dynamicparameters', [ $dynamicParams ] );
 			}
 		}
@@ -407,28 +429,28 @@ class ApiParamInfo extends ApiBase {
 
 		return [
 			'modules' => [
-				ApiBase::PARAM_ISMULTI => true,
+				ParamValidator::PARAM_ISMULTI => true,
 			],
 			'helpformat' => [
-				ApiBase::PARAM_DFLT => 'none',
-				ApiBase::PARAM_TYPE => [ 'html', 'wikitext', 'raw', 'none' ],
+				ParamValidator::PARAM_DEFAULT => 'none',
+				ParamValidator::PARAM_TYPE => [ 'html', 'wikitext', 'raw', 'none' ],
 			],
 
 			'querymodules' => [
-				ApiBase::PARAM_DEPRECATED => true,
-				ApiBase::PARAM_ISMULTI => true,
-				ApiBase::PARAM_TYPE => $querymodules,
+				ParamValidator::PARAM_DEPRECATED => true,
+				ParamValidator::PARAM_ISMULTI => true,
+				ParamValidator::PARAM_TYPE => $querymodules,
 			],
 			'mainmodule' => [
-				ApiBase::PARAM_DEPRECATED => true,
+				ParamValidator::PARAM_DEPRECATED => true,
 			],
 			'pagesetmodule' => [
-				ApiBase::PARAM_DEPRECATED => true,
+				ParamValidator::PARAM_DEPRECATED => true,
 			],
 			'formatmodules' => [
-				ApiBase::PARAM_DEPRECATED => true,
-				ApiBase::PARAM_ISMULTI => true,
-				ApiBase::PARAM_TYPE => $formatmodules,
+				ParamValidator::PARAM_DEPRECATED => true,
+				ParamValidator::PARAM_ISMULTI => true,
+				ParamValidator::PARAM_TYPE => $formatmodules,
 			]
 		];
 	}
@@ -446,3 +468,6 @@ class ApiParamInfo extends ApiBase {
 		return 'https://www.mediawiki.org/wiki/Special:MyLanguage/API:Parameter_information';
 	}
 }
+
+/** @deprecated class alias since 1.43 */
+class_alias( ApiParamInfo::class, 'ApiParamInfo' );

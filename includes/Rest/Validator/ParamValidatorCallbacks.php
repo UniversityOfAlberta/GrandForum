@@ -3,32 +3,24 @@
 namespace MediaWiki\Rest\Validator;
 
 use InvalidArgumentException;
-use MediaWiki\Permissions\PermissionManager;
+use MediaWiki\Permissions\Authority;
 use MediaWiki\Rest\RequestInterface;
-use MediaWiki\User\UserIdentity;
 use Psr\Http\Message\UploadedFileInterface;
+use UtfNormal\Validator;
 use Wikimedia\Message\DataMessageValue;
 use Wikimedia\ParamValidator\Callbacks;
 
 class ParamValidatorCallbacks implements Callbacks {
 
-	/** @var PermissionManager */
-	private $permissionManager;
-
-	/** @var RequestInterface */
-	private $request;
-
-	/** @var UserIdentity */
-	private $user;
+	private RequestInterface $request;
+	private Authority $authority;
 
 	public function __construct(
-		PermissionManager $permissionManager,
 		RequestInterface $request,
-		UserIdentity $user
+		Authority $authority
 	) {
-		$this->permissionManager = $permissionManager;
 		$this->request = $request;
-		$this->user = $user;
+		$this->authority = $authority;
 	}
 
 	/**
@@ -37,6 +29,7 @@ class ParamValidatorCallbacks implements Callbacks {
 	 * @return array
 	 */
 	private function getParamsFromSource( $source ) {
+		// This switch block must match Validator::KNOWN_PARAM_SOURCES
 		switch ( $source ) {
 			case 'path':
 				return $this->request->getPathParams();
@@ -45,7 +38,11 @@ class ParamValidatorCallbacks implements Callbacks {
 				return $this->request->getQueryParams();
 
 			case 'post':
+				wfDeprecatedMsg( 'The "post" source is deprecated, use "body" instead', '1.43' );
 				return $this->request->getPostParams();
+
+			case 'body':
+				return $this->request->getParsedBody() ?? [];
 
 			default:
 				throw new InvalidArgumentException( __METHOD__ . ": Invalid source '$source'" );
@@ -59,10 +56,20 @@ class ParamValidatorCallbacks implements Callbacks {
 
 	public function getValue( $name, $default, array $options ) {
 		$params = $this->getParamsFromSource( $options['source'] );
-		return $params[$name] ?? $default;
-		// @todo Should normalization to NFC UTF-8 be done here (much like in the
-		// action API and the rest of MW), or should it be left to handlers to
-		// do whatever normalization they need?
+		$value = $params[$name] ?? $default;
+
+		// Normalisation for body is being handled in Handler::parseBodyData
+		if ( !isset( $options['raw'] ) && $options['source'] !== 'body' ) {
+			if ( is_string( $value ) ) {
+				// Normalize value to NFC UTF-8
+				$normalizedValue = Validator::cleanUp( $value );
+				// TODO: Warn if normalization was applied
+
+				$value = $normalizedValue;
+			}
+		}
+
+		return $value;
 	}
 
 	public function hasUpload( $name, array $options ) {
@@ -87,7 +94,7 @@ class ParamValidatorCallbacks implements Callbacks {
 	}
 
 	public function useHighLimits( array $options ) {
-		return $this->permissionManager->userHasRight( $this->user, 'apihighlimits' );
+		return $this->authority->isAllowed( 'apihighlimits' );
 	}
 
 }

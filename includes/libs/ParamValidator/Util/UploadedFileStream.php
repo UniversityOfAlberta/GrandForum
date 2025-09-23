@@ -4,6 +4,7 @@ namespace Wikimedia\ParamValidator\Util;
 
 use Psr\Http\Message\StreamInterface;
 use RuntimeException;
+use Stringable;
 use Throwable;
 use Wikimedia\AtEase\AtEase;
 
@@ -17,9 +18,9 @@ use Wikimedia\AtEase\AtEase;
  * @internal
  * @since 1.34
  */
-class UploadedFileStream implements StreamInterface {
+class UploadedFileStream implements Stringable, StreamInterface {
 
-	/** @var resource File handle */
+	/** @var resource|null File handle */
 	private $fp;
 
 	/** @var int|false|null File size. False if not set yet. */
@@ -78,14 +79,11 @@ class UploadedFileStream implements StreamInterface {
 	public function close() {
 		if ( $this->fp ) {
 			// Spec doesn't care about close errors.
-			AtEase::suppressWarnings();
 			try {
 				// PHP 7 emits warnings, suppress
-				fclose( $this->fp );
+				AtEase::quietCall( 'fclose', $this->fp );
 			} catch ( \TypeError $unused ) {
 				// While PHP 8 throws exceptions, ignore
-			} finally {
-				AtEase::restoreWarnings();
 			}
 			$this->fp = null;
 		}
@@ -103,12 +101,9 @@ class UploadedFileStream implements StreamInterface {
 
 			if ( $this->fp ) {
 				// Spec doesn't care about errors here.
-				AtEase::suppressWarnings();
 				try {
-					$stat = fstat( $this->fp );
+					$stat = AtEase::quietCall( 'fstat', $this->fp );
 				} catch ( \TypeError $unused ) {
-				} finally {
-					AtEase::restoreWarnings();
 				}
 				$this->size = $stat['size'] ?? null;
 			}
@@ -124,13 +119,10 @@ class UploadedFileStream implements StreamInterface {
 
 	public function eof() {
 		// Spec doesn't care about errors here.
-		AtEase::suppressWarnings();
 		try {
-			return !$this->fp || feof( $this->fp );
+			return !$this->fp || AtEase::quietCall( 'feof', $this->fp );
 		} catch ( \TypeError $unused ) {
 			return true;
-		} finally {
-			AtEase::restoreWarnings();
 		}
 	}
 
@@ -152,6 +144,7 @@ class UploadedFileStream implements StreamInterface {
 	}
 
 	public function write( $string ) {
+		// @phan-suppress-previous-line PhanPluginNeverReturnMethod
 		$this->checkOpen();
 		throw new RuntimeException( 'Stream is read-only' );
 	}

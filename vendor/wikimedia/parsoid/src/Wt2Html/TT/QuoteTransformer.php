@@ -4,6 +4,7 @@ declare( strict_types = 1 );
 namespace Wikimedia\Parsoid\Wt2Html\TT;
 
 use Wikimedia\Assert\Assert;
+use Wikimedia\Parsoid\NodeData\DataParsoid;
 use Wikimedia\Parsoid\Tokens\EndTagTk;
 use Wikimedia\Parsoid\Tokens\EOFTk;
 use Wikimedia\Parsoid\Tokens\NlTk;
@@ -27,7 +28,7 @@ function array_flatten( array $array ): array {
 	$ret = [];
 	foreach ( $array as $key => $value ) {
 		if ( is_array( $value ) ) {
-			$ret = array_merge( $ret, array_flatten( $value ) );
+			PHPUtils::pushArray( $ret, array_flatten( $value ) );
 		} else {
 			$ret[$key] = $value;
 		}
@@ -99,14 +100,14 @@ class QuoteTransformer extends TokenHandler {
 	 * Handles mw-quote tokens and td/th tokens
 	 * @inheritDoc
 	 */
-	public function onTag( Token $token ) {
-		$tkName = is_string( $token ) ? '' : $token->getName();
+	public function onTag( Token $token ): ?TokenHandlerResult {
+		$tkName = $token->getName();
 		if ( $tkName === 'mw-quote' ) {
 			return $this->onQuote( $token );
 		} elseif ( $tkName === 'td' || $tkName === 'th' ) {
 			return $this->processQuotes( $token );
 		} else {
-			return $token;
+			return null;
 		}
 	}
 
@@ -114,7 +115,7 @@ class QuoteTransformer extends TokenHandler {
 	 * On encountering a NlTk, processes quotes on the current line
 	 * @inheritDoc
 	 */
-	public function onNewline( NlTk $token ) {
+	public function onNewline( NlTk $token ): ?TokenHandlerResult {
 		return $this->processQuotes( $token );
 	}
 
@@ -122,28 +123,28 @@ class QuoteTransformer extends TokenHandler {
 	 * On encountering an EOFTk, processes quotes on the current line
 	 * @inheritDoc
 	 */
-	public function onEnd( EOFTk $token ) {
+	public function onEnd( EOFTk $token ): ?TokenHandlerResult {
 		return $this->processQuotes( $token );
 	}
 
 	/**
 	 * @inheritDoc
 	 */
-	public function onAny( $token ) {
-		$this->manager->env->log(
+	public function onAny( $token ): ?TokenHandlerResult {
+		$this->env->log(
 			"trace/quote",
-			$this->manager->pipelineId,
+			$this->pipelineId,
 			"ANY |",
-			function () use ( $token ) {
+			static function () use ( $token ) {
 				return PHPUtils::jsonEncode( $token );
 			}
 		);
 
 		if ( $this->onAnyEnabled ) {
 			$this->currentChunk[] = $token;
-			return [];
+			return new TokenHandlerResult( [] );
 		} else {
-			return $token;
+			return null;
 		}
 	}
 
@@ -154,16 +155,16 @@ class QuoteTransformer extends TokenHandler {
 	 * processQuotes.
 	 *
 	 * @param Token $token token
-	 * @return array
+	 * @return TokenHandlerResult
 	 */
-	private function onQuote( Token $token ): array {
-		$v = $token->getAttribute( 'value' );
+	private function onQuote( Token $token ): TokenHandlerResult {
+		$v = $token->getAttributeV( 'value' );
 		$qlen = strlen( $v );
-		$this->manager->env->log(
+		$this->env->log(
 			"trace/quote",
-			$this->manager->pipelineId,
+			$this->pipelineId,
 			"QUOTE |",
-			function () use ( $token ) {
+			static function () use ( $token ) {
 				return PHPUtils::jsonEncode( $token );
 			}
 		);
@@ -176,7 +177,7 @@ class QuoteTransformer extends TokenHandler {
 			$this->startNewChunk();
 		}
 
-		return [];
+		return new TokenHandlerResult( [] );
 	}
 
 	/**
@@ -184,28 +185,28 @@ class QuoteTransformer extends TokenHandler {
 	 * collected quote tokens so far.
 	 *
 	 * @param Token $token token
-	 * @return Token|array
+	 * @return TokenHandlerResult|null
 	 */
-	private function processQuotes( Token $token ) {
+	private function processQuotes( Token $token ): ?TokenHandlerResult {
 		if ( !$this->onAnyEnabled ) {
 			// Nothing to do, quick abort.
-			return $token;
+			return null;
 		}
 
-		$this->manager->env->log(
+		$this->env->log(
 			"trace/quote",
-			$this->manager->pipelineId,
+			$this->pipelineId,
 			"NL    |",
-			function () use( $token ) {
+			static function () use( $token ) {
 				return PHPUtils::jsonEncode( $token );
 			}
 		);
 
 		if (
 			( $token->getName() === 'td' || $token->getName() === 'th' ) &&
-			( $token->dataAttribs->stx ?? '' ) === 'html'
+			( $token->dataParsoid->stx ?? '' ) === 'html'
 		) {
-			return $token;
+			return null;
 		}
 
 		// count number of bold and italics
@@ -215,7 +216,7 @@ class QuoteTransformer extends TokenHandler {
 		for ( $i = 1; $i < $chunkCount; $i += 2 ) {
 			// quote token
 			Assert::invariant( count( $this->chunks[$i] ) === 1, 'Expected a single token in the chunk' );
-			$qlen = strlen( $this->chunks[$i][0]->getAttribute( "value" ) );
+			$qlen = strlen( $this->chunks[$i][0]->getAttributeV( "value" ) );
 			if ( $qlen === 2 || $qlen === 5 ) {
 				$numitalics++;
 			}
@@ -232,13 +233,13 @@ class QuoteTransformer extends TokenHandler {
 			$chunkCount = count( $this->chunks );
 			for ( $i = 1; $i < $chunkCount; $i += 2 ) {
 				// only look at bold tags
-				if ( strlen( $this->chunks[$i][0]->getAttribute( "value" ) ) !== 3 ) {
+				if ( strlen( $this->chunks[$i][0]->getAttributeV( "value" ) ) !== 3 ) {
 					continue;
 				}
 
 				$tok = $this->chunks[$i][0];
-				$lastCharIsSpace = $tok->getAttribute( 'isSpace_1' );
-				$secondLastCharIsSpace = $tok->getAttribute( 'isSpace_2' );
+				$lastCharIsSpace = $tok->getAttributeV( 'isSpace_1' );
+				$secondLastCharIsSpace = $tok->getAttributeV( 'isSpace_2' );
 				if ( $lastCharIsSpace && $firstspace === -1 ) {
 					$firstspace = $i;
 				} elseif ( !$lastCharIsSpace ) {
@@ -274,14 +275,14 @@ class QuoteTransformer extends TokenHandler {
 		$this->currentChunk[] = $token;
 		$this->startNewChunk();
 		// PORT-FIXME: Is there a more efficient way of doing this?
-		$res = [ "tokens" => array_flatten( array_merge( [], $this->chunks ) ) ];
+		$res = new TokenHandlerResult( array_flatten( $this->chunks ) );
 
-		$this->manager->env->log(
+		$this->env->log(
 			"trace/quote",
-			$this->manager->pipelineId,
+			$this->pipelineId,
 			"----->",
-			function () use ( $res ) {
-				return PHPUtils::jsonEncode( $res["tokens"] );
+			static function () use ( $res ) {
+				return PHPUtils::jsonEncode( $res->tokens );
 			}
 		);
 
@@ -300,17 +301,19 @@ class QuoteTransformer extends TokenHandler {
 	private function convertBold( int $i ): void {
 		// this should be a bold tag.
 		Assert::invariant( $i > 0 && count( $this->chunks[$i] ) === 1
-			&& strlen( $this->chunks[$i][0]->getAttribute( "value" ) ) === 3,
+			&& strlen( $this->chunks[$i][0]->getAttributeV( "value" ) ) === 3,
 			'this should be a bold tag' );
 
 		// we're going to convert it to a single plain text ' plus an italic tag
 		$this->chunks[$i - 1][] = "'";
 		$oldbold = $this->chunks[$i][0];
-		$tsr = $oldbold->dataAttribs->tsr ?? null;
+		$tsr = $oldbold->dataParsoid->tsr ?? null;
 		if ( $tsr ) {
 			$tsr = new SourceRange( $tsr->start + 1, $tsr->end );
 		}
-		$newbold = new SelfclosingTagTk( 'mw-quote', [], (object)[ "tsr" => $tsr ] );
+		$dp = new DataParsoid;
+		$dp->tsr = $tsr;
+		$newbold = new SelfclosingTagTk( 'mw-quote', [], $dp );
 		$newbold->setAttribute( "value", "''" ); // italic!
 		$this->chunks[$i] = [ $newbold ];
 	}
@@ -326,7 +329,7 @@ class QuoteTransformer extends TokenHandler {
 		$chunkCount = count( $this->chunks );
 		for ( $i = 1; $i < $chunkCount; $i += 2 ) {
 			Assert::invariant( count( $this->chunks[$i] ) === 1, 'expected count chunks[i] == 1' );
-			$qlen = strlen( $this->chunks[$i][0]->getAttribute( "value" ) );
+			$qlen = strlen( $this->chunks[$i][0]->getAttributeV( "value" ) );
 			if ( $qlen === 2 ) {
 				if ( $state === 'i' ) {
 					$this->quoteToTag( $i, [ new EndTagTk( 'i' ) ] );
@@ -404,15 +407,15 @@ class QuoteTransformer extends TokenHandler {
 		}
 		if ( $state === 'b' || $state === 'ib' ) {
 			$this->currentChunk[] = new EndTagTk( 'b' );
-			$this->last["b"]->dataAttribs->autoInsertedEnd = true;
+			$this->last["b"]->dataParsoid->autoInsertedEndToken = true;
 		}
 		if ( $state === 'i' || $state === 'bi' || $state === 'ib' ) {
 			$this->currentChunk[] = new EndTagTk( 'i' );
-			$this->last["i"]->dataAttribs->autoInsertedEnd = true;
+			$this->last["i"]->dataParsoid->autoInsertedEndToken = true;
 		}
 		if ( $state === 'bi' ) {
 			$this->currentChunk[] = new EndTagTk( 'b' );
-			$this->last["b"]->dataAttribs->autoInsertedEnd = true;
+			$this->last["b"]->dataParsoid->autoInsertedEndToken = true;
 		}
 	}
 
@@ -428,22 +431,22 @@ class QuoteTransformer extends TokenHandler {
 		$result = [];
 		$oldtag = $this->chunks[$chunk][0];
 		// make tsr
-		$tsr = $oldtag->dataAttribs->tsr ?? null;
+		$tsr = $oldtag->dataParsoid->tsr ?? null;
 		$startpos = $tsr ? $tsr->start : null;
 		$endpos = $tsr ? $tsr->end : null;
 		$numTags = count( $tags );
 		for ( $i = 0; $i < $numTags; $i++ ) {
 			if ( $tsr ) {
 				if ( $i === 0 && $ignoreBogusTwo ) {
-					$this->last[$tags[$i]->getName()]->dataAttribs->autoInsertedEnd = true;
+					$this->last[$tags[$i]->getName()]->dataParsoid->autoInsertedEndToken = true;
 				} elseif ( $i === 2 && $ignoreBogusTwo ) {
-					$tags[$i]->dataAttribs->autoInsertedStart = true;
+					$tags[$i]->dataParsoid->autoInsertedStartToken = true;
 				} elseif ( $tags[$i]->getName() === 'b' ) {
-					$tags[$i]->dataAttribs->tsr = new SourceRange( $startpos, $startpos + 3 );
-					$startpos = $tags[$i]->dataAttribs->tsr->end;
+					$tags[$i]->dataParsoid->tsr = new SourceRange( $startpos, $startpos + 3 );
+					$startpos = $tags[$i]->dataParsoid->tsr->end;
 				} elseif ( $tags[$i]->getName() === 'i' ) {
-					$tags[$i]->dataAttribs->tsr = new SourceRange( $startpos, $startpos + 2 );
-					$startpos = $tags[$i]->dataAttribs->tsr->end;
+					$tags[$i]->dataParsoid->tsr = new SourceRange( $startpos, $startpos + 2 );
+					$startpos = $tags[$i]->dataParsoid->tsr->end;
 				}
 			}
 			$this->last[$tags[$i]->getName()] = ( $tags[$i]->getType() === "EndTagTk" ) ? null : $tags[$i];

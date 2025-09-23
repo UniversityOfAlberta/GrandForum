@@ -22,6 +22,8 @@
 
 declare( strict_types = 1 );
 
+namespace MediaWiki\Password;
+
 /**
  * The old style of MediaWiki password hashing. It involves
  * running MD5 on the password.
@@ -29,15 +31,15 @@ declare( strict_types = 1 );
  * @since 1.24
  */
 class MWOldPassword extends ParameterizedPassword {
-	protected function getDefaultParams() : array {
+	protected function getDefaultParams(): array {
 		return [];
 	}
 
-	protected function getDelimiter() : string {
+	protected function getDelimiter(): string {
 		return ':';
 	}
 
-	public function crypt( string $plaintext ) : void {
+	public function crypt( string $plaintext ): void {
 		if ( count( $this->args ) === 1 ) {
 			// Accept (but do not generate) salted passwords with :A: prefix.
 			// These are actually B-type passwords, but an error in a previous
@@ -49,8 +51,11 @@ class MWOldPassword extends ParameterizedPassword {
 			$this->hash = md5( $plaintext );
 		}
 
-		if ( !is_string( $this->hash ) || strlen( $this->hash ) < 32 ) {
+		if ( strlen( $this->hash ) < 32 ) {
 			throw new PasswordError( 'Error when hashing password.' );
 		}
 	}
 }
+
+/** @deprecated since 1.43 use MediaWiki\\Password\\MWOldPassword */
+class_alias( MWOldPassword::class, 'MWOldPassword' );

@@ -18,6 +18,11 @@
  * @file
  */
 
+use Wikimedia\Assert\Assert;
+use Wikimedia\Message\MessageParam;
+use Wikimedia\Message\MessageSpecifier;
+use Wikimedia\Message\MessageValue;
+
 /**
  * Generic operation result class
  * Has warning/error list, boolean status and arbitrary value
@@ -30,22 +35,34 @@
  * informed as to what went wrong. Calling the fatal() function sets an error
  * message and simultaneously switches off the OK flag.
  *
- * The recommended pattern for Status objects is to return a StatusValue
- * unconditionally, i.e. both on success and on failure -- so that the
- * developer of the calling code is reminded that the function can fail, and
- * so that a lack of error-handling will be explicit.
+ * The recommended pattern for functions returning StatusValue objects is
+ * to return a StatusValue unconditionally, both on success and on failure
+ * (similarly to Option, Maybe, Promise etc. objects in other languages) --
+ * so that the developer of the calling code is reminded that the function
+ * can fail, and so that a lack of error-handling will be explicit.
  *
- * The use of Message objects should be avoided when serializability is needed.
+ * This class accepts any MessageSpecifier objects. The use of Message objects
+ * should be avoided when serializability is needed. Use MessageValue in that
+ * case instead.
  *
  * @newable
+ * @stable to extend
  * @since 1.25
  */
-class StatusValue {
+class StatusValue implements Stringable {
 
-	/** @var bool */
+	/**
+	 * @var bool
+	 * @internal Only for use by Status. Use {@link self::isOK()} or {@link self::setOK()}.
+	 */
 	protected $ok = true;
 
-	/** @var array[] */
+	/**
+	 * @var array[]
+	 * @internal Only for use by Status. Use {@link self::getErrors()} (get full list),
+	 * {@link self::splitByErrorType()} (get errors/warnings), or
+	 * {@link self::fatal()}, {@link self::error()} or {@link self::warning()} (add error/warning).
+	 */
 	protected $errors = [];
 
 	/** @var mixed */
@@ -59,6 +76,9 @@ class StatusValue {
 
 	/** @var int Counter for batch operations */
 	public $failCount = 0;
+
+	/** @var mixed arbitrary extra data about the operation */
+	public $statusData;
 
 	/**
 	 * Factory function for fatal errors
@@ -144,7 +164,9 @@ class StatusValue {
 	 *
 	 * Each error is a (message:string or MessageSpecifier,params:array) map
 	 *
+	 * @deprecated since 1.43 Use `->getMessages()` instead
 	 * @return array[]
+	 * @phan-return array{type:'warning'|'error', message:string|MessageSpecifier, params:array}[]
 	 */
 	public function getErrors() {
 		return $this->errors;
@@ -154,9 +176,11 @@ class StatusValue {
 	 * Change operation status
 	 *
 	 * @param bool $ok
+	 * @return $this
 	 */
 	public function setOK( $ok ) {
 		$this->ok = $ok;
+		return $this;
 	}
 
 	/**
@@ -164,10 +188,63 @@ class StatusValue {
 	 *
 	 * @param bool $ok Whether the operation completed
 	 * @param mixed|null $value
+	 * @return $this
 	 */
 	public function setResult( $ok, $value = null ) {
 		$this->ok = (bool)$ok;
 		$this->value = $value;
+		return $this;
+	}
+
+	/**
+	 * Add a new error to the error array ($this->errors) if that error is not already in the
+	 * error array. Each error is passed as an array with the following fields:
+	 *
+	 * - type: 'error' or 'warning'
+	 * - message: a string (message key) or MessageSpecifier
+	 * - params: an array of string parameters
+	 *
+	 * If the new error is of type 'error' and it matches an existing error of type 'warning',
+	 * the existing error is upgraded to type 'error'. An error provided as a MessageSpecifier
+	 * will successfully match an error provided as the same string message key and array of
+	 * parameters as separate array elements.
+	 *
+	 * @param array $newError
+	 * @phan-param array{type:'warning'|'error', message:string|MessageSpecifier, params:array} $newError
+	 * @return $this
+	 */
+	private function addError( array $newError ) {
+		[ 'type' => $newType, 'message' => $newKey, 'params' => $newParams ] = $newError;
+		if ( $newKey instanceof MessageSpecifier ) {
+			if ( $newParams ) {
+				// Deprecate code like `Status::newFatal( wfMessage( 'foo' ), 'param' )`
+				// - the parameters have always been ignored, so this is usually a mistake.
+				wfDeprecatedMsg( 'Combining MessageSpecifier and parameters array' .
+					' was deprecated in MediaWiki 1.43', '1.43' );
+			}
+			$newParams = $newKey->getParams();
+			$newKey = $newKey->getKey();
+		}
+
+		foreach ( $this->errors as [ 'type' => &$type, 'message' => $key, 'params' => $params ] ) {
+			if ( $key instanceof MessageSpecifier ) {
+				$params = $key->getParams();
+				$key = $key->getKey();
+			}
+
+			// This uses loose equality as we must support equality between MessageParam objects
+			// (e.g. ScalarParam), including when they are created separate and not by-ref equal.
+			if ( $newKey === $key && $newParams == $params ) {
+				if ( $type === 'warning' && $newType === 'error' ) {
+					$type = 'error';
+				}
+				return $this;
+			}
+		}
+
+		$this->errors[] = $newError;
+
+		return $this;
 	}
 
 	/**
@@ -175,13 +252,14 @@ class StatusValue {
 	 *
 	 * @param string|MessageSpecifier $message Message key or object
 	 * @param mixed ...$parameters
+	 * @return $this
 	 */
 	public function warning( $message, ...$parameters ) {
-		$this->errors[] = [
+		return $this->addError( [
 			'type' => 'warning',
 			'message' => $message,
 			'params' => $parameters
-		];
+		] );
 	}
 
 	/**
@@ -190,13 +268,14 @@ class StatusValue {
 	 *
 	 * @param string|MessageSpecifier $message Message key or object
 	 * @param mixed ...$parameters
+	 * @return $this
 	 */
 	public function error( $message, ...$parameters ) {
-		$this->errors[] = [
+		return $this->addError( [
 			'type' => 'error',
 			'message' => $message,
 			'params' => $parameters
-		];
+		] );
 	}
 
 	/**
@@ -205,14 +284,11 @@ class StatusValue {
 	 *
 	 * @param string|MessageSpecifier $message Message key or object
 	 * @param mixed ...$parameters
+	 * @return $this
 	 */
 	public function fatal( $message, ...$parameters ) {
-		$this->errors[] = [
-			'type' => 'error',
-			'message' => $message,
-			'params' => $parameters
-		];
 		$this->ok = false;
+		return $this->error( $message, ...$parameters );
 	}
 
 	/**
@@ -220,15 +296,26 @@ class StatusValue {
 	 *
 	 * @param StatusValue $other
 	 * @param bool $overwriteValue Whether to override the "value" member
+	 * @return $this
 	 */
 	public function merge( $other, $overwriteValue = false ) {
-		$this->errors = array_merge( $this->errors, $other->errors );
+		if ( $this->statusData !== null && $other->statusData !== null ) {
+			throw new RuntimeException( "Status cannot be merged, because they both have \$statusData" );
+		} else {
+			$this->statusData ??= $other->statusData;
+		}
+
+		foreach ( $other->errors as $error ) {
+			$this->addError( $error );
+		}
 		$this->ok = $this->ok && $other->ok;
 		if ( $overwriteValue ) {
 			$this->value = $other->value;
 		}
 		$this->successCount += $other->successCount;
 		$this->failCount += $other->failCount;
+
+		return $this;
 	}
 
 	/**
@@ -238,8 +325,10 @@ class StatusValue {
 	 *   - message: string message key or MessageSpecifier
 	 *   - params: array list of parameters
 	 *
+	 * @deprecated since 1.43 Use `->getMessages( $type )` instead
 	 * @param string $type
 	 * @return array[]
+	 * @phan-return array{type:'warning'|'error', message:string|MessageSpecifier, params:array}[]
 	 */
 	public function getErrorsByType( $type ) {
 		$result = [];
@@ -253,22 +342,84 @@ class StatusValue {
 	}
 
 	/**
-	 * Returns true if the specified message is present as a warning or error
+	 * Returns a list of error messages, optionally only those of the given type
 	 *
-	 * @param string|MessageSpecifier $message Message key or object to search for
+	 * If the `warning()` or `error()` method was called with a MessageSpecifier object,
+	 * this method is guaranteed to return the same object.
 	 *
+	 * @since 1.43
+	 * @param ?string $type If provided, only return messages of the type 'warning' or 'error'
+	 * @phan-param null|'warning'|'error' $type
+	 * @return MessageSpecifier[]
+	 */
+	public function getMessages( ?string $type = null ): array {
+		Assert::parameter( $type === null || $type === 'warning' || $type === 'error',
+			'$type', "must be null, 'warning', or 'error'" );
+		$result = [];
+		foreach ( $this->errors as $error ) {
+			if ( $type === null || $error['type'] === $type ) {
+				[ 'message' => $key, 'params' => $params ] = $error;
+				if ( $key instanceof MessageSpecifier ) {
+					$result[] = $key;
+				} else {
+					$result[] = new MessageValue( $key, $params );
+				}
+			}
+		}
+
+		return $result;
+	}
+
+	/**
+	 * Returns true if the specified message is present as a warning or error.
+	 * Any message using the same key will be found (ignoring the message parameters).
+	 *
+	 * @param string $message Message key to search for
+	 *   (this parameter used to allow MessageSpecifier too, deprecated since 1.43)
 	 * @return bool
 	 */
 	public function hasMessage( $message ) {
 		if ( $message instanceof MessageSpecifier ) {
+			wfDeprecatedMsg( 'Passing MessageSpecifier to hasMessage()' .
+				' was deprecated in MediaWiki 1.43', '1.43' );
 			$message = $message->getKey();
 		}
-		foreach ( $this->errors as $error ) {
-			if ( $error['message'] instanceof MessageSpecifier
-				&& $error['message']->getKey() === $message
+
+		foreach ( $this->errors as [ 'message' => $key ] ) {
+			if ( ( $key instanceof MessageSpecifier && $key->getKey() === $message ) ||
+				$key === $message
 			) {
 				return true;
-			} elseif ( $error['message'] === $message ) {
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Returns true if any other message than the specified ones is present as a warning or error.
+	 * Any messages using the same keys will be found (ignoring the message parameters).
+	 *
+	 * @param string ...$messages Message keys to search for
+	 *   (this parameter used to allow MessageSpecifier too, deprecated since 1.43)
+	 * @return bool
+	 */
+	public function hasMessagesExcept( ...$messages ) {
+		$exceptedKeys = [];
+		foreach ( $messages as $message ) {
+			if ( $message instanceof MessageSpecifier ) {
+				wfDeprecatedMsg( 'Passing MessageSpecifier to hasMessagesExcept()' .
+					' was deprecated in MediaWiki 1.43', '1.43' );
+				$message = $message->getKey();
+			}
+			$exceptedKeys[] = $message;
+		}
+
+		foreach ( $this->errors as [ 'message' => $key ] ) {
+			if ( $key instanceof MessageSpecifier ) {
+				$key = $key->getKey();
+			}
+			if ( !in_array( $key, $exceptedKeys, true ) ) {
 				return true;
 			}
 		}
@@ -280,19 +431,37 @@ class StatusValue {
 	 * If the specified source message exists, replace it with the specified
 	 * destination message, but keep the same parameters as in the original error.
 	 *
-	 * Note, due to the lack of tools for comparing IStatusMessage objects, this
-	 * function will not work when using such an object as the search parameter.
+	 * When using a string as the `$source` parameter, any message using the same key will be replaced
+	 * (regardless of whether it was stored as string or as MessageSpecifier, and ignoring the
+	 * message parameters).
 	 *
-	 * @param MessageSpecifier|string $source Message key or object to search for
+	 * When using a MessageSpecifier as the `$source` parameter, the message will only be replaced
+	 * when the same MessageSpecifier object was stored in the StatusValue (compared with `===`).
+	 * Since the only reliable way to obtain one is to use getErrors(), which is deprecated,
+	 * passing a MessageSpecifier is deprecated (since 1.43).
+	 *
+	 * @param string $source Message key to search for
+	 *   (this parameter used to allow MessageSpecifier too, deprecated since 1.43)
 	 * @param MessageSpecifier|string $dest Replacement message key or object
 	 * @return bool Return true if the replacement was done, false otherwise.
 	 */
 	public function replaceMessage( $source, $dest ) {
 		$replaced = false;
 
-		foreach ( $this->errors as $index => $error ) {
-			if ( $error['message'] === $source ) {
-				$this->errors[$index]['message'] = $dest;
+		if ( $source instanceof MessageSpecifier ) {
+			wfDeprecatedMsg( 'Passing MessageSpecifier as $source to replaceMessage()' .
+				' was deprecated in MediaWiki 1.43', '1.43' );
+		}
+
+		foreach ( $this->errors as [ 'message' => &$message, 'params' => &$params ] ) {
+			if ( $message === $source ||
+				( $message instanceof MessageSpecifier && $message->getKey() === $source )
+			) {
+				$message = $dest;
+				if ( $dest instanceof MessageSpecifier ) {
+					// 'params' will be ignored now, so remove them from the internal array
+					$params = [];
+				}
 				$replaced = true;
 			}
 		}
@@ -301,20 +470,20 @@ class StatusValue {
 	}
 
 	/**
+	 * Returns a string representation of the status for debugging.
+	 * This is fairly verbose and may change without notice.
+	 *
 	 * @return string
 	 */
 	public function __toString() {
 		$status = $this->isOK() ? "OK" : "Error";
 		if ( count( $this->errors ) ) {
-			$errorcount = "collected " . ( count( $this->errors ) ) . " error(s) on the way";
+			$errorcount = "collected " . ( count( $this->errors ) ) . " message(s) on the way";
 		} else {
 			$errorcount = "no errors detected";
 		}
 		if ( isset( $this->value ) ) {
-			$valstr = gettype( $this->value ) . " value set";
-			if ( is_object( $this->value ) ) {
-				$valstr .= "\"" . get_class( $this->value ) . "\" instance";
-			}
+			$valstr = get_debug_type( $this->value ) . " value set";
 		} else {
 			$valstr = "no value set";
 		}
@@ -324,28 +493,27 @@ class StatusValue {
 			$valstr
 		);
 		if ( count( $this->errors ) > 0 ) {
-			$hdr = sprintf( "+-%'-4s-+-%'-25s-+-%'-40s-+\n", "", "", "" );
-			$i = 1;
-			$out .= "\n";
-			$out .= $hdr;
-			foreach ( $this->errors as $error ) {
-				if ( $error['message'] instanceof MessageSpecifier ) {
-					$key = $error['message']->getKey();
-					$params = $error['message']->getParams();
-				} elseif ( $error['params'] ) {
-					$key = $error['message'];
-					$params = $error['params'];
-				} else {
-					$key = $error['message'];
-					$params = [];
+			$hdr = sprintf( "+-%'-8s-+-%'-25s-+-%'-36s-+\n", "", "", "" );
+			$out .= "\n" . $hdr;
+			foreach ( $this->errors as [ 'type' => $type, 'message' => $key, 'params' => $params ] ) {
+				if ( $key instanceof MessageSpecifier ) {
+					$params = $key->getParams();
+					$key = $key->getKey();
 				}
 
-				$out .= sprintf( "| %4d | %-25.25s | %-40.40s |\n",
-					$i,
-					$key,
-					self::flattenParams( $params )
-				);
-				$i += 1;
+				$keyChunks = mb_str_split( $key, 25 );
+				$paramsChunks = mb_str_split( $this->flattenParams( $params, " | " ), 36 );
+
+				// array_map(null,...) is like Python's zip()
+				foreach ( array_map( null, [ $type ], $keyChunks, $paramsChunks )
+					as [ $typeChunk, $keyChunk, $paramsChunk ]
+				) {
+					$out .= sprintf( "| %-8s | %-25s | %-36s |\n",
+						$typeChunk,
+						$keyChunk,
+						$paramsChunk
+					);
+				}
 			}
 			$out .= $hdr;
 		}
@@ -355,19 +523,49 @@ class StatusValue {
 
 	/**
 	 * @param array $params Message parameters
+	 * @param string $joiner
+	 *
 	 * @return string String representation
 	 */
-	private function flattenParams( array $params ) : string {
+	private function flattenParams( array $params, string $joiner = ', ' ): string {
 		$ret = [];
 		foreach ( $params as $p ) {
 			if ( is_array( $p ) ) {
-				$ret[] = '[ ' . self::flattenParams( $p ) . ' ]';
+				$r = '[ ' . self::flattenParams( $p ) . ' ]';
 			} elseif ( $p instanceof MessageSpecifier ) {
-				$ret[] = '{ ' . $p->getKey() . ': ' . self::flattenParams( $p->getParams() ) . ' }';
+				$r = '{ ' . $p->getKey() . ': ' . self::flattenParams( $p->getParams() ) . ' }';
+			} elseif ( $p instanceof MessageParam ) {
+				$r = $p->dump();
 			} else {
-				$ret[] = (string)$p;
+				$r = (string)$p;
+			}
+
+			$ret[] = mb_strlen( $r ) > 100 ? mb_substr( $r, 0, 99 ) . "..." : $r;
+		}
+		return implode( $joiner, $ret );
+	}
+
+	/**
+	 * Returns a list of status messages of the given type (or all if false)
+	 *
+	 * @internal Only for use by Status.
+	 *
+	 * @param string|bool $type
+	 * @return array[]
+	 */
+	protected function getStatusArray( $type = false ) {
+		$result = [];
+
+		foreach ( $this->getErrors() as $error ) {
+			if ( !$type || $error['type'] === $type ) {
+				if ( $error['message'] instanceof MessageSpecifier ) {
+					$result[] = [ $error['message']->getKey(), ...$error['message']->getParams() ];
+				} else {
+					$result[] = [ $error['message'], ...$error['params'] ];
+				}
 			}
 		}
-		return implode( ' ', $ret );
+
+		return $result;
 	}
 }

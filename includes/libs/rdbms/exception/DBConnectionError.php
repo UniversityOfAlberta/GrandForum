@@ -16,7 +16,6 @@
  * http://www.gnu.org/copyleft/gpl.html
  *
  * @file
- * @ingroup Database
  */
 namespace Wikimedia\Rdbms;
 
@@ -30,7 +29,7 @@ class DBConnectionError extends DBExpectedError {
 	 * @param IDatabase|null $db Object throwing the error
 	 * @param string $error Error text
 	 */
-	public function __construct( IDatabase $db = null, $error = 'unknown error' ) {
+	public function __construct( ?IDatabase $db = null, $error = 'unknown error' ) {
 		$msg = 'Cannot access the database';
 		if ( trim( $error ) != '' ) {
 			$msg .= ": $error";
@@ -39,8 +38,3 @@ class DBConnectionError extends DBExpectedError {
 		parent::__construct( $db, $msg );
 	}
 }
-
-/**
- * @deprecated since 1.29
- */
-class_alias( DBConnectionError::class, 'DBConnectionError' );

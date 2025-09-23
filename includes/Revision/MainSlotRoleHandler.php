@@ -22,11 +22,13 @@
 
 namespace MediaWiki\Revision;
 
-use Hooks;
 use MediaWiki\Content\IContentHandlerFactory;
+use MediaWiki\HookContainer\HookContainer;
+use MediaWiki\HookContainer\HookRunner;
 use MediaWiki\Linker\LinkTarget;
+use MediaWiki\Page\PageIdentity;
+use MediaWiki\Title\TitleFactory;
 use MWUnknownContentModelException;
-use Title;
 
 /**
  * A SlotRoleHandler for the main slot. While most slot roles serve a specific purpose and
@@ -47,23 +49,33 @@ class MainSlotRoleHandler extends SlotRoleHandler {
 	 */
 	private $namespaceContentModels;
 
-	/**
-	 * @var IContentHandlerFactory
-	 */
+	/** @var IContentHandlerFactory */
 	private $contentHandlerFactory;
+
+	/** @var HookRunner */
+	private $hookRunner;
+
+	/** @var TitleFactory */
+	private $titleFactory;
 
 	/**
 	 * @param string[] $namespaceContentModels A mapping of namespaces to content models,
 	 *        typically from $wgNamespaceContentModels.
 	 * @param IContentHandlerFactory $contentHandlerFactory
+	 * @param HookContainer $hookContainer
+	 * @param TitleFactory $titleFactory
 	 */
 	public function __construct(
 		array $namespaceContentModels,
-		IContentHandlerFactory $contentHandlerFactory
+		IContentHandlerFactory $contentHandlerFactory,
+		HookContainer $hookContainer,
+		TitleFactory $titleFactory
 	) {
-		parent::__construct( 'main', CONTENT_MODEL_WIKITEXT );
+		parent::__construct( SlotRecord::MAIN, CONTENT_MODEL_WIKITEXT );
 		$this->namespaceContentModels = $namespaceContentModels;
 		$this->contentHandlerFactory = $contentHandlerFactory;
+		$this->hookRunner = new HookRunner( $hookContainer );
+		$this->titleFactory = $titleFactory;
 	}
 
 	public function supportsArticleCount() {
@@ -72,24 +84,24 @@ class MainSlotRoleHandler extends SlotRoleHandler {
 
 	/**
 	 * @param string $model
-	 * @param LinkTarget $page
+	 * @param PageIdentity $page
 	 *
 	 * @return bool
 	 * @throws MWUnknownContentModelException
 	 */
-	public function isAllowedModel( $model, LinkTarget $page ) {
-		$title = Title::newFromLinkTarget( $page );
+	public function isAllowedModel( $model, PageIdentity $page ) {
+		$title = $this->titleFactory->newFromPageIdentity( $page );
 		$handler = $this->contentHandlerFactory->getContentHandler( $model );
 
 		return $handler->canBeUsedOn( $title );
 	}
 
 	/**
-	 * @param LinkTarget $page
+	 * @param LinkTarget|PageIdentity $page
 	 *
 	 * @return string
 	 */
-	public function getDefaultModel( LinkTarget $page ) {
+	public function getDefaultModel( $page ) {
 		// NOTE: this method must not rely on $title->getContentModel() directly or indirectly,
 		//       because it is used to initialize the mContentModel member.
 
@@ -98,8 +110,13 @@ class MainSlotRoleHandler extends SlotRoleHandler {
 		$model = $this->namespaceContentModels[$ns] ?? null;
 
 		// Hook can determine default model
-		$title = Title::newFromLinkTarget( $page );
-		if ( !Hooks::runner()->onContentHandlerDefaultModelFor( $title, $model ) && $model !== null ) {
+		if ( $page instanceof PageIdentity ) {
+			$title = $this->titleFactory->newFromPageIdentity( $page );
+		} else {
+			$title = $this->titleFactory->newFromLinkTarget( $page );
+		}
+		// @phan-suppress-next-line PhanTypeMismatchArgument Type mismatch on pass-by-ref args
+		if ( !$this->hookRunner->onContentHandlerDefaultModelFor( $title, $model ) && $model !== null ) {
 			return $model;
 		}
 

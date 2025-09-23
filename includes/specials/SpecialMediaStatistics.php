@@ -1,7 +1,5 @@
 <?php
 /**
- * Implements Special:MediaStatistics
- *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -18,18 +16,34 @@
  * http://www.gnu.org/copyleft/gpl.html
  *
  * @file
- * @ingroup SpecialPage
- * @author Brian Wolff
  */
 
+namespace MediaWiki\Specials;
+
+use MediaWiki\Cache\LinkBatchFactory;
+use MediaWiki\Html\Html;
+use MediaWiki\Output\OutputPage;
+use MediaWiki\SpecialPage\QueryPage;
+use MediaWiki\SpecialPage\SpecialPage;
+use Skin;
+use Wikimedia\Mime\MimeAnalyzer;
+use Wikimedia\Rdbms\IConnectionProvider;
 use Wikimedia\Rdbms\IDatabase;
+use Wikimedia\Rdbms\IReadableDatabase;
 use Wikimedia\Rdbms\IResultWrapper;
 
 /**
+ * Implements Special:MediaStatistics
+ *
  * @ingroup SpecialPage
+ * @author Brian Wolff
  */
 class SpecialMediaStatistics extends QueryPage {
-	protected $totalCount = 0, $totalBytes = 0;
+
+	public const MAX_LIMIT = 5000;
+
+	protected int $totalCount = 0;
+	protected int $totalBytes = 0;
 
 	/**
 	 * @var int Combined file size of all files in a section
@@ -37,16 +51,35 @@ class SpecialMediaStatistics extends QueryPage {
 	protected $totalPerType = 0;
 
 	/**
+	 * @var int Combined file count of all files in a section
+	 */
+	protected $countPerType = 0;
+
+	/**
 	 * @var int Combined file size of all files
 	 */
 	protected $totalSize = 0;
 
-	public function __construct( $name = 'MediaStatistics' ) {
-		parent::__construct( $name );
+	private MimeAnalyzer $mimeAnalyzer;
+
+	/**
+	 * @param MimeAnalyzer $mimeAnalyzer
+	 * @param IConnectionProvider $dbProvider
+	 * @param LinkBatchFactory $linkBatchFactory
+	 */
+	public function __construct(
+		MimeAnalyzer $mimeAnalyzer,
+		IConnectionProvider $dbProvider,
+		LinkBatchFactory $linkBatchFactory
+	) {
+		parent::__construct( 'MediaStatistics' );
 		// Generally speaking there is only a small number of file types,
 		// so just show all of them.
-		$this->limit = 5000;
+		$this->limit = self::MAX_LIMIT;
 		$this->shownavigation = false;
+		$this->mimeAnalyzer = $mimeAnalyzer;
+		$this->setDatabaseProvider( $dbProvider );
+		$this->setLinkBatchFactory( $linkBatchFactory );
 	}
 
 	public function isExpensive() {
@@ -68,7 +101,7 @@ class SpecialMediaStatistics extends QueryPage {
 	 * @return array
 	 */
 	public function getQueryInfo() {
-		$dbr = wfGetDB( DB_REPLICA );
+		$dbr = $this->getDatabaseProvider()->getReplicaDatabase();
 		$fakeTitle = $dbr->buildConcat( [
 			'img_media_type',
 			$dbr->addQuotes( ';' ),
@@ -113,7 +146,7 @@ class SpecialMediaStatistics extends QueryPage {
 	 *
 	 * @param OutputPage $out
 	 * @param Skin $skin (deprecated presumably)
-	 * @param IDatabase $dbr
+	 * @param IReadableDatabase $dbr
 	 * @param IResultWrapper $res Results from query
 	 * @param int $num Number of results
 	 * @param int $offset Paging offset (Should always be 0 in our case)
@@ -125,7 +158,7 @@ class SpecialMediaStatistics extends QueryPage {
 			if ( count( $mediaStats ) < 4 ) {
 				continue;
 			}
-			list( $mediaType, $mime, $totalCount, $totalBytes ) = $mediaStats;
+			[ $mediaType, $mime, $totalCount, $totalBytes ] = $mediaStats;
 			if ( $prevMediaType !== $mediaType ) {
 				if ( $prevMediaType !== null ) {
 					// We're not at beginning, so we have to
@@ -134,6 +167,7 @@ class SpecialMediaStatistics extends QueryPage {
 				}
 				$this->outputMediaType( $mediaType );
 				$this->totalPerType = 0;
+				$this->countPerType = 0;
 				$this->outputTableStart( $mediaType );
 				$prevMediaType = $mediaType;
 			}
@@ -147,6 +181,7 @@ class SpecialMediaStatistics extends QueryPage {
 				$this->msg( 'mediastatistics-allbytes' )
 					->numParams( $this->totalSize )
 					->sizeParams( $this->totalSize )
+					->numParams( $this->totalCount )
 					->text()
 			);
 		}
@@ -165,6 +200,8 @@ class SpecialMediaStatistics extends QueryPage {
 					->numParams( $this->totalPerType )
 					->sizeParams( $this->totalPerType )
 					->numParams( $this->makePercentPretty( $this->totalPerType / $this->totalBytes ) )
+					->numParams( $this->countPerType )
+					->numParams( $this->makePercentPretty( $this->countPerType / $this->totalCount ) )
 					->text()
 		);
 		$this->totalSize += $this->totalPerType;
@@ -212,6 +249,7 @@ class SpecialMediaStatistics extends QueryPage {
 				->parse()
 		);
 		$this->totalPerType += $bytes;
+		$this->countPerType += $count;
 		$this->getOutput()->addHTML( Html::rawElement( 'tr', [], $row ) );
 	}
 
@@ -240,8 +278,7 @@ class SpecialMediaStatistics extends QueryPage {
 	 * @return string Comma separated list of allowed extensions (e.g. ".ogg, .oga")
 	 */
 	private function getExtensionList( $mime ) {
-		$exts = MediaWiki\MediaWikiServices::getInstance()->getMimeAnalyzer()
-			->getExtensionsFromMimeType( $mime );
+		$exts = $this->mimeAnalyzer->getExtensionsFromMimeType( $mime );
 		if ( !$exts ) {
 			return '';
 		}
@@ -291,7 +328,7 @@ class SpecialMediaStatistics extends QueryPage {
 				[],
 				// for grep:
 				// mediastatistics-table-mimetype, mediastatistics-table-extensions
-				// tatistics-table-count, mediastatistics-table-totalbytes
+				// mediastatistics-table-count, mediastatistics-table-totalbytes
 				$this->msg( 'mediastatistics-table-' . $header )->parse()
 			);
 		}
@@ -330,7 +367,7 @@ class SpecialMediaStatistics extends QueryPage {
 	 * parse the fake title format that this special page abuses querycache with.
 	 *
 	 * @param string $fakeTitle A string formatted as <media type>;<mime type>;<count>;<bytes>
-	 * @return array The constituant parts of $fakeTitle
+	 * @return array The constituent parts of $fakeTitle
 	 */
 	private function splitFakeTitle( $fakeTitle ) {
 		return explode( ';', $fakeTitle, 4 );
@@ -344,17 +381,9 @@ class SpecialMediaStatistics extends QueryPage {
 		return 'media';
 	}
 
-	/**
-	 * This method isn't used, since we override outputResults, but
-	 * we need to implement since abstract in parent class.
-	 *
-	 * @param Skin $skin
-	 * @param stdClass $result Result row
-	 * @return bool|string|void
-	 * @throws MWException
-	 */
+	/** @inheritDoc */
 	public function formatResult( $skin, $result ) {
-		throw new MWException( "unimplemented" );
+		return false;
 	}
 
 	/**
@@ -374,3 +403,9 @@ class SpecialMediaStatistics extends QueryPage {
 		$res->seek( 0 );
 	}
 }
+
+/**
+ * Retain the old class name for backwards compatibility.
+ * @deprecated since 1.41
+ */
+class_alias( SpecialMediaStatistics::class, 'SpecialMediaStatistics' );

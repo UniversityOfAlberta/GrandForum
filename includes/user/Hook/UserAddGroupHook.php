@@ -2,15 +2,18 @@
 
 namespace MediaWiki\User\Hook;
 
-use User;
+use MediaWiki\User\User;
 
 /**
+ * This is a hook handler interface, see docs/Hooks.md.
+ * Use the hook name "UserAddGroup" to register handlers implementing this interface.
+ *
  * @stable to implement
  * @ingroup Hooks
  */
 interface UserAddGroupHook {
 	/**
-	 * This hook is alled when adding a group or changing a group's expiry.
+	 * This hook is called when adding a group or changing a group's expiry.
 	 *
 	 * @since 1.35
 	 *

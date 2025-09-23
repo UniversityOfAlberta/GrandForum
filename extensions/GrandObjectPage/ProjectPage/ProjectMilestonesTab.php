@@ -137,7 +137,7 @@ class ProjectMilestonesTab extends AbstractEditableTab {
     
     function generateBody(){
         global $wgUser, $wgOut, $wgServer, $wgScriptPath;
-        if($wgUser->isLoggedIn()){
+        if($wgUser->isRegistered()){
             $project = $this->project;
             $me = Person::newFromId($wgUser->getId());
             if($me->isMemberOf($project) || $me->isRoleAtLeast(STAFF)){
@@ -149,7 +149,7 @@ class ProjectMilestonesTab extends AbstractEditableTab {
     
     function generateEditBody(){
         global $wgUser, $wgOut, $wgServer, $wgScriptPath;
-        if($wgUser->isLoggedIn()){
+        if($wgUser->isRegistered()){
             $project = $this->project;
             $this->showMilestones();
             return $this->html;

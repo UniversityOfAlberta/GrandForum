@@ -20,19 +20,41 @@
  * @file
  */
 
+namespace MediaWiki\Api;
+
+use HtmlArmor;
+use ISearchResultSet;
+use MediaWiki\Search\TitleMatcher;
+use MediaWiki\Status\Status;
+use SearchEngine;
+use SearchEngineConfig;
+use SearchEngineFactory;
+use SearchResult;
+use Wikimedia\ParamValidator\ParamValidator;
+use Wikimedia\ParamValidator\TypeDef\EnumDef;
+
 /**
  * Query module to perform full text search within wiki titles and content
  *
  * @ingroup API
  */
 class ApiQuerySearch extends ApiQueryGeneratorBase {
-	use SearchApi;
+	use \MediaWiki\Api\SearchApi;
 
-	/** @var array list of api allowed params */
-	private $allowedParams;
+	private TitleMatcher $titleMatcher;
 
-	public function __construct( ApiQuery $query, $moduleName ) {
+	public function __construct(
+		ApiQuery $query,
+		string $moduleName,
+		SearchEngineConfig $searchEngineConfig,
+		SearchEngineFactory $searchEngineFactory,
+		TitleMatcher $titleMatcher
+	) {
 		parent::__construct( $query, $moduleName, 'sr' );
+		// Services also needed in SearchApi trait
+		$this->searchEngineConfig = $searchEngineConfig;
+		$this->searchEngineFactory = $searchEngineFactory;
+		$this->titleMatcher = $titleMatcher;
 	}
 
 	public function execute() {
@@ -54,8 +76,8 @@ class ApiQuerySearch extends ApiQueryGeneratorBase {
 		$query = $params['search'];
 		$what = $params['what'];
 		$interwiki = $params['interwiki'];
-		$searchInfo = array_flip( $params['info'] );
-		$prop = array_flip( $params['prop'] );
+		$searchInfo = array_fill_keys( $params['info'], true );
+		$prop = array_fill_keys( $params['prop'], true );
 
 		// Create search engine instance and set options
 		$search = $this->buildSearchEngine( $params );
@@ -64,6 +86,8 @@ class ApiQuerySearch extends ApiQueryGeneratorBase {
 		}
 		$search->setFeatureData( 'rewrite', (bool)$params['enablerewrites'] );
 		$search->setFeatureData( 'interwiki', (bool)$interwiki );
+		// Hint to some SearchEngines about what snippets we would like returned
+		$search->setFeatureData( 'snippets', $this->decideSnippets( $prop ) );
 
 		$nquery = $search->replacePrefixes( $query );
 		if ( $nquery !== $query ) {
@@ -80,8 +104,7 @@ class ApiQuerySearch extends ApiQueryGeneratorBase {
 		} elseif ( $what == 'nearmatch' ) {
 			// near matches must receive the user input as provided, otherwise
 			// the near matches within namespaces are lost.
-			$matches = $search->getNearMatcher( $this->getConfig() )
-				->getNearMatchResultSet( $params['search'] );
+			$matches = $this->titleMatcher->getNearMatchResultSet( $params['search'] );
 		} else {
 			// We default to title searches; this is a terrible legacy
 			// of the way we initially set up the MySQL fulltext-based
@@ -120,31 +143,30 @@ class ApiQuerySearch extends ApiQueryGeneratorBase {
 			$this->dieWithError( [ 'apierror-searchdisabled', $what ], "search-{$what}-disabled" );
 		}
 
-		if ( $resultPageSet === null ) {
-			$apiResult = $this->getResult();
-			// Add search meta data to result
-			if ( isset( $searchInfo['totalhits'] ) ) {
-				$totalhits = $matches->getTotalHits();
-				if ( $totalhits !== null ) {
-					$apiResult->addValue( [ 'query', 'searchinfo' ],
-						'totalhits', $totalhits );
-				}
+		$apiResult = $this->getResult();
+		// Add search meta data to result
+		if ( isset( $searchInfo['totalhits'] ) ) {
+			$totalhits = $matches->getTotalHits();
+			if ( $totalhits !== null ) {
+				$apiResult->addValue( [ 'query', 'searchinfo' ],
+					'totalhits', $totalhits );
 			}
-			if ( isset( $searchInfo['suggestion'] ) && $matches->hasSuggestion() ) {
-				$apiResult->addValue( [ 'query', 'searchinfo' ],
-					'suggestion', $matches->getSuggestionQuery() );
-				$apiResult->addValue( [ 'query', 'searchinfo' ],
-					'suggestionsnippet', HtmlArmor::getHtml( $matches->getSuggestionSnippet() ) );
-			}
-			if ( isset( $searchInfo['rewrittenquery'] ) && $matches->hasRewrittenQuery() ) {
-				$apiResult->addValue( [ 'query', 'searchinfo' ],
-					'rewrittenquery', $matches->getQueryAfterRewrite() );
-				$apiResult->addValue( [ 'query', 'searchinfo' ],
-					'rewrittenquerysnippet', HtmlArmor::getHtml( $matches->getQueryAfterRewriteSnippet() ) );
-			}
+		}
+		if ( isset( $searchInfo['suggestion'] ) && $matches->hasSuggestion() ) {
+			$apiResult->addValue( [ 'query', 'searchinfo' ],
+				'suggestion', $matches->getSuggestionQuery() );
+			$apiResult->addValue( [ 'query', 'searchinfo' ],
+				'suggestionsnippet', HtmlArmor::getHtml( $matches->getSuggestionSnippet() ) );
+		}
+		if ( isset( $searchInfo['rewrittenquery'] ) && $matches->hasRewrittenQuery() ) {
+			$apiResult->addValue( [ 'query', 'searchinfo' ],
+				'rewrittenquery', $matches->getQueryAfterRewrite() );
+			$apiResult->addValue( [ 'query', 'searchinfo' ],
+				'rewrittenquerysnippet', HtmlArmor::getHtml( $matches->getQueryAfterRewriteSnippet() ) );
 		}
 
 		$titles = [];
+		$data = [];
 		$count = 0;
 
 		if ( $matches->hasMoreResults() ) {
@@ -158,8 +180,9 @@ class ApiQuerySearch extends ApiQueryGeneratorBase {
 				continue;
 			}
 
+			$vals = $this->getSearchResultData( $result, $prop );
+
 			if ( $resultPageSet === null ) {
-				$vals = $this->getSearchResultData( $result, $prop );
 				if ( $vals ) {
 					// Add item to results and see whether it fits
 					$fit = $apiResult->addValue( [ 'query', $this->getModuleName() ], null, $vals );
@@ -170,6 +193,7 @@ class ApiQuerySearch extends ApiQueryGeneratorBase {
 				}
 			} else {
 				$titles[] = $result->getTitle();
+				$data[] = $vals ?: [];
 			}
 		}
 
@@ -195,7 +219,7 @@ class ApiQuerySearch extends ApiQueryGeneratorBase {
 				'query', $this->getModuleName()
 			], 'p' );
 		} else {
-			$resultPageSet->setRedirectMergePolicy( function ( $current, $new ) {
+			$resultPageSet->setRedirectMergePolicy( static function ( $current, $new ) {
 				if ( !isset( $current['index'] ) || $new['index'] < $current['index'] ) {
 					$current['index'] = $new['index'];
 				}
@@ -204,7 +228,10 @@ class ApiQuerySearch extends ApiQueryGeneratorBase {
 			$resultPageSet->populateFromTitles( $titles );
 			$offset = $params['offset'] + 1;
 			foreach ( $titles as $index => $title ) {
-				$resultPageSet->setGeneratorData( $title, [ 'index' => $index + $offset ] );
+				$resultPageSet->setGeneratorData(
+					$title,
+					$data[ $index ] + [ 'index' => $index + $offset ]
+				);
 			}
 		}
 	}
@@ -328,35 +355,54 @@ class ApiQuerySearch extends ApiQueryGeneratorBase {
 		return $totalhits;
 	}
 
+	private function decideSnippets( array $prop ): array {
+		// Field names align with definitions in ContentHandler::getFieldsForSearchIndex.
+		// Except `redirect` which isn't explicitly created, but refers to the title of
+		// pages that redirect to the result page.
+		$fields = [];
+		if ( isset( $prop['titlesnippet'] ) ) {
+			$fields[] = 'title';
+		}
+		// checking snippet and title variants is a bit special cased, but some search
+		// engines generate the title variant from the snippet and thus must have the
+		// snippet requested to provide the title.
+		if ( isset( $prop['redirectsnippet'] ) || isset( $prop['redirecttitle'] ) ) {
+			$fields[] = 'redirect';
+		}
+		if ( isset( $prop['categorysnippet'] ) ) {
+			$fields[] = 'category';
+		}
+		if ( isset( $prop['sectionsnippet'] ) || isset( $prop['sectiontitle'] ) ) {
+			$fields[] = 'heading';
+		}
+		return $fields;
+	}
+
 	public function getCacheMode( $params ) {
 		return 'public';
 	}
 
 	public function getAllowedParams() {
-		if ( $this->allowedParams !== null ) {
-			return $this->allowedParams;
-		}
-
-		$this->allowedParams = $this->buildCommonApiParams() + [
+		$allowedParams = $this->buildCommonApiParams() + [
 			'what' => [
-				ApiBase::PARAM_TYPE => [
+				ParamValidator::PARAM_TYPE => [
 					'title',
 					'text',
 					'nearmatch',
 				]
 			],
 			'info' => [
-				ApiBase::PARAM_DFLT => 'totalhits|suggestion|rewrittenquery',
-				ApiBase::PARAM_TYPE => [
+				ParamValidator::PARAM_DEFAULT => 'totalhits|suggestion|rewrittenquery',
+				ParamValidator::PARAM_TYPE => [
 					'totalhits',
 					'suggestion',
 					'rewrittenquery',
 				],
-				ApiBase::PARAM_ISMULTI => true,
+				ParamValidator::PARAM_ISMULTI => true,
 			],
 			'prop' => [
-				ApiBase::PARAM_DFLT => 'size|wordcount|timestamp|snippet',
-				ApiBase::PARAM_TYPE => [
+				ParamValidator::PARAM_DEFAULT => 'size|wordcount|timestamp|snippet',
+				ParamValidator::PARAM_TYPE => [
 					'size',
 					'wordcount',
 					'timestamp',
@@ -372,9 +418,9 @@ class ApiQuerySearch extends ApiQueryGeneratorBase {
 					'hasrelated', // deprecated
 					'extensiondata',
 				],
-				ApiBase::PARAM_ISMULTI => true,
+				ParamValidator::PARAM_ISMULTI => true,
 				ApiBase::PARAM_HELP_MSG_PER_VALUE => [],
-				ApiBase::PARAM_DEPRECATED_VALUES => [
+				EnumDef::PARAM_DEPRECATED_VALUES => [
 					'score' => true,
 					'hasrelated' => true
 				],
@@ -383,22 +429,23 @@ class ApiQuerySearch extends ApiQueryGeneratorBase {
 			'enablerewrites' => false,
 		];
 
+		// Generators only add info/properties if explicitly requested. T263841
+		if ( $this->isInGeneratorMode() ) {
+			$allowedParams['prop'][ParamValidator::PARAM_DEFAULT] = '';
+			$allowedParams['info'][ParamValidator::PARAM_DEFAULT] = '';
+		}
+
 		// If we have more than one engine the list of available sorts is
 		// difficult to represent. For now don't expose it.
-		$services = MediaWiki\MediaWikiServices::getInstance();
-		$alternatives = $services
-			->getSearchEngineConfig()
-			->getSearchTypes();
+		$alternatives = $this->searchEngineConfig->getSearchTypes();
 		if ( count( $alternatives ) == 1 ) {
-			$this->allowedParams['sort'] = [
-				ApiBase::PARAM_DFLT => 'relevance',
-				ApiBase::PARAM_TYPE => $services
-					->newSearchEngine()
-					->getValidSorts(),
+			$allowedParams['sort'] = [
+				ParamValidator::PARAM_DEFAULT => SearchEngine::DEFAULT_SORT,
+				ParamValidator::PARAM_TYPE => $this->searchEngineFactory->create()->getValidSorts(),
 			];
 		}
 
-		return $this->allowedParams;
+		return $allowedParams;
 	}
 
 	public function getSearchProfileParams() {
@@ -425,3 +472,6 @@ class ApiQuerySearch extends ApiQueryGeneratorBase {
 		return 'https://www.mediawiki.org/wiki/Special:MyLanguage/API:Search';
 	}
 }
+
+/** @deprecated class alias since 1.43 */
+class_alias( ApiQuerySearch::class, 'ApiQuerySearch' );

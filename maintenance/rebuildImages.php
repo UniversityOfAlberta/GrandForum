@@ -7,7 +7,7 @@
  *   --missing  Crawl the uploads dir for images without records, and
  *              add them only.
  *
- * Copyright © 2005 Brion Vibber <brion@pobox.com>
+ * Copyright © 2005 Brooke Vibber <bvibber@wikimedia.org>
  * https://www.mediawiki.org/
  *
  * This program is free software; you can redistribute it and/or modify
@@ -26,13 +26,17 @@
  * http://www.gnu.org/copyleft/gpl.html
  *
  * @file
- * @author Brion Vibber <brion at pobox.com>
+ * @author Brooke Vibber <bvibber@wikimedia.org>
  * @ingroup Maintenance
  */
 
+// @codeCoverageIgnoreStart
 require_once __DIR__ . '/Maintenance.php';
+// @codeCoverageIgnoreEnd
 
-use MediaWiki\MediaWikiServices;
+use MediaWiki\FileRepo\File\FileSelectQueryBuilder;
+use MediaWiki\Specials\SpecialUpload;
+use MediaWiki\User\User;
 use Wikimedia\Rdbms\IMaintainableDatabase;
 
 /**
@@ -61,7 +65,7 @@ class ImageBuilder extends Maintenance {
 	/** @var int */
 	private $count;
 
-	/** @var int */
+	/** @var float */
 	private $startTime;
 
 	/** @var string */
@@ -69,11 +73,6 @@ class ImageBuilder extends Maintenance {
 
 	public function __construct() {
 		parent::__construct();
-
-		global $wgUpdateCompatibleMetadata;
-		// make sure to update old, but compatible img_metadata fields.
-		$wgUpdateCompatibleMetadata = true;
-
 		$this->addDescription( 'Script to update image metadata records' );
 
 		$this->addOption( 'missing', 'Check for files without associated database record' );
@@ -81,10 +80,10 @@ class ImageBuilder extends Maintenance {
 	}
 
 	public function execute() {
-		$this->dbw = $this->getDB( DB_MASTER );
+		$this->dbw = $this->getPrimaryDB();
 		$this->dryrun = $this->hasOption( 'dry-run' );
 		if ( $this->dryrun ) {
-			MediaWiki\MediaWikiServices::getInstance()->getReadOnlyMode()
+			$this->getServiceContainer()->getReadOnlyMode()
 				->setReason( 'Dry run mode, image upgrades are suppressed' );
 		}
 
@@ -100,7 +99,11 @@ class ImageBuilder extends Maintenance {
 	 */
 	private function getRepo() {
 		if ( $this->repo === null ) {
-			$this->repo = MediaWikiServices::getInstance()->getRepoGroup()->getLocalRepo();
+			$this->repo = $this->getServiceContainer()->getRepoGroup()
+				->newCustomLocalRepo( [
+					// make sure to update old, but compatible img_metadata fields.
+					'updateCompatibleMetadata' => true
+				] );
 		}
 
 		return $this->repo;
@@ -150,17 +153,18 @@ class ImageBuilder extends Maintenance {
 		flush();
 	}
 
-	private function buildTable( $table, $key, $queryInfo, $callback ) {
-		$count = $this->dbw->selectField( $table, 'count(*)', '', __METHOD__ );
+	private function buildTable( $table, $queryBuilder, $callback ) {
+		$count = $this->dbw->newSelectQueryBuilder()
+			->select( 'count(*)' )
+			->from( $table )
+			->caller( __METHOD__ )->fetchField();
 		$this->init( $count, $table );
 		$this->output( "Processing $table...\n" );
 
-		$result = $this->getDB( DB_REPLICA )->select(
-			$queryInfo['tables'], $queryInfo['fields'], [], __METHOD__, [], $queryInfo['joins']
-		);
+		$result = $queryBuilder->caller( __METHOD__ )->fetchResultSet();
 
 		foreach ( $result as $row ) {
-			$update = call_user_func( $callback, $row, null );
+			$update = call_user_func( $callback, $row );
 			if ( $update ) {
 				$this->progress( 1 );
 			} else {
@@ -172,10 +176,10 @@ class ImageBuilder extends Maintenance {
 
 	private function buildImage() {
 		$callback = [ $this, 'imageCallback' ];
-		$this->buildTable( 'image', 'img_name', LocalFile::getQueryInfo(), $callback );
+		$this->buildTable( 'image', FileSelectQueryBuilder::newForFile( $this->getReplicaDB() ), $callback );
 	}
 
-	private function imageCallback( $row, $copy ) {
+	private function imageCallback( $row ) {
 		// Create a File object from the row
 		// This will also upgrade it
 		$file = $this->getRepo()->newFileFromRow( $row );
@@ -184,11 +188,11 @@ class ImageBuilder extends Maintenance {
 	}
 
 	private function buildOldImage() {
-		$this->buildTable( 'oldimage', 'oi_archive_name', OldLocalFile::getQueryInfo(),
+		$this->buildTable( 'oldimage', FileSelectQueryBuilder::newForOldFile( $this->getReplicaDB() ),
 			[ $this, 'oldimageCallback' ] );
 	}
 
-	private function oldimageCallback( $row, $copy ) {
+	private function oldimageCallback( $row ) {
 		// Create a File object from the row
 		// This will also upgrade it
 		if ( $row->oi_archive_name == '' ) {
@@ -207,10 +211,11 @@ class ImageBuilder extends Maintenance {
 
 	public function checkMissingImage( $fullpath ) {
 		$filename = wfBaseName( $fullpath );
-		$row = $this->dbw->selectRow( 'image',
-			[ 'img_name' ],
-			[ 'img_name' => $filename ],
-			__METHOD__ );
+		$row = $this->dbw->newSelectQueryBuilder()
+			->select( [ 'img_name' ] )
+			->from( 'image' )
+			->where( [ 'img_name' => $filename ] )
+			->caller( __METHOD__ )->fetchRow();
 
 		if ( !$row ) {
 			// file not registered
@@ -220,7 +225,7 @@ class ImageBuilder extends Maintenance {
 
 	private function addMissingImage( $filename, $fullpath ) {
 		$timestamp = $this->dbw->timestamp( $this->getRepo()->getFileTimestamp( $fullpath ) );
-		$services = MediaWikiServices::getInstance();
+		$services = $this->getServiceContainer();
 
 		$altname = $services->getContentLanguage()->checkTitleEncoding( $filename );
 		if ( $altname != $filename ) {
@@ -244,14 +249,14 @@ class ImageBuilder extends Maintenance {
 			$pageText = SpecialUpload::getInitialPageText(
 				'(recovered file, missing upload log entry)'
 			);
-			$user = User::newSystemUser( 'Maintenance script', [ 'steal' => true ] );
-			$status = $file->recordUpload2(
+			$user = User::newSystemUser( User::MAINTENANCE_SCRIPT_USER, [ 'steal' => true ] );
+			$status = $file->recordUpload3(
 				'',
 				'(recovered file, missing upload log entry)',
 				$pageText,
+				$user,
 				false,
-				$timestamp,
-				$user
+				$timestamp
 			);
 			if ( !$status->isOK() ) {
 				$this->output( "Error uploading file $fullpath\n" );
@@ -263,5 +268,7 @@ class ImageBuilder extends Maintenance {
 	}
 }
 
+// @codeCoverageIgnoreStart
 $maintClass = ImageBuilder::class;
 require_once RUN_MAINTENANCE_IF_MAIN;
+// @codeCoverageIgnoreEnd

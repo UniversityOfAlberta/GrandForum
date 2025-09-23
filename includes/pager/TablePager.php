@@ -1,7 +1,5 @@
 <?php
 /**
- * Efficient paging for SQL queries.
- *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -18,13 +16,22 @@
  * http://www.gnu.org/copyleft/gpl.html
  *
  * @file
- * @ingroup Pager
  */
 
+namespace MediaWiki\Pager;
+
+use MediaWiki\Context\IContextSource;
+use MediaWiki\Html\Html;
 use MediaWiki\Linker\LinkRenderer;
+use MediaWiki\Parser\ParserOutput;
+use MediaWiki\Xml\XmlSelect;
+use OOUI\ButtonGroupWidget;
+use OOUI\ButtonWidget;
+use stdClass;
 
 /**
  * Table-based display with a user-selectable sort order
+ *
  * @stable to extend
  * @ingroup Pager
  */
@@ -41,7 +48,7 @@ abstract class TablePager extends IndexPager {
 	 * @param IContextSource|null $context
 	 * @param LinkRenderer|null $linkRenderer
 	 */
-	public function __construct( IContextSource $context = null, LinkRenderer $linkRenderer = null ) {
+	public function __construct( ?IContextSource $context = null, ?LinkRenderer $linkRenderer = null ) {
 		if ( $context ) {
 			$this->setContext( $context );
 		}
@@ -63,25 +70,6 @@ abstract class TablePager extends IndexPager {
 	}
 
 	/**
-	 * Get the formatted result list. Calls getStartBody(), formatRow() and getEndBody(), concatenates
-	 * the results and returns them.
-	 *
-	 * Also adds the required styles to our OutputPage object (this means that if context wasn't
-	 * passed to constructor or otherwise set up, you will get a pager with missing styles).
-	 *
-	 * This method has been made 'final' in 1.24. There's no reason to override it, and if there exist
-	 * any subclasses that do, the style loading hack is probably broken in them. Let's fail fast
-	 * rather than mysteriously render things wrong.
-	 *
-	 * @deprecated since 1.24, use getBodyOutput() or getFullOutput() instead
-	 * @return string
-	 */
-	final public function getBody() {
-		$this->getOutput()->addModuleStyles( $this->getModuleStyles() );
-		return parent::getBody();
-	}
-
-	/**
 	 * Get the formatted result list.
 	 *
 	 * Calls getBody() and getModuleStyles() and builds a ParserOutput object. (This is a bit hacky
@@ -94,8 +82,7 @@ abstract class TablePager extends IndexPager {
 		$body = parent::getBody();
 
 		$pout = new ParserOutput;
-		$pout->setText( $body );
-		$pout->addModuleStyles( $this->getModuleStyles() );
+		$pout->setRawText( $body );
 		return $pout;
 	}
 
@@ -113,7 +100,7 @@ abstract class TablePager extends IndexPager {
 		$body = parent::getBody();
 
 		$pout = new ParserOutput;
-		$pout->setText( $navigation . $body . $navigation );
+		$pout->setRawText( $navigation . $body . $navigation );
 		$pout->addModuleStyles( $this->getModuleStyles() );
 		return $pout;
 	}
@@ -160,9 +147,8 @@ abstract class TablePager extends IndexPager {
 			}
 		}
 
-		$tableClass = $this->getTableClass();
 		$ret = Html::openElement( 'table', [
-			'class' => " $tableClass" ]
+			'class' => $this->getTableClass() ]
 		);
 		$ret .= Html::rawElement( 'thead', [], Html::rawElement( 'tr', [], "\n" . $s . "\n" ) );
 		$ret .= Html::openElement( 'tbody' ) . "\n";
@@ -219,7 +205,7 @@ abstract class TablePager extends IndexPager {
 	 *
 	 * @stable to override
 	 *
-	 * @param object $row The database result row
+	 * @param stdClass $row The database result row
 	 * @return string
 	 */
 	protected function getRowClass( $row ) {
@@ -231,17 +217,11 @@ abstract class TablePager extends IndexPager {
 	 *
 	 * @stable to override
 	 *
-	 * @param object $row The database result row
+	 * @param stdClass $row The database result row
 	 * @return array Array of attribute => value
 	 */
 	protected function getRowAttrs( $row ) {
-		$class = $this->getRowClass( $row );
-		if ( $class === '' ) {
-			// Return an empty array to avoid clutter in HTML like class=""
-			return [];
-		} else {
-			return [ 'class' => $this->getRowClass( $row ) ];
-		}
+		return [ 'class' => $this->getRowClass( $row ) ];
 	}
 
 	/**
@@ -322,7 +302,7 @@ abstract class TablePager extends IndexPager {
 		$title = $this->getTitle();
 
 		foreach ( $types as $type ) {
-			$buttons[] = new \OOUI\ButtonWidget( [
+			$buttons[] = new ButtonWidget( [
 				// Messages used here:
 				// * table_pager_first
 				// * table_pager_prev
@@ -339,21 +319,19 @@ abstract class TablePager extends IndexPager {
 				'disabled' => $queries[ $type ] === false
 			] );
 		}
-		return new \OOUI\ButtonGroupWidget( [
+		return new ButtonGroupWidget( [
 			'classes' => [ $this->getNavClass() ],
 			'items' => $buttons,
 		] );
 	}
 
 	/**
-	 * ResourceLoader modules that must be loaded to provide correct styling for this pager
-	 *
-	 * @stable to override
-	 * @since 1.24
-	 * @return string[]
+	 * @inheritDoc
 	 */
 	public function getModuleStyles() {
-		return [ 'mediawiki.pager.tablePager', 'oojs-ui.styles.icons-movement' ];
+		return array_merge(
+			parent::getModuleStyles(), [ 'oojs-ui.styles.icons-movement' ]
+		);
 	}
 
 	/**
@@ -405,19 +383,24 @@ abstract class TablePager extends IndexPager {
 	/**
 	 * Get \<input type="hidden"\> elements for use in a method="get" form.
 	 * Resubmits all defined elements of the query string, except for a
-	 * blacklist, passed in the $blacklist parameter.
+	 * exclusion list, passed in the $noResubmit parameter.
+	 * Also array values are discarded for security reasons (per WebRequest::getVal)
 	 *
-	 * @param array $blacklist Parameters from the request query which should not be resubmitted
+	 * @param array $noResubmit Parameters from the request query which should not be resubmitted
 	 * @return string HTML fragment
 	 */
-	public function getHiddenFields( $blacklist = [] ) {
-		$blacklist = (array)$blacklist;
+	public function getHiddenFields( $noResubmit = [] ) {
+		$noResubmit = (array)$noResubmit;
 		$query = $this->getRequest()->getQueryValues();
-		foreach ( $blacklist as $name ) {
+		foreach ( $noResubmit as $name ) {
 			unset( $query[$name] );
 		}
 		$s = '';
 		foreach ( $query as $name => $value ) {
+			if ( is_array( $value ) ) {
+				// Per WebRequest::getVal: Array values are discarded for security reasons.
+				continue;
+			}
 			$s .= Html::hidden( $name, $value ) . "\n";
 		}
 		return $s;
@@ -459,6 +442,7 @@ abstract class TablePager extends IndexPager {
 	 * otherwise
 	 *
 	 * @param string $field
+	 * @return bool
 	 */
 	abstract protected function isFieldSortable( $field );
 
@@ -470,7 +454,8 @@ abstract class TablePager extends IndexPager {
 	 * need more context.
 	 *
 	 * @param string $name The database field name
-	 * @param string $value The value retrieved from the database
+	 * @param string|null $value The value retrieved from the database, or null if
+	 *   the row doesn't contain this field
 	 */
 	abstract public function formatValue( $name, $value );
 
@@ -490,7 +475,10 @@ abstract class TablePager extends IndexPager {
 	 * field name, for use in the table header. The description should be plain
 	 * text, it will be HTML-escaped later.
 	 *
-	 * @return array
+	 * @return string[]
 	 */
 	abstract protected function getFieldNames();
 }
+
+/** @deprecated class alias since 1.41 */
+class_alias( TablePager::class, 'TablePager' );

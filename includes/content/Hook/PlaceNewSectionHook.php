@@ -2,10 +2,13 @@
 
 namespace MediaWiki\Content\Hook;
 
-use Content;
+use MediaWiki\Content\Content;
 use WikiPage;
 
 /**
+ * This is a hook handler interface, see docs/Hooks.md.
+ * Use the hook name "PlaceNewSection" to register handlers implementing this interface.
+ *
  * @stable to implement
  * @ingroup Hooks
  */

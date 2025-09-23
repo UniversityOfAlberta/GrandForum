@@ -2,11 +2,14 @@
 
 namespace MediaWiki\Hook;
 
-use User;
+use MediaWiki\User\User;
 
 /**
- * @stable to implement
+ * This is a hook handler interface, see docs/Hooks.md.
+ * Use the hook name "EmailUserPermissionsErrors" to register handlers implementing this interface.
+ *
  * @ingroup Hooks
+ * @deprecated since 1.41 Handle the EmailUserAuthorizeSend hook instead.
  */
 interface EmailUserPermissionsErrorsHook {
 	/**

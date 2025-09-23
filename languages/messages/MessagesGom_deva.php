@@ -1,16 +1,14 @@
 <?php
 /** Goan Konkani - Devanagari script (गोंयची कोंकणी)
  *
- * To improve a translation please visit https://translatewiki.net
- *
- * @ingroup Language
  * @file
+ * @ingroup Languages
  *
  * @author Darshan kandolkar
  * @author The Discoverer
  */
 
-$fallback = 'hi';
+$fallback = 'gom-latn';
 
 $namespaceNames = [
 	NS_MEDIA            => 'माध्यम',

@@ -18,7 +18,7 @@ class JsonLdRdfWriter extends RdfWriterBase {
 	 *
 	 * @see https://www.w3.org/TR/json-ld/#the-context
 	 *
-	 * @var string[]
+	 * @var array[]
 	 */
 	protected $context = [];
 
@@ -28,20 +28,20 @@ class JsonLdRdfWriter extends RdfWriterBase {
 	 * would be broken if an explicit "@type" was added to the context
 	 * for the predicate.
 	 *
-	 * @var boolean[]
+	 * @var bool[]
 	 */
 	protected $defaulted = [];
 
 	/**
 	 * The JSON-LD "@graph", which lists all the nodes described by this JSON-LD object.
 	 * We apply an optimization eliminating the "@graph" entry if it consists
-	 * of a single node; in that case we will set $this->graph to null in
+	 * of a single node; in that case, we will set $this->graph to null in
 	 * #finishJson() to ensure that the deferred callback in #finishDocument()
 	 * doesn't later emit "@graph".
 	 *
 	 * @see https://www.w3.org/TR/json-ld/#named-graphs
 	 *
-	 * @var array[]|null
+	 * @var array|null
 	 */
 	private $graph = [];
 
@@ -85,19 +85,19 @@ class JsonLdRdfWriter extends RdfWriterBase {
 	/**
 	 * The IRI for the RDF `type` property.
 	 */
-	const RDF_TYPE_IRI = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type';
+	private const RDF_TYPE_IRI = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type';
 
 	/**
 	 * The type internally used for "default type", which is a string or
 	 * otherwise default-coerced type.
 	 */
-	const DEFAULT_TYPE = '@purtle@default@';
+	private const DEFAULT_TYPE = '@purtle@default@';
 
 	/**
 	 * @param string $role
 	 * @param BNodeLabeler|null $labeler
 	 */
-	public function __construct( $role = parent::DOCUMENT_ROLE, BNodeLabeler $labeler = null ) {
+	public function __construct( $role = parent::DOCUMENT_ROLE, ?BNodeLabeler $labeler = null ) {
 		parent::__construct( $role, $labeler );
 
 		// The following named methods are protected, not private, so we
@@ -152,7 +152,7 @@ class JsonLdRdfWriter extends RdfWriterBase {
 		} else {
 			if ( $base !== '_' && isset( $this->prefixes[ $base ] ) ) {
 				if ( $base === '' ) {
-					// Empty prefix not supported; use full IRI
+					// Empty prefixes are not supported; use full IRI
 					return $this->prefixes[ $base ] . $local;
 				}
 				if ( !isset( $this->context[ $base ] ) ) {
@@ -187,9 +187,11 @@ class JsonLdRdfWriter extends RdfWriterBase {
 
 	/**
 	 * Return a appropriate term for the current predicate value.
+	 *
+	 * @return string
 	 */
 	private function getCurrentTerm() {
-		list( $base, $local ) = $this->currentPredicate;
+		[ $base, $local ] = $this->currentPredicate;
 		$predIRI = $this->toIRI( $base, $local );
 		if ( $predIRI === self::RDF_TYPE_IRI ) {
 			return $predIRI;
@@ -348,7 +350,7 @@ class JsonLdRdfWriter extends RdfWriterBase {
 				$this->addTypedValue( self::DEFAULT_TYPE, ( $literal === 'true' ) );
 				return;
 			case 'http://www.w3.org/2001/XMLSchema#double':
-				$v = doubleval( $literal );
+				$v = floatval( $literal );
 				// Only "numbers with fractions" are xsd:double.  We need
 				// to verify that the JSON string will contain a decimal
 				// point, otherwise the value would be interpreted as an
@@ -390,7 +392,7 @@ class JsonLdRdfWriter extends RdfWriterBase {
 	 * @param bool $forceExpand If true, don't try to add this type to the
 	 *  context. Defaults to false.
 	 */
-	protected function addTypedValue( $type, $simpleVal, $expandedVal=null, $forceExpand=false ) {
+	protected function addTypedValue( $type, $simpleVal, $expandedVal = null, $forceExpand = false ) {
 		if ( !$forceExpand ) {
 			$pred = $this->getCurrentTerm();
 			if ( $type === self::DEFAULT_TYPE ) {
@@ -426,7 +428,7 @@ class JsonLdRdfWriter extends RdfWriterBase {
 
 		if ( $name === self::RDF_TYPE_IRI ) {
 			$name = '@type';
-			$this->values = array_map( function ( array $val ) {
+			$this->values = array_map( static function ( array $val ) {
 				return $val[ '@id' ];
 			}, $this->values );
 		}

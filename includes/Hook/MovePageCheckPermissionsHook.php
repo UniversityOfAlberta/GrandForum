@@ -2,11 +2,14 @@
 
 namespace MediaWiki\Hook;
 
-use Status;
-use Title;
-use User;
+use MediaWiki\Status\Status;
+use MediaWiki\Title\Title;
+use MediaWiki\User\User;
 
 /**
+ * This is a hook handler interface, see docs/Hooks.md.
+ * Use the hook name "MovePageCheckPermissions" to register handlers implementing this interface.
+ *
  * @stable to implement
  * @ingroup Hooks
  */
@@ -19,7 +22,7 @@ interface MovePageCheckPermissionsHook {
 	 * @param Title $oldTitle Current (old) location
 	 * @param Title $newTitle New location
 	 * @param User $user User making the move
-	 * @param string $reason Reason provided by the user
+	 * @param string|null $reason Reason provided by the user
 	 * @param Status $status Status object to pass error messages to
 	 * @return bool|void True or no return value to continue or false to abort
 	 */

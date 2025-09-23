@@ -18,7 +18,9 @@
  * @file
  */
 
-use MediaWiki\MediaWikiServices;
+namespace MediaWiki\Title;
+
+use InvalidArgumentException;
 
 /**
  * A class to convert page titles on a foreign wiki (ForeignTitle objects) into
@@ -26,16 +28,24 @@ use MediaWiki\MediaWikiServices;
  * local namespace.
  */
 class NamespaceImportTitleFactory implements ImportTitleFactory {
-	/** @var int */
-	protected $ns;
+	private TitleFactory $titleFactory;
+
+	private int $ns;
 
 	/**
+	 * @param NamespaceInfo $namespaceInfo
+	 * @param TitleFactory $titleFactory
 	 * @param int $ns The namespace to use for all pages
 	 */
-	public function __construct( $ns ) {
-		if ( !MediaWikiServices::getInstance()->getNamespaceInfo()->exists( $ns ) ) {
-			throw new MWException( "Namespace $ns doesn't exist on this wiki" );
+	public function __construct(
+		NamespaceInfo $namespaceInfo,
+		TitleFactory $titleFactory,
+		int $ns
+	) {
+		if ( !$namespaceInfo->exists( $ns ) ) {
+			throw new InvalidArgumentException( "Namespace $ns doesn't exist on this wiki" );
 		}
+		$this->titleFactory = $titleFactory;
 		$this->ns = $ns;
 	}
 
@@ -48,6 +58,9 @@ class NamespaceImportTitleFactory implements ImportTitleFactory {
 	 * @return Title|null
 	 */
 	public function createTitleFromForeignTitle( ForeignTitle $foreignTitle ) {
-		return Title::makeTitleSafe( $this->ns, $foreignTitle->getText() );
+		return $this->titleFactory->makeTitleSafe( $this->ns, $foreignTitle->getText() );
 	}
 }
+
+/** @deprecated class alias since 1.41 */
+class_alias( NamespaceImportTitleFactory::class, 'NamespaceImportTitleFactory' );

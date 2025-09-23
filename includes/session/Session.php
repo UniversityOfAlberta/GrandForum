@@ -23,12 +23,18 @@
 
 namespace MediaWiki\Session;
 
+use BadMethodCallException;
+use LogicException;
+use MediaWiki\MainConfigNames;
+use MediaWiki\MediaWikiServices;
+use MediaWiki\Request\WebRequest;
+use MediaWiki\User\User;
+use MWRestrictions;
 use Psr\Log\LoggerInterface;
-use User;
-use WebRequest;
+use RuntimeException;
 
 /**
- * Manages data for an an authenticated session
+ * Manages data for an authenticated session
  *
  * A Session represents the fact that the current HTTP request is part of a
  * session. There are two broad types of Sessions, based on whether they
@@ -169,7 +175,7 @@ class Session implements \Countable, \Iterator, \ArrayAccess {
 	 * Returns the authenticated user for this session
 	 * @return User
 	 */
-	public function getUser() {
+	public function getUser(): User {
 		return $this->backend->getUser();
 	}
 
@@ -179,6 +185,15 @@ class Session implements \Countable, \Iterator, \ArrayAccess {
 	 */
 	public function getAllowedUserRights() {
 		return $this->backend->getAllowedUserRights();
+	}
+
+	/**
+	 * Fetch any restrictions imposed on logins or actions when this
+	 * session is active.
+	 * @return MWRestrictions|null
+	 */
+	public function getRestrictions(): ?MWRestrictions {
+		return $this->backend->getRestrictions();
 	}
 
 	/**
@@ -239,7 +254,6 @@ class Session implements \Countable, \Iterator, \ArrayAccess {
 	}
 
 	/**
-	 * Set the "logged out" timestamp
 	 * @param int $ts
 	 */
 	public function setLoggedOutTimestamp( $ts ) {
@@ -265,14 +279,12 @@ class Session implements \Countable, \Iterator, \ArrayAccess {
 			$this->backend->dirty();
 		}
 		if ( $this->backend->canSetUser() ) {
-			$this->backend->setUser( new User );
+			$this->backend->setUser( MediaWikiServices::getInstance()->getUserFactory()->newAnonymous() );
 		}
 		$this->backend->save();
 	}
 
 	/**
-	 * Renew the session
-	 *
 	 * Resets the TTL in the backend store if the session is near expiring, and
 	 * re-persists the session to any active WebRequests if persistent.
 	 */
@@ -342,6 +354,21 @@ class Session implements \Countable, \Iterator, \ArrayAccess {
 	}
 
 	/**
+	 * Check if a CSRF token is set for the session
+	 *
+	 * @since 1.37
+	 * @param string $key Token key
+	 * @return bool
+	 */
+	public function hasToken( string $key = 'default' ): bool {
+		$secrets = $this->get( 'wsTokenSecrets' );
+		if ( !is_array( $secrets ) ) {
+			return false;
+		}
+		return isset( $secrets[$key] ) && is_string( $secrets[$key] );
+	}
+
+	/**
 	 * Fetch a CSRF token from the session
 	 *
 	 * Note that this does not persist the session, which you'll probably want
@@ -398,9 +425,11 @@ class Session implements \Countable, \Iterator, \ArrayAccess {
 	 * @return string[] Encryption key, HMAC key
 	 */
 	private function getSecretKeys() {
-		global $wgSessionSecret, $wgSecretKey, $wgSessionPbkdf2Iterations;
-
-		$wikiSecret = $wgSessionSecret ?: $wgSecretKey;
+		$mainConfig = MediaWikiServices::getInstance()->getMainConfig();
+		$sessionSecret = $mainConfig->get( MainConfigNames::SessionSecret );
+		$secretKey = $mainConfig->get( MainConfigNames::SecretKey );
+		$sessionPbkdf2Iterations = $mainConfig->get( MainConfigNames::SessionPbkdf2Iterations );
+		$wikiSecret = $sessionSecret ?: $secretKey;
 		$userSecret = $this->get( 'wsSessionSecret', null );
 		if ( $userSecret === null ) {
 			$userSecret = \MWCryptRand::generateHex( 32 );
@@ -408,11 +437,11 @@ class Session implements \Countable, \Iterator, \ArrayAccess {
 		}
 		$iterations = $this->get( 'wsSessionPbkdf2Iterations', null );
 		if ( $iterations === null ) {
-			$iterations = $wgSessionPbkdf2Iterations;
+			$iterations = $sessionPbkdf2Iterations;
 			$this->set( 'wsSessionPbkdf2Iterations', $iterations );
 		}
 
-		$keymats = hash_pbkdf2( 'sha256', $wikiSecret, $userSecret, $iterations, 64, true );
+		$keymats = openssl_pbkdf2( $wikiSecret, $userSecret, 64, $iterations, 'sha256' );
 		return [
 			substr( $keymats, 0, 32 ),
 			substr( $keymats, 32, 32 ),
@@ -424,8 +453,6 @@ class Session implements \Countable, \Iterator, \ArrayAccess {
 	 * @return array
 	 */
 	private static function getEncryptionAlgorithm() {
-		global $wgSessionInsecureSecrets;
-
 		if ( self::$encryptionAlgorithm === null ) {
 			if ( function_exists( 'openssl_encrypt' ) ) {
 				$methods = openssl_get_cipher_methods();
@@ -439,17 +466,8 @@ class Session implements \Countable, \Iterator, \ArrayAccess {
 				}
 			}
 
-			if ( $wgSessionInsecureSecrets ) {
-				// @todo: import a pure-PHP library for AES instead of this
-				self::$encryptionAlgorithm = [ 'insecure' ];
-				return self::$encryptionAlgorithm;
-			}
-
-			throw new \BadMethodCallException(
-				'Encryption is not available. You really should install the PHP OpenSSL extension. ' .
-				'But if you really can\'t and you\'re willing ' .
-				'to accept insecure storage of sensitive session data, set ' .
-				'$wgSessionInsecureSecrets = true in LocalSettings.php to make this exception go away.'
+			throw new BadMethodCallException(
+				'Encryption is not available. You need to install the PHP OpenSSL extension.'
 			);
 		}
 
@@ -465,14 +483,13 @@ class Session implements \Countable, \Iterator, \ArrayAccess {
 	 * @param mixed $value
 	 */
 	public function setSecret( $key, $value ) {
-		list( $encKey, $hmacKey ) = $this->getSecretKeys();
+		[ $encKey, $hmacKey ] = $this->getSecretKeys();
 		$serialized = serialize( $value );
 
 		// The code for encryption (with OpenSSL) and sealing is taken from
 		// Chris Steipp's OATHAuthUtils class in Extension::OATHAuth.
 
 		// Encrypt
-		// @todo: import a pure-PHP library for AES instead of doing $wgSessionInsecureSecrets
 		$iv = random_bytes( 16 );
 		$algorithm = self::getEncryptionAlgorithm();
 		switch ( $algorithm[0] ) {
@@ -482,13 +499,8 @@ class Session implements \Countable, \Iterator, \ArrayAccess {
 					throw new \UnexpectedValueException( 'Encryption failed: ' . openssl_error_string() );
 				}
 				break;
-			case 'insecure':
-				$ex = new \Exception( 'No encryption is available, storing data as plain text' );
-				$this->logger->warning( $ex->getMessage(), [ 'exception' => $ex ] );
-				$ciphertext = $serialized;
-				break;
 			default:
-				throw new \LogicException( 'invalid algorithm' );
+				throw new LogicException( 'invalid algorithm' );
 		}
 
 		// Seal
@@ -520,15 +532,15 @@ class Session implements \Countable, \Iterator, \ArrayAccess {
 		// Unseal and check
 		$pieces = explode( '.', $encrypted, 4 );
 		if ( count( $pieces ) !== 3 ) {
-			$ex = new \Exception( 'Invalid sealed-secret format' );
+			$ex = new RuntimeException( 'Invalid sealed-secret format' );
 			$this->logger->warning( $ex->getMessage(), [ 'exception' => $ex ] );
 			return $default;
 		}
-		list( $hmac, $iv, $ciphertext ) = $pieces;
-		list( $encKey, $hmacKey ) = $this->getSecretKeys();
+		[ $hmac, $iv, $ciphertext ] = $pieces;
+		[ $encKey, $hmacKey ] = $this->getSecretKeys();
 		$integCalc = hash_hmac( 'sha256', $iv . '.' . $ciphertext, $hmacKey, true );
 		if ( !hash_equals( $integCalc, base64_decode( $hmac ) ) ) {
-			$ex = new \Exception( 'Sealed secret has been tampered with, aborting.' );
+			$ex = new RuntimeException( 'Sealed secret has been tampered with, aborting.' );
 			$this->logger->warning( $ex->getMessage(), [ 'exception' => $ex ] );
 			return $default;
 		}
@@ -540,17 +552,10 @@ class Session implements \Countable, \Iterator, \ArrayAccess {
 				$serialized = openssl_decrypt( base64_decode( $ciphertext ), $algorithm[1], $encKey,
 					OPENSSL_RAW_DATA, base64_decode( $iv ) );
 				if ( $serialized === false ) {
-					$ex = new \Exception( 'Decyption failed: ' . openssl_error_string() );
+					$ex = new RuntimeException( 'Decyption failed: ' . openssl_error_string() );
 					$this->logger->debug( $ex->getMessage(), [ 'exception' => $ex ] );
 					return $default;
 				}
-				break;
-			case 'insecure':
-				$ex = new \Exception(
-					'No encryption is available, retrieving data that was stored as plain text'
-				);
-				$this->logger->warning( $ex->getMessage(), [ 'exception' => $ex ] );
-				$serialized = base64_decode( $ciphertext );
 				break;
 			default:
 				throw new \LogicException( 'invalid algorithm' );
@@ -575,8 +580,6 @@ class Session implements \Countable, \Iterator, \ArrayAccess {
 	}
 
 	/**
-	 * Save the session
-	 *
 	 * This will update the backend data and might re-persist the session
 	 * if needed.
 	 */
@@ -584,8 +587,8 @@ class Session implements \Countable, \Iterator, \ArrayAccess {
 		$this->backend->save();
 	}
 
-	/**
-	 * @name Interface methods
+	// region   Interface methods
+	/** @name   Interface methods
 	 * @{
 	 */
 
@@ -649,7 +652,7 @@ class Session implements \Countable, \Iterator, \ArrayAccess {
 	public function &offsetGet( $offset ) {
 		$data = &$this->backend->getData();
 		if ( !array_key_exists( $offset, $data ) ) {
-			$ex = new \Exception( "Undefined index (auto-adds to session with a null value): $offset" );
+			$ex = new LogicException( "Undefined index (auto-adds to session with a null value): $offset" );
 			$this->logger->debug( $ex->getMessage(), [ 'exception' => $ex ] );
 		}
 		return $data[$offset];
@@ -666,5 +669,5 @@ class Session implements \Countable, \Iterator, \ArrayAccess {
 	}
 
 	/** @} */
-
+	// endregion  -- end of Interface methods
 }

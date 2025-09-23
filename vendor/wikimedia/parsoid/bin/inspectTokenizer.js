@@ -53,6 +53,12 @@ yargs.options({
 		'boolean': true,
 		'default': false,
 	},
+
+	'header-comment-file': {
+		description: 'File containing the comment to add in the header of the generated file',
+		'boolean': false,
+		'default': __dirname + '/grammarheader-script.txt'
+	}
 });
 
 yargs.help();
@@ -68,10 +74,8 @@ function getOutputStream(opts) {
 function generateSource(opts) {
 	var file = getOutputStream(opts);
 	var tokenizer = new PegTokenizer();
-	var pegOpts = {
-		php: opts.php,
-		trace: opts.trace
-	};
+	var headerComment = fs.readFileSync(opts['header-comment-file']).toString();
+	var pegOpts = { trace: opts.trace, headerComment: headerComment };
 	var source = tokenizer.compileTokenizer(tokenizer.parseTokenizer(pegOpts), pegOpts);
 	file.write(source, 'utf8');
 }
@@ -160,7 +164,7 @@ function generateCallgraph(opts) {
 
 		rule_ref: function(node) {
 			var edge = "\t" + currentRuleName + " -> " + node.name + ";";
-			if (edges.indexOf(edge) === -1) {
+			if (!edges.includes(edge)) {
 				edges.push(edge);
 			}
 		}

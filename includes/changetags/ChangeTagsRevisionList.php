@@ -16,15 +16,19 @@
  * http://www.gnu.org/copyleft/gpl.html
  *
  * @file
- * @ingroup Change tagging
  */
 
 use MediaWiki\MediaWikiServices;
-use Wikimedia\Rdbms\IDatabase;
+use MediaWiki\Permissions\Authority;
+use MediaWiki\Status\Status;
+use Wikimedia\Rdbms\IResultWrapper;
+use Wikimedia\Rdbms\SelectQueryBuilder;
 
 /**
- * Stores a list of taggable revisions.
+ * Store a list of taggable revisions.
+ *
  * @since 1.25
+ * @ingroup ChangeTags
  */
 class ChangeTagsRevisionList extends ChangeTagsList {
 	public function getType() {
@@ -32,40 +36,19 @@ class ChangeTagsRevisionList extends ChangeTagsList {
 	}
 
 	/**
-	 * @param IDatabase $db
-	 * @return mixed
+	 * @param \Wikimedia\Rdbms\IReadableDatabase $db
+	 * @return IResultWrapper
 	 */
 	public function doQuery( $db ) {
 		$ids = array_map( 'intval', $this->ids );
-		$revQuery = MediaWikiServices::getInstance()
-			->getRevisionStore()
-			->getQueryInfo( [ 'user' ] );
-		$queryInfo = [
-			'tables' => $revQuery['tables'],
-			'fields' => $revQuery['fields'],
-			'conds' => [
-				'rev_page' => $this->title->getArticleID(),
-				'rev_id' => $ids,
-			],
-			'options' => [ 'ORDER BY' => 'rev_id DESC' ],
-			'join_conds' => $revQuery['joins'],
-		];
-		ChangeTags::modifyDisplayQuery(
-			$queryInfo['tables'],
-			$queryInfo['fields'],
-			$queryInfo['conds'],
-			$queryInfo['join_conds'],
-			$queryInfo['options'],
-			''
-		);
-		return $db->select(
-			$queryInfo['tables'],
-			$queryInfo['fields'],
-			$queryInfo['conds'],
-			__METHOD__,
-			$queryInfo['options'],
-			$queryInfo['join_conds']
-		);
+		$queryBuilder = MediaWikiServices::getInstance()->getRevisionStore()->newSelectQueryBuilder( $db )
+			->joinComment()
+			->joinUser()
+			->where( [ 'rev_page' => $this->page->getId(), 'rev_id' => $ids ] )
+			->orderBy( 'rev_id', SelectQueryBuilder::SORT_DESC );
+
+		MediaWikiServices::getInstance()->getChangeTagsStore()->modifyDisplayQueryBuilder( $queryBuilder, 'revision' );
+		return $queryBuilder->caller( __METHOD__ )->fetchResultSet();
 	}
 
 	public function newItem( $row ) {
@@ -75,18 +58,25 @@ class ChangeTagsRevisionList extends ChangeTagsList {
 	/**
 	 * Add/remove change tags from all the revisions in the list.
 	 *
-	 * @param array $tagsToAdd
-	 * @param array $tagsToRemove
+	 * @param string[] $tagsToAdd
+	 * @param string[] $tagsToRemove
 	 * @param string|null $params
 	 * @param string $reason
-	 * @param User $user
+	 * @param Authority $performer
 	 * @return Status
 	 */
-	public function updateChangeTagsOnAll( $tagsToAdd, $tagsToRemove, $params, $reason, $user ) {
+	public function updateChangeTagsOnAll(
+		array $tagsToAdd,
+		array $tagsToRemove,
+		?string $params,
+		string $reason,
+		Authority $performer
+	) {
+		$status = Status::newGood();
 		for ( $this->reset(); $this->current(); $this->next() ) {
 			$item = $this->current();
 			$status = ChangeTags::updateTagsWithChecks( $tagsToAdd, $tagsToRemove,
-				null, $item->getId(), null, $params, $reason, $user );
+				null, $item->getId(), null, $params, $reason, $performer );
 			// Should only fail on second and subsequent times if the user trips
 			// the rate limiter
 			if ( !$status->isOK() ) {

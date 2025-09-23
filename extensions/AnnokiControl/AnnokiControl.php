@@ -1,4 +1,7 @@
 <?php
+
+use MediaWiki\MediaWikiServices;
+
 if (!defined('MEDIAWIKI')) {
   echo "This file is a MediaWiki extension, and cannot be accessed independantly.";
   exit( 1 );
@@ -153,7 +156,7 @@ $wgExtensionCredits['specialpage'][] = array(
                          );
                          
 function getTableName($baseName) {
-    $dbr = wfGetDB(DB_REPLICA);
+    $dbr = MediaWikiServices::getInstance()->getConnectionProvider()->getReplicaDatabase();
     $tblName = $dbr->tableName("$baseName");
     $tblName = str_replace("`", "", "$tblName");
     return $tblName;

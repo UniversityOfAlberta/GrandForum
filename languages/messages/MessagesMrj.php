@@ -1,10 +1,8 @@
 <?php
 /** Hill Mari (кырык мары)
  *
- * To improve a translation please visit https://translatewiki.net
- *
- * @ingroup Language
  * @file
+ * @ingroup Languages
  *
  * @author Amdf
  * @author Andrijko Z.

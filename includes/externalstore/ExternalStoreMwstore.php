@@ -1,7 +1,5 @@
 <?php
 /**
- * External storage in a file backend.
- *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -20,13 +18,20 @@
  * @file
  */
 
+use MediaWiki\FileBackend\FileBackendGroup;
+use MediaWiki\MediaWikiServices;
+use MediaWiki\WikiMap\WikiMap;
+use Wikimedia\FileBackend\FileBackend;
+use Wikimedia\FileBackend\FSFileBackend;
+
 /**
- * File backend accessible external objects.
+ * External storage in a FileBackend.
  *
  * In this system, each store "location" maps to the name of a file backend.
  * The file backends must be defined in $wgFileBackends and must be global
  * and fully qualified with a global "wikiId" prefix in the configuration.
  *
+ * @see ExternalStoreAccess
  * @ingroup ExternalStorage
  * @since 1.21
  */
@@ -48,11 +53,11 @@ class ExternalStoreMwstore extends ExternalStoreMedium {
 	}
 
 	/**
-	 * The URL returned is of the form of the form mwstore://backend/container/wiki/id
+	 * Fetch data from a given external store URL
 	 *
 	 * @see ExternalStoreMedium::fetchFromURL()
-	 * @param string $url
-	 * @return bool
+	 * @param string $url An external store URL in the form of mwstore://backend/container/wiki/id
+	 * @return string|bool
 	 */
 	public function fetchFromURL( $url ) {
 		$be = $this->fbGroup->backendFromPath( $url );
@@ -67,7 +72,7 @@ class ExternalStoreMwstore extends ExternalStoreMedium {
 
 	/**
 	 * Fetch data from given external store URLs.
-	 * The URL returned is of the form of the form mwstore://backend/container/wiki/id
+	 * The URLs are in the form of mwstore://backend/container/wiki/id
 	 *
 	 * @param array $urls An array of external store URLs
 	 * @return array A map from url to stored content. Failed results are not represented.
@@ -89,15 +94,13 @@ class ExternalStoreMwstore extends ExternalStoreMedium {
 		return $blobs;
 	}
 
-	/**
-	 * @inheritDoc
-	 */
 	public function store( $backend, $data ) {
 		$be = $this->fbGroup->get( $backend );
 		// Get three random base 36 characters to act as shard directories
-		$rand = Wikimedia\base_convert( mt_rand( 0, 46655 ), 10, 36, 3 );
+		$rand = Wikimedia\base_convert( (string)mt_rand( 0, 46655 ), 10, 36, 3 );
 		// Make sure ID is roughly lexicographically increasing for performance
-		$id = str_pad( UIDGenerator::newTimestampedUID128( 32 ), 26, '0', STR_PAD_LEFT );
+		$gen = MediaWikiServices::getInstance()->getGlobalIdGenerator();
+		$id = str_pad( $gen->newTimestampedUID128( 32 ), 26, '0', STR_PAD_LEFT );
 		// Segregate items by DB domain ID for the sake of bookkeeping
 		$domain = $this->isDbDomainExplicit
 			? $this->dbDomain
@@ -116,7 +119,7 @@ class ExternalStoreMwstore extends ExternalStoreMedium {
 			return $url;
 		}
 
-		throw new MWException( __METHOD__ . ": operation failed: $status" );
+		throw new ExternalStoreException( __METHOD__ . ": operation failed: $status" );
 	}
 
 	public function isReadOnly( $backend ) {
@@ -126,6 +129,6 @@ class ExternalStoreMwstore extends ExternalStoreMedium {
 
 		$be = $this->fbGroup->get( $backend );
 
-		return $be ? $be->isReadOnly() : false;
+		return $be->isReadOnly();
 	}
 }

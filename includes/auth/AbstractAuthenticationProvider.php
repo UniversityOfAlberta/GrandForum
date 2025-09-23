@@ -21,9 +21,10 @@
 
 namespace MediaWiki\Auth;
 
-use Config;
+use MediaWiki\Config\Config;
 use MediaWiki\HookContainer\HookContainer;
 use MediaWiki\HookContainer\HookRunner;
+use MediaWiki\User\UserNameUtils;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -35,34 +36,60 @@ use Psr\Log\LoggerInterface;
 abstract class AbstractAuthenticationProvider implements AuthenticationProvider {
 	/** @var LoggerInterface */
 	protected $logger;
+
 	/** @var AuthManager */
 	protected $manager;
+
 	/** @var Config */
 	protected $config;
+
 	/** @var HookContainer */
 	private $hookContainer;
+
 	/** @var HookRunner */
 	private $hookRunner;
 
-	public function setLogger( LoggerInterface $logger ) {
-		$this->logger = $logger;
-	}
+	/** @var UserNameUtils */
+	protected $userNameUtils;
 
-	public function setManager( AuthManager $manager ) {
+	/**
+	 * Initialise with dependencies of an AuthenticationProvider
+	 *
+	 * @since 1.37
+	 * @internal In production code AuthManager will initialize the
+	 * AbstractAuthenticationProvider, in tests
+	 * AuthenticationProviderTestTrait must be used.
+	 *
+	 * @param LoggerInterface $logger
+	 * @param AuthManager $manager
+	 * @param HookContainer $hookContainer
+	 * @param Config $config
+	 * @param UserNameUtils $userNameUtils
+	 */
+	public function init(
+		LoggerInterface $logger,
+		AuthManager $manager,
+		HookContainer $hookContainer,
+		Config $config,
+		UserNameUtils $userNameUtils
+	) {
+		$this->logger = $logger;
 		$this->manager = $manager;
+		$this->hookContainer = $hookContainer;
+		$this->hookRunner = new HookRunner( $hookContainer );
+		$this->config = $config;
+		$this->userNameUtils = $userNameUtils;
+		$this->postInitSetup();
 	}
 
 	/**
+	 * A provider can override this to do any necessary setup after init()
+	 * is called.
+	 *
+	 * @since 1.37
 	 * @stable to override
-	 * @param Config $config
 	 */
-	public function setConfig( Config $config ) {
-		$this->config = $config;
-	}
-
-	public function setHookContainer( HookContainer $hookContainer ) {
-		$this->hookContainer = $hookContainer;
-		$this->hookRunner = new HookRunner( $hookContainer );
+	protected function postInitSetup() {
 	}
 
 	/**
@@ -77,7 +104,7 @@ abstract class AbstractAuthenticationProvider implements AuthenticationProvider 
 	 * @since 1.35
 	 * @return HookContainer
 	 */
-	protected function getHookContainer() : HookContainer {
+	protected function getHookContainer(): HookContainer {
 		return $this->hookContainer;
 	}
 
@@ -87,7 +114,7 @@ abstract class AbstractAuthenticationProvider implements AuthenticationProvider 
 	 * @since 1.35
 	 * @return HookRunner
 	 */
-	protected function getHookRunner() : HookRunner {
+	protected function getHookRunner(): HookRunner {
 		return $this->hookRunner;
 	}
 }

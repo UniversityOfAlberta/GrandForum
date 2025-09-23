@@ -21,6 +21,10 @@
  * @file
  */
 
+use MediaWiki\MediaWikiServices;
+use MediaWiki\Page\PageIdentity;
+use MediaWiki\Title\Title;
+
 /**
  * An utility class to rescore search results by looking for an exact match
  * in the db and add the page found to the first position.
@@ -29,6 +33,11 @@
  * @ingroup Search
  */
 class SearchExactMatchRescorer {
+	/**
+	 * @var ?string set when a redirect returned from the engine is replaced by the exact match
+	 */
+	private ?string $replacedRedirect;
+
 	/**
 	 * Default search backend does proper prefix searching, but custom backends
 	 * may sort based on other algorithms that may cause the exact title match
@@ -40,6 +49,7 @@ class SearchExactMatchRescorer {
 	 * @return string[] munged results
 	 */
 	public function rescore( $search, $namespaces, $srchres, $limit ) {
+		$this->replacedRedirect = null;
 		// Pick namespace (based on PrefixSearch::defaultSearchBackend)
 		$ns = in_array( NS_MAIN, $namespaces ) ? NS_MAIN : reset( $namespaces );
 		$t = Title::newFromText( $search, $ns );
@@ -70,10 +80,10 @@ class SearchExactMatchRescorer {
 			$redirectTargetsToRedirect = $this->redirectTargetsToRedirect( $srchres );
 			if ( isset( $redirectTargetsToRedirect[$target] ) ) {
 				// The exact match and something in the results list are both redirects
-				// to the same thing!  In this case we'll pull the returned match to the
-				// top following the same logic above.  Again, it might not be a perfect
-				// choice but it'll do.
-				return $this->pullFront( $redirectTargetsToRedirect[$target], $srchres );
+				// to the same thing! In this case we prefer the match the user typed.
+				$this->replacedRedirect = array_splice( $srchres, $redirectTargetsToRedirect[$target], 1 )[0];
+				array_unshift( $srchres, $string );
+				return $srchres;
 			}
 		} else {
 			$redirectTargetsToRedirect = $this->redirectTargetsToRedirect( $srchres );
@@ -93,6 +103,16 @@ class SearchExactMatchRescorer {
 			array_pop( $srchres );
 		}
 		return $srchres;
+	}
+
+	/**
+	 * Redirect initially returned by the search engine that got replaced by a better match:
+	 * - exact match to a redirect to the same page
+	 * - exact match to the target page
+	 * @return string|null the replaced redirect or null if nothing was replaced
+	 */
+	public function getReplacedRedirect(): ?string {
+		return $this->replacedRedirect;
 	}
 
 	/**
@@ -131,15 +151,15 @@ class SearchExactMatchRescorer {
 
 	/**
 	 * Get a redirect's destination from a title
-	 * @param Title $title A title to redirect. It may not redirect or even exist
+	 * @param PageIdentity $page A page to redirect. It may not redirect or even exist
 	 * @return null|string If title exists and redirects, get the destination's prefixed name
 	 */
-	private function getRedirectTarget( $title ) {
-		$page = WikiPage::factory( $title );
-		if ( !$page->exists() ) {
-			return null;
-		}
-		$redir = $page->getRedirectTarget();
+	private function getRedirectTarget( PageIdentity $page ) {
+		$redirectStore = MediaWikiServices::getInstance()->getRedirectStore();
+		$redir = $redirectStore->getRedirectTarget( $page );
+
+		// Needed to get the text needed for display.
+		$redir = Title::castFromLinkTarget( $redir );
 		return $redir ? $redir->getPrefixedText() : null;
 	}
 }

@@ -1,7 +1,5 @@
 <?php
 /**
- * Redirect from Special:NewSection/$1 to index.php?title=$1&action=edit&section=new.
- *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -18,14 +16,35 @@
  * http://www.gnu.org/copyleft/gpl.html
  *
  * @file
+ */
+
+namespace MediaWiki\Specials;
+
+use MediaWiki\HTMLForm\HTMLForm;
+use MediaWiki\SpecialPage\RedirectSpecialPage;
+use MediaWiki\Title\Title;
+use SearchEngineFactory;
+
+/**
+ * Redirect from Special:NewSection/$1 to index.php?title=$1&action=edit&section=new.
+ *
  * @ingroup SpecialPage
  * @author DannyS712
  */
 class SpecialNewSection extends RedirectSpecialPage {
-	public function __construct() {
+
+	private SearchEngineFactory $searchEngineFactory;
+
+	/**
+	 * @param SearchEngineFactory $searchEngineFactory
+	 */
+	public function __construct(
+		SearchEngineFactory $searchEngineFactory
+	) {
 		parent::__construct( 'NewSection' );
 		$this->mAllowedRedirectParams = [ 'preloadtitle', 'nosummary', 'editintro',
 			'preload', 'preloadparams', 'summary' ];
+		$this->searchEngineFactory = $searchEngineFactory;
 	}
 
 	/**
@@ -51,10 +70,11 @@ class SpecialNewSection extends RedirectSpecialPage {
 	private function showForm() {
 		$form = HTMLForm::factory( 'ooui', [
 			'page' => [
-				'type' => 'text',
+				'type' => 'title',
 				'name' => 'page',
 				'label-message' => 'newsection-page',
 				'required' => true,
+				'creatable' => true,
 			],
 		], $this->getContext(), 'newsection' );
 		$form->setSubmitTextMsg( 'newsection-submit' );
@@ -64,11 +84,7 @@ class SpecialNewSection extends RedirectSpecialPage {
 
 	public function onFormSubmit( $formData ) {
 		$title = $formData['page'];
-		try {
-			$page = Title::newFromTextThrow( $title );
-		} catch ( MalformedTitleException $e ) {
-			return Status::newFatal( $e->getMessageObject() );
-		}
+		$page = Title::newFromTextThrow( $title );
 		$query = [ 'action' => 'edit', 'section' => 'new' ];
 		$url = $page->getFullUrlForRedirect( $query );
 		$this->getOutput()->redirect( $url );
@@ -78,7 +94,25 @@ class SpecialNewSection extends RedirectSpecialPage {
 		return true;
 	}
 
+	/**
+	 * Return an array of subpages beginning with $search that this special page will accept.
+	 *
+	 * @param string $search Prefix to search for
+	 * @param int $limit Maximum number of results to return (usually 10)
+	 * @param int $offset Number of results to skip (usually 0)
+	 * @return string[] Matching subpages
+	 */
+	public function prefixSearchSubpages( $search, $limit, $offset ) {
+		return $this->prefixSearchString( $search, $limit, $offset, $this->searchEngineFactory );
+	}
+
 	protected function getGroupName() {
 		return 'redirects';
 	}
 }
+
+/**
+ * Retain the old class name for backwards compatibility.
+ * @deprecated since 1.41
+ */
+class_alias( SpecialNewSection::class, 'SpecialNewSection' );

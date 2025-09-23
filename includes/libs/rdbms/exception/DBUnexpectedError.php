@@ -16,20 +16,12 @@
  * http://www.gnu.org/copyleft/gpl.html
  *
  * @file
- * @ingroup Database
  */
-
 namespace Wikimedia\Rdbms;
 
 /**
  * @newable
- * @stable to extend
  * @ingroup Database
  */
 class DBUnexpectedError extends DBError {
 }
-
-/**
- * @deprecated since 1.29
- */
-class_alias( DBUnexpectedError::class, 'DBUnexpectedError' );

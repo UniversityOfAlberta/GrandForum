@@ -1,6 +1,7 @@
 <?php
 
-use MediaWiki\MediaWikiServices;
+use MediaWiki\Content\ContentHandler;
+use MediaWiki\SpecialPage\SpecialPage;
 
 class ContentModelLogFormatter extends LogFormatter {
 	protected function getMessageParameters() {
@@ -14,9 +15,7 @@ class ContentModelLogFormatter extends LogFormatter {
 	public function getActionLinks() {
 		if ( $this->entry->isDeleted( LogPage::DELETED_ACTION ) // Action is hidden
 			|| $this->entry->getSubtype() !== 'change'
-			|| !MediaWikiServices::getInstance()
-				->getPermissionManager()
-				->userHasRight( $this->context->getUser(), 'editcontentmodel' )
+			|| !$this->context->getAuthority()->isAllowed( 'editcontentmodel' )
 		) {
 			return '';
 		}

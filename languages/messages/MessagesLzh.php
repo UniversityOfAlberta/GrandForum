@@ -1,10 +1,8 @@
 <?php
 /** Literary Chinese (文言)
  *
- * To improve a translation please visit https://translatewiki.net
- *
- * @ingroup Language
  * @file
+ * @ingroup Languages
  *
  * @author C933103
  * @author Itsmine
@@ -14,18 +12,21 @@
  * @author Simon Shek
  * @author StephDC
  * @author Super Wang
+ * @author Winston Sung
  * @author Xiaomingyan
  * @author Yanteng3
  */
 
-$fallback = 'zh-hant'; // T125373
+$fallback = 'zh-hant, zh, zh-hans'; // T125373, T278639, T286291
 
+/** @phpcs-require-sorted-array */
 $specialPageAliases = [
 	'Activeusers'               => [ '躍簿' ],
 	'Allmessages'               => [ '官話' ],
 	'Allpages'                  => [ '全典' ],
 	'Ancientpages'              => [ '陳年' ],
 	'Blankpage'                 => [ '白頁' ],
+	'BlockList'                 => [ '列禁簿、禁址' ],
 	'Booksources'               => [ '書海' ],
 	'BrokenRedirects'           => [ '斷渡' ],
 	'Categories'                => [ '類' ],
@@ -47,7 +48,6 @@ $specialPageAliases = [
 	'Filepath'                  => [ '檔路' ],
 	'Import'                    => [ '圖入匯' ],
 	'Invalidateemail'           => [ '消核郵驛' ],
-	'BlockList'                 => [ '列禁簿、禁址' ],
 	'LinkSearch'                => [ '尋網連' ],
 	'Listfiles'                 => [ '見檔' ],
 	'Listgrouprights'           => [ '權任一覽' ],

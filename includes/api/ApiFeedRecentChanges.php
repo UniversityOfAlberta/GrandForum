@@ -19,14 +19,51 @@
  * @since 1.23
  */
 
+namespace MediaWiki\Api;
+
+use ChangesFeed;
+use MediaWiki\Context\DerivativeContext;
+use MediaWiki\Feed\ChannelFeed;
+use MediaWiki\MainConfigNames;
+use MediaWiki\Request\DerivativeRequest;
+use MediaWiki\SpecialPage\SpecialPage;
+use MediaWiki\SpecialPage\SpecialPageFactory;
+use MediaWiki\Title\Title;
+use MediaWiki\User\TempUser\TempUserConfig;
+use RuntimeException;
+use Wikimedia\ParamValidator\ParamValidator;
+use Wikimedia\ParamValidator\TypeDef\IntegerDef;
+
 /**
  * Recent changes feed.
  *
+ * @ingroup RecentChanges
  * @ingroup API
  */
 class ApiFeedRecentChanges extends ApiBase {
 
+	/** @var array */
 	private $params;
+
+	private SpecialPageFactory $specialPageFactory;
+	private TempUserConfig $tempUserConfig;
+
+	/**
+	 * @param ApiMain $mainModule
+	 * @param string $moduleName
+	 * @param SpecialPageFactory $specialPageFactory
+	 * @param TempUserConfig $tempUserConfig
+	 */
+	public function __construct(
+		ApiMain $mainModule,
+		string $moduleName,
+		SpecialPageFactory $specialPageFactory,
+		TempUserConfig $tempUserConfig
+	) {
+		parent::__construct( $mainModule, $moduleName );
+		$this->specialPageFactory = $specialPageFactory;
+		$this->tempUserConfig = $tempUserConfig;
+	}
 
 	/**
 	 * This module uses a custom feed wrapper printer.
@@ -46,11 +83,11 @@ class ApiFeedRecentChanges extends ApiBase {
 
 		$this->params = $this->extractRequestParams();
 
-		if ( !$config->get( 'Feed' ) ) {
+		if ( !$config->get( MainConfigNames::Feed ) ) {
 			$this->dieWithError( 'feed-unavailable' );
 		}
 
-		$feedClasses = $config->get( 'FeedClasses' );
+		$feedClasses = $config->get( MainConfigNames::FeedClasses );
 		if ( !isset( $feedClasses[$this->params['feedformat']] ) ) {
 			$this->dieWithError( 'feed-invalid' );
 		}
@@ -62,11 +99,11 @@ class ApiFeedRecentChanges extends ApiBase {
 		}
 
 		$feedFormat = $this->params['feedformat'];
-		$specialClass = $this->params['target'] !== null
-			? SpecialRecentChangesLinked::class
-			: SpecialRecentChanges::class;
+		$specialPageName = $this->params['target'] !== null
+			? 'Recentchangeslinked'
+			: 'Recentchanges';
 
-		$formatter = $this->getFeedObject( $feedFormat, $specialClass );
+		$formatter = $this->getFeedObject( $feedFormat, $specialPageName );
 
 		// Parameters are passed via the request in the context… :(
 		$context = new DerivativeContext( $this );
@@ -77,7 +114,11 @@ class ApiFeedRecentChanges extends ApiBase {
 		) );
 
 		// The row-getting functionality should be factored out of ChangesListSpecialPage too…
-		$rc = new $specialClass();
+		$rc = $this->specialPageFactory->getPage( $specialPageName );
+		if ( $rc === null ) {
+			throw new RuntimeException( __METHOD__ . ' not able to instance special page ' . $specialPageName );
+		}
+		'@phan-var \MediaWiki\SpecialPage\ChangesListSpecialPage $rc';
 		$rc->setContext( $context );
 		$rows = $rc->getRows();
 
@@ -87,17 +128,17 @@ class ApiFeedRecentChanges extends ApiBase {
 	}
 
 	/**
-	 * Return a ChannelFeed object.
+	 * Return a MediaWiki\Feed\ChannelFeed object.
 	 *
 	 * @param string $feedFormat Feed's format (either 'rss' or 'atom')
-	 * @param string $specialClass Relevant special page name (either 'SpecialRecentChanges' or
-	 *     'SpecialRecentChangesLinked')
+	 * @param string $specialPageName Relevant special page name (either 'Recentchanges' or
+	 *     'Recentchangeslinked')
 	 * @return ChannelFeed
 	 */
-	public function getFeedObject( $feedFormat, $specialClass ) {
-		if ( $specialClass === SpecialRecentChangesLinked::class ) {
+	private function getFeedObject( $feedFormat, $specialPageName ) {
+		if ( $specialPageName === 'Recentchangeslinked' ) {
 			$title = Title::newFromText( $this->params['target'] );
-			if ( !$title ) {
+			if ( !$title || $title->isExternal() ) {
 				$this->dieWithError( [ 'apierror-invalidtitle', wfEscapeWikiText( $this->params['target'] ) ] );
 			}
 
@@ -122,54 +163,59 @@ class ApiFeedRecentChanges extends ApiBase {
 
 	public function getAllowedParams() {
 		$config = $this->getConfig();
-		$feedFormatNames = array_keys( $config->get( 'FeedClasses' ) );
+		$feedFormatNames = array_keys( $config->get( MainConfigNames::FeedClasses ) );
 
-		$ret = [
+		return [
 			'feedformat' => [
-				ApiBase::PARAM_DFLT => 'rss',
-				ApiBase::PARAM_TYPE => $feedFormatNames,
+				ParamValidator::PARAM_DEFAULT => 'rss',
+				ParamValidator::PARAM_TYPE => $feedFormatNames,
 			],
 
 			'namespace' => [
-				ApiBase::PARAM_TYPE => 'namespace',
+				ParamValidator::PARAM_TYPE => 'namespace',
 			],
+			// TODO: Rename this option to 'invertnamespaces'?
 			'invert' => false,
 			'associated' => false,
 
 			'days' => [
-				ApiBase::PARAM_DFLT => 7,
-				ApiBase::PARAM_MIN => 1,
-				ApiBase::PARAM_TYPE => 'integer',
+				ParamValidator::PARAM_DEFAULT => 7,
+				IntegerDef::PARAM_MIN => 1,
+				ParamValidator::PARAM_TYPE => 'integer',
 			],
 			'limit' => [
-				ApiBase::PARAM_DFLT => 50,
-				ApiBase::PARAM_MIN => 1,
-				ApiBase::PARAM_MAX => $config->get( 'FeedLimit' ),
-				ApiBase::PARAM_TYPE => 'integer',
+				ParamValidator::PARAM_DEFAULT => 50,
+				IntegerDef::PARAM_MIN => 1,
+				IntegerDef::PARAM_MAX => $config->get( MainConfigNames::FeedLimit ),
+				ParamValidator::PARAM_TYPE => 'integer',
 			],
 			'from' => [
-				ApiBase::PARAM_TYPE => 'timestamp',
+				ParamValidator::PARAM_TYPE => 'timestamp',
 			],
 
 			'hideminor' => false,
 			'hidebots' => false,
-			'hideanons' => false,
+			'hideanons' => [
+				ParamValidator::PARAM_DEFAULT => false,
+				ApiBase::PARAM_HELP_MSG => $this->tempUserConfig->isKnown() ?
+					'apihelp-feedrecentchanges-param-hideanons-temp' :
+					'apihelp-feedrecentchanges-param-hideanons',
+			],
 			'hideliu' => false,
 			'hidepatrolled' => false,
 			'hidemyself' => false,
 			'hidecategorization' => false,
 
 			'tagfilter' => [
-				ApiBase::PARAM_TYPE => 'string',
+				ParamValidator::PARAM_TYPE => 'string',
 			],
+			'inverttags' => false,
 
 			'target' => [
-				ApiBase::PARAM_TYPE => 'string',
+				ParamValidator::PARAM_TYPE => 'string',
 			],
 			'showlinkedto' => false,
 		];
-
-		return $ret;
 	}
 
 	protected function getExamplesMessages() {
@@ -180,4 +226,11 @@ class ApiFeedRecentChanges extends ApiBase {
 				=> 'apihelp-feedrecentchanges-example-30days',
 		];
 	}
+
+	public function getHelpUrls() {
+		return 'https://www.mediawiki.org/wiki/Special:MyLanguage/API:Feedrecentchanges';
+	}
 }
+
+/** @deprecated class alias since 1.43 */
+class_alias( ApiFeedRecentChanges::class, 'ApiFeedRecentChanges' );

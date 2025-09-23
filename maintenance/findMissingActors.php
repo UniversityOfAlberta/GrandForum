@@ -19,84 +19,71 @@
  * @ingroup Maintenance
  */
 
-use MediaWiki\MediaWikiServices;
+use MediaWiki\User\ActorNormalization;
 use MediaWiki\User\UserFactory;
 use MediaWiki\User\UserNameUtils;
-use Wikimedia\Rdbms\LBFactory;
-use Wikimedia\Rdbms\LoadBalancer;
+use MediaWiki\User\UserRigorOptions;
 
+// @codeCoverageIgnoreStart
 require_once __DIR__ . '/Maintenance.php';
+// @codeCoverageIgnoreEnd
 
 /**
- * Maintenance script for finding and replacing invalid actor IDs, see T261325.
+ * Maintenance script for finding and replacing invalid actor IDs, see T261325 and T307738.
  *
  * @ingroup Maintenance
  */
 class FindMissingActors extends Maintenance {
 
-	/**
-	 * @var UserFactory|null
-	 */
-	private $userFactory;
-
-	/**
-	 * @var UserNameUtils|null
-	 */
-	private $userNameUtils;
-
-	/**
-	 * @var LoadBalancer|null
-	 */
-	private $loadBalancer;
-
-	/**
-	 * @var LBFactory
-	 */
-	private $lbFactory;
-
-	private const TABLES = [
-		// 'rev_actor' => [ 'revision', 'rev_actor', 'rev_id' ], // not yet used in 1.35
-		'revactor_actor' => [ 'revision_actor_temp', 'revactor_actor', 'revactor_rev' ],
-		'ar_actor' => [ 'archive', 'ar_actor', 'ar_id' ],
-		'ipb_by_actor' => [ 'ipblocks', 'ipb_by_actor', 'ipb_id' ], // no index on ipb_by_actor!
-		'img_actor' => [ 'image', 'img_actor', 'img_name' ],
-		'oi_actor' => [ 'oldimage', 'oi_actor', 'oi_archive_name' ], // no index on oi_archive_name!
-		'fa_actor' => [ 'filearchive', 'fa_actor', 'fa_id' ],
-		'rc_actor' => [ 'recentchanges', 'rc_actor', 'rc_id' ],
-		'log_actor' => [ 'logging', 'log_actor', 'log_id' ],
-	];
+	private UserFactory $userFactory;
+	private UserNameUtils $userNameUtils;
+	private ActorNormalization $actorNormalization;
 
 	public function __construct() {
 		parent::__construct();
 
 		$this->addDescription( 'Find and fix invalid actor IDs.' );
-		$this->addOption( 'field', 'The name of a database field to process. '
-			. 'Possible values: ' . implode( ', ', array_keys( self::TABLES ) ),
-			 true, true );
+		$this->addOption( 'field', 'The name of a database field to process',
+			true, true );
+		$this->addOption( 'type', 'Which type of invalid actors to find or fix, '
+			. 'missing or broken (with empty actor_name which can\'t be associated '
+			. 'with an existing user).',
+			false, true );
 		$this->addOption( 'skip', 'A comma-separated list of actor IDs to skip.',
 			false, true );
-		$this->addOption( 'overwrite-with', 'Replace missing actors with this user. '
+		$this->addOption( 'overwrite-with', 'Replace invalid actors with this user. '
 			. 'Typically, this would be "Unknown user", but it could be any reserved '
 			. 'system user (per $wgReservedUsernames) or locally registered user. '
 			. 'If not given, invalid actors will only be listed, not fixed. '
 			. 'You will be prompted for confirmation before data is written. ',
-			 false, true );
+			false, true );
 
 		$this->setBatchSize( 1000 );
 	}
 
-	public function initializeServices(
-		?UserFactory $userFactory = null,
-		?UserNameUtils $userNameUtils = null,
-		?LoadBalancer $loadBalancer = null,
-		?LBFactory $lbFactory = null
-	) {
-		$services = MediaWikiServices::getInstance();
+	/**
+	 * @return array
+	 */
+	private function getTables() {
+		return [
+			'ar_actor' => [ 'archive', 'ar_actor', 'ar_id' ],
+			'img_actor' => [ 'image', 'img_actor', 'img_name' ],
+			'oi_actor' => [ 'oldimage', 'oi_actor', 'oi_archive_name' ], // no index on oi_archive_name!
+			'fa_actor' => [ 'filearchive', 'fa_actor', 'fa_id' ],
+			'rc_actor' => [ 'recentchanges', 'rc_actor', 'rc_id' ],
+			'log_actor' => [ 'logging', 'log_actor', 'log_id' ],
+			'rev_actor' => [ 'revision', 'rev_actor', 'rev_id' ],
+			'bl_by_actor' => [ 'block', 'bl_by_actor', 'bl_id' ], // no index on bl_by_actor!
+		];
+	}
 
-		$this->userFactory = $userFactory ?? $this->userFactory ?? $services->getUserFactory();
-		$this->userNameUtils = $userNameUtils ?? $this->userNameUtils ?? $services->getUserNameUtils();
-		$this->loadBalancer = $loadBalancer ?? $this->loadBalancer ?? $services->getDBLoadBalancer();
-		$this->lbFactory = $lbFactory ?? $this->lbFactory ?? $services->getDBLoadBalancerFactory();
+	/**
+	 * @param string $field
+	 * @return array|null
+	 */
+	private function getTableInfo( $field ) {
+		$tables = $this->getTables();
+		return $tables[$field] ?? null;
 	}
 
 	/**
@@ -118,10 +105,10 @@ class FindMissingActors extends Maintenance {
 		$user = $this->userFactory->newFromName( $name );
 
 		if ( !$user ) {
-			$this->fatalError( "Not a valid user name: '$user'" );
+			$this->fatalError( "Not a valid user name: '$name'" );
 		}
 
-		$name = $this->userNameUtils->getCanonical( $name, UserNameUtils::RIGOR_NONE );
+		$name = $this->userNameUtils->getCanonical( $name, UserRigorOptions::RIGOR_NONE );
 
 		if ( $user->isRegistered() ) {
 			$this->output( "Using existing user: '$user'\n" );
@@ -133,9 +120,8 @@ class FindMissingActors extends Maintenance {
 			$this->fatalError( "Unknown user: '$name'" );
 		}
 
-		// Supply write connection to assign an actor ID if needed.
-		$dbw = $this->loadBalancer->getConnectionRef( DB_MASTER );
-		$actorId = $user->getActorId( $dbw );
+		$dbw = $this->getPrimaryDB();
+		$actorId = $this->actorNormalization->acquireActorId( $user, $dbw );
 
 		if ( !$actorId ) {
 			$this->fatalError( "Failed to acquire an actor ID for user '$user'" );
@@ -145,28 +131,34 @@ class FindMissingActors extends Maintenance {
 		return $actorId;
 	}
 
-	/**
-	 * @inheritDoc
-	 */
 	public function execute() {
-		$this->initializeServices();
+		$services = $this->getServiceContainer();
+		$this->userFactory = $services->getUserFactory();
+		$this->userNameUtils = $services->getUserNameUtils();
+		$this->actorNormalization = $services->getActorNormalization();
+		$this->setDBProvider( $services->getConnectionProvider() );
 
 		$field = $this->getOption( 'field' );
-		if ( !isset( self::TABLES[$field] ) ) {
+		if ( !$this->getTableInfo( $field ) ) {
 			$this->fatalError( "Unknown field: $field.\n" );
+		}
+
+		$type = $this->getOption( 'type', 'missing' );
+		if ( $type !== 'missing' && $type !== 'broken' ) {
+			$this->fatalError( "Unknown type: $type.\n" );
 		}
 
 		$skip = $this->parseIntList( $this->getOption( 'skip', '' ) );
 		$overwrite = $this->getNewActorId();
 
-		$bad = $this->findBadActors( $field, $skip );
+		$bad = $this->findBadActors( $field, $type, $skip );
 
 		if ( $bad && $overwrite ) {
 			$this->output( "\n" );
 			$this->output( "Do you want to OVERWRITE the listed actor IDs?\n" );
 			$this->output( "Information about the invalid IDs will be lost!\n" );
 			$this->output( "\n" );
-			$confirm = $this->readconsole( 'Type "yes" to continue: ' );
+			$confirm = self::readconsole( 'Type "yes" to continue: ' );
 
 			if ( $confirm === 'yes' ) {
 				$this->overwriteActorIDs( $field, array_keys( $bad ), $overwrite );
@@ -182,18 +174,16 @@ class FindMissingActors extends Maintenance {
 	 * Find rows that have bad actor IDs.
 	 *
 	 * @param string $field the database field in which to detect bad actor IDs.
+	 * @param string $type type of bad actors, missing or broken.
 	 * @param int[] $skip bad actor IDs not to replace.
 	 *
 	 * @return array a list of row IDs, identifying rows in which the actor ID needs to be replaced.
 	 */
-	private function findBadActors( $field, $skip ) {
-		[ $table, $actorField, $idField ] = self::TABLES[$field];
+	private function findBadActors( $field, $type, $skip ) {
+		[ $table, $actorField, $idField ] = $this->getTableInfo( $field );
 		$this->output( "Finding invalid actor IDs in $table.$actorField...\n" );
 
-		$dbr = $this->loadBalancer->getConnectionRef(
-			DB_REPLICA,
-			[ 'maintenance', 'vslow', 'slow' ]
-		);
+		$dbr = $this->getServiceContainer()->getDBLoadBalancer()->getConnection( DB_REPLICA, 'vslow' );
 
 		/*
 		We are building an SQL query like this one here, performing a left join
@@ -205,27 +195,24 @@ class FindMissingActors extends Maintenance {
 
 		SELECT log_id
 		FROM logging
-		JOIN actor ON log_actor = actor_id
+		LEFT JOIN actor ON log_actor = actor_id
 		WHERE actor_id IS NULL
 		AND log_actor NOT IN (1, 2, 3, 4)
 		LIMIT 1000;
-		 */
+		*/
 
-		$conds = [ 'actor_id' => null ];
+		$queryBuilder = $dbr->newSelectQueryBuilder()
+			->select( [ $actorField, $idField ] )
+			->from( $table )
+			->leftJoin( 'actor', null, [ "$actorField = actor_id" ] )
+			->where( $type == 'missing' ? [ 'actor_id' => null ] : [ 'actor_name' => '' ] )
+			->limit( $this->getBatchSize() );
 
 		if ( $skip ) {
-			$conds[] = $actorField . ' NOT IN ( ' . $dbr->makeList( $skip ) . ' ) ';
+			$queryBuilder->andWhere( $dbr->expr( $actorField, '!=', $skip ) );
 		}
 
-		$queryBuilder = $dbr->newSelectQueryBuilder();
-		$queryBuilder->table( $table )
-			->fields( [ $actorField, $idField ] )
-			->conds( $conds )
-			->leftJoin( 'actor', null, [ "$actorField = actor_id" ] )
-			->limit( $this->getBatchSize() )
-			->caller( __METHOD__ );
-
-		$res = $queryBuilder->fetchResultSet();
+		$res = $queryBuilder->caller( __METHOD__ )->fetchResultSet();
 		$count = $res->numRows();
 
 		$bad = [];
@@ -261,18 +248,22 @@ class FindMissingActors extends Maintenance {
 	 * @return int
 	 */
 	private function overwriteActorIDs( $field, array $ids, int $overwrite ) {
-		[ $table, $actorField, $idField ] = self::TABLES[$field];
+		[ $table, $actorField, $idField ] = $this->getTableInfo( $field );
 
 		$count = count( $ids );
 		$this->output( "OVERWRITING $count actor IDs in $table.$actorField with $overwrite...\n" );
 
-		$dbw = $this->loadBalancer->getConnectionRef( DB_MASTER );
+		$dbw = $this->getPrimaryDB();
 
-		$dbw->update( $table, [ $actorField => $overwrite ], [ $idField => $ids ], __METHOD__ );
+		$dbw->newUpdateQueryBuilder()
+			->update( $table )
+			->set( [ $actorField => $overwrite ] )
+			->where( [ $idField => $ids ] )
+			->caller( __METHOD__ )->execute();
 
 		$count = $dbw->affectedRows();
 
-		$this->lbFactory->waitForReplication();
+		$this->waitForReplication();
 		$this->output( "\tUpdated $count rows.\n" );
 
 		return $count;
@@ -280,5 +271,7 @@ class FindMissingActors extends Maintenance {
 
 }
 
+// @codeCoverageIgnoreStart
 $maintClass = FindMissingActors::class;
 require_once RUN_MAINTENANCE_IF_MAIN;
+// @codeCoverageIgnoreEnd

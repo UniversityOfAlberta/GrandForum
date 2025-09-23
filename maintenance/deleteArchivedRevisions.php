@@ -23,7 +23,9 @@
  * @ingroup Maintenance
  */
 
+// @codeCoverageIgnoreStart
 require_once __DIR__ . '/Maintenance.php';
+// @codeCoverageIgnoreEnd
 
 /**
  * Maintenance script to delete archived (deleted from public) revisions
@@ -40,18 +42,25 @@ class DeleteArchivedRevisions extends Maintenance {
 	}
 
 	public function execute() {
-		$dbw = $this->getDB( DB_MASTER );
+		$dbw = $this->getPrimaryDB();
 
 		if ( !$this->hasOption( 'delete' ) ) {
-			$count = $dbw->selectField( 'archive', 'COUNT(*)', '', __METHOD__ );
+			$count = $dbw->newSelectQueryBuilder()
+				->select( 'COUNT(*)' )
+				->from( 'archive' )
+				->caller( __METHOD__ )
+				->fetchField();
 			$this->output( "Found $count revisions to delete.\n" );
 			$this->output( "Please run the script again with the --delete option "
 				. "to really delete the revisions.\n" );
 			return;
 		}
 
-		$this->output( "Deleting archived revisions... " );
-		$dbw->delete( 'archive', '*', __METHOD__ );
+		$this->output( "Deleting archived revisions..." );
+		$dbw->newDeleteQueryBuilder()
+			->deleteFrom( 'archive' )
+			->where( '*' )
+			->caller( __METHOD__ )->execute();
 		$count = $dbw->affectedRows();
 		$this->output( "done. $count revisions deleted.\n" );
 
@@ -61,5 +70,7 @@ class DeleteArchivedRevisions extends Maintenance {
 	}
 }
 
+// @codeCoverageIgnoreStart
 $maintClass = DeleteArchivedRevisions::class;
 require_once RUN_MAINTENANCE_IF_MAIN;
+// @codeCoverageIgnoreEnd

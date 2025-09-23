@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2007 Roan Kattouw "<Firstname>.<Lastname>@gmail.com"
+ * Copyright © 2007 Roan Kattouw <roan.kattouw@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,13 +20,24 @@
  * @file
  */
 
+namespace MediaWiki\Api;
+
+use MediaWiki\Cache\LinkBatchFactory;
+use MediaWiki\CommentFormatter\RowCommentFormatter;
+use MediaWiki\CommentStore\CommentStore;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\ParamValidator\TypeDef\UserDef;
 use MediaWiki\Revision\RevisionRecord;
+use MediaWiki\Revision\RevisionStore;
 use MediaWiki\Revision\SlotRecord;
 use MediaWiki\Storage\NameTableAccessException;
+use MediaWiki\Storage\NameTableStore;
+use MediaWiki\Title\Title;
 use Wikimedia\ParamValidator\ParamValidator;
+use Wikimedia\ParamValidator\TypeDef\EnumDef;
 use Wikimedia\ParamValidator\TypeDef\IntegerDef;
+use Wikimedia\Rdbms\IExpression;
+use Wikimedia\Rdbms\LikeValue;
 
 /**
  * Query module to enumerate all deleted revisions.
@@ -36,8 +47,27 @@ use Wikimedia\ParamValidator\TypeDef\IntegerDef;
  */
 class ApiQueryDeletedrevs extends ApiQueryBase {
 
-	public function __construct( ApiQuery $query, $moduleName ) {
+	private CommentStore $commentStore;
+	private RowCommentFormatter $commentFormatter;
+	private RevisionStore $revisionStore;
+	private NameTableStore $changeTagDefStore;
+	private LinkBatchFactory $linkBatchFactory;
+
+	public function __construct(
+		ApiQuery $query,
+		string $moduleName,
+		CommentStore $commentStore,
+		RowCommentFormatter $commentFormatter,
+		RevisionStore $revisionStore,
+		NameTableStore $changeTagDefStore,
+		LinkBatchFactory $linkBatchFactory
+	) {
 		parent::__construct( $query, $moduleName, 'dr' );
+		$this->commentStore = $commentStore;
+		$this->commentFormatter = $commentFormatter;
+		$this->revisionStore = $revisionStore;
+		$this->changeTagDefStore = $changeTagDefStore;
+		$this->linkBatchFactory = $linkBatchFactory;
 	}
 
 	public function execute() {
@@ -48,9 +78,8 @@ class ApiQueryDeletedrevs extends ApiQueryBase {
 
 		$user = $this->getUser();
 		$db = $this->getDB();
-		$commentStore = CommentStore::getStore();
 		$params = $this->extractRequestParams( false );
-		$prop = array_flip( $params['prop'] );
+		$prop = array_fill_keys( $params['prop'], true );
 		$fld_parentid = isset( $prop['parentid'] );
 		$fld_revid = isset( $prop['revid'] );
 		$fld_user = isset( $prop['user'] );
@@ -66,18 +95,16 @@ class ApiQueryDeletedrevs extends ApiQueryBase {
 
 		// If we're in a mode that breaks the same-origin policy, no tokens can
 		// be obtained
-		if ( $this->lacksSameOriginSecurity() ) {
-			$fld_token = false;
-		}
-
-		// If user can't undelete, no tokens
-		if ( !$this->getPermissionManager()->userHasRight( $user, 'undelete' ) ) {
+		if ( $this->lacksSameOriginSecurity() ||
+			// If user can't undelete, no tokens
+			!$this->getAuthority()->isAllowed( 'undelete' )
+		) {
 			$fld_token = false;
 		}
 
 		$result = $this->getResult();
 		$pageSet = $this->getPageSet();
-		$titles = $pageSet->getTitles();
+		$titles = $pageSet->getPages();
 
 		// This module operates in three modes:
 		// 'revs': List deleted revs for certain titles (1)
@@ -109,15 +136,17 @@ class ApiQueryDeletedrevs extends ApiQueryBase {
 			$this->dieWithError( 'user and excludeuser cannot be used together', 'badparams' );
 		}
 
-		$revisionStore = MediaWikiServices::getInstance()->getRevisionStore();
-		$arQuery = $revisionStore->getArchiveQueryInfo();
+		$arQuery = $this->revisionStore->getArchiveQueryInfo();
 		$this->addTables( $arQuery['tables'] );
 		$this->addFields( $arQuery['fields'] );
 		$this->addJoinConds( $arQuery['joins'] );
 		$this->addFields( [ 'ar_title', 'ar_namespace' ] );
 
 		if ( $fld_tags ) {
-			$this->addFields( [ 'ts_tags' => ChangeTags::makeTagSummarySubquery( 'archive' ) ] );
+			$this->addFields( [
+				'ts_tags' => MediaWikiServices::getInstance()->getChangeTagsStore()
+					->makeTagSummarySubquery( 'archive' )
+			] );
 		}
 
 		if ( $params['tag'] !== null ) {
@@ -125,9 +154,8 @@ class ApiQueryDeletedrevs extends ApiQueryBase {
 			$this->addJoinConds(
 				[ 'change_tag' => [ 'JOIN', [ 'ar_rev_id=ct_rev_id' ] ] ]
 			);
-			$changeTagDefStore = MediaWikiServices::getInstance()->getChangeTagDefStore();
 			try {
-				$this->addWhereFld( 'ct_tag_id', $changeTagDefStore->getId( $params['tag'] ) );
+				$this->addWhereFld( 'ct_tag_id', $this->changeTagDefStore->getId( $params['tag'] ) );
 			} catch ( NameTableAccessException $exception ) {
 				// Return nothing.
 				$this->addWhere( '1=0' );
@@ -168,7 +196,7 @@ class ApiQueryDeletedrevs extends ApiQueryBase {
 
 		// We need a custom WHERE clause that matches all titles.
 		if ( $mode == 'revs' ) {
-			$lb = new LinkBatch( $titles );
+			$lb = $this->linkBatchFactory->newLinkBatch( $titles );
 			$where = $lb->constructSet( 'ar', $db );
 			$this->addWhere( $where );
 		} elseif ( $mode == 'all' ) {
@@ -183,37 +211,33 @@ class ApiQueryDeletedrevs extends ApiQueryBase {
 			$this->addWhereRange( 'ar_title', $dir, $from, $to );
 
 			if ( isset( $params['prefix'] ) ) {
-				$this->addWhere( 'ar_title' . $db->buildLike(
-					$this->titlePartToKey( $params['prefix'], $params['namespace'] ),
-					$db->anyString() ) );
+				$this->addWhere(
+					$db->expr(
+						'ar_title',
+						IExpression::LIKE,
+						new LikeValue(
+							$this->titlePartToKey( $params['prefix'], $params['namespace'] ),
+							$db->anyString()
+						)
+					)
+				);
 			}
 		}
 
 		if ( $params['user'] !== null ) {
-			// Don't query by user ID here, it might be able to use the ar_usertext_timestamp index.
-			$actorQuery = ActorMigration::newMigration()
-				->getWhere( $db, 'ar_user', $params['user'], false );
-			$this->addTables( $actorQuery['tables'] );
-			$this->addJoinConds( $actorQuery['joins'] );
-			$this->addWhere( $actorQuery['conds'] );
+			// We already join on actor due to getArchiveQueryInfo()
+			$this->addWhereFld( 'actor_name', $params['user'] );
 		} elseif ( $params['excludeuser'] !== null ) {
-			// Here there's no chance of using ar_usertext_timestamp.
-			$actorQuery = ActorMigration::newMigration()
-				->getWhere( $db, 'ar_user', $params['excludeuser'] );
-			$this->addTables( $actorQuery['tables'] );
-			$this->addJoinConds( $actorQuery['joins'] );
-			$this->addWhere( 'NOT(' . $actorQuery['conds'] . ')' );
+			$this->addWhere( $db->expr( 'actor_name', '!=', $params['excludeuser'] ) );
 		}
 
 		if ( $params['user'] !== null || $params['excludeuser'] !== null ) {
 			// Paranoia: avoid brute force searches (T19342)
 			// (shouldn't be able to get here without 'deletedhistory', but
 			// check it again just in case)
-			if ( !$this->getPermissionManager()->userHasRight( $user, 'deletedhistory' ) ) {
+			if ( !$this->getAuthority()->isAllowed( 'deletedhistory' ) ) {
 				$bitmask = RevisionRecord::DELETED_USER;
-			} elseif ( !$this->getPermissionManager()
-				->userHasAnyRight( $user, 'suppressrevision', 'viewsuppressed' )
-			) {
+			} elseif ( !$this->getAuthority()->isAllowedAny( 'suppressrevision', 'viewsuppressed' ) ) {
 				$bitmask = RevisionRecord::DELETED_USER | RevisionRecord::DELETED_RESTRICTED;
 			} else {
 				$bitmask = 0;
@@ -224,31 +248,21 @@ class ApiQueryDeletedrevs extends ApiQueryBase {
 		}
 
 		if ( $params['continue'] !== null ) {
-			$cont = explode( '|', $params['continue'] );
-			$op = ( $dir == 'newer' ? '>' : '<' );
+			$op = ( $dir == 'newer' ? '>=' : '<=' );
 			if ( $mode == 'all' || $mode == 'revs' ) {
-				$this->dieContinueUsageIf( count( $cont ) != 4 );
-				$ns = (int)$cont[0];
-				$this->dieContinueUsageIf( strval( $ns ) !== $cont[0] );
-				$title = $db->addQuotes( $cont[1] );
-				$ts = $db->addQuotes( $db->timestamp( $cont[2] ) );
-				$ar_id = (int)$cont[3];
-				$this->dieContinueUsageIf( strval( $ar_id ) !== $cont[3] );
-				$this->addWhere( "ar_namespace $op $ns OR " .
-					"(ar_namespace = $ns AND " .
-					"(ar_title $op $title OR " .
-					"(ar_title = $title AND " .
-					"(ar_timestamp $op $ts OR " .
-					"(ar_timestamp = $ts AND " .
-					"ar_id $op= $ar_id)))))" );
+				$cont = $this->parseContinueParamOrDie( $params['continue'], [ 'int', 'string', 'timestamp', 'int' ] );
+				$this->addWhere( $db->buildComparison( $op, [
+					'ar_namespace' => $cont[0],
+					'ar_title' => $cont[1],
+					'ar_timestamp' => $db->timestamp( $cont[2] ),
+					'ar_id' => $cont[3],
+				] ) );
 			} else {
-				$this->dieContinueUsageIf( count( $cont ) != 2 );
-				$ts = $db->addQuotes( $db->timestamp( $cont[0] ) );
-				$ar_id = (int)$cont[1];
-				$this->dieContinueUsageIf( strval( $ar_id ) !== $cont[1] );
-				$this->addWhere( "ar_timestamp $op $ts OR " .
-					"(ar_timestamp = $ts AND " .
-					"ar_id $op= $ar_id)" );
+				$cont = $this->parseContinueParamOrDie( $params['continue'], [ 'timestamp', 'int' ] );
+				$this->addWhere( $db->buildComparison( $op, [
+					'ar_timestamp' => $db->timestamp( $cont[0] ),
+					'ar_id' => $cont[1],
+				] ) );
 			}
 		}
 
@@ -276,6 +290,18 @@ class ApiQueryDeletedrevs extends ApiQueryBase {
 			$this->addWhereRange( 'ar_id', $dir, null, null );
 		}
 		$res = $this->select( __METHOD__ );
+
+		$formattedComments = [];
+		if ( $fld_parsedcomment ) {
+			$formattedComments = $this->commentFormatter->formatItems(
+				$this->commentFormatter->rows( $res )
+					->indexField( 'ar_id' )
+					->commentKey( 'ar_comment' )
+					->namespaceField( 'ar_namespace' )
+					->titleField( 'ar_title' )
+			);
+		}
+
 		$pageMap = []; // Maps ns&title to (fake) pageid
 		$count = 0;
 		$newPageID = 0;
@@ -331,13 +357,12 @@ class ApiQueryDeletedrevs extends ApiQueryBase {
 					RevisionRecord::DELETED_COMMENT,
 					$user
 				) ) {
-					$comment = $commentStore->getComment( 'ar_comment', $row )->text;
+					$comment = $this->commentStore->getComment( 'ar_comment', $row )->text;
 					if ( $fld_comment ) {
 						$rev['comment'] = $comment;
 					}
 					if ( $fld_parsedcomment ) {
-						$title = Title::makeTitle( $row->ar_namespace, $row->ar_title );
-						$rev['parsedcomment'] = Linker::formatComment( $comment, $title );
+						$rev['parsedcomment'] = $formattedComments[$row->ar_id];
 					}
 				}
 			}
@@ -359,7 +384,7 @@ class ApiQueryDeletedrevs extends ApiQueryBase {
 					$user
 				) ) {
 					if ( $row->ar_sha1 != '' ) {
-						$rev['sha1'] = Wikimedia\base_convert( $row->ar_sha1, 36, 16, 40 );
+						$rev['sha1'] = \Wikimedia\base_convert( $row->ar_sha1, 36, 16, 40 );
 					} else {
 						$rev['sha1'] = '';
 					}
@@ -376,7 +401,7 @@ class ApiQueryDeletedrevs extends ApiQueryBase {
 					$user
 				) ) {
 					ApiResult::setContentValue( $rev, 'text',
-						$revisionStore->newRevisionFromArchiveRow( $row )
+						$this->revisionStore->newRevisionFromArchiveRow( $row )
 							->getContent( SlotRecord::MAIN )->serialize() );
 				}
 			}
@@ -403,6 +428,7 @@ class ApiQueryDeletedrevs extends ApiQueryBase {
 				$title = Title::makeTitle( $row->ar_namespace, $row->ar_title );
 				ApiQueryBase::addTitleInfo( $a, $title );
 				if ( $fld_token ) {
+					// @phan-suppress-next-line PhanPossiblyUndeclaredVariable token is set when used
 					$a['token'] = $token;
 				}
 				$fit = $result->addValue( [ 'query', $this->getModuleName() ], $pageID, $a );
@@ -431,22 +457,27 @@ class ApiQueryDeletedrevs extends ApiQueryBase {
 	}
 
 	public function getAllowedParams() {
+		$smallLimit = $this->getMain()->canApiHighLimits() ? ApiBase::LIMIT_SML2 : ApiBase::LIMIT_SML1;
 		return [
 			'start' => [
-				ApiBase::PARAM_TYPE => 'timestamp',
+				ParamValidator::PARAM_TYPE => 'timestamp',
 				ApiBase::PARAM_HELP_MSG_INFO => [ [ 'modes', 1, 2 ] ],
 			],
 			'end' => [
-				ApiBase::PARAM_TYPE => 'timestamp',
+				ParamValidator::PARAM_TYPE => 'timestamp',
 				ApiBase::PARAM_HELP_MSG_INFO => [ [ 'modes', 1, 2 ] ],
 			],
 			'dir' => [
-				ApiBase::PARAM_TYPE => [
+				ParamValidator::PARAM_TYPE => [
 					'newer',
 					'older'
 				],
-				ApiBase::PARAM_DFLT => 'older',
+				ParamValidator::PARAM_DEFAULT => 'older',
 				ApiBase::PARAM_HELP_MSG => 'api-help-param-direction',
+				ApiBase::PARAM_HELP_MSG_PER_VALUE => [
+					'newer' => 'api-help-paramvalue-direction-newer',
+					'older' => 'api-help-paramvalue-direction-older',
+				],
 				ApiBase::PARAM_HELP_MSG_INFO => [ [ 'modes', 1, 3 ] ],
 			],
 			'from' => [
@@ -459,28 +490,26 @@ class ApiQueryDeletedrevs extends ApiQueryBase {
 				ApiBase::PARAM_HELP_MSG_INFO => [ [ 'modes', 3 ] ],
 			],
 			'unique' => [
-				ApiBase::PARAM_DFLT => false,
+				ParamValidator::PARAM_DEFAULT => false,
 				ApiBase::PARAM_HELP_MSG_INFO => [ [ 'modes', 3 ] ],
 			],
 			'namespace' => [
-				ApiBase::PARAM_TYPE => 'namespace',
-				ApiBase::PARAM_DFLT => NS_MAIN,
+				ParamValidator::PARAM_TYPE => 'namespace',
+				ParamValidator::PARAM_DEFAULT => NS_MAIN,
 				ApiBase::PARAM_HELP_MSG_INFO => [ [ 'modes', 3 ] ],
 			],
 			'tag' => null,
 			'user' => [
-				ApiBase::PARAM_TYPE => 'user',
-				UserDef::PARAM_ALLOWED_USER_TYPES => [ 'name', 'ip', 'id', 'interwiki' ],
-				UserDef::PARAM_RETURN_OBJECT => true,
+				ParamValidator::PARAM_TYPE => 'user',
+				UserDef::PARAM_ALLOWED_USER_TYPES => [ 'name', 'ip', 'temp', 'id', 'interwiki' ],
 			],
 			'excludeuser' => [
-				ApiBase::PARAM_TYPE => 'user',
-				UserDef::PARAM_ALLOWED_USER_TYPES => [ 'name', 'ip', 'id', 'interwiki' ],
-				UserDef::PARAM_RETURN_OBJECT => true,
+				ParamValidator::PARAM_TYPE => 'user',
+				UserDef::PARAM_ALLOWED_USER_TYPES => [ 'name', 'ip', 'temp', 'id', 'interwiki' ],
 			],
 			'prop' => [
-				ApiBase::PARAM_DFLT => 'user|comment',
-				ApiBase::PARAM_TYPE => [
+				ParamValidator::PARAM_DEFAULT => 'user|comment',
+				ParamValidator::PARAM_TYPE => [
 					'revid',
 					'parentid',
 					'user',
@@ -494,14 +523,21 @@ class ApiQueryDeletedrevs extends ApiQueryBase {
 					'token',
 					'tags'
 				],
-				ApiBase::PARAM_ISMULTI => true
+				ParamValidator::PARAM_ISMULTI => true,
+				ApiBase::PARAM_HELP_MSG_PER_VALUE => [
+					'content' => [ 'apihelp-query+deletedrevs-paramvalue-prop-content', $smallLimit ],
+				],
+				EnumDef::PARAM_DEPRECATED_VALUES => [
+					'token' => true,
+				],
 			],
 			'limit' => [
-				ApiBase::PARAM_DFLT => 10,
-				ApiBase::PARAM_TYPE => 'limit',
-				ApiBase::PARAM_MIN => 1,
-				ApiBase::PARAM_MAX => ApiBase::LIMIT_BIG1,
-				ApiBase::PARAM_MAX2 => ApiBase::LIMIT_BIG2
+				ParamValidator::PARAM_DEFAULT => 10,
+				ParamValidator::PARAM_TYPE => 'limit',
+				IntegerDef::PARAM_MIN => 1,
+				IntegerDef::PARAM_MAX => ApiBase::LIMIT_BIG1,
+				IntegerDef::PARAM_MAX2 => ApiBase::LIMIT_BIG2,
+				ApiBase::PARAM_HELP_MSG => [ 'apihelp-query+deletedrevs-param-limit', $smallLimit ],
 			],
 			'continue' => [
 				ApiBase::PARAM_HELP_MSG => 'api-help-param-continue',
@@ -510,20 +546,34 @@ class ApiQueryDeletedrevs extends ApiQueryBase {
 	}
 
 	protected function getExamplesMessages() {
-		return [
-			'action=query&list=deletedrevs&titles=Main%20Page|Talk:Main%20Page&' .
-				'drprop=user|comment|content'
-				=> 'apihelp-query+deletedrevs-example-mode1',
+		$title = Title::newMainPage();
+		$talkTitle = $title->getTalkPageIfDefined();
+		$examples = [];
+
+		if ( $talkTitle ) {
+			$title = rawurlencode( $title->getPrefixedText() );
+			$talkTitle = rawurlencode( $talkTitle->getPrefixedText() );
+			$examples = [
+				"action=query&list=deletedrevs&titles={$title}|{$talkTitle}&" .
+					'drprop=user|comment|content'
+					=> 'apihelp-query+deletedrevs-example-mode1',
+			];
+		}
+
+		return array_merge( $examples, [
 			'action=query&list=deletedrevs&druser=Bob&drlimit=50'
 				=> 'apihelp-query+deletedrevs-example-mode2',
 			'action=query&list=deletedrevs&drdir=newer&drlimit=50'
 				=> 'apihelp-query+deletedrevs-example-mode3-main',
 			'action=query&list=deletedrevs&drdir=newer&drlimit=50&drnamespace=1&drunique='
 				=> 'apihelp-query+deletedrevs-example-mode3-talk',
-		];
+		] );
 	}
 
 	public function getHelpUrls() {
 		return 'https://www.mediawiki.org/wiki/Special:MyLanguage/API:Deletedrevs';
 	}
 }
+
+/** @deprecated class alias since 1.43 */
+class_alias( ApiQueryDeletedrevs::class, 'ApiQueryDeletedrevs' );

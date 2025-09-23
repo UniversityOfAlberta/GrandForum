@@ -21,6 +21,13 @@
  * @ingroup FileBackend
  */
 
+namespace Wikimedia\FileBackend;
+
+use StatusValue;
+use Wikimedia\FileBackend\FileOpHandle\FileBackendStoreOpHandle;
+use Wikimedia\FileBackend\FileOps\FileOp;
+use Wikimedia\FileBackend\FileOps\FileStatePredicates;
+
 /**
  * Helper class for representing batch file operations.
  * Do not use this class from places outside FileBackend.
@@ -41,7 +48,6 @@ class FileOpBatch {
 	 * $opts is an array of options, including:
 	 *   - force        : Errors that would normally cause a rollback do not.
 	 *                    The remaining operations are still attempted if any fail.
-	 *   - nonJournaled : Don't log this operation batch in the file journal.
 	 *   - concurrency  : Try to do this many operations in parallel when possible.
 	 *
 	 * The resulting StatusValue will be "OK" unless:
@@ -50,10 +56,9 @@ class FileOpBatch {
 	 *
 	 * @param FileOp[] $performOps List of FileOp operations
 	 * @param array $opts Batch operation options
-	 * @param FileJournal $journal Journal to log operations to
 	 * @return StatusValue
 	 */
-	public static function attempt( array $performOps, array $opts, FileJournal $journal ) {
+	public static function attempt( array $performOps, array $opts ) {
 		$status = StatusValue::newGood();
 
 		$n = count( $performOps );
@@ -63,13 +68,10 @@ class FileOpBatch {
 			return $status;
 		}
 
-		$batchId = $journal->getTimestampedUUID();
 		$ignoreErrors = !empty( $opts['force'] );
-		$journaled = empty( $opts['nonJournaled'] );
 		$maxConcurrency = $opts['concurrency'] ?? 1;
 
-		$entries = []; // file journal entry list
-		$predicates = FileOp::newPredicates(); // account for previous ops in prechecks
+		$predicates = new FileStatePredicates(); // account for previous ops in prechecks
 		$curBatch = []; // concurrent FileOp sub-batch accumulation
 		$curBatchDeps = FileOp::newDependencies(); // paths used in FileOp sub-batch
 		$pPerformOps = []; // ordered list of concurrent FileOp sub-batches
@@ -77,7 +79,6 @@ class FileOpBatch {
 		// Do pre-checks for each operation; abort on failure...
 		foreach ( $performOps as $index => $fileOp ) {
 			$backendName = $fileOp->getBackend()->getName();
-			$fileOp->setBatchId( $batchId ); // transaction ID
 			// Decide if this op can be done concurrently within this sub-batch
 			// or if a new concurrent sub-batch must be started after this one...
 			if ( $fileOp->dependsOn( $curBatchDeps )
@@ -93,15 +94,10 @@ class FileOpBatch {
 			// Update list of affected paths in this batch
 			$curBatchDeps = $fileOp->applyDependencies( $curBatchDeps );
 			// Simulate performing the operation...
-			$oldPredicates = $predicates;
 			$subStatus = $fileOp->precheck( $predicates ); // updates $predicates
 			$status->merge( $subStatus );
-			if ( $subStatus->isOK() ) {
-				if ( $journaled ) { // journal log entries
-					$entries = array_merge( $entries,
-						$fileOp->getJournalEntries( $oldPredicates, $predicates ) );
-				}
-			} else { // operation failed?
+			if ( !$subStatus->isOK() ) {
+				// operation failed?
 				$status->success[$index] = false;
 				++$status->failCount;
 				if ( !$ignoreErrors ) {
@@ -112,16 +108,6 @@ class FileOpBatch {
 		// Push the last sub-batch
 		if ( count( $curBatch ) ) {
 			$pPerformOps[] = $curBatch;
-		}
-
-		// Log the operations in the file journal...
-		if ( count( $entries ) ) {
-			$subStatus = $journal->logChangeBatch( $entries, $batchId );
-			if ( !$subStatus->isOK() ) {
-				$status->merge( $subStatus );
-
-				return $status; // abort
-			}
 		}
 
 		if ( $ignoreErrors ) { // treat precheck() fatals as mere warnings
@@ -201,3 +187,6 @@ class FileOpBatch {
 		}
 	}
 }
+
+/** @deprecated class alias since 1.43 */
+class_alias( FileOpBatch::class, 'FileOpBatch' );

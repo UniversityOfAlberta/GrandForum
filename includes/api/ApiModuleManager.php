@@ -21,8 +21,13 @@
  * @since 1.21
  */
 
+namespace MediaWiki\Api;
+
+use InvalidArgumentException;
+use MediaWiki\Context\ContextSource;
 use MediaWiki\MediaWikiServices;
-use Wikimedia\ObjectFactory;
+use UnexpectedValueException;
+use Wikimedia\ObjectFactory\ObjectFactory;
 
 /**
  * This class holds a list of modules and handles instantiation
@@ -59,7 +64,7 @@ class ApiModuleManager extends ContextSource {
 	 * @param ApiBase $parentModule Parent module instance will be used during instantiation
 	 * @param ObjectFactory|null $objectFactory Object factory to use when instantiating modules
 	 */
-	public function __construct( ApiBase $parentModule, ObjectFactory $objectFactory = null ) {
+	public function __construct( ApiBase $parentModule, ?ObjectFactory $objectFactory = null ) {
 		$this->mParent = $parentModule;
 		$this->objectFactory = $objectFactory ?? MediaWikiServices::getInstance()->getObjectFactory();
 	}
@@ -96,18 +101,8 @@ class ApiModuleManager extends ContextSource {
 	 * @param string|array $spec The ObjectFactory spec for instantiating the module,
 	 *  or a class name to instantiate.
 	 * @param callable|null $factory Callback for instantiating the module (deprecated).
-	 *
-	 * @throws InvalidArgumentException
 	 */
-	public function addModule( $name, $group, $spec, $factory = null ) {
-		if ( !is_string( $name ) ) {
-			throw new InvalidArgumentException( '$name must be a string' );
-		}
-
-		if ( !is_string( $group ) ) {
-			throw new InvalidArgumentException( '$group must be a string' );
-		}
-
+	public function addModule( string $name, string $group, $spec, $factory = null ) {
 		if ( is_string( $spec ) ) {
 			$spec = [
 				'class' => $spec
@@ -130,7 +125,7 @@ class ApiModuleManager extends ContextSource {
 	/**
 	 * Get module instance by name, or instantiate it if it does not exist
 	 *
-	 * @param string $moduleName Module name
+	 * @param string $moduleName
 	 * @param string|null $group Optionally validate that the module is in a specific group
 	 * @param bool $ignoreCache If true, force-creates a new instance and does not cache it
 	 *
@@ -141,7 +136,7 @@ class ApiModuleManager extends ContextSource {
 			return null;
 		}
 
-		list( $moduleGroup, $spec ) = $this->mModules[$moduleName];
+		[ $moduleGroup, $spec ] = $this->mModules[$moduleName];
 
 		if ( $group !== null && $moduleGroup !== $group ) {
 			return null;
@@ -188,7 +183,7 @@ class ApiModuleManager extends ContextSource {
 	/**
 	 * Get an array of modules in a specific group or all if no group is set.
 	 * @param string|null $group Optional group filter
-	 * @return array List of module names
+	 * @return string[] List of module names
 	 */
 	public function getNames( $group = null ) {
 		if ( $group === null ) {
@@ -224,7 +219,7 @@ class ApiModuleManager extends ContextSource {
 	 * Returns the class name of the given module
 	 *
 	 * @param string $module Module name
-	 * @return string|bool class name or false if the module does not exist
+	 * @return string|false class name or false if the module does not exist
 	 * @since 1.24
 	 */
 	public function getClassName( $module ) {
@@ -237,7 +232,7 @@ class ApiModuleManager extends ContextSource {
 
 	/**
 	 * Returns true if the specific module is defined at all or in a specific group.
-	 * @param string $moduleName Module name
+	 * @param string $moduleName
 	 * @param string|null $group Group name to check against, or null to check all groups,
 	 * @return bool True if defined
 	 */
@@ -270,3 +265,6 @@ class ApiModuleManager extends ContextSource {
 		return array_keys( $this->mGroups );
 	}
 }
+
+/** @deprecated class alias since 1.43 */
+class_alias( ApiModuleManager::class, 'ApiModuleManager' );

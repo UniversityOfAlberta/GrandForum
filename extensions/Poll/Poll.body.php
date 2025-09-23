@@ -47,7 +47,7 @@ class PollView {
 				
 				if(!$found) {
 					// User is not allowed to view this poll
-					if($wgUser->isLoggedIn()){
+					if($wgUser->isRegistered()){
 						$wgOut->setPageTitle("Poll Permissions Error");
 						$wgOut->addHTML("You are not allowed to view this poll");
 					}

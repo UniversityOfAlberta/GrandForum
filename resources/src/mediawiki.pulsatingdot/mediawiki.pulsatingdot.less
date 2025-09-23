@@ -1,28 +1,26 @@
+@import 'mediawiki.skin.variables.less';
+
 .mw-pulsating-dot {
-	&:before,
-	&:after {
+	&::before,
+	&::after {
 		content: '';
 		display: block;
 		position: absolute;
-		border-radius: 50%;
-		background-color: #36c;
+		border-radius: @border-radius-circle;
+		background-color: @background-color-progressive;
 	}
 
-	&:before {
+	&::before {
 		width: 36px;
 		height: 36px;
 		top: -18px;
 		left: -18px;
 		opacity: 0;
-		-webkit-animation: mw-pulsating-dot-pulse 3s ease-out;
-		-moz-animation: mw-pulsating-dot-pulse 3s ease-out;
 		animation: mw-pulsating-dot-pulse 3s ease-out;
-		-webkit-animation-iteration-count: infinite;
-		-moz-animation-iteration-count: infinite;
 		animation-iteration-count: infinite;
 	}
 
-	&:after {
+	&::after {
 		width: 12px;
 		height: 12px;
 		top: -6px;
@@ -55,14 +53,6 @@
 		transform: scale( 1 );
 		opacity: 0;
 	}
-}
-
-@-webkit-keyframes mw-pulsating-dot-pulse {
-	.mw-pulsating-dot-pulse-frames;
-}
-
-@-moz-keyframes mw-pulsating-dot-pulse {
-	.mw-pulsating-dot-pulse-frames;
 }
 
 @keyframes mw-pulsating-dot-pulse {

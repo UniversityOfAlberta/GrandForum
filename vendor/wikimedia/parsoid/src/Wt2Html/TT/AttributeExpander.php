@@ -3,9 +3,11 @@ declare( strict_types = 1 );
 
 namespace Wikimedia\Parsoid\Wt2Html\TT;
 
-use stdClass;
 use Wikimedia\Assert\Assert;
+use Wikimedia\Assert\UnreachableException;
 use Wikimedia\Parsoid\Config\Env;
+use Wikimedia\Parsoid\NodeData\DataMw;
+use Wikimedia\Parsoid\NodeData\DataMwAttrib;
 use Wikimedia\Parsoid\Tokens\KV;
 use Wikimedia\Parsoid\Tokens\NlTk;
 use Wikimedia\Parsoid\Tokens\SelfclosingTagTk;
@@ -15,6 +17,7 @@ use Wikimedia\Parsoid\Utils\PHPUtils;
 use Wikimedia\Parsoid\Utils\PipelineUtils;
 use Wikimedia\Parsoid\Utils\TokenUtils;
 use Wikimedia\Parsoid\Utils\Utils;
+use Wikimedia\Parsoid\Utils\WTUtils;
 use Wikimedia\Parsoid\Wt2Html\Frame;
 use Wikimedia\Parsoid\Wt2Html\PegTokenizer;
 use Wikimedia\Parsoid\Wt2Html\TokenTransformManager;
@@ -23,6 +26,8 @@ use Wikimedia\Parsoid\Wt2Html\TokenTransformManager;
  * Generic attribute expansion handler.
  */
 class AttributeExpander extends TokenHandler {
+	private const META_TYPE_MATCHER = '#(mw:(LanguageVariant|Transclusion|Param|Includes|Annotation/)(.*)$)#D';
+
 	/**
 	 * Used for re-tokenizing attribute strings that need to be re-expanded
 	 * @var PegTokenizer
@@ -42,12 +47,6 @@ class AttributeExpander extends TokenHandler {
 		$this->tokenizer = new PegTokenizer( $manager->getEnv() );
 	}
 
-	/**
-	 * @param bool $nlTkOkay
-	 * @param array $tokens
-	 * @param bool $atTopLevel
-	 * @return int
-	 */
 	private static function nlTkIndex(
 		bool $nlTkOkay, array $tokens, bool $atTopLevel
 	): int {
@@ -75,10 +74,10 @@ class AttributeExpander extends TokenHandler {
 		$inInclude = false;
 		foreach ( $tokens as $i => $t ) {
 			if ( $t instanceof SelfclosingTagTk ) {
-				$type = $t->getAttribute( 'typeof' );
+				$type = $t->getAttributeV( 'typeof' );
 				$typeMatch = [];
 				if ( $type && preg_match( $includeRE, $type, $typeMatch, PREG_UNMATCHED_AS_NULL ) ) {
-					$inInclude = !preg_match( '#/End$#D', $typeMatch[1] ?? '' );
+					$inInclude = !str_ends_with( $typeMatch[1] ?? '', '/End' );
 				}
 			} elseif ( !$inInclude && $t instanceof NlTk ) {
 				// newline token outside <*include*>
@@ -89,31 +88,16 @@ class AttributeExpander extends TokenHandler {
 		return -1;
 	}
 
-	/**
-	 * @return string
-	 */
-	private static function metaTypeMatcher(): string {
-		return '#(mw:(LanguageVariant|Transclusion|Param|Includes/)(.*)$)#D';
-	}
-
-	/**
-	 * @param Frame $frame
-	 * @param Token $token
-	 * @param int $nlTkPos
-	 * @param array $tokens
-	 * @param bool $wrapTemplates
-	 * @return array
-	 */
 	private static function splitTokens(
-		Frame $frame, Token $token, int $nlTkPos, array $tokens,
-		bool $wrapTemplates
+		Frame $frame, Token $token, int $nlTkPos, array $tokens, bool $wrapTemplates
 	): array {
-		$buf = [];
+		$preNLBuf = [];
 		$postNLBuf = null;
 		$startMeta = null;
 		$metaTokens = null;
 
 		// Split the token array around the first newline token.
+		$startMetaIndex = null;
 		foreach ( $tokens as $i => $t ) {
 			if ( $i === $nlTkPos ) {
 				// split here!
@@ -121,31 +105,44 @@ class AttributeExpander extends TokenHandler {
 				break;
 			} else {
 				if ( $wrapTemplates && $t instanceof SelfclosingTagTk ) {
-					$type = $t->getAttribute( 'typeof' );
-					// Don't trip on transclusion end tags
+					$type = $t->getAttributeV( 'typeof' );
+					// We are interested in the last start meta tag.
+					// Everything before it is assumed to be closed.
 					$typeMatch = [];
 					if ( $type &&
-						preg_match( self::metaTypeMatcher(), $type, $typeMatch ) &&
-						!preg_match( '#/End$#D', $typeMatch[1] )
+						preg_match( self::META_TYPE_MATCHER, $type, $typeMatch ) &&
+						!str_ends_with( $typeMatch[1], '/End' )
 					) {
 						$startMeta = $t;
+						$startMetaIndex = $i;
 					}
 				}
 
-				$buf[] = $t;
+				// Use $i to make code robust if $tokens were not continugous
+				$preNLBuf[$i] = $t;
 			}
 		}
 
-		if ( $wrapTemplates && $startMeta ) {
+		// Clear $startMeta from $preNLBuf - setting to '' is sufficient.
+		if ( $startMeta ) {
+			$preNLBuf[$startMetaIndex] = '';
+		}
+
+		// We split the token into pieces.
+		// Since we no longer know where this token now ends tsr-wise,
+		// set tsr->end to null
+		$token->dataParsoid->tsr->end = null;
+
+		if ( $startMeta ) {
 			// Support template wrapping with the following steps:
 			// - Hoist the transclusion start-meta from the first line
 			//   to before the token.
 			// - Update the start-meta tsr to that of the token.
 			// - Record the wikitext between the token and the transclusion
 			//   as an unwrappedWT data-parsoid attribute of the start-meta.
-			$dp = $startMeta->dataAttribs;
-			$dp->unwrappedWT = substr( $frame->getSrcText(), $token->dataAttribs->tsr->start,
-				$dp->tsr->start - $token->dataAttribs->tsr->start );
+			$dp = $startMeta->dataParsoid;
+			$dp->unwrappedWT = substr( $frame->getSrcText(), $token->dataParsoid->tsr->start,
+				$dp->tsr->start - $token->dataParsoid->tsr->start );
 
 			// unwrappedWT will be added to the data-mw.parts array which makes
 			// this a multi-template-content-block.
@@ -155,8 +152,8 @@ class AttributeExpander extends TokenHandler {
 			// for current PHP DOM implementation and could be removed in the future
 			$tokenName = mb_strtoupper( $token->getName() );
 
-			$dp->firstWikitextNode = isset( $token->dataAttribs->stx ) ?
-				$tokenName . '_' . $token->dataAttribs->stx : $tokenName;
+			$dp->firstWikitextNode = isset( $token->dataParsoid->stx ) ?
+				$tokenName . '_' . $token->dataParsoid->stx : $tokenName;
 
 			// Update tsr->start only. Unless the end-meta token is moved as well,
 			// updating tsr->end can introduce bugs in cases like:
@@ -166,10 +163,10 @@ class AttributeExpander extends TokenHandler {
 			//   |}
 			//
 			// which can then cause dirty diffs (the "|" before the x gets dropped).
-			$dp->tsr->start = $token->dataAttribs->tsr->start;
+			$dp->tsr->start = $token->dataParsoid->tsr->start;
 			$metaTokens = [ $startMeta ];
 
-			return [ 'metaTokens' => $metaTokens, 'preNLBuf' => $buf, 'postNLBuf' => $postNLBuf ];
+			return [ 'metaTokens' => $metaTokens, 'preNLBuf' => $preNLBuf, 'postNLBuf' => $postNLBuf ];
 		} else {
 			return [ 'metaTokens' => [], 'preNLBuf' => $tokens, 'postNLBuf' => [] ];
 		}
@@ -189,6 +186,7 @@ class AttributeExpander extends TokenHandler {
 	): array {
 		$buf = [];
 		$hasGeneratedContent = false;
+		$annotationType = [];
 
 		foreach ( $tokens as $t ) {
 			if ( $t instanceof TagTk || $t instanceof SelfclosingTagTk ) {
@@ -202,11 +200,15 @@ class AttributeExpander extends TokenHandler {
 
 				if ( $wrapTemplates ) {
 					// Strip all meta tags.
-					$type = $t->getAttribute( 'typeof' );
+					$type = $t->getAttributeV( 'typeof' );
 					$typeMatch = [];
-					if ( $type && preg_match( self::metaTypeMatcher(), $type, $typeMatch ) ) {
-						if ( !preg_match( '#/End$#D', $typeMatch[1] ) ) {
+					if ( $type && preg_match( self::META_TYPE_MATCHER, $type, $typeMatch ) ) {
+						if ( !str_ends_with( $typeMatch[1], '/End' ) ) {
 							$hasGeneratedContent = true;
+						}
+						$groups = [];
+						if ( preg_match( WTUtils::ANNOTATION_META_TYPE_REGEXP, $type, $groups ) ) {
+							$annotationType[] = $groups[1];
 						}
 					} else {
 						$buf[] = $t;
@@ -223,7 +225,11 @@ class AttributeExpander extends TokenHandler {
 			}
 		}
 
-		return [ 'hasGeneratedContent' => $hasGeneratedContent, 'value' => $buf ];
+		return [
+			'hasGeneratedContent' => $hasGeneratedContent,
+			'annotationType' => $annotationType,
+			'value' => $buf
+		];
 	}
 
 	/**
@@ -236,7 +242,7 @@ class AttributeExpander extends TokenHandler {
 		}
 		$ret = [];
 		foreach ( $a as $t ) {
-			$ret[] = TokenUtils::isTemplateToken( $t ) ? $t->dataAttribs->src : $t;
+			$ret[] = TokenUtils::isTemplateToken( $t ) ? $t->dataParsoid->src : $t;
 		}
 		return $ret;
 	}
@@ -245,9 +251,9 @@ class AttributeExpander extends TokenHandler {
 	 * Callback for attribute expansion in AttributeTransformManager
 	 * @param Token $token
 	 * @param KV[] $expandedAttrs
-	 * @return array
+	 * @return TokenHandlerResult
 	 */
-	private function buildExpandedAttrs( Token $token, array $expandedAttrs ): array {
+	private function buildExpandedAttrs( Token $token, array $expandedAttrs ) {
 		// If we're not in a template, we'll be doing template wrapping in dom
 		// post-processing (same conditional there), so take care of meta markers
 		// found while processing tokens.
@@ -263,6 +269,7 @@ class AttributeExpander extends TokenHandler {
 		$newAttrs = null;
 		$nlTkPos = -1;
 		$nlTkOkay = TokenUtils::isHTMLTag( $token ) || !TokenUtils::isTableTag( $token );
+		$annotationTypes = [];
 
 		// Identify attributes that were generated in full or in part using templates
 		foreach ( $oldAttrs as $i => $oldA ) {
@@ -351,7 +358,7 @@ class AttributeExpander extends TokenHandler {
 				// and probably use appropriately-named flags to convey type information.
 				if ( is_array( $oldA->k ) ) {
 					if ( !is_array( $expandedK ) ) {
-						PHPUtils::unreachable( "expandedK: expected array. Found: " .
+						throw new UnreachableException( "expandedK: expected array. Found: " .
 							PHPUtils::jsonEncode( $expandedK ) );
 					}
 
@@ -365,9 +372,14 @@ class AttributeExpander extends TokenHandler {
 						$expandedK = $updatedK['preNLBuf'];
 						$postNLToks = $updatedK['postNLBuf'];
 						$metaTokens = $updatedK['metaTokens'];
+						// We split up this attribute's key into pieces.
+						if ( $expandedA->srcOffsets->key ) {
+							$expandedA->srcOffsets->key->end = null;
+						}
 					} else {
 						// Maybe scenario 2 from the documentation comment above.
 						$updatedK = self::stripMetaTags( $env, $expandedK, $wrapTemplates );
+						PHPUtils::pushArray( $annotationTypes, $updatedK['annotationType'] );
 						$expandedK = $updatedK['value'];
 					}
 
@@ -385,11 +397,13 @@ class AttributeExpander extends TokenHandler {
 						// Trim whitespace to ensure tokenizer isn't tripped up
 						// by the presence of unnecessary whitespace.
 						$kStr = trim( TokenUtils::tokensToString( $expandedK, false, [
+							// These tokens haven't been expanded to DOM yet
+							// so unpacking them here is justifiable
 							'unpackDOMFragments' => true,
 							'env' => $env
 						] ) );
 						$rule = $nlTkOkay ? 'generic_newline_attributes' : 'table_attributes';
-						$kvs = preg_match( '/=/', $kStr ) ?
+						$kvs = str_contains( $kStr, '=' ) ?
 							$this->tokenizer->tokenizeAs( $kStr, $rule, /* sol */true ) : null;
 						if ( $kvs ) {
 							// At this point, templates should have been expanded.
@@ -402,24 +416,21 @@ class AttributeExpander extends TokenHandler {
 								$kv->k = self::tplToksToString( $kv->k );
 								$kv->v = self::tplToksToString( $kv->v );
 
-								// These `kv`s come from tokenizing the string we produced above,
-								// and will therefore have offset starting at zero.
-								// Shift them by the old amount if available.
-								if ( is_array( $expandedA->srcOffsets ) ) {
-									if ( is_array( $kv->srcOffsets ) ) {
-										$offset = $expandedA->srcOffsets[0];
-										foreach ( $kv->srcOffsets as $j => $_ ) {
-											$kv->srcOffsets[$j] += $offset;
-										}
-									}
-								}
+								// $kStr is based on running tokensToString on $expandedK.
+								// So, $kStr might have dropped HTML tags, etc. Given that,
+								// we can no longer reliably compute offsets for these
+								// new key/value pairs. We could try to be more smart here,
+								// but it is not worth the complexity.
+								$kv->srcOffsets = null;
 							}
 							// SSS FIXME: Collect all keys here, not just the first key
 							// i.e. in a string like {{1x|1=id='v1' title='foo' style='..'}}
 							// that string is setting attributes for [id, title, style], not just id.
 							//
 							// That requires the ability for the data-mw.attribs[i].txt to be an array.
-							// However, the spec at [[mw:Parsoid/MediaWiki_DOM_spec]] says:
+							// However, the spec at [[mw:Specs/HTML#Generated_attributes_of_HTML_tags]]
+							// says:
+							//
 							//    "This spec also assumes that a template can only
 							//     generate one attribute rather than multiple attributes."
 							//
@@ -430,14 +441,14 @@ class AttributeExpander extends TokenHandler {
 							if ( !$newAttrs ) {
 								$newAttrs = $i === 0 ? [] : array_slice( $expandedAttrs, 0, $i );
 							}
-							$newAttrs = array_merge( $newAttrs, $kvs );
+							PHPUtils::pushArray( $newAttrs, $kvs );
 						}
 					}
 				}
 
 				// We have a potentially expanded value.
 				// Check if the value came from a template/extension expansion.
-				if ( is_string( $expandedK ) && !preg_match( '/^mw:/', $expandedK )
+				if ( is_string( $expandedK ) && !str_starts_with( $expandedK, 'mw:' )
 					&& is_array( $oldA->v )
 				) {
 					$nlTkPos = self::nlTkIndex( $nlTkOkay, $expandedV, $wrapTemplates );
@@ -451,9 +462,14 @@ class AttributeExpander extends TokenHandler {
 						$expandedV = $updatedV['preNLBuf'];
 						$postNLToks = $updatedV['postNLBuf'];
 						$metaTokens = $updatedV['metaTokens'];
+						// We split up this attribute's value into pieces.
+						if ( $expandedA->srcOffsets->value ) {
+							$expandedA->srcOffsets->value->end = null;
+						}
 					} else {
 						// Maybe scenario 2 from the documentation comment above.
 						$updatedV = self::stripMetaTags( $env, $expandedV, $wrapTemplates );
+						PHPUtils::pushArray( $annotationTypes, $updatedV['annotationType'] );
 						$expandedV = $updatedV['value'];
 					}
 					$expandedA->v = $expandedV;
@@ -501,9 +517,9 @@ class AttributeExpander extends TokenHandler {
 					//         is clearer and less confusing than
 					//    [{ "txt":..., "html":... }, { "html":... }]
 					$tmpDataMW[$key] = [
-						'k' => [ 'txt' => $key, 'srcOffsets' => $expandedA->srcOffsets->key ],
+						'k' => [ 'txt' => $key, 'srcOffsets' => $expandedA->srcOffsets->key ?? null ],
 						// FIXME: Why is 'txt' missing? Why are we not checking for [] ?
-						'v' => [ 'html' => $valHTML, 'srcOffsets' => $expandedA->srcOffsets->value ]
+						'v' => [ 'html' => $valHTML, 'srcOffsets' => $expandedA->srcOffsets->value ?? null ]
 					];
 
 					if ( $keyHTML !== null ) {
@@ -533,7 +549,7 @@ class AttributeExpander extends TokenHandler {
 		// this check can be relaxed to allow that.
 		// https://gerrit.wikimedia.org/r/#/c/65575 has some reference code that can be used then.
 
-		if ( !$token->getAttribute( 'about' ) && $tmpDataMW && count( $tmpDataMW ) > 0 ) {
+		if ( !$token->getAttributeV( 'about' ) && $tmpDataMW && count( $tmpDataMW ) > 0 ) {
 			// Flatten k-v pairs.
 			$vals = [];
 			foreach ( $tmpDataMW as $obj ) {
@@ -548,7 +564,7 @@ class AttributeExpander extends TokenHandler {
 			// AttributeExpander may interact with the original tokens still
 			// present as attributes of `token`.
 			//
-			// For example, while treebuilding, the object holding dataAttribs
+			// For example, while treebuilding, the object holding dataParsoid
 			// of a token is reused as the data-parsoid attribute of the
 			// corresonding node.  Thus, when we get to the DOM cleanup pass,
 			// unsetting properties changes the token as well.  This was
@@ -562,8 +578,8 @@ class AttributeExpander extends TokenHandler {
 			$vals = Utils::clone( $vals );
 
 			// Expand all token arrays to DOM.
-			$eVals = PipelineUtils::expandValuesToDOM(
-				$this->manager->env, $this->manager->getFrame(), $vals,
+			$eVals = PipelineUtils::expandAttrValuesToDOM(
+				$this->env, $this->manager->getFrame(), $vals,
 				$this->options['expandTemplates'],
 				$this->options['inTemplate']
 			);
@@ -571,7 +587,7 @@ class AttributeExpander extends TokenHandler {
 			// Rebuild flattened k-v pairs.
 			$expAttrs = [];
 			for ( $j = 0;  $j < count( $eVals );  $j += 2 ) {
-				$expAttrs[] = [ $eVals[$j], $eVals[$j + 1] ];
+				$expAttrs[] = new DataMwAttrib( $eVals[$j], $eVals[$j + 1] );
 			}
 
 			if ( $token->getName() === 'template' ) {
@@ -583,23 +599,21 @@ class AttributeExpander extends TokenHandler {
 				//   { ... "attribs":[{"k":"about","v":"#mwt1"},{"k":"typeof","v":"mw:Transclusion"}] .. }
 				// So, record these in the tmp attribute for the template hander
 				// to retrieve and process.
-				if ( !$token->dataAttribs->tmp ) {
-					$token->dataAttribs->tmp = new stdClass;
-				}
-				$token->dataAttribs->tmp->templatedAttribs = $expAttrs;
+				$token->dataParsoid->getTemp()->templatedAttribs = $expAttrs;
 			} else {
 				// Mark token as having expanded attrs.
-				$token->addAttribute( 'about', $this->manager->env->newAboutId() );
+				$token->addAttribute( 'about', $this->env->newAboutId() );
 				$token->addSpaceSeparatedAttribute( 'typeof', 'mw:ExpandedAttrs' );
-				$token->addAttribute( 'data-mw', PHPUtils::jsonEncode( [ 'attribs' => $expAttrs ] ) );
+				foreach ( $annotationTypes as $annotationType ) {
+					$token->addSpaceSeparatedAttribute( 'typeof', 'mw:Annotation/' . $annotationType );
+				}
+				$token->dataMw = new DataMw( [ 'attribs' => $expAttrs ] );
 			}
 		}
 
-		// Retry this pass if we expanded templates in $token's attributes
-		$retry = count( $metaTokens ) > 0;
-		$metaTokens[] = $token;
-
-		return [ 'tokens' => array_merge( $metaTokens, $postNLToks ), 'retry' => $retry ];
+		return new TokenHandlerResult(
+			array_merge( $metaTokens, [ $token ], $postNLToks )
+		);
 	}
 
 	/**
@@ -607,14 +621,33 @@ class AttributeExpander extends TokenHandler {
 	 * (Ex: Templated styles)
 	 *
 	 * @param Token $token Token whose attrs being expanded.
-	 * @return array
+	 * @return TokenHandlerResult
 	 */
-	public function processComplexAttributes( Token $token ): array {
+	private function processComplexAttributes( Token $token ): TokenHandlerResult {
 		$atm = new AttributeTransformManager( $this->manager->getFrame(), [
 			'expandTemplates' => $this->options['expandTemplates'],
 			'inTemplate' => $this->options['inTemplate']
 		] );
 		return $this->buildExpandedAttrs( $token, $atm->process( $token->attribs ) );
+	}
+
+	/**
+	 * Expand the first attribute of the token -- usually needed to support
+	 * tempate tokens where the template target itself is a complex attribute.
+	 *
+	 * @param Token $token Token whose first attribute is being expanded.
+	 * @return TokenHandlerResult
+	 */
+	public function expandFirstAttribute( Token $token ): TokenHandlerResult {
+		$atm = new AttributeTransformManager( $this->manager->getFrame(), [
+			'expandTemplates' => $this->options['expandTemplates'],
+			'inTemplate' => $this->options['inTemplate']
+		] );
+		$expandedAttrs = $atm->process( [ $token->attribs[0] ] );
+		return $this->buildExpandedAttrs(
+			$token,
+			array_replace( $token->attribs, [ 0 => $expandedAttrs[0] ] )
+		);
 	}
 
 	/**
@@ -625,21 +658,50 @@ class AttributeExpander extends TokenHandler {
 	 * (Ex: Templated styles)
 	 *
 	 * @param Token|string $token Token whose attrs being expanded.
-	 * @return array
+	 * @return TokenHandlerResult|null
 	 */
-	public function onAny( $token ): array {
-		if ( ( $token instanceof TagTk || $token instanceof SelfclosingTagTk ) &&
+	public function onAny( $token ): ?TokenHandlerResult {
+		if (
+			!( $token instanceof TagTk || $token instanceof SelfclosingTagTk ) ||
+			!count( $token->attribs )
+		) {
+			return null;
+		}
+
+		$name = $token->getName();
+		$property = $token->getAttributeV( 'property' ) ?? '';
+		$typeOf = $token->getAttributeV( 'typeof' ) ?? '';
+
+		if (
 			// Do not process dom-fragment tokens: a separate handler deals with them.
-			count( $token->attribs ) &&
-			$token->getName() !== 'mw:dom-fragment-token' && (
-				$token->getName() !== 'meta' ||
-				!preg_match( '/mw:(TSRMarker|Placeholder|Transclusion|Param|Includes)/',
-					$token->getAttribute( 'typeof' ) ?? '' )
+			$name === 'mw:dom-fragment-token' ||
+			(
+				$name === 'meta' &&
+				(
+					// Parsoid generated metas don't need expansion
+					preg_match( '/mw:(Placeholder|Transclusion|Param|Includes)/', $typeOf ) ||
+					// The TemplateHandler runs before the AttributeExpander and
+					// magic words masquerading as templates may themselves be
+					// templated (as in templated template names).
+					// See TemplateHandler::processSpecialMagicWord()
+					// So, we may see page properties that have already been
+					// expanded and annotated with mw:ExpandedAttrs.  We return
+					// early to avoid the assertion below, at the expense of
+					// perhaps not catching other cases where tokens are passed
+					// through here doubly by mistake.
+					( preg_match( '/mw:(PageProp)/', $property ) &&
+						str_contains( $typeOf, 'mw:ExpandedAttrs' ) )
+				)
 			)
 		) {
-			return $this->processComplexAttributes( $token );
-		} else {
-			return [ 'tokens' => [ $token ] ];
+			return null;
 		}
+
+		Assert::invariant(
+			!str_contains( $typeOf, 'mw:ExpandedAttrs' ),
+			"Expanding an already expanded token, that's a no-no."
+		);
+
+		return $this->processComplexAttributes( $token );
 	}
 }

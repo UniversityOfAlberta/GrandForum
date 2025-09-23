@@ -1,7 +1,5 @@
 <?php
 /**
- * Implements Special:Preferences
- *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -18,10 +16,22 @@
  * http://www.gnu.org/copyleft/gpl.html
  *
  * @file
- * @ingroup SpecialPage
  */
 
+namespace MediaWiki\Specials;
+
+use MediaWiki\Context\IContextSource;
+use MediaWiki\Html\Html;
+use MediaWiki\HTMLForm\HTMLForm;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Preferences\PreferencesFactory;
+use MediaWiki\SpecialPage\SpecialPage;
+use MediaWiki\User\Options\UserOptionsManager;
+use MediaWiki\User\User;
+use OOUI\FieldLayout;
+use OOUI\SearchInputWidget;
+use PermissionsError;
+use PreferencesFormOOUI;
 
 /**
  * A special page that allows users to change their preferences
@@ -29,8 +39,23 @@ use MediaWiki\MediaWikiServices;
  * @ingroup SpecialPage
  */
 class SpecialPreferences extends SpecialPage {
-	public function __construct() {
+
+	private PreferencesFactory $preferencesFactory;
+	private UserOptionsManager $userOptionsManager;
+
+	/**
+	 * @param PreferencesFactory|null $preferencesFactory
+	 * @param UserOptionsManager|null $userOptionsManager
+	 */
+	public function __construct(
+		?PreferencesFactory $preferencesFactory = null,
+		?UserOptionsManager $userOptionsManager = null
+	) {
 		parent::__construct( 'Preferences' );
+		// This class is extended and therefore falls back to global state - T265924
+		$services = MediaWikiServices::getInstance();
+		$this->preferencesFactory = $preferencesFactory ?? $services->getPreferencesFactory();
+		$this->userOptionsManager = $userOptionsManager ?? $services->getUserOptionsManager();
 	}
 
 	public function doesWrites() {
@@ -43,7 +68,7 @@ class SpecialPreferences extends SpecialPage {
 		$out = $this->getOutput();
 		$out->disallowUserJs(); # Prevent hijacked user scripts from sniffing passwords etc.
 
-		$this->requireLogin( 'prefsnologintext2' );
+		$this->requireNamedUser( 'prefsnologintext2' );
 		$this->checkReadOnly();
 
 		if ( $par == 'reset' ) {
@@ -55,9 +80,8 @@ class SpecialPreferences extends SpecialPage {
 		$out->addModules( 'mediawiki.special.preferences.ooui' );
 		$out->addModuleStyles( [
 			'mediawiki.special.preferences.styles.ooui',
-			'mediawiki.widgets.TagMultiselectWidget.styles',
+			'oojs-ui-widgets.styles',
 		] );
-		$out->addModuleStyles( 'oojs-ui-widgets.styles' );
 
 		$session = $this->getRequest()->getSession();
 		if ( $session->get( 'specialPreferencesSaveSuccess' ) ) {
@@ -66,21 +90,20 @@ class SpecialPreferences extends SpecialPage {
 			$out->addModuleStyles( 'mediawiki.notification.convertmessagebox.styles' );
 
 			$out->addHTML(
-				Html::rawElement(
-					'div',
-					[
-						'class' => 'mw-preferences-messagebox mw-notify-success successbox',
-						'id' => 'mw-preferences-success',
-						'data-mw-autohide' => 'false',
-					],
-					Html::element( 'p', [], $this->msg( 'savedprefs' )->text() )
+				Html::successBox(
+					Html::element(
+						'p',
+						[],
+						$this->msg( 'savedprefs' )->text()
+					),
+					'mw-preferences-messagebox mw-notify-success'
 				)
 			);
 		}
 
 		$this->addHelpLink( 'Help:Preferences' );
 
-		// Load the user from the master to reduce CAS errors on double post (T95839)
+		// Load the user from the primary DB to reduce CAS errors on double post (T95839)
 		if ( $this->getRequest()->wasPosted() ) {
 			$user = $this->getUser()->getInstanceForUpdate() ?: $this->getUser();
 		} else {
@@ -99,53 +122,63 @@ class SpecialPreferences extends SpecialPage {
 		}
 		$out->addJsConfigVars( 'wgPreferencesTabs', $prefTabs );
 
+		$out->addHTML( new FieldLayout(
+			new SearchInputWidget( [
+				'placeholder' => $this->msg( 'searchprefs' )->text(),
+			] ),
+			[
+				'classes' => [ 'mw-prefs-search' ],
+				'label' => $this->msg( 'searchprefs' )->text(),
+				'invisibleLabel' => true,
+				'infusable' => true,
+			]
+		) );
 		$htmlForm->show();
 	}
 
 	/**
 	 * Get the preferences form to use.
-	 * @param User $user The user.
-	 * @param IContextSource $context The context.
+	 * @param User $user
+	 * @param IContextSource $context
 	 * @return PreferencesFormOOUI|HTMLForm
 	 */
 	protected function getFormObject( $user, IContextSource $context ) {
-		$preferencesFactory = MediaWikiServices::getInstance()->getPreferencesFactory();
-		$form = $preferencesFactory->getForm( $user, $context, PreferencesFormOOUI::class );
+		$form = $this->preferencesFactory->getForm( $user, $context, PreferencesFormOOUI::class );
 		return $form;
 	}
 
 	protected function showResetForm() {
-		if ( !MediaWikiServices::getInstance()
-				->getPermissionManager()
-				->userHasRight( $this->getUser(), 'editmyoptions' )
-		) {
+		if ( !$this->getAuthority()->isAllowed( 'editmyoptions' ) ) {
 			throw new PermissionsError( 'editmyoptions' );
 		}
 
 		$this->getOutput()->addWikiMsg( 'prefs-reset-intro' );
 
-		$context = new DerivativeContext( $this->getContext() );
-		$context->setTitle( $this->getPageTitle( 'reset' ) ); // Reset subpage
-		$htmlForm = HTMLForm::factory( 'ooui', [], $context, 'prefs-restore' );
-
-		$htmlForm->setSubmitTextMsg( 'restoreprefs' );
-		$htmlForm->setSubmitDestructive();
-		$htmlForm->setSubmitCallback( [ $this, 'submitReset' ] );
-		$htmlForm->suppressReset();
-
-		$htmlForm->show();
+		$desc = [
+			'confirm' => [
+				'type' => 'check',
+				'label-message' => 'prefs-reset-confirm',
+				'required' => true,
+			],
+		];
+		// TODO: disable the submit button if the checkbox is not checked
+		HTMLForm::factory( 'ooui', $desc, $this->getContext(), 'prefs-restore' )
+			->setTitle( $this->getPageTitle( 'reset' ) ) // Reset subpage
+			->setSubmitTextMsg( 'restoreprefs' )
+			->setSubmitDestructive()
+			->setSubmitCallback( [ $this, 'submitReset' ] )
+			->showCancel()
+			->setCancelTarget( $this->getPageTitle() )
+			->show();
 	}
 
 	public function submitReset( $formData ) {
-		if ( !MediaWikiServices::getInstance()
-				->getPermissionManager()
-				->userHasRight( $this->getUser(), 'editmyoptions' )
-		) {
+		if ( !$this->getAuthority()->isAllowed( 'editmyoptions' ) ) {
 			throw new PermissionsError( 'editmyoptions' );
 		}
 
 		$user = $this->getUser()->getInstanceForUpdate();
-		$user->resetOptions( 'all', $this->getContext() );
+		$this->userOptionsManager->resetAllOptions( $user );
 		$user->saveSettings();
 
 		// Set session data for the success message
@@ -158,6 +191,12 @@ class SpecialPreferences extends SpecialPage {
 	}
 
 	protected function getGroupName() {
-		return 'users';
+		return 'login';
 	}
 }
+
+/**
+ * Retain the old class name for backwards compatibility.
+ * @deprecated since 1.41
+ */
+class_alias( SpecialPreferences::class, 'SpecialPreferences' );

@@ -2,7 +2,7 @@
 /**
  * Corrects wrong values in the `page_latest` field in the database.
  *
- * Copyright © 2005 Brion Vibber <brion@pobox.com>
+ * Copyright © 2005 Brooke Vibber <bvibber@wikimedia.org>
  * https://www.mediawiki.org/
  *
  * This program is free software; you can redistribute it and/or modify
@@ -24,10 +24,13 @@
  * @ingroup Maintenance
  */
 
-use MediaWiki\MediaWikiServices;
-use MediaWiki\Revision\RevisionLookup;
+use MediaWiki\Maintenance\Maintenance;
+use MediaWiki\Title\Title;
+use Wikimedia\Rdbms\IDBAccessObject;
 
+// @codeCoverageIgnoreStart
 require_once __DIR__ . '/Maintenance.php';
+// @codeCoverageIgnoreEnd
 
 /**
  * Maintenance script to correct wrong values in the `page_latest` field
@@ -46,36 +49,40 @@ class AttachLatest extends Maintenance {
 
 	public function execute() {
 		$this->output( "Looking for pages with page_latest set to 0...\n" );
-		$dbw = $this->getDB( DB_MASTER );
+		$dbw = $this->getPrimaryDB();
 		$conds = [ 'page_latest' => 0 ];
 		if ( $this->hasOption( 'regenerate-all' ) ) {
 			$conds = '';
 		}
-		$result = $dbw->select( 'page',
-			[ 'page_id', 'page_namespace', 'page_title' ],
-			$conds,
-			__METHOD__ );
+		$result = $dbw->newSelectQueryBuilder()
+			->select( [ 'page_id', 'page_namespace', 'page_title' ] )
+			->from( 'page' )
+			->where( $conds )
+			->caller( __METHOD__ )
+			->fetchResultSet();
 
-		$lbFactory = MediaWikiServices::getInstance()->getDBLoadBalancerFactory();
-		$dbDomain = $lbFactory->getLocalDomainID();
+		$services = $this->getServiceContainer();
+		$dbDomain = $services->getDBLoadBalancerFactory()->getLocalDomainID();
+		$wikiPageFactory = $services->getWikiPageFactory();
+		$revisionLookup = $services->getRevisionLookup();
 
 		$n = 0;
 		foreach ( $result as $row ) {
 			$pageId = intval( $row->page_id );
 			$title = Title::makeTitle( $row->page_namespace, $row->page_title );
 			$name = $title->getPrefixedText();
-			$latestTime = $dbw->selectField( 'revision',
-				'MAX(rev_timestamp)',
-				[ 'rev_page' => $pageId ],
-				__METHOD__ );
+			$latestTime = $dbw->newSelectQueryBuilder()
+				->select( 'MAX(rev_timestamp)' )
+				->from( 'revision' )
+				->where( [ 'rev_page' => $pageId ] )
+				->caller( __METHOD__ )
+				->fetchField();
 			if ( !$latestTime ) {
 				$this->output( "$dbDomain $pageId [[$name]] can't find latest rev time?!\n" );
 				continue;
 			}
 
-			$revRecord = MediaWikiServices::getInstance()
-				->getRevisionLookup()
-				->getRevisionByTimestamp( $title, $latestTime, RevisionLookup::READ_LATEST );
+			$revRecord = $revisionLookup->getRevisionByTimestamp( $title, $latestTime, IDBAccessObject::READ_LATEST );
 			if ( $revRecord === null ) {
 				$this->output(
 					"$dbDomain $pageId [[$name]] latest time $latestTime, can't find revision id\n"
@@ -86,9 +93,9 @@ class AttachLatest extends Maintenance {
 			$id = $revRecord->getId();
 			$this->output( "$dbDomain $pageId [[$name]] latest time $latestTime, rev id $id\n" );
 			if ( $this->hasOption( 'fix' ) ) {
-				$page = WikiPage::factory( $title );
+				$page = $wikiPageFactory->newFromTitle( $title );
 				$page->updateRevisionOn( $dbw, $revRecord );
-				$lbFactory->waitForReplication();
+				$this->waitForReplication();
 			}
 			$n++;
 		}
@@ -99,5 +106,7 @@ class AttachLatest extends Maintenance {
 	}
 }
 
+// @codeCoverageIgnoreStart
 $maintClass = AttachLatest::class;
 require_once RUN_MAINTENANCE_IF_MAIN;
+// @codeCoverageIgnoreEnd

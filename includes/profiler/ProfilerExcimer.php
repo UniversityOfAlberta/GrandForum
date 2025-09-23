@@ -21,12 +21,14 @@
 /**
  * @ingroup Profiler
  * @since 1.33
+ * @see $wgProfiler
  */
 class ProfilerExcimer extends Profiler {
 	/** @var ExcimerProfiler */
 	private $cpuProf;
 	/** @var ExcimerProfiler */
 	private $realProf;
+	/** @var float */
 	private $period;
 
 	/**

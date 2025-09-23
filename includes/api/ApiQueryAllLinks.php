@@ -20,7 +20,17 @@
  * @file
  */
 
-use MediaWiki\MediaWikiServices;
+namespace MediaWiki\Api;
+
+use MediaWiki\Cache\GenderCache;
+use MediaWiki\Linker\LinksMigration;
+use MediaWiki\ParamValidator\TypeDef\NamespaceDef;
+use MediaWiki\Title\NamespaceInfo;
+use MediaWiki\Title\Title;
+use Wikimedia\ParamValidator\ParamValidator;
+use Wikimedia\ParamValidator\TypeDef\IntegerDef;
+use Wikimedia\Rdbms\IExpression;
+use Wikimedia\Rdbms\LikeValue;
 
 /**
  * Query module to enumerate links from all pages together.
@@ -29,14 +39,31 @@ use MediaWiki\MediaWikiServices;
  */
 class ApiQueryAllLinks extends ApiQueryGeneratorBase {
 
-	private $table, $tablePrefix, $indexTag;
+	private string $table;
+	private string $tablePrefix;
+	private string $indexTag;
+	/** @var string */
 	private $fieldTitle = 'title';
+	/** @var int */
 	private $dfltNamespace = NS_MAIN;
+	/** @var bool */
 	private $hasNamespace = true;
+	/** @var string|null */
 	private $useIndex = null;
+	/** @var array */
 	private $props = [];
 
-	public function __construct( ApiQuery $query, $moduleName ) {
+	private NamespaceInfo $namespaceInfo;
+	private GenderCache $genderCache;
+	private LinksMigration $linksMigration;
+
+	public function __construct(
+		ApiQuery $query,
+		string $moduleName,
+		NamespaceInfo $namespaceInfo,
+		GenderCache $genderCache,
+		LinksMigration $linksMigration
+	) {
 		switch ( $moduleName ) {
 			case 'alllinks':
 				$prefix = 'al';
@@ -50,7 +77,6 @@ class ApiQueryAllLinks extends ApiQueryGeneratorBase {
 				$this->table = 'templatelinks';
 				$this->tablePrefix = 'tl_';
 				$this->dfltNamespace = NS_TEMPLATE;
-				$this->useIndex = 'tl_namespace';
 				$this->indexTag = 't';
 				break;
 			case 'allfileusages':
@@ -77,6 +103,9 @@ class ApiQueryAllLinks extends ApiQueryGeneratorBase {
 		}
 
 		parent::__construct( $query, $moduleName, $prefix );
+		$this->namespaceInfo = $namespaceInfo;
+		$this->genderCache = $genderCache;
+		$this->linksMigration = $linksMigration;
 	}
 
 	public function execute() {
@@ -100,8 +129,29 @@ class ApiQueryAllLinks extends ApiQueryGeneratorBase {
 		$params = $this->extractRequestParams();
 
 		$pfx = $this->tablePrefix;
-		$fieldTitle = $this->fieldTitle;
-		$prop = array_flip( $params['prop'] );
+
+		$nsField = $pfx . 'namespace';
+		$titleField = $pfx . $this->fieldTitle;
+		$linktargetReadNew = false;
+		$targetIdColumn = '';
+		if ( isset( $this->linksMigration::$mapping[$this->table] ) ) {
+			[ $nsField, $titleField ] = $this->linksMigration->getTitleFields( $this->table );
+			$queryInfo = $this->linksMigration->getQueryInfo( $this->table, 'linktarget', 'STRAIGHT_JOIN' );
+			$this->addTables( $queryInfo['tables'] );
+			$this->addJoinConds( $queryInfo['joins'] );
+			if ( in_array( 'linktarget', $queryInfo['tables'] ) ) {
+				$linktargetReadNew = true;
+				$targetIdColumn = "{$pfx}target_id";
+				$this->addFields( [ $targetIdColumn ] );
+			}
+		} else {
+			if ( $this->useIndex ) {
+				$this->addOption( 'USE INDEX', $this->useIndex );
+			}
+			$this->addTables( $this->table );
+		}
+
+		$prop = array_fill_keys( $params['prop'], true );
 		$fld_ids = isset( $prop['ids'] );
 		$fld_title = isset( $prop['title'] );
 		if ( $this->hasNamespace ) {
@@ -126,28 +176,28 @@ class ApiQueryAllLinks extends ApiQueryGeneratorBase {
 			$this->addOption( 'DISTINCT' );
 		}
 
-		$this->addTables( $this->table );
 		if ( $this->hasNamespace ) {
-			$this->addWhereFld( $pfx . 'namespace', $namespace );
+			$this->addWhereFld( $nsField, $namespace );
 		}
 
 		$continue = $params['continue'] !== null;
 		if ( $continue ) {
-			$continueArr = explode( '|', $params['continue'] );
-			$op = $params['dir'] == 'descending' ? '<' : '>';
+			$op = $params['dir'] == 'descending' ? '<=' : '>=';
 			if ( $params['unique'] ) {
-				$this->dieContinueUsageIf( count( $continueArr ) != 1 );
-				$continueTitle = $db->addQuotes( $continueArr[0] );
-				$this->addWhere( "{$pfx}{$fieldTitle} $op= $continueTitle" );
+				$cont = $this->parseContinueParamOrDie( $params['continue'], [ 'string' ] );
+				$this->addWhere( $db->expr( $titleField, $op, $cont[0] ) );
+			} elseif ( !$linktargetReadNew ) {
+				$cont = $this->parseContinueParamOrDie( $params['continue'], [ 'string', 'int' ] );
+				$this->addWhere( $db->buildComparison( $op, [
+					$titleField => $cont[0],
+					"{$pfx}from" => $cont[1],
+				] ) );
 			} else {
-				$this->dieContinueUsageIf( count( $continueArr ) != 2 );
-				$continueTitle = $db->addQuotes( $continueArr[0] );
-				$continueFrom = (int)$continueArr[1];
-				$this->addWhere(
-					"{$pfx}{$fieldTitle} $op $continueTitle OR " .
-					"({$pfx}{$fieldTitle} = $continueTitle AND " .
-					"{$pfx}from $op= $continueFrom)"
-				);
+				$cont = $this->parseContinueParamOrDie( $params['continue'], [ 'int', 'int' ] );
+				$this->addWhere( $db->buildComparison( $op, [
+					$targetIdColumn => $cont[0],
+					"{$pfx}from" => $cont[1],
+				] ) );
 			}
 		}
 
@@ -156,28 +206,34 @@ class ApiQueryAllLinks extends ApiQueryGeneratorBase {
 			$this->titlePartToKey( $params['from'], $namespace );
 		$to = $params['to'] === null ? null :
 			$this->titlePartToKey( $params['to'], $namespace );
-		$this->addWhereRange( $pfx . $fieldTitle, 'newer', $from, $to );
+		$this->addWhereRange( $titleField, 'newer', $from, $to );
 
 		if ( isset( $params['prefix'] ) ) {
-			$this->addWhere( $pfx . $fieldTitle . $db->buildLike( $this->titlePartToKey(
-				$params['prefix'], $namespace ), $db->anyString() ) );
+			$this->addWhere(
+				$db->expr(
+					$titleField,
+					IExpression::LIKE,
+					new LikeValue( $this->titlePartToKey( $params['prefix'], $namespace ), $db->anyString() )
+				)
+			);
 		}
 
-		$this->addFields( [ 'pl_title' => $pfx . $fieldTitle ] );
+		$this->addFields( [ 'pl_title' => $titleField ] );
 		$this->addFieldsIf( [ 'pl_from' => $pfx . 'from' ], !$params['unique'] );
 		foreach ( $this->props as $name => $field ) {
 			$this->addFieldsIf( $field, isset( $prop[$name] ) );
 		}
 
-		if ( $this->useIndex ) {
-			$this->addOption( 'USE INDEX', $this->useIndex );
-		}
 		$limit = $params['limit'];
 		$this->addOption( 'LIMIT', $limit + 1 );
 
 		$sort = ( $params['dir'] == 'descending' ? ' DESC' : '' );
 		$orderBy = [];
-		$orderBy[] = $pfx . $fieldTitle . $sort;
+		if ( $linktargetReadNew ) {
+			$orderBy[] = $targetIdColumn;
+		} else {
+			$orderBy[] = $titleField . $sort;
+		}
 		if ( !$params['unique'] ) {
 			$orderBy[] = $pfx . 'from' . $sort;
 		}
@@ -186,16 +242,13 @@ class ApiQueryAllLinks extends ApiQueryGeneratorBase {
 		$res = $this->select( __METHOD__ );
 
 		// Get gender information
-		if ( $res->numRows() && $resultPageSet === null ) {
-			$services = MediaWikiServices::getInstance();
-			if ( $services->getNamespaceInfo()->hasGenderDistinction( $namespace ) ) {
-				$users = [];
-				foreach ( $res as $row ) {
-					$users[] = $row->pl_title;
-				}
-				if ( $users !== [] ) {
-					$services->getGenderCache()->doQuery( $users, __METHOD__ );
-				}
+		if ( $resultPageSet === null && $res->numRows() && $this->namespaceInfo->hasGenderDistinction( $namespace ) ) {
+			$users = [];
+			foreach ( $res as $row ) {
+				$users[] = $row->pl_title;
+			}
+			if ( $users !== [] ) {
+				$this->genderCache->doQuery( $users, __METHOD__ );
 			}
 		}
 
@@ -203,12 +256,15 @@ class ApiQueryAllLinks extends ApiQueryGeneratorBase {
 		$titles = [];
 		$count = 0;
 		$result = $this->getResult();
+
 		foreach ( $res as $row ) {
 			if ( ++$count > $limit ) {
 				// We've reached the one extra which shows that there are
 				// additional pages to be had. Stop here...
 				if ( $params['unique'] ) {
 					$this->setContinueEnumParameter( 'continue', $row->pl_title );
+				} elseif ( $linktargetReadNew ) {
+					$this->setContinueEnumParameter( 'continue', $row->{$targetIdColumn} . '|' . $row->pl_from );
 				} else {
 					$this->setContinueEnumParameter( 'continue', $row->pl_title . '|' . $row->pl_from );
 				}
@@ -235,6 +291,8 @@ class ApiQueryAllLinks extends ApiQueryGeneratorBase {
 				if ( !$fit ) {
 					if ( $params['unique'] ) {
 						$this->setContinueEnumParameter( 'continue', $row->pl_title );
+					} elseif ( $linktargetReadNew ) {
+						$this->setContinueEnumParameter( 'continue', $row->{$targetIdColumn} . '|' . $row->pl_from );
 					} else {
 						$this->setContinueEnumParameter( 'continue', $row->pl_title . '|' . $row->pl_from );
 					}
@@ -266,28 +324,28 @@ class ApiQueryAllLinks extends ApiQueryGeneratorBase {
 			'prefix' => null,
 			'unique' => false,
 			'prop' => [
-				ApiBase::PARAM_ISMULTI => true,
-				ApiBase::PARAM_DFLT => 'title',
-				ApiBase::PARAM_TYPE => array_merge(
+				ParamValidator::PARAM_ISMULTI => true,
+				ParamValidator::PARAM_DEFAULT => 'title',
+				ParamValidator::PARAM_TYPE => array_merge(
 					[ 'ids', 'title' ], array_keys( $this->props )
 				),
 				ApiBase::PARAM_HELP_MSG_PER_VALUE => [],
 			],
 			'namespace' => [
-				ApiBase::PARAM_DFLT => $this->dfltNamespace,
-				ApiBase::PARAM_TYPE => 'namespace',
-				ApiBase::PARAM_EXTRA_NAMESPACES => [ NS_MEDIA, NS_SPECIAL ],
+				ParamValidator::PARAM_DEFAULT => $this->dfltNamespace,
+				ParamValidator::PARAM_TYPE => 'namespace',
+				NamespaceDef::PARAM_EXTRA_NAMESPACES => [ NS_MEDIA, NS_SPECIAL ],
 			],
 			'limit' => [
-				ApiBase::PARAM_DFLT => 10,
-				ApiBase::PARAM_TYPE => 'limit',
-				ApiBase::PARAM_MIN => 1,
-				ApiBase::PARAM_MAX => ApiBase::LIMIT_BIG1,
-				ApiBase::PARAM_MAX2 => ApiBase::LIMIT_BIG2
+				ParamValidator::PARAM_DEFAULT => 10,
+				ParamValidator::PARAM_TYPE => 'limit',
+				IntegerDef::PARAM_MIN => 1,
+				IntegerDef::PARAM_MAX => ApiBase::LIMIT_BIG1,
+				IntegerDef::PARAM_MAX2 => ApiBase::LIMIT_BIG2
 			],
 			'dir' => [
-				ApiBase::PARAM_DFLT => 'ascending',
-				ApiBase::PARAM_TYPE => [
+				ParamValidator::PARAM_DEFAULT => 'ascending',
+				ParamValidator::PARAM_TYPE => [
 					'ascending',
 					'descending'
 				]
@@ -323,3 +381,6 @@ class ApiQueryAllLinks extends ApiQueryGeneratorBase {
 		return "https://www.mediawiki.org/wiki/Special:MyLanguage/API:{$name}";
 	}
 }
+
+/** @deprecated class alias since 1.43 */
+class_alias( ApiQueryAllLinks::class, 'ApiQueryAllLinks' );

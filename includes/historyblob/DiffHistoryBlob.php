@@ -22,17 +22,20 @@
 
 /**
  * Diff-based history compression
- * Requires xdiff 1.5+ and zlib
+ * Requires xdiff and zlib
+ *
+ * WARNING: Objects of this class are serialized and permanently stored in the DB.
+ * Do not change the name or visibility of any property!
  */
 class DiffHistoryBlob implements HistoryBlob {
-	/** @var array Uncompressed item cache */
+	/** @var string[] Uncompressed item cache */
 	public $mItems = [];
 
 	/** @var int Total uncompressed size */
 	public $mSize = 0;
 
 	/**
-	 * @var array Array of diffs. If a diff D from A to B is notated D = B - A,
+	 * @var array|null Array of diffs. If a diff D from A to B is notated D = B - A,
 	 * and Z is an empty string:
 	 *
 	 *              { item[map[i]] - item[map[i-1]]   where i > 0
@@ -44,11 +47,11 @@ class DiffHistoryBlob implements HistoryBlob {
 	/** @var array The diff map, see above */
 	public $mDiffMap;
 
-	/** @var int The key for getText()
+	/** @var string The key for getText()
 	 */
 	public $mDefaultKey;
 
-	/** @var string Compressed storage */
+	/** @var string|null Compressed storage */
 	public $mCompressed;
 
 	/** @var bool True if the object is locked against further writes */
@@ -58,7 +61,7 @@ class DiffHistoryBlob implements HistoryBlob {
 	 * @var int The maximum uncompressed size before the object becomes sad
 	 * Should be less than max_allowed_packet
 	 */
-	public $mMaxSize = 10000000;
+	public $mMaxSize = 10_000_000;
 
 	/** @var int The maximum number of text items before the object becomes sad */
 	public $mMaxCount = 100;
@@ -70,24 +73,23 @@ class DiffHistoryBlob implements HistoryBlob {
 
 	public function __construct() {
 		if ( !function_exists( 'gzdeflate' ) ) {
-			throw new MWException( "Need zlib support to read or write DiffHistoryBlob\n" );
+			throw new RuntimeException( "Need zlib support to read or write DiffHistoryBlob\n" );
 		}
 	}
 
 	/**
-	 * @throws MWException
 	 * @param string $text
-	 * @return int
+	 * @return string
 	 */
 	public function addItem( $text ) {
 		if ( $this->mFrozen ) {
-			throw new MWException( __METHOD__ . ": Cannot add more items after sleep/wakeup" );
+			throw new BadMethodCallException( __METHOD__ . ": Cannot add more items after sleep/wakeup" );
 		}
 
 		$this->mItems[] = $text;
 		$this->mSize += strlen( $text );
 		$this->mDiffs = null; // later
-		return count( $this->mItems ) - 1;
+		return (string)( count( $this->mItems ) - 1 );
 	}
 
 	/**
@@ -95,7 +97,7 @@ class DiffHistoryBlob implements HistoryBlob {
 	 * @return string
 	 */
 	public function getItem( $key ) {
-		return $this->mItems[$key];
+		return $this->mItems[(int)$key];
 	}
 
 	/**
@@ -112,12 +114,9 @@ class DiffHistoryBlob implements HistoryBlob {
 		return $this->getItem( $this->mDefaultKey );
 	}
 
-	/**
-	 * @throws MWException
-	 */
 	private function compress() {
 		if ( !function_exists( 'xdiff_string_rabdiff' ) ) {
-			throw new MWException( "Need xdiff 1.5+ support to write DiffHistoryBlob\n" );
+			throw new RuntimeException( "Need xdiff support to write DiffHistoryBlob\n" );
 		}
 		if ( isset( $this->mDiffs ) ) {
 			// Already compressed
@@ -193,12 +192,7 @@ class DiffHistoryBlob implements HistoryBlob {
 	 * @return string
 	 */
 	private function diff( $t1, $t2 ) {
-		# Need to do a null concatenation with warnings off, due to bugs in the current version of xdiff
-		# "String is not zero-terminated"
-		Wikimedia\suppressWarnings();
-		$diff = xdiff_string_rabdiff( $t1, $t2 ) . '';
-		Wikimedia\restoreWarnings();
-		return $diff;
+		return xdiff_string_rabdiff( $t1, $t2 );
 	}
 
 	/**
@@ -208,19 +202,16 @@ class DiffHistoryBlob implements HistoryBlob {
 	 */
 	private function patch( $base, $diff ) {
 		if ( function_exists( 'xdiff_string_bpatch' ) ) {
-			Wikimedia\suppressWarnings();
-			$text = xdiff_string_bpatch( $base, $diff ) . '';
-			Wikimedia\restoreWarnings();
-			return $text;
+			return xdiff_string_bpatch( $base, $diff );
 		}
 
 		# Pure PHP implementation
 
 		$header = unpack( 'Vofp/Vcsize', substr( $diff, 0, 8 ) );
 
-		# Check the checksum if hash extension is available
+		# Check the checksum
 		$ofp = $this->xdiffAdler32( $base );
-		if ( $ofp !== false && $ofp !== substr( $diff, 0, 4 ) ) {
+		if ( $ofp !== substr( $diff, 0, 4 ) ) {
 			wfDebug( __METHOD__ . ": incorrect base checksum" );
 			return false;
 		}
@@ -266,17 +257,11 @@ class DiffHistoryBlob implements HistoryBlob {
 	 * the bytes backwards and initialised with 0 instead of 1. See T36428.
 	 *
 	 * @param string $s
-	 * @return string|bool False if the hash extension is not available
+	 * @return string
 	 */
 	public function xdiffAdler32( $s ) {
-		if ( !function_exists( 'hash' ) ) {
-			return false;
-		}
-
-		static $init;
-		if ( $init === null ) {
-			$init = str_repeat( "\xf0", 205 ) . "\xee" . str_repeat( "\xf0", 67 ) . "\x02";
-		}
+		static $init = null;
+		$init ??= str_repeat( "\xf0", 205 ) . "\xee" . str_repeat( "\xf0", 67 ) . "\x02";
 
 		// The real Adler-32 checksum of $init is zero, so it initialises the
 		// state to zero, as it is at the start of LibXDiff's checksum
@@ -331,7 +316,7 @@ class DiffHistoryBlob implements HistoryBlob {
 	public function __wakeup() {
 		// addItem() doesn't work if mItems is partially filled from mDiffs
 		$this->mFrozen = true;
-		$info = unserialize( gzinflate( $this->mCompressed ) );
+		$info = HistoryBlobUtils::unserializeArray( gzinflate( $this->mCompressed ) );
 		$this->mCompressed = null;
 
 		if ( !$info ) {

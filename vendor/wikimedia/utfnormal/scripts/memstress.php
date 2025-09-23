@@ -52,6 +52,11 @@ foreach ( $testfiles as $file => $desc ) {
 	benchmarkTest( $normalizer, $file, $desc );
 }
 
+/**
+ * @param Validator &$u
+ * @param string $filename
+ * @param string $desc
+ */
 function benchmarkTest( &$u, $filename, $desc ) {
 	print "Testing $filename ($desc)...\n";
 	$data = file_get_contents( $filename );
@@ -78,6 +83,12 @@ function benchmarkTest( &$u, $filename, $desc ) {
 	}
 }
 
+/**
+ * @param Validator &$u
+ * @param string &$data
+ * @param string $form
+ * @return string
+ */
 function benchmarkForm( &$u, &$data, $form ) {
 	# $start = microtime( true );
 	for ( $i = 0; $i < BENCH_CYCLES; $i++ ) {
@@ -91,7 +102,7 @@ function benchmarkForm( &$u, &$data, $form ) {
 	$delta = $deltas[0];
 
 	$rate = intval( strlen( $data ) / $delta );
-	$same = ( 0 == strcmp( $data, $out ) );
+	$same = ( strcmp( $data, $out ) == 0 );
 
 	printf( " %20s %6.1fms %12s bytes/s (%s)\n",
 		$form,

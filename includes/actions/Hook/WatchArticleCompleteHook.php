@@ -2,10 +2,13 @@
 
 namespace MediaWiki\Hook;
 
-use User;
+use MediaWiki\User\User;
 use WikiPage;
 
 /**
+ * This is a hook handler interface, see docs/Hooks.md.
+ * Use the hook name "WatchArticleComplete" to register handlers implementing this interface.
+ *
  * @stable to implement
  * @ingroup Hooks
  */

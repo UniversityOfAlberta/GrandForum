@@ -2,7 +2,8 @@
 
 namespace MediaWiki\Auth;
 
-use Config;
+use MediaWiki\MainConfigNames;
+use Wikimedia\Rdbms\IConnectionProvider;
 
 /**
  * Handles email notification / email address confirmation for account creation.
@@ -16,24 +17,25 @@ class EmailNotificationSecondaryAuthenticationProvider
 	/** @var bool */
 	protected $sendConfirmationEmail;
 
+	/** @var IConnectionProvider */
+	private $dbProvider;
+
 	/**
+	 * @param IConnectionProvider $dbProvider
 	 * @param array $params
 	 *  - sendConfirmationEmail: (bool) send an email asking the user to confirm their email
 	 *    address after a successful registration
 	 */
-	public function __construct( $params = [] ) {
+	public function __construct( IConnectionProvider $dbProvider, $params = [] ) {
 		if ( isset( $params['sendConfirmationEmail'] ) ) {
 			$this->sendConfirmationEmail = (bool)$params['sendConfirmationEmail'];
 		}
+		$this->dbProvider = $dbProvider;
 	}
 
-	public function setConfig( Config $config ) {
-		parent::setConfig( $config );
-
-		if ( $this->sendConfirmationEmail === null ) {
-			$this->sendConfirmationEmail = $this->config->get( 'EnableEmail' )
-				&& $this->config->get( 'EmailAuthentication' );
-		}
+	protected function postInitSetup() {
+		$this->sendConfirmationEmail ??= $this->config->get( MainConfigNames::EnableEmail )
+				&& $this->config->get( MainConfigNames::EmailAuthentication );
 	}
 
 	public function getAuthenticationRequests( $action, array $options ) {
@@ -51,7 +53,7 @@ class EmailNotificationSecondaryAuthenticationProvider
 			&& !$this->manager->getAuthenticationSessionData( 'no-email' )
 		) {
 			// TODO show 'confirmemail_oncreate'/'confirmemail_sendfailed' message
-			wfGetDB( DB_MASTER )->onTransactionCommitOrIdle(
+			$this->dbProvider->getPrimaryDatabase()->onTransactionCommitOrIdle(
 				function () use ( $user ) {
 					$user = $user->getInstanceForUpdate();
 					$status = $user->sendConfirmationMail();

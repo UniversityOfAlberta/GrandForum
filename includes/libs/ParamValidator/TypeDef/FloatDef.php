@@ -28,48 +28,40 @@ use Wikimedia\ParamValidator\ParamValidator;
  */
 class FloatDef extends NumericDef {
 
+	/** @inheritDoc */
 	protected $valueType = 'double';
 
 	public function validate( $name, $value, array $settings, array $options ) {
-		// Use a regex so as to avoid any potential oddness PHP's default conversion might allow.
-		if ( !preg_match( '/^[+-]?(?:\d*\.)?\d+(?:[eE][+-]?\d+)?$/D', $value ) ) {
-			$this->failure( 'badfloat', $name, $value, $settings, $options );
+		if ( is_float( $value ) ) {
+			$ret = $value;
+		} elseif ( is_int( $value ) ) {
+			$ret = (float)$value;
+		} elseif ( $options[ self::OPT_ENFORCE_JSON_TYPES ] ?? false ) {
+			$this->fatal(
+				$this->failureMessage( 'badfloat-type' )
+					->params( gettype( $value ) ),
+				$name, $value, $settings, $options
+			);
+		} else {
+			if ( !preg_match( '/^[+-]?(?:\d*\.)?\d+(?:[eE][+-]?\d+)?$/D', $value ) ) {
+				// Use a regex to avoid any potential oddness PHP's default conversion might allow.
+				$this->fatal( 'badfloat', $name, $value, $settings, $options );
+			}
+
+			$ret = (float)$value;
 		}
 
-		$ret = (float)$value;
 		if ( !is_finite( $ret ) ) {
-			$this->failure( 'badfloat-notfinite', $name, $value, $settings, $options );
+			$this->fatal( 'badfloat-notfinite', $name, $value, $settings, $options );
 		}
 
 		return $this->checkRange( $ret, $name, $value, $settings, $options );
 	}
 
-	/**
-	 * Attempt to fix locale weirdness
-	 *
-	 * We don't have any usable number formatting function that's not locale-aware,
-	 * and `setlocale()` isn't safe in multithreaded environments. Sigh.
-	 *
-	 * @param string $value Value to fix
-	 * @return string
-	 */
-	private function fixLocaleWeirdness( $value ) {
-		$localeData = localeconv();
-		if ( $localeData['decimal_point'] !== '.' ) {
-			$value = strtr( $value, [
-				$localeData['decimal_point'] => '.',
-				// PHP's number formatting currently uses only the first byte from 'decimal_point'.
-				// See upstream bug https://bugs.php.net/bug.php?id=78113
-				$localeData['decimal_point'][0] => '.',
-			] );
-		}
-		return $value;
-	}
-
 	public function stringifyValue( $name, $value, array $settings, array $options ) {
-		// Ensure sufficient precision for round-tripping. PHP_FLOAT_DIG was added in PHP 7.2.
-		$digits = defined( 'PHP_FLOAT_DIG' ) ? PHP_FLOAT_DIG : 15;
-		return $this->fixLocaleWeirdness( sprintf( "%.{$digits}g", $value ) );
+		// Ensure sufficient precision for round-tripping
+		$digits = PHP_FLOAT_DIG;
+		return sprintf( "%.{$digits}g", $value );
 	}
 
 	public function getHelpInfo( $name, array $settings, array $options ) {

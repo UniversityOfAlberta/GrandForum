@@ -21,7 +21,18 @@
  * @ingroup Actions
  */
 
+use MediaWiki\Feed\AtomFeed;
+use MediaWiki\Feed\FeedItem;
+use MediaWiki\Feed\FeedUtils;
+use MediaWiki\Feed\RSSFeed;
+use MediaWiki\Html\Html;
+use MediaWiki\HTMLForm\HTMLForm;
+use MediaWiki\MainConfigNames;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Pager\HistoryPager;
+use MediaWiki\Request\WebRequest;
+use MediaWiki\SpecialPage\SpecialPage;
+use MediaWiki\Utils\MWTimestamp;
 use Wikimedia\Rdbms\FakeResultWrapper;
 use Wikimedia\Rdbms\IResultWrapper;
 
@@ -55,7 +66,7 @@ class HistoryAction extends FormlessAction {
 	}
 
 	protected function getPageTitle() {
-		return $this->msg( 'history-title', $this->getTitle()->getPrefixedText() )->text();
+		return $this->msg( 'history-title' )->plaintextParams( $this->getTitle()->getPrefixedText() );
 	}
 
 	protected function getDescription() {
@@ -89,7 +100,10 @@ class HistoryAction extends FormlessAction {
 		// Precache various messages
 		if ( !isset( $this->message ) ) {
 			$this->message = [];
-			$msgs = [ 'cur', 'last', 'pipe-separator' ];
+			$msgs = [
+				'cur', 'tooltip-cur', 'last', 'tooltip-last', 'pipe-separator',
+				'changeslist-nocomment', 'updatedmarker',
+			];
 			foreach ( $msgs as $msg ) {
 				$this->message[$msg] = $this->msg( $msg )->escaped();
 			}
@@ -117,8 +131,8 @@ class HistoryAction extends FormlessAction {
 			$day = cal_days_in_month( CAL_GREGORIAN, $month, $year );
 
 			// Left pad the months and days
-			$month = str_pad( $month, 2, "0", STR_PAD_LEFT );
-			$day = str_pad( $day, 2, "0", STR_PAD_LEFT );
+			$month = str_pad( (string)$month, 2, "0", STR_PAD_LEFT );
+			$day = str_pad( (string)$day, 2, "0", STR_PAD_LEFT );
 		}
 
 		$before = $request->getVal( 'date-range-to' );
@@ -141,6 +155,8 @@ class HistoryAction extends FormlessAction {
 	public function onView() {
 		$out = $this->getOutput();
 		$request = $this->getRequest();
+		$config = $this->context->getConfig();
+		$services = MediaWikiServices::getInstance();
 
 		// Allow client-side HTTP caching of the history page.
 		// But, always ignore this cache if the (logged-in) user has this page on their watchlist
@@ -149,15 +165,20 @@ class HistoryAction extends FormlessAction {
 		// so going from "some unseen" to "all seen" would not clear the cache.
 		// But, when all of the revisions are marked as seen, then only way for new unseen revision
 		// markers to appear, is for the page to be edited, which updates page_touched/Last-Modified.
+		$watchlistManager = $services->getWatchlistManager();
+		$hasUnseenRevisionMarkers = $config->get( MainConfigNames::ShowUpdatedMarker ) &&
+			$watchlistManager->getTitleNotificationTimestamp(
+				$this->getUser(),
+				$this->getTitle()
+			);
 		if (
-			!$this->hasUnseenRevisionMarkers() &&
+			!$hasUnseenRevisionMarkers &&
 			$out->checkLastModified( $this->getWikiPage()->getTouched() )
 		) {
 			return null; // Client cache fresh and headers sent, nothing more to do.
 		}
 
 		$this->preCacheMessages();
-		$config = $this->context->getConfig();
 
 		# Fill in the file cache if not set already
 		if ( HTMLFileCache::useFileCache( $this->getContext() ) ) {
@@ -175,13 +196,6 @@ class HistoryAction extends FormlessAction {
 			'mediawiki.action.history.styles',
 			'mediawiki.special.changeslist',
 		] );
-		if ( $config->get( 'UseMediaWikiUIEverywhere' ) ) {
-			$out = $this->getOutput();
-			$out->addModuleStyles( [
-				'mediawiki.ui.input',
-				'mediawiki.ui.checkbox',
-			] );
-		}
 
 		// Handle atom/RSS feeds.
 		$feedType = $request->getRawVal( 'feed' );
@@ -191,28 +205,27 @@ class HistoryAction extends FormlessAction {
 		}
 
 		$this->addHelpLink(
-			'https://meta.wikimedia.org/wiki/Special:MyLanguage/Help:Page_history',
+			'https://www.mediawiki.org/wiki/Special:MyLanguage/Help:History',
 			true
 		);
 
+		$dbr = $services->getConnectionProvider()->getReplicaDatabase();
 		// Fail nicely if article doesn't exist.
 		if ( !$this->getWikiPage()->exists() ) {
-			global $wgSend404Code;
-			if ( $wgSend404Code ) {
+			$send404Code = $config->get( MainConfigNames::Send404Code );
+			if ( $send404Code ) {
 				$out->setStatusCode( 404 );
 			}
 			$out->addWikiMsg( 'nohistory' );
 
-			$dbr = wfGetDB( DB_REPLICA );
-
 			# show deletion/move log if there is an entry
 			LogEventsList::showLogExtract(
 				$out,
-				[ 'delete', 'move', 'protect' ],
+				[ 'delete', 'move', 'protect', 'merge' ],
 				$this->getTitle(),
 				'',
 				[ 'lim' => 10,
-					'conds' => [ 'log_action != ' . $dbr->addQuotes( 'revision' ) ],
+					'conds' => [ $dbr->expr( 'log_action', '!=', 'revision' ) ],
 					'showIfEmpty' => false,
 					'msgKey' => [ 'moveddeleted-notice' ]
 				]
@@ -228,40 +241,40 @@ class HistoryAction extends FormlessAction {
 		 * Option to show only revisions that have been (partially) hidden via RevisionDelete
 		 */
 		if ( $request->getBool( 'deleted' ) ) {
-			$conds = [ 'rev_deleted != 0' ];
+			$conds = [ $dbr->expr( 'rev_deleted', '!=', 0 ) ];
 		} else {
 			$conds = [];
 		}
 
 		// Add the general form.
 		$fields = [
-			[
-				'name' => 'title',
-				'type' => 'hidden',
-				'default' => $this->getTitle()->getPrefixedDBkey(),
-			],
-			[
+			'action' => [
 				'name' => 'action',
 				'type' => 'hidden',
 				'default' => 'history',
 			],
-			[
+			'date-range-to' => [
 				'type' => 'date',
 				'default' => $ts,
 				'label' => $this->msg( 'date-range-to' )->text(),
 				'name' => 'date-range-to',
 			],
-			[
-				'label-raw' => $this->msg( 'tag-filter' )->parse(),
+			'tagfilter' => [
+				'label-message' => 'tag-filter',
 				'type' => 'tagfilter',
 				'id' => 'tagfilter',
 				'name' => 'tagfilter',
 				'value' => $tagFilter,
-			]
+			],
+			'tagInvert' => [
+				'type' => 'check',
+				'name' => 'tagInvert',
+				'label-message' => 'invert',
+				'hide-if' => [ '===', 'tagfilter', '' ],
+			],
 		];
-		$permissionManager = MediaWikiServices::getInstance()->getPermissionManager();
-		if ( $permissionManager->userHasRight( $this->getUser(), 'deletedhistory' ) ) {
-			$fields[] = [
+		if ( $this->getAuthority()->isAllowed( 'deletedhistory' ) ) {
+			$fields['deleted'] = [
 				'type' => 'check',
 				'label' => $this->msg( 'history-show-deleted' )->text(),
 				'default' => $request->getBool( 'deleted' ),
@@ -276,10 +289,10 @@ class HistoryAction extends FormlessAction {
 			->setAction( wfScript() )
 			->setCollapsibleOptions( true )
 			->setId( 'mw-history-searchform' )
-			->setSubmitText( $this->msg( 'historyaction-submit' )->text() )
+			->setSubmitTextMsg( 'historyaction-submit' )
 			->setWrapperAttributes( [ 'id' => 'mw-history-search' ] )
-			->setWrapperLegend( $this->msg( 'history-fieldset-title' )->text() );
-		$htmlForm->loadData();
+			->setWrapperLegendMsg( 'history-fieldset-title' )
+			->prepareForm();
 
 		$out->addHTML( $htmlForm->getHTML( false ) );
 
@@ -291,33 +304,36 @@ class HistoryAction extends FormlessAction {
 		// Create and output the list.
 		$dateComponents = explode( '-', $ts );
 		if ( count( $dateComponents ) > 1 ) {
-			$y = $dateComponents[0];
-			$m = $dateComponents[1];
-			$d = $dateComponents[2];
+			$y = (int)$dateComponents[0];
+			$m = (int)$dateComponents[1];
+			$d = (int)$dateComponents[2];
 		} else {
-			$y = '';
-			$m = '';
-			$d = '';
+			$y = 0;
+			$m = 0;
+			$d = 0;
 		}
-		$pager = new HistoryPager( $this, $y, $m, $tagFilter, $conds, $d );
+		$pager = new HistoryPager(
+			$this,
+			$y,
+			$m,
+			$d,
+			$tagFilter,
+			$request->getCheck( 'tagInvert' ),
+			$conds,
+			$services->getLinkBatchFactory(),
+			$watchlistManager,
+			$services->getCommentFormatter(),
+			$services->getHookContainer(),
+			$services->getChangeTagsStore()
+		);
 		$out->addHTML(
 			$pager->getNavigationBar() .
 			$pager->getBody() .
 			$pager->getNavigationBar()
 		);
-		$out->preventClickjacking( $pager->getPreventClickjacking() );
+		$out->getMetadata()->setPreventClickjacking( $pager->getPreventClickjacking() );
 
 		return null;
-	}
-
-	/**
-	 * @return bool Page is watched by and has unseen revision for the user
-	 */
-	private function hasUnseenRevisionMarkers() {
-		return (
-			$this->getContext()->getConfig()->get( 'ShowUpdatedMarker' ) &&
-			$this->getTitle()->getNotificationTimestamp( $this->getUser() )
-		);
 	}
 
 	/**
@@ -336,35 +352,25 @@ class HistoryAction extends FormlessAction {
 			return new FakeResultWrapper( [] );
 		}
 
-		$dbr = wfGetDB( DB_REPLICA );
+		$dbr = MediaWikiServices::getInstance()->getConnectionProvider()->getReplicaDatabase();
 
 		if ( $direction === self::DIR_PREV ) {
-			list( $dirs, $oper ) = [ "ASC", ">=" ];
+			[ $dirs, $oper ] = [ "ASC", ">=" ];
 		} else { /* $direction === self::DIR_NEXT */
-			list( $dirs, $oper ) = [ "DESC", "<=" ];
+			[ $dirs, $oper ] = [ "DESC", "<=" ];
 		}
 
+		$queryBuilder = MediaWikiServices::getInstance()->getRevisionStore()->newSelectQueryBuilder( $dbr )
+			->joinComment()
+			->where( [ 'rev_page' => $this->getWikiPage()->getId() ] )
+			->useIndex( [ 'revision' => 'rev_page_timestamp' ] )
+			->orderBy( [ 'rev_timestamp' ], $dirs )
+			->limit( $limit );
 		if ( $offset ) {
-			$offsets = [ "rev_timestamp $oper " . $dbr->addQuotes( $dbr->timestamp( $offset ) ) ];
-		} else {
-			$offsets = [];
+			$queryBuilder->andWhere( $dbr->expr( 'rev_timestamp', $oper, $dbr->timestamp( $offset ) ) );
 		}
 
-		$page_id = $this->getWikiPage()->getId();
-
-		$revQuery = MediaWikiServices::getInstance()->getRevisionStore()->getQueryInfo();
-		return $dbr->select(
-			$revQuery['tables'],
-			$revQuery['fields'],
-			array_merge( [ 'rev_page' => $page_id ], $offsets ),
-			__METHOD__,
-			[
-				'ORDER BY' => "rev_timestamp $dirs",
-				'USE INDEX' => [ 'revision' => 'page_timestamp' ],
-				'LIMIT' => $limit
-			],
-			$revQuery['joins']
-		);
+		return $queryBuilder->caller( __METHOD__ )->fetchResultSet();
 	}
 
 	/**
@@ -373,12 +379,12 @@ class HistoryAction extends FormlessAction {
 	 * @param string $type Feed type
 	 */
 	private function feed( $type ) {
-		if ( !FeedUtils::checkFeedOutput( $type ) ) {
+		if ( !FeedUtils::checkFeedOutput( $type, $this->getOutput() ) ) {
 			return;
 		}
 		$request = $this->getRequest();
 
-		$feedClasses = $this->context->getConfig()->get( 'FeedClasses' );
+		$feedClasses = $this->context->getConfig()->get( MainConfigNames::FeedClasses );
 		/** @var RSSFeed|AtomFeed $feed */
 		$feed = new $feedClasses[$type](
 			$this->getTitle()->getPrefixedText() . ' - ' .
@@ -387,21 +393,25 @@ class HistoryAction extends FormlessAction {
 			$this->getTitle()->getFullURL( 'action=history' )
 		);
 
-		// Get a limit on number of feed entries. Provide a sane default
+		// Get a limit on number of feed entries. Provide a sensible default
 		// of 10 if none is defined (but limit to $wgFeedLimit max)
 		$limit = $request->getInt( 'limit', 10 );
 		$limit = min(
 			max( $limit, 1 ),
-			$this->context->getConfig()->get( 'FeedLimit' )
+			$this->context->getConfig()->get( MainConfigNames::FeedLimit )
 		);
 
 		$items = $this->fetchRevisions( $limit, 0, self::DIR_NEXT );
 
+		// Preload comments
+		$formattedComments = MediaWikiServices::getInstance()->getRowCommentFormatter()
+			->formatRows( $items, 'rev_comment' );
+
 		// Generate feed elements enclosed between header and footer.
 		$feed->outHeader();
 		if ( $items->numRows() ) {
-			foreach ( $items as $row ) {
-				$feed->outItem( $this->feedItem( $row ) );
+			foreach ( $items as $i => $row ) {
+				$feed->outItem( $this->feedItem( $row, $formattedComments[$i] ) );
 			}
 		} else {
 			$feed->outItem( $this->feedEmpty() );
@@ -421,24 +431,25 @@ class HistoryAction extends FormlessAction {
 	}
 
 	/**
-	 * Generate a FeedItem object from a given revision table row
+	 * Generate a MediaWiki\Feed\FeedItem object from a given revision table row
 	 * Borrows Recent Changes' feed generation functions for formatting;
 	 * includes a diff to the previous revision (if any).
 	 *
 	 * @param stdClass|array $row Database row
+	 * @param string $formattedComment The comment in HTML format
 	 * @return FeedItem
 	 */
-	private function feedItem( $row ) {
+	private function feedItem( $row, $formattedComment ) {
 		$revisionStore = MediaWikiServices::getInstance()->getRevisionStore();
 		$rev = $revisionStore->newRevisionFromRow( $row, 0, $this->getTitle() );
 		$prevRev = $revisionStore->getPreviousRevision( $rev );
 		$revComment = $rev->getComment() === null ? null : $rev->getComment()->text;
-		$text = FeedUtils::formatDiffRow(
+		$text = FeedUtils::formatDiffRow2(
 			$this->getTitle(),
 			$prevRev ? $prevRev->getId() : false,
 			$rev->getId(),
 			$rev->getTimestamp(),
-			$revComment
+			$formattedComment
 		);
 		$revUserText = $rev->getUser() ? $rev->getUser()->getName() : '';
 		if ( $revComment == '' ) {

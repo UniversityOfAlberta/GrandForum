@@ -1,7 +1,5 @@
 <?php
 /**
- * Job queue task description base code.
- *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -20,8 +18,12 @@
  * @file
  */
 
+use MediaWiki\Http\Telemetry;
+use MediaWiki\Page\PageReference;
+use MediaWiki\Page\PageReferenceValue;
+
 /**
- * Job queue task description base code
+ * Job queue task description base code.
  *
  * Example usage:
  * @code
@@ -30,11 +32,12 @@
  *		[ 'lives' => 1, 'usleep' => 100, 'pi' => 3.141569 ],
  *		[ 'removeDuplicates' => 1 ]
  * );
- * JobQueueGroup::singleton()->push( $job )
+ * MediaWikiServices::getInstance()->getJobQueueGroup()->push( $job )
  * @endcode
  *
- * @ingroup JobQueue
+ * @newable
  * @since 1.23
+ * @ingroup JobQueue
  */
 class JobSpecification implements IJobSpecification {
 	/** @var string */
@@ -43,8 +46,8 @@ class JobSpecification implements IJobSpecification {
 	/** @var array Array of job parameters or false if none */
 	protected $params;
 
-	/** @var Title */
-	protected $title;
+	/** @var PageReference */
+	protected $page;
 
 	/** @var array */
 	protected $opts;
@@ -55,28 +58,33 @@ class JobSpecification implements IJobSpecification {
 	 * @param array $opts Map of key/values
 	 *   'removeDuplicates' key - whether to remove duplicate jobs
 	 *   'removeDuplicatesIgnoreParams' key - array with parameters to ignore for deduplication
-	 * @param Title|null $title Optional descriptive title
+	 * @param PageReference|null $page
 	 */
 	public function __construct(
-		$type, array $params, array $opts = [], Title $title = null
+		$type, array $params, array $opts = [], ?PageReference $page = null
 	) {
+		$params += [
+			'requestId' => Telemetry::getInstance()->getRequestId(),
+		];
 		$this->validateParams( $params );
 		$this->validateParams( $opts );
 
 		$this->type = $type;
-		if ( $title instanceof Title ) {
+		if ( $page ) {
 			// Make sure JobQueue classes can pull the title from parameters alone
-			if ( $title->getDBkey() !== '' ) {
+			if ( $page->getDBkey() !== '' ) {
 				$params += [
-					'namespace' => $title->getNamespace(),
-					'title' => $title->getDBkey()
+					'namespace' => $page->getNamespace(),
+					'title' => $page->getDBkey()
 				];
 			}
 		} else {
-			$title = Title::makeTitle( NS_SPECIAL, '' );
+			// We aim to remove the page from job specification and all we need
+			// is namespace/dbkey, so use LOCAL no matter what.
+			$page = PageReferenceValue::localReference( NS_SPECIAL, 'Badtitle/' . __CLASS__ );
 		}
 		$this->params = $params;
-		$this->title = $title;
+		$this->page = $page;
 		$this->opts = $opts;
 	}
 
@@ -95,10 +103,6 @@ class JobSpecification implements IJobSpecification {
 
 	public function getType() {
 		return $this->type;
-	}
-
-	public function getTitle() {
-		return $this->title;
 	}
 
 	public function getParams() {
@@ -126,6 +130,8 @@ class JobSpecification implements IJobSpecification {
 			unset( $info['params']['rootJobTimestamp'] );
 			// Likewise for jobs with different delay times
 			unset( $info['params']['jobReleaseTimestamp'] );
+			// Identical jobs from different requests should count as duplicates
+			unset( $info['params']['requestId'] );
 			if ( isset( $this->opts['removeDuplicatesIgnoreParams'] ) ) {
 				foreach ( $this->opts['removeDuplicatesIgnoreParams'] as $field ) {
 					unset( $info['params'][$field] );
@@ -153,17 +159,19 @@ class JobSpecification implements IJobSpecification {
 	}
 
 	/**
+	 * @deprecated since 1.41
 	 * @return array Field/value map that can immediately be serialized
 	 * @since 1.25
 	 */
 	public function toSerializableArray() {
+		wfDeprecated( __METHOD__, '1.41' );
 		return [
 			'type'   => $this->type,
 			'params' => $this->params,
 			'opts'   => $this->opts,
 			'title'  => [
-				'ns'  => $this->title->getNamespace(),
-				'key' => $this->title->getDBkey()
+				'ns'  => $this->page->getNamespace(),
+				'key' => $this->page->getDBkey()
 			]
 		];
 	}
@@ -174,8 +182,11 @@ class JobSpecification implements IJobSpecification {
 	 * @since 1.25
 	 */
 	public static function newFromArray( array $map ) {
-		$title = Title::makeTitle( $map['title']['ns'], $map['title']['key'] );
-
-		return new self( $map['type'], $map['params'], $map['opts'], $title );
+		return new self(
+			$map['type'],
+			$map['params'],
+			$map['opts'],
+			PageReferenceValue::localReference( $map['title']['ns'], $map['title']['key'] )
+		);
 	}
 }

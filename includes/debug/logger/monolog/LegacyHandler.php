@@ -24,26 +24,37 @@ use LogicException;
 use MediaWiki\Logger\LegacyLogger;
 use Monolog\Handler\AbstractProcessingHandler;
 use Monolog\Logger;
+use Socket;
 use UnexpectedValueException;
 
 /**
- * Log handler that replicates the behavior of MediaWiki's former wfErrorLog()
- * logging service. Log output can be directed to a local file, a PHP stream,
- * or a udp2log server.
+ * Monolog imitation of MediaWiki\Logger\LegacyLogger
+ *
+ * This replicates the behavior of LegacyLogger, which in turn replicates
+ * MediaWiki's former wfErrorLog() function.
+ *
+ * The main use case of the LegacyHandler is to enable adoption of Monolog
+ * features (such as alternate formatters, extra processors, and enabling multiple
+ * destinations/handlers at the same time), where one of the handlers (this one)
+ * essentiallly does what the LegacySpi would do if you hadn't enabled
+ * MonologSpi. In particular: writing to a file like $wgDebugLogFile,
+ * and sending messages to a PHP stream or udp2log server.
  *
  * For udp2log output, the stream specification must have the form:
  * "udp://HOST:PORT[/PREFIX]"
  * where:
+ *
  * - HOST: IPv4, IPv6 or hostname
  * - PORT: server port
  * - PREFIX: optional (but recommended) prefix telling udp2log how to route
- * the log event. The special prefix "{channel}" will use the log event's
- * channel as the prefix value.
+ *   the log event. The special prefix "{channel}" will use the log event's
+ *   channel as the prefix value.
  *
- * When not targeting a udp2log stream this class will act as a drop-in
+ * When not targeting a udp2log server, this class will act as a drop-in
  * replacement for \Monolog\Handler\StreamHandler.
  *
  * @since 1.25
+ * @ingroup Debug
  * @copyright © 2013 Wikimedia Foundation and contributors
  */
 class LegacyHandler extends AbstractProcessingHandler {
@@ -62,12 +73,12 @@ class LegacyHandler extends AbstractProcessingHandler {
 
 	/**
 	 * Log sink
-	 * @var resource
+	 * @var Socket|resource|null
 	 */
 	protected $sink;
 
 	/**
-	 * @var string
+	 * @var string|null
 	 */
 	protected $error;
 
@@ -90,7 +101,7 @@ class LegacyHandler extends AbstractProcessingHandler {
 	 * @param string $stream Stream URI
 	 * @param bool $useLegacyFilter Filter log events using legacy rules
 	 * @param int $level Minimum logging level that will trigger handler
-	 * @param bool $bubble Can handled meesages bubble up the handler stack?
+	 * @param bool $bubble Can handled messages bubble up the handler stack?
 	 */
 	public function __construct(
 		$stream,
@@ -114,7 +125,7 @@ class LegacyHandler extends AbstractProcessingHandler {
 		$this->error = null;
 		set_error_handler( [ $this, 'errorTrap' ] );
 
-		if ( substr( $this->uri, 0, 4 ) == 'udp:' ) {
+		if ( str_starts_with( $this->uri, 'udp:' ) ) {
 			$parsed = parse_url( $this->uri );
 			if ( !isset( $parsed['host'] ) ) {
 				throw new UnexpectedValueException( sprintf(
@@ -153,6 +164,7 @@ class LegacyHandler extends AbstractProcessingHandler {
 			$this->sink = null;
 			throw new UnexpectedValueException( sprintf(
 				'The stream or file "%s" could not be opened: %s',
+				// @phan-suppress-next-line PhanTypeMismatchArgumentInternalProbablyReal Set by error handler
 				$this->uri, $this->error
 			) );
 		}
@@ -200,12 +212,12 @@ class LegacyHandler extends AbstractProcessingHandler {
 					$record['channel'] : $this->prefix;
 				$text = preg_replace( '/^/m', "{$leader} ", $text );
 
-				// Limit to 64KB
+				// Limit to 64 KiB
 				if ( strlen( $text ) > 65506 ) {
 					$text = substr( $text, 0, 65506 );
 				}
 
-				if ( substr( $text, -1 ) != "\n" ) {
+				if ( !str_ends_with( $text, "\n" ) ) {
 					$text .= "\n";
 				}
 
@@ -214,7 +226,12 @@ class LegacyHandler extends AbstractProcessingHandler {
 			}
 
 			socket_sendto(
-				$this->sink, $text, strlen( $text ), 0, $this->host, $this->port
+				$this->sink,
+				$text,
+				strlen( $text ),
+				0,
+				$this->host,
+				$this->port
 			);
 
 		} else {
@@ -226,7 +243,6 @@ class LegacyHandler extends AbstractProcessingHandler {
 		if ( $this->sink ) {
 			if ( $this->useUdp() ) {
 				socket_close( $this->sink );
-
 			} else {
 				fclose( $this->sink );
 			}

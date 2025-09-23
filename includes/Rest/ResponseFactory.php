@@ -4,7 +4,7 @@ namespace MediaWiki\Rest;
 
 use HttpStatus;
 use InvalidArgumentException;
-use LanguageCode;
+use MediaWiki\Language\LanguageCode;
 use MWExceptionHandler;
 use stdClass;
 use Throwable;
@@ -15,29 +15,46 @@ use Wikimedia\Message\MessageValue;
  * Generates standardized response objects.
  */
 class ResponseFactory {
-	private const CT_PLAIN = 'text/plain; charset=utf-8';
 	private const CT_HTML = 'text/html; charset=utf-8';
 	private const CT_JSON = 'application/json';
 
 	/** @var ITextFormatter[] */
 	private $textFormatters;
 
+	/** @var bool Whether to send exception backtraces to the client */
+	private $showExceptionDetails = false;
+
 	/**
 	 * @param ITextFormatter[] $textFormatters
+	 *
+	 * If there is a relative preference among the input text formatters, the formatters should
+	 * be ordered from most to least preferred.
 	 */
 	public function __construct( $textFormatters ) {
 		$this->textFormatters = $textFormatters;
 	}
 
 	/**
+	 * Control whether web responses may include a exception messager and backtrace
+	 *
+	 * @see $wgShowExceptionDetails
+	 * @since 1.39
+	 * @param bool $showExceptionDetails
+	 */
+	public function setShowExceptionDetails( bool $showExceptionDetails ): void {
+		$this->showExceptionDetails = $showExceptionDetails;
+	}
+
+	/**
 	 * Encode a stdClass object or array to a JSON string
 	 *
-	 * @param array|stdClass $value
+	 * @param array|stdClass|\JsonSerializable $value
 	 * @return string
 	 * @throws JsonEncodingException
 	 */
 	public function encodeJson( $value ) {
-		$json = json_encode( $value, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE );
+		$json = json_encode( $value,
+			JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_INVALID_UTF8_SUBSTITUTE );
 		if ( $json === false ) {
 			throw new JsonEncodingException( json_last_error_msg(), json_last_error() );
 		}
@@ -55,13 +72,13 @@ class ResponseFactory {
 
 	/**
 	 * Create a successful JSON response.
-	 * @param array|stdClass $value JSON value
+	 * @param array|stdClass|\JsonSerializable $value JSON value
 	 * @param string|null $contentType HTTP content type (should be 'application/json+...')
 	 *   or null for plain 'application/json'
 	 * @return Response
 	 */
 	public function createJson( $value, $contentType = null ) {
-		$contentType = $contentType ?? self::CT_JSON;
+		$contentType ??= self::CT_JSON;
 		$response = new Response( $this->encodeJson( $value ) );
 		$response->setHeader( 'Content-Type', $contentType );
 		return $response;
@@ -93,8 +110,7 @@ class ResponseFactory {
 	 * @return Response
 	 */
 	public function createPermanentRedirect( $target ) {
-		$response = $this->createRedirectBase( $target );
-		$response->setStatus( 301 );
+		$response = $this->createRedirect( $target, 301 );
 		return $response;
 	}
 
@@ -109,8 +125,22 @@ class ResponseFactory {
 	 * @see self::createSeeOther()
 	 */
 	public function createLegacyTemporaryRedirect( $target ) {
+		$response = $this->createRedirect( $target, 302 );
+		return $response;
+	}
+
+	/**
+	 * Creates a redirect specifying the code.
+	 * This indicates that the operation the client was trying to perform can temporarily
+	 * be achieved by using a different URL. Clients will preserve the request method when
+	 * retrying the request with the new URL.
+	 * @param string $target Redirect target
+	 * @param int $code Status code
+	 * @return Response
+	 */
+	public function createRedirect( $target, $code ) {
 		$response = $this->createRedirectBase( $target );
-		$response->setStatus( 302 );
+		$response->setStatus( $code );
 		return $response;
 	}
 
@@ -123,8 +153,7 @@ class ResponseFactory {
 	 * @return Response
 	 */
 	public function createTemporaryRedirect( $target ) {
-		$response = $this->createRedirectBase( $target );
-		$response->setStatus( 307 );
+		$response = $this->createRedirect( $target, 307 );
 		return $response;
 	}
 
@@ -137,8 +166,7 @@ class ResponseFactory {
 	 * @return Response
 	 */
 	public function createSeeOther( $target ) {
-		$response = $this->createRedirectBase( $target );
-		$response->setStatus( 303 );
+		$response = $this->createRedirect( $target, 303 );
 		return $response;
 	}
 
@@ -163,7 +191,6 @@ class ResponseFactory {
 	 * @param int $errorCode HTTP error code
 	 * @param array $bodyData An array of data to be included in the JSON response
 	 * @return Response
-	 * @throws InvalidArgumentException
 	 */
 	public function createHttpError( $errorCode, array $bodyData = [] ) {
 		if ( $errorCode < 400 || $errorCode >= 600 ) {
@@ -200,32 +227,52 @@ class ResponseFactory {
 
 	/**
 	 * Turn a throwable into a JSON error response.
+	 *
 	 * @param Throwable $exception
+	 * @param array $extraData if present, used to generate a RESTbase-style response
 	 * @return Response
 	 */
-	public function createFromException( Throwable $exception ) {
+	public function createFromException( Throwable $exception, array $extraData = [] ) {
 		if ( $exception instanceof LocalizedHttpException ) {
 			$response = $this->createLocalizedHttpError(
 				$exception->getCode(),
 				$exception->getMessageValue(),
-				(array)$exception->getErrorData()
+				$exception->getErrorData() + $extraData + [
+					'errorKey' => $exception->getErrorKey(),
+				]
 			);
+		} elseif ( $exception instanceof ResponseException ) {
+			return $exception->getResponse();
+		} elseif ( $exception instanceof RedirectException ) {
+			$response = $this->createRedirect( $exception->getTarget(), $exception->getCode() );
 		} elseif ( $exception instanceof HttpException ) {
-			// FIXME can HttpException represent 2xx or 3xx responses?
-			$response = $this->createHttpError(
-				$exception->getCode(),
-				array_merge(
-					[ 'message' => $exception->getMessage() ],
-					(array)$exception->getErrorData()
+			if ( in_array( $exception->getCode(), [ 204, 304 ], true ) ) {
+				$response = $this->create();
+				$response->setStatus( $exception->getCode() );
+			} else {
+				$response = $this->createHttpError(
+					$exception->getCode(),
+					array_merge(
+						[ 'message' => $exception->getMessage() ],
+						$exception->getErrorData()
+					)
+				);
+			}
+		} elseif ( $this->showExceptionDetails ) {
+			$response = $this->createHttpError( 500, [
+				'message' => 'Error: exception of type ' . get_class( $exception ) . ': '
+					. $exception->getMessage(),
+				'exception' => MWExceptionHandler::getStructuredExceptionData(
+					$exception,
+					MWExceptionHandler::CAUGHT_BY_OTHER
 				)
-			);
+			] );
+			// XXX: should we try to do something useful with ILocalizedException?
+			// XXX: should we try to do something useful with common MediaWiki errors like ReadOnlyError?
 		} else {
 			$response = $this->createHttpError( 500, [
 				'message' => 'Error: exception of type ' . get_class( $exception ),
-				'exception' => MWExceptionHandler::getStructuredExceptionData( $exception )
 			] );
-			// FIXME should we try to do something useful with ILocalizedException?
-			// FIXME should we try to do something useful with common MediaWiki errors like ReadOnlyError?
 		}
 		return $response;
 	}
@@ -244,10 +291,7 @@ class ResponseFactory {
 		} elseif ( is_array( $value ) || $value instanceof stdClass ) {
 			$data = $value;
 		} else {
-			$type = gettype( $originalValue );
-			if ( $type === 'object' ) {
-				$type = get_class( $originalValue );
-			}
+			$type = get_debug_type( $originalValue );
 			throw new InvalidArgumentException( __METHOD__ . ": Invalid return value type $type" );
 		}
 		$response = $this->createJson( $data );
@@ -273,11 +317,21 @@ class ResponseFactory {
 	 * @return string
 	 */
 	protected function getHyperLink( $url ) {
-		$url = htmlspecialchars( $url );
+		$url = htmlspecialchars( $url, ENT_COMPAT );
 		return "<!doctype html><title>Redirect</title><a href=\"$url\">$url</a>";
 	}
 
-	public function formatMessage( MessageValue $messageValue ) {
+	/**
+	 * Tries to return the formatted string(s) for a message value object using the
+	 * response factory's text formatters. The returned array will either be empty (if there are
+	 * no text formatters), or have exactly one key, "messageTranslations", whose value
+	 * is an array of formatted strings, keyed by the associated language code.
+	 *
+	 * @param MessageValue $messageValue the message value object to format
+	 *
+	 * @return array
+	 */
+	public function formatMessage( MessageValue $messageValue ): array {
 		if ( !$this->textFormatters ) {
 			// For unit tests
 			return [];
@@ -289,6 +343,85 @@ class ResponseFactory {
 			$translations[$lang] = $messageText;
 		}
 		return [ 'messageTranslations' => $translations ];
+	}
+
+	/**
+	 * Tries to return one formatted string for a message value object. Return value will be:
+	 *   1) the formatted string for $preferredLang, if $preferredLang is supplied and the
+	 *      formatted string for that language is available.
+	 *   2) the first available formatted string, if any are available.
+	 *   3) the message key string, if no formatted strings are available.
+	 * Callers who need more specific control should call formatMessage() instead.
+	 *
+	 * @param MessageValue $messageValue the message value object to format
+	 * @param string $preferredlang preferred language for the formatted string, if available
+	 *
+	 * @return string
+	 */
+	public function getFormattedMessage(
+		MessageValue $messageValue, string $preferredlang = ''
+	): string {
+		$strings = $this->formatMessage( $messageValue );
+		if ( !$strings ) {
+			return $messageValue->getKey();
+		}
+
+		$strings = $strings['messageTranslations'];
+		if ( $preferredlang && array_key_exists( $preferredlang, $strings ) ) {
+			return $strings[ $preferredlang ];
+		} else {
+			return reset( $strings );
+		}
+	}
+
+	/**
+	 * Returns OpenAPI schema response components object,
+	 * providing information about the structure of some standard responses,
+	 * for use in path specs.
+	 *
+	 * @see https://swagger.io/specification/#components-object
+	 * @see https://swagger.io/specification/#response-object
+	 *
+	 * @return array
+	 */
+	public static function getResponseComponents(): array {
+		return [
+			'responses' => [
+				'GenericErrorResponse' => [
+					'description' => 'Generic error response',
+					'content' => [
+						'application/json' => [
+							'schema' => [
+								'$ref' => '#/components/schemas/GenericErrorResponseModel'
+							]
+						],
+					],
+				]
+			],
+			'schemas' => [
+				'GenericErrorResponseModel' => [
+					'description' => 'Generic error response body',
+					'required' => [ 'httpCode', 'httpMessage' ],
+					'properties' => [
+						'httpCode' => [
+							'type' => 'integer'
+						],
+						'httpMessage' => [
+							'type' => 'string'
+						],
+						'message' => [
+							'type' => 'string'
+						],
+						'messageTranslations' => [
+							'type' => 'object',
+							'additionalProperties' => [
+								'type' => 'string'
+							]
+						],
+					]
+				]
+			],
+		];
 	}
 
 }

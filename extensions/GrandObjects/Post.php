@@ -150,7 +150,7 @@ class Post extends BackboneModel{
 
     function toArray(){
         global $wgUser;
-        if(!$wgUser->isLoggedIn()){
+        if(!$wgUser->isRegistered()){
             return array();
         }
         $user = Person::newFromId($this->getUser()->getId());

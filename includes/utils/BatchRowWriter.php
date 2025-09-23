@@ -41,6 +41,11 @@ class BatchRowWriter {
 	protected $clusterName;
 
 	/**
+	 * @var string|null For debugging which method is using this class.
+	 */
+	protected $caller;
+
+	/**
 	 * @param IDatabase $db The database to write to
 	 * @param string $table The name of the table to update
 	 * @param string|false $clusterName A cluster name valid for use with LBFactory
@@ -52,6 +57,19 @@ class BatchRowWriter {
 	}
 
 	/**
+	 * Use ->setCaller( __METHOD__ ) to indicate which code is using this
+	 * class. Only used in debugging output.
+	 * @since 1.36
+	 *
+	 * @param string $caller
+	 * @return self
+	 */
+	public function setCaller( $caller ) {
+		$this->caller = $caller;
+		return $this;
+	}
+
+	/**
 	 * @param array[][] $updates Array of arrays each containing two keys, 'primaryKey'
 	 *  and 'changes'. primaryKey must contain a map of column names to values
 	 *  sufficient to uniquely identify the row. changes must contain a map of column
@@ -59,18 +77,22 @@ class BatchRowWriter {
 	 * @phan-param array<int,array{primaryKey:array,changes:array}> $updates
 	 */
 	public function write( array $updates ) {
-		$lbFactory = MediaWikiServices::getInstance()->getDBLoadBalancerFactory();
-		$ticket = $lbFactory->getEmptyTransactionTicket( __METHOD__ );
+		$dbProvider = MediaWikiServices::getInstance()->getConnectionProvider();
+		$ticket = $dbProvider->getEmptyTransactionTicket( __METHOD__ );
 
-		foreach ( $updates as $update ) {
-			$this->db->update(
-				$this->table,
-				$update['changes'],
-				$update['primaryKey'],
-				__METHOD__
-			);
+		$caller = __METHOD__;
+		if ( (string)$this->caller !== '' ) {
+			$caller .= " (for {$this->caller})";
 		}
 
-		$lbFactory->commitAndWaitForReplication( __METHOD__, $ticket );
+		foreach ( $updates as $update ) {
+			$this->db->newUpdateQueryBuilder()
+				->update( $this->table )
+				->set( $update['changes'] )
+				->where( $update['primaryKey'] )
+				->caller( $caller )->execute();
+		}
+
+		$dbProvider->commitAndWaitForReplication( __METHOD__, $ticket );
 	}
 }

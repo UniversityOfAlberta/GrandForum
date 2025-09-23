@@ -21,11 +21,42 @@
  * @defgroup API API
  */
 
+namespace MediaWiki\Api;
+
+use ILocalizedException;
+use LogicException;
+use MediaWiki;
 use MediaWiki\Api\Validator\ApiParamValidator;
+use MediaWiki\Context\DerivativeContext;
+use MediaWiki\Context\IContextSource;
+use MediaWiki\Context\RequestContext;
+use MediaWiki\Debug\MWDebug;
+use MediaWiki\Html\Html;
 use MediaWiki\Logger\LoggerFactory;
+use MediaWiki\MainConfigNames;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Message\Message;
 use MediaWiki\ParamValidator\TypeDef\UserDef;
+use MediaWiki\Profiler\ProfilingContext;
+use MediaWiki\Request\FauxRequest;
+use MediaWiki\Request\WebRequest;
+use MediaWiki\Request\WebRequestUpload;
+use MediaWiki\Rest\HeaderParser\Origin;
 use MediaWiki\Session\SessionManager;
+use MediaWiki\StubObject\StubGlobalUser;
+use MediaWiki\User\UserRigorOptions;
+use MediaWiki\Utils\MWTimestamp;
+use MediaWiki\WikiMap\WikiMap;
+use MWExceptionHandler;
+use MWExceptionRenderer;
+use Profiler;
+use Throwable;
+use UnexpectedValueException;
+use Wikimedia\AtEase\AtEase;
+use Wikimedia\Message\MessageSpecifier;
+use Wikimedia\ParamValidator\ParamValidator;
+use Wikimedia\ParamValidator\TypeDef\IntegerDef;
+use Wikimedia\Stats\StatsFactory;
 use Wikimedia\Timestamp\TimestampException;
 
 /**
@@ -35,7 +66,7 @@ use Wikimedia\Timestamp\TimestampException;
  * and use formatter to print results.
  * In case of an exception, an error message will be printed using the same formatter.
  *
- * To use API from another application, run it using FauxRequest object, in which
+ * To use API from another application, run it using MediaWiki\Request\FauxRequest object, in which
  * case any internal exceptions will not be handled but passed up to the caller.
  * After successful execution, use getResult() for the resulting data.
  *
@@ -58,74 +89,429 @@ class ApiMain extends ApiBase {
 	/**
 	 * List of available modules: action name => module class
 	 */
-	private static $Modules = [
-		'login' => ApiLogin::class,
-		'clientlogin' => ApiClientLogin::class,
-		'logout' => ApiLogout::class,
-		'createaccount' => ApiAMCreateAccount::class,
-		'linkaccount' => ApiLinkAccount::class,
-		'unlinkaccount' => ApiRemoveAuthenticationData::class,
-		'changeauthenticationdata' => ApiChangeAuthenticationData::class,
-		'removeauthenticationdata' => ApiRemoveAuthenticationData::class,
-		'resetpassword' => ApiResetPassword::class,
-		'query' => ApiQuery::class,
-		'expandtemplates' => ApiExpandTemplates::class,
-		'parse' => ApiParse::class,
-		'stashedit' => ApiStashEdit::class,
-		'opensearch' => ApiOpenSearch::class,
-		'feedcontributions' => ApiFeedContributions::class,
-		'feedrecentchanges' => ApiFeedRecentChanges::class,
-		'feedwatchlist' => ApiFeedWatchlist::class,
-		'help' => ApiHelp::class,
-		'paraminfo' => ApiParamInfo::class,
-		'rsd' => ApiRsd::class,
-		'compare' => ApiComparePages::class,
-		'tokens' => ApiTokens::class,
-		'checktoken' => ApiCheckToken::class,
-		'cspreport' => ApiCSPReport::class,
-		'validatepassword' => ApiValidatePassword::class,
+	private const MODULES = [
+		'login' => [
+			'class' => ApiLogin::class,
+			'services' => [
+				'AuthManager',
+			],
+		],
+		'clientlogin' => [
+			'class' => ApiClientLogin::class,
+			'services' => [
+				'AuthManager',
+				'UrlUtils',
+			],
+		],
+		'logout' => [
+			'class' => ApiLogout::class,
+		],
+		'createaccount' => [
+			'class' => ApiAMCreateAccount::class,
+			'services' => [
+				'AuthManager',
+				'UrlUtils',
+			],
+		],
+		'linkaccount' => [
+			'class' => ApiLinkAccount::class,
+			'services' => [
+				'AuthManager',
+				'UrlUtils',
+			],
+		],
+		'unlinkaccount' => [
+			'class' => ApiRemoveAuthenticationData::class,
+			'services' => [
+				'AuthManager',
+			],
+		],
+		'changeauthenticationdata' => [
+			'class' => ApiChangeAuthenticationData::class,
+			'services' => [
+				'AuthManager',
+			],
+		],
+		'removeauthenticationdata' => [
+			'class' => ApiRemoveAuthenticationData::class,
+			'services' => [
+				'AuthManager',
+			],
+		],
+		'resetpassword' => [
+			'class' => ApiResetPassword::class,
+			'services' => [
+				'PasswordReset',
+			]
+		],
+		'query' => [
+			'class' => ApiQuery::class,
+			'services' => [
+				'ObjectFactory',
+				'WikiExporterFactory',
+				'TitleFormatter',
+				'TitleFactory',
+			]
+		],
+		'expandtemplates' => [
+			'class' => ApiExpandTemplates::class,
+			'services' => [
+				'RevisionStore',
+				'ParserFactory',
+			]
+		],
+		'parse' => [
+			'class' => ApiParse::class,
+			'services' => [
+				'RevisionLookup',
+				'SkinFactory',
+				'LanguageNameUtils',
+				'LinkBatchFactory',
+				'LinkCache',
+				'ContentHandlerFactory',
+				'ParserFactory',
+				'WikiPageFactory',
+				'ContentRenderer',
+				'ContentTransformer',
+				'CommentFormatter',
+				'TempUserCreator',
+				'UserFactory',
+				'UrlUtils',
+				'TitleFormatter',
+			]
+		],
+		'stashedit' => [
+			'class' => ApiStashEdit::class,
+			'services' => [
+				'ContentHandlerFactory',
+				'PageEditStash',
+				'RevisionLookup',
+				'StatsFactory',
+				'WikiPageFactory',
+				'TempUserCreator',
+				'UserFactory',
+			]
+		],
+		'opensearch' => [
+			'class' => ApiOpenSearch::class,
+			'services' => [
+				'LinkBatchFactory',
+				'SearchEngineConfig',
+				'SearchEngineFactory',
+				'UrlUtils',
+			]
+		],
+		'feedcontributions' => [
+			'class' => ApiFeedContributions::class,
+			'services' => [
+				'RevisionStore',
+				'LinkRenderer',
+				'LinkBatchFactory',
+				'HookContainer',
+				'DBLoadBalancerFactory',
+				'NamespaceInfo',
+				'UserFactory',
+				'CommentFormatter',
+			]
+		],
+		'feedrecentchanges' => [
+			'class' => ApiFeedRecentChanges::class,
+			'services' => [
+				'SpecialPageFactory',
+				'TempUserConfig',
+			]
+		],
+		'feedwatchlist' => [
+			'class' => ApiFeedWatchlist::class,
+			'services' => [
+				'ParserFactory',
+			]
+		],
+		'help' => [
+			'class' => ApiHelp::class,
+			'services' => [
+				'SkinFactory',
+			]
+		],
+		'paraminfo' => [
+			'class' => ApiParamInfo::class,
+			'services' => [
+				'UserFactory',
+			],
+		],
+		'rsd' => [
+			'class' => ApiRsd::class,
+		],
+		'compare' => [
+			'class' => ApiComparePages::class,
+			'services' => [
+				'RevisionStore',
+				'ArchivedRevisionLookup',
+				'SlotRoleRegistry',
+				'ContentHandlerFactory',
+				'ContentTransformer',
+				'CommentFormatter',
+				'TempUserCreator',
+				'UserFactory',
+			]
+		],
+		'checktoken' => [
+			'class' => ApiCheckToken::class,
+		],
+		'cspreport' => [
+			'class' => ApiCSPReport::class,
+			'services' => [
+				'UrlUtils',
+			]
+		],
+		'validatepassword' => [
+			'class' => ApiValidatePassword::class,
+			'services' => [
+				'AuthManager',
+				'UserFactory',
+			]
+		],
 
 		// Write modules
-		'purge' => ApiPurge::class,
-		'setnotificationtimestamp' => ApiSetNotificationTimestamp::class,
-		'rollback' => ApiRollback::class,
-		'delete' => ApiDelete::class,
-		'undelete' => ApiUndelete::class,
-		'protect' => ApiProtect::class,
-		'block' => ApiBlock::class,
-		'unblock' => ApiUnblock::class,
-		'move' => ApiMove::class,
-		'edit' => ApiEditPage::class,
-		'upload' => ApiUpload::class,
-		'filerevert' => ApiFileRevert::class,
-		'emailuser' => ApiEmailUser::class,
-		'watch' => ApiWatch::class,
-		'patrol' => ApiPatrol::class,
-		'import' => ApiImport::class,
-		'clearhasmsg' => ApiClearHasMsg::class,
-		'userrights' => ApiUserrights::class,
-		'options' => ApiOptions::class,
-		'imagerotate' => ApiImageRotate::class,
-		'revisiondelete' => ApiRevisionDelete::class,
-		'managetags' => ApiManageTags::class,
-		'tag' => ApiTag::class,
-		'mergehistory' => ApiMergeHistory::class,
-		'setpagelanguage' => ApiSetPageLanguage::class,
-		'changecontentmodel' => ApiChangeContentModel::class,
+		'purge' => [
+			'class' => ApiPurge::class,
+			'services' => [
+				'WikiPageFactory',
+				'TitleFormatter',
+			],
+		],
+		'setnotificationtimestamp' => [
+			'class' => ApiSetNotificationTimestamp::class,
+			'services' => [
+				'DBLoadBalancerFactory',
+				'RevisionStore',
+				'WatchedItemStore',
+				'TitleFormatter',
+				'TitleFactory',
+			]
+		],
+		'rollback' => [
+			'class' => ApiRollback::class,
+			'services' => [
+				'RollbackPageFactory',
+				'WatchlistManager',
+				'UserOptionsLookup',
+			]
+		],
+		'delete' => [
+			'class' => ApiDelete::class,
+			'services' => [
+				'RepoGroup',
+				'WatchlistManager',
+				'UserOptionsLookup',
+				'DeletePageFactory',
+			]
+		],
+		'undelete' => [
+			'class' => ApiUndelete::class,
+			'services' => [
+				'WatchlistManager',
+				'UserOptionsLookup',
+				'UndeletePageFactory',
+				'WikiPageFactory',
+			]
+		],
+		'protect' => [
+			'class' => ApiProtect::class,
+			'services' => [
+				'WatchlistManager',
+				'UserOptionsLookup',
+				'RestrictionStore',
+			]
+		],
+		'block' => [
+			'class' => ApiBlock::class,
+			'services' => [
+				'BlockPermissionCheckerFactory',
+				'BlockUserFactory',
+				'TitleFactory',
+				'UserIdentityLookup',
+				'WatchedItemStore',
+				'BlockUtils',
+				'BlockActionInfo',
+				'WatchlistManager',
+				'UserOptionsLookup',
+			]
+		],
+		'unblock' => [
+			'class' => ApiUnblock::class,
+			'services' => [
+				'BlockPermissionCheckerFactory',
+				'UnblockUserFactory',
+				'UserIdentityLookup',
+				'WatchedItemStore',
+				'WatchlistManager',
+				'UserOptionsLookup',
+			]
+		],
+		'move' => [
+			'class' => ApiMove::class,
+			'services' => [
+				'MovePageFactory',
+				'RepoGroup',
+				'WatchlistManager',
+				'UserOptionsLookup',
+			]
+		],
+		'edit' => [
+			'class' => ApiEditPage::class,
+			'services' => [
+				'ContentHandlerFactory',
+				'RevisionLookup',
+				'WatchedItemStore',
+				'WikiPageFactory',
+				'WatchlistManager',
+				'UserOptionsLookup',
+				'RedirectLookup',
+				'TempUserCreator',
+				'UserFactory',
+			]
+		],
+		'upload' => [
+			'class' => ApiUpload::class,
+			'services' => [
+				'JobQueueGroup',
+				'WatchlistManager',
+				'UserOptionsLookup',
+			]
+		],
+		'filerevert' => [
+			'class' => ApiFileRevert::class,
+			'services' => [
+				'RepoGroup',
+			]
+		],
+		'emailuser' => [
+			'class' => ApiEmailUser::class,
+			'services' => [
+				'EmailUserFactory',
+				'UserFactory',
+			]
+		],
+		'watch' => [
+			'class' => ApiWatch::class,
+			'services' => [
+				'WatchlistManager',
+				'TitleFormatter',
+			]
+		],
+		'patrol' => [
+			'class' => ApiPatrol::class,
+			'services' => [
+				'RevisionStore',
+			]
+		],
+		'import' => [
+			'class' => ApiImport::class,
+			'services' => [
+				'WikiImporterFactory',
+			]
+		],
+		'clearhasmsg' => [
+			'class' => ApiClearHasMsg::class,
+			'services' => [
+				'TalkPageNotificationManager',
+			]
+		],
+		'userrights' => [
+			'class' => ApiUserrights::class,
+			'services' => [
+				'UserGroupManager',
+				'WatchedItemStore',
+				'WatchlistManager',
+				'UserOptionsLookup',
+			]
+		],
+		'options' => [
+			'class' => ApiOptions::class,
+			'services' => [
+				'UserOptionsManager',
+				'PreferencesFactory',
+			],
+		],
+		'imagerotate' => [
+			'class' => ApiImageRotate::class,
+			'services' => [
+				'RepoGroup',
+				'TempFSFileFactory',
+				'TitleFactory',
+			]
+		],
+		'revisiondelete' => [
+			'class' => ApiRevisionDelete::class,
+		],
+		'managetags' => [
+			'class' => ApiManageTags::class,
+		],
+		'tag' => [
+			'class' => ApiTag::class,
+			'services' => [
+				'DBLoadBalancerFactory',
+				'RevisionStore',
+				'ChangeTagsStore',
+			]
+		],
+		'mergehistory' => [
+			'class' => ApiMergeHistory::class,
+			'services' => [
+				'MergeHistoryFactory',
+			],
+		],
+		'setpagelanguage' => [
+			'class' => ApiSetPageLanguage::class,
+			'services' => [
+				'DBLoadBalancerFactory',
+				'LanguageNameUtils',
+			]
+		],
+		'changecontentmodel' => [
+			'class' => ApiChangeContentModel::class,
+			'services' => [
+				'ContentHandlerFactory',
+				'ContentModelChangeFactory',
+			]
+		],
+		'acquiretempusername' => [
+			'class' => ApiAcquireTempUserName::class,
+			'services' => [
+				'TempUserCreator',
+			]
+		],
 	];
 
 	/**
 	 * List of available formats: format name => format class
 	 */
-	private static $Formats = [
-		'json' => ApiFormatJson::class,
-		'jsonfm' => ApiFormatJson::class,
-		'php' => ApiFormatPhp::class,
-		'phpfm' => ApiFormatPhp::class,
-		'xml' => ApiFormatXml::class,
-		'xmlfm' => ApiFormatXml::class,
-		'rawfm' => ApiFormatJson::class,
-		'none' => ApiFormatNone::class,
+	private const FORMATS = [
+		'json' => [
+			'class' => ApiFormatJson::class,
+		],
+		'jsonfm' => [
+			'class' => ApiFormatJson::class,
+		],
+		'php' => [
+			'class' => ApiFormatPhp::class,
+		],
+		'phpfm' => [
+			'class' => ApiFormatPhp::class,
+		],
+		'xml' => [
+			'class' => ApiFormatXml::class,
+		],
+		'xmlfm' => [
+			'class' => ApiFormatXml::class,
+		],
+		'rawfm' => [
+			'class' => ApiFormatJson::class,
+		],
+		'none' => [
+			'class' => ApiFormatNone::class,
+		],
 	];
 
 	/**
@@ -134,49 +520,73 @@ class ApiMain extends ApiBase {
 	 *                'params' => [ $someVarToSubst ] ],
 	 * ];
 	 */
-	private static $mRights = [
-		'writeapi' => [
-			'msg' => 'right-writeapi',
-			'params' => []
-		],
+	private const RIGHTS_MAP = [
 		'apihighlimits' => [
 			'msg' => 'api-help-right-apihighlimits',
 			'params' => [ ApiBase::LIMIT_SML2, ApiBase::LIMIT_BIG2 ]
 		]
 	];
 
-	/**
-	 * @var ApiFormatBase
-	 */
+	/** @var ApiFormatBase|null */
 	private $mPrinter;
 
-	private $mModuleMgr, $mResult, $mErrorFormatter = null, $mParamValidator;
+	/** @var ApiModuleManager */
+	private $mModuleMgr;
+
+	/** @var ApiResult */
+	private $mResult;
+
+	/** @var ApiErrorFormatter */
+	private $mErrorFormatter;
+
+	/** @var ApiParamValidator */
+	private $mParamValidator;
+
 	/** @var ApiContinuationManager|null */
 	private $mContinuationManager;
+
+	/** @var string|null */
 	private $mAction;
+
+	/** @var bool */
 	private $mEnableWrite;
-	private $mInternalMode, $mCdnMaxAge;
+
+	/** @var bool */
+	private $mInternalMode;
+
 	/** @var ApiBase */
 	private $mModule;
 
+	/** @var string */
 	private $mCacheMode = 'private';
+
 	/** @var array */
 	private $mCacheControl = [];
+
+	/** @var array */
 	private $mParamsUsed = [];
+
+	/** @var array */
 	private $mParamsSensitive = [];
 
 	/** @var bool|null Cached return value from self::lacksSameOriginSecurity() */
 	private $lacksSameOriginSecurity = null;
+
+	/** @var StatsFactory */
+	private $statsFactory;
 
 	/**
 	 * Constructs an instance of ApiMain that utilizes the module and format specified by $request.
 	 *
 	 * @stable to call
 	 * @param IContextSource|WebRequest|null $context If this is an instance of
-	 *    FauxRequest, errors are thrown and no printing occurs
+	 *    MediaWiki\Request\FauxRequest, errors are thrown and no printing occurs
 	 * @param bool $enableWrite Should be set to true if the api may modify data
+	 * @param bool|null $internal Whether the API request is an internal faux
+	 *        request. If null or not given, the request is assumed to be internal
+	 *        if $context contains a FauxRequest.
 	 */
-	public function __construct( $context = null, $enableWrite = false ) {
+	public function __construct( $context = null, $enableWrite = false, $internal = null ) {
 		if ( $context === null ) {
 			$context = RequestContext::getMain();
 		} elseif ( $context instanceof WebRequest ) {
@@ -194,70 +604,79 @@ class ApiMain extends ApiBase {
 			$request = $this->getRequest();
 		}
 
-		$this->mInternalMode = ( $request instanceof FauxRequest );
+		$this->mInternalMode = $internal ?? ( $request instanceof FauxRequest );
 
 		// Special handling for the main module: $parent === $this
 		parent::__construct( $this, $this->mInternalMode ? 'main_int' : 'main' );
 
 		$config = $this->getConfig();
+		// TODO inject stuff, see T265644
+		$services = MediaWikiServices::getInstance();
 
 		if ( !$this->mInternalMode ) {
 			// If we're in a mode that breaks the same-origin policy, strip
 			// user credentials for security.
 			if ( $this->lacksSameOriginSecurity() ) {
-				global $wgUser;
 				wfDebug( "API: stripping user credentials when the same-origin policy is not applied" );
-				$user = new User();
-				$wgUser = $user;
+				$user = $services->getUserFactory()->newAnonymous();
+				StubGlobalUser::setUser( $user );
 				$derivativeContext->setUser( $user );
 				$request->response()->header( 'MediaWiki-Login-Suppressed: true' );
 			}
 		}
 
 		$this->mParamValidator = new ApiParamValidator(
-			$this, MediaWikiServices::getInstance()->getObjectFactory()
+			$this,
+			$services->getObjectFactory()
 		);
 
-		$this->mResult = new ApiResult( $this->getConfig()->get( 'APIMaxResultSize' ) );
+		$this->statsFactory = $services->getStatsFactory();
+
+		$this->mResult =
+			new ApiResult( $this->getConfig()->get( MainConfigNames::APIMaxResultSize ) );
 
 		// Setup uselang. This doesn't use $this->getParameter()
 		// because we're not ready to handle errors yet.
 		// Optimisation: Avoid slow getVal(), this isn't user-generated content.
-		$uselang = $request->getRawVal( 'uselang', self::API_DEFAULT_USELANG );
+		$uselang = $request->getRawVal( 'uselang' ) ?? self::API_DEFAULT_USELANG;
 		if ( $uselang === 'user' ) {
 			// Assume the parent context is going to return the user language
 			// for uselang=user (see T85635).
 		} else {
 			if ( $uselang === 'content' ) {
-				$uselang = MediaWikiServices::getInstance()->getContentLanguage()->getCode();
+				$uselang = $services->getContentLanguage()->getCode();
 			}
 			$code = RequestContext::sanitizeLangCode( $uselang );
 			$derivativeContext->setLanguage( $code );
 			if ( !$this->mInternalMode ) {
+				// phpcs:disable MediaWiki.Usage.ExtendClassUsage.FunctionVarUsage
 				global $wgLang;
 				$wgLang = $derivativeContext->getLanguage();
 				RequestContext::getMain()->setLanguage( $wgLang );
+				// phpcs:enable MediaWiki.Usage.ExtendClassUsage.FunctionVarUsage
 			}
 		}
 
 		// Set up the error formatter. This doesn't use $this->getParameter()
 		// because we're not ready to handle errors yet.
 		// Optimisation: Avoid slow getVal(), this isn't user-generated content.
-		$errorFormat = $request->getRawVal( 'errorformat', 'bc' );
-		$errorLangCode = $request->getRawVal( 'errorlang', 'uselang' );
+		$errorFormat = $request->getRawVal( 'errorformat' ) ?? 'bc';
+		$errorLangCode = $request->getRawVal( 'errorlang' ) ?? 'uselang';
 		$errorsUseDB = $request->getCheck( 'errorsuselocal' );
 		if ( in_array( $errorFormat, [ 'plaintext', 'wikitext', 'html', 'raw', 'none' ], true ) ) {
 			if ( $errorLangCode === 'uselang' ) {
 				$errorLang = $this->getLanguage();
 			} elseif ( $errorLangCode === 'content' ) {
-				$errorLang = MediaWikiServices::getInstance()->getContentLanguage();
+				$errorLang = $services->getContentLanguage();
 			} else {
 				$errorLangCode = RequestContext::sanitizeLangCode( $errorLangCode );
-				$errorLang = MediaWikiServices::getInstance()->getLanguageFactory()
-					->getLanguage( $errorLangCode );
+				$errorLang = $services->getLanguageFactory()->getLanguage( $errorLangCode );
 			}
 			$this->mErrorFormatter = new ApiErrorFormatter(
-				$this->mResult, $errorLang, $errorFormat, $errorsUseDB
+				$this->mResult,
+				$errorLang,
+				$errorFormat,
+				$errorsUseDB
 			);
 		} else {
 			$this->mErrorFormatter = new ApiErrorFormatter_BackCompat( $this->mResult );
@@ -266,23 +685,21 @@ class ApiMain extends ApiBase {
 
 		$this->mModuleMgr = new ApiModuleManager(
 			$this,
-			MediaWikiServices::getInstance()->getObjectFactory()
+			$services->getObjectFactory()
 		);
-		$this->mModuleMgr->addModules( self::$Modules, 'action' );
-		$this->mModuleMgr->addModules( $config->get( 'APIModules' ), 'action' );
-		$this->mModuleMgr->addModules( self::$Formats, 'format' );
-		$this->mModuleMgr->addModules( $config->get( 'APIFormatModules' ), 'format' );
+		$this->mModuleMgr->addModules( self::MODULES, 'action' );
+		$this->mModuleMgr->addModules( $config->get( MainConfigNames::APIModules ), 'action' );
+		$this->mModuleMgr->addModules( self::FORMATS, 'format' );
+		$this->mModuleMgr->addModules( $config->get( MainConfigNames::APIFormatModules ), 'format' );
 
 		$this->getHookRunner()->onApiMain__moduleManager( $this->mModuleMgr );
 
 		$this->mContinuationManager = null;
 		$this->mEnableWrite = $enableWrite;
-
-		$this->mCdnMaxAge = -1; // flag for executeActionWithErrorHandling()
 	}
 
 	/**
-	 * Return true if the API was started by other PHP code using FauxRequest
+	 * Return true if the API was started by other PHP code using MediaWiki\Request\FauxRequest
 	 * @return bool
 	 */
 	public function isInternalMode() {
@@ -310,20 +727,13 @@ class ApiMain extends ApiBase {
 		$request = $this->getRequest();
 
 		// JSONP mode
-		if ( $request->getCheck( 'callback' ) ) {
-			$this->lacksSameOriginSecurity = true;
-			return true;
-		}
-
-		// Anonymous CORS
-		if ( $request->getVal( 'origin' ) === '*' ) {
-			$this->lacksSameOriginSecurity = true;
-			return true;
-		}
-
-		// Header to be used from XMLHTTPRequest when the request might
-		// otherwise be used for XSS.
-		if ( $request->getHeader( 'Treat-as-Untrusted' ) !== false ) {
+		if ( $request->getCheck( 'callback' ) ||
+			// Anonymous CORS
+			$request->getVal( 'origin' ) === '*' ||
+			// Header to be used from XMLHTTPRequest when the request might
+			// otherwise be used for XSS.
+			$request->getHeader( 'Treat-as-Untrusted' ) !== false
+		) {
 			$this->lacksSameOriginSecurity = true;
 			return true;
 		}
@@ -343,7 +753,6 @@ class ApiMain extends ApiBase {
 	}
 
 	/**
-	 * Get the continuation manager
 	 * @return ApiContinuationManager|null
 	 */
 	public function getContinuationManager() {
@@ -351,10 +760,9 @@ class ApiMain extends ApiBase {
 	}
 
 	/**
-	 * Set the continuation manager
 	 * @param ApiContinuationManager|null $manager
 	 */
-	public function setContinuationManager( ApiContinuationManager $manager = null ) {
+	public function setContinuationManager( ?ApiContinuationManager $manager = null ) {
 		if ( $manager !== null && $this->mContinuationManager !== null ) {
 			throw new UnexpectedValueException(
 				__METHOD__ . ': tried to set manager from ' . $manager->getSource() .
@@ -368,7 +776,7 @@ class ApiMain extends ApiBase {
 	 * Get the parameter validator
 	 * @return ApiParamValidator
 	 */
-	public function getParamValidator() : ApiParamValidator {
+	public function getParamValidator(): ApiParamValidator {
 		return $this->mParamValidator;
 	}
 
@@ -458,6 +866,10 @@ class ApiMain extends ApiBase {
 		$this->mCacheMode = $mode;
 	}
 
+	public function getCacheMode() {
+		return $this->mCacheMode;
+	}
+
 	/**
 	 * Set directives (key/value pairs) for the Cache-Control header.
 	 * Boolean values will be formatted as such, by including or omitting
@@ -487,6 +899,7 @@ class ApiMain extends ApiBase {
 			);
 		}
 
+		// @phan-suppress-next-line PhanTypeMismatchReturnSuperType
 		return $printer;
 	}
 
@@ -529,9 +942,11 @@ class ApiMain extends ApiBase {
 			$this->executeAction();
 			$runTime = microtime( true ) - $t;
 			$this->logRequest( $runTime );
-			MediaWikiServices::getInstance()->getStatsdDataFactory()->timing(
-				'api.' . $this->mModule->getModuleName() . '.executeTiming', 1000 * $runTime
-			);
+
+			$this->statsFactory->getTiming( 'api_executeTiming_seconds' )
+				->setLabel( 'module', $this->mModule->getModuleName() )
+				->copyToStatsdAt( 'api.' . $this->mModule->getModuleName() . '.executeTiming' )
+				->observe( 1000 * $runTime );
 		} catch ( Throwable $e ) {
 			$this->handleException( $e );
 			$this->logRequest( microtime( true ) - $t, $e );
@@ -547,7 +962,7 @@ class ApiMain extends ApiBase {
 				&& SessionManager::getGlobalSession()->isPersistent()
 			)
 		) {
-			$this->getContext()->getOutput()->enableClientCache( false );
+			$this->getContext()->getOutput()->disableClientCache();
 			$this->getContext()->getOutput()->considerCacheSettingsFinal();
 		}
 
@@ -575,7 +990,7 @@ class ApiMain extends ApiBase {
 		// T65145: Rollback any open database transactions
 		if ( !$e instanceof ApiUsageException ) {
 			// ApiUsageExceptions are intentional, so don't rollback if that's the case
-			MWExceptionHandler::rollbackMasterChangesAndLog(
+			MWExceptionHandler::rollbackPrimaryChangesAndLog(
 				$e,
 				MWExceptionHandler::CAUGHT_BY_ENTRYPOINT
 			);
@@ -615,7 +1030,7 @@ class ApiMain extends ApiBase {
 			// parameters and redo.
 			$failed = true;
 			$this->addWarning( 'apiwarn-errorprinterfailed' );
-			foreach ( $ex->getStatusValue()->getErrors() as $error ) {
+			foreach ( $ex->getStatusValue()->getMessages() as $error ) {
 				try {
 					$this->mPrinter->addWarning( $error );
 				} catch ( Throwable $ex2 ) {
@@ -627,6 +1042,7 @@ class ApiMain extends ApiBase {
 		if ( $failed ) {
 			$this->mPrinter = null;
 			$this->createErrorPrinter();
+			// @phan-suppress-next-line PhanNonClassMethodCall False positive
 			$this->mPrinter->forceDefaultParams();
 			if ( $httpCode ) {
 				$response->statusHeader( 200 ); // Reset in case the fallback doesn't want a non-200
@@ -723,10 +1139,10 @@ class ApiMain extends ApiBase {
 			}
 
 			$config = $this->getConfig();
-			$matchedOrigin = count( $origins ) === 1 && self::matchOrigin(
-				$originParam,
-				$config->get( 'CrossSiteAJAXdomains' ),
-				$config->get( 'CrossSiteAJAXdomainExceptions' )
+			$origin = Origin::parseHeaderList( $origins );
+			$matchedOrigin = $origin->match(
+				$config->get( MainConfigNames::CrossSiteAJAXdomains ),
+				$config->get( MainConfigNames::CrossSiteAJAXdomainExceptions )
 			);
 
 			$allowOrigin = $originHeader;
@@ -738,15 +1154,9 @@ class ApiMain extends ApiBase {
 			$requestedMethod = $request->getHeader( 'Access-Control-Request-Method' );
 			$preflight = $request->getMethod() === 'OPTIONS' && $requestedMethod !== false;
 			if ( $preflight ) {
-				// This is a CORS preflight request
-				if ( $requestedMethod !== 'POST' && $requestedMethod !== 'GET' ) {
-					// If method is not a case-sensitive match, do not set any additional headers and terminate.
-					$response->header( 'MediaWiki-CORS-Rejection: Unsupported method requested in preflight' );
-					return true;
-				}
 				// We allow the actual request to send the following headers
 				$requestedHeaders = $request->getHeader( 'Access-Control-Request-Headers' );
-				$allowedHeaders = $this->getConfig()->get( 'AllowedCorsHeaders' );
+				$allowedHeaders = $this->getConfig()->get( MainConfigNames::AllowedCorsHeaders );
 				if ( $requestedHeaders !== false ) {
 					if ( !self::matchRequestedHeaders( $requestedHeaders, $allowedHeaders ) ) {
 						$response->header( 'MediaWiki-CORS-Rejection: Unsupported header requested in preflight' );
@@ -755,14 +1165,8 @@ class ApiMain extends ApiBase {
 					$response->header( 'Access-Control-Allow-Headers: ' . $requestedHeaders );
 				}
 
-				// We only allow the actual request to be GET or POST
-				$response->header( 'Access-Control-Allow-Methods: POST, GET' );
-			} elseif ( $request->getMethod() !== 'POST' && $request->getMethod() !== 'GET' ) {
-				// Unsupported non-preflight method, don't handle it as CORS
-				$response->header(
-					'MediaWiki-CORS-Rejection: Unsupported method for simple request or actual request'
-				);
-				return true;
+				// We only allow the actual request to be GET, POST, or HEAD
+				$response->header( 'Access-Control-Allow-Methods: POST, GET, HEAD' );
 			}
 
 			$response->header( "Access-Control-Allow-Origin: $allowOrigin" );
@@ -790,31 +1194,6 @@ class ApiMain extends ApiBase {
 	}
 
 	/**
-	 * Attempt to match an Origin header against a set of rules and a set of exceptions
-	 * @param string $value Origin header
-	 * @param array $rules Set of wildcard rules
-	 * @param array $exceptions Set of wildcard rules
-	 * @return bool True if $value matches a rule in $rules and doesn't match
-	 *    any rules in $exceptions, false otherwise
-	 */
-	protected static function matchOrigin( $value, $rules, $exceptions ) {
-		foreach ( $rules as $rule ) {
-			if ( preg_match( self::wildcardToRegex( $rule ), $value ) ) {
-				// Rule matches, check exceptions
-				foreach ( $exceptions as $exc ) {
-					if ( preg_match( self::wildcardToRegex( $exc ), $value ) ) {
-						return false;
-					}
-				}
-
-				return true;
-			}
-		}
-
-		return false;
-	}
-
-	/**
 	 * Attempt to validate the value of Access-Control-Request-Headers against a list
 	 * of headers that we allow the follow up request to send.
 	 *
@@ -827,7 +1206,8 @@ class ApiMain extends ApiBase {
 			return true;
 		}
 		$requestedHeaders = explode( ',', $requestedHeaders );
-		$allowedHeaders = array_change_key_case( array_flip( $allowedHeaders ), CASE_LOWER );
+		$allowedHeaders = array_change_key_case(
+			array_fill_keys( $allowedHeaders, true ), CASE_LOWER );
 		foreach ( $requestedHeaders as $rHeader ) {
 			$rHeader = strtolower( trim( $rHeader ) );
 			if ( !isset( $allowedHeaders[$rHeader] ) ) {
@@ -843,25 +1223,6 @@ class ApiMain extends ApiBase {
 	}
 
 	/**
-	 * Helper function to convert wildcard string into a regex
-	 * '*' => '.*?'
-	 * '?' => '.'
-	 *
-	 * @param string $wildcard String with wildcards
-	 * @return string Regular expression
-	 */
-	protected static function wildcardToRegex( $wildcard ) {
-		$wildcard = preg_quote( $wildcard, '/' );
-		$wildcard = str_replace(
-			[ '\*', '\?' ],
-			[ '.*?', '.' ],
-			$wildcard
-		);
-
-		return "/^https?:\/\/$wildcard$/";
-	}
-
-	/**
 	 * Send caching headers
 	 * @param bool $isError Whether an error response is being output
 	 * @since 1.26 added $isError parameter
@@ -874,7 +1235,7 @@ class ApiMain extends ApiBase {
 
 		$config = $this->getConfig();
 
-		if ( $config->get( 'VaryOnXFP' ) ) {
+		if ( $config->get( MainConfigNames::VaryOnXFP ) ) {
 			$out->addVaryHeader( 'X-Forwarded-Proto' );
 		}
 
@@ -900,7 +1261,7 @@ class ApiMain extends ApiBase {
 		$maxage = 0;
 		if ( isset( $this->mCacheControl['max-age'] ) ) {
 			$maxage = $this->mCacheControl['max-age'];
-		} elseif ( ( $this->mModule && !$this->mModule->isWriteMode() ) ||
+		} elseif ( ( !$isError && $this->mModule && !$this->mModule->isWriteMode() ) ||
 			$this->mCacheMode !== 'private'
 		) {
 			$maxage = $this->getParameter( 'maxage' );
@@ -978,6 +1339,7 @@ class ApiMain extends ApiBase {
 			if ( !$this->mModuleMgr->isDefined( $value, 'format' ) ) {
 				$value = self::API_DEFAULT_FORMAT;
 			}
+			// @phan-suppress-next-line PhanTypeMismatchArgumentNullable getVal does not return null here
 			$this->mPrinter = $this->createPrinterByName( $value );
 		}
 
@@ -1006,19 +1368,17 @@ class ApiMain extends ApiBase {
 	protected function errorMessagesFromException( Throwable $e, $type = 'error' ) {
 		$messages = [];
 		if ( $e instanceof ApiUsageException ) {
-			foreach ( $e->getStatusValue()->getErrorsByType( $type ) as $error ) {
-				$messages[] = ApiMessage::create( $error );
+			foreach ( $e->getStatusValue()->getMessages( $type ) as $msg ) {
+				$messages[] = ApiMessage::create( $msg );
 			}
 		} elseif ( $type !== 'error' ) {
 			// None of the rest have any messages for non-error types
 		} else {
-			// Something is seriously wrong
-			$config = $this->getConfig();
 			// TODO: Avoid embedding arbitrary class names in the error code.
-			$class = preg_replace( '#^Wikimedia\\\Rdbms\\\#', '', get_class( $e ) );
+			$class = preg_replace( '#^Wikimedia\\\\Rdbms\\\\#', '', get_class( $e ) );
 			$code = 'internal_api_error_' . $class;
 			$data = [ 'errorclass' => get_class( $e ) ];
-			if ( $config->get( 'ShowExceptionDetails' ) ) {
+			if ( MWExceptionRenderer::shouldShowExceptionDetails() ) {
 				if ( $e instanceof ILocalizedException ) {
 					$msg = $e->getMessageObject();
 				} elseif ( $e instanceof MessageSpecifier ) {
@@ -1091,7 +1451,7 @@ class ApiMain extends ApiBase {
 			$path = null;
 		}
 		if ( $e instanceof ApiUsageException ) {
-			$link = wfExpandUrl( wfScript( 'api' ) );
+			$link = (string)MediaWikiServices::getInstance()->getUrlUtils()->expand( wfScript( 'api' ) );
 			$result->addContentValue(
 				$path,
 				'docref',
@@ -1101,7 +1461,7 @@ class ApiMain extends ApiBase {
 					. $this->msg( 'api-usage-mailinglist-ref' )->inLanguage( $formatter->getLanguage() )->text()
 				)
 			);
-		} elseif ( $config->get( 'ShowExceptionDetails' ) ) {
+		} elseif ( $config->get( MainConfigNames::ShowExceptionDetails ) ) {
 			$result->addContentValue(
 				$path,
 				'trace',
@@ -1133,7 +1493,7 @@ class ApiMain extends ApiBase {
 			$result->addValue( null, 'requestid', $requestid, ApiResult::NO_SIZE_CHECK );
 		}
 
-		if ( $this->getConfig()->get( 'ShowHostnames' ) && (
+		if ( $this->getConfig()->get( MainConfigNames::ShowHostnames ) && (
 			in_array( 'servedby', $force, true ) || $this->getParameter( 'servedby' )
 		) ) {
 			$result->addValue( null, 'servedby', wfHostname(), ApiResult::NO_SIZE_CHECK );
@@ -1144,10 +1504,18 @@ class ApiMain extends ApiBase {
 		}
 
 		if ( $this->getParameter( 'responselanginfo' ) ) {
-			$result->addValue( null, 'uselang', $this->getLanguage()->getCode(),
-				ApiResult::NO_SIZE_CHECK );
-			$result->addValue( null, 'errorlang', $this->getErrorFormatter()->getLanguage()->getCode(),
-				ApiResult::NO_SIZE_CHECK );
+			$result->addValue(
+				null,
+				'uselang',
+				$this->getLanguage()->getCode(),
+				ApiResult::NO_SIZE_CHECK
+			);
+			$result->addValue(
+				null,
+				'errorlang',
+				$this->getErrorFormatter()->getLanguage()->getCode(),
+				ApiResult::NO_SIZE_CHECK
+			);
 		}
 	}
 
@@ -1167,7 +1535,6 @@ class ApiMain extends ApiBase {
 	/**
 	 * Set up the module for response
 	 * @return ApiBase The module that will handle this action
-	 * @throws MWException
 	 * @throws ApiUsageException
 	 */
 	protected function setupModule() {
@@ -1177,7 +1544,8 @@ class ApiMain extends ApiBase {
 			// Probably can't happen
 			// @codeCoverageIgnoreStart
 			$this->dieWithError(
-				[ 'apierror-unknownaction', wfEscapeWikiText( $this->mAction ) ], 'unknown_action'
+				[ 'apierror-unknownaction', wfEscapeWikiText( $this->mAction ) ],
+				'unknown_action'
 			);
 			// @codeCoverageIgnoreEnd
 		}
@@ -1185,14 +1553,14 @@ class ApiMain extends ApiBase {
 
 		// Check token, if necessary
 		if ( $module->needsToken() === true ) {
-			throw new MWException(
+			throw new LogicException(
 				"Module '{$module->getModuleName()}' must be updated for the new token handling. " .
 				'See documentation for ApiBase::needsToken for details.'
 			);
 		}
 		if ( $module->needsToken() ) {
 			if ( !$module->mustBePosted() ) {
-				throw new MWException(
+				throw new LogicException(
 					"Module '{$module->getModuleName()}' must require POST to use tokens."
 				);
 			}
@@ -1211,6 +1579,7 @@ class ApiMain extends ApiBase {
 			}
 		}
 
+		// @phan-suppress-next-line PhanTypeMismatchReturnNullable T240141
 		return $module;
 	}
 
@@ -1218,17 +1587,19 @@ class ApiMain extends ApiBase {
 	 * @return array
 	 */
 	private function getMaxLag() {
-		$dbLag = MediaWikiServices::getInstance()->getDBLoadBalancer()->getMaxLag();
+		$services = MediaWikiServices::getInstance();
+		$dbLag = $services->getDBLoadBalancer()->getMaxLag();
 		$lagInfo = [
 			'host' => $dbLag[0],
 			'lag' => $dbLag[1],
 			'type' => 'db'
 		];
 
-		$jobQueueLagFactor = $this->getConfig()->get( 'JobQueueIncludeInMaxLagFactor' );
+		$jobQueueLagFactor =
+			$this->getConfig()->get( MainConfigNames::JobQueueIncludeInMaxLagFactor );
 		if ( $jobQueueLagFactor ) {
 			// Turn total number of jobs into seconds by using the configured value
-			$totalJobs = array_sum( JobQueueGroup::singleton()->getQueueSizes() );
+			$totalJobs = array_sum( $services->getJobQueueGroup()->getQueueSizes() );
 			$jobQueueLag = $totalJobs / (float)$jobQueueLagFactor;
 			if ( $jobQueueLag > $lagInfo['lag'] ) {
 				$lagInfo = [
@@ -1261,7 +1632,7 @@ class ApiMain extends ApiBase {
 				$response->header( 'Retry-After: ' . max( (int)$maxLag, 5 ) );
 				$response->header( 'X-Database-Lag: ' . (int)$lagInfo['lag'] );
 
-				if ( $this->getConfig()->get( 'ShowHostnames' ) ) {
+				if ( $this->getConfig()->get( MainConfigNames::ShowHostnames ) ) {
 					$this->dieWithError(
 						[ 'apierror-maxlag', $lagInfo['lag'], $lagInfo['host'] ],
 						'maxlag',
@@ -1323,10 +1694,11 @@ class ApiMain extends ApiBase {
 				$etag = $module->getConditionalRequestData( 'etag' );
 			}
 		}
+		// @phan-suppress-next-line PhanPossiblyUndeclaredVariable $etag is declared when $ifNoneMatch is true
 		if ( $ifNoneMatch && $etag !== null ) {
-			$test = substr( $etag, 0, 2 ) === 'W/' ? substr( $etag, 2 ) : $etag;
-			$match = array_map( function ( $s ) {
-				return substr( $s, 0, 2 ) === 'W/' ? substr( $s, 2 ) : $s;
+			$test = str_starts_with( $etag, 'W/' ) ? substr( $etag, 2 ) : $etag;
+			$match = array_map( static function ( $s ) {
+				return str_starts_with( $s, 'W/' ) ? substr( $s, 2 ) : $s;
 			}, $ifNoneMatch );
 			$return304 = in_array( $test, $match, true );
 		} else {
@@ -1359,13 +1731,13 @@ class ApiMain extends ApiBase {
 							$modifiedTimes = [
 								'page' => $lastMod,
 								'user' => $this->getUser()->getTouched(),
-								'epoch' => $config->get( 'CacheEpoch' ),
+								'epoch' => $config->get( MainConfigNames::CacheEpoch ),
 							];
 
-							if ( $config->get( 'UseCdn' ) ) {
+							if ( $config->get( MainConfigNames::UseCdn ) ) {
 								// T46570: the core page itself may not change, but resources might
 								$modifiedTimes['sepoch'] = wfTimestamp(
-									TS_MW, time() - $config->get( 'CdnMaxAge' )
+									TS_MW, time() - $config->get( MainConfigNames::CdnMaxAge )
 								);
 							}
 							$this->getHookRunner()->onOutputPageCheckLastModified( $modifiedTimes, $this->getOutput() );
@@ -1383,10 +1755,10 @@ class ApiMain extends ApiBase {
 			$this->getRequest()->response()->statusHeader( 304 );
 
 			// Avoid outputting the compressed representation of a zero-length body
-			Wikimedia\suppressWarnings();
+			AtEase::suppressWarnings();
 			ini_set( 'zlib.output_compression', 0 );
-			Wikimedia\restoreWarnings();
-			wfClearOutputBuffers();
+			AtEase::restoreWarnings();
+			wfResetOutputBuffers( false );
 
 			return false;
 		}
@@ -1401,7 +1773,7 @@ class ApiMain extends ApiBase {
 	protected function checkExecutePermissions( $module ) {
 		$user = $this->getUser();
 		if ( $module->isReadMode() && !$this->getPermissionManager()->isEveryoneAllowed( 'read' ) &&
-			!$this->getPermissionManager()->userHasRight( $user, 'read' )
+			!$this->getAuthority()->isAllowed( 'read' )
 		) {
 			$this->dieWithError( 'apierror-readapidenied' );
 		}
@@ -1409,8 +1781,6 @@ class ApiMain extends ApiBase {
 		if ( $module->isWriteMode() ) {
 			if ( !$this->mEnableWrite ) {
 				$this->dieWithError( 'apierror-noapiwrite' );
-			} elseif ( !$this->getPermissionManager()->userHasRight( $user, 'writeapi' ) ) {
-				$this->dieWithError( 'apierror-writeapidenied' );
 			} elseif ( $this->getRequest()->getHeader( 'Promise-Non-Write-API-Action' ) ) {
 				$this->dieWithError( 'apierror-promised-nonwrite-api' );
 			}
@@ -1419,6 +1789,7 @@ class ApiMain extends ApiBase {
 		}
 
 		// Allow extensions to stop execution for arbitrary reasons.
+		// TODO: change hook to accept Authority
 		$message = 'hookaborted';
 		if ( !$this->getHookRunner()->onApiCheckCanExecute( $module, $user, $message ) ) {
 			$this->dieWithError( $message );
@@ -1430,13 +1801,13 @@ class ApiMain extends ApiBase {
 	 * @param ApiBase $module An Api module
 	 */
 	protected function checkReadOnly( $module ) {
-		if ( wfReadOnly() ) {
+		if ( MediaWikiServices::getInstance()->getReadOnlyMode()->isReadOnly() ) {
 			$this->dieReadOnly();
 		}
 
 		if ( $module->isWriteMode()
 			&& $this->getUser()->isBot()
-			&& MediaWikiServices::getInstance()->getDBLoadBalancer()->getServerCount() > 1
+			&& MediaWikiServices::getInstance()->getDBLoadBalancer()->hasReplicaServers()
 		) {
 			$this->checkBotReadOnly();
 		}
@@ -1448,7 +1819,7 @@ class ApiMain extends ApiBase {
 	private function checkBotReadOnly() {
 		// Figure out how many servers have passed the lag threshold
 		$numLagged = 0;
-		$lagLimit = $this->getConfig()->get( 'APIMaxLagThreshold' );
+		$lagLimit = $this->getConfig()->get( MainConfigNames::APIMaxLagThreshold );
 		$laggedServers = [];
 		$loadBalancer = MediaWikiServices::getInstance()->getDBLoadBalancer();
 		foreach ( $loadBalancer->getLagTimes() as $serverIndex => $lag ) {
@@ -1489,24 +1860,26 @@ class ApiMain extends ApiBase {
 			$user = $this->getUser();
 			switch ( $params['assert'] ) {
 				case 'anon':
-					if ( !$user->isAnon() ) {
+					if ( $user->isRegistered() ) {
 						$this->dieWithError( 'apierror-assertanonfailed' );
 					}
 					break;
 				case 'user':
-					if ( $user->isAnon() ) {
+					if ( !$user->isRegistered() ) {
 						$this->dieWithError( 'apierror-assertuserfailed' );
 					}
 					break;
 				case 'bot':
-					if ( !$this->getPermissionManager()->userHasRight( $user, 'bot' ) ) {
+					if ( !$this->getAuthority()->isAllowed( 'bot' ) ) {
 						$this->dieWithError( 'apierror-assertbotfailed' );
 					}
 					break;
 			}
 		}
 		if ( isset( $params['assertuser'] ) ) {
-			$assertUser = User::newFromName( $params['assertuser'], false );
+			// TODO inject stuff, see T265644
+			$assertUser = MediaWikiServices::getInstance()->getUserFactory()
+				->newFromName( $params['assertuser'], UserRigorOptions::RIGOR_NONE );
 			if ( !$assertUser || !$this->getUser()->equals( $assertUser ) ) {
 				$this->dieWithError(
 					[ 'apierror-assertnameduserfailed', wfEscapeWikiText( $params['assertuser'] ) ]
@@ -1534,25 +1907,32 @@ class ApiMain extends ApiBase {
 			$this->dieWithErrorOrDebug( [ 'apierror-mustbeposted', $this->mAction ] );
 		}
 
-		if ( $request->wasPosted() && !$request->getHeader( 'Content-Type' ) ) {
-			$this->addDeprecation(
-				'apiwarn-deprecation-post-without-content-type', 'post-without-content-type'
-			);
+		if ( $request->wasPosted() ) {
+			if ( !$request->getHeader( 'Content-Type' ) ) {
+				$this->addDeprecation(
+					'apiwarn-deprecation-post-without-content-type', 'post-without-content-type'
+				);
+			}
+			$contentLength = $request->getHeader( 'Content-Length' );
+			$maxPostSize = wfShorthandToInteger( ini_get( 'post_max_size' ), 0 );
+			if ( $maxPostSize && $contentLength > $maxPostSize ) {
+				$this->dieWithError(
+					[ 'apierror-http-contenttoolarge', Message::sizeParam( $maxPostSize ) ],
+					null, null, 413
+				);
+			}
 		}
 
 		// See if custom printer is used
-		$this->mPrinter = $module->getCustomPrinter();
-		if ( $this->mPrinter === null ) {
-			// Create an appropriate printer
-			$this->mPrinter = $this->createPrinterByName( $params['format'] );
-		}
+		$this->mPrinter = $module->getCustomPrinter() ??
+			// Create an appropriate printer if not set
+			$this->createPrinterByName( $params['format'] );
 
 		if ( $request->getProtocol() === 'http' &&
 			(
-				$this->getConfig()->get( 'ForceHTTPS' ) ||
+				$this->getConfig()->get( MainConfigNames::ForceHTTPS ) ||
 				$request->getSession()->shouldForceHTTPS() ||
-				( $this->getUser()->isLoggedIn() &&
-					$this->getUser()->requiresHTTPS() )
+				$this->getUser()->requiresHTTPS()
 			)
 		) {
 			$this->addDeprecation( 'apiwarn-deprecation-httpsexpected', 'https-expected' );
@@ -1573,6 +1953,7 @@ class ApiMain extends ApiBase {
 		$this->mModule = $module;
 
 		if ( !$this->mInternalMode ) {
+			ProfilingContext::singleton()->init( MW_ENTRY_POINT, $module->getModuleName() );
 			$this->setRequestExpectations( $module );
 		}
 
@@ -1607,16 +1988,19 @@ class ApiMain extends ApiBase {
 	 * @param ApiBase $module
 	 */
 	protected function setRequestExpectations( ApiBase $module ) {
-		$limits = $this->getConfig()->get( 'TrxProfilerLimits' );
+		$request = $this->getRequest();
+
+		$trxLimits = $this->getConfig()->get( MainConfigNames::TrxProfilerLimits );
 		$trxProfiler = Profiler::instance()->getTransactionProfiler();
-		$trxProfiler->setLogger( LoggerFactory::getInstance( 'DBPerformance' ) );
-		if ( $this->getRequest()->hasSafeMethod() ) {
-			$trxProfiler->setExpectations( $limits['GET'], __METHOD__ );
-		} elseif ( $this->getRequest()->wasPosted() && !$module->isWriteMode() ) {
-			$trxProfiler->setExpectations( $limits['POST-nonwrite'], __METHOD__ );
-			$this->getRequest()->markAsSafeRequest();
+		$trxProfiler->setLogger( LoggerFactory::getInstance( 'rdbms' ) );
+		$trxProfiler->setStatsFactory( MediaWikiServices::getInstance()->getStatsFactory() );
+		$trxProfiler->setRequestMethod( $request->getMethod() );
+		if ( $request->hasSafeMethod() ) {
+			$trxProfiler->setExpectations( $trxLimits['GET'], __METHOD__ );
+		} elseif ( $request->wasPosted() && !$module->isWriteMode() ) {
+			$trxProfiler->setExpectations( $trxLimits['POST-nonwrite'], __METHOD__ );
 		} else {
-			$trxProfiler->setExpectations( $limits['POST'], __METHOD__ );
+			$trxProfiler->setExpectations( $trxLimits['POST'], __METHOD__ );
 		}
 	}
 
@@ -1625,18 +2009,25 @@ class ApiMain extends ApiBase {
 	 * @param float $time Time in seconds
 	 * @param Throwable|null $e Throwable caught while processing the request
 	 */
-	protected function logRequest( $time, Throwable $e = null ) {
+	protected function logRequest( $time, ?Throwable $e = null ) {
 		$request = $this->getRequest();
 
+		$user = $this->getUser();
+		$performer = [
+			'user_text' => $user->getName(),
+		];
+		if ( $user->isRegistered() ) {
+			$performer['user_id'] = $user->getId();
+		}
 		$logCtx = [
-			// https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/event-schemas/+/master/jsonschema/mediawiki/api/request
-			'$schema' => '/mediawiki/api/request/0.0.1',
+			// https://gerrit.wikimedia.org/g/mediawiki/event-schemas/+/master/jsonschema/mediawiki/api/request
+			'$schema' => '/mediawiki/api/request/1.0.0',
 			'meta' => [
 				'request_id' => WebRequest::getRequestId(),
 				'id' => MediaWikiServices::getInstance()
 					->getGlobalIdGenerator()->newUUIDv4(),
 				'dt' => wfTimestamp( TS_ISO_8601 ),
-				'domain' => $this->getConfig()->get( 'ServerName' ),
+				'domain' => $this->getConfig()->get( MainConfigNames::ServerName ),
 				// If using the EventBus extension (as intended) with this log channel,
 				// this stream name will map to a Kafka topic.
 				'stream' => 'mediawiki.api-request'
@@ -1645,6 +2036,7 @@ class ApiMain extends ApiBase {
 				'method' => $request->getMethod(),
 				'client_ip' => $request->getIP()
 			],
+			'performer' => $performer,
 			'database' => WikiMap::getCurrentWikiDbDomain()->getId(),
 			'backend_time_ms' => (int)round( $time * 1000 ),
 		];
@@ -1671,7 +2063,7 @@ class ApiMain extends ApiBase {
 			" {$logCtx['http']['client_ip']} " .
 			"T={$logCtx['backend_time_ms']}ms";
 
-		$sensitive = array_flip( $this->getSensitiveParams() );
+		$sensitive = array_fill_keys( $this->getSensitiveParams(), true );
 		foreach ( $this->getParamsUsed() as $name ) {
 			$value = $request->getVal( $name );
 			if ( $value === null ) {
@@ -1744,6 +2136,10 @@ class ApiMain extends ApiBase {
 
 	/**
 	 * Mark parameters as sensitive
+	 *
+	 * This is called automatically for you when declaring a parameter
+	 * with ApiBase::PARAM_SENSITIVE.
+	 *
 	 * @since 1.29
 	 * @param string|string[] $params
 	 */
@@ -1829,7 +2225,7 @@ class ApiMain extends ApiBase {
 	 * @param int $httpCode HTTP status code, or 0 to not change
 	 */
 	protected function printResult( $httpCode = 0 ) {
-		if ( $this->getConfig()->get( 'DebugAPI' ) !== false ) {
+		if ( $this->getConfig()->get( MainConfigNames::DebugAPI ) !== false ) {
 			$this->addWarning( 'apiwarn-wgdebugapi' );
 		}
 
@@ -1857,30 +2253,32 @@ class ApiMain extends ApiBase {
 	public function getAllowedParams() {
 		return [
 			'action' => [
-				ApiBase::PARAM_DFLT => 'help',
-				ApiBase::PARAM_TYPE => 'submodule',
+				ParamValidator::PARAM_DEFAULT => 'help',
+				ParamValidator::PARAM_TYPE => 'submodule',
 			],
 			'format' => [
-				ApiBase::PARAM_DFLT => self::API_DEFAULT_FORMAT,
-				ApiBase::PARAM_TYPE => 'submodule',
+				ParamValidator::PARAM_DEFAULT => self::API_DEFAULT_FORMAT,
+				ParamValidator::PARAM_TYPE => 'submodule',
 			],
 			'maxlag' => [
-				ApiBase::PARAM_TYPE => 'integer'
+				ParamValidator::PARAM_TYPE => 'integer'
 			],
 			'smaxage' => [
-				ApiBase::PARAM_TYPE => 'integer',
-				ApiBase::PARAM_DFLT => 0
+				ParamValidator::PARAM_TYPE => 'integer',
+				ParamValidator::PARAM_DEFAULT => 0,
+				IntegerDef::PARAM_MIN => 0,
 			],
 			'maxage' => [
-				ApiBase::PARAM_TYPE => 'integer',
-				ApiBase::PARAM_DFLT => 0
+				ParamValidator::PARAM_TYPE => 'integer',
+				ParamValidator::PARAM_DEFAULT => 0,
+				IntegerDef::PARAM_MIN => 0,
 			],
 			'assert' => [
-				ApiBase::PARAM_TYPE => [ 'anon', 'user', 'bot' ]
+				ParamValidator::PARAM_TYPE => [ 'anon', 'user', 'bot' ]
 			],
 			'assertuser' => [
-				ApiBase::PARAM_TYPE => 'user',
-				UserDef::PARAM_ALLOWED_USER_TYPES => [ 'name' ],
+				ParamValidator::PARAM_TYPE => 'user',
+				UserDef::PARAM_ALLOWED_USER_TYPES => [ 'name', 'temp' ],
 			],
 			'requestid' => null,
 			'servedby' => false,
@@ -1888,17 +2286,19 @@ class ApiMain extends ApiBase {
 			'responselanginfo' => false,
 			'origin' => null,
 			'uselang' => [
-				ApiBase::PARAM_DFLT => self::API_DEFAULT_USELANG,
+				ParamValidator::PARAM_DEFAULT => self::API_DEFAULT_USELANG,
 			],
+			'variant' => null,
 			'errorformat' => [
-				ApiBase::PARAM_TYPE => [ 'plaintext', 'wikitext', 'html', 'raw', 'none', 'bc' ],
-				ApiBase::PARAM_DFLT => 'bc',
+				ParamValidator::PARAM_TYPE => [ 'plaintext', 'wikitext', 'html', 'raw', 'none', 'bc' ],
+				ParamValidator::PARAM_DEFAULT => 'bc',
+				ApiBase::PARAM_HELP_MSG_PER_VALUE => [],
 			],
 			'errorlang' => [
-				ApiBase::PARAM_DFLT => 'uselang',
+				ParamValidator::PARAM_DEFAULT => 'uselang',
 			],
 			'errorsuselocal' => [
-				ApiBase::PARAM_DFLT => false,
+				ParamValidator::PARAM_DEFAULT => false,
 			],
 		];
 	}
@@ -1934,25 +2334,27 @@ class ApiMain extends ApiBase {
 
 		// Fill 'permissions'
 		$help['permissions'] .= Html::openElement( 'div',
-			[ 'class' => 'apihelp-block apihelp-permissions' ] );
+			[ 'class' => [ 'apihelp-block', 'apihelp-permissions' ] ] );
 		$m = $this->msg( 'api-help-permissions' );
 		if ( !$m->isDisabled() ) {
 			$help['permissions'] .= Html::rawElement( 'div', [ 'class' => 'apihelp-block-head' ],
-				$m->numParams( count( self::$mRights ) )->parse()
+				$m->numParams( count( self::RIGHTS_MAP ) )->parse()
 			);
 		}
 		$help['permissions'] .= Html::openElement( 'dl' );
-		foreach ( self::$mRights as $right => $rightMsg ) {
-			$help['permissions'] .= Html::element( 'dt', null, $right );
+		// TODO inject stuff, see T265644
+		$groupPermissionsLookup = MediaWikiServices::getInstance()->getGroupPermissionsLookup();
+		foreach ( self::RIGHTS_MAP as $right => $rightMsg ) {
+			$help['permissions'] .= Html::element( 'dt', [], $right );
 
 			$rightMsg = $this->msg( $rightMsg['msg'], $rightMsg['params'] )->parse();
-			$help['permissions'] .= Html::rawElement( 'dd', null, $rightMsg );
+			$help['permissions'] .= Html::rawElement( 'dd', [], $rightMsg );
 
-			$groups = array_map( function ( $group ) {
+			$groups = array_map( static function ( $group ) {
 				return $group == '*' ? 'all' : $group;
-			}, $this->getPermissionManager()->getGroupsWithPermission( $right ) );
+			}, $groupPermissionsLookup->getGroupsWithPermission( $right ) );
 
-			$help['permissions'] .= Html::rawElement( 'dd', null,
+			$help['permissions'] .= Html::rawElement( 'dd', [],
 				$this->msg( 'api-help-permissions-granted-to' )
 					->numParams( count( $groups ) )
 					->params( Message::listParam( $groups ) )
@@ -1964,41 +2366,25 @@ class ApiMain extends ApiBase {
 
 		// Fill 'datatypes', 'templatedparams', and 'credits', if applicable
 		if ( empty( $options['nolead'] ) ) {
+			// @phan-suppress-next-line PhanTypePossiblyInvalidDimOffset Must set when nolead is not set
 			$level = $options['headerlevel'];
+			// @phan-suppress-next-line PhanTypePossiblyInvalidDimOffset Must set when nolead is not set
 			$tocnumber = &$options['tocnumber'];
 
 			$header = $this->msg( 'api-help-datatypes-header' )->parse();
-
-			$id = Sanitizer::escapeIdForAttribute( 'main/datatypes', Sanitizer::ID_PRIMARY );
-			$idFallback = Sanitizer::escapeIdForAttribute( 'main/datatypes', Sanitizer::ID_FALLBACK );
-			$headline = Linker::makeHeadline( min( 6, $level ),
-				' class="apihelp-header">',
-				$id,
-				$header,
-				'',
-				$idFallback
+			$headline = Html::rawElement(
+				'h' . min( 6, $level ),
+				[ 'class' => 'apihelp-header', 'id' => 'main/datatypes' ],
+				$header
 			);
-			// Ensure we have a sane anchor
-			if ( $id !== 'main/datatypes' && $idFallback !== 'main/datatypes' ) {
-				$headline = '<div id="main/datatypes"></div>' . $headline;
-			}
 			$help['datatypes'] .= $headline;
 			$help['datatypes'] .= $this->msg( 'api-help-datatypes-top' )->parseAsBlock();
 			$help['datatypes'] .= '<dl>';
 			foreach ( $this->getParamValidator()->knownTypes() as $type ) {
 				$m = $this->msg( "api-help-datatype-$type" );
 				if ( !$m->isDisabled() ) {
-					$id = "main/datatype/$type";
-					$help['datatypes'] .= '<dt id="' . htmlspecialchars( $id ) . '">';
-					$encId = Sanitizer::escapeIdForAttribute( $id, Sanitizer::ID_PRIMARY );
-					if ( $encId !== $id ) {
-						$help['datatypes'] .= '<span id="' . htmlspecialchars( $encId ) . '"></span>';
-					}
-					$encId2 = Sanitizer::escapeIdForAttribute( $id, Sanitizer::ID_FALLBACK );
-					if ( $encId2 !== $id && $encId2 !== $encId ) {
-						$help['datatypes'] .= '<span id="' . htmlspecialchars( $encId2 ) . '"></span>';
-					}
-					$help['datatypes'] .= htmlspecialchars( $type ) . '</dt><dd>' . $m->parseAsBlock() . "</dd>";
+					$help['datatypes'] .= Html::element( 'dt', [ 'id' => "main/datatype/$type" ], $type );
+					$help['datatypes'] .= Html::rawElement( 'dd', [], $m->parseAsBlock() );
 				}
 			}
 			$help['datatypes'] .= '</dl>';
@@ -2010,25 +2396,16 @@ class ApiMain extends ApiBase {
 					'anchor' => 'main/datatypes',
 					'line' => $header,
 					'number' => implode( '.', $tocnumber ),
-					'index' => false,
+					'index' => '',
 				];
 			}
 
 			$header = $this->msg( 'api-help-templatedparams-header' )->parse();
-
-			$id = Sanitizer::escapeIdForAttribute( 'main/templatedparams', Sanitizer::ID_PRIMARY );
-			$idFallback = Sanitizer::escapeIdForAttribute( 'main/templatedparams', Sanitizer::ID_FALLBACK );
-			$headline = Linker::makeHeadline( min( 6, $level ),
-				' class="apihelp-header">',
-				$id,
-				$header,
-				'',
-				$idFallback
+			$headline = Html::rawElement(
+				'h' . min( 6, $level ),
+				[ 'class' => 'apihelp-header', 'id' => 'main/templatedparams' ],
+				$header
 			);
-			// Ensure we have a sane anchor
-			if ( $id !== 'main/templatedparams' && $idFallback !== 'main/templatedparams' ) {
-				$headline = '<div id="main/templatedparams"></div>' . $headline;
-			}
 			$help['templatedparams'] .= $headline;
 			$help['templatedparams'] .= $this->msg( 'api-help-templatedparams' )->parseAsBlock();
 			if ( !isset( $tocData['main/templatedparams'] ) ) {
@@ -2039,24 +2416,16 @@ class ApiMain extends ApiBase {
 					'anchor' => 'main/templatedparams',
 					'line' => $header,
 					'number' => implode( '.', $tocnumber ),
-					'index' => false,
+					'index' => '',
 				];
 			}
 
 			$header = $this->msg( 'api-credits-header' )->parse();
-			$id = Sanitizer::escapeIdForAttribute( 'main/credits', Sanitizer::ID_PRIMARY );
-			$idFallback = Sanitizer::escapeIdForAttribute( 'main/credits', Sanitizer::ID_FALLBACK );
-			$headline = Linker::makeHeadline( min( 6, $level ),
-				' class="apihelp-header">',
-				$id,
-				$header,
-				'',
-				$idFallback
+			$headline = Html::rawElement(
+				'h' . min( 6, $level ),
+				[ 'class' => 'apihelp-header', 'id' => 'main/credits' ],
+				$header
 			);
-			// Ensure we have a sane anchor
-			if ( $id !== 'main/credits' && $idFallback !== 'main/credits' ) {
-				$headline = '<div id="main/credits"></div>' . $headline;
-			}
 			$help['credits'] .= $headline;
 			$help['credits'] .= $this->msg( 'api-credits' )->useDatabase( false )->parseAsBlock();
 			if ( !isset( $tocData['main/credits'] ) ) {
@@ -2067,12 +2436,13 @@ class ApiMain extends ApiBase {
 					'anchor' => 'main/credits',
 					'line' => $header,
 					'number' => implode( '.', $tocnumber ),
-					'index' => false,
+					'index' => '',
 				];
 			}
 		}
 	}
 
+	/** @var bool|null */
 	private $mCanApiHighLimits = null;
 
 	/**
@@ -2081,8 +2451,7 @@ class ApiMain extends ApiBase {
 	 */
 	public function canApiHighLimits() {
 		if ( !isset( $this->mCanApiHighLimits ) ) {
-			$this->mCanApiHighLimits = $this->getPermissionManager()
-				->userHasRight( $this->getUser(), 'apihighlimits' );
+			$this->mCanApiHighLimits = $this->getAuthority()->isAllowed( 'apihighlimits' );
 		}
 
 		return $this->mCanApiHighLimits;
@@ -2099,16 +2468,18 @@ class ApiMain extends ApiBase {
 	/**
 	 * Fetches the user agent used for this request
 	 *
-	 * The value will be the combination of the 'Api-User-Agent' header (if
-	 * any) and the standard User-Agent header (if any).
+	 * This returns the value of the 'Api-User-Agent' header, if any,
+	 * or the standard User-Agent header, otherwise.
 	 *
 	 * @return string
 	 */
 	public function getUserAgent() {
-		return trim(
-			$this->getRequest()->getHeader( 'Api-user-agent' ) . ' ' .
-			$this->getRequest()->getHeader( 'User-agent' )
-		);
+		$agent = (string)$this->getRequest()->getHeader( 'Api-user-agent' );
+		if ( $agent == '' ) {
+			$agent = $this->getRequest()->getHeader( 'User-agent' );
+		}
+
+		return $agent;
 	}
 }
 
@@ -2116,3 +2487,6 @@ class ApiMain extends ApiBase {
  * For really cool vim folding this needs to be at the end:
  * vim: foldmarker=@{,@} foldmethod=marker
  */
+
+/** @deprecated class alias since 1.43 */
+class_alias( ApiMain::class, 'ApiMain' );

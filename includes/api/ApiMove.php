@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2007 Roan Kattouw "<Firstname>.<Lastname>@gmail.com"
+ * Copyright © 2007 Roan Kattouw <roan.kattouw@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,7 +20,17 @@
  * @file
  */
 
-use MediaWiki\MediaWikiServices;
+namespace MediaWiki\Api;
+
+use LogicException;
+use MediaWiki\MainConfigNames;
+use MediaWiki\Page\MovePageFactory;
+use MediaWiki\Status\Status;
+use MediaWiki\Title\Title;
+use MediaWiki\User\Options\UserOptionsLookup;
+use MediaWiki\Watchlist\WatchlistManager;
+use RepoGroup;
+use Wikimedia\ParamValidator\ParamValidator;
 
 /**
  * API Module to move pages
@@ -30,11 +40,28 @@ class ApiMove extends ApiBase {
 
 	use ApiWatchlistTrait;
 
-	public function __construct( ApiMain $mainModule, $moduleName, $modulePrefix = '' ) {
-		parent::__construct( $mainModule, $moduleName, $modulePrefix );
+	private MovePageFactory $movePageFactory;
+	private RepoGroup $repoGroup;
 
-		$this->watchlistExpiryEnabled = $this->getConfig()->get( 'WatchlistExpiry' );
-		$this->watchlistMaxDuration = $this->getConfig()->get( 'WatchlistExpiryMaxDuration' );
+	public function __construct(
+		ApiMain $mainModule,
+		string $moduleName,
+		MovePageFactory $movePageFactory,
+		RepoGroup $repoGroup,
+		WatchlistManager $watchlistManager,
+		UserOptionsLookup $userOptionsLookup
+	) {
+		parent::__construct( $mainModule, $moduleName );
+
+		$this->movePageFactory = $movePageFactory;
+		$this->repoGroup = $repoGroup;
+
+		// Variables needed in ApiWatchlistTrait trait
+		$this->watchlistExpiryEnabled = $this->getConfig()->get( MainConfigNames::WatchlistExpiry );
+		$this->watchlistMaxDuration =
+			$this->getConfig()->get( MainConfigNames::WatchlistExpiryMaxDuration );
+		$this->watchlistManager = $watchlistManager;
+		$this->userOptionsLookup = $userOptionsLookup;
 	}
 
 	public function execute() {
@@ -55,6 +82,8 @@ class ApiMove extends ApiBase {
 			if ( !$fromTitle ) {
 				$this->dieWithError( [ 'apierror-nosuchpageid', $params['fromid'] ] );
 			}
+		} else {
+			throw new LogicException( 'Unreachable due to requireOnlyOneParameter' );
 		}
 
 		if ( !$fromTitle->exists() ) {
@@ -68,38 +97,28 @@ class ApiMove extends ApiBase {
 		}
 		$toTalk = $toTitle->getTalkPageIfDefined();
 
-		$repoGroup = MediaWikiServices::getInstance()->getRepoGroup();
-		if ( $toTitle->getNamespace() == NS_FILE
-			&& !$repoGroup->getLocalRepo()->findFile( $toTitle )
-			&& $repoGroup->findFile( $toTitle )
+		if ( $toTitle->getNamespace() === NS_FILE
+			&& !$this->repoGroup->getLocalRepo()->findFile( $toTitle )
+			&& $this->repoGroup->findFile( $toTitle )
 		) {
 			if ( !$params['ignorewarnings'] &&
-				 $this->getPermissionManager()->userHasRight( $user, 'reupload-shared' ) ) {
+				$this->getAuthority()->isAllowed( 'reupload-shared' ) ) {
 				$this->dieWithError( 'apierror-fileexists-sharedrepo-perm' );
-			} elseif ( !$this->getPermissionManager()->userHasRight( $user, 'reupload-shared' ) ) {
+			} elseif ( !$this->getAuthority()->isAllowed( 'reupload-shared' ) ) {
 				$this->dieWithError( 'apierror-cantoverwrite-sharedfile' );
-			}
-		}
-
-		// Rate limit
-		if ( $user->pingLimiter( 'move' ) ) {
-			$this->dieWithError( 'apierror-ratelimited' );
-		}
-
-		// Check if the user is allowed to add the specified changetags
-		if ( $params['tags'] ) {
-			$ableToTag = ChangeTags::canAddTagsAccompanyingChange( $params['tags'], $user );
-			if ( !$ableToTag->isOK() ) {
-				$this->dieStatus( $ableToTag );
 			}
 		}
 
 		// Move the page
 		$toTitleExists = $toTitle->exists();
-		$status = $this->movePage( $fromTitle, $toTitle, $params['reason'], !$params['noredirect'],
-			$params['tags'] ?: [] );
+		$mp = $this->movePageFactory->newMovePage( $fromTitle, $toTitle );
+		$status = $mp->moveIfAllowed(
+			$this->getAuthority(),
+			$params['reason'],
+			!$params['noredirect'],
+			$params['tags'] ?: []
+		);
 		if ( !$status->isOK() ) {
-			$user->spreadAnyEditBlock();
 			$this->dieStatus( $status );
 		}
 
@@ -120,9 +139,9 @@ class ApiMove extends ApiBase {
 		// Move the talk page
 		if ( $params['movetalk'] && $toTalk && $fromTalk->exists() && !$fromTitle->isTalkPage() ) {
 			$toTalkExists = $toTalk->exists();
-			$status = $this->movePage(
-				$fromTalk,
-				$toTalk,
+			$mp = $this->movePageFactory->newMovePage( $fromTalk, $toTalk );
+			$status = $mp->moveIfAllowed(
+				$this->getAuthority(),
 				$params['reason'],
 				!$params['noredirect'],
 				$params['tags'] ?: []
@@ -150,7 +169,7 @@ class ApiMove extends ApiBase {
 			);
 			ApiResult::setIndexedTagName( $r['subpages'], 'subpage' );
 
-			if ( $params['movetalk'] ) {
+			if ( $params['movetalk'] && $toTalk ) {
 				$r['subpages-talk'] = $this->moveSubpages(
 					$fromTalk,
 					$toTalk,
@@ -162,10 +181,7 @@ class ApiMove extends ApiBase {
 			}
 		}
 
-		$watch = 'preferences';
-		if ( isset( $params['watchlist'] ) ) {
-			$watch = $params['watchlist'];
-		}
+		$watch = $params['watchlist'] ?? 'preferences';
 		$watchlistExpiry = $this->getExpiryFromParams( $params );
 
 		// Watch pages
@@ -176,48 +192,19 @@ class ApiMove extends ApiBase {
 	}
 
 	/**
-	 * @param Title $from
-	 * @param Title $to
-	 * @param string $reason
-	 * @param bool $createRedirect
-	 * @param array $changeTags Applied to the entry in the move log and redirect page revision
-	 * @return Status
-	 */
-	protected function movePage( Title $from, Title $to, $reason, $createRedirect, $changeTags ) {
-		$mp = MediaWikiServices::getInstance()->getMovePageFactory()->newMovePage( $from, $to );
-		$valid = $mp->isValidMove();
-		if ( !$valid->isOK() ) {
-			return $valid;
-		}
-
-		$user = $this->getUser();
-		$permStatus = $mp->checkPermissions( $user, $reason );
-		if ( !$permStatus->isOK() ) {
-			return $permStatus;
-		}
-
-		// Check suppressredirect permission
-		if ( !$this->getPermissionManager()->userHasRight( $user, 'suppressredirect' ) ) {
-			$createRedirect = true;
-		}
-
-		return $mp->move( $user, $reason, $createRedirect, $changeTags );
-	}
-
-	/**
 	 * @param Title $fromTitle
 	 * @param Title $toTitle
 	 * @param string $reason
 	 * @param bool $noredirect
-	 * @param array $changeTags Applied to the entry in the move log and redirect page revisions
+	 * @param string[] $changeTags Applied to the entry in the move log and redirect page revisions
 	 * @return array
 	 */
 	public function moveSubpages( $fromTitle, $toTitle, $reason, $noredirect, $changeTags = [] ) {
 		$retval = [];
 
-		$mp = new MovePage( $fromTitle, $toTitle );
+		$mp = $this->movePageFactory->newMovePage( $fromTitle, $toTitle );
 		$result =
-			$mp->moveSubpagesIfAllowed( $this->getUser(), $reason, !$noredirect, $changeTags );
+			$mp->moveSubpagesIfAllowed( $this->getAuthority(), $reason, !$noredirect, $changeTags );
 		if ( !$result->isOK() ) {
 			// This means the whole thing failed
 			return [ 'errors' => $this->getErrorFormatter()->arrayFromStatus( $result ) ];
@@ -251,11 +238,11 @@ class ApiMove extends ApiBase {
 		$params = [
 			'from' => null,
 			'fromid' => [
-				ApiBase::PARAM_TYPE => 'integer'
+				ParamValidator::PARAM_TYPE => 'integer'
 			],
 			'to' => [
-				ApiBase::PARAM_TYPE => 'string',
-				ApiBase::PARAM_REQUIRED => true
+				ParamValidator::PARAM_TYPE => 'string',
+				ParamValidator::PARAM_REQUIRED => true
 			],
 			'reason' => '',
 			'movetalk' => false,
@@ -270,8 +257,8 @@ class ApiMove extends ApiBase {
 		return $params + [
 			'ignorewarnings' => false,
 			'tags' => [
-				ApiBase::PARAM_TYPE => 'tags',
-				ApiBase::PARAM_ISMULTI => true,
+				ParamValidator::PARAM_TYPE => 'tags',
+				ParamValidator::PARAM_ISMULTI => true,
 			],
 		];
 	}
@@ -292,3 +279,6 @@ class ApiMove extends ApiBase {
 		return 'https://www.mediawiki.org/wiki/Special:MyLanguage/API:Move';
 	}
 }
+
+/** @deprecated class alias since 1.43 */
+class_alias( ApiMove::class, 'ApiMove' );

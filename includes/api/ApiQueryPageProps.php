@@ -20,6 +20,12 @@
  * @file
  */
 
+namespace MediaWiki\Api;
+
+use MediaWiki\Page\PageProps;
+use MediaWiki\Title\Title;
+use Wikimedia\ParamValidator\ParamValidator;
+
 /**
  * A query module to show basic page information.
  *
@@ -27,20 +33,25 @@
  */
 class ApiQueryPageProps extends ApiQueryBase {
 
-	private $params;
+	private PageProps $pageProps;
 
-	public function __construct( ApiQuery $query, $moduleName ) {
+	public function __construct(
+		ApiQuery $query,
+		string $moduleName,
+		PageProps $pageProps
+	) {
 		parent::__construct( $query, $moduleName, 'pp' );
+		$this->pageProps = $pageProps;
 	}
 
 	public function execute() {
 		# Only operate on existing pages
-		$pages = $this->getPageSet()->getGoodTitles();
+		$pages = $this->getPageSet()->getGoodPages();
 
-		$this->params = $this->extractRequestParams();
-		if ( $this->params['continue'] ) {
-			$continueValue = (int)$this->params['continue'];
-			$this->dieContinueUsageIf( strval( $continueValue ) !== $this->params['continue'] );
+		$params = $this->extractRequestParams();
+		if ( $params['continue'] ) {
+			$cont = $this->parseContinueParamOrDie( $params['continue'], [ 'int' ] );
+			$continueValue = $cont[0];
 			$filteredPages = [];
 			foreach ( $pages as $id => $page ) {
 				if ( $id >= $continueValue ) {
@@ -55,19 +66,17 @@ class ApiQueryPageProps extends ApiQueryBase {
 			return;
 		}
 
-		$pageProps = PageProps::getInstance();
-		$result = $this->getResult();
-		if ( $this->params['prop'] ) {
-			$propnames = $this->params['prop'];
-			$properties = $pageProps->getProperties( $pages, $propnames );
+		if ( $params['prop'] ) {
+			$properties = $this->pageProps->getProperties( $pages, $params['prop'] );
 		} else {
-			$properties = $pageProps->getAllProperties( $pages );
+			$properties = $this->pageProps->getAllProperties( $pages );
 		}
 
 		ksort( $properties );
 
-		foreach ( $properties as $page => $props ) {
-			if ( !$this->addPageProps( $result, $page, $props ) ) {
+		$result = $this->getResult();
+		foreach ( $properties as $pageid => $props ) {
+			if ( !$this->addPageProps( $result, $pageid, $props ) ) {
 				break;
 			}
 		}
@@ -103,14 +112,17 @@ class ApiQueryPageProps extends ApiQueryBase {
 				ApiBase::PARAM_HELP_MSG => 'api-help-param-continue',
 			],
 			'prop' => [
-				ApiBase::PARAM_ISMULTI => true,
+				ParamValidator::PARAM_ISMULTI => true,
 			],
 		];
 	}
 
 	protected function getExamplesMessages() {
+		$title = Title::newMainPage()->getPrefixedText();
+		$mp = rawurlencode( $title );
+
 		return [
-			'action=query&prop=pageprops&titles=Main%20Page|MediaWiki'
+			"action=query&prop=pageprops&titles={$mp}|MediaWiki"
 				=> 'apihelp-query+pageprops-example-simple',
 		];
 	}
@@ -119,3 +131,6 @@ class ApiQueryPageProps extends ApiQueryBase {
 		return 'https://www.mediawiki.org/wiki/Special:MyLanguage/API:Pageprops';
 	}
 }
+
+/** @deprecated class alias since 1.43 */
+class_alias( ApiQueryPageProps::class, 'ApiQueryPageProps' );

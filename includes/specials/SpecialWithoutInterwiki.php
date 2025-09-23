@@ -1,7 +1,5 @@
 <?php
 /**
- * Implements Special:Withoutinterwiki
- *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -18,22 +16,49 @@
  * http://www.gnu.org/copyleft/gpl.html
  *
  * @file
+ */
+
+namespace MediaWiki\Specials;
+
+use MediaWiki\Cache\LinkBatchFactory;
+use MediaWiki\HTMLForm\HTMLForm;
+use MediaWiki\Languages\LanguageConverterFactory;
+use MediaWiki\SpecialPage\PageQueryPage;
+use MediaWiki\Title\NamespaceInfo;
+use MediaWiki\Title\Title;
+use Wikimedia\Rdbms\IConnectionProvider;
+use Wikimedia\Rdbms\IExpression;
+use Wikimedia\Rdbms\LikeValue;
+
+/**
+ * List of pages without any language links
+ *
  * @ingroup SpecialPage
  * @author Rob Church <robchur@gmail.com>
  */
-
-use MediaWiki\MediaWikiServices;
-
-/**
- * Special page lists pages without language links
- *
- * @ingroup SpecialPage
- */
 class SpecialWithoutInterwiki extends PageQueryPage {
+	/** @var string */
 	private $prefix = '';
 
-	public function __construct( $name = 'Withoutinterwiki' ) {
-		parent::__construct( $name );
+	private NamespaceInfo $namespaceInfo;
+
+	/**
+	 * @param NamespaceInfo $namespaceInfo
+	 * @param IConnectionProvider $dbProvider
+	 * @param LinkBatchFactory $linkBatchFactory
+	 * @param LanguageConverterFactory $languageConverterFactory
+	 */
+	public function __construct(
+		NamespaceInfo $namespaceInfo,
+		IConnectionProvider $dbProvider,
+		LinkBatchFactory $linkBatchFactory,
+		LanguageConverterFactory $languageConverterFactory
+	) {
+		parent::__construct( 'Withoutinterwiki' );
+		$this->namespaceInfo = $namespaceInfo;
+		$this->setDatabaseProvider( $dbProvider );
+		$this->setLinkBatchFactory( $linkBatchFactory );
+		$this->setLanguageConverter( $languageConverterFactory->getLanguageConverter( $this->getContentLanguage() ) );
 	}
 
 	public function execute( $par ) {
@@ -59,12 +84,13 @@ class SpecialWithoutInterwiki extends PageQueryPage {
 			]
 		];
 
-		$htmlForm = HTMLForm::factory( 'ooui', $formDescriptor, $this->getContext() );
-		$htmlForm->setWrapperLegend( '' )
+		HTMLForm::factory( 'ooui', $formDescriptor, $this->getContext() )
+			->setWrapperLegend( '' )
 			->setSubmitTextMsg( 'withoutinterwiki-submit' )
 			->setMethod( 'get' )
 			->prepareForm()
 			->displayForm( false );
+		return '';
 	}
 
 	protected function sortDescending() {
@@ -91,16 +117,19 @@ class SpecialWithoutInterwiki extends PageQueryPage {
 				'title' => 'page_title',
 			],
 			'conds' => [
-				'll_title IS NULL',
-				'page_namespace' => MediaWikiServices::getInstance()->getNamespaceInfo()->
-					getContentNamespaces(),
+				'll_title' => null,
+				'page_namespace' => $this->namespaceInfo->getContentNamespaces(),
 				'page_is_redirect' => 0
 			],
 			'join_conds' => [ 'langlinks' => [ 'LEFT JOIN', 'll_from = page_id' ] ]
 		];
 		if ( $this->prefix ) {
-			$dbr = wfGetDB( DB_REPLICA );
-			$query['conds'][] = 'page_title ' . $dbr->buildLike( $this->prefix, $dbr->anyString() );
+			$dbr = $this->getDatabaseProvider()->getReplicaDatabase();
+			$query['conds'][] = $dbr->expr(
+				'page_title',
+				IExpression::LIKE,
+				new LikeValue( $this->prefix, $dbr->anyString() )
+			);
 		}
 
 		return $query;
@@ -110,3 +139,9 @@ class SpecialWithoutInterwiki extends PageQueryPage {
 		return 'maintenance';
 	}
 }
+
+/**
+ * Retain the old class name for backwards compatibility.
+ * @deprecated since 1.41
+ */
+class_alias( SpecialWithoutInterwiki::class, 'SpecialWithoutInterwiki' );

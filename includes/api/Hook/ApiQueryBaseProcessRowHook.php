@@ -2,10 +2,13 @@
 
 namespace MediaWiki\Api\Hook;
 
-use ApiQueryBase;
+use MediaWiki\Api\ApiQueryBase;
 use stdClass;
 
 /**
+ * This is a hook handler interface, see docs/Hooks.md.
+ * Use the hook name "ApiQueryBaseProcessRow" to register handlers implementing this interface.
+ *
  * @stable to implement
  * @ingroup Hooks
  */

@@ -1,7 +1,7 @@
 <?php
 
-namespace WikiPEG;
+namespace Wikimedia\WikiPEG;
 
 interface Tracer {
-  function trace($event);
+	public function trace( $event );
 }

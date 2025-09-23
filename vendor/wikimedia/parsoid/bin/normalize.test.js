@@ -30,11 +30,6 @@ var opts = yargs
 		'boolean': true,
 		'default': false,
 	},
-	rtTestMode: {
-		description: 'in round-trip testing mode?',
-		'boolean': true,
-		'default': false,
-	},
 	html: {
 		description: 'html',
 		'boolean': false,
@@ -54,14 +49,11 @@ Promise.async(function *() {
 		return;
 	}
 
-	const env = new MockEnv({
-		scrubWikitext: true,
-	}, null);
+	const env = new MockEnv({}, null);
 
 	var mockState = {
 		env,
-		selserMode: argv.enableSelserMode,
-		rtTestMode: argv.rtTestMode,
+		selserMode: argv.enableSelserMode
 	};
 
 	const domBody = ContentUtils.ppToDOM(env, html, { markNew: true });

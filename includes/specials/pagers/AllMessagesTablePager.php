@@ -19,9 +19,25 @@
  * @ingroup Pager
  */
 
+namespace MediaWiki\Pager;
+
+use LocalisationCache;
+use MediaWiki\Context\IContextSource;
+use MediaWiki\Html\FormOptions;
+use MediaWiki\Html\Html;
+use MediaWiki\Language\Language;
+use MediaWiki\Languages\LanguageFactory;
 use MediaWiki\Linker\LinkRenderer;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Parser\Sanitizer;
+use MediaWiki\SpecialPage\SpecialPage;
+use MediaWiki\Title\Title;
+use MediaWiki\Xml\Xml;
+use stdClass;
 use Wikimedia\Rdbms\FakeResultWrapper;
+use Wikimedia\Rdbms\IConnectionProvider;
+use Wikimedia\Rdbms\IReadableDatabase;
+use Wikimedia\Rdbms\IResultWrapper;
 
 /**
  * Use TablePager for prettified output. We have to pretend that we're
@@ -32,17 +48,12 @@ use Wikimedia\Rdbms\FakeResultWrapper;
 class AllMessagesTablePager extends TablePager {
 
 	/**
-	 * @var string
-	 */
-	protected $langcode;
-
-	/**
 	 * @var bool
 	 */
 	protected $foreign;
 
 	/**
-	 * @var string
+	 * @var string|false
 	 */
 	protected $prefix;
 
@@ -61,25 +72,38 @@ class AllMessagesTablePager extends TablePager {
 	 */
 	public $custom;
 
+	private LocalisationCache $localisationCache;
+
 	/**
-	 * @param IContextSource|null $context
-	 * @param FormOptions $opts
+	 * @param IContextSource $context
+	 * @param Language $contentLanguage
+	 * @param LanguageFactory $languageFactory
 	 * @param LinkRenderer $linkRenderer
+	 * @param IConnectionProvider $dbProvider
+	 * @param LocalisationCache $localisationCache
+	 * @param FormOptions $opts
 	 */
-	public function __construct( ?IContextSource $context, FormOptions $opts,
-		LinkRenderer $linkRenderer
+	public function __construct(
+		IContextSource $context,
+		Language $contentLanguage,
+		LanguageFactory $languageFactory,
+		LinkRenderer $linkRenderer,
+		IConnectionProvider $dbProvider,
+		LocalisationCache $localisationCache,
+		FormOptions $opts
 	) {
+		// Set database before parent constructor to avoid setting it there
+		$this->mDb = $dbProvider->getReplicaDatabase();
 		parent::__construct( $context, $linkRenderer );
+		$this->localisationCache = $localisationCache;
 
 		$this->mIndexField = 'am_title';
 		// FIXME: Why does this need to be set to DIR_DESCENDING to produce ascending ordering?
 		$this->mDefaultDirection = IndexPager::DIR_DESCENDING;
 
-		$contLang = MediaWikiServices::getInstance()->getContentLanguage();
-		$this->lang = wfGetLangObj( $opts->getValue( 'lang' ) );
+		$this->lang = $languageFactory->getRawLanguage( $opts->getValue( 'lang' ) );
 
-		$this->langcode = $this->lang->getCode();
-		$this->foreign = !$this->lang->equals( $contLang );
+		$this->foreign = !$this->lang->equals( $contentLanguage );
 
 		$filter = $opts->getValue( 'filter' );
 		if ( $filter === 'all' ) {
@@ -103,16 +127,14 @@ class AllMessagesTablePager extends TablePager {
 		// The suffix that may be needed for message names if we're in a
 		// different language (eg [[MediaWiki:Foo/fr]]: $suffix = '/fr'
 		if ( $this->foreign ) {
-			$this->suffix = '/' . $this->langcode;
+			$this->suffix = '/' . $this->lang->getCode();
 		} else {
 			$this->suffix = '';
 		}
 	}
 
 	private function getAllMessages( $descending ) {
-		$messageNames = MediaWikiServices::getInstance()
-			->getLocalisationCache()
-			->getSubitemList( 'en', 'messages' );
+		$messageNames = $this->localisationCache->getSubitemList( 'en', 'messages' );
 
 		// Normalise message names so they look like page titles and sort correctly - T86139
 		$messageNames = array_map( [ $this->lang, 'ucfirst' ], $messageNames );
@@ -132,22 +154,30 @@ class AllMessagesTablePager extends TablePager {
 	 * an entry for each existing page, with the key being the message name and
 	 * value arbitrary.
 	 *
+	 * @since 1.36 Added $dbr parameter
+	 *
 	 * @param array $messageNames
 	 * @param string $langcode What language code
 	 * @param bool $foreign Whether the $langcode is not the content language
+	 * @param IReadableDatabase|null $dbr
 	 * @return array A 'pages' and 'talks' array with the keys of existing pages
 	 */
-	public static function getCustomisedStatuses( $messageNames, $langcode = 'en', $foreign = false ) {
+	public static function getCustomisedStatuses(
+		$messageNames,
+		$langcode = 'en',
+		$foreign = false,
+		?IReadableDatabase $dbr = null
+	) {
 		// FIXME: This function should be moved to Language:: or something.
-
-		$dbr = wfGetDB( DB_REPLICA );
-		$res = $dbr->select( 'page',
-			[ 'page_namespace', 'page_title' ],
-			[ 'page_namespace' => [ NS_MEDIAWIKI, NS_MEDIAWIKI_TALK ] ],
-			__METHOD__,
-			[ 'USE INDEX' => 'name_title' ]
-		);
-		$xNames = array_flip( $messageNames );
+		// Fallback to global state, if not provided
+		$dbr ??= MediaWikiServices::getInstance()->getConnectionProvider()->getReplicaDatabase();
+		$res = $dbr->newSelectQueryBuilder()
+			->select( [ 'page_namespace', 'page_title' ] )
+			->from( 'page' )
+			->where( [ 'page_namespace' => [ NS_MEDIAWIKI, NS_MEDIAWIKI_TALK ] ] )
+			->useIndex( 'page_name_title' )
+			->caller( __METHOD__ )->fetchResultSet();
+		$xNames = array_fill_keys( $messageNames, true );
 
 		$pageFlags = $talkFlags = [];
 
@@ -183,20 +213,25 @@ class AllMessagesTablePager extends TablePager {
 	 * @param string $offset
 	 * @param int $limit
 	 * @param bool $order
-	 * @return FakeResultWrapper
+	 * @return IResultWrapper
 	 */
 	public function reallyDoQuery( $offset, $limit, $order ) {
 		$asc = ( $order === self::QUERY_ASCENDING );
 
 		$messageNames = $this->getAllMessages( $order );
-		$statuses = self::getCustomisedStatuses( $messageNames, $this->langcode, $this->foreign );
+		$statuses = self::getCustomisedStatuses(
+			$messageNames,
+			$this->lang->getCode(),
+			$this->foreign,
+			$this->getDatabase()
+		);
 
 		$rows = [];
 		$count = 0;
 		foreach ( $messageNames as $key ) {
 			$customised = isset( $statuses['pages'][$key] );
 			if ( $customised !== $this->custom &&
-				( $asc && ( $key < $offset || !$offset ) || !$asc && $key > $offset ) &&
+				( ( $asc && ( $key < $offset || !$offset ) ) || ( !$asc && $key > $offset ) ) &&
 				( ( $this->prefix && preg_match( $this->prefix, $key ) ) || $this->prefix === false )
 			) {
 				$actual = $this->msg( $key )->inLanguage( $this->lang )->plain();
@@ -220,9 +255,8 @@ class AllMessagesTablePager extends TablePager {
 	}
 
 	protected function getStartBody() {
-		$tableClass = $this->getTableClass();
 		return Xml::openElement( 'table', [
-			'class' => "mw-datatable $tableClass",
+			'class' => $this->getTableClass(),
 			'id' => 'mw-allmessagestable'
 		] ) .
 		"\n" .
@@ -245,23 +279,30 @@ class AllMessagesTablePager extends TablePager {
 		return Html::closeElement( 'table' );
 	}
 
+	/**
+	 * @param string $field
+	 * @param string|null $value
+	 * @return string HTML
+	 */
 	public function formatValue( $field, $value ) {
 		$linkRenderer = $this->getLinkRenderer();
 		switch ( $field ) {
 			case 'am_title':
 				$title = Title::makeTitle( NS_MEDIAWIKI, $value . $this->suffix );
 				$talk = Title::makeTitle( NS_MEDIAWIKI_TALK, $value . $this->suffix );
-				$translation = Linker::makeExternalLink(
+				$message = $this->msg( $value )->inLanguage( $this->lang )->useDatabase( false )->plain();
+				$translation = $linkRenderer->makeExternalLink(
 					'https://translatewiki.net/w/i.php?' . wfArrayToCgi( [
 						'title' => 'Special:SearchTranslations',
 						'group' => 'mediawiki',
 						'grouppath' => 'mediawiki',
-						'language' => $this->getLanguage()->getCode(),
-						'query' => $value . ' ' . $this->msg( $value )->plain()
+						'language' => $this->lang->getCode(),
+						'query' => $value . ' ' . $message
 					] ),
-					$this->msg( 'allmessages-filter-translate' )->text()
+					$this->msg( 'allmessages-filter-translate' ),
+					$this->getTitle()
 				);
-				$talkLink = $this->msg( 'talkpagelinktext' )->escaped();
+				$talkLink = $this->msg( 'talkpagelinktext' )->text();
 
 				if ( $this->mCurrentRow->am_customised ) {
 					$title = $linkRenderer->makeKnownLink( $title, $this->getLanguage()->lcfirst( $value ) );
@@ -280,9 +321,9 @@ class AllMessagesTablePager extends TablePager {
 				}
 
 				return $title . ' ' .
-				$this->msg( 'parentheses' )->rawParams( $talk )->escaped() .
-				' ' .
-				$this->msg( 'parentheses' )->rawParams( $translation )->escaped();
+					$this->msg( 'parentheses' )->rawParams( $talk )->escaped() .
+					' ' .
+					$this->msg( 'parentheses' )->rawParams( $translation )->escaped();
 
 			case 'am_default':
 			case 'am_actual':
@@ -309,7 +350,7 @@ class AllMessagesTablePager extends TablePager {
 				$formatted = "\u{00A0}";
 			}
 
-			$s .= Html::element( 'td', $this->getCellAttrs( 'am_actual', $row->am_actual ), $formatted )
+			$s .= Html::rawElement( 'td', $this->getCellAttrs( 'am_actual', $row->am_actual ), $formatted )
 				. Html::closeElement( 'tr' );
 		}
 
@@ -369,3 +410,9 @@ class AllMessagesTablePager extends TablePager {
 	}
 
 }
+
+/**
+ * Retain the old class name for backwards compatibility.
+ * @deprecated since 1.41
+ */
+class_alias( AllMessagesTablePager::class, 'AllMessagesTablePager' );

@@ -1,7 +1,5 @@
 <?php
 /**
- * Implements Special:Mostcategories
- *
  * Copyright © 2005 Ævar Arnfjörð Bjarmason
  *
  * This program is free software; you can redistribute it and/or modify
@@ -20,22 +18,46 @@
  * http://www.gnu.org/copyleft/gpl.html
  *
  * @file
- * @ingroup SpecialPage
- * @author Ævar Arnfjörð Bjarmason <avarab@gmail.com>
  */
 
-use MediaWiki\MediaWikiServices;
+namespace MediaWiki\Specials;
+
+use MediaWiki\Cache\LinkBatchFactory;
+use MediaWiki\Html\Html;
+use MediaWiki\Linker\Linker;
+use MediaWiki\SpecialPage\QueryPage;
+use MediaWiki\Title\NamespaceInfo;
+use MediaWiki\Title\Title;
+use Skin;
+use stdClass;
+use Wikimedia\Rdbms\IConnectionProvider;
 use Wikimedia\Rdbms\IDatabase;
 use Wikimedia\Rdbms\IResultWrapper;
 
 /**
- * A special page that list pages that have highest category count
+ * List of pages that have the highest category count.
  *
  * @ingroup SpecialPage
+ * @author Ævar Arnfjörð Bjarmason <avarab@gmail.com>
  */
 class SpecialMostCategories extends QueryPage {
-	public function __construct( $name = 'Mostcategories' ) {
-		parent::__construct( $name );
+
+	private NamespaceInfo $namespaceInfo;
+
+	/**
+	 * @param NamespaceInfo $namespaceInfo
+	 * @param IConnectionProvider $dbProvider
+	 * @param LinkBatchFactory $linkBatchFactory
+	 */
+	public function __construct(
+		NamespaceInfo $namespaceInfo,
+		IConnectionProvider $dbProvider,
+		LinkBatchFactory $linkBatchFactory
+	) {
+		parent::__construct( 'Mostcategories' );
+		$this->namespaceInfo = $namespaceInfo;
+		$this->setDatabaseProvider( $dbProvider );
+		$this->setLinkBatchFactory( $linkBatchFactory );
 	}
 
 	public function isExpensive() {
@@ -54,8 +76,9 @@ class SpecialMostCategories extends QueryPage {
 				'title' => 'page_title',
 				'value' => 'COUNT(*)'
 			],
-			'conds' => [ 'page_namespace' =>
-				MediaWikiServices::getInstance()->getNamespaceInfo()->getContentNamespaces() ],
+			'conds' => [
+				'page_namespace' => $this->namespaceInfo->getContentNamespaces()
+			],
 			'options' => [
 				'HAVING' => 'COUNT(*) > 1',
 				'GROUP BY' => [ 'page_namespace', 'page_title' ]
@@ -79,7 +102,7 @@ class SpecialMostCategories extends QueryPage {
 
 	/**
 	 * @param Skin $skin
-	 * @param object $result Result row
+	 * @param stdClass $result Result row
 	 * @return string
 	 */
 	public function formatResult( $skin, $result ) {
@@ -112,3 +135,9 @@ class SpecialMostCategories extends QueryPage {
 		return 'highuse';
 	}
 }
+
+/**
+ * Retain the old class name for backwards compatibility.
+ * @deprecated since 1.41
+ */
+class_alias( SpecialMostCategories::class, 'SpecialMostCategories' );

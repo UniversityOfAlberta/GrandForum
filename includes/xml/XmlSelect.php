@@ -20,13 +20,21 @@
  * @file
  */
 
+namespace MediaWiki\Xml;
+
+use MediaWiki\Html\Html;
+
 /**
  * Class for generating HTML <select> or <datalist> elements.
  */
 class XmlSelect {
+	/** @var array[] */
 	protected $options = [];
+	/** @var string|array|false */
 	protected $default = false;
+	/** @var string|array */
 	protected $tagName = 'select';
+	/** @var (string|int)[] */
 	protected $attributes = [];
 
 	public function __construct( $name = false, $id = false, $default = false ) {
@@ -59,7 +67,7 @@ class XmlSelect {
 
 	/**
 	 * @param string $name
-	 * @param string $value
+	 * @param string|int $value
 	 */
 	public function setAttribute( $name, $value ) {
 		$this->attributes[$name] = $value;
@@ -67,7 +75,7 @@ class XmlSelect {
 
 	/**
 	 * @param string $name
-	 * @return string|null
+	 * @return string|int|null
 	 */
 	public function getAttribute( $name ) {
 		return $this->attributes[$name] ?? null;
@@ -75,7 +83,7 @@ class XmlSelect {
 
 	/**
 	 * @param string $label
-	 * @param string|false $value If not given, assumed equal to $label
+	 * @param string|int|float|false $value If not given, assumed equal to $label
 	 */
 	public function addOption( $label, $value = false ) {
 		$value = $value !== false ? $value : $label;
@@ -137,6 +145,7 @@ class XmlSelect {
 	/**
 	 * Parse labels and values out of a comma- and colon-separated list of options, such as is used for
 	 * expiry and duration lists. Documentation of the format is on translatewiki.net.
+	 * @since 1.35
 	 * @link https://translatewiki.net/wiki/Template:Doc-mediawiki-options-list
 	 * @param string $msg The message to parse.
 	 * @return string[] The options array, where keys are option labels (i.e. translations)
@@ -150,10 +159,11 @@ class XmlSelect {
 				$option = "$option:$option";
 			}
 			// Extract the two parts.
-			list( $label, $value ) = explode( ':', $option );
-			// Escape special chars just to be safe, even though there should never be any.
-			$options[ trim( $label ) ] = htmlspecialchars( trim( $value ) );
+			[ $label, $value ] = explode( ':', $option );
+			$options[ trim( $label ) ] = trim( $value );
 		}
 		return $options;
 	}
 }
+/** @deprecated class alias since 1.43 */
+class_alias( XmlSelect::class, 'XmlSelect' );

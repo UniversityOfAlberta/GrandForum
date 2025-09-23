@@ -3,9 +3,10 @@ declare( strict_types = 1 );
 
 namespace Wikimedia\Parsoid\Utils\DOMCompat;
 
-use DOMElement;
 use Iterator;
 use LogicException;
+use Wikimedia\Parsoid\DOM\Element;
+use Wikimedia\Parsoid\Utils\DOMCompat;
 
 /**
  * Implements the parts of DOMTokenList interface which are used by Parsoid.
@@ -15,10 +16,10 @@ use LogicException;
  */
 class TokenList implements Iterator {
 
-	/** @var DOMElement The node whose classes are listed. */
+	/** @var Element The node whose classes are listed. */
 	protected $node;
 
-	/** @var string Copy of the attribute text, used for change detection. */
+	/** @var string|bool Copy of the attribute text, used for change detection. */
 	private $attribute = false;
 
 	// Testing element existence with a list is less painful than returning numeric keys
@@ -27,9 +28,9 @@ class TokenList implements Iterator {
 	private $classList;
 
 	/**
-	 * @param DOMElement $node The node whose classes are listed.
+	 * @param Element $node The node whose classes are listed.
 	 */
-	public function __construct( DOMElement $node ) {
+	public function __construct( $node ) {
 		$this->node = $node;
 		$this->lazyLoadClassList();
 	}
@@ -94,41 +95,26 @@ class TokenList implements Iterator {
 		}
 	}
 
-	/**
-	 * @return string
-	 */
 	public function current(): string {
 		$this->lazyLoadClassList();
 		return current( $this->classList );
 	}
 
-	/**
-	 * @return void
-	 */
 	public function next(): void {
 		$this->lazyLoadClassList();
 		next( $this->classList );
 	}
 
-	/**
-	 * @return int|null
-	 */
 	public function key(): ?int {
 		$this->lazyLoadClassList();
 		return key( $this->classList );
 	}
 
-	/**
-	 * @return bool
-	 */
 	public function valid(): bool {
 		$this->lazyLoadClassList();
 		return key( $this->classList ) !== null;
 	}
 
-	/**
-	 * @return void
-	 */
 	public function rewind(): void {
 		$this->lazyLoadClassList();
 		reset( $this->classList );
@@ -138,10 +124,10 @@ class TokenList implements Iterator {
 	 * Set the classList property based on the class attribute of the wrapped element.
 	 */
 	private function lazyLoadClassList(): void {
-		$attrib = $this->node->getAttribute( 'class' );
+		$attrib = DOMCompat::getAttribute( $this->node, 'class' ) ?? '';
 		if ( $attrib !== $this->attribute ) {
 			$this->attribute = $attrib;
-			$this->classList = preg_split( '/\s+/', $this->node->getAttribute( 'class' ), -1,
+			$this->classList = preg_split( '/\s+/', $attrib, -1,
 				PREG_SPLIT_NO_EMPTY );
 		}
 	}

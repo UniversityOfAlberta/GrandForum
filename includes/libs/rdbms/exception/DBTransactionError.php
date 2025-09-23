@@ -16,20 +16,38 @@
  * http://www.gnu.org/copyleft/gpl.html
  *
  * @file
- * @ingroup Database
  */
-
 namespace Wikimedia\Rdbms;
+
+use Wikimedia\NormalizedException\INormalizedException;
+use Wikimedia\NormalizedException\NormalizedExceptionTrait;
 
 /**
  * @newable
- * @stable to extend
  * @ingroup Database
  */
-class DBTransactionError extends DBExpectedError {
-}
+class DBTransactionError extends DBExpectedError implements INormalizedException {
 
-/**
- * @deprecated since 1.29
- */
-class_alias( DBTransactionError::class, 'DBTransactionError' );
+	use NormalizedExceptionTrait;
+
+	/**
+	 * @stable to call
+	 * @param IDatabase|null $db
+	 * @param string $error
+	 * @param array $params parameters to be passed down to the i18n message
+	 * @param \Throwable|null $prev
+	 * @param array $errorParams PSR-3 message context
+	 */
+	public function __construct(
+		?IDatabase $db, $error, array $params = [], ?\Throwable $prev = null, $errorParams = []
+	) {
+		$this->normalizedMessage = $error;
+		$this->messageContext = $errorParams;
+		parent::__construct(
+			$db,
+			self::getMessageFromNormalizedMessage( $error, $params ),
+			$params,
+			$prev
+		);
+	}
+}

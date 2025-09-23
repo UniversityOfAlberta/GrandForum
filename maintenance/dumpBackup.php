@@ -3,7 +3,7 @@
  * Script that dumps wiki pages or logging database into an XML interchange
  * wrapper format for export or backup
  *
- * Copyright © 2005 Brion Vibber <brion@pobox.com>
+ * Copyright © 2005 Brooke Vibber <bvibber@wikimedia.org>
  * https://www.mediawiki.org/
  *
  * This program is free software; you can redistribute it and/or modify
@@ -26,7 +26,11 @@
  * @ingroup Maintenance
  */
 
+use MediaWiki\Maintenance\BackupDumper;
+
+// @codeCoverageIgnoreStart
 require_once __DIR__ . '/includes/BackupDumper.php';
+// @codeCoverageIgnoreEnd
 
 class DumpBackup extends BackupDumper {
 	public function __construct( $args = null ) {
@@ -43,7 +47,7 @@ WARNING: this is not a full database dump! It is merely for public export
          https://www.mediawiki.org/wiki/Backup
 TEXT
 		);
-		$this->stderr = fopen( "php://stderr", "wt" );
+
 		// Actions
 		$this->addOption( 'full', 'Dump all revisions of every page' );
 		$this->addOption( 'current', 'Dump only the latest revision of every page.' );
@@ -106,7 +110,7 @@ TEXT
 				$this->fatalError( "Unable to open file {$filename}\n" );
 			}
 			$pages = array_map( 'trim', $pages );
-			$this->pages = array_filter( $pages, function ( $x ) {
+			$this->pages = array_filter( $pages, static function ( $x ) {
 				return $x !== '';
 			} );
 		}
@@ -140,5 +144,7 @@ TEXT
 	}
 }
 
+// @codeCoverageIgnoreStart
 $maintClass = DumpBackup::class;
 require_once RUN_MAINTENANCE_IF_MAIN;
+// @codeCoverageIgnoreEnd

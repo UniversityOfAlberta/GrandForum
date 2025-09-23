@@ -1,21 +1,42 @@
 <?php
 /**
- * @defgroup ExternalStorage ExternalStorage
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ * http://www.gnu.org/copyleft/gpl.html
+ *
+ * @file
  */
 
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
+use Wikimedia\RequestTimeout\TimeoutException;
 
 /**
- * Key/value blob storage for a collection of storage medium types (e.g. RDBMs, files)
+ * @defgroup ExternalStorage ExternalStorage
  *
- * Multiple medium types can be active and each one can have multiple "locations" available.
- * Blobs are stored under URLs of the form "<protocol>://<location>/<path>". Each type of storage
- * medium has an associated protocol. Insertions will randomly pick mediums and locations from
- * the provided list of writable medium-qualified locations. Insertions will also fail-over to
- * other writable locations or mediums if one or more are not available.
+ * Object storage outside the main database, see also [ExternalStore Architecture](@ref externalstorearch).
+ */
+
+/**
+ * This is the main interface for fetching or inserting objects with [ExternalStore](@ref externalstorearch).
  *
+ * This interface is meant to mimic the ExternalStoreMedium base class (which
+ * represents a single external store protocol), and transparently uses the
+ * right instance of that class when fetching by URL.
+ *
+ * @see [ExternalStore Architecture](@ref externalstorearch).
  * @ingroup ExternalStorage
  * @since 1.34
  */
@@ -29,7 +50,7 @@ class ExternalStoreAccess implements LoggerAwareInterface {
 	 * @param ExternalStoreFactory $factory
 	 * @param LoggerInterface|null $logger
 	 */
-	public function __construct( ExternalStoreFactory $factory, LoggerInterface $logger = null ) {
+	public function __construct( ExternalStoreFactory $factory, ?LoggerInterface $logger = null ) {
 		$this->storeFactory = $factory;
 		$this->logger = $logger ?: new NullLogger();
 	}
@@ -45,7 +66,7 @@ class ExternalStoreAccess implements LoggerAwareInterface {
 	 *
 	 * @param string $url The URL of the text to get
 	 * @param array $params Map of context parameters; same as ExternalStoreFactory::getStore()
-	 * @return string|bool The text stored or false on error
+	 * @return string|false The text stored or false on error
 	 * @throws ExternalStoreException
 	 */
 	public function fetchFromURL( $url, array $params = [] ) {
@@ -90,11 +111,11 @@ class ExternalStoreAccess implements LoggerAwareInterface {
 	 * @param string $data
 	 * @param array $params Map of context parameters; same as ExternalStoreFactory::getStore()
 	 * @param string[]|null $tryStores Base URLs to try, e.g. [ "DB://cluster1" ]
-	 * @return string|bool The URL of the stored data item, or false on error
+	 * @return string|false The URL of the stored data item, or false on error
 	 * @throws ExternalStoreException
 	 */
-	public function insert( $data, array $params = [], array $tryStores = null ) {
-		$tryStores = $tryStores ?? $this->storeFactory->getWriteBaseUrls();
+	public function insert( $data, array $params = [], ?array $tryStores = null ) {
+		$tryStores ??= $this->storeFactory->getWriteBaseUrls();
 		if ( !$tryStores ) {
 			throw new ExternalStoreException( "List of external stores provided is empty." );
 		}
@@ -127,6 +148,8 @@ class ExternalStoreAccess implements LoggerAwareInterface {
 						"No URL returned by storage medium ($storeUrl)"
 					);
 				}
+			} catch ( TimeoutException $e ) {
+				throw $e;
 			} catch ( Exception $ex ) {
 				$error = $ex;
 				$msg = 'caught ' . get_class( $error ) . ' exception: ' . $error->getMessage();

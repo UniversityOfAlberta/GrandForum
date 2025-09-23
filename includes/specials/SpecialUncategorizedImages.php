@@ -1,7 +1,5 @@
 <?php
 /**
- * Implements Special:Uncategorizedimages
- *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -18,20 +16,29 @@
  * http://www.gnu.org/copyleft/gpl.html
  *
  * @file
+ */
+
+namespace MediaWiki\Specials;
+
+use MediaWiki\SpecialPage\ImageQueryPage;
+use Wikimedia\Rdbms\IConnectionProvider;
+
+/**
+ * List of file pages which haven't been categorised
+ *
+ * @todo FIXME: Use an instance of UncategorizedPagesPage or something
+ *
  * @ingroup SpecialPage
  * @author Rob Church <robchur@gmail.com>
  */
-
-/**
- * Special page lists images which haven't been categorised
- *
- * @ingroup SpecialPage
- * @todo FIXME: Use an instance of UncategorizedPagesPage or something
- */
 class SpecialUncategorizedImages extends ImageQueryPage {
-	public function __construct( $name = 'Uncategorizedimages' ) {
-		parent::__construct( $name );
-		$this->addHelpLink( 'Help:Categories' );
+
+	/**
+	 * @param IConnectionProvider $dbProvider
+	 */
+	public function __construct( IConnectionProvider $dbProvider ) {
+		parent::__construct( 'Uncategorizedimages' );
+		$this->setDatabaseProvider( $dbProvider );
 	}
 
 	protected function sortDescending() {
@@ -50,6 +57,11 @@ class SpecialUncategorizedImages extends ImageQueryPage {
 		return [ 'title' ];
 	}
 
+	public function execute( $par ) {
+		$this->addHelpLink( 'Help:Categories' );
+		parent::execute( $par );
+	}
+
 	public function getQueryInfo() {
 		return [
 			'tables' => [ 'page', 'categorylinks' ],
@@ -58,7 +70,7 @@ class SpecialUncategorizedImages extends ImageQueryPage {
 				'title' => 'page_title',
 			],
 			'conds' => [
-				'cl_from IS NULL',
+				'cl_from' => null,
 				'page_namespace' => NS_FILE,
 				'page_is_redirect' => 0,
 			],
@@ -75,3 +87,9 @@ class SpecialUncategorizedImages extends ImageQueryPage {
 		return 'maintenance';
 	}
 }
+
+/**
+ * Retain the old class name for backwards compatibility.
+ * @deprecated since 1.41
+ */
+class_alias( SpecialUncategorizedImages::class, 'SpecialUncategorizedImages' );

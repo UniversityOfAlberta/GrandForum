@@ -1,11 +1,8 @@
 <?php
 /** Saraiki (multiple scripts)
  *
- * To improve a translation please visit https://translatewiki.net
- *
- * @ingroup Language
  * @file
- *
+ * @ingroup Languages
  */
 
 $fallback = 'skr-arab';

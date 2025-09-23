@@ -22,7 +22,7 @@
 
 namespace MediaWiki\Revision;
 
-use Content;
+use MediaWiki\Content\Content;
 
 /**
  * Mutable version of RevisionSlots, for constructing a new revision.
@@ -132,9 +132,3 @@ class MutableRevisionSlots extends RevisionSlots {
 	}
 
 }
-
-/**
- * Retain the old class name for backwards compatibility.
- * @deprecated since 1.32
- */
-class_alias( MutableRevisionSlots::class, 'MediaWiki\Storage\MutableRevisionSlots' );

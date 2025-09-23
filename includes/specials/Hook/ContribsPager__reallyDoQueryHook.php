@@ -2,10 +2,13 @@
 
 namespace MediaWiki\Hook;
 
-use ContribsPager;
+use MediaWiki\Pager\ContributionsPager;
 
 // phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
 /**
+ * This is a hook handler interface, see docs/Hooks.md.
+ * Use the hook name "ContribsPager::reallyDoQuery" to register handlers implementing this interface.
+ *
  * @stable to implement
  * @ingroup Hooks
  */
@@ -16,7 +19,7 @@ interface ContribsPager__reallyDoQueryHook {
 	 * @since 1.35
 	 *
 	 * @param array &$data an array of results of all contribs queries
-	 * @param ContribsPager $pager The ContribsPager object hooked into
+	 * @param ContributionsPager $pager The ContributionsPager object hooked into
 	 * @param string $offset Index offset, inclusive
 	 * @param int $limit Exact query limit
 	 * @param bool $descending Query direction, false for ascending, true for descending
