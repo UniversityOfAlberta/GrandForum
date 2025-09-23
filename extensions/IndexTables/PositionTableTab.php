@@ -30,10 +30,11 @@ class PositionTableTab extends PeopleTableTab {
         foreach(Person::getAllPeople() as $person){
             foreach($person->getUniversitiesDuring($start, $end) as $uni){
                 if($uni['position'] == $this->table){
-                    $data[] = $person;
+                    $data[$person->getId()] = $person;
                 }
             }
         }
+        $data = array_values($data);
 
         $emailHeader = "";
         $idHeader = "";
