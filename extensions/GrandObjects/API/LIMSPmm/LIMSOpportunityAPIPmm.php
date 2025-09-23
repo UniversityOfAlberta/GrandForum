@@ -27,19 +27,19 @@ class LIMSOpportunityAPIPmm extends RESTAPI {
     }
     
     function doPOST() {
-        $input = file_get_contents('php://input');
-        $data = json_decode($input, true);
-
-        $action = isset($data['action']) ? $data['action'] : null;
-        
-        if ($action == 'send_notification') {
-            $filters = isset($data['filters']) ? $data['filters'] : [];
-            $emailContent = isset($data['emailContent']) ? $data['emailContent'] : '';
-            return $this->sendEmailNotifications($filters, $emailContent);
-        }
-
         $me = Person::newFromWgUser();
         if (LIMSOpportunityPmm::isAllowedToCreate()) {
+            $input = file_get_contents('php://input');
+            $data = json_decode($input, true);
+
+            $action = isset($data['action']) ? $data['action'] : null;
+            
+            if ($action == 'send_notification') {
+                $filters = isset($data['filters']) ? $data['filters'] : [];
+                $emailContent = isset($data['emailContent']) ? $data['emailContent'] : '';
+                return $this->sendEmailNotifications($filters, $emailContent);
+            }
+
             $opportunity = new LIMSOpportunityPmm([]);
             $opportunity->contact = isset($data['contact']) ? $data['contact'] : null;
             $opportunity->owner = isset($data['owner']['id']) ? $data['owner']['id'] : null;
@@ -145,6 +145,11 @@ class LIMSOpportunityAPIPmm extends RESTAPI {
             }
         }
 
+        $projectLeaders = $project->getLeaders();
+        foreach ($projectLeaders as $leader) {
+            $assigneesToNotify[$leader->getId()] = $leader;
+        }
+
         foreach ($assigneesToNotify as $assignee) {
             Notification::addNotification(
                 $me, 
@@ -155,10 +160,15 @@ class LIMSOpportunityAPIPmm extends RESTAPI {
                 true
             );
         }
+
+        $totalRecipients = count($assigneesToNotify);
+        $leaderCount = count($projectLeaders);
+
+        $messageCount = max(0, $totalRecipients - $leaderCount);
         
         return json_encode([
             'status' => 'success', 
-            'message' => 'Email notification sent to ' . count($assigneesToNotify) . ' assignees'
+            'message' => 'Email notification sent to ' . $messageCount . ' assignees'
         ]);
     }
 }
