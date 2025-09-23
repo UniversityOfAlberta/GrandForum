@@ -68,6 +68,9 @@ MailingListRule = RelationModel.extend({
                     this.set('possibleValues', {ids: unis.pluck('id'), names: unis.pluck('name'), groups: unis.pluck('province')});
                 }.bind(this));
                 break;
+            case "POS":
+                this.set('possibleValues', {ids: _.keys(positionList), names: _.keys(positionList)});
+                break;
         }
     },
     

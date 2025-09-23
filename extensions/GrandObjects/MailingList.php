@@ -197,6 +197,7 @@ class MailingList extends BackboneModel {
             $subRoleResult = false;
             $projResult = false;
             $locResult = false;
+            $posResult = false;
             $rules = $list->getRules();
             $phaseRules = array();
             $projRules = array();
@@ -282,6 +283,17 @@ class MailingList extends BackboneModel {
                         }
                         $locResult = ($locResult || $found);
                         $results['locResult'] = $locResult;
+                        break;
+                    case "POS":
+                        $found = false;
+                        foreach($person->getCurrentUniversities() as $uni){
+                            if($uni['position'] == $value){
+                                $found = true;
+                                break;
+                            }
+                        }
+                        $posResult = ($posResult || $found);
+                        $results['posResult'] = $posResult;
                         break;
                 }
             }
