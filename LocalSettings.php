@@ -51,6 +51,8 @@ require_once( "$IP/config/ForumConfig.php" );
 require_once( "$IP/Classes/Inflect/Inflect.php" );
 $wgBaseDirectory = MW_INSTALL_PATH;
 
+$wgDeprecationReleaseLimit = '1.0';
+
 ## Path settings
 $wgSitename         = $config->getValue("siteName");
 $wgServer           = $config->getValue("server");
@@ -132,7 +134,7 @@ $wgDBTableOptions   = "ENGINE=InnoDB, DEFAULT CHARSET=binary";
 
 ## Cache settings
 $wgSessionCacheType = CACHE_DB;
-$wgPasswordAttemptThrottle = false;
+$wgPasswordAttemptThrottle = [];
 $wgDisableCounters = false;
 $wgJobRunRate = 0.01;
 $wgSessionsInObjectCache = true;

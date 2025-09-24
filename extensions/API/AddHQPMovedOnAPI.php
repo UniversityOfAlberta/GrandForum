@@ -1,5 +1,7 @@
 <?php
 
+use MediaWiki\MediaWikiServices;
+
 class AddHQPMovedOnAPI extends API{
 
     function __construct(){
@@ -24,7 +26,7 @@ class AddHQPMovedOnAPI extends API{
 
 	function doAction($noEcho=false){
 		global $wgRequest, $wgUser;
-		$groups = $wgUser->getGroups();
+		$groups = MediaWikiServices::getInstance()->getUserGroupManager()->getUserGroups($wgUser);
 		$me = Person::newFromId($wgUser->getId());
 
 		$person = Person::newFromName($_POST['user']);

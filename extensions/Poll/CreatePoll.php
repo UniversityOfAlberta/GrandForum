@@ -1,4 +1,7 @@
 <?php
+
+use MediaWiki\MediaWikiServices;
+
 $dir = dirname(__FILE__) . '/';
 $wgSpecialPages['CreatePoll'] = 'CreatePoll'; # Let MediaWiki know about the special page.
 $wgExtensionMessagesFiles['CreatePoll'] = $dir . 'CreatePoll.i18n.php';
@@ -312,7 +315,7 @@ class CreatePoll extends SpecialPage{
 								<b>Poll Visibility:</b>
 							</td>
 							<td>");
-		$groups = $wgUser->getGroups();
+		$groups = MediaWikiServices::getInstance()->getUserGroupManager()->getUserGroups($wgUser);
 		//print_r($groups);
 		/*if($me->isStudent() || $me->isRoleAtLeast(STAFF)){
 		    $groups[] = "Student";

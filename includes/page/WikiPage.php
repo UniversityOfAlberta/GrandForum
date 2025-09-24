@@ -770,7 +770,6 @@ class WikiPage implements Stringable, Page, PageRecord {
 	 */
 	public function getContent( $audience = RevisionRecord::FOR_PUBLIC, ?Authority $performer = null ) {
 		$this->loadLastEdit();
-		var_dump($this->mLastRevision);
 		if ( $this->mLastRevision ) {
 			return $this->mLastRevision->getContent( SlotRecord::MAIN, $audience, $performer );
 		}

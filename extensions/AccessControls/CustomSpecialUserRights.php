@@ -1,4 +1,7 @@
 <?php
+
+use MediaWiki\MediaWikiServices;
+
 //this class started out as extending UserrightsPage which ended up being rewritten in 1.13
 //TODO: it needs major refactoring (rewriting?)
 require_once("includes/specialpage/SpecialPage.php");
@@ -149,7 +152,7 @@ function implode_wrapped($before, $after, $glue, $array){
                   $userNS = $wgExtraNamespaces[$userNS];
                 }
 
-		$removable = array_merge($removable, $user->getGroups());
+		$removable = array_merge($removable, MediaWikiServices::getInstance()->getUserGroupManager()->getUserGroups($user));
 		$removable = array_merge(array(array($userNS,1)), $removable);
 		$removable = array_unique($removable);
 		
@@ -169,7 +172,7 @@ function implode_wrapped($before, $after, $glue, $array){
 		
 		$list = array();
 		/* if the group is a custom namespace then we want to show the name and not the namespace ID */
-		foreach( $user->getGroups() as $group ) {
+		foreach( MediaWikiServices::getInstance()->getUserGroupManager()->getUserGroups($user) as $group ) {
 		  //if (is_numeric($group)) //BT
 		  //$list[] = $wgExtraNamespaces[$group];
 		  //else
@@ -328,7 +331,7 @@ function implode_wrapped($before, $after, $glue, $array){
 
 		$user = $this->fetchUser($username);
 		$id = $user->getID();
-		$currentGroups = $user->getGroups();
+		$currentGroups = MediaWikiServices::getInstance()->getUserGroupManager()->getUserGroups($user);
 
 		$targetGroups = $wgRequest->getArray("removable", array());
 		if (!$targetGroups) {
@@ -348,7 +351,7 @@ function implode_wrapped($before, $after, $glue, $array){
 		}
 
 		Hooks::run( 'UserRights', array( &$user, $addgroup, $removegroup ) );
-		$this->addLogEntry( $user, $currentGroups, $user->getGroups() );
+		$this->addLogEntry( $user, $currentGroups, MediaWikiServices::getInstance()->getUserGroupManager()->getUserGroups($user) );
 
 
 	}

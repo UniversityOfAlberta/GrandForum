@@ -1,4 +1,7 @@
 <?php
+
+use MediaWiki\MediaWikiServices;
+
 require_once("AddMember.php");
 
 $notificationFunctions[] = 'UserCreate::createNotification';
@@ -7,7 +10,7 @@ class UserCreate {
 
     static function createNotification(){
         global $notifications, $wgUser, $wgServer, $wgScriptPath;
-        $groups = $wgUser->getGroups();
+        $groups = MediaWikiServices::getInstance()->getUserGroupManager()->getUserGroups($wgUser);
         if($wgUser->isRegistered()){
             $me = Person::newFromId($wgUser->getId());
             if($me->isRoleAtLeast(STAFF)){

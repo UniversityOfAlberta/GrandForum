@@ -1,5 +1,7 @@
 <?php
 
+use MediaWiki\MediaWikiServices;
+
 class AddMaterialAPI extends API{
 
     var $errors = "";
@@ -49,7 +51,7 @@ class AddMaterialAPI extends API{
 
 	function doAction($noEcho=false){
 		global $wgRequest, $wgUser, $wgServer, $wgScriptPath, $wgMessage;
-		$groups = $wgUser->getGroups();
+		$groups = MediaWikiServices::getInstance()->getUserGroupManager()->getUserGroups($wgUser);
 		$me = Person::newFromId($wgUser->getId());
         if(!isset($_POST['projects']) || count($_POST['projects']) == 0){
             $_POST['projects'] = array();

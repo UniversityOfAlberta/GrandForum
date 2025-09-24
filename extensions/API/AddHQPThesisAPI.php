@@ -1,5 +1,7 @@
 <?php
 
+use MediaWiki\MediaWikiServices;
+
 class AddHQPThesisAPI extends API{
 
     function __construct(){
@@ -14,7 +16,7 @@ class AddHQPThesisAPI extends API{
 
 	function doAction($noEcho=false){
 		global $wgRequest, $wgUser;
-		$groups = $wgUser->getGroups();
+		$groups = MediaWikiServices::getInstance()->getUserGroupManager()->getUserGroups($wgUser);
 		$me = Person::newFromId($wgUser->getId());
 
 		$person = Person::newFromName($_POST['user']);

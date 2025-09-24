@@ -30,7 +30,7 @@ class NamespaceManager extends SpecialPage {
 	}
 
 	public function userCanExecute( $user ) {
-		return in_array('sysop', $user->getGroups());
+		return in_array('sysop', MediaWikiServices::getInstance()->getUserGroupManager()->getUserGroups($user));
 	}
 
 	/**

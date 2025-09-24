@@ -226,7 +226,6 @@ function onUserCan2(&$title, &$user, $action, &$result) {
   // Check public sections of wiki page
   if(!$user->isRegistered() && $title->getNamespace() >= 0 && $action == 'read'){
       $article = MediaWikiServices::getInstance()->getWikiPageFactory()->newFromTitle($title);
-      var_dump($article->mId);
       if($article != null && $article->exists()){
           $text = $article->getContent()->getText();
           if(strstr($text, "[public]") !== false && strstr($text, "[/public]") !== false){
@@ -282,7 +281,7 @@ function onUserCan2(&$title, &$user, $action, &$result) {
 	}
 	
 	//sysops are allowed to do anything (if we reach here then the action is not creating/moving a new page
-	if (in_array('sysop', $user->getGroups()) || in_array('Management', $user->getGroups())) {
+	if (in_array('sysop', MediaWikiServices::getInstance()->getUserGroupManager()->getUserGroups($user)) || in_array('Management', MediaWikiServices::getInstance()->getUserGroupManager()->getUserGroups($user))) {
 		$result = true;
 		return true;
 	}
@@ -386,7 +385,7 @@ function onUserCan2(&$title, &$user, $action, &$result) {
         $nsText = @$exploded[0];
     }
     
-    $userGroups = $user->getGroups();
+    $userGroups = MediaWikiServices::getInstance()->getUserGroupManager()->getUserGroups($user);
 
     foreach($userGroups as $group){
         if($nsText == $group){

@@ -1,5 +1,7 @@
 <?php
 
+use MediaWiki\MediaWikiServices;
+
 class AddRoleAPI extends API{
 
     function __construct(){
@@ -14,7 +16,7 @@ class AddRoleAPI extends API{
 
 	function doAction($noEcho=false){
 		global $wgRequest, $wgUser, $wgServer, $wgScriptPath;
-		$groups = $wgUser->getGroups();
+		$groups = MediaWikiServices::getInstance()->getUserGroupManager()->getUserGroups($wgUser);
 		$me = Person::newFromId($wgUser->getId());
 		$person = Person::newFromName($_POST['user']);
 		if($me->isRoleAtLeast(STAFF) || ($me->isRoleAtLeast(NI) && $person->isRole(INACTIVE) && $_POST['role'] == HQP)){
@@ -36,7 +38,7 @@ class AddRoleAPI extends API{
                                       'start_date' => EQ(COL('CURRENT_TIMESTAMP'))));
             // Add entry for user_groups
             $user = User::newFromId($person->getId());
-            $groups = $user->getGroups();
+            $groups = MediaWikiServices::getInstance()->getUserGroupManager()->getUserGroups($user);
             $skip = false;
             foreach($groups as $group){
                 if($role == $group){

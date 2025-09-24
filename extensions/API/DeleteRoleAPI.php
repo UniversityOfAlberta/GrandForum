@@ -1,5 +1,7 @@
 <?php
 
+use MediaWiki\MediaWikiServices;
+
 class DeleteRoleAPI extends API{
 
     function __construct(){
@@ -16,7 +18,7 @@ class DeleteRoleAPI extends API{
 
 	function doAction($noEcho=false){
 		global $wgRequest, $wgUser, $wgServer, $wgScriptPath;
-		$groups = $wgUser->getGroups();
+		$groups = MediaWikiServices::getInstance()->getUserGroupManager()->getUserGroups($wgUser);
         $me = Person::newFromId($wgUser->getId());
         $person = Person::newFromName($_POST['user']);
 		if($me->isRoleAtLeast(STAFF) || ($me->isRoleAtLeast(NI) && $person->isRole(HQP) && $_POST['role'] == HQP)){

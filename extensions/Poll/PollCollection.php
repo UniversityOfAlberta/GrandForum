@@ -1,5 +1,7 @@
 <?php
 
+use MediaWiki\MediaWikiServices;
+
 class PollCollection {
 
 	var $id;
@@ -99,7 +101,7 @@ class PollCollection {
 	function canUserViewPoll($user){
 		if($user->isRegistered()){
 		    $person = Person::newFromUser($user);
-			$groups = $user->getGroups();
+			$groups = MediaWikiServices::getInstance()->getUserGroupManager()->getUserGroups($user);
 			foreach($this->groups as $group){
 				if($group == "all"){
 					return true;

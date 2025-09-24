@@ -100,11 +100,10 @@ class Wiki extends BackboneModel {
     }
 
     function getNewestAuthor(){
-        $data = DBFunctions::select(array("mw_revision", "mw_revision_actor_temp", "mw_actor"),
+        $data = DBFunctions::select(array("mw_revision", "mw_actor"),
                                     array("actor_user"),
                                     array("rev_page" => EQ($this->getId()),
-                                          "revactor_rev" => EQ(COL("rev_id")),
-                                          "revactor_actor" => EQ(COL("actor_id"))),
+                                          "rev_actor" => EQ(COL("actor_id"))),
                                     array("rev_id"=>"DESC"));
         if(count($data)>0){
             return Person::newFromId($data[0]['actor_user']);
@@ -155,12 +154,11 @@ class Wiki extends BackboneModel {
 
     function isApproved(){
         $data = DBFunctions::select(array("grand_page_approved"=>"a",
-                                          "mw_revision"=>"r", "mw_revision_actor_temp", "mw_actor"),
+                                          "mw_revision"=>"r", "mw_actor"),
                                     array("a.approved", "actor_user"),
                                     array("a.page_id"=>EQ(COL("r.rev_page")),
                                           "r.rev_page"=>$this->getId(),
-                                          "revactor_rev" => EQ(COL("r.rev_id")),
-                                          "revactor_actor" => EQ(COL("actor_id")),
+                                          "r.rev_actor" => EQ(COL("actor_id")),
                                           "a.approved"=>1),
                                     array("rev_id"=>"DESC"));
         return (count($data)>0);
@@ -171,12 +169,11 @@ class Wiki extends BackboneModel {
             return $this->canView;
         }
         $me = Person::newFromWgUser();
-        $data = DBFunctions::select(array("grand_page_approved"=>"a","mw_revision"=>"r", "mw_revision_actor_temp", "mw_actor"),
+        $data = DBFunctions::select(array("grand_page_approved"=>"a","mw_revision"=>"r", "mw_actor"),
                                     array("a.approved", "actor_user"),
                                     array("a.page_id"=>EQ(COL("r.rev_page")),
                                           "r.rev_page"=>$this->getId(),
-                                          "revactor_rev" => EQ(COL("r.rev_id")),
-                                          "revactor_actor" => EQ(COL("actor_id"))), 
+                                          "r.rev_actor" => EQ(COL("actor_id"))), 
                                     array("rev_id"=>"DESC"));
         if (count($data)>0){
             $this->canView = ($data[0]['approved'] || $me->getId() === $data[0]['actor_user'] || $me->isRoleAtLeast(STAFF));

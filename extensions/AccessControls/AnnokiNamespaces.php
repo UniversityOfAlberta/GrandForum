@@ -290,7 +290,7 @@ static function getExtraNamespaces($type, $includeTalk = false) {
    
    $namespaces = array();
 
-   $groups = $user->getGroups();
+   $groups = MediaWikiServices::getInstance()->getUserGroupManager()->getUserGroups($user);
    
    if (in_array('sysop', $groups))
      $groups = $wgExtraNamespaces;

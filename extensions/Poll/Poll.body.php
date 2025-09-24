@@ -1,4 +1,7 @@
 <?php
+
+use MediaWiki\MediaWikiServices;
+
 autoload_register('Poll');
 require_once("MyPolls.php");
 require_once("CreatePoll.php");
@@ -40,7 +43,7 @@ class PollView {
 			    $this->pollCollection = PollCollection::newFromId($_GET['id']);
 			}
 			if($this->pollCollection != null){
-				$groups = $wgUser->getGroups();
+				$groups = MediaWikiServices::getInstance()->getUserGroupManager()->getUserGroups($wgUser);
 				$found = false;
 				$found = $this->pollCollection->canUserViewPoll($wgUser);
 				$expired = $this->pollCollection->isPollExpired();
