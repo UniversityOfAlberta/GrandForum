@@ -10,6 +10,9 @@
  * @package MediaWiki
  * @subpackage Skins
  */
+ 
+use MediaWiki\MediaWikiServices; 
+
 $wgValidSkinNames['cavendish'] = 'cavendish';
 $wgAutoloadClasses['SkinCavendish'] = __DIR__ . '/cavendish.php';
 
@@ -49,28 +52,23 @@ class CavendishTemplate extends QuickTemplate {
 		// Suppress warnings to prevent notices about missing indexes in $this->data
 		//Wikimedia\AtEase\AtEase::suppressWarnings();
 		
-?><!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php $this->text('lang') ?>" lang="<?php $this->text('lang') ?>" dir="<?php $this->text('dir') ?>">
-	<head>
-		<meta http-equiv="Content-Type" content="<?php $this->text('mimetype') ?>; charset=<?php $this->text('charset') ?>" />
-
-		<title><?php $this->text('pagetitle') ?></title>
+?>
 		<link type="image/x-icon" href="<?php echo $wgServer.$wgScriptPath.'/favicon.png'; ?>" rel="shortcut icon" />
 		<link type="text/css" href="<?php $this->text('stylepath') ?>/smoothness/jquery-ui-1.8.21.custom.css" rel="Stylesheet" />
-		<link type="text/css" href="<?php $this->text('stylepath') ?>/<?php $this->text('stylename') ?>/jquery.qtip.min.css" rel="Stylesheet" />
-		<link type="text/css" href="<?php $this->text('stylepath') ?>/<?php $this->text('stylename') ?>/chosen/chosen.css.php" rel="Stylesheet" />
+		<link type="text/css" href="<?php echo $wgServer.$wgScriptPath; ?>/skins/cavendish/jquery.qtip.min.css" rel="Stylesheet" />
+		<link type="text/css" href="<?php echo $wgServer.$wgScriptPath; ?>/skins/cavendish/chosen/chosen.css.php" rel="Stylesheet" />
 		<?php //$this->html('csslinks') ?>
 
 		<link rel="stylesheet" href="<?php $this->text('stylepath') ?>/common/shared.css" type="text/css" media="screen" />
 		<link rel="stylesheet" href="<?php $this->text('stylepath') ?>/common/commonPrint.css" type="text/css" media="print" />
-		<link rel="stylesheet" href="<?php $this->text('stylepath') ?>/<?php $this->text('stylename') ?>/print.css" type="text/css" media="print" />
+		<link rel="stylesheet" href="<?php echo $wgServer.$wgScriptPath; ?>/skins/cavendish/print.css" type="text/css" media="print" />
 		
 		<link type="text/css" href="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/DataTables/css/jquery.dataTables.css" rel="Stylesheet" />
 		<link type="text/css" rel="stylesheet" href="<?php echo "$wgServer$wgScriptPath"; ?>/skins/simplePagination/simplePagination.css" />
 		
-		<style type="text/css" media="screen,projection">/*<![CDATA[*/ @import "<?php $this->text('stylepath') ?>/<?php $this->text('stylename') ?>/main.css"; /*]]>*/</style>
-		<style type="text/css" media="screen,projection">/*<![CDATA[*/ @import "<?php $this->text('stylepath') ?>/<?php $this->text('stylename') ?>/extensions.css"; /*]]>*/</style>
-		<style <?php if(empty($this->data['printable']) ) { ?>media="print"<?php } ?> type="text/css">/*<![CDATA[*/ @import "<?php $this->text('stylepath') ?>/<?php $this->text('stylename') ?>/print.css"; /*]]>*/</style>
+		<style type="text/css" media="screen,projection">/*<![CDATA[*/ @import "<?php echo $wgServer.$wgScriptPath; ?>/skins/cavendish/main.css"; /*]]>*/</style>
+		<style type="text/css" media="screen,projection">/*<![CDATA[*/ @import "<?php echo $wgServer.$wgScriptPath; ?>/skins/cavendish/extensions.css"; /*]]>*/</style>
+		<style <?php if(empty($this->data['printable']) ) { ?>media="print"<?php } ?> type="text/css">/*<![CDATA[*/ @import "<?php echo $wgServer.$wgScriptPath; ?>/skins/cavendish/print.css"; /*]]>*/</style>
 		
 		<link rel="stylesheet" type="text/css" media="print" href="<?php $this->text('stylepath') ?>/common/commonPrint.css" />
 		<link type="text/css" href="<?php $this->text('stylepath') ?>/switcheroo/switcheroo.css" rel="Stylesheet" />
@@ -812,8 +810,8 @@ $(function(){
                 $GLOBALS['tabs']['Profile'] = TabUtils::createTab($title);
                 $GLOBALS['tabs']['Manager'] = TabUtils::createTab("Manager");
                 
-	            Hooks::run('TopLevelTabs', array(&$GLOBALS['tabs']));
-	            Hooks::run('SubLevelTabs', array(&$GLOBALS['tabs']));
+	            MediaWikiServices::getInstance()->getHookContainer()->run('TopLevelTabs', array(&$GLOBALS['tabs']));
+	            MediaWikiServices::getInstance()->getHookContainer()->run('SubLevelTabs', array(&$GLOBALS['tabs']));
 	            
             ?>
 		    <?php 
@@ -925,7 +923,7 @@ $(function(){
 			<!-- end content -->
 			<?php if($this->data['dataAfterContent']) { $this->html ('dataAfterContent'); } ?>
 				<div id="footer"><table><tr><td align="left" width="1%" nowrap="nowrap">
-		    <?php if($this->data['copyrightico']) { ?><div id="f-copyrightico"><?php $this->html('copyrightico') ?></div><?php } ?></td><td align="center">
+		    </td><td align="center">
     <?php	// Generate additional footer links
 		    $footerlinks = array(
 			    'lastmod', 'viewcount', 'numberofwatchingusers', 'credits', 'copyright',
@@ -993,8 +991,8 @@ $(function(){
 		        redirect("$wgServer$wgScriptPath/index.php/{$_GET['returnto']}");
 		    }
 		    $me = Person::newFromWgUser();
-		    Hooks::run('ToolboxHeaders', array(&$GLOBALS['toolbox']));
-	        Hooks::run('ToolboxLinks', array(&$GLOBALS['toolbox']));
+		    MediaWikiServices::getInstance()->getHookContainer()->run('ToolboxHeaders', array(&$GLOBALS['toolbox']));
+	        MediaWikiServices::getInstance()->getHookContainer()->run('ToolboxLinks', array(&$GLOBALS['toolbox']));
 	        //$GLOBALS['toolbox']['Other']['links'][1000] = TabUtils::createToolboxLink("Upload File", "$wgServer$wgScriptPath/index.php/Special:Upload");
 	        if($wgUser->isRegistered() && $config->getValue('networkName') == "AGE-WELL"){ 
 	            $resources = TabUtils::createToolboxHeader("Resources");
@@ -1122,8 +1120,8 @@ EOF;
         <a class='underlined highlights-text' style='display:inline;padding:0;' href='$wgServer$wgScriptPath/index.php/About'><span class='pBodyTitle1 fr'>Propos</span></a>
         <div class='pBody1 fr' style='padding: 10px;margin-bottom: 4px;margin-left:4px;margin-right:4px;'>En savoir plus sur le site <a class='underlined highlights-text' style='display:inline;padding:0;' href='$wgServer$wgScriptPath/index.php/About'>ici</a>.</div>";
         
-		Hooks::run( 'MonoBookTemplateToolboxEnd', array( &$this ) );
-		Hooks::run( 'SkinTemplateToolboxEnd', array( &$this ) );
+		MediaWikiServices::getInstance()->getHookContainer()->run( 'MonoBookTemplateToolboxEnd', array( &$this ) );
+		MediaWikiServices::getInstance()->getHookContainer()->run( 'SkinTemplateToolboxEnd', array( &$this ) );
 ?>
 	</li>
 <?php

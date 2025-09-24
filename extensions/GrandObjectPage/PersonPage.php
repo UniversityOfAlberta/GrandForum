@@ -189,7 +189,7 @@ class PersonPage {
     static function createSubTabs(&$tabs){
         global $wgUser, $wgServer, $wgScriptPath, $wgTitle;
         $me = Person::newFromWgUser();
-        if($me->isRegistered()){
+        if($me->isLoggedIn()){
             $selected = ($me->isRole($wgTitle->getNSText()) && $me->getName() == $wgTitle->getText()) ? "selected" : "";
             $tabs['Profile']['subtabs'][] = TabUtils::createSubTab($me->getNameForForms(), $me->getUrl(), $selected);
         }

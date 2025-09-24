@@ -79,7 +79,7 @@ class TabUtils {
         $new_actions = array();
         foreach($content_actions as $key1 => $actions){
             foreach($actions as $key => $action){
-                if(strstr($action['class'], 'selected') !== false && !is_numeric($key)){
+                if(isset($action['class']) && strstr($action['class'], 'selected') !== false && !is_numeric($key)){
                     continue;
                 }
                 if(!is_numeric($key)){
@@ -106,6 +106,8 @@ class TabUtils {
         }
         
         $content_actions = $new_actions;
+        $content_actions['namespaces'] = array();
+        $content_actions['associated-pages'] = array();
         return true;
     }
     

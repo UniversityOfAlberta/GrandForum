@@ -4,6 +4,8 @@
  * @package GrandObjects
  */
 
+use MediaWiki\MediaWikiServices;
+
 class PDF extends BackboneModel {
     
     var $id;
@@ -192,7 +194,7 @@ class PDF extends BackboneModel {
             return true;
         }
         $result = false;
-        Hooks::run('CanUserReadPDF', array($me, $this, &$result));
+        MediaWikiServices::getInstance()->getHookContainer()->run('CanUserReadPDF', array($me, $this, &$result));
         return $result;
     }
     

@@ -1,5 +1,7 @@
 <?php
 
+use MediaWiki\MediaWikiServices;
+
 require_once("SpecialImpersonate.php");
 
 $wgHooks['UserLoadAfterLoadFromSession'][] = 'startImpersonate';
@@ -137,7 +139,7 @@ function startImpersonate($wgUser){
             $pageAllowed = true;
         }
         else{
-            Hooks::run('CheckImpersonationPermissions', array($person, $realPerson, $ns, $title, &$pageAllowed));
+            MediaWikiServices::getInstance()->getHookContainer()->run('CheckImpersonationPermissions', array($person, $realPerson, $ns, $title, &$pageAllowed));
         }
         
         if(!$pageAllowed && !((isset($_POST['submit']) && $_POST['submit'] == "Save") || isset($_GET['showInstructions']) || (isset($_GET['action']) && $_GET['action'] == 'getUserMode'))){
@@ -201,7 +203,7 @@ function getImpersonatingMessage(){
         $readOnly = ($wgDelegating) ? "" : " in read-only mode";
         $message .= "<a href='{$realPerson->getUrl()}'>{$realPerson->getNameForForms()}</a> is currently viewing the forum as <a href='{$person->getUrl()}'>{$person->getNameForForms()}</a>{$readOnly}.  This session will expire once you navigate away from this page";
     }
-    Hooks::run('ImpersonationMessage', array($person, $realPerson, $ns, $title, &$message));
+    MediaWikiServices::getInstance()->getHookContainer()->run('ImpersonationMessage', array($person, $realPerson, $ns, $title, &$message));
     return $message;
 }
 

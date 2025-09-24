@@ -350,7 +350,7 @@ function implode_wrapped($before, $after, $glue, $array){
 			$user->addGroup( $group );
 		}
 
-		Hooks::run( 'UserRights', array( &$user, $addgroup, $removegroup ) );
+		MediaWikiServices::getInstance()->getHookContainer()->run( 'UserRights', array( &$user, $addgroup, $removegroup ) );
 		$this->addLogEntry( $user, $currentGroups, MediaWikiServices::getInstance()->getUserGroupManager()->getUserGroups($user) );
 
 

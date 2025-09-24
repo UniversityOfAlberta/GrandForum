@@ -412,7 +412,7 @@ input {
 	margin:2px;
 }
 
-input[type=text] {
+input[type=text]:not(.oo-ui-inputWidget-input) {
     height: 16px;
 }
 

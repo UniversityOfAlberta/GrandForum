@@ -1,10 +1,11 @@
 <?php
 
+use MediaWiki\MediaWikiServices;
+
 class SpecialSideUserLogin extends SpecialUserLogin {
 
-    function __construct(){
-        parent::__construct();
-        
+    public function __construct() {
+        parent::__construct(MediaWikiServices::getInstance()->getAuthManager());
     }
     
     protected function mainLoginForm( array $requests, $msg = '', $msgtype = 'error' ) {
@@ -36,6 +37,7 @@ class SpecialSideUserLogin extends SpecialUserLogin {
         echo $this->getOutput()->getHTML();
         echo "<script type='text/javascript'>
             $('#side form[name=userlogin]').attr('action', $('#side form[name=userlogin]').attr('action').replace('index.php?title=Special:UserLogin', 'index.php/Special:UserLogin?title=Special:UserLogin'));
+            $('#userloginForm .cdx-checkbox__icon').remove();
         </script>";
     }
 

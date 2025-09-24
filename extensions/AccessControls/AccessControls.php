@@ -1,5 +1,7 @@
 <?php
 
+use MediaWiki\MediaWikiServices;
+
 require "SpecialSideUserLogin.php";
 require "Management.php";
 //require "NamespaceManager.php";
@@ -103,7 +105,7 @@ function permissionError(){
         // Depending on when this function is called, the title may not be created yet, so make an empty one
         $wgTitle = new Title();
     }
-    Hooks::run('BeforeDisplayNoArticleText', array(null));
+    MediaWikiServices::getInstance()->getHookContainer()->run('BeforeDisplayNoArticleText', array(null));
     if($wgUser->isRegistered()){
         $wgOut->setPageTitle("Permission error");
         $wgOut->addHTML("<p>You are not allowed to execute the action you have requested.</p>

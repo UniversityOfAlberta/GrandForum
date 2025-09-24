@@ -1,4 +1,7 @@
 <?php
+
+    use MediaWiki\MediaWikiServices;
+
     autoload_register('GrandObjectPage');
     autoload_register('GrandObjectPage/TabbedPage');
     
@@ -21,13 +24,13 @@
     
     function noEdit($editpage){
         global $wgArticle;
-        Hooks::run('ArticleViewHeader', array($wgArticle, "", ""));
+        MediaWikiServices::getInstance()->getHookContainer()->run('ArticleViewHeader', array($wgArticle, "", ""));
         return true;
     }
     
     function noCreate($action, $article){
         if($action == "createFromTemplate"){
-            Hooks::run('ArticleViewHeader', array($article, "", "")); 
+            MediaWikiServices::getInstance()->getHookContainer()->run('ArticleViewHeader', array($article, "", "")); 
         }
         return true;
     }
