@@ -290,7 +290,7 @@
                     <tbody>
             ]]>
         </Static>
-        <ReportItemSet id="faculty" type="DepartmentPeopleReportItemSet" department="{$my_dept}" start="{$last_year}-07-01" end="{$this_year}-07-01" university="University of Alberta" excludeMe="true">
+        <ReportItemSet id="faculty" type="DepartmentPeopleReportItemSet" department="{$my_dept}" start="{$last_year}-07-01" end="{$this_year}-07-01" university="University of Alberta">
             <Static>
                 {set(nStudents, 0)}
                 {set(nCourses, 0)}
@@ -520,7 +520,7 @@
                     <tbody>
             ]]>
         </Static>
-        <ReportItemSet id="faculty" type="DepartmentPeopleReportItemSet" atsec="true" department="{$my_dept}" start="{$last_year}-07-01" end="{$this_year}-07-01" university="University of Alberta" excludeMe="true">
+        <ReportItemSet id="faculty" type="DepartmentPeopleReportItemSet" atsec="true" department="{$my_dept}" start="{$last_year}-07-01" end="{$this_year}-07-01" university="University of Alberta">
             <Static>
                 {set(nStudents, 0)}
                 {set(nCourses, 0)}
