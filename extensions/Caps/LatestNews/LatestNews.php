@@ -140,7 +140,7 @@ class LatestNews extends SpecialPage{
         
         if(isset($data[0])){
             $pdfId = (isset($_GET['pdf'])) ? $_GET['pdf'] : $data[0]['id'];
-            $wgOut->addHTML("<iframe src='https://docs.google.com/viewer?url=$wgServer$wgScriptPath/index.php?action=getPDF%26pdf={$pdfId}%26lang={$wgLang->getCode()}&embedded=true' width='800px' height='610px' frameborder='0'></iframe>");
+            $wgOut->addHTML("<iframe src='$wgServer$wgScriptPath/index.php?action=getPDF&pdf={$pdfId}&lang={$wgLang->getCode()}' width='800px' height='610px' frameborder='0'></iframe>");
             $wgOut->addHTML("<div>
                 <fieldset>
                 <legend>

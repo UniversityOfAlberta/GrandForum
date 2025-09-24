@@ -1,5 +1,7 @@
 <?php
 
+use MediaWiki\MediaWikiServices;
+
 class PeopleWikiTab extends AbstractTab {
 
     var $table;
@@ -413,7 +415,7 @@ class PeopleWikiTab extends AbstractTab {
 
                     $this->html .= "<tr>\n";
                     $revId = $page->getRevIdFetched();
-                    $revision = Revision::newFromId($revId);
+                    $revision = MediaWikiServices::getInstance()->getRevisionStore()->getRevisionById($revId);
                     $date = $revision->getTimestamp();
                     $year = substr($date, 0, 4);
                     $month = substr($date, 4, 2);
@@ -421,7 +423,7 @@ class PeopleWikiTab extends AbstractTab {
                     $hour = substr($date, 8, 2);
                     $minute = substr($date, 10, 2);
                     $second = substr($date, 12, 2);
-                    $editor = Person::newFromId($revision->getUser());
+                    $editor = Person::newFromId($revision->getUser()->getId());
                     if($data[0]['title'] != ""){
                         $title = ucfirst($data[0]['title']);
                     }

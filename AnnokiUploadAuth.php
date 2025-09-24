@@ -12,11 +12,13 @@
  * usually don't.
  */
 
+use MediaWiki\MediaWikiServices;
+
 define( 'MW_NO_OUTPUT_COMPRESSION', 1 );
 require_once( dirname( __FILE__ ) . '/includes/WebStart.php' );
-require_once( dirname( __FILE__ ) . '/includes/StreamFile.php' );
+require_once( dirname( __FILE__ ) . '/includes/Output/StreamFile.php' );
 
-$perms = User::getGroupPermissions( array( '*' ) );
+$perms = MediaWikiServices::getInstance()->getGroupPermissionsLookup()->getGroupPermissions( array( '*' ) );
 if ( in_array( 'read', $perms, true ) ) {
 	wfDebugLog( 'AnnokiUploadAuth', 'Public wiki' );
 	wfPublicError();
@@ -41,15 +43,20 @@ $me = Person::newFromWgUser();
 $data = DBFunctions::select(array('mw_page'),
                             array('*'),
                             array('page_title' => EQ("{$file}")));
+
 if((strpos($file, "Presentations_") === 0 ||
     strpos($file, "Surveys_") === 0 ||
     strpos($file, "Curricula_") === 0) &&
    (!$me->isRoleAtLeast(MANAGER) && !$me->isSubRole('Academic Faculty'))){
    wfForbidden();
 }
-   
-$wikipage = @WikiPage::newFromRow((object)$data[0]);
-if(!wfLocalFile($file)->exists()){
+
+try{
+    $wikipage = @MediaWikiServices::getInstance()->getWikiPageFactory()->newFromRow((object)$data[0]);
+} catch(Exception $e) {
+    wfForbidden();
+}
+if(!MediaWikiServices::getInstance()->getRepoGroup()->getLocalRepo()->newFile($file)->exists()){
     $data = DBFunctions::select(array('mw_an_upload_permissions'),
                                 array('url'),
                                 array('upload_name' => EQ('File:'.$file)));
@@ -94,7 +101,7 @@ if ($egAnProtectUploads){
     $unarchivedTitle =  Title::makeTitleSafe( NS_FILE, $match);
   }
   str_replace("File:", "", $unarchivedTitle);
-  if (!$unarchivedTitle->userCan('read') || !$wgUser->isRegistered()){
+  if (!MediaWikiServices::getInstance()->getPermissionManager()->userCan('read', $wgUser, $unarchivedTitle) || !$wgUser->isRegistered()){
     if((!is_array( $wgWhitelistRead ) || !in_array($title, $wgWhitelistRead))){
         wfDebugLog( 'AnnokiUploadAuth', 'User does not have access to '.$unarchivedTitle->getPrefixedText());
         $errorFile = 'extensions/AccessControls/images/errorFile.gif';
@@ -142,7 +149,6 @@ $wikipage->doViewUpdates($wgUser);
 DeferredUpdates::doUpdates('commit');
 wfDebugLog( 'AnnokiUploadAuth', "Streaming `{$filename}`" );
 StreamFile::stream($filename, array( 'Cache-Control: private', 'Vary: Cookie' ));
-wfLogProfilingData();
 
 /**
  * Issue a standard HTTP 403 Forbidden header and a basic
@@ -160,8 +166,7 @@ function wfForbidden($error = 'You need to log in to access files on this server
 </body>
 </html>
 ENDS;
-	wfLogProfilingData();
-	exit();
+	close();
 }
 
 /**
@@ -181,7 +186,6 @@ this case.
 </body>
 </html>
 ENDS;
-	wfLogProfilingData();
-	exit;
+	close();
 }
 

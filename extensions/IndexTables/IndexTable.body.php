@@ -1,5 +1,7 @@
 <?php
 
+use MediaWiki\MediaWikiServices;
+
 require_once("InactiveUsers.php");
 require_once('PeopleWikiTab.php');
 require_once('PeopleTableTab.php');
@@ -19,7 +21,7 @@ class IndexTable {
     static function externalRedirect($out, $parseroutput){
         global $wgTitle, $wgServer;
         if($wgTitle->getNsText() == "File"){
-            redirect($wgServer.wfLocalFile($wgTitle->getText())->getUrl() );
+            redirect($wgServer.MediaWikiServices::getInstance()->getRepoGroup()->getLocalRepo()->newFile($wgTitle->getText())->getUrl());
         }
         return true;
     }
