@@ -24,11 +24,11 @@ class DeleteRelationAPI extends API{
 		if(!$noEcho){
             if($person1->getName() == null){
                 echo "There is no person by the name of '{$_POST['name1']}'\n";
-                exit;
+                close();
             }
             if($person2->getName() == null){
                 echo "There is no person by the name of '{$_POST['name2']}'\n";
-                exit;
+                close();
             }
         }
 		if($me->isRoleAtLeast(HQP)){

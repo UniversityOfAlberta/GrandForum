@@ -19,35 +19,35 @@ function getUserMode($action, $page){
                           'message' => 'You are currently logged out');
             header('Content-Type: application/json');
             echo json_encode($json);
-            exit;
+            close();
         }
         else if(FROZEN && !$me->isRoleAtLeast(STAFF)){
             $json = array('mode' => 'frozen',
                           'message' => "The Forum is currently not available for edits during the RMC review-and-deliberation period.");
             header('Content-Type: application/json');
             echo json_encode($json);
-            exit;
+            close();
         }
         else if($wgImpersonating){
             $json = array('mode' => 'impersonating',
                           'message' => getImpersonatingMessage());
             header('Content-Type: application/json');
             echo json_encode($json);
-            exit;
+            close();
         }
         else if(isset($_GET['user']) && $_GET['user'] != $wgUser->getName()){
             $json = array('mode' => 'differentUser',
                           'message' => 'You are currently logged in as <i>'.$wgUser->getName().'</i>.  Your browser session is associated with the user <i>'.$_GET['user'].'</i>.  To correct this, refresh the page, but make sure to copy any unsaved changes which you may have made, as they have not been saved.');
             header('Content-Type: application/json');
             echo json_encode($json);
-            exit;
+            close();
         }
         else{
             $json = array('mode' => 'loggedIn',
                           'message' => "");
             header('Content-Type: application/json');
             echo json_encode($json);
-            exit;
+            close();
         }
     }
     return true;

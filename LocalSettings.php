@@ -25,6 +25,10 @@ if(PHP_SAPI != 'cli'){
     header('Cache-Control: no-cache, no-store, must-revalidate');
     header('Pragma: no-cache');
     header('Expires: 0');
+    
+    if(!isset($_GET['embed'])){
+        header('X-Frame-Options: SAMEORIGIN');
+    }
 }
 
 date_default_timezone_set('America/Edmonton');
@@ -47,9 +51,18 @@ $path = array( $IP, "$IP/includes", "$IP/languages" );
 set_include_path( implode( PATH_SEPARATOR, $path ) . PATH_SEPARATOR . get_include_path() );
 
 //require_once( "$IP/includes/DefaultSettings.php" );
+require_once( "$IP/Classes/Patch.php" );
 require_once( "$IP/config/ForumConfig.php" );
 require_once( "$IP/Classes/Inflect/Inflect.php" );
 $wgBaseDirectory = MW_INSTALL_PATH;
+
+// Hack to disable the headElement function
+$objPatch = new Patch("$IP/includes/Output/OutputPage.php");
+$objPatch->redefineFunction("
+    public function headElement( Skin \$sk, \$includeStyle = true ) {
+        return '';
+    }");
+eval($objPatch->getCode());
 
 $wgDeprecationReleaseLimit = '1.0';
 
@@ -133,11 +146,11 @@ $wgDBprefix         = "mw_";
 $wgDBTableOptions   = "ENGINE=InnoDB, DEFAULT CHARSET=binary";
 
 ## Cache settings
-$wgSessionCacheType = CACHE_DB;
+//$wgSessionCacheType = CACHE_DB;
 $wgPasswordAttemptThrottle = [];
 $wgDisableCounters = false;
 $wgJobRunRate = 0.01;
-$wgSessionsInObjectCache = true;
+//$wgSessionsInObjectCache = true;
 $wgEnableSidebarCache = true;
 if($config->getValue('localizationCache') != ""){
     if(!file_exists($config->getValue('localizationCache')) && 

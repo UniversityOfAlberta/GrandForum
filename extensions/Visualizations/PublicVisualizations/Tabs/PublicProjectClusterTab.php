@@ -139,7 +139,7 @@ class PublicProjectClusterTab extends AbstractTab {
 	        
 	        header("Content-Type: application/json");
 	        echo json_encode($data);
-	        exit;
+	        close();
             echo <<<EOF
 {
  "name": "",
@@ -407,7 +407,7 @@ class PublicProjectClusterTab extends AbstractTab {
  ]
 }
 EOF;
-            exit;
+            close();
         }
         return true;
 	}

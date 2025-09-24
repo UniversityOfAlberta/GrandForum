@@ -47,7 +47,7 @@ class PublicationAPI extends API{
 	    }
 	    $cache = new PublicationFullCache($this);
 		echo $cache->getCache();
-		exit;
+		close();
 		/*
 		$finish = microtime(true);
 		

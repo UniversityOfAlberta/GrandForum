@@ -35,7 +35,7 @@ class ThemePage {
                     $wgOut->clearHTML();
                     $wgOut->permissionRequired('');
                     $wgOut->output();
-                    exit;
+                    close();
                 }
                 return true;
             }

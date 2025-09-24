@@ -112,7 +112,7 @@ function wfForbidden($error = 'You need to log in to access files on this server
 </html>
 ENDS;
 	wfLogProfilingData();
-	exit();
+	close();
 }
 
 /**
@@ -133,6 +133,6 @@ this case.
 </html>
 ENDS;
 	wfLogProfilingData();
-	exit;
+	close();
 }
 

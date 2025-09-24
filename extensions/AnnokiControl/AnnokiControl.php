@@ -40,6 +40,11 @@ function redirect($url){
     try {
         DBFunctions::commit();
     } catch (exception $e){ }
+    close();
+}
+
+function close(){
+    MediaWikiServices::getInstance()->getDBLoadBalancerFactory()->shutdown();
     exit;
 }
 

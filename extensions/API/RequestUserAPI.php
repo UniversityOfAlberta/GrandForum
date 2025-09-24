@@ -36,7 +36,7 @@ class RequestUserAPI extends API{
 		if(!isset($_POST['wpName']) || $_POST['wpName'] == null){
 			if($doEcho){
 			    echo "A User Name must be provided.\n";
-		    	exit;
+		    	close();
 		    }
 		    else{
 		        $message = "A User Name must be provided.";
@@ -48,7 +48,7 @@ class RequestUserAPI extends API{
 		if(!preg_match("/^[À-Ÿa-zA-Z\-]+\.[À-Ÿa-zA-Z\-]+$/", $name)){
 		    if($doEcho){
 		        echo "This User Name is not in the format 'FirstName.LastName'.\n";
-		        exit;
+		        close();
 		    }
 		    else{
 		        $message = "This User Name is not in the format 'FirstName.LastName'.";
@@ -61,7 +61,7 @@ class RequestUserAPI extends API{
 		if($person != null && $person->getName() != null){
 		    if($doEcho){
 		        echo "A user by the name of '{$person->getName()}' already exists.\n";
-		        exit;
+		        close();
 		    }
 		    else{
 		        $message = "A user by the name of '{$person->getName()}' already exists.";
@@ -72,7 +72,7 @@ class RequestUserAPI extends API{
 		if(!isset($_POST['wpEmail']) || $_POST['wpEmail'] == null){
 			if($doEcho){
 			    echo "An email address must be provided.\n";
-			    exit;
+			    close();
 			}
 			else{
 			    $message = "An email address must be provided.";
@@ -84,7 +84,7 @@ class RequestUserAPI extends API{
 		if(!Sanitizer::validateEmail($email)){
 		    if($doEcho){
 		        echo "A valid email address must be provided.\n";
-		        exit;
+		        close();
 		    }
 		    else{
 		        $message = "A valid email address must be provided.";
@@ -95,7 +95,7 @@ class RequestUserAPI extends API{
 		if(!$me->isRoleAtLeast(MANAGER) && (!isset($_POST['wpUserType']) || $_POST['wpUserType'] == null)){
 		    if($doEcho){
 			    echo "User Roles must be provided\n";
-			    exit;
+			    close();
 			}
 			else{
 			    $message = "At least one User Role must be provided";

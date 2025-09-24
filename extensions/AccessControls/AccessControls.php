@@ -120,7 +120,7 @@ function permissionError(){
         $wgOut->output();
         $wgOut->disable();
     }
-    exit;
+    close();
 }
 
 function isValidEmailAddr($addr, &$result){

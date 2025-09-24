@@ -52,7 +52,7 @@ class MaterialListAPI extends API{
 	    }
 	    $cache = new MaterialListFullCache($this);
 		echo $cache->getCache();
-		exit;
+		close();
 	}
 	
 	function outputXML($materials){

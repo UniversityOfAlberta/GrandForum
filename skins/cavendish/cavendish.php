@@ -44,6 +44,9 @@ class CavendishTemplate extends QuickTemplate {
 	 *
 	 * @access private
 	 */
+	 
+	
+	 
 	function execute() {
 		global $wgRequest, $wgServer, $wgScriptPath, $wgOut, $wgLogo, $wgTitle, $wgUser, $wgMessage, $wgImpersonating, $wgDelegating, $wgTitle, $config, $wgLang;
 		$this->skin = $skin = $this->data['skin'];
@@ -52,7 +55,12 @@ class CavendishTemplate extends QuickTemplate {
 		// Suppress warnings to prevent notices about missing indexes in $this->data
 		//Wikimedia\AtEase\AtEase::suppressWarnings();
 		
-?>
+?><!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php $this->text('lang') ?>" lang="<?php $this->text('lang') ?>" dir="<?php $this->text('dir') ?>">
+	<head>
+		<meta http-equiv="Content-Type" content="<?php $this->text('mimetype') ?>; charset=<?php $this->text('charset') ?>" />
+		<meta name="robots" content="noindex" />
+		<title><?php $this->text('pagetitle') ?></title>
 		<link type="image/x-icon" href="<?php echo $wgServer.$wgScriptPath.'/favicon.png'; ?>" rel="shortcut icon" />
 		<link type="text/css" href="<?php $this->text('stylepath') ?>/smoothness/jquery-ui-1.8.21.custom.css" rel="Stylesheet" />
 		<link type="text/css" href="<?php echo $wgServer.$wgScriptPath; ?>/skins/cavendish/jquery.qtip.min.css" rel="Stylesheet" />

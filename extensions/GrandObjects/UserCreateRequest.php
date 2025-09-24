@@ -203,7 +203,7 @@ class UserCreateRequest {
                 header("Content-Disposition: attachment; filename={$request->getName()}");
                 header("Content-Type: {$certification['file_data']['type']}");
                 echo base64_decode($certification['file_data']['file']);
-                exit;
+                close();
             }
         }
         return true;

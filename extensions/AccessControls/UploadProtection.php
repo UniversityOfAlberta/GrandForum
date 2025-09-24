@@ -27,7 +27,7 @@ class UploadProtection {
 	print "<b>Annoki Error</b>: The file AnnokiUploadAuth.php must exist at the base directory of the MediaWiki installation, but the web server doesn't have sufficient permissions to create this file.  
 <br><br>Please copy $localUploadAuth to $uploadAuth manually.
 <br><br>UNIX: cp $localUploadAuth $uploadAuth";
-      exit;
+      close();
       }
     }
   }

@@ -121,7 +121,7 @@ class ProjectMainTab extends AbstractEditableTab {
             if($result){
                 $this->project->name = $_POST['new_acronym'];
                 redirect($this->project->getUrl());
-                exit;
+                close();
             }
         }
     }

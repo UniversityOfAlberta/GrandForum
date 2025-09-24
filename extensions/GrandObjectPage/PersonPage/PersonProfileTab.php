@@ -303,7 +303,7 @@ EOF;
             $data = array_slice($data, 0, 75);
             header("Content-Type: application/json");
             echo json_encode($data);
-            exit;
+            close();
         }
         return true;
     }

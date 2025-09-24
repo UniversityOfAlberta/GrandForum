@@ -18,7 +18,7 @@ function contributionSearch($action, $request){
     if($action == "contributionSearch"){
         header("Content-type: text/json");
         echo Contribution::search($_GET['phrase'], $_GET['category']);
-        exit;
+        close();
     }
     return true;
 }

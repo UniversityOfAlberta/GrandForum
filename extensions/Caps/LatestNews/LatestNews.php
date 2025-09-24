@@ -28,7 +28,7 @@ class LatestNews extends SpecialPage{
                                         array($_GET['lang'] => 'pdf'),
                                         array('id' => $_GET['pdf']));
             echo $data[0]['pdf'];
-            exit;
+            close();
         }
         return true;
     }
