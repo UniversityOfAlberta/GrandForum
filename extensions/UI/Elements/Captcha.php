@@ -8,17 +8,8 @@ class Captcha extends UIElement {
     }
     
     function render(){
-        global $wgLang;
-        if($wgLang->getCode() == 'en'){
-            return "<img id='captcha' src='../Classes/securimage/securimage_show.php' alt='CAPTCHA Image' /><br />
-                    <input type='text' name='{$this->id}' size='10' maxlength='6' />
-	                <a href='#' onclick='document.getElementById(\"captcha\").src = \"../Classes/securimage/securimage_show.php?\" + Math.random(); return false'>[ Different Image ]</a>";
-        }
-        if($wgLang->getCode() == 'fr'){
-            return "<img id='captcha' src='../Classes/securimage/securimage_show.php' alt='CAPTCHA Image' /><br />
-                    <input type='text' name='{$this->id}' size='10' maxlength='6' />
-	                <a href='#' onclick='document.getElementById(\"captcha\").src = \"../Classes/securimage/securimage_show.php?\" + Math.random(); return false'>[ Image Différente ]</a>";
-        }
+        global $config;
+        return "<div class='g-recaptcha' data-sitekey='{$config->getValue('reCaptchaSiteKey')}'></div>";
     }
     
 }

@@ -201,8 +201,8 @@ Votre participation est facultative et vous pouvez choisir de se retirer de l'é
             $referenceRow = new FormTableRow("reference_row");
             $referenceRow->append($referenceLabel)->append($referenceField);
 
-            $captchaLabel = new Label("captcha_label", "Enter Code", "Enter the code you see in the image", VALIDATE_NOT_NULL);
-            $captchaField = new Captcha("captcha_field", "Captcha", "", VALIDATE_NOT_NULL);
+            $captchaLabel = new Label("captcha_label", "Enter Code", "Enter the code you see in the image", VALIDATE_NOTHING);
+            $captchaField = new Captcha("captcha_field", "Captcha", "", VALIDATE_NOTHING);
             $captchaRow = new FormTableRow("captcha_row");
             $captchaRow->append($captchaLabel)->append($captchaField);
             $termsLabel = new Label("terms_label", "<div style='display:inline-block;vertical-align:top;'>Terms and Conditions<br /><small>*must scroll through consent form</small></div>", "Terms and conditions", VALIDATE_NOTHING);
