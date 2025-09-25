@@ -208,7 +208,7 @@
         </ReportItem>
     </ReportSection>
     
-    <ReportSection id="nutrition" blobSection="AVOID_Demographics" type="NextPrevReportSection" pagebreak="false"
+    <ReportSection id="nutrition" blobSection="AVOID_Nutrition" type="NextPrevReportSection" pagebreak="false"
                    postId="Nutrition" 
                    tooltip="Nutrition and Physical Activity Questionnaire" 
                    name="Nutrition / Physical Activity" 
