@@ -56,8 +56,7 @@
                     });
                     if($("#reportWarning").length == 0){
                         $("#reportFooter").prepend("<div id='reportWarning' style='display:none;margin:0;' class='warning'>" +
-                                                        "<en>You have not yet completed all of the questions.</en>" + 
-                                                        "<fr>Vous n'avez pas encore terminé toutes les questions.</fr>" + 
+                                                        "You have not yet completed all of the questions." + 
                                                    "</div>");
                     }
                     if($(".selectedReportTab").text() != showLanguage(wgLang, "Consent", "Consentement")){
@@ -81,57 +80,11 @@
                    tooltip="Participant Demographic Questionnaire" 
                    name="Demographics" 
                    title="Participant Demographic Questionnaire">
-        <Static>
-            <![CDATA[
-                <en>
-                    <p>
-                        <i><b>NOTE:</b> Please answer the questions in this section to the best of your ability. This is important information to help us understand who is using the program (and consequently, who isn't) so that we can make sure we are helping everyone who needs it. As more information is gathered, we will be able to personalize the experience for you and future users!</i>
-                    </p>
-                    <p>
-                        <i>The Healthy Aging Assessment will take between 10 and 15 minutes to complete. You can log out at any time and your progress will be saved to complete later at your convenience.</i>
-                    </p>
-                </en>
-                <fr>
-                    <p>Bienvenue sur le site Internet du programme Proactif pour éviter la fragilisation!</p>
-                    Avant de commencer, veuillez prendre connaissance des informations suivantes :
-                    <ul>
-                        <li>Ce questionnaire est composé de six sections et devrait prendre entre 20 et 25 minutes à compléter.</li>
-                        <li>Si vous quittez le questionnaire avant de l’avoir terminé vos réponses seront enregistrées et vous pourrez le terminer plus tard.</li>
-                        <li>Vous êtes libres de ne pas répondre à certaines questions.</li>
-                        <li>Vous pouvez vous retirer de ce projet à n’importe quel moment, sans avoir à donner de raison et sans perdre votre accès au site Internet, en faisant connaître votre décision à la responsable de ce projet ou à l’un des membres de son personnel de recherche.</li>
-                        <li>Une fois le questionnaire rempli, vous recevrez des recommandations personnalisées selon vos réponses.</li>
-                        <li>Toutes les informations que vous nous fournissez seront traitées de façon strictement confidentielle et ne seront en aucun cas utilisées individuellement, mais feront partie de l’analyse globale de toutes les enquêtes recueillies.</li>
-                    </ul>
-                </fr>
-            ]]>
-        </Static>
-        <ReportItem id="socio_info1" type="SelectReportItem" blobItem="avoid_age" 
-                    options="less than 60|60|61|62|63|64|65|66|67|68|69|70|71|72|73|74|75|76|77|78|79|80|81|82|83|84|85|86|87|88|89|90|91|92|93|94|95|96|97|98|99|100|101|102|103|104|105"
-                    labels="{showLanguage(less than 60,moins de 60)}|60|61|62|63|64|65|66|67|68|69|70|71|72|73|74|75|76|77|78|79|80|81|82|83|84|85|86|87|88|89|90|91|92|93|94|95|96|97|98|99|100|101|102|103|104|105">
-            <![CDATA[
-                <h3>
-                    <en>Age</en>
-                    <fr>Quel est votre âge?</fr>
-                </h3>
-                <div class="requiredField">{$item}</div>
-            ]]>
-        </ReportItem>
+        <!-- Gender -->
         <ReportItem id="socio_info2" type="RadioReportItem" blobItem="avoid_gender" 
-                    options="Man|Woman|Prefer not to say|Prefer to self describe myself"
-                    labels="{showLanguage(Man|
-                                          Woman|
-                                          Prefer not to say|
-                                          Prefer to self describe myself,
-                                          
-                                          Homme|
-                                          Femme|
-                                          Je préfère ne pas répondre|
-                                          Autre)}">
+                    options="Man|Woman|Nonbinary|Prefer to self describe myself">
             <![CDATA[
-                <h3>
-                    <en>What is your gender?</en>
-                    <fr>Quel est votre genre?</fr>
-                </h3>
+                <h3>What is your gender?</h3>
                 <p><i>Gender refers to social roles and expectations, behaviors, expressions, and identities of girls, women, boys, men, and gender-diverse people.</i></p>
                 <div class="requiredField">{$item}</div>
             ]]>
@@ -139,21 +92,47 @@
         <ReportItem id="specify_socio_info2" type="Text" blobItem="GENDERSPECIFY" width="400px" optional="true">
             <![CDATA[
                 <span id='specifygender'>
-                    <en>Please Specify</en>
-                    <fr>Précisez</fr>:
+                    Please Specify
                     {$item}
                 </span>
             ]]>
         </ReportItem>
-        <ReportItem id="postalcode" type="Text" blobItem="POSTAL" width="45px" max_length="3">
+        <Static>
+            <![CDATA[
+                <script type='text/javascript'>
+                    $('span#specifygender').hide();
+                    function specifyGender(){
+                        if($("input:radio[value='Prefer to self describe myself']").is(':checked')){
+                            $('span#specifygender').show();
+                        }
+                        else{ 
+                            $('span#specifygender').hide(); 
+                        }
+                    }
+                    _.defer(specifyGender);
+                    $("input:radio[name='Demographics_socio_info2']").change(specifyGender);
+                </script>
+            ]]>
+        </Static>
+        
+        <!-- Age -->
+        <ReportItem id="socio_info1" type="SelectReportItem" blobItem="avoid_age" 
+                    options="less than 60|60|61|62|63|64|65|66|67|68|69|70|71|72|73|74|75|76|77|78|79|80|81|82|83|84|85|86|87|88|89|90|91|92|93|94|95|96|97|98|99|100|101|102|103|104|105">
             <![CDATA[
                 <h3>
-                    <en>Please enter the first 3 digits of your postal code:</en>
-                    <fr>Quels sont les trois premiers chiffres de votre code postal?</fr>
+                    What is your age?
                 </h3>
+                <div class="requiredField">{$item}</div>
+            ]]>
+        </ReportItem>
+        
+        <!-- Postal Code -->
+        <ReportItem id="postalcode" type="Text" blobItem="POSTAL" width="45px" max_length="3">
+            <![CDATA[
+                <h3>What are the first three digits of your postal code (e.g. K7P)?</h3>
                 <div class="requiredField">{$item} <span id="postalCodeError" class="inlineError" style="display:none;">This is not a valid postal code.</span></div>
                 <script type="text/javascript">
-                    $('[name=GettingtoKnowYou_postalcode]').on('input', function(){
+                    $('[name=Demographics_postalcode]').on('input', function(){
                         $(this).val($(this).val().toUpperCase());
                         var val = $(this).val();
                         var matches = val.match(/[ABCEGHJKLMNPRSTVXY][0-9][ABCEGHJKLMNPRSTVWXYZ]|CFN/);
@@ -164,7 +143,7 @@
                             $('#postalCodeError').hide();
                         }
                     });
-                    $('[name=GettingtoKnowYou_postalcode]').change(function(){
+                    $('[name=Demographics_postalcode]').change(function(){
                         var val = $(this).val();
                         var matches = val.match(/[ABCEGHJKLMNPRSTVXY][0-9][ABCEGHJKLMNPRSTVWXYZ]|CFN/);
                         if(_.size(matches) != 1){
@@ -174,409 +153,57 @@
                 </script>
             ]]>
         </ReportItem>
+        
+        <!-- Sexuality -->
+        <ReportItem id="socio_info3" type="RadioReportItem" blobItem="avoid_sex" 
+                    options="Straight or Heterosexual|Gay or Lesbian|Bisexual|Other sexual orientation">
+            <![CDATA[
+                <h3>Which of the following best describes your sexual orientation?</h3>
+                <div class="requiredField">{$item}</div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="specify_socio_info3" type="Text" blobItem="SEXSPECIFY" width="400px" optional="true">
+            <![CDATA[
+                <span id='specifysex'>
+                    Please Specify
+                    {$item}
+                </span>
+            ]]>
+        </ReportItem>
         <Static>
             <![CDATA[
                 <script type='text/javascript'>
-                                $('span#specifygender').hide();
-                    function specifyGender(){
-                        if($("input:radio[value='Prefer to self describe myself']").is(':checked')){
-                            $('span#specifygender').show();
+                    $('span#specifysex').hide();
+                    function specifySex(){
+                        if($("input:radio[value='Other sexual orientation']").is(':checked')){
+                            $('span#specifysex').show();
                         }
-                        else{ $('span#specifygender').hide();}
-                                        }
-                                        _.defer(specifyGender);
-                                        $("input:radio[name='GettingtoKnowYou_socio_info2']").change(specifyGender);
-                                </script>
-                <br/>
-                <p><i>
-                    People of different ethnicities do not have significantly different genetics. But our ethnicity still has important consequences including how we are treated by different individuals and institutions.
-                </i></p>
-            ]]>
-        </Static>
-        <ReportItem id="ethnicity_avoid" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="ethnicity_avoid" orientation="vertical" optional="true" 
-                    options="Black|East/Southeast Asian|Indigenous (First Nations, Metis, Inuk/Inuit)|Latino|Middle Eastern|South Asian|White|Other|Prefer not to answer"
-                    labels="{showLanguage(Black|
-                                          East/Southeast Asian|
-                                          Indigenous &amp;#40;First Nations&amp;#44; Metis&amp;#44; Inuk/Inuit&amp;#41;|
-                                          Latino|
-                                          Middle Eastern|
-                                          South Asian|
-                                          White|
-                                          Other|
-                                          Prefer not to answer,
-                                          
-                                          Noir|
-                                          Asiatique de l’Est/Sud-Est|
-                                          Autochtones &amp;#40;y compris les Premières Nations&amp;#44; les Métis et les Inuits&amp;#41;|
-                                          Latino|
-                                          Moyen-oriental|
-                                          Sud-asiatique|
-                                          Blanc|
-                                          Autre|
-                                          Préfère ne pas répondre)}">
-            <![CDATA[
-                <h3>
-                    <en>Which ethnicity category best describes you? Check all that apply:</en>
-                    <fr>Quelle catégorie d’appartenance ethnique vous décrit le mieux? Cochez tout ce qui s’applique:</fr>    
-                </h3>
-                <div class="requiredField">{$item}</div>
-            ]]>
-        </ReportItem>
-        <ReportItem id="ethnicity_indigenous" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="ethnicity_avoid2" orientation="vertical" optional="true"
-                    options="First Nations|Metis|Inuk/Inuit|No|Prefer not to answer"
-                    labels="{showLanguage(First Nations|
-                                          Metis|
-                                          Inuk/Inuit|
-                                          No|
-                                          Prefer not to answer,
-                                          
-                                          Premières Nations| 
-                                          Métis|
-                                          Inuit|
-                                          Non|
-                                          Préfère ne pas répondre)}">
-            <![CDATA[
-                <span id="indigenous_specify">
-                <h3>
-                    <en>Do you identify as First Nations, Metis, or inuk/Inuit? (check all that apply)</en>
-                    <fr>Vous identifiez-vous comme membre d’une Première Nation, Métis ou Inuit? (Cochez tout ce qui s’applique):</fr>
-                </h3>
-                {$item}
-                </span>
-            ]]>
-        </ReportItem>
-        <ReportItem id="ethnicity_indigenous_specify" type="Text" blobItem="ETHNICITYINDIGENOUSSPECIFY" width="400px" optional="true">
-            <![CDATA[
-                <span id="indigenous_other">
-                    <en>Please Specify</en>
-                    <fr>Précisez</fr>:
-                    {$item}
-                </span>
-            ]]>
-        </ReportItem>
-        <Static>
-            <![CDATA[
-            <script type='text/javascript'>
-                $('span#indigenous_specify').hide();
-                function specifyIndigenous(){
-                    if($("input:checkbox[value='Indigenous (First Nations, Metis, Inuk/Inuit)']").is(':checked')){
-                        $('span#indigenous_specify').show();
+                        else{ 
+                            $('span#specifysex').hide(); 
+                        }
                     }
-                    else{ 
-                        $('span#indigenous_specify').hide();
-                    }
-                }
-                _.defer(specifyIndigenous);
-                $("input:checkbox[name='GettingtoKnowYou_ethnicity_avoid[]']").change(specifyIndigenous);
-
-                $('span#indigenous_other').hide();
-                function specifyIndigenousOther(){
-                    if($("input:checkbox[value='Other']").is(':checked')){
-                        $('span#indigenous_other').show();
-                    }
-                    else{ 
-                        $('span#indigenous_other').hide();
-                    }
-                }
-                _.defer(specifyIndigenousOther);
-                $("input:checkbox[name='GettingtoKnowYou_ethnicity_indigenous[]']").change(specifyIndigenousOther);
-            </script>
-        ]]>
-        </Static>
-        <ReportItem id="transportation_avoid" type="SelectReportItem" blobItem="transportation_avoid" 
-                    options="Passenger in a motor vehicle|Drive a motor vehicle|Taxi or similar paid services|Public transportation such as bus, rapid transit, subway or train|Accessible transit|Cycling|Walking|Wheelchair or motorized cart"
-                    labels="{showLanguage(Passenger in a motor vehicle|
-                                          Drive a motor vehicle|
-                                          Taxi or similar paid services|
-                                          Public transportation such as bus&amp;#44; rapid transit&amp;#44; subway or train|
-                                          Accessible transit|
-                                          Cycling|
-                                          Walking|
-                                          Wheelchair or motorized cart, 
-                                          
-                                          Passager d’un véhicule automobile|
-                                          Conducteur d’un véhicule automobile|
-                                          Taxi ou services payants similaires|
-                                          Transports en commun&amp;#44; comme le bus&amp;#44; le transport rapide&amp;#44; le métro ou le train|
-                                          Transport adapté|
-                                          Vélo|
-                                          Marche|
-                                          Fauteuil roulant ou fauteuil roulant motorisé)}">
-            <![CDATA[
-                <h3>
-                    <en>In general, which is your most common form of transportation?</en>
-                    <fr>En général, quel est le moyen de transport que vous utilisez le plus couramment?</fr>
-                </h3>
-                <div class="requiredField">{$item}</div>
-            ]]>
-        </ReportItem>
-        <ReportItem id="income_avoid" type="SelectReportItem" blobItem="income_avoid" 
-                    options="Under $10,000|$10,000 to $24,999|$25,000 to $49,999|$50,000 to $74,999|$75,000 to $99,999|$100,000 or more|Prefer not to say"
-                    labels="{showLanguage(Under $10&amp;#44;000|
-                                          $10&amp;#44;000 to $24&amp;#44;999|
-                                          $25&amp;#44;000 to $49&amp;#44;999|
-                                          $50&amp;#44;000 to $74&amp;#44;999|
-                                          $75&amp;#44;000 to $99&amp;#44;999|
-                                          $100&amp;#44;000 or more|
-                                          Prefer not to say,
-                                          
-                                          Moins de 10 000 $|
-                                          de 10 000 $ à 24 999 $|
-                                          de 25 000 $ à 49 999 $|
-                                          de 50 000 $ à 74 999 $|
-                                          de 75 000 $ à 99 999 $|
-                                          100 000 $ ou plus|
-                                          Je préfère ne pas répondre)}">
-            <![CDATA[
-                <h3>
-                    <en>What is your total household annual income? (include all sources of income before taxes and deductions):</en>
-                    <fr>À combien estimez-vous le revenu annuel total de votre foyer? Veuillez inclure toutes les sources de revenus avant impôts et déductions</fr>
-                </h3>
-                <div class="requiredField">{$item}</div>
-            ]]>
-        </ReportItem>
-        <Static>
-            <![CDATA[
-                <br />
-                <p>
-                    <i>
-                        <en>An assistive device is any device or tool designed or adapted to help a person perform a particular task or activity.</en>
-                        <fr>Un appareil fonctionnel est un dispositif ou un outil conçu ou adapté pour aider une personne à accomplir une tâche ou une activité particulière.</fr>
-                    </i>
-                </p>
-            ]]>
-        </Static>
-        <ReportItem id="assistive_avoid" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="assistive_avoid" orientation="vertical" optional="true" 
-                    options="a cane, a walking stick or crutches|a walker|a scooter|a manual wheelchair|a motorized wheelchair|orthopaedic footwear|an orthotic or a brace|a prosthetic device or an artificial limb|a grasping tool or a reach extender|adapted tools, utensils or special grips|a device for dressing (e.g., button hook, zipper pull, long-handled shoe horn)|a device with oversized buttons (e.g., remote control or telephone)|None"
-                    labels="{showLanguage(a cane&amp;#44; a walking stick or crutches|
-                                          a walker|
-                                          a scooter|
-                                          a manual wheelchair|
-                                          a motorized wheelchair|
-                                          orthopaedic footwear|
-                                          an orthotic or a brace|
-                                          a prosthetic device or an artificial limb|
-                                          a grasping tool or a reach extender|
-                                          adapted tools&amp;#44; utensils or special grips|
-                                          a device for dressing &amp;#40;e.g.&amp;#44; button hook&amp;#44; zipper pull&amp;#44; long-handled shoe horn&amp;#41;|
-                                          a device with oversized buttons &amp;#40;e.g.&amp;#44; remote control or telephone&amp;#41;|
-                                          None, 
-                                           
-                                          Canne&amp;#44; bâton de marche ou béquilles|
-                                          Déambulateur|
-                                          Triporteur ou quadriporteur|
-                                          Fauteuil roulant|
-                                          Fauteuil roulant motorisé|
-                                          Chaussures orthopédiques|
-                                          Orthèse ou appareil orthopédique|
-                                          Prothèse ou membre artificiel|
-                                          Outil de préhension ou pour allonger la portée|
-                                          Outils ou ustensiles adaptés&amp;#44; poignées spéciales|
-                                          Dispositif pour s’habiller &amp;#40;p. ex. crochet pour bouton&amp;#44; tirette de fermeture éclair&amp;#44; chausse-pied à long manche&amp;#41;|
-                                          Appareil avec des touches surdimensionnées &amp;#40;p. ex. télécommande ou téléphone&amp;#41;|
-                                          Aucun)}">
-            <![CDATA[
-                <h3>
-                    <en>Do you use any aids and/or assistive devices for moving around, to help with bending or reaching or to help with fine motor skills? Select all that apply.</en>
-                    <fr>Utilisez-vous des aides ou des appareils fonctionnels pour vous déplacer, pour vous aider à vous pencher ou à atteindre des objets ou pour faciliter votre motricité fine? Cochez tout ce qui s’applique.</fr>
-                </h3>
-                <div class="requiredField">{$item}</div>
-            ]]>
-        </ReportItem>
-        <ReportItem id="living_avoid" type="SelectReportItem" blobItem="living_avoid" 
-                    options="Living alone|Living with partner (includes with or without children)|Living with relatives and non-relatives|Prefer not to say"
-                    labels="{showLanguage(Living alone|
-                                          Living with partner &amp;#40;includes with or without children&amp;#41;|
-                                          Living with relatives and non-relatives|
-                                          Prefer not to say,
-                                          
-                                          Je vis seul&amp;#40;e&amp;#41;|
-                                          Je vis en couple &amp;#40;avec ou sans enfants&amp;#41;|
-                                          Je vis avec un ou des membres de ma famille élargie ou avec d’autres personnes non apparentées|
-                                          Je préfère ne pas répondre)}">
-            <![CDATA[
-                    <h3>
-                        <en>Living arrangement:</en>
-                        <fr>Veuillez décrire la composition de votre ménage:</fr>
-                    </h3>
-                    <div class="requiredField">{$item}</div>
-            ]]>
-        </ReportItem>
-        <If if="{==({$wgLang},en)}">
-            <!-- English -->
-            <ReportItem id="living_environment" type="SelectReportItem" blobItem="living_environment" 
-                        options="Independent, at home|Private home with informal care|Private home with formal care|Naturally Occurring Retirement Community|Retirement home|Assisted living facility|Long-Term Care with 24/7 skilled nursing care|Other (specify):"
-                        labels="Independent, at home|Private home with informal care|Private home with formal care|Naturally Occurring Retirement Community|Retirement home|Assisted living facility|Long-Term Care with 24/7 skilled nursing care|Other">
-                <![CDATA[
-                        <h3>What best describes your living environment?</h3>
-                        <div class="requiredField" id='living_environment'>{$item}</div>
-                ]]>
-            </ReportItem>
-        </If>
-        <Else>
-            <!-- French -->
-            <ReportItem id="living_environment" type="SelectReportItem" blobItem="living_environment" 
-                        options="À domicile, autonome|À domicile avec du soutien de mon réseau|À domicile avec du soutien d’organisations de soins ou de services à domicile|Résidence privée pour aînés (RPAs)|Dans une résidence pour personnes âgées autonomes|Dans une résidence pour personnes âgées autonomes et semi-autonomes|Dans une résidence pour personnes âgées semi-autonomes|Ressource intermédiaire (RI)|Dans un centre d'hébergement et de soins de longue durée (CHSLD)|Autre"
-                        labels="À domicile, autonome|À domicile avec du soutien de mon réseau|À domicile avec du soutien d’organisations de soins ou de services à domicile|Résidence privée pour aînés (RPAs)|Dans une résidence pour personnes âgées autonomes|Dans une résidence pour personnes âgées autonomes et semi-autonomes|Dans une résidence pour personnes âgées semi-autonomes|Ressource intermédiaire (RI)|Dans un centre d'hébergement et de soins de longue durée (CHSLD)|Autre">
-                <![CDATA[
-                        <h3>Lequel des énoncés suivant décrit le mieux l'endroit où vous vivez?</h3>
-                        <div class="requiredField" id='living_environment'>{$item}</div>
-                ]]>
-            </ReportItem>
-        </Else>
-        <ReportItem id="living_specify" type="Text" blobItem="LIVINGSPECIFY" width="400px" optional="true">
-            <![CDATA[
-                <span id="living_specify">
-                    <en>Please Specify</en>
-                    <fr>Précisez</fr>: 
-                    {$item}
-                </span>
-                ]]>
-        </ReportItem>
-        <ReportItem id="education_avoid" type="SelectReportItem" blobItem="education_avoid" 
-                    options="No certificate, diploma, or degree|Secondary (highschool) diploma or equivalency certificate|Apprenticeship or trades certificate or diploma|College, CEGEP, or non-university certificate or diploma|University certificate of diploma below bachelor level|University certificate, diploma, or degree at bachelor level or above|Prefer not to say"
-                    labels="{showLanguage(No certificate&amp;#44; diploma&amp;#44; or degree|
-                                          Secondary &amp;#40;highschool&amp;#41; diploma or equivalency certificate|
-                                          Apprenticeship or trades certificate or diploma|
-                                          College&amp;#44; CEGEP&amp;#44; or non-university certificate or diploma|
-                                          University certificate of diploma below bachelor level|
-                                          University certificate&amp;#44; diploma&amp;#44; or degree at bachelor level or above|
-                                          Prefer not to say,
-                                          
-                                          Aucun certificat&amp;#44; diplôme ou grade|
-                                          Diplôme d’études secondaires ou attestation d’équivalence|
-                                          Certificat d’apprenti ou autre certificat d’une école de métiers ou d’un centre de formation professionnelle|
-                                          Certificat ou un diplôme d’études collégiales&amp;#44; d’un cégep ou d’un autre établissement non universitaire|
-                                          Certificat ou diplôme universitaire de niveau inférieur au baccalauréat|
-                                          Baccalauréat ou études de deuxième ou troisième cycle|
-                                          Je préfère ne pas répondre)}">
-            <![CDATA[
-                    <h3>
-                        <en>Please specify your highest level of education:</en>
-                        <fr>Quel est votre plus haut niveau de scolarité?</fr>    
-                    </h3>
-                    <div class="requiredField">{$item}</div>
-            ]]>
-        </ReportItem>
-        <ReportItem id="employment_avoid" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="employments_avoid" 
-                    options="Employed|Unemployed|I am permanently unable to work|I volunteer or look after children or other family members|I am retired|Other (specify):"
-                    labels="{showLanguage(Employed|
-                                          Unemployed|
-                                          I am permanently unable to work|
-                                          I volunteer or look after children or other family members|
-                                          I am retired|
-                                          Other &amp;#40;specify&amp;#41;:,
-                                          
-                                          Employé&amp;#40;e&amp;#41;|
-                                          Au chômage|
-                                          Incapacité permanente de travailler|
-                                          Bénévolat ou garde d’enfants ou d’autres membres de la famille|
-                                          Retraité&amp;#40;e&amp;#41;|
-                                          Autre&amp;#44; précisez:)}">
-            <![CDATA[
-                    <h3>
-                        <en>Employment status:</en>
-                        <fr>Quelle est votre situation d’emploi?</fr>
-                    </h3>
-                    <div class="requiredField">{$item}</div>
-            ]]>
-        </ReportItem>
-        <ReportItem id="employment_specify" type="Text" blobItem="EMPLOYSPECIFY" width="400px" optional="true">
-            <![CDATA[
-                <span id="employspecify">
-                    <en>Specify</en>
-                    <fr>Précisez</fr>: {$item}
-                </span>
-                ]]>
-        </ReportItem>
-        <Static>
-            <![CDATA[
-            <script type='text/javascript'>
-                $('span#employspecify').hide();
-                function specifyEmploy(){
-                    if($("input[name='GettingtoKnowYou_employment_avoid\[\]'][value='Other (specify):']").is(":checked")){
-                        $('span#employspecify').show();
-                    }
-                    else{ $('span#employspecify').hide();}
-                }
-                _.defer(specifyEmploy);
-                $("input[name='GettingtoKnowYou_employment_avoid\[\]']").change(specifyEmploy);
-                
-                $('span#living_specify').hide();
-                function specifyLiving(){
-                    if($("#living_environment select").val() == "Other (specify):" || 
-                       $("#living_environment select").val() == "Autre"){
-                            $('span#living_specify').show();
-                    }
-                    else{ $('span#living_specify').hide();}
-                }
-                _.defer(specifyLiving);
-                $("#living_environment select").change(specifyLiving);
-            </script>
-        ]]>
-        </Static>
-        <ReportItem id="device_avoid" type="RadioReportItem" blobItem="device_avoid" 
-                    options="Yes|No"
-                    labels="{showLanguage(Yes|No,Oui|Non)}">
-            <![CDATA[
-                    <h3>
-                        <en>In the past 12 months, have you used any technology or digital device to help you monitor or manage certain aspects of your health and well-being?</en>
-                        <fr>Au cours des 12 derniers mois, avez-vous utilisé une technologie ou un appareil numérique pour vous aider à surveiller ou à gérer certains aspects de votre santé et de votre bien-être?</fr>
-                    </h3>
-                    <div class="requiredField">{$item}</div>
-            ]]>
-        </ReportItem>
-        <ReportItem id="device_specify" type="Text" blobItem="DEVICESPECIFY" width="400px" optional="true">
-            <![CDATA[
-                <span id="devicespecify">
-                    <en>If yes, please specify what technology or device</en>
-                    <fr>Précisez le type de technologie</fr>: {$item}
-                </span>
-                ]]>
-        </ReportItem>
-        <Static>
-            <![CDATA[
-                <script type='text/javascript'>
-                    $('span#devicespecify').hide();
-                    function specifyDevice(){
-                            if($("input:radio[value='Yes']").is(':checked')){
-                                    $('span#devicespecify').show();
-                            }
-                            else{ $('span#devicespecify').hide();}
-                    }
-                    _.defer(specifyDevice);
-                    $("input:radio[name='GettingtoKnowYou_device_avoid']").change(specifyDevice);
+                    _.defer(specifySex);
+                    $("input:radio[name='Demographics_socio_info3']").change(specifySex);
                 </script>
             ]]>
         </Static>
-        <ReportItem id="tech1" type="SelectReportItem" blobItem="tech_avoid" 
-                    options="Yes|No"
-                    labels="{showLanguage(Yes|No,Oui|Non)}">
+        
+        <!-- Ethnicity -->
+        <ReportItem id="ethnicity_avoid" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="ethnicity_avoid" orientation="vertical" optional="true" 
+                    options="Black|East Asian|Indigenous (First Nations, Inuk/Inuit, Métis)|Latin American|Middle Eastern|South Asian|Southeast Asian|White|Another race category|I don't know|Prefer not to answer|I prefer not to answer">
             <![CDATA[
-                    <h3>
-                        <en>Do you feel comfortable using technology in your everyday life?</en>
-                        <fr>Vous sentez-vous à l’aise d’utiliser la technologie dans votre quotidien?</fr>
-                    </h3>
-                    <div class="requiredField">{$item}</div>
+                <p style='margin-top:2em; margin-bottom:-1em;'>In our society, people are often described by their race or racial background. These are not based in science, but our race may influence the way we are treated by individuals and institutions, and this may affect our health.</p>
+                <h3>Which category(ies) best describes you? Check all that apply: </h3>
+                <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
-        <ReportItem id="internetissues_avoid" type="SelectReportItem" blobItem="internetissues_avoid" 
-                    options="Never|On occasion|Often – My internet connection is not reliable|I do not have internet"
-                    labels="{showLanguage(Never|
-                                          On occasion|
-                                          Often – My internet connection is not reliable|
-                                          I do not have internet,
-                                          
-                                          Jamais|
-                                          À l’occasion|
-                                          Souvent&amp;#44; ma connexion Internet n’est pas fiable|
-                                          Je n'ai pas Internet)}">
+        
+        <!-- Indigenous -->
+        <ReportItem id="ethnicity_indigenous" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="ethnicity_avoid2" orientation="vertical" optional="true"
+                    options="Yes, First Nations|Yes, Inuk/Inuit|Yes, Métis|No|I don't know|I prefer not to answer">
             <![CDATA[
-                    <h3>
-                        <en>How often do you experience internet connectivity issues?</en>
-                        <fr>À quelle fréquence éprouvez-vous des difficultés à vous connecter à Internet?</fr>
-                    </h3>
-                    <div class="requiredField">{$item}</div>
+                <h3>Do you identify as First Nations, Inuk/Inuit, and/or Métis? Check all that apply:</h3>
+                {$item}
             ]]>
         </ReportItem>
     </ReportSection>
@@ -593,11 +220,8 @@
             </ReportItem>
             <Static>
                 <![CDATA[
-                    <div>
-                        <en>Submitting will mark your survey as 'complete' and will prevent you from editing in the future.</en>
-                        <fr>La soumission marquera votre enquête comme « complète » et vous empêchera de modifier à l'avenir.</fr>
-                    </div><br />
-                    <a class='button' id='submit_review'><en>Submit</en><fr>Soumettre</fr></a>
+                    <div>Submitting will mark your survey as 'complete' and will prevent you from editing in the future.</div><br />
+                    <a class='button' id='submit_review'>Submit</a>
                     <script type='text/javascript'>
                         $('#reportFooter').prev().hide();
                         $('#reportFooter').hide();
@@ -613,8 +237,7 @@
         </If>
         <Else>
             <![CDATA[
-                <en>You must complete all of the questions in the survey.</en>
-                <fr>Vous devez répondre à toutes les questions de l'enquête.</fr>
+                You must complete all of the questions in the survey.
             ]]>
         </Else>
     </ReportSection>
