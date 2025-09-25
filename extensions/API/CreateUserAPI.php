@@ -111,7 +111,7 @@ class CreateUserAPI extends API{
                         $language = "fr";
                     }
 
-                    $person->getUser()->setOption("language", $language);
+                    MediaWikiServices::getInstance()->getUserOptionsManager()->setOption( $person->getUser(), 'language', $language );
                     $person->getUser()->saveSettings();
                     
                     $provData = DBFunctions::select(array('grand_provinces'),
@@ -203,7 +203,7 @@ class CreateUserAPI extends API{
 		// @codeCoverageIgnoreEnd
 
 		$mainPageUrl = \Title::newMainPage()->getCanonicalURL();
-		$userLanguage = $user->getOption( 'language' );
+		$userLanguage = MediaWikiServices::getInstance()->getUserOptionsLookup()->getOption( $user, 'language');
 		$subjectMessage = wfMessage( 'createaccount-title' )->inLanguage( $userLanguage );
 		$bodyMessage = wfMessage( 'createaccount-text', $ip, $user->getName(), $password,
 			'<' . $mainPageUrl . '>', round( 7*24*3600 / 86400 ) )

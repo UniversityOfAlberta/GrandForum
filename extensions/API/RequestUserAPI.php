@@ -131,8 +131,8 @@ class RequestUserAPI extends API{
         $wpCaps['provision'] = isset($_POST['wpProvision']) ? $_POST['wpProvision'] : "";
         $wpCaps['pharmacy_name'] = isset($_POST['wpPharmacyName']) ? $_POST['wpPharmacyName'] : "";
         $wpCaps['pharmacy_address'] = isset($_POST['wpPharmacyAddress']) ? $_POST['wpPharmacyAddress'] : "";
-        $wpCaps['collect_demo'] = @(array_search('collect_demo', $_POST['wpAgreeExtra']) !== false) ? 1 : 0;
-        $wpCaps['collect_comments'] = @(array_search('collect_comments', $_POST['wpAgreeExtra']) !== false) ? 1 : 0;
+        $wpCaps['collect_demo'] = (isset($_POST['wpAgreeExtra']) && array_search('collect_demo', $_POST['wpAgreeExtra']) !== false) ? 1 : 0;
+        $wpCaps['collect_comments'] = (isset($_POST['wpAgreeExtra']) && array_search('collect_comments', $_POST['wpAgreeExtra']) !== false) ? 1 : 0;
 	    if(isset($_FILES['file_filed'])){
             $contents = base64_encode(file_get_contents($_FILES['file_field']['tmp_name']));
             $filename = $_FILES['file_field']['name'];

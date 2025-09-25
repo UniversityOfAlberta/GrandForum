@@ -53,7 +53,7 @@ class UserCreate {
         
         if(isset($_POST['wpNS'])){
             $box = $_POST['wpNS'];
-            while (list ($key,$val) = @each ($box)) {
+            foreach($box as $key => $val){
                 if($val != null && $val != ""){
                     $project = Project::newFromName($val);
                     DBFunctions::insert('mw_user_groups',
