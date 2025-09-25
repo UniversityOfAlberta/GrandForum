@@ -325,7 +325,7 @@ function onUserCan2(&$title, &$user, $action, &$result) {
 	  }
 	}
 	
-	if (($action == 'edit' || $action == 'move') && $title->isProtected($action)) {
+	if (($action == 'edit' || $action == 'move') && MediaWikiServices::getInstance()->getRestrictionStore()->isProtected($title, $action)) {
 		//this is needed because the global protect permissions that we had to set above somehow conflict with page edit restrictions
 		//if we reach here then the user is not a sysop
 		
@@ -334,7 +334,7 @@ function onUserCan2(&$title, &$user, $action, &$result) {
 	}
 	
 	if (($action == 'delete' || $action == 'browsearchive' 
-	|| $action == 'undelete' || $action == 'deletedhistory') && $title->isProtected('edit')) {
+	|| $action == 'undelete' || $action == 'deletedhistory') && MediaWikiServices::getInstance()->getRestrictionStore()->isProtected($title, 'edit')) {
 		//if the page is protected for editing and this user is not a sysop then we don't let them delete/undelete it
 		$result = false;
 		return false;
