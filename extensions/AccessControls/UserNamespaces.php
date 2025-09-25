@@ -177,10 +177,10 @@ END;
 
 		if (!$row)
 			return null;
-		if ($row[0] == null) {
+		if ($row['nsUser'] == null) {
 			return null;
 		}
-		return User::newFromId($row[0]);
+		return User::newFromId($row['nsUser']);
 	}
 }
 ?>

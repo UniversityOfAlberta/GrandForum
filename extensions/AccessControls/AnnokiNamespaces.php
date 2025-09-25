@@ -184,10 +184,10 @@ function getAllPagesInNS($nsName, $includeRedir = true) {
 		$nsName .= ":";
 	}
 	while ($row = $result->fetchRow()) {
-		if (!$includeRedir && $row[1] == 1) {
+		if (!$includeRedir && $row['page_is_redirect'] == 1) {
 			continue;
 		}
-		$pages[] = "$nsName" . str_replace('_', ' ', $row[0]);
+		$pages[] = "$nsName" . str_replace('_', ' ', $row['page_title']);
 	}
 	return $pages;
 }
@@ -198,17 +198,17 @@ function getAllPages($includeTalk = false) {
 	$result = $dbr->select("page", array("page_title", "page_namespace", "page_is_redirect") );
 
 	while ($row = $result->fetchRow()) {
-		if ($row[1] < 100 && $row[1] != NS_MAIN && $row[1] != NS_TALK) {
+		if ($row['page_namespace'] < 100 && $row['page_namespace'] != NS_MAIN && $row['page_namespace'] != NS_TALK) {
 			continue;
 		} 
-		if (!$includeTalk && MediaWikiServices::getInstance()->getNamespaceInfo()->isTalk($row[1])) {
+		if (!$includeTalk && MediaWikiServices::getInstance()->getNamespaceInfo()->isTalk($row['page_namespace'])) {
 			continue;
 		}
 		$nsName = "";
-		if (array_key_exists($row[1], $wgExtraNamespaces)) {
-			$nsName = $wgExtraNamespaces[$row[1]] . ":";
+		if (array_key_exists($row['page_namespace'], $wgExtraNamespaces)) {
+			$nsName = $wgExtraNamespaces[$row['page_namespace']] . ":";
 		}
-		$pages[] = array($nsName . str_replace('_', ' ', $row[0]), $row[2]);
+		$pages[] = array($nsName . str_replace('_', ' ', $row['page_title']), $row['page_is_redirect']);
 	}
 	return $pages;
 }
@@ -228,7 +228,7 @@ function getAllUsersInNS($nsName) {
 	AND ug.ug_group = '$nsName'"); //BT
 
 	while ($row = $result->fetchRow()) {
-		$users[] = $row[0];
+		$users[] = $row['user_name'];
 	}
 	return $users;
 }
@@ -323,10 +323,8 @@ static function getExtraNamespaces($type, $includeTalk = false) {
    $result = $dbr->select("{$egAnnokiTablePrefix}extranamespaces", 'nsName', array('public' => 1) );
 
    while ($row = $result->fetchRow()){
-     $publicNS[] = $row[0];
+     $publicNS[] = $row['nsName'];
    }
-   
-   $dbr->freeResult($result);
 
    sort($publicNS);
    

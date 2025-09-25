@@ -453,7 +453,7 @@ function isPublicNS($nsId) {
 	$dbr = MediaWikiServices::getInstance()->getConnectionProvider()->getReplicaDatabase();
 	$result = $dbr->select("${egAnnokiTablePrefix}extranamespaces", "public", array("nsId" => $nsId) );
 
-	if (!($row = $result->fetchRow()) || ($row[0] == 0)) {
+	if (!($row = $result->fetchRow()) || ($row['public'] == 0)) {
 		return false;
 	}
 
@@ -545,7 +545,7 @@ function getExtraPermissions($title) {
 	$result = $dbr->select("${egAnnokiTablePrefix}pagepermissions", "group_id", array("page_id" => $title->getArticleID()) );
 	$extraPerm = array();
 	while ($row = $result->fetchRow()) {
-	  $extraPerm[] = $row[0];
+	  $extraPerm[] = $row['group_id'];
 	}
 	return $extraPerm;
 }
@@ -621,7 +621,6 @@ AND `page_is_redirect` =0";
 	print "<a href=\"$wgScriptPath/index.php/$page\">$page</a><br>";
       }
       print '</html>';
-      $dbr->freeResult( $res );
 
       close();
     }

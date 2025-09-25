@@ -40,8 +40,6 @@ class AnnokiDatabaseFunctions {
         $results[] = $row;
     }
 
-    $dbLink->freeResult($res);
-
     return $results;
   }
 
@@ -60,7 +58,6 @@ class AnnokiDatabaseFunctions {
       $query = "show tables like \"$tableName\"";
       $result = $dbr->query($query);
       $numRows = $dbr->numRows($results);
-      $dbr->freeResult($results);
 
       return ($numRows === 1);
   }

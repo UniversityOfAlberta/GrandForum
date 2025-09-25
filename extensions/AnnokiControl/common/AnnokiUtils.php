@@ -27,12 +27,10 @@ class AnnokiUtils {
     $result = $dbr->select("$userTable LEFT JOIN $ipblocks ON user_id = ipb_user", 'user_name, ipb_user');
      
     while ($row = $result->fetchRow()) {
-      if ($row[1] == null) {
-	$users[] = $row[0];
+      if ($row['ipb_user'] == null) {
+	$users[] = $row['user_name'];
       }
     }
-
-    $dbr->freeResult($result);
 
     return $users;
   }
@@ -52,8 +50,6 @@ class AnnokiUtils {
       while ($row = $result->fetchRow()){
 	  $authors[] = $row['rev_user_text'];
       }
-      
-      $dbr->freeResult($result);
 
       return $authors;
   }
