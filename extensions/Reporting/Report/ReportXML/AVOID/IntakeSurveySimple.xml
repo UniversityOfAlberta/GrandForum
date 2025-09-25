@@ -449,12 +449,69 @@
                 </table>
             ]]>
         </Static>
+        
+        <ReportItem id="nutrition1" type="Radio" blobItem="NUTRITION1" options="Most days (5-7 days)|Some days (2-4 days)|Rarely or not at all">
+            <![CDATA[
+                <h3>Do you eat foods high in protein (e.g., meat, poultry, fish, eggs, and dairy foods) with every meal?</h3>
+                <div class='requiredField'>{$item}</div>
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="nutrition2" type="Radio" blobItem="NUTRITION2" options="Most days (5-7 days)|Some days (2-4 days)|Rarely or not at all">
+            <![CDATA[
+                <h3>At mealtimes, is half your plate usually filled with fruits and vegetables?</h3>
+                <div class='requiredField'>{$item}</div>
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="nutrition3" type="Radio" blobItem="NUTRITION3" options="Most days (5-7 days)|Some days (2-4 days)|Rarely or not at all">
+            <![CDATA[
+                <h3>Do you eat foods high in calcium every day? Recommended Dietary Allowance: 1000-1200mg daily *1 cup cow’s milk = 200mg, 3/4 cup yogurt = 250mg, 1 oz. cheese = 200mg</h3>
+                <div class='requiredField'>{$item}</div>
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="nutrition4" type="Radio" blobItem="NUTRITION4" options="Most days (5-7 days)|Some days (2-4 days)|Rarely or not at all">
+            <![CDATA[
+                <h3>Do you take a vitamin D supplement?</h3>
+                <div class='requiredField'>{$item}</div>
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="nutrition5" type="Radio" blobItem="NUTRITION5" options="Most days (5-7 days)|Some days (2-4 days)|Rarely or not at all">
+            <![CDATA[
+                <h3>During the last 7 days, on how many days did you walk for at least 10 minutes at a time?</h3>
+                <div class='requiredField'>{$item}</div>
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="nutrition6" type="Radio" blobItem="NUTRITION6" options="Most days (5-7 days)|Some days (2-4 days)|Rarely or not at all">
+            <![CDATA[
+                <h3>During the last 7 days, on how many days did you do moderate to vigorous physical activities like gardening, cleaning, bicycling at a regular pace, swimming, or other fitness activities?</h3>
+                <div class='requiredField'>{$item}</div>
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="nutrition7" type="Radio" blobItem="NUTRITION7" options="Some of the day|Most of the day|All day">
+            <![CDATA[
+                <h3>During the last 7 days, how much time did you spend sitting during the day?</h3>
+                <div class='requiredField'>{$item}</div>
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="nutrition8" type="Radio" blobItem="NUTRITION8" options="Excellent|Very good|Good|Fair|Poor">
+            <![CDATA[
+                <h3>In general, how is your mental health?</h3>
+                <div class='requiredField'>{$item}</div>
+            ]]>
+        </ReportItem>
     </ReportSection>
     
     <ReportSection id="submit" type="EditableReportSection" blobSection="SUBMIT" 
                    postId="Submit"
                    name="{showLanguage(Submit, Soumettre)}">
-        <If if="{and({==({getProgress(demographics)},100)}
+        <If if="{and({==({getProgress(demographics)},100)},
+                     {==({getProgress(nutrition)},100)}
                 )}">
             <ReportItem id="submitted" type="TextReportItem" blobItem="SUBMITTED">
                 <![CDATA[
