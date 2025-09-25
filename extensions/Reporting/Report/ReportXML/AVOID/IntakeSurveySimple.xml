@@ -189,7 +189,7 @@
         </Static>
         
         <!-- Ethnicity -->
-        <ReportItem id="ethnicity_avoid" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="ethnicity_avoid" orientation="vertical" optional="true" 
+        <ReportItem id="ethnicity_avoid" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="ethnicity_avoid" orientation="vertical" 
                     options="Black|East Asian|Indigenous (First Nations, Inuk/Inuit, Métis)|Latin American|Middle Eastern|South Asian|Southeast Asian|White|Another race category|I don't know|Prefer not to answer|I prefer not to answer">
             <![CDATA[
                 <p style='margin-top:2em; margin-bottom:-1em;'>In our society, people are often described by their race or racial background. These are not based in science, but our race may influence the way we are treated by individuals and institutions, and this may affect our health.</p>
@@ -199,13 +199,256 @@
         </ReportItem>
         
         <!-- Indigenous -->
-        <ReportItem id="ethnicity_indigenous" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="ethnicity_avoid2" orientation="vertical" optional="true"
+        <ReportItem id="ethnicity_indigenous" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="ethnicity_avoid2" orientation="vertical"
                     options="Yes, First Nations|Yes, Inuk/Inuit|Yes, Métis|No|I don't know|I prefer not to answer">
             <![CDATA[
                 <h3>Do you identify as First Nations, Inuk/Inuit, and/or Métis? Check all that apply:</h3>
-                {$item}
+                <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="nutrition" blobSection="AVOID_Demographics" type="NextPrevReportSection" pagebreak="false"
+                   postId="Nutrition" 
+                   tooltip="Nutrition and Physical Activity Questionnaire" 
+                   name="Nutrition / Physical Activity" 
+                   title="Nutrition and Physical Activity Questionnaire">
+        <Static>
+            <![CDATA[
+                <p>Please circle your response to each of the questions below.</p>
+                <h3>I am able to:</h3>
+                <table class='wikitable'>
+                    <tr>
+                        <th style='width: 27em;'></th>
+                        <th style='width: 5.25em;'>Not at all</th>
+                        <th style='width: 5.25em;'>A little</th>
+                        <th style='width: 5.25em;'>Somewhat</th>
+                        <th style='width: 5.25em;'>Mostly</th>
+                        <th style='width: 5.25em;'>Completely</th>
+                    </tr>
+            ]]>
+        </Static>
+        <ReportItem id="able1" type="Radio" orientation="inline" options="1|2|3|4|5" blobItem="ABLE1">
+            <![CDATA[
+                    <tr class='requiredField'>
+                        <td>Eat a balanced diet</td>
+                        {$item}
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="able2" type="Radio" orientation="inline" options="1|2|3|4|5" blobItem="ABLE2">
+            <![CDATA[
+                    <tr class='requiredField'>
+                        <td>Tell which foods are high in protein content</td>
+                        {$item}
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="able3" type="Radio" orientation="inline" options="1|2|3|4|5" blobItem="ABLE3">
+            <![CDATA[
+                    <tr class='requiredField'>
+                        <td>Drink as much water as I need to drink every day</td>
+                        {$item}
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="able4" type="Radio" orientation="inline" options="1|2|3|4|5" blobItem="ABLE4">
+            <![CDATA[
+                    <tr class='requiredField'>
+                        <td>Do exercises that are good for me</td>
+                        {$item}
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="able5" type="Radio" orientation="inline" options="1|2|3|4|5" blobItem="ABLE5">
+            <![CDATA[
+                    <tr class='requiredField'>
+                        <td>Fit exercise into my regular routine</td>
+                        {$item}
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="able6" type="Radio" orientation="inline" options="1|2|3|4|5" blobItem="ABLE6">
+            <![CDATA[
+                    <tr class='requiredField'>
+                        <td>Find ways to exercise that I enjoy</td>
+                        {$item}
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="able7" type="Radio" orientation="inline" options="1|2|3|4|5" blobItem="ABLE7">
+            <![CDATA[
+                    <tr class='requiredField'>
+                        <td>Find accessible places for me to exercise in the community</td>
+                        {$item}
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="able8" type="Radio" orientation="inline" options="1|2|3|4|5" blobItem="ABLE8">
+            <![CDATA[
+                    <tr class='requiredField'>
+                        <td>Figure out where to get information on how to take care of my health</td>
+                        {$item}
+                    </tr>
+            ]]>
+        </ReportItem>
+        <Static>
+            <![CDATA[
+                </table>
+            ]]>
+        </Static>
+        
+        <Static>
+            <![CDATA[
+                <h3>How confident are you that you can exercise 3 times per week for 20 minutes in each of following situations?</h3>
+                <table class='wikitable'>
+                    <tr>
+                        <th style='width: 27em;'></th>
+                        <th style='width: 5.25em;'>Not confident at all</th>
+                        <th style='width: 5.25em;'>A little confident</th>
+                        <th style='width: 5.25em;'>Somewhat confident</th>
+                        <th style='width: 5.25em;'>Mostly confident</th>
+                        <th style='width: 5.25em;'>Very confident</th>
+                    </tr>
+            ]]>
+        </Static>
+        <ReportItem id="confident1" type="Radio" orientation="inline" options="1|2|3|4|5" blobItem="CONFIDENT1">
+            <![CDATA[
+                    <tr class='requiredField'>
+                        <td>When I am tired.</td>
+                        {$item}
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="confident2" type="Radio" orientation="inline" options="1|2|3|4|5" blobItem="CONFIDENT2">
+            <![CDATA[
+                    <tr class='requiredField'>
+                        <td>When I have a lot of other things to do.</td>
+                        {$item}
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="confident3" type="Radio" orientation="inline" options="1|2|3|4|5" blobItem="CONFIDENT3">
+            <![CDATA[
+                    <tr class='requiredField'>
+                        <td>When I am in a bad mood.</td>
+                        {$item}
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="confident4" type="Radio" orientation="inline" options="1|2|3|4|5" blobItem="CONFIDENT4">
+            <![CDATA[
+                    <tr class='requiredField'>
+                        <td>When I feel I don’t have enough time.</td>
+                        {$item}
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="confident5" type="Radio" orientation="inline" options="1|2|3|4|5" blobItem="CONFIDENT5">
+            <![CDATA[
+                    <tr class='requiredField'>
+                        <td>When I am feeling under pressure to get things done.</td>
+                        {$item}
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="confident6" type="Radio" orientation="inline" options="1|2|3|4|5" blobItem="CONFIDENT6">
+            <![CDATA[
+                    <tr class='requiredField'>
+                        <td>When I am feeling ill.</td>
+                        {$item}
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="confident7" type="Radio" orientation="inline" options="1|2|3|4|5" blobItem="CONFIDENT7">
+            <![CDATA[
+                    <tr class='requiredField'>
+                        <td>When I am feeling depressed.</td>
+                        {$item}
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="confident8" type="Radio" orientation="inline" options="1|2|3|4|5" blobItem="CONFIDENT8">
+            <![CDATA[
+                    <tr class='requiredField'>
+                        <td>When I am feeling too old.</td>
+                        {$item}
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="confident9" type="Radio" orientation="inline" options="1|2|3|4|5" blobItem="CONFIDENT9">
+            <![CDATA[
+                    <tr class='requiredField'>
+                        <td>When I am feeling too overweight</td>
+                        {$item}
+                    </tr>
+            ]]>
+        </ReportItem>
+        <Static>
+            <![CDATA[
+                </table>
+            ]]>
+        </Static>
+        
+        <Static>
+            <![CDATA[
+                <h3>How confident are you that you can:</h3>
+                <table class='wikitable'>
+                    <tr>
+                        <th style='width: 27em;'></th>
+                        <th style='width: 5.25em;'>Not confident at all</th>
+                        <th style='width: 5.25em;'>A little confident</th>
+                        <th style='width: 5.25em;'>Somewhat confident</th>
+                        <th style='width: 5.25em;'>Mostly confident</th>
+                        <th style='width: 5.25em;'>Very confident</th>
+                    </tr>
+            ]]>
+        </Static>
+        <ReportItem id="can1" type="Radio" orientation="inline" options="1|2|3|4|5" blobItem="CAN1">
+            <![CDATA[
+                    <tr class='requiredField'>
+                        <td>Prepare healthy meals even when you feel tired?</td>
+                        {$item}
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="can2" type="Radio" orientation="inline" options="1|2|3|4|5" blobItem="CAN2">
+            <![CDATA[
+                    <tr class='requiredField'>
+                        <td>Choose nutritious foods when shopping, even if certain foods are expensive or hard to find?</td>
+                        {$item}
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="can3" type="Radio" orientation="inline" options="1|2|3|4|5" blobItem="CAN3">
+            <![CDATA[
+                    <tr class='requiredField'>
+                        <td>Maintain a balanced diet despite changes in appetite or taste?</td>
+                        {$item}
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="can4" type="Radio" orientation="inline" options="1|2|3|4|5" blobItem="CAN4">
+            <![CDATA[
+                    <tr class='requiredField'>
+                        <td>Follow your dietary restrictions due to health conditions?</td>
+                        {$item}
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="can5" type="Radio" orientation="inline" options="1|2|3|4|5" blobItem="CAN5">
+            <![CDATA[
+                    <tr class='requiredField'>
+                        <td>Eat healthily even if you feel lonely or depressed?</td>
+                        {$item}
+                    </tr>
+            ]]>
+        </ReportItem>
+        <Static>
+            <![CDATA[
+                </table>
+            ]]>
+        </Static>
     </ReportSection>
     
     <ReportSection id="submit" type="EditableReportSection" blobSection="SUBMIT" 

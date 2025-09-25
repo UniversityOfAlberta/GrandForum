@@ -91,6 +91,9 @@ class RadioReportItem extends AbstractReportItem {
 						if($orientation == 'horizontal'){
 							$items[] = "<input style='vertical-align:top;display:table-cell;transform-origin:top;' type='radio' name='{$this->getPostId()}' value='{$option}' $checked />&nbsp;{$option}";
 						}
+						else if($orientation == 'inline'){
+						    $items[] = "<input type='radio' name='{$this->getPostId()}' value='{$option}' $checked />";
+						}
 						else{
 							$items[] = "<div style='display:table;padding-bottom:1px;padding-top:1px;'><input style='vertical-align:top;display:table-cell;transform-origin:top;' type='radio' name='{$this->getPostId()}' value='{$option}' $checked />&nbsp;<div style='display:table-cell;'>{$option}</div></div>";
 						}
@@ -133,6 +136,9 @@ class RadioReportItem extends AbstractReportItem {
 				$output .= "<tr><th style='width:$width%'><center>".implode("</center></th><th style='width:$width%;'><center>", $items)."</center></th></tr>";
 				$output .= "<tr><td class='small' valign='top' align='middle'>".implode("</td><td class='small' valign='top' align='middle'>", $descriptions)."</td></tr>";
 				$output .= "</table>";
+			}
+			else if($orientation == 'inline'){
+			    $output = "<td align='middle' valign='top'>".implode("</td><td align='middle' valign='top'>", $items)."</td>";
 			}
 			if($this->getBlobValue() == ""){
 				$output = "<input type='hidden' name='{$this->getPostId()}' value='' />".$output; 
