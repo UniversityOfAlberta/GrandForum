@@ -1,5 +1,7 @@
 <?php
 
+use MediaWiki\MediaWikiServices;
+
 $dir = dirname(__FILE__) . '/';
 $wgSpecialPages['EmailList'] = 'EmailList'; # Let MediaWiki know about the special page.
 $wgExtensionMessagesFiles['EmailList'] = $dir . 'EmailList.i18n.php';
@@ -46,7 +48,7 @@ class EmailList extends SpecialPage{
                     <td>{$person->getEmail()}</td>
                     <td>{$person->getPostalCode()}</td>
                     <td>{$person->getProvinceFromPostalCode()}</td>
-                    <td>{$person->getUser()->getOption('language')}</td>
+                    <td>".MediaWikiServices::getInstance()->getUserOptionsLookup()->getOption( $person->getUser(), 'language')."</td>
                     <td>{$person->getType()}</td>
                     <td>".implode(", ", $subRoles)."</td>
                     <td>{$certified}</td>

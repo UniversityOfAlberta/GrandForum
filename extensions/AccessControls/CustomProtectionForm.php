@@ -338,7 +338,7 @@ class CustomProtectionForm extends ProtectionForm {
 					<td class='mw-input'>" .
 						Xml::checkLabel( wfMsg( 'watchthis' ),
 							'mwProtectWatch', 'mwProtectWatch',
-							$this->mTitle->userIsWatching() || $wgUser->getOption( 'watchdefault' ) ) .
+							$this->mTitle->userIsWatching() || MediaWikiServices::getInstance()->getUserOptionsLookup()->getOption( $wgUser, 'watchdefault') ) .
 					"</td>
 				</tr>
 				<tr>
@@ -433,7 +433,7 @@ class CustomProtectionForm extends ProtectionForm {
 					<td class='mw-input'>" .
 						Xml::checkLabel( wfMsg( 'watchthis' ),
 							'mwProtectWatch', 'mwProtectWatch',
-							$this->mTitle->userIsWatching() || $wgUser->getOption( 'watchdefault' ) ) .
+							$this->mTitle->userIsWatching() || MediaWikiServices::getInstance()->getUserOptionsLookup()->getOption( $wgUser, 'watchdefault') ) .
 					"</td>
 				</tr>
 				<tr>
