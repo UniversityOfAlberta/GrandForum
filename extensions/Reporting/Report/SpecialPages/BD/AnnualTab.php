@@ -17,16 +17,18 @@ class AnnualTab extends AbstractTab {
         $raAuthorsCount = 0;
         foreach($papers as $paper){
             foreach($paper->getAuthors() as $author){
-                $found = false;
-                $unis = $author->getUniversitiesDuring($start, $end);
-                foreach($unis as $uni){
-                    if($uni['position'] == "Research Assistant"){
-                        $found = true;
-                        break;
+                if($author->getId() != 0){
+                    $found = false;
+                    $unis = $author->getUniversitiesDuring($start, $end);
+                    foreach($unis as $uni){
+                        if($uni['position'] == "Research Assistant"){
+                            $found = true;
+                            break;
+                        }
                     }
-                }
-                if($found){
-                    $raAuthorsCount++;
+                    if($found){
+                        $raAuthorsCount++;
+                    }
                 }
             }
         }
