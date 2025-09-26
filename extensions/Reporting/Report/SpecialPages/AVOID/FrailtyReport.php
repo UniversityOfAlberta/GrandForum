@@ -488,9 +488,9 @@ class FrailtyReport extends SpecialPage {
                 vertical-align: middle;
             }" : 
             ".logos img {
-                max-height: 65px;
-                margin-left: 3%;
-                margin-right: 3%;
+                max-height: 55px;
+                margin-left: 2%;
+                margin-right: 2%;
                 vertical-align: middle;
             }";
 
@@ -776,9 +776,9 @@ class FrailtyReport extends SpecialPage {
                         <div class='body'>
                         <img src='{$wgServer}{$wgScriptPath}/skins/bg_top.png' style='z-index: -2; position: absolute; top:0; left: 0; right:0; width: 216mm;' />
                         <div class='logos'>
-                            <img src='{$wgServer}{$wgScriptPath}/skins/logo4.png' />
+                            <img style='max-height: 50px;' src='{$wgServer}{$wgScriptPath}/skins/logo4.png' />
                             <img src='{$wgServer}{$wgScriptPath}/skins/logo3.png' />
-                            <img style='max-height: 100px;' src='{$wgServer}{$wgScriptPath}/skins/logo2.png' />
+                            <img style='max-height: 65px;' src='{$wgServer}{$wgScriptPath}/skins/logo2.png' />
                             <en><img src='{$wgServer}{$wgScriptPath}/skins/logo1.png' /></en><fr><img src='{$wgServer}{$wgScriptPath}/skins/logo1fr.png' /></fr>
                         </div>
                         <div class='title-box'>

@@ -75,14 +75,21 @@ class Report extends AbstractReport{
     
     static function createSubTabs(&$tabs){
         global $wgServer, $wgScriptPath, $wgTitle, $config;
-        $person = Person::newFromWgUser();
+        $me = Person::newFromWgUser();
         $url = "$wgServer$wgScriptPath/index.php/Special:Report?report=";
-        if($person->isLoggedIn() && $config->getValue('networkFullName') != "AVOID Australia" && 
-                                    $config->getValue('networkFullName') != "AVOID AB"){
+        if($me->isLoggedIn() && $config->getValue('networkFullName') != "AVOID Australia" && 
+                                $config->getValue('networkFullName') != "AVOID AB"){
             if(!AVOIDDashboard::hasSubmittedSurvey()){
                 $section = AVOIDDashboard::getNextIncompleteSection();
                 $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "IntakeSurvey")) ? "selected" : false;
                 $tabs["Surveys"]['subtabs'][] = TabUtils::createSubTab("<en>Healthy Aging Assessment</en><fr>Évaluation du vieillissement sain</fr>", "{$url}IntakeSurvey&section={$section}", $selected);
+            }
+            if($config->getValue('networkFullName') == "AVOID KFLA"){
+                if(!AVOIDDashboard::hasSubmittedSurvey($me->getId(), "RP_AVOID_SIMPLE") && $me->getRegistration() >= "20250922000000"){
+                    $tabs["Surveys"]['subtabs'] = array(); // Reset subtabs
+                    $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "IntakeSurveySimple")) ? "selected" : false;
+                    $tabs["Surveys"]['subtabs'][] = TabUtils::createSubTab("<en>Healthy Aging Assessment</en><fr>Évaluation du vieillissement sain</fr>", "{$url}IntakeSurveySimple", $selected);
+                }
             }
         }
         return true;

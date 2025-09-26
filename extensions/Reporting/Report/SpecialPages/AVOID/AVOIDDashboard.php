@@ -1123,6 +1123,7 @@ class AVOIDDashboard extends SpecialPage {
                                                        $config->getValue('networkFullName') == "AVOID AB"){
             return true;
         }
+        $simpleSubmitted = AVOIDDashboard::hasSubmittedSurvey($me->getId(), "RP_AVOID_SIMPLE");
         $baseLineSubmitted = AVOIDDashboard::hasSubmittedSurvey($me->getId(), "RP_AVOID");
         $threeMonthSubmitted = AVOIDDashboard::hasSubmittedSurvey($me->getId(), "RP_AVOID_THREEMO");
         $sixMonthSubmitted = AVOIDDashboard::hasSubmittedSurvey($me->getId(), "RP_AVOID_SIXMO");
@@ -1132,33 +1133,45 @@ class AVOIDDashboard extends SpecialPage {
         $baseDiff = (time() - strtotime(AVOIDDashboard::submissionDate($me->getId(), "RP_AVOID")))/86400;
         $section = AVOIDDashboard::getNextIncompleteSection();
         if($me->isLoggedIn()){
-            if(!$baseLineSubmitted && ($wgTitle->getText() != "Report" || @$_GET['report'] != "IntakeSurvey")){
-                redirect("{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=IntakeSurvey&section={$section}");
+            if($config->getValue('networkFullName') == "AVOID KFLA"){
+                // KFLA
+                if(!$simpleSubmitted && $me->getRegistration() >= "20250922000000" && ($wgTitle->getText() != "Report" || @$_GET['report'] != "IntakeSurveySimple")){
+                    redirect("{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=IntakeSurveySimple");
+                }
+                else if(isset($wgRoleValues[$nsText]) || ($nsText == "" && $wgTitle->getText() == "Main Page")){
+                    redirect("{$wgServer}{$wgScriptPath}/index.php/Special:AVOIDDashboard");
+                }
             }
-            else if($baseLineSubmitted && !$threeMonthSubmitted && $baseDiff >= 30*3 && $baseDiff < 30*4 && ($wgTitle->getText() != "Report" || @$_GET['report'] != "ThreeMonths")){
-                $wgMessage->addInfo("You are eligible to fill out the Three Month Follow-Up.  <a href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=ThreeMonths'><b>Click Here</b></a> to fill out the follow-up.");
-                //redirect("{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=ThreeMonths");
-            }
-            else if($baseLineSubmitted && !$sixMonthSubmitted && $baseDiff >= 30*6 && $baseDiff < 30*7 && ($wgTitle->getText() != "Report" || @$_GET['report'] != "SixMonths")){
-                redirect("{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=SixMonths");
-            }
-            else if($baseLineSubmitted && !$nineMonthSubmitted && $baseDiff >= 30*9 && $baseDiff < 30*10 && ($wgTitle->getText() != "Report" || @$_GET['report'] != "NineMonths")){
+            else{
+                // Others
+                if(!$baseLineSubmitted && ($wgTitle->getText() != "Report" || @$_GET['report'] != "IntakeSurvey")){
+                    redirect("{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=IntakeSurvey&section={$section}");
+                }
+                else if($baseLineSubmitted && !$threeMonthSubmitted && $baseDiff >= 30*3 && $baseDiff < 30*4 && ($wgTitle->getText() != "Report" || @$_GET['report'] != "ThreeMonths")){
+                    $wgMessage->addInfo("You are eligible to fill out the Three Month Follow-Up.  <a href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=ThreeMonths'><b>Click Here</b></a> to fill out the follow-up.");
+                    //redirect("{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=ThreeMonths");
+                }
+                else if($baseLineSubmitted && !$sixMonthSubmitted && $baseDiff >= 30*6 && $baseDiff < 30*7 && ($wgTitle->getText() != "Report" || @$_GET['report'] != "SixMonths")){
+                    redirect("{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=SixMonths");
+                }
+                else if($baseLineSubmitted && !$nineMonthSubmitted && $baseDiff >= 30*9 && $baseDiff < 30*10 && ($wgTitle->getText() != "Report" || @$_GET['report'] != "NineMonths")){
 
-                $wgMessage->addInfo("You are eligible to fill out the Nine Month Follow-Up.  <a href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=NineMonths'><b>Click Here</b></a> to fill out the follow-up.");
-                //redirect("{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=NineMonths");
-            }
-            else if($baseLineSubmitted && !$twelveMonthSubmitted && $baseDiff >= 30*12 && ($wgTitle->getText() != "Report" || @$_GET['report'] != "TwelveMonths")){
-                redirect("{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=TwelveMonths");
-            }
-            else if($nsText == "Special" && $wgTitle->getText() == "Report" && ((@$_GET['report'] == "IntakeSurvey" && $baseLineSubmitted) || 
-                                                                                (@$_GET['report'] == "ThreeMonths" && $threeMonthSubmitted) ||
-                                                                                (@$_GET['report'] == "SixMonths" && $sixMonthSubmitted) ||
-                                                                                (@$_GET['report'] == "NineMonths" && $nineMonthSubmitted) ||
-                                                                                (@$_GET['report'] == "TwelveMonths" && $twelveMonthSubmitted))){
-                redirect("{$wgServer}{$wgScriptPath}/index.php/Special:AVOIDDashboard");
-            }
-            else if(isset($wgRoleValues[$nsText]) || ($nsText == "" && $wgTitle->getText() == "Main Page")){
-                redirect("{$wgServer}{$wgScriptPath}/index.php/Special:AVOIDDashboard");
+                    $wgMessage->addInfo("You are eligible to fill out the Nine Month Follow-Up.  <a href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=NineMonths'><b>Click Here</b></a> to fill out the follow-up.");
+                    //redirect("{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=NineMonths");
+                }
+                else if($baseLineSubmitted && !$twelveMonthSubmitted && $baseDiff >= 30*12 && ($wgTitle->getText() != "Report" || @$_GET['report'] != "TwelveMonths")){
+                    redirect("{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=TwelveMonths");
+                }
+                else if($nsText == "Special" && $wgTitle->getText() == "Report" && ((@$_GET['report'] == "IntakeSurvey" && $baseLineSubmitted) || 
+                                                                                    (@$_GET['report'] == "ThreeMonths" && $threeMonthSubmitted) ||
+                                                                                    (@$_GET['report'] == "SixMonths" && $sixMonthSubmitted) ||
+                                                                                    (@$_GET['report'] == "NineMonths" && $nineMonthSubmitted) ||
+                                                                                    (@$_GET['report'] == "TwelveMonths" && $twelveMonthSubmitted))){
+                    redirect("{$wgServer}{$wgScriptPath}/index.php/Special:AVOIDDashboard");
+                }
+                else if(isset($wgRoleValues[$nsText]) || ($nsText == "" && $wgTitle->getText() == "Main Page")){
+                    redirect("{$wgServer}{$wgScriptPath}/index.php/Special:AVOIDDashboard");
+                }
             }
         }
 
