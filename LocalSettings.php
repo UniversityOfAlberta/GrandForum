@@ -18,7 +18,7 @@ if(PHP_SAPI != 'cli'){
         error_reporting(E_ALL);
     }
     else{
-        error_reporting(E_ALL ^ E_STRICT);
+        error_reporting(E_ALL ^ E_STRICT ^ E_DEPRECATED);
     }
     ini_set("display_errors", 1);
 

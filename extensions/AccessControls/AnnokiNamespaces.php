@@ -115,7 +115,7 @@ function addNewNamespace($nsName, $user = null) {
     return false;
   
   $dbw = wfGetDB( DB_PRIMARY );
-  $result = $dbw->selectRow("${egAnnokiTablePrefix}extranamespaces", "MAX(nsId) AS maxId", "");
+  $result = $dbw->selectRow("{$egAnnokiTablePrefix}extranamespaces", "MAX(nsId) AS maxId", "");
   $nsId = (int) $result->maxId;
   
   if (!is_int($nsId) || ($nsId < 100)) {
@@ -129,7 +129,7 @@ function addNewNamespace($nsName, $user = null) {
   if ($user != null) {
     $userID = $user->getID();
   }
-  $dbw->insert("${egAnnokiTablePrefix}extranamespaces", array("nsId" => $nsId, "nsName" => $nsName, "nsUser" => $userID));
+  $dbw->insert("{$egAnnokiTablePrefix}extranamespaces", array("nsId" => $nsId, "nsName" => $nsName, "nsUser" => $userID));
   
   return true;
 }
@@ -147,7 +147,7 @@ function renameNamespace($nsName, $newNsName)  {
 		return;
 	}
 	$dbw = wfGetDB( DB_PRIMARY );
-	$dbw->update("${egAnnokiTablePrefix}extranamespaces", array("nsName" => $newNsName), array("nsId" => $nsId));
+	$dbw->update("{$egAnnokiTablePrefix}extranamespaces", array("nsName" => $newNsName), array("nsId" => $nsId));
 	$this->registerExtraNamespaces();
 }
 
@@ -331,7 +331,7 @@ static function getExtraNamespaces($type, $includeTalk = false) {
    $publicNS = array();
 
    $dbr = wfGetDB( DB_REPLICA );
-   $result = $dbr->select("${egAnnokiTablePrefix}extranamespaces", 'nsName', array('public' => 1) );
+   $result = $dbr->select("{$egAnnokiTablePrefix}extranamespaces", 'nsName', array('public' => 1) );
 
    while ($row = $dbr->fetchRow($result)){
      $publicNS[] = $row[0];
@@ -366,7 +366,7 @@ static function getExtraNamespaces($type, $includeTalk = false) {
    global $egAnnokiTablePrefix;
 
    $dbr = wfGetDB( DB_REPLICA );
-   $result = $dbr->selectField("${egAnnokiTablePrefix}extranamespaces", 'nsName', array('nsUser' => $user->getId()));
+   $result = $dbr->selectField("{$egAnnokiTablePrefix}extranamespaces", 'nsName', array('nsUser' => $user->getId()));
 
    if (!$result)
      return false;
