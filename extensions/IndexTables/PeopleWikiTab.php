@@ -32,11 +32,11 @@ class PeopleWikiTab extends AbstractTab {
         $wgRequest->setVal("wpIgnoreWarning", true);
         $wgRequest->setVal("wpEditToken", $wgUser->getEditToken());
 
-        $upload = new SpecialUpload($wgRequest);
+        $upload = new SpecialUpload(MediaWikiServices::getInstance()->getRepoGroup());
         $upload->execute(null);
-            $_POST['fileURL'] = trim($_POST['fileURL']);
-            $_POST['realTitle'] = trim($_POST['realTitle']);
-            $_POST['keywords'] = trim($_POST['keywords']);
+        $_POST['fileURL'] = trim($_POST['fileURL']);
+        $_POST['realTitle'] = trim($_POST['realTitle']);
+        $_POST['keywords'] = trim($_POST['keywords']);
         if($upload->mLocalFile != null){
             $data = DBFunctions::select(array('mw_an_upload_permissions'),
                                         array('*'),
@@ -94,7 +94,7 @@ class PeopleWikiTab extends AbstractTab {
         global $wgUser, $wgOut, $wgServer, $wgScriptPath, $wgLang, $config;
         $resources = array("Organizations", "Articles", "Patients", "Tools", "Clinical", "Resources", "Canadian", "Nursing", "Formulaires_en_français");
         if(isset($_FILES['wpUploadFile'])){
-            $this->uploadFile();
+            //$this->uploadFile();
         }
         
         $table = $this->table;
@@ -186,7 +186,7 @@ class PeopleWikiTab extends AbstractTab {
                 return false;
             }
         </script>
-        <a class='button' id='newWikiPage' style='display:none;'>New Wiki Page</a>&nbsp;<a class='button' id='newFilePage'>$button_val</a>
+        <!--a class='button' id='newWikiPage' style='display:none;'>New Wiki Page</a>&nbsp;<a class='button' id='newFilePage'>$button_val</a>
         <div id='newWikiPageDiv' style='display:none;'>
             <h2>Create New Wiki Page</h2>
             <form action='' onSubmit='clickButton'>
@@ -239,7 +239,7 @@ class PeopleWikiTab extends AbstractTab {
                 $('#newFileDiv').show('fast');
             });
             $(\"input[name='keywords']\").tagit({});
-        </script>";
+        </script-->";
 
         $pages = Wiki::getFiles($this->table);
         if($this->table == "Articles"){

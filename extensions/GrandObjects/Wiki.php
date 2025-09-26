@@ -134,13 +134,13 @@ class Wiki extends BackboneModel {
 
     static function getAllUnapprovedPages(){
         $pages = array();
-            $data = DBFunctions::select(array("grand_page_approved"),
-                                        array("page_id"),
-                                        array("approved"=>EQ(COL(0))));
+        $data = DBFunctions::select(array("grand_page_approved"),
+                                    array("page_id"),
+                                    array("approved"=>EQ(COL(0))));
         foreach($data as $row){
-        $pages[] = Wiki::newFromId($row['page_id']);
+            $pages[] = Wiki::newFromId($row['page_id']);
         }
-            
+        
         return $pages;
     }
     

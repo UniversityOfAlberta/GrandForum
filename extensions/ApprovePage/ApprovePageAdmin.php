@@ -10,9 +10,9 @@ class ApprovePageAdmin {
                 global $notifications, $wgUser, $wgServer, $wgScriptPath;
                 $me = Person::newFromId($wgUser->getId());
                 if($me->isRoleAtLeast(STAFF)){
-			$rows = Wiki::getAllUnapprovedPages();
+                    $rows = Wiki::getAllUnapprovedPages();
                         if(count($rows) > 0){
-                                $notifications[] = new Notification("Page Approval Pending", "There is at least one page requiring approval.", "$wgServer$wgScriptPath/index.php/Special:ApprovePage?action=view");
+                            $notifications[] = new Notification("Page Approval Pending", "There is at least one page requiring approval.", "$wgServer$wgScriptPath/index.php/Special:ApprovePage?action=view");
                         }
                 }
         }
