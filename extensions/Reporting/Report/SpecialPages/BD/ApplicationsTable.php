@@ -8,6 +8,7 @@ $wgSpecialPageGroups['ApplicationsTable'] = 'network-tools';
 $wgHooks['SubLevelTabs'][] = 'ApplicationsTable::createSubTabs';
 
 require_once("SurveyTab.php");
+require_once("AnnualTab.php");
 
 function runApplicationsTable($par) {
     ApplicationsTable::execute($par);
@@ -66,6 +67,7 @@ class ApplicationsTable extends SpecialPage{
         if($me->isRoleAtLeast(SD)){
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=project'>Project</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=theme'>Theme</a>";
+            $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=annual'>Annual</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=survey'>Survey</a>";
         }
         
@@ -82,6 +84,9 @@ class ApplicationsTable extends SpecialPage{
         }
         else if($program == "theme" && $me->isRoleAtLeast(SD)){
             $this->generateTheme();
+        }
+        else if($program == "annual" && $me->isRoleAtLeast(SD)){
+            $this->generateAnnual();
         }
         else if($program == "survey" && $me->isRoleAtLeast(SD)){
             $this->generateSurvey();
@@ -145,6 +150,16 @@ class ApplicationsTable extends SpecialPage{
                     $tabbedPage->addTab($tab);
                 }
             }
+        }
+        $wgOut->addHTML($tabbedPage->showPage());
+    }
+    
+    function generateAnnual(){
+        global $config, $wgOut;
+        $tabbedPage = new InnerTabbedPage("reports");
+        for($y=date('Y');$y>=substr($config->getValue('projectPhaseDates')[1],0,4);$y--){
+            $tab = new AnnualTab($y);
+            $tabbedPage->addTab($tab);
         }
         $wgOut->addHTML($tabbedPage->showPage());
     }
