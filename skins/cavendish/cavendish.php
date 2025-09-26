@@ -996,10 +996,7 @@ $(function(){
 		if($wgUser->isRegistered()){
 		    echo "
 			<ul class='pBodyLogin'>";
-		    
-		    if(isset($_GET['returnto'])){
-		        redirect("$wgServer$wgScriptPath/index.php/{$_GET['returnto']}");
-		    }
+
 		    $me = Person::newFromWgUser();
 		    MediaWikiServices::getInstance()->getHookContainer()->run('ToolboxHeaders', array(&$GLOBALS['toolbox']));
 	        MediaWikiServices::getInstance()->getHookContainer()->run('ToolboxLinks', array(&$GLOBALS['toolbox']));
