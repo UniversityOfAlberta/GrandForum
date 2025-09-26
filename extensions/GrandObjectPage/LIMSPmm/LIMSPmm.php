@@ -24,7 +24,9 @@ class LIMSPmm extends BackbonePage {
                     'lims_status_change',
                     'lims_status_check',
                     'lims_comment_history',
-                'lims_email_notification_view');
+                    'lims_email_notification_view',
+                    'project_tasks_main',
+                    'task_row');
     }
     
     function getViews(){
@@ -39,7 +41,9 @@ class LIMSPmm extends BackbonePage {
                     'LIMSStatusChangeViewPmm',
                     'LIMSStatusCheckViewPmm',
                     'LIMSCommentHistoryPmm',
-                'LIMSEmailNotificationViewPmm');
+                    'LIMSEmailNotificationViewPmm',
+                    'ProjectTaskView',
+                    'TaskRowView');
     }
     
     function getModels(){

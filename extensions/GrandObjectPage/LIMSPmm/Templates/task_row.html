@@ -1,0 +1,133 @@
+
+<% if (isEditMode) { %>
+    <!-- ================== EDIT MODE ROW ================== -->
+    <td valign="top"><span id="deleteTask" class="delete-icon" style="margin: 7px 5px 0 5px;" title="Delete Task"></span></td>
+    <td valign="top"><%= HTML.TextBox(this, 'task', {placeholder: 'Enter Task...', style: "width:100%;box-sizing:border-box;margin:0;", "class": "task-input"}) %></td>
+    <%
+    var taskTypesOptions = ['Planning', 'Screening', 'Data Extraction', 'Analysis and Report Writing'];
+    %>
+    <td valign="top">
+        <%= HTML.Select(this, 'taskType' , { 
+            "class": "task-type-select",
+            options: taskTypesOptions
+        }) %>
+    </td>
+    <td valign="top">
+        <%
+        var memberOptions =  _.map(project.members, function(person) {
+            return {option: person.name, value: person.id};
+        });
+        var allOptions = [
+            {option: 'Everyone', value: -1}
+        ].concat(memberOptions);
+        %>
+        <%= HTML.Select(this, 'assignees', {
+            "class": "assignees-select",
+            style: 'width:200px; display: none',
+            multiple: true,
+            options: allOptions,
+        }) %>
+    </td>
+    <td valign="top" style="white-space:nowrap;"><%= HTML.DatePicker(this, 'dueDate', {"class": "due-date-input", format: 'yy-mm-dd', style: 'width:5em'}) %></td>
+
+<% } else { %>
+    <!-- ================== VIEW MODE ROW ================== -->
+    <td><%= task %></td>
+    <td><%= taskType %></td>
+    <td>
+        <% 
+        var assigneesList = assignees || [];
+        var isEveryoneAssigned = _.some(assigneesList, function(a) { return a.id === -1; });
+
+        if (isEveryoneAssigned) { %>
+            <div>Everyone</div>
+        <% } else {
+            if (assigneesList.length > 0) {
+                assigneesList.forEach(function(assignee) { %>
+                    <div><a href="<%= assignee.url %>"><%= assignee.name %></a></div>
+                <% });
+            } else { %>
+                <div>No Assignees</div>
+            <% }
+        } %>
+    </td>
+    <td style="text-align: center;"><%= dueDate %></td>
+<% } %>
+
+<!-- ================== SHARED STATUS COLUMN (Used in both modes) ================== -->
+<td style="text-align: center; white-space:nowrap; padding: 5px;">
+    <% if (isLeaderAllowedToEdit) { %>
+        <%
+        var allAssignees = isEveryoneAssigned ? project.members : assignees;
+        var allStatuses = statuses || {};
+        var isFullyCompleted = false;
+
+        if (allAssignees && allAssignees.length > 0) {
+            isFullyCompleted = _.every(allAssignees, function(assignee) {
+                return allStatuses[assignee.id] === 'Closed';
+            });
+        }
+        %>
+        <% if (isFullyCompleted) { %>
+            <div style="text-align: center; color: #28a745; font-weight: bold;">Completed</div>
+        <% } else { %>
+            <div style="font-size: 12px; line-height: 1.6; text-align: left;">
+                <div style="display: flex; align-items: center; white-space: nowrap;">
+                    <span style="width: 10px; height: 10px; background-color: #28a745; border-radius: 50%; margin-right: 6px;"></span>
+                    <strong class="count-completed" style="margin-right: 4px;"><%= displayClosedCount %></strong> Completed
+                </div>
+                <div style="display: flex; align-items: center; white-space: nowrap;">
+                    <span style="width: 10px; height: 10px; background-color: #FF8C00; border-radius: 50%; margin-right: 6px;"></span>
+                    <strong class="count-pending" style="margin-right: 4px;"><%= displayPendingReviewCount %></strong> Pending Review
+                </div>
+                <div style="display: flex; align-items: center; white-space: nowrap;">
+                    <span style="width: 10px; height: 10px; background-color: #007bff; border-radius: 50%; margin-right: 6px;"></span>
+                    <strong class="count-assigned" style="margin-right: 4px;"><%= displayAssignedCount %></strong> Assigned
+                </div>
+            </div>
+        <% } %>
+        <div style="margin-top: 5px;"><button id="changeStatusButton" type="button">Change Status</button></div>
+        <div id="changeStatusDialog"></div>
+
+    <% } else { %>
+        <%
+        var statuses = statuses || {};
+        var currentUserId = me.get('id');
+        var reviewers = reviewers || {};
+        var myStatus = null;
+        var myAssigneeStatus = isCurrentUserAssignee ? (statuses[currentUserId] || statuses['-1']) : null;
+        var reviewTaskStatus = null;
+
+        if (isCurrentUserReviewer) {
+            var reviewedAssigneeId = _.findKey(reviewers, function(r) { return r && r.id == currentUserId; });
+            if (reviewedAssigneeId) { reviewTaskStatus = statuses[reviewedAssigneeId]; }
+        }
+
+        if (myAssigneeStatus && myAssigneeStatus !== 'Closed') { myStatus = myAssigneeStatus; } 
+        else if (isCurrentUserReviewer) { myStatus = (reviewTaskStatus === 'Done') ? 'Done' : 'Closed'; } 
+        else { myStatus = myAssigneeStatus; }
+        
+        if (myStatus === null) { myStatus = 'Assigned'; }
+
+        if (myStatus === 'Closed') { %>
+            <div style="color: #28a745; font-weight: bold;">Completed</div>
+        <% } else if (myStatus === 'Done') { %>
+            <div style="color: #FF8C00; font-weight: bold;">Pending Review</div>
+            <div style="margin-top: 5px;"><button id="changeStatusButton" type="button">Change Status</button></div>
+            <div id="changeStatusDialog"></div>
+        <% } else { %>
+            <div style="color: red; font-weight: bold;">Pending</div>
+            <div style="margin-top: 5px;"><button id="changeStatusButton" type="button">Change Status</button></div>
+            <div id="changeStatusDialog"></div>
+        <% } %>
+    <% } %>
+</td>
+
+<!-- ================== SHARED DETAILS COLUMN (Used in both modes) ================== -->
+<td valign="top" style="width:40%">
+    <% if (isEditMode) { %>
+        <%= HTML.TextArea(this, 'details', {"class": "details-textarea", style: "height: 63px;width:100%;box-sizing:border-box;margin:0;"}) %> 
+    <% } else { %>
+        <%= details %>
+    <% } %>
+</td>

@@ -360,6 +360,21 @@ class Project extends BackboneModel {
         }
         return (count($data) > 0);
     }
+
+    static function isAllowedToCreate(){
+        $me = Person::newFromWgUser();
+        return $me->isRoleAtLeast(STAFF) || $me->isRole(PL);
+    }
+
+    function isAllowedToEdit(){
+        $me = Person::newFromWgUser();
+        return ($me->isRole(PL, $this) || $me->isRoleAtLeast(STAFF));
+    }
+
+    function isAllowedToView(){
+        $me = Person::newFromWgUser();
+        return ($me->isMemberOf($this) || $me->isRoleAtLeast(STAFF));
+    }
     
     // Constructor
     // Takes in a resultset containing the 'project id' and 'project name'
@@ -993,6 +1008,12 @@ class Project extends BackboneModel {
         return CRMContact::getAllContacts($this);
     }
 
+    // Returns an array of tasks belonging to this project
+    function getTasks() {
+        error_log('inside gettasks but in project');
+        return LIMSTaskPmm::getTasks($this->getId());
+    }
+
     /// Returns an array with the leaders of the project.  By default, the
     /// resulting array contains instances of Person.  If #onlyid is set to
     /// true, then the resulting array contains only numerical user IDs.
@@ -1225,21 +1246,19 @@ class Project extends BackboneModel {
         return $articles;
     }
 
-function getTaskAssigneeFiles() {
-    $projectId = intval($this->id);
-    $sql = "SELECT a.id, a.filename, a.task_id, a.assignee
-            FROM grand_project AS p
-            INNER JOIN grand_pmm_contact AS c ON p.id = c.project_id
-            INNER JOIN grand_pmm_opportunity AS o ON c.id = o.contact
-            INNER JOIN grand_pmm_task AS t ON o.id = t.opportunity
-            INNER JOIN grand_pmm_task_assignees AS a ON t.id = a.task_id
-            WHERE p.id = {$projectId}
-              AND a.filename IS NOT NULL
-              AND a.filename != ''";
-    
-    $data = DBFunctions::execSQL($sql);
-    return $data;
-}
+    function getTaskAssigneeFiles() {
+        $projectId = intval($this->id);
+        $sql = "SELECT a.id, a.filename, a.task_id, a.assignee
+                FROM grand_project AS p
+                INNER JOIN grand_pmm_task AS t ON p.id = t.project_id
+                INNER JOIN grand_pmm_task_assignees AS a ON t.id = a.task_id
+                WHERE p.id = {$projectId}
+                AND a.filename IS NOT NULL
+                AND a.filename != ''";
+        
+        $data = DBFunctions::execSQL($sql);
+        return $data;
+    }
     
     /**
      * Returns an array containing responses for being 'Up to date'

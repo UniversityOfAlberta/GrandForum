@@ -12,6 +12,7 @@ class LIMSTaskPmm extends BackboneModel
 
     var $id;
     var $opportunity;
+    var $projectId;
     var $assignees;
     var $task;
     var $dueDate;
@@ -29,16 +30,16 @@ class LIMSTaskPmm extends BackboneModel
             array('*'),
             array('id' => $id)
         );
-        $opportunity = new LIMSTaskPmm($data);
-        return $opportunity;
+        $taskData = new LIMSTaskPmm($data);
+        return $taskData;
     }
 
-    static function getTasks($opportunity_id)
+    static function getTasks($project_id)
     {
         $data = DBFunctions::select(
             array('grand_pmm_task'),
             array('*'),
-            array('opportunity' => $opportunity_id)
+            array('project_id' => $project_id)
         );
         $tasks = array();
         foreach ($data as $row) {
@@ -106,7 +107,7 @@ class LIMSTaskPmm extends BackboneModel
 
         if (count($data) > 0) {
             $this->id = $data[0]['id'];
-            $this->opportunity = $data[0]['opportunity'];
+            $this->projectId = $data[0]['project_id'];
             // $this->assignee = $data[0]['assignee'];
             $this->task = $data[0]['task'];
             $this->dueDate = $data[0]['due_date'];
@@ -156,13 +157,9 @@ class LIMSTaskPmm extends BackboneModel
         return "";
     }
 
-    function getOpportunity()
+    function getProject()
     {
-        return LIMSOpportunityPmm::newFromId($this->opportunity);
-    }
-
-    function getPerson(){
-        return $this->getOpportunity()->getPerson();
+        return Project::newFromId($this->projectId);
     }
 
     function isMember()
@@ -221,18 +218,17 @@ class LIMSTaskPmm extends BackboneModel
 
     function isAllowedToEdit()
     {
-        
-        return ($this->getOpportunity()->isAllowedToEdit() || $this->isMember() );
+        return ($this->getProject()->isAllowedToEdit() || $this->isMember() );
     }
 
     function isAllowedToView()
     {
-        return $this->getOpportunity()->isAllowedToView();
+        return $this->getProject()->isAllowedToView();
     }
 
     static function isAllowedToCreate()
     {
-        return LIMSOpportunityPmm::isAllowedToCreate();
+        return Project::isAllowedToCreate();
     }
 
     function getCommentsHistory(){
@@ -260,7 +256,7 @@ class LIMSTaskPmm extends BackboneModel
 
             $json = array(
                 'id' => $this->getId(),
-                'opportunity' => $this->getOpportunity()->getId(),
+                'projectId' => $this->projectId,
                 'assignees' => $assignees,
                 'task' => $this->getTask(),
                 'dueDate' => $this->getDueDate(),
@@ -285,13 +281,11 @@ class LIMSTaskPmm extends BackboneModel
             DBFunctions::insert(
                 'grand_pmm_task',
                 array(
-                    'opportunity' => $this->opportunity,
-                    // 'assignee' => $this->assignee,
+                    'project_id' => $this->projectId,
                     'task' => $this->task,
                     'due_date' => $this->dueDate,
                     'details' => $this->details,
                     'task_type' => $this->taskType
-                    // 'status' => $this->status
                 )
             );
             $this->id = DBFunctions::insertId();
@@ -344,7 +338,7 @@ class LIMSTaskPmm extends BackboneModel
                     $assignee, 
                     "Task Created", 
                     "The task <b>{$this->task}</b> has been created. Comments: <b>{$comment}</b>", 
-                    $this->getOpportunity()->getContact()->getProject()->getUrl() . "?tab=activity-management", 
+                    $this->getProject()->getUrl() . "?tab=activity-management", 
                     true
                 );
             }
@@ -431,7 +425,7 @@ class LIMSTaskPmm extends BackboneModel
             DBFunctions::update(
                 'grand_pmm_task',
                 array(
-                    'opportunity' => $this->opportunity,
+                    'project_id' => $this->projectId,
                     'task' => $this->task,
                     'due_date' => $this->dueDate,
                     'details' => $this->details,
@@ -446,7 +440,7 @@ class LIMSTaskPmm extends BackboneModel
             );
 
             $this->reviewers = isset($this->reviewers) ? (array)$this->reviewers : [];
-            $isLeader = $this->getOpportunity()->isAllowedToEdit();
+            $isLeader = $this->getProject()->isAllowedToEdit();
 
             foreach ($this->assignees as $assignee) {
                 $assigneeId = (isset($assignee->id)) ? $assignee->id : $assignee;
@@ -548,13 +542,13 @@ class LIMSTaskPmm extends BackboneModel
                     Your Impact:
                     Your work helps us maintain momentum and reach our goals in collaborative, open team science.
                     The insights or data you provided will guide the next steps for our project and benefit fellow team members.
-                    Comments: <b>{$comment}</b>", $this->getOpportunity()->getContact()->getProject()->getUrl() . "?tab=activity-management", true);
+                    Comments: <b>{$comment}</b>", $this->getProject()->getUrl() . "?tab=activity-management", true);
                 } else {
-                    Notification::addNotification($me, $assignee, "Task Updated", "The task <b>{$this->task}</b> has been updated. Comments: <b>{$comment}</b>", $this->getOpportunity()->getContact()->getProject()->getUrl() . "?tab=activity-management", true);
+                    Notification::addNotification($me, $assignee, "Task Updated", "The task <b>{$this->task}</b> has been updated. Comments: <b>{$comment}</b>", $this->getProject()->getUrl() . "?tab=activity-management", true);
                 }
             }
             // Send email to leader if an assignee left a comment
-            $leaders = $this->getOpportunity()->getContact()->getProject()->getLeaders();
+            $leaders = $this->getProject()->getLeaders();
             $comment = @$_POST['comments'][$me->getId()];
 
             foreach ($leaders as $leader) {
@@ -564,7 +558,7 @@ class LIMSTaskPmm extends BackboneModel
                         $leader,
                         "New Comment on Task: <b>{$this->task}</b>",
                         "Assignee <b>{$me->getNameForForms()}</b> left a comment on the task <b>{$this->task}</b>:<br><b>{$comment}</b>",
-                        $this->getOpportunity()->getContact()->getProject()->getUrl() . "?tab=activity-management",
+                        $this->getProject()->getUrl() . "?tab=activity-management",
                         true
                     );
                 }
