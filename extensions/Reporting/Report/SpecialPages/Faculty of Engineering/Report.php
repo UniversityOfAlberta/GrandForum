@@ -27,10 +27,10 @@ class Report extends TemplateReport{
             $person->getFecPersonalInfo();
             $url = "$wgServer$wgScriptPath/index.php/Special:Report?report=";
             if($person->inFaculty()){
-                /*if($person->isRole(NI) || $person->isRole("ATS")){
+                if($person->isRole(NI) || $person->isRole("ATS")){
                     $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "Rebuttal")) ? "selected" : false;
                     $tabs["Rebuttal"]['subtabs'][] = TabUtils::createSubTab("Rebuttal", "{$url}Rebuttal", $selected);
-                }*/
+                }
                 
                 if($person->isRole(NI) || $person->isRole("ATS")){
                     $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "Variance")) ? "selected" : false;
