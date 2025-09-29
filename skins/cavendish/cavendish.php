@@ -603,8 +603,8 @@ class CavendishTemplate extends QuickTemplate {
 		                var dark = '<?php echo "$wgServer$wgScriptPath"; ?>/' + iconPath + $(this).attr("name") + '.png';
 		                var light = '<?php echo "$wgServer$wgScriptPath"; ?>/' + iconPathHighlighted + $(this).attr("name") + '.png';
 		                
-		                $(this).attr('onmouseover', "changeImg($('img:not(.overlay)', $(this)), '" + light + "')");
-		                $(this).attr('onmouseout', "changeImg($('img:not(.overlay)', $(this)), '" + dark + "')");
+		                $(this).attr('onmouseover', "changeImg($('> img:not(.overlay)', $(this)), '" + light + "')");
+		                $(this).attr('onmouseout', "changeImg($('> img:not(.overlay)', $(this)), '" + dark + "')");
 		            }
 		        });
 		        
@@ -868,7 +868,7 @@ class CavendishTemplate extends QuickTemplate {
                         break;
                     case 'twitter':
                         $img = "";
-                        $text = ($text == "") ? "&#120143;" : $text;
+                        $text = ($text == "") ? "<img src='$wgServer$wgScriptPath/skins/icons/logo-white.png' style='height:19px;margin-bottom:3px;' />" : $text;
                         $text2 = "X";
                         break;
                     case 'facebook':
