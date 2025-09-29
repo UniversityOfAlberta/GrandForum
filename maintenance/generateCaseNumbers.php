@@ -57,18 +57,13 @@
         }
     }
     else{
-        // Sort by PhD or Appointment date
-        $data = DBFunctions::execSQL("SELECT `user_id`, `date_of_phd`, `date_of_appointment` 
+        // Sort by most recent date
+        $data = DBFunctions::execSQL("SELECT `user_id`
                                   FROM `grand_personal_fec_info` 
                                   WHERE `date_retirement` >= '{$end}' OR 
                                         `date_retirement`  = '0000-00-00 00:00:00' 
-                                  ORDER BY REPLACE(`date_of_phd`, '0000-00-00 00:00:00', `date_of_appointment`) DESC");
-                                  
-        $data2 = DBFunctions::execSQL("SELECT `user_id`, `date_of_phd`, `date_of_appointment` 
-                                       FROM `grand_personal_fec_info` 
-                                       WHERE `date_retirement` >= '{$end}' OR 
-                                             `date_retirement`  = '0000-00-00 00:00:00' 
-                                       ORDER BY `date_of_appointment` DESC");
+                                  ORDER BY GREATEST(`date_of_phd`, `date_of_appointment`, `date_assistant`, `date_associate`, `date_professor`, `date_fso2`, `date_fso3`, `date_fso4`, `date_atsec1`, `date_atsec2`, `date_atsec3`, `date_tenure`) DESC");
+
         foreach($data as $row){
             // Ordered by PhD Date
             $person = Person::newFromId($row['user_id']);
@@ -77,37 +72,7 @@
                 continue;
             }
             $fecType = $person->getFECType($end);
-            if($fecType == "B1" ||
-               $fecType == "B2" ||
-               $fecType == "C1"){
-                if($row['date_of_phd'] == "0000-00-00 00:00:00"){
-                    echo "Missing PhD date: {$person->getNameForForms()}\n";
-                }
-                $index = @++$counts[$fecType];
-                $fec[$row['user_id']] = $index;
-            }
-        }
-        
-        foreach($data2 as $row){
-            // Ordered by Appointment Date
-            $person = Person::newFromId($row['user_id']);
-            if(!isValid($person)){
-                // Check to make sure the person exists, and is an Faculty
-                continue;
-            }
-            $fecType = $person->getFECType($end);
-            if($fecType == "N1" ||
-               $fecType == "M1" ||
-               $fecType == "A1" ||
-               $fecType == "D1" ||
-               $fecType == "E1" ||
-               $fecType == "F1" ||
-               $fecType == "T1" ||
-               $fecType == "T2" ||
-               $fecType == "T3"){
-                if($row['date_of_appointment'] == "0000-00-00 00:00:00"){
-                    echo "Missing Appointment date: {$person->getNameForForms()}\n";
-                }
+            if($fecType != ""){
                 $index = @++$counts[$fecType];
                 $fec[$row['user_id']] = $index;
             }
@@ -117,7 +82,6 @@
     $data = array();
     foreach($allPeople as $person){
         if(isset($fec[$person->getId()]) && $person->getFECType($end) != ""){
-            // Only do this for Professors right now, but this will eventually be used for everyone
             $fecType = $person->getFECType($end);
             $index = @$fec[$person->getId()];
             $tuple = array();
