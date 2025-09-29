@@ -9,18 +9,31 @@ ProjectTaskView = Backbone.View.extend({
         this.childViews = [];
         this.isEditMode = options.isEditMode;
         this.projectId = options.projectId;
+        
         this.project = new Project({ id: this.projectId });
         this.tasks = new LIMSTasksPmm([], { projectId: this.projectId });
-
-        this.listenTo(this.tasks, 'add', this.renderNewTaskRow);
         
-        $.when(this.project.fetch(), this.tasks.fetch()).done(this.render.bind(this));
+        this.listenTo(this.tasks, 'add', this.renderNewTaskRow);
+        this.listenTo(this.tasks, 'change:toDelete', this.removeDeletedTaskView);
+        this.listenTo(this.project, 'sync', this.render);
+        this.listenTo(this.project.members, 'sync', this.render);
+        this.listenTo(this.tasks, 'sync', this.render);
+        
+        this.project.fetch();
+        this.project.getMembers();
+        this.tasks.fetch();
         
         if (this.isEditMode) {
             this.setupFormHook();
         }
     },
-    
+
+    removeDeletedTaskView: function(model) {
+            this.childViews = _.filter(this.childViews, function(view) {
+                return view.model !== model;
+            });
+    },
+
     setupFormHook: function() {
         var self = this;
         $('form').on('submit', function(e) {
@@ -62,6 +75,10 @@ ProjectTaskView = Backbone.View.extend({
     },
     
     render: function () {
+        if (!this.project.id || !this.project.members) {
+            return this;
+        }
+
         var templateData = {
             project: this.project.toJSON(),
             tasks: this.tasks.toJSON(),
@@ -75,7 +92,9 @@ ProjectTaskView = Backbone.View.extend({
 
         this.childViews = [];
         this.tasks.each(function(taskModel) {
-            this.renderNewTaskRow(taskModel);
+            if (!taskModel.toDelete) {
+                this.renderNewTaskRow(taskModel);
+            }
         }, this);
         
         return this;
@@ -84,14 +103,30 @@ ProjectTaskView = Backbone.View.extend({
     saveAllTasks: function() {
         var savePromises = [];
         
-        _.each(this.childViews, function(childView) {
-            if (childView.saveTask && typeof childView.saveTask === 'function') {
-                var savePromise = childView.saveTask();
-                if (savePromise && savePromise.then) {
-                    savePromises.push(savePromise);
+        this.tasks.each(function(taskModel) {
+            taskModel.unset('displayAssignees');
+            taskModel.unset('displayStatuses');
+            taskModel.unset('displayFiles');
+            taskModel.unset('displayReviewers');
+            taskModel.unset('displayComments');
+            
+            taskModel.saving = true;
+            
+            if (!taskModel.toDelete) {
+                if (taskModel.unsavedAttributes() !== false) {
+                    savePromises.push(taskModel.save(null, {
+                        success: function(){ taskModel.saving = false; },
+                        error: function(){ taskModel.saving = false; }
+                    }));
+                } else {
+                    taskModel.saving = false;
                 }
+            } else if (!taskModel.isNew()) {
+                savePromises.push(taskModel.destroy({wait: true}));
+            } else {
+                taskModel.saving = false;
             }
-        });
+        }, this);
         
         return $.when.apply(null, savePromises);
     },

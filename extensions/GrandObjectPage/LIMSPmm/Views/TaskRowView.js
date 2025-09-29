@@ -3,35 +3,31 @@ var TaskRowView = Backbone.View.extend({
 
     template: _.template($('#task_row_template').html()),
 
-    editDialog: null,
-
     initialize: function(options) {
         this.project = options.project;
         this.isEditMode = options.isEditMode;
         
         this.listenTo(this.model, "sync", this.render);
-        
-        if (this.isEditMode && this.model.startTracking) {
-            this.model.startTracking(); 
+
+        if (this.isEditMode) {
+            this.listenTo(this.model, "change:assignees", this.handleAssigneeChange);
+            this.listenTo(this.model, "change:statuses", this.render);
+            this.prepareDisplayState();
+            this.model.startTracking();
         }
     },
 
     events: {
         "click #deleteTask": "deleteTask",
         "click #checkStatus": "checkStatus",
+        'click #changeStatusButton': "changeStatus",
         "click .download-merged-csvs": "downloadMergedCsvs"
     },
 
     saveTask: function() {
         if (!this.isEditMode) return null;
-
         if (this.model.unsavedAttributes() !== false) {
-            return this.model.save(null, {
-                success: function() {
-                    console.log("Task '" + this.model.get('task') + "' saved successfully!");
-                    this.$el.css('background-color', '#d4edda').animate({backgroundColor: 'transparent'}, 1000);
-                }.bind(this)
-            });
+            return this.model.save();
         }
         return null;
     },
@@ -44,48 +40,44 @@ var TaskRowView = Backbone.View.extend({
         }
         
         var templateData = this.model.toJSON();
-        templateData.project = this.project.toJSON();
+        templateData.projectMembers = this.project.members.toJSON();
         templateData.isEditMode = this.isEditMode;
-
         this.$el.html(this.template(templateData));
 
         if (this.isEditMode) {
             this.renderTinyMCE();
             _.defer(function() {
-                this.$('select[name=assignees]').chosen();
+                this.$('select[name=assignees]').show().chosen();
+                this.updateAssigneeOptions();
             }.bind(this));
         }
 
         return this;
     },
     
-    deleteTask: function() {
-        if (confirm('Are you sure you want to delete this task?')) {
-            this.model.toDelete = true;
-            this.model.trigger("change:toDelete");
-            this.remove();
-        }
+    deleteTask: function(){
+        this.model.toDelete = true;
+        this.model.trigger("change:toDelete");
+        this.$el.remove();
     },
     
     checkStatus: function(){
-        var view = new LIMSStatusCheckViewPmm({el: this.editDialog, model: this.model, isDialog: true, project: this.project});
+        var checkStatusDialog = $('<div></div>');
+        var view = new LIMSStatusCheckViewPmm({el: checkStatusDialog, model: this.model, isDialog: true, project: this.project});
         
-        this.editDialog.view = view;
-        $('body').append(this.editDialog);
-
-        if (this.editDialog.dialog('instance')) {
-            this.editDialog.dialog('destroy');
-        }
+        $('body').append(checkStatusDialog);
         
-        $('body').append(this.editDialog);
-        
-        this.editDialog.dialog({
+        checkStatusDialog.dialog({
             height: $(window).height() * 0.75,
             width: 600,
-            title: "Check Task Status"
+            title: "Check Task Status",
+            close: function() {
+                view.remove();
+                $(this).dialog('destroy').remove();
+            }
         });
 
-        this.editDialog.dialog('open');
+        checkStatusDialog.dialog('open');
     },
 
     isRowVisible: function() {
@@ -335,20 +327,12 @@ var TaskRowView = Backbone.View.extend({
     },
 
     changeStatus: function(){
-        // Create a model for the status change dialog
-        var view = new LIMSStatusChangeViewPmm({el: this.editDialog, model: this.model, isDialog: true, project: this.project});
+        var changeStatusDialog = $('<div></div>');
+        var view = new LIMSStatusChangeViewPmm({el: changeStatusDialog, model: this.model, isDialog: true, project: this.project});
 
-        this.editDialog.view = view;
-        $('body').append(this.editDialog);
-
-        // Check if the dialog is already initialized
-        if (this.editDialog.dialog('instance')) {
-            this.editDialog.dialog('destroy');
-        }
+        $('body').append(changeStatusDialog);
         
-        $('body').append(this.editDialog);
-        
-        this.editDialog.dialog({
+        changeStatusDialog.dialog({
             height: $(window).height() * 0.75,
             width: 900,
             title: "Change Task Status",
@@ -358,9 +342,6 @@ var TaskRowView = Backbone.View.extend({
                 }
             }
         });
-
-        // Open the dialog
-        this.editDialog.dialog('open');
     },
     
 });

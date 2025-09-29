@@ -53,7 +53,7 @@ class LIMSTaskAPIPmm extends RESTAPI {
         $task = LIMSTaskPmm::newFromId($this->getParam('id'));
         if($task->isAllowedToEdit()){
             $task->assignees = $this->POST('assignees');
-            $task->project = $this->POST('projectId');
+            $task->projectId = $this->POST('projectId');
             $task->reviewers = $this->POST('reviewers');
             $task->task = $this->POST('task');
             $task->dueDate = $this->POST('dueDate');
