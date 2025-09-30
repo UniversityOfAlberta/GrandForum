@@ -1,6 +1,7 @@
 <%
-var canEditThisRow = isEditMode && isAllowedToEdit;
-var isLeaderEditing = canEditThisRow && isLeaderAllowedToEdit;
+    var canEditThisRow = isEditMode && isAllowedToEdit;
+    var isLeaderEditing = canEditThisRow && isLeaderAllowedToEdit;
+    var allStatuses = statuses || {};
 %>
 
 <% if (isLeaderEditing) { %>
@@ -66,7 +67,6 @@ var isLeaderEditing = canEditThisRow && isLeaderAllowedToEdit;
 <td style="text-align: center; white-space:nowrap; padding: 5px;">
     <% if (isLeaderAllowedToEdit) { %>
         <%
-            var allStatuses = statuses || {};
             var allAssignees = isEveryoneAssigned ? projectMembers : assignees;
             var isFullyCompleted = false;
             if (allAssignees && allAssignees.length > 0) {
@@ -100,19 +100,19 @@ var isLeaderEditing = canEditThisRow && isLeaderAllowedToEdit;
         <% } else { %>
             <div style="display: flex; flex-direction: column; gap: 5px; margin-top: 5px;">
                 <button id="checkStatus" type="button" class="btn btn-primary btn-xs">Check Status</button>
+                <button class="download-merged-csvs" type="button" class="btn btn-primary btn-xs">Download CSVs</button>
             </div>
         <% }%>
     <% } else { %>
             <%
-                var statuses = statuses || {};
                 var currentUserId = me.get('id');
                 var reviewers = reviewers || {};
                 var myStatus = 'Assigned'; // Default status
-                var myAssigneeStatus = isCurrentUserAssignee ? (statuses[currentUserId] || statuses['-1']) : null;
+                var myAssigneeStatus = isCurrentUserAssignee ? (allStatuses[currentUserId] || allStatuses['-1']) : null;
                 var reviewTaskStatus = null;
                 if (isCurrentUserReviewer) {
                     var reviewedAssigneeId = _.findKey(reviewers, r => r && r.id == currentUserId);
-                    if (reviewedAssigneeId) { reviewTaskStatus = statuses[reviewedAssigneeId]; }
+                    if (reviewedAssigneeId) { reviewTaskStatus = allStatuses[reviewedAssigneeId]; }
                 }
                 if (myAssigneeStatus && myAssigneeStatus !== 'Closed') { myStatus = myAssigneeStatus; } 
                 else if (isCurrentUserReviewer) { myStatus = (reviewTaskStatus === 'Done') ? 'Done' : 'Closed'; } 
