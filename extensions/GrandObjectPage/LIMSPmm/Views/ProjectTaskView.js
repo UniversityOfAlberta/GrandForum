@@ -1,6 +1,6 @@
 ProjectTaskView = Backbone.View.extend({
     template: _.template($('#project_tasks_main_template').html()),
-
+    dataTable: null,
     events: {
         'click #add-new-task-button': 'addNewTask'
     },
@@ -13,6 +13,9 @@ ProjectTaskView = Backbone.View.extend({
         this.project = new Project({ id: this.projectId });
         this.tasks = new LIMSTasksPmm([], { projectId: this.projectId });
         
+        var userRole = _.pluck(_.filter(me.get('roles'), function(el){return el.title == this.project.get("name") ||  el.role !== PL}.bind(this)), 'role');
+        this.isLeaderAllowedToEdit = _.intersection(userRole, [PL, STAFF, MANAGER, ADMIN]).length > 0 ;
+
         this.listenTo(this.tasks, 'add', this.renderNewTaskRow);
         this.listenTo(this.tasks, 'change:toDelete', this.removeDeletedTaskView);
         this.listenTo(this.project, 'sync', this.render);
@@ -29,9 +32,9 @@ ProjectTaskView = Backbone.View.extend({
     },
 
     removeDeletedTaskView: function(model) {
-            this.childViews = _.filter(this.childViews, function(view) {
-                return view.model !== model;
-            });
+        this.childViews = _.filter(this.childViews, function(view) {
+            return view.model !== model;
+        });
     },
 
     setupFormHook: function() {
@@ -79,10 +82,16 @@ ProjectTaskView = Backbone.View.extend({
             return this;
         }
 
+        if (this.dataTable) {
+            this.dataTable.destroy();
+            this.dataTable = null;
+        }
+
         var templateData = {
             project: this.project.toJSON(),
             tasks: this.tasks.toJSON(),
-            isEditMode: this.isEditMode
+            isEditMode: this.isEditMode,
+            isLeaderAllowedToEdit: this.isLeaderAllowedToEdit
         };
         
         this.$el.html(this.template(templateData));
@@ -96,6 +105,10 @@ ProjectTaskView = Backbone.View.extend({
                 this.renderNewTaskRow(taskModel);
             }
         }, this);
+
+        this.$('#project-tasks-table').DataTable({
+            iDisplayLength: 100
+        });
         
         return this;
     },

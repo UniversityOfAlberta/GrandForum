@@ -8,6 +8,10 @@ var TaskRowView = Backbone.View.extend({
         this.isEditMode = options.isEditMode;
         
         this.listenTo(this.model, "sync", this.render);
+        var userRole = _.pluck(_.filter(me.get('roles'), function(el){return el.title == this.project.get("name") ||  el.role !== PL}.bind(this)), 'role');
+        var isPLAllowed = _.intersection(userRole, [PL, STAFF, MANAGER, ADMIN]).length > 0 ;
+        
+        this.model.set('isLeaderAllowedToEdit', isPLAllowed);
 
         if (this.isEditMode) {
             this.listenTo(this.model, "change:assignees", this.handleAssigneeChange);

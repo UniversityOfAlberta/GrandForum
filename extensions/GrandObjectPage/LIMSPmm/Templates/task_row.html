@@ -1,13 +1,14 @@
 <%
-var canEditThisRow = isEditMode && isAllowedToEdit; 
+var canEditThisRow = isEditMode && isAllowedToEdit;
+var isLeaderEditing = canEditThisRow && isLeaderAllowedToEdit;
 %>
 
-<% if (canEditThisRow) { %>
+<% if (isLeaderEditing) { %>
     <td valign="top"><span id="deleteTask" class="delete-icon" style="margin: 7px 5px 0 5px;" title="Delete Task"></span></td>
 <% } %>
 
 <td valign="top">
-    <% if (canEditThisRow) { %>
+    <% if (isLeaderEditing) { %>
         <%= HTML.TextBox(this, 'task', {placeholder: 'Enter Task...', style: "width:100%;box-sizing:border-box;margin:0;"}) %>
     <% } else { %>
         <%= task %>
@@ -15,7 +16,7 @@ var canEditThisRow = isEditMode && isAllowedToEdit;
 </td>
 
 <td valign="top">
-    <% if (canEditThisRow && isLeaderAllowedToEdit) { %>
+    <% if (isLeaderEditing) { %>
         <% var taskTypesOptions = ['Planning', 'Screening', 'Data Extraction', 'Analysis and Report Writing']; %>
         <%= HTML.Select(this, 'taskType' , { options: taskTypesOptions }) %>
     <% } else { %>
@@ -24,7 +25,7 @@ var canEditThisRow = isEditMode && isAllowedToEdit;
 </td>
 
 <td valign="top">
-    <% if (canEditThisRow && isLeaderAllowedToEdit) { %>
+    <% if (isLeaderEditing) { %>
         <%
         var memberOptions = _.map(projectMembers, function(person) {
             return {option: person.fullName, value: person.id};
@@ -55,7 +56,7 @@ var canEditThisRow = isEditMode && isAllowedToEdit;
 </td>
 
 <td valign="top" style="white-space:nowrap;">
-    <% if (canEditThisRow) { %>
+    <% if (canEditThisRow && isLeaderAllowedToEdit) { %>
         <%= HTML.DatePicker(this, 'dueDate', { format: 'yy-mm-dd', style: 'width:5em'}) %>
     <% } else { %>
         <div style="text-align: center;"><%= dueDate %></div>
@@ -85,9 +86,19 @@ var canEditThisRow = isEditMode && isAllowedToEdit;
             <div id="changeStatusDialog"></div>
         <% } else { %>
             <%
-            var myStatus = 'Assigned'; // Default status
-            var myAssigneeStatus = isCurrentUserAssignee ? (statuses[me.get('id')] || statuses['-1']) : null;
-            if (myAssigneeStatus) { myStatus = myAssigneeStatus; }
+                var statuses = statuses || {};
+                var currentUserId = me.get('id');
+                var reviewers = reviewers || {};
+                var myStatus = 'Assigned'; // Default status
+                var myAssigneeStatus = isCurrentUserAssignee ? (statuses[currentUserId] || statuses['-1']) : null;
+                var reviewTaskStatus = null;
+                if (isCurrentUserReviewer) {
+                    var reviewedAssigneeId = _.findKey(reviewers, r => r && r.id == currentUserId);
+                    if (reviewedAssigneeId) { reviewTaskStatus = statuses[reviewedAssigneeId]; }
+                }
+                if (myAssigneeStatus && myAssigneeStatus !== 'Closed') { myStatus = myAssigneeStatus; } 
+                else if (isCurrentUserReviewer) { myStatus = (reviewTaskStatus === 'Done') ? 'Done' : 'Closed'; } 
+                else { myStatus = myAssigneeStatus; }
             %>
             <% if (myStatus === 'Closed') { %>
                 <div style="color: #28a745; font-weight: bold;">Completed</div>
@@ -156,7 +167,7 @@ var canEditThisRow = isEditMode && isAllowedToEdit;
 </td>
 
 <td valign="top" style="width:40%">
-    <% if (canEditThisRow) { %>
+    <% if (isLeaderEditing) { %>
         <%= HTML.TextArea(this, 'details', {style: "height: 63px;width:100%;box-sizing:border-box;margin:0;"}) %> 
     <% } else { %>
         <%= details %>

@@ -1,13 +1,10 @@
-<% if (isEditMode) { %>
-    <button id="add-new-task-button" class="button">Add Task</button>
-<% } %>
 <div id="project_tasks_main_template">
     <h2>Tasks</h2>
-    <table class='wikitable' style='width:100%'>
+    <table id='project-tasks-table' class='wikitable' style='width:100%'>
         <thead>
             <tr>
-                <% if (isEditMode) { %>
-                <th style='width: 2%'></th>
+                <% if (isEditMode && isLeaderAllowedToEdit) { %>
+                    <th style='width: 2%'></th>
                 <% } %>
                 <th style='width: 25%'>Task</th>
                 <th style='width: 15%'>Type</th>
@@ -21,3 +18,6 @@
         </tbody>
     </table>
 </div>
+<% if (isEditMode && isLeaderAllowedToEdit) { %>
+    <button id="add-new-task-button" style="margin-top: 20px;" class="button">Add Task</button>
+<% } %>
