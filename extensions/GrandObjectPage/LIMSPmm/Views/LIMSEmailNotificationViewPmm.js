@@ -5,8 +5,8 @@ LIMSEmailNotificationViewPmm = Backbone.View.extend({
     },
     
     initialize: function(options) {
-        this.opportunity = options.opportunity;
-        this.project = options.project;
+        this.projectId = options.projectId;
+        this.tasks = options.tasks;
         
         this.model = new Backbone.Model({
             taskName: '',
@@ -15,7 +15,7 @@ LIMSEmailNotificationViewPmm = Backbone.View.extend({
             emailContent: ''
         });
                 
-        this.listenTo(this.opportunity.tasks, "sync add remove", this.render);
+        this.listenTo(this.tasks, "sync add remove", this.render);
         
         this.template = _.template($('#lims_email_notification_view_template').html());
     },
@@ -26,7 +26,7 @@ LIMSEmailNotificationViewPmm = Backbone.View.extend({
         if (!filterType) return options;
 
         var allFilterOptions = {
-            'taskName': this.opportunity.tasks.pluck('task') || [],
+            'taskName': this.tasks.pluck('task') || [],
             'taskType': ['Planning', 'Screening', 'Data Extraction', 'Analysis and Report Writing'],
             'assigneeStatus': ['Assigned', 'Done', 'Closed']
         };
@@ -61,7 +61,7 @@ LIMSEmailNotificationViewPmm = Backbone.View.extend({
         }
         
         var payload = {
-            action: "send_notification",
+            projectId: this.projectId,
             filters: filters,
             emailContent: emailContent
         };
@@ -71,7 +71,7 @@ LIMSEmailNotificationViewPmm = Backbone.View.extend({
         $button.prop('disabled', true).text('Sending...');
         
         $.ajax({
-            url: 'index.php?action=api.limsopportunitypmm/' + this.opportunity.get('id'),
+            url: 'index.php?action=api.notifications',
             method: 'POST',
             data: JSON.stringify(payload),
             contentType: 'application/json',

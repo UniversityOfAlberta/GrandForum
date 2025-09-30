@@ -1,6 +1,7 @@
 ProjectTaskView = Backbone.View.extend({
     template: _.template($('#project_tasks_main_template').html()),
     dataTable: null,
+    emailNotificationView: null,
     events: {
         'click #add-new-task-button': 'addNewTask'
     },
@@ -25,6 +26,11 @@ ProjectTaskView = Backbone.View.extend({
         this.project.fetch();
         this.project.getMembers();
         this.tasks.fetch();
+
+        this.emailNotificationView = new LIMSEmailNotificationViewPmm({
+            projectId: this.projectId,
+            tasks: this.tasks
+        });
         
         if (this.isEditMode) {
             this.setupFormHook();
@@ -96,6 +102,8 @@ ProjectTaskView = Backbone.View.extend({
         
         this.$el.html(this.template(templateData));
         
+        this.emailNotificationView.setElement(this.$('#emailAccordion')).render();
+                
         var $taskList = this.$('#task-list');
         _.each(this.childViews, function(child) { child.remove(); });
 
