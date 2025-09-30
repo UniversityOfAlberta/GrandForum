@@ -78,6 +78,16 @@ class ProjectPage {
                 TabUtils::clearActions();
                 $wgOut->clearHTML();
                 $wgOut->setPageTitle("{$project->getFullName()} ({$project->getName()})");
+
+                $styleTag = '<style>
+                .custom-title {
+                    position: sticky !important;
+                    top: 0 !important;
+                    background: white !important;
+                }
+                </style>';
+
+                $wgOut->addHTML($styleTag);
                 
                 $visibility = array();
                 if(!$project->isDeleted()){
@@ -122,7 +132,7 @@ class ProjectPage {
                     $tabbedPage->addTab(new ProjectKPITab($project, $visibility));
                     //$tabbedPage->addTab(new ProjectKPISummaryTab($project, $visibility));
                 }
-                if(isExtensionEnabled("PMM")){
+                if(isExtensionEnabled("PMM") && ($visibility['isMember'] || $me->isRoleAtLeast(STAFF))){             
                     $tabbedPage->addTab(new ProjectLIMSPmmTab($project, $visibility));
                 }
                 if(($project->getStatus() != 'Proposed' && $project->getType() != 'Administrative') && 
@@ -166,8 +176,8 @@ class ProjectPage {
                 }
                 $wgOut->output();
                 $wgOut->disable();
-                close();
-            }
+                exit;
+            } 
         }
         return true;
     }

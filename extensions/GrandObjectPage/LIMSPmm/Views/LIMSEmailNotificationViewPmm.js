@@ -113,7 +113,7 @@ LIMSEmailNotificationViewPmm = Backbone.View.extend({
         this.$('.email-accordion').accordion({
             collapsible: true,
             active: isInitialized ? wasActive : false,
-            heightStyle: "content"
+            autoHeight: false
         });
         
         this.$el.attr('style', 'margin-bottom: 20px;');

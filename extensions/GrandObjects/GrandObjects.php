@@ -301,8 +301,6 @@ function createModels(){
     addScript("LIMSOpportunity");
     addScript("LIMSTask");
     addScript("LIMSContact");
-    addScript("LIMSContactPmm");
-    addScript("LIMSOpportunityPmm");
     addScript("LIMSTaskPmm");
     return true;
 }
