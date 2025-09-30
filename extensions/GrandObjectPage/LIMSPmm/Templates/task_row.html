@@ -56,7 +56,7 @@ var isLeaderEditing = canEditThisRow && isLeaderAllowedToEdit;
 </td>
 
 <td valign="top" style="white-space:nowrap;">
-    <% if (canEditThisRow && isLeaderAllowedToEdit) { %>
+    <% if (isLeaderEditing) { %>
         <%= HTML.DatePicker(this, 'dueDate', { format: 'yy-mm-dd', style: 'width:5em'}) %>
     <% } else { %>
         <div style="text-align: center;"><%= dueDate %></div>
@@ -64,8 +64,20 @@ var isLeaderEditing = canEditThisRow && isLeaderAllowedToEdit;
 </td>
 
 <td style="text-align: center; white-space:nowrap; padding: 5px;">
-    <% if (canEditThisRow) { %>
-        <% if (isLeaderAllowedToEdit) { %>
+    <% if (isLeaderAllowedToEdit) { %>
+        <%
+            var allStatuses = statuses || {};
+            var allAssignees = isEveryoneAssigned ? projectMembers : assignees;
+            var isFullyCompleted = false;
+            if (allAssignees && allAssignees.length > 0) {
+                isFullyCompleted = _.every(allAssignees, function(assignee) {
+                    return allStatuses[assignee.id] === 'Closed';
+                });
+            }
+        %>
+        <% if (isFullyCompleted) { %>
+            <div style="color: #28a745; font-weight: bold;">Completed</div>
+        <% } else { %>
             <div style="font-size: 12px; line-height: 1.6; text-align: left;">
                 <div style="display: flex; align-items: center;">
                     <span style="width: 10px; height: 10px; background-color: #28a745; border-radius: 50%; margin-right: 6px;"></span>
@@ -80,64 +92,17 @@ var isLeaderEditing = canEditThisRow && isLeaderAllowedToEdit;
                     <strong class="count-assigned"><%= displayAssignedCount %></strong>&nbsp;Assigned
                 </div>
             </div>
+        <% } %>
+        <% if (canEditThisRow) { %>
             <div style="margin-top: 5px;">
                 <button id="changeStatusButton" type="button">Change Status</button>
             </div>
-            <div id="changeStatusDialog"></div>
         <% } else { %>
-            <%
-                var statuses = statuses || {};
-                var currentUserId = me.get('id');
-                var reviewers = reviewers || {};
-                var myStatus = 'Assigned'; // Default status
-                var myAssigneeStatus = isCurrentUserAssignee ? (statuses[currentUserId] || statuses['-1']) : null;
-                var reviewTaskStatus = null;
-                if (isCurrentUserReviewer) {
-                    var reviewedAssigneeId = _.findKey(reviewers, r => r && r.id == currentUserId);
-                    if (reviewedAssigneeId) { reviewTaskStatus = statuses[reviewedAssigneeId]; }
-                }
-                if (myAssigneeStatus && myAssigneeStatus !== 'Closed') { myStatus = myAssigneeStatus; } 
-                else if (isCurrentUserReviewer) { myStatus = (reviewTaskStatus === 'Done') ? 'Done' : 'Closed'; } 
-                else { myStatus = myAssigneeStatus; }
-            %>
-            <% if (myStatus === 'Closed') { %>
-                <div style="color: #28a745; font-weight: bold;">Completed</div>
-            <% } else if (myStatus === 'Done') { %>
-                <div style="color: #FF8C00; font-weight: bold;">Pending Review</div>
-                <div style="margin-top: 5px;"><button id="changeStatusButton" type="button">Change Status</button></div>
-                <div id="changeStatusDialog"></div>
-            <% } else { %>
-                <div style="color: red; font-weight: bold;">Pending</div>
-                <div style="margin-top: 5px;"><button id="changeStatusButton" type="button">Change Status</button></div>
-                <div id="changeStatusDialog"></div>
-            <% } %>
-        <% } %>
-    <% } else { %>
-        <% if (isLeaderAllowedToEdit) { %>
-            <%
-                var allStatuses = statuses || {};
-                var allAssignees = isEveryoneAssigned ? projectMembers : assignees;
-                var isFullyCompleted = false;
-                if (allAssignees && allAssignees.length > 0) {
-                    isFullyCompleted = _.every(allAssignees, function(assignee) {
-                        return allStatuses[assignee.id] === 'Closed';
-                    });
-                }
-            %>
-            <% if (isFullyCompleted) { %>
-                <div style="color: #28a745; font-weight: bold;">Completed</div>
-            <% } else { %>
-                <div style="font-size: 12px; line-height: 1.6; text-align: left;">
-                    <div style="display: flex; align-items: center;"><span style="width: 10px; height: 10px; background-color: #28a745; border-radius: 50%; margin-right: 6px;"></span><strong><%= displayClosedCount %></strong>&nbsp;Completed</div>
-                    <div style="display: flex; align-items: center;"><span style="width: 10px; height: 10px; background-color: #FF8C00; border-radius: 50%; margin-right: 6px;"></span><strong><%= displayPendingReviewCount %></strong>&nbsp;Pending Review</div>
-                    <div style="display: flex; align-items: center;"><span style="width: 10px; height: 10px; background-color: #007bff; border-radius: 50%; margin-right: 6px;"></span><strong><%= displayAssignedCount %></strong>&nbsp;Assigned</div>
-                </div>
-            <% } %>
             <div style="display: flex; flex-direction: column; gap: 5px; margin-top: 5px;">
                 <button id="checkStatus" type="button" class="btn btn-primary btn-xs">Check Status</button>
             </div>
-            <div id="changeStatusDialog"></div>
-        <% } else if (isCurrentUserAssignee || isCurrentUserReviewer) { %>
+        <% }%>
+    <% } else { %>
             <%
                 var statuses = statuses || {};
                 var currentUserId = me.get('id');
@@ -157,13 +122,24 @@ var isLeaderEditing = canEditThisRow && isLeaderAllowedToEdit;
                 <div style="color: #28a745; font-weight: bold;">Completed</div>
             <% } else if (myStatus === 'Done') { %>
                 <div style="color: #FF8C00; font-weight: bold; margin-bottom: 4px;">Pending Review</div>
-                <button id="checkStatus" type="button" class="btn btn-primary btn-xs">Check Status</button>
+                <div style="margin-top: 5px;">
+                    <% if (canEditThisRow) { %>
+                        <button id="changeStatusButton" type="button" class="btn btn-primary btn-xs">Change Status</button>
+                    <% } else { %>
+                        <button id="checkStatus" type="button" class="btn btn-primary btn-xs">Check Status</button>
+                    <% } %>
+                </div>
             <% } else { %>
                 <div style="color: red; font-weight: bold; margin-bottom: 4px;">Pending</div>
-                <button id="checkStatus" type="button" class="btn btn-primary btn-xs">Check Status</button>
+                <div style="margin-top: 5px;">
+                    <% if (canEditThisRow) { %>
+                        <button id="changeStatusButton" type="button" class="btn btn-primary btn-xs">Change Status</button>
+                    <% } else { %>
+                        <button id="checkStatus" type="button" class="btn btn-primary btn-xs">Check Status</button>
+                    <% } %>
+                </div>
             <% } %>
         <% } %>
-    <% } %>
 </td>
 
 <td valign="top" style="width:40%">
