@@ -176,7 +176,7 @@ class ProjectPage {
                 }
                 $wgOut->output();
                 $wgOut->disable();
-                exit;
+                close();
             } 
         }
         return true;
