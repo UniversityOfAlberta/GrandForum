@@ -1010,7 +1010,6 @@ class Project extends BackboneModel {
 
     // Returns an array of tasks belonging to this project
     function getTasks() {
-        error_log('inside gettasks but in project');
         return LIMSTaskPmm::getTasks($this->getId());
     }
 

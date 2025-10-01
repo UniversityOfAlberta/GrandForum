@@ -233,7 +233,7 @@ $apiRequest->addAction('Hidden','limstaskpmm', 'LIMSTaskAPIPmm');
 $apiRequest->addAction('Hidden','limstaskpmm/:id', 'LIMSTaskAPIPmm');
 $apiRequest->addAction('Hidden','limstaskpmm/project/:project_id', 'LIMSTaskAPIPmm');
 $apiRequest->addAction('Hidden','limstaskpmm/:id/files/:file_id', 'LIMSTaskAPIPmm');
-$apiRequest->addAction('Hidden','limstaskpmm/:id/merge_csvs', 'LIMSTaskMergeCsv');
+$apiRequest->addAction('Hidden','limstaskpmm/:id/merge_files', 'LIMSTaskMergeFiles');
 $apiRequest->addAction('Hidden','notifications', 'LIMSSendNotifications');
 
 // DataCollection

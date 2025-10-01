@@ -25,7 +25,7 @@ var TaskRowView = Backbone.View.extend({
         "click #deleteTask": "deleteTask",
         "click #checkStatus": "checkStatus",
         'click #changeStatusButton': "changeStatus",
-        "click .download-merged-csvs": "downloadMergedCsvs"
+        "click .download-merged-files": "handleDownloadClick"
     },
 
     saveTask: function() {
@@ -64,7 +64,7 @@ var TaskRowView = Backbone.View.extend({
         this.model.trigger("change:toDelete");
         this.$el.remove();
     },
-    
+
     checkStatus: function(){
         var checkStatusDialog = $('<div></div>');
         var view = new LIMSStatusCheckViewPmm({el: checkStatusDialog, model: this.model, isDialog: true, project: this.project});
@@ -131,7 +131,7 @@ var TaskRowView = Backbone.View.extend({
             isCurrentUserReviewer: isCurrentUserReviewer
         });
     },
-    
+
     prepareDisplayState: function() {
         var primaryData = this.model.toJSON();
         var isEveryoneAssigned = _.some(primaryData.assignees, function(a) { return (a.id || a) == -1; });
@@ -179,7 +179,12 @@ var TaskRowView = Backbone.View.extend({
 
     },
 
-    downloadMergedCsvs: function(e) {
+    handleDownloadClick: function(e) {
+        var format = $(e.currentTarget).data('format');
+        this.downloadMergedFiles(e, format);
+    },
+
+    downloadMergedFiles: function(e, format) {
         e.preventDefault();
 
         if (!this.model || !this.model.id) {
@@ -187,12 +192,18 @@ var TaskRowView = Backbone.View.extend({
             return;
         }
         
+        if (format !== 'csv' && format !== 'pdf') {
+            alert('Error: Invalid format specified.');
+            return;
+        }
+
         var taskId = this.model.id;
-        var restPath = 'api.limstaskpmm/' + taskId + '/merge_csvs';
-    
+        var restPath = 'api.limstaskpmm/' + taskId + '/merge_files';
+
         var apiUrl = wgServer 
-               + wgScriptPath 
-               + '/index.php?action=' + restPath;
+            + wgScriptPath 
+            + '/index.php?action=' + restPath 
+            + '&format=' + format;
 
         $.ajax({
             url: apiUrl,
@@ -202,28 +213,26 @@ var TaskRowView = Backbone.View.extend({
             },
             success: function(data, textStatus, xhr) {
                 var contentType = xhr.getResponseHeader('content-type');
-                if (contentType && contentType.includes('text/csv')) {
-                    var blob = new Blob([data], { type: 'text/csv' });
-                    var url = window.URL.createObjectURL(blob);
-                    var a = document.createElement('a');
-                    a.href = url;
-                    a.download = xhr.getResponseHeader('content-disposition')
-                        .split('filename=')[1].replace(/"/g, '') || 'merged_data.csv';
-                    document.body.appendChild(a);
-                    a.click();
-                    document.body.removeChild(a);
-                    window.URL.revokeObjectURL(url);
-                }
+                var blob = new Blob([data], { type: contentType });
+                var url = window.URL.createObjectURL(blob);
+                var a = document.createElement('a');
+                a.href = url;
+                a.download = xhr.getResponseHeader('content-disposition')
+                    .split('filename=')[1].replace(/"/g, '') || 'merged_data.' + format;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
             },
             error: function(xhr, textStatus, errorThrown) {
-                var errorMessage = 'An error occurred while downloading CSV files.';
+                var errorMessage = 'An error occurred while downloading the files.';
                 if (xhr.status === 404) {
-                    errorMessage = 'No CSV files found for this task.';
+                    errorMessage = 'No ' + format.toUpperCase() + ' files found for this task.';
                 } else if (xhr.status === 400) {
-                    errorMessage = 'Invalid task ID provided.';
+                    errorMessage = 'Invalid request. Please check the task ID and format.';
                 }
-                alert( errorMessage);
-            }.bind(this)
+                alert(errorMessage);
+            }
         });
     },
 
@@ -255,7 +264,7 @@ var TaskRowView = Backbone.View.extend({
             });
         }.bind(this));
     },
-    
+
     handleAssigneeChange: function(model, allAssignees) {
         var fullAssigneeObjects = _.map(allAssignees, function(item) {
             var assigneeId;

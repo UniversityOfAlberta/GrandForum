@@ -100,8 +100,8 @@
         <% } else { %>
             <div style="display: flex; flex-direction: column; gap: 5px; margin-top: 5px;">
                 <button id="checkStatus" type="button" class="btn btn-primary btn-xs">Check Status</button>
-                <button class="download-merged-csvs" type="button" class="btn btn-primary btn-xs">Download CSVs</button>
-            </div>
+                <button class="download-merged-files" data-format="csv" type="button" class="btn btn-primary btn-xs">Download Merged CSVs</button>
+                <button class="download-merged-files" data-format="pdf" type="button" class="btn btn-primary btn-xs">Download Merged PDFs</button>            </div>
         <% }%>
     <% } else { %>
             <%
