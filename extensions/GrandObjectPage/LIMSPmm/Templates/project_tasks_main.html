@@ -1,11 +1,14 @@
-<% if (isLeaderAllowedToEdit) { %>
+<%= 
+    var canEdit = isEditMode && isLeaderAllowedToEdit
+%>
+<% if (canEdit) { %>
     <div id="emailAccordion"></div>
 <% } %>
 <div id="project_tasks_main_template">
     <table id='project-tasks-table' class='wikitable' style='width:100%'>
         <thead>
             <tr>
-                <% if (isEditMode && isLeaderAllowedToEdit) { %>
+                <% if (canEdit) { %>
                     <th style='width: 2%'></th>
                 <% } %>
                 <th style='width: 25%'>Task</th>
@@ -20,6 +23,6 @@
         </tbody>
     </table>
 </div>
-<% if (isEditMode && isLeaderAllowedToEdit) { %>
+<% if (canEdit) { %>
     <button id="add-new-task-button" style="margin-top: 20px;" class="button">Add Task</button>
 <% } %>
