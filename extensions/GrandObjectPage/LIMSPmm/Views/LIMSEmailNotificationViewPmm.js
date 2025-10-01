@@ -12,7 +12,8 @@ LIMSEmailNotificationViewPmm = Backbone.View.extend({
             taskName: '',
             taskType: '',
             assigneeStatus: '',
-            emailContent: ''
+            emailContent: '',
+            emailSubject: ''
         });
                 
         this.listenTo(this.tasks, "sync add remove", this.render);
@@ -54,7 +55,8 @@ LIMSEmailNotificationViewPmm = Backbone.View.extend({
         if (assigneeStatusOption !== ''){ filters['assigneeStatus'] = assigneeStatusOption }
 
         var emailContent = this.model.get('emailContent');
-        
+        var emailSubject = this.model.get('emailSubject');
+
         if (Object.keys(filters).length === 0 || !emailContent) {
             alert('Please fill in all fields before sending.');
             return;
@@ -63,6 +65,7 @@ LIMSEmailNotificationViewPmm = Backbone.View.extend({
         var payload = {
             projectId: this.projectId,
             filters: filters,
+            emailSubject: emailSubject,
             emailContent: emailContent
         };
         
@@ -94,6 +97,7 @@ LIMSEmailNotificationViewPmm = Backbone.View.extend({
             taskName: '',
             taskType: '',
             assigneeStatus: '',
+            emailSubject: '',
             emailContent: ''
         });
         

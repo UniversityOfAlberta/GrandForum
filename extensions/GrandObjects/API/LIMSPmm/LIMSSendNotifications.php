@@ -11,7 +11,8 @@ class LIMSSendNotifications extends RESTAPI {
             $this->throwError("Project ID is required");
         }
         $filters = isset($data['filters']) ? $data['filters'] : [];
-        $emailContent = isset($data['emailContent']) ? $data['emailContent'] : '';    
+        $emailContent = isset($data['emailContent']) ? $data['emailContent'] : '';
+        $emailSubject = isset($data['emailSubject']) ? $data['emailSubject'] : '';
 
         if (empty($emailContent)) {
             $this->throwError("Email content cannot be empty");
@@ -78,17 +79,45 @@ class LIMSSendNotifications extends RESTAPI {
             }
         }
 
-        $projectLeaders = $project->getLeaders();
-        foreach ($projectLeaders as $leader) {
-            $assigneesToNotify[$leader->getId()] = $leader;
-        }
-
         foreach ($assigneesToNotify as $assignee) {
             Notification::addNotification(
                 $me, 
                 $assignee, 
-                "Email Notification", 
+                "Email Notification: " . $emailSubject, 
                 $emailContent, 
+                $project->getUrl() . "?tab=activity-management", 
+                true
+            );
+        }
+
+        $filterPrefix = '';
+        $filterParts = [];
+
+        $filterLabels = [
+            'taskName' => 'Task Name',
+            'taskType' => 'Task Type',
+            'assigneeStatus' => 'Status'
+        ];
+
+        foreach ($filters as $key => $value) {
+            if (!empty($value)) {
+                $label = isset($filterLabels[$key]) ? $filterLabels[$key] : $key;
+                $filterParts[] = "$label: $value";
+            }
+        }
+
+        if (!empty($filterParts)) {
+            $filterString = implode(', ', $filterParts);
+            $filterPrefix = "(Filters: " . $filterString . ") ";
+        }
+
+        $projectLeaders = $project->getLeaders();
+        foreach ($projectLeaders as $leader) {
+            Notification::addNotification(
+                $me, 
+                $leader, 
+                "Email Notification: " . $emailSubject, 
+                $filterPrefix . $emailContent, 
                 $project->getUrl() . "?tab=activity-management", 
                 true
             );
