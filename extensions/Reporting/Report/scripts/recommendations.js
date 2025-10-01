@@ -49,7 +49,7 @@ $(document).ready(function(){
                     if($(this).val().indexOf("PTC") != -1){
                         foundPTC = true;
                         PTC = this;
-                        if($(this).val().indexOf("0.00") != 1){
+                        if($(this).val().indexOf("0.00") != -1){
                             $(this).hide();
                         }
                     }
@@ -80,7 +80,7 @@ $(document).ready(function(){
                 if($(this).val().indexOf("PTC") != -1){
                     foundPTC = true;
                     PTC = this;
-                    if($(this).val().indexOf("0.00") != 1){
+                    if($(this).val().indexOf("0.00") != -1){
                         $(this).hide();
                     }
                 }
