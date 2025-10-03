@@ -67,8 +67,3 @@ Feature: Wiki
         {{{var2}}}
         """
         And I press "Save page"
-        
-    Scenario: NI searches for Wiki Page
-        Given I am logged in as "NI.User1" using password "NI.Pass1"
-        When I fill in "globalSearchInput" with "Test"
-        Then I wait until I see "TestWikiPage" up to "2000"

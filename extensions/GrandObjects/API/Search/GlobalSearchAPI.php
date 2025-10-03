@@ -326,55 +326,6 @@ class GlobalSearchAPI extends RESTAPI {
                     $ids[] = intval($key);
                 }
                 break;
-            case 'wikipage':
-                $url = "{$wgServer}{$wgScriptPath}/api.php?action=query&generator=search&gsrwhat=title&gsrsearch=".$search."&format=json";
-                $ch = curl_init();
-                curl_setopt($ch, CURLOPT_URL, $url);
-                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-
-                // get http header for cookies
-                curl_setopt($ch, CURLOPT_HEADER, 0);
-                if(!isExtensionEnabled('Shibboleth')){
-                    // forward current cookies to curl
-                    $cookies = array();
-                    foreach($_COOKIE as $key => $value){
-                        if ($key != 'Array' && !is_array($value)){
-                            $cookies[] = $key . '=' . $value;
-                        }
-                    }
-                    curl_setopt($ch, CURLOPT_COOKIE, implode(';', $cookies));
-                }
-                $response = curl_exec($ch);
-                curl_close($ch);
-                $results = json_decode($response);
-                $blacklistedNamespaces = array('Publication',
-                                               'Artifact',
-                                               'Presentation',
-                                               'Activity',
-                                               'Press',
-                                               'Award',
-                                               'NI',
-                                               'HQP',
-                                               'Mail');
-                if(isset($results->query)){
-                    foreach($results->query->pages as $page){
-                        $article = Article::newFromId($page->pageid);
-                        if($article != null && MediaWikiServices::getInstance()->getPermissionManager()->userCan('read', $wgUser, $article->getTitle()) && array_search($article->getTitle()->getNSText(), $blacklistedNamespaces) === false){
-                            $project = Project::newFromName($article->getTitle()->getNSText());
-                            if($project != null && $project->getName() != ""){
-                                // Namespace belongs to a project
-                                if($project->getType() == 'Administrative' || $me->isMemberOf($project)){
-                                    $ids[] = $page->pageid;
-                                }
-                            }
-                            else if(strpos($article->getTitle()->getText(), "MAIL") !== 0){
-                                $ids[] = $page->pageid;
-                            }
-                        }
-                    }
-                }
-                break;
             case 'specialpage':
                 global $wgSpecialPages;
                 foreach($wgSpecialPages as $specialPage){

@@ -109,9 +109,6 @@ GlobalSearchResultsView = Backbone.View.extend({
         },
         "bibliographyResults" : function(){
             return new BibliographyResultsView({parent: this, model: new GlobalSearch({group: 'bibliographies', search: ''})});
-        },
-        "wikiResults" : function(){
-            return new WikiResultsView({parent: this, model: new GlobalSearch({group: 'wikipage', search: ''})});
         }
     },
     
@@ -467,20 +464,3 @@ BibliographyResultsView = ResultsView.extend({
         this.$el.html(this.template({group: "Bibliographies"}));
     }
 });
-
-WikiResultsView = ResultsView.extend({
-    maxResults: 3,
-
-    createCardView: function(model){
-        return new SmallWikiCardView({model: model});
-    },
-    
-    createModel: function(obj){
-        return new WikiPage({id: obj});
-    },
-    
-    render: function(){
-        this.$el.html(this.template({group: "Wiki Pages"}));
-    }
-});
-
