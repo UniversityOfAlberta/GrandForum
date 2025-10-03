@@ -59,10 +59,21 @@
     else{
         // Sort by most recent date
         $data = DBFunctions::execSQL("SELECT `user_id`
-                                  FROM `grand_personal_fec_info` 
-                                  WHERE `date_retirement` >= '{$end}' OR 
-                                        `date_retirement`  = '0000-00-00 00:00:00' 
-                                  ORDER BY GREATEST(`date_of_phd`, `date_of_appointment`, `date_assistant`, `date_associate`, `date_professor`, `date_fso2`, `date_fso3`, `date_fso4`, `date_atsec1`, `date_atsec2`, `date_atsec3`, `date_tenure`) DESC");
+                                      FROM `grand_personal_fec_info` 
+                                      WHERE `date_retirement` >= '{$end}' OR 
+                                            `date_retirement`  = '0000-00-00 00:00:00' 
+                                      ORDER BY GREATEST(IF(`date_of_phd` <= '{$end}', `date_of_phd`, '0000-00-00'), 
+                                                        IF(`date_of_appointment` <= '{$end}', `date_of_appointment`, '0000-00-00'),
+                                                        IF(`date_assistant` <= '{$end}', `date_assistant`, '0000-00-00'),
+                                                        IF(`date_associate` <= '{$end}', `date_associate`, '0000-00-00'),
+                                                        IF(`date_professor` <= '{$end}', `date_professor`, '0000-00-00'), 
+                                                        IF(`date_fso2` <= '{$end}', `date_fso2`, '0000-00-00'),
+                                                        IF(`date_fso3` <= '{$end}', `date_fso3`, '0000-00-00'),
+                                                        IF(`date_fso4` <= '{$end}', `date_fso4`, '0000-00-00'),
+                                                        IF(`date_atsec1` <= '{$end}', `date_atsec1`, '0000-00-00'), 
+                                                        IF(`date_atsec2` <= '{$end}', `date_atsec2`, '0000-00-00'), 
+                                                        IF(`date_atsec3` <= '{$end}', `date_atsec3`, '0000-00-00'), 
+                                                        IF(`date_tenure` <= '{$end}', `date_tenure`, '0000-00-00')) DESC");
 
         foreach($data as $row){
             // Ordered by PhD Date
