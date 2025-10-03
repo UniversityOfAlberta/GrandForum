@@ -3470,7 +3470,7 @@ class Person extends BackboneModel {
     
     function getFECType($date=null){ return ""; }
 
-    function getCaseNumber($year=YEAR){ return ""; }
+    function getCaseNumber($year=YEAR, $which=""){ return ""; }
     
     function getSalary($year){ return ""; }
     
@@ -4384,9 +4384,9 @@ class FullPerson extends Person {
     /**
      * Returns the precomputed case number for this Person
      */
-    function getCaseNumber($year=YEAR){
-        if(Cache::exists("case_number{$this->getId()}_{$year}")){
-            return Cache::fetch("case_number{$this->getId()}_{$year}");
+    function getCaseNumber($year=YEAR, $which=""){
+        if(Cache::exists("case_number{$which}_{$this->getId()}_{$year}")){
+            return Cache::fetch("case_number{$which}_{$this->getId()}_{$year}");
         }
         else{
             $data = DBFunctions::select(array('grand_case_numbers'),
@@ -4394,10 +4394,10 @@ class FullPerson extends Person {
                                         array('user_id' => $this->getId(),
                                               'year' => $year));
             if(!empty($data)){
-                Cache::store("case_number{$this->getId()}_{$year}", $data[0]['number']);
-                return $data[0]['number'];
+                Cache::store("case_number{$which}_{$this->getId()}_{$year}", $data[0]["number{$which}"]);
+                return $data[0]["number{$which}"];
             }
-            Cache::store("case_number{$this->getId()}_{$year}", "");
+            Cache::store("case_number{$which}_{$this->getId()}_{$year}", "");
             return "";
         }
     }

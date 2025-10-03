@@ -27,6 +27,9 @@ class CaseNumberOrders extends AbstractMigration
      */
     public function change()
     {
-
+        $table = $this->table('grand_case_numbers');
+        $table->addColumn('number2', 'string', array('limit' => 64))
+              ->addColumn('number3', 'string', array('limit' => 64))
+              ->update();
     }
 }

@@ -1169,9 +1169,9 @@ class ReportItemCallback {
         return $person->getFECType($this->reportItem->getReport()->year.CYCLE_END_MONTH);
     }
     
-    function getUserCaseNumber(){
+    function getUserCaseNumber($which=""){
         $person = Person::newFromId($this->reportItem->personId);
-        return $person->getCaseNumber($this->reportItem->getReport()->year);
+        return $person->getCaseNumber($this->reportItem->getReport()->year, $which);
     }
     
     function getUserKeywords(){
