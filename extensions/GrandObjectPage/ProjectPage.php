@@ -48,7 +48,7 @@ class ProjectPage {
                                                        $me->isThemeCoordinatorOf($project->getParent())))){
                     TabUtils::clearActions();
                     permissionError();
-                    close();
+                    exit;
                 }
                 return true;
             }
@@ -176,7 +176,7 @@ class ProjectPage {
                 }
                 $wgOut->output();
                 $wgOut->disable();
-                close();
+                exit;
             } 
         }
         return true;

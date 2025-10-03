@@ -329,6 +329,17 @@ class CavendishTemplate extends QuickTemplate {
 		    relationTypes = <?php echo json_encode($config->getValue('relationTypes')); ?>;
 		    boardMods = <?php echo json_encode($config->getValue('boardMods')); ?>;
 		    showSideBar = <?php var_export($config->getValue('showSideBar')) ?>;
+			showSideBarToMember = <?php var_export($config->getValue('showSideBarToMember')) ?>;
+			isProjectLeader = <?php echo json_encode((function($user){
+				$allProjects = Project::getAllProjects();
+				foreach($allProjects as $proj){
+					if($proj->isAllowedToEdit($user)){
+						return true;
+					}
+				}
+				return false;
+				})($me)); ?>;
+
 		    embed = <?php var_export(isset($_GET['embed'])); ?>;
 		    
 		    var today = new Date().toISOString().split('T')[0];
@@ -432,7 +443,14 @@ class CavendishTemplate extends QuickTemplate {
                     }
                     $("#bodyContent").css('top', top);
                     if(me.isLoggedIn() && showSideBar){
-                        $("#side").show();
+						if (showSideBarToMember || isProjectLeader) {
+                        	$("#side").show();
+						} else {
+ 							$("#side").hide();
+							$("#sideToggle").hide();
+							$("#bodyContent").css('left', '0');
+							$("#outerHeader").css('left', '0');
+						}
                     }
                     $("#side").css("top", 0);
                 }

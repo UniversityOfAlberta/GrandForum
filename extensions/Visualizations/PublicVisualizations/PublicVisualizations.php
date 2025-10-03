@@ -32,7 +32,7 @@ class PublicVisualizations extends SpecialPage{
 	        return $user->isRegistered();
 	    }
 
-        if (!$user->isLoggedIn()){
+        if (!$user->isRegistered()){
             return false;
         }
 

@@ -29,7 +29,7 @@ class ProjectLIMSPmmTab extends AbstractEditableTab {
 
     private function generateView($isEditMode) {
         global $wgUser, $wgServer, $wgScriptPath, $wgOut;
-        if ($wgUser->isLoggedIn()) {
+        if ($wgUser->isRegistered()) {
             $projectId = $this->project->getId();
 
             $limsPmm = new LIMSPmm();

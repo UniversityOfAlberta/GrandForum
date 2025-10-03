@@ -14,7 +14,7 @@ class LIMSTaskAPIPmm extends RESTAPI {
                     header('Content-Disposition: attachment; filename="'.$file['filename'].'"');
                     $exploded = explode("base64,", $file['data']);
                     echo base64_decode(@$exploded[1]);
-                    close();
+                    exit;
                 }
             }
             return $task->toJSON();
