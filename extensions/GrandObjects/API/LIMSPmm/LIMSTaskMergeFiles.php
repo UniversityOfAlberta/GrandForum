@@ -109,7 +109,7 @@ class LIMSTaskMergeFiles extends RESTAPI {
         header('Content-Disposition: attachment; filename="'.$filename.'"');
         
         echo $final_csv_string;
-        exit;
+        close();
     }
 
     private function mergeAndStreamPdf($task, $all_files_metadata) {
@@ -155,7 +155,7 @@ class LIMSTaskMergeFiles extends RESTAPI {
 
         readfile($merged_pdf_path);
         unlink($merged_pdf_path);
-        exit;
+        close();
     }
 
     private function executePdfMerge(array $filePaths, string $outputFilePath): bool {
