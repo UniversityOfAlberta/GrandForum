@@ -258,7 +258,7 @@ class PersonVisualizationsTab extends AbstractTab {
             
             $legend[$i]['name'] = "Institution";
             $legend[$i++]['color'] = "#B26060";
-            if($me->isRegistered()){
+            if($me->isLoggedIn()){
                 $legend[$i]['name'] = "Co-authorship";
                 $legend[$i++]['color'] = "#6191B3";
             }
