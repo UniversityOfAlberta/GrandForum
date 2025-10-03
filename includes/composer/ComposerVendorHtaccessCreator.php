@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (C) 2017 Kunal Mehta <legoktm@member.fsf.org>
+ * Copyright (C) 2017 Kunal Mehta <legoktm@debian.org>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,6 +38,8 @@ class ComposerVendorHtaccessCreator {
 			return;
 		}
 
-		file_put_contents( $fname, "Deny from all\n" );
+		file_put_contents( $fname,
+			"Require all denied\n" .
+			"Satisfy All\n" );
 	}
 }

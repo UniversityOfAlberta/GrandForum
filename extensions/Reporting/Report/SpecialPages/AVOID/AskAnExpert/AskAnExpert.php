@@ -102,7 +102,7 @@ class AskAnExpert extends BackbonePage {
             $message .= "--".$uid."--";
 
             mail($config->getValue('supportEmail'), "[{$config->getValue('networkName')}] {$subj}", $message, $header);
-            exit;
+            close();
         }
         return true;
     }

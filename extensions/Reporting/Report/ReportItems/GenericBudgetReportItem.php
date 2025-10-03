@@ -11,7 +11,7 @@ class GenericBudgetReportItem extends AbstractReportItem {
                 header('Content-Type: application/vnd.ms-excel');
                 header("Content-disposition: attachment; filename='{$person->getNameForForms()}_Budget.xls'");
                 echo $data;
-                exit;
+                close();
             }
         }
         if(isset($_GET['budgetUploadForm'])){
@@ -121,7 +121,7 @@ class GenericBudgetReportItem extends AbstractReportItem {
         echo "      </div>
                 </body>
               </html>";
-        exit;
+        close();
     }
     
     function save(){

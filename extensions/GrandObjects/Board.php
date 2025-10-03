@@ -83,7 +83,7 @@ class Board extends BackboneModel {
 
     function toArray(){
         global $wgUser;
-        if(!$wgUser->isLoggedIn()){
+        if(!$wgUser->isRegistered()){
             return array();
         }
         $json = array('id' => $this->getId(),

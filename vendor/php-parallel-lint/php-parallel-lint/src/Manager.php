@@ -1,8 +1,10 @@
 <?php
 namespace JakubOnderka\PhpParallelLint;
 
+use JakubOnderka\PhpParallelLint\Contracts\SyntaxErrorCallback;
 use JakubOnderka\PhpParallelLint\Process\GitBlameProcess;
 use JakubOnderka\PhpParallelLint\Process\PhpExecutable;
+use ReturnTypeWillChange;
 
 class Manager
 {
@@ -38,6 +40,7 @@ class Manager
         $parallelLint->setAspTagsEnabled($settings->aspTags);
         $parallelLint->setShortTagEnabled($settings->shortTag);
         $parallelLint->setShowDeprecated($settings->showDeprecated);
+        $parallelLint->setSyntaxErrorCallback($this->createSyntaxErrorCallback($settings));
 
         $parallelLint->setProcessCallback(function ($status, $file) use ($output) {
             if ($status === ParallelLint::STATUS_OK) {
@@ -80,6 +83,8 @@ class Manager
         switch ($settings->format) {
             case Settings::FORMAT_JSON:
                 return new JsonOutput($writer);
+            case Settings::FORMAT_GITLAB:
+                return new GitLabOutput($writer);
             case Settings::FORMAT_CHECKSTYLE:
                 return new CheckstyleOutput($writer);
         }
@@ -134,7 +139,8 @@ class Manager
      */
     protected function getFilesFromPaths(array $paths, array $extensions, array $excluded = array())
     {
-        $extensions = array_flip($extensions);
+        $extensions = array_map('preg_quote', $extensions, array_fill(0, count($extensions), '`'));
+        $regex = '`\.(?:' . implode('|', $extensions) . ')$`iD';
         $files = array();
 
         foreach ($paths as $path) {
@@ -151,11 +157,11 @@ class Manager
                     \RecursiveIteratorIterator::CATCH_GET_CHILD
                 );
 
+                $iterator = new \RegexIterator($iterator, $regex);
+
                 /** @var \SplFileInfo[] $iterator */
                 foreach ($iterator as $directoryFile) {
-                    if (isset($extensions[pathinfo($directoryFile->getFilename(), PATHINFO_EXTENSION)])) {
-                        $files[] = (string) $directoryFile;
-                    }
+                    $files[] = (string) $directoryFile;
                 }
             } else {
                 throw new NotExistsPathException($path);
@@ -165,6 +171,33 @@ class Manager
         $files = array_unique($files);
 
         return $files;
+    }
+
+    protected function createSyntaxErrorCallback(Settings $settings)
+    {
+        if ($settings->syntaxErrorCallbackFile === null) {
+            return null;
+        }
+
+        $fullFilePath = realpath($settings->syntaxErrorCallbackFile);
+        if ($fullFilePath === false) {
+            throw new NotExistsPathException($settings->syntaxErrorCallbackFile);
+        }
+
+        require_once $fullFilePath;
+
+        $expectedClassName = basename($fullFilePath, '.php');
+        if (!class_exists($expectedClassName)) {
+            throw new NotExistsClassException($expectedClassName, $settings->syntaxErrorCallbackFile);
+        }
+
+        $callbackInstance = new $expectedClassName;
+
+        if (!($callbackInstance instanceof SyntaxErrorCallback)) {
+            throw new NotImplementCallbackException($expectedClassName);
+        }
+
+        return $callbackInstance;
     }
 }
 
@@ -194,6 +227,7 @@ class RecursiveDirectoryFilterIterator extends \RecursiveFilterIterator
      * @link http://php.net/manual/en/filteriterator.accept.php
      * @return bool true if the current element is acceptable, otherwise false.
      */
+    #[ReturnTypeWillChange]
     public function accept()
     {
         $current = $this->current()->getPathname();
@@ -213,6 +247,7 @@ class RecursiveDirectoryFilterIterator extends \RecursiveFilterIterator
      * @link http://php.net/manual/en/recursivefilteriterator.haschildren.php
      * @return bool true if the inner iterator has children, otherwise false
      */
+    #[ReturnTypeWillChange]
     public function hasChildren()
     {
         return $this->iterator->hasChildren();
@@ -225,6 +260,7 @@ class RecursiveDirectoryFilterIterator extends \RecursiveFilterIterator
      * @link http://php.net/manual/en/recursivefilteriterator.getchildren.php
      * @return \RecursiveFilterIterator containing the inner iterator's children.
      */
+    #[ReturnTypeWillChange]
     public function getChildren()
     {
         return new self($this->iterator->getChildren(), $this->excluded);

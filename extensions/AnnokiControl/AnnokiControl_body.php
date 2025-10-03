@@ -65,7 +65,7 @@ You should log in and change your password now.';
   static function onUserGetLanguageObject($user, &$code){
       global $wgLang, $wgLanguageCode;
         if(@$_GET['lang'] == 'fr' || @$_GET['lang'] == 'en'){
-            if($user->isLoggedIn() && $user->getOption("language") != $_GET['lang']){
+            if($user->isRegistered() && $user->getOption("language") != $_GET['lang']){
                 $user->setOption("language", $_GET['lang']);
                 MediaWikiServices::getInstance()->getUserOptionsManager()->saveOptions( $user );
                 DBFunctions::commit();
@@ -77,10 +77,10 @@ You should log in and change your password now.';
                 $code = $_GET['lang'];
             }
         }
-        else if($user->isLoggedIn()){
+        else if($user->isRegistered()){
             $code = $user->getOption('language');
         }
-        else if(!$user->isLoggedIn() && isset($_COOKIE['lang'])){
+        else if(!$user->isRegistered() && isset($_COOKIE['lang'])){
             $code = $_COOKIE['lang'];
         }
         else {

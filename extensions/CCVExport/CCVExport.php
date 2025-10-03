@@ -45,7 +45,7 @@ class CCVExport extends SpecialPage {
             header("Content-Disposition: attachment;filename=export.xml"); 
             header("Content-Transfer-Encoding: binary ");
             echo $xml;
-            exit;
+            close();
         }
       
         $wgOut->setPageTitle("Export To CCV");

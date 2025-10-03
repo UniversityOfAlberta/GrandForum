@@ -66,7 +66,7 @@ class AdminCustomTab extends AbstractTab {
 	                }
 	            }
 	        }
-	        exit;
+	        close();
 	    }
 	    return true;
 	}

@@ -1,26 +1,30 @@
-[![Build Status](https://travis-ci.com/cssjanus/php-cssjanus.svg?branch=master)](https://travis-ci.com/cssjanus/php-cssjanus) [![Packagist](https://img.shields.io/packagist/v/cssjanus/cssjanus.svg?style=flat)](https://packagist.org/packages/cssjanus/cssjanus) [![Coverage Status](https://coveralls.io/repos/github/cssjanus/php-cssjanus/badge.svg?branch=master)](https://coveralls.io/github/cssjanus/php-cssjanus?branch=master)
+[![Packagist](https://img.shields.io/packagist/v/cssjanus/cssjanus.svg?style=flat)](https://packagist.org/packages/cssjanus/cssjanus)
 
 # CSSJanus
 
 Convert CSS stylesheets between left-to-right and right-to-left.
 
-## Basic usage
+## Usage
+
+```php
+transform( string $css, bool $swapLtrInURL = false, bool $swapLeftInURL = false ) : string
+```
+
+Parameters;
+
+* ``$css`` (string) Stylesheet to transform.
+* ``$swapLtrInURL`` (boolean) Swap `ltr` to `rtl` direction in URLs.
+* ``$swapLeftInURL`` (boolean) Swap `left` and `right` edges in URLs.
+
+Example:
 
 ```php
 $rtlCss = CSSJanus::transform( $ltrCss );
 ```
 
-## Advanced usage
-
-``transform( $css, $swapLtrRtlInURL = false, $swapLeftRightInURL = false )``
-
-* ``$css`` (string) Stylesheet to transform
-* ``$swapLtrRtlInURL`` (boolean) Swap 'ltr' and 'rtl' in URLs
-* ``$swapLeftRightInURL`` (boolean) Swap 'left' and 'right' in URLs
-
 ### Preventing flipping
 
-Use a ```/* @noflip */``` comment to protect a rule from being changed.
+If a rule is not meant to be flipped by CSSJanus, use a `/* @noflip */` comment to protect the rule.
 
 ```css
 .rule1 {
@@ -36,10 +40,14 @@ Use a ```/* @noflip */``` comment to protect a rule from being changed.
 
 ## Port
 
-This is a PHP port of the Node.js implementation of CSSJanus.
+This is a PHP port of the Node.js implementation of CSSJanus. Feature requests and bugs related
+to the actual CSS transformation logic or test cases of it, should be submitted upstream
+at <https://github.com/cssjanus/cssjanus>.
 
-Feature requests and bugs related to the actual CSS transformation or test
-cases of it, should be submitted upstream at
-<https://github.com/cssjanus/cssjanus>.
+CSSJanus was originally a [Google project](http://code.google.com/p/cssjanus/).
 
-Upstream releases will be ported here.
+## Contribute
+
+* Issue tracker: <https://phabricator.wikimedia.org/tag/cssjanus/>
+* Source code: <https://gerrit.wikimedia.org/g/mediawiki/libs/php-cssjanus>
+* Submit patches via Gerrit: <https://www.mediawiki.org/wiki/Developer_account>

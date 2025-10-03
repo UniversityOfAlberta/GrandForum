@@ -9,11 +9,11 @@ declare( strict_types = 1 );
 
 namespace Wikimedia\Parsoid\Ext\JSON;
 
-use DOMDocument;
-use DOMElement;
 use Wikimedia\Assert\Assert;
+use Wikimedia\Parsoid\Core\ContentModelHandler;
 use Wikimedia\Parsoid\Core\SelserData;
-use Wikimedia\Parsoid\Ext\ContentModelHandler;
+use Wikimedia\Parsoid\DOM\Document;
+use Wikimedia\Parsoid\DOM\Element;
 use Wikimedia\Parsoid\Ext\DOMUtils;
 use Wikimedia\Parsoid\Ext\ExtensionModule;
 use Wikimedia\Parsoid\Ext\ParsoidExtensionAPI;
@@ -22,18 +22,9 @@ use Wikimedia\Parsoid\Utils\DOMCompat;
 
 /**
  * Native Parsoid implementation of the "json" contentmodel.
- * @class
  */
 class JSON extends ContentModelHandler implements ExtensionModule {
-	private const PARSE_ERROR_HTML = '<!DOCTYPE html><html>'
-		. '<body>'
-		. "<table data-mw='{\"errors\":[{\"key\":\"bad-json\"}]}' typeof=\"mw:Error\">"
-		. '</body>';
-
-	/**
-	 * @var DOMDocument
-	 */
-	protected $document;
+	private const PARSE_ERROR_HTML = "<table typeof=\"mw:Error\" data-mw='{\"errors\":[{\"key\":\"bad-json\"}]}'>";
 
 	/** @inheritDoc */
 	public function getConfig(): array {
@@ -46,10 +37,10 @@ class JSON extends ContentModelHandler implements ExtensionModule {
 	}
 
 	/**
-	 * @param DOMElement $parent
+	 * @param Element $parent
 	 * @param array|object|string $val
 	 */
-	private function rootValueTable( DOMElement $parent, $val ): void {
+	private function rootValueTable( Element $parent, $val ): void {
 		if ( is_array( $val ) ) {
 			// Wrap arrays in another array so they're visually boxed in a
 			// container.  Otherwise they are visually indistinguishable from
@@ -69,10 +60,10 @@ class JSON extends ContentModelHandler implements ExtensionModule {
 	}
 
 	/**
-	 * @param DOMElement $parent
+	 * @param Element $parent
 	 * @param array $val
 	 */
-	private function objectTable( DOMElement $parent, array $val ): void {
+	private function objectTable( Element $parent, array $val ): void {
 		DOMCompat::setInnerHTML( $parent,
 			'<table class="mw-json mw-json-object"><tbody>' );
 		$tbody = $parent->firstChild->firstChild;
@@ -89,14 +80,14 @@ class JSON extends ContentModelHandler implements ExtensionModule {
 	}
 
 	/**
-	 * @param DOMElement $parent
-	 * @param string|null $key
+	 * @param Element $parent
+	 * @param ?string $key
 	 * @param mixed $val
 	 */
-	private function objectRow( DOMElement $parent, ?string $key, $val ): void {
-		$tr = $this->document->createElement( 'tr' );
+	private function objectRow( Element $parent, ?string $key, $val ): void {
+		$tr = $parent->ownerDocument->createElement( 'tr' );
 		if ( $key !== null ) {
-			$th = $this->document->createElement( 'th' );
+			$th = $parent->ownerDocument->createElement( 'th' );
 			$th->textContent = $key;
 			$tr->appendChild( $th );
 		}
@@ -105,10 +96,10 @@ class JSON extends ContentModelHandler implements ExtensionModule {
 	}
 
 	/**
-	 * @param DOMElement $parent
+	 * @param Element $parent
 	 * @param array $val
 	 */
-	private function arrayTable( DOMElement $parent, array $val ): void {
+	private function arrayTable( Element $parent, array $val ): void {
 		DOMCompat::setInnerHTML( $parent,
 			'<table class="mw-json mw-json-array"><tbody>' );
 		$tbody = $parent->firstChild->firstChild;
@@ -124,11 +115,11 @@ class JSON extends ContentModelHandler implements ExtensionModule {
 	}
 
 	/**
-	 * @param DOMElement $parent
+	 * @param Element $parent
 	 * @param mixed $val
 	 */
-	private function valueCell( DOMElement $parent, $val ): void {
-		$td = $this->document->createElement( 'td' );
+	private function valueCell( Element $parent, $val ): void {
+		$td = $parent->ownerDocument->createElement( 'td' );
 		if ( is_array( $val ) ) {
 			self::arrayTable( $td, $val );
 		} elseif ( $val && is_object( $val ) ) {
@@ -141,17 +132,17 @@ class JSON extends ContentModelHandler implements ExtensionModule {
 	}
 
 	/**
-	 * @param DOMElement $parent
+	 * @param Element $parent
 	 * @param string|int|bool|null $val
 	 */
-	private function primitiveValue( DOMElement $parent, $val ): void {
+	private function primitiveValue( Element $parent, $val ): void {
 		if ( $val === null ) {
 			DOMCompat::getClassList( $parent )->add( 'mw-json-null' );
 			$parent->textContent = 'null';
 			return;
 		} elseif ( is_bool( $val ) ) {
 			DOMCompat::getClassList( $parent )->add( 'mw-json-boolean' );
-			$parent->textContent = [ 'false', 'true' ][$val === true];
+			$parent->textContent = $val ? 'true' : 'false';
 			return;
 		} elseif ( is_int( $val ) || is_float( $val ) ) {
 			DOMCompat::getClassList( $parent )->add( 'mw-json-number' );
@@ -165,43 +156,47 @@ class JSON extends ContentModelHandler implements ExtensionModule {
 	 * JSON to HTML.
 	 * Implementation matches that from includes/content/JsonContent.php in
 	 * mediawiki core, except that we distinguish value types.
-	 * @param ParsoidExtensionAPI $API
-	 * @param string $jsonText
-	 * @return DOMDocument
+	 * @param ParsoidExtensionAPI $extApi
+	 * @return Document
 	 */
-	public function toDOM( ParsoidExtensionAPI $API, string $jsonText ): DOMDocument {
-		$this->document = $API->htmlToDom( '<!DOCTYPE html><html><body>' );
-		$src = null;
+	public function toDOM( ParsoidExtensionAPI $extApi ): Document {
+		$jsonText = $extApi->getPageConfig()->getPageMainContent();
+		$document = $extApi->getTopLevelDoc();
+		$body = DOMCompat::getBody( $document );
 
-// PORT-FIXME When production moves to PHP 7.3, re-enable this try catch code
-/*		try {
-			$src = json_decode( $jsonText, false, 6, JSON_THROW_ON_ERROR );
-			self::rootValueTable( DOMCompat::getBody( $this->document ), $src );
-		} catch ( Exception $e ) {
-			$this->document = $API->htmlToDom( self::PARSE_ERROR_HTML );
-		}
-*/
+		// PORT-FIXME: When production moves to PHP 7.3, re-enable this try
+		// catch code
+
+		// try {
+		// 	$src = json_decode( $jsonText, false, 6, JSON_THROW_ON_ERROR );
+		// 	self::rootValueTable( $body, $src );
+		// } catch ( JsonException $e ) {
+		// 	DOMCompat::setInnerHTML( $body, self::PARSE_ERROR_HTML );
+		// }
+
 		$src = json_decode( $jsonText, false, 6 );
 		if ( $src === null && json_last_error() !== JSON_ERROR_NONE ) {
-			$this->document = $API->htmlToDom( self::PARSE_ERROR_HTML );
+			DOMCompat::setInnerHTML( $body, self::PARSE_ERROR_HTML );
 		} else {
-			self::rootValueTable( DOMCompat::getBody( $this->document ), $src );
+			self::rootValueTable( $body, $src );
 		}
-/* end of PHP 7.2 compatible error handling code, remove whem enabling 7.3+ try catch code */
+
+		// end of PHP 7.2 compatible error handling code, remove whem enabling
+		// 7.3+ try catch code
 
 		// We're responsible for running the standard DOMPostProcessor on our
 		// resulting document.
-		$API->postProcessDOM( $this->document );
+		$extApi->postProcessDOM( $document );
 
-		return $this->document;
+		return $document;
 	}
 
 	/**
 	 * RootValueTableFrom
-	 * @param DOMElement $el
+	 * @param Element $el
 	 * @return array|false|int|string|null
 	 */
-	private function rootValueTableFrom( DOMElement $el ) {
+	private function rootValueTableFrom( Element $el ) {
 		if ( DOMCompat::getClassList( $el )->contains( 'mw-json-single-value' ) ) {
 			return self::primitiveValueFrom( DOMCompat::querySelector( $el, 'tr > td' ) );
 		} elseif ( DOMCompat::getClassList( $el )->contains( 'mw-json-array' ) ) {
@@ -212,17 +207,17 @@ class JSON extends ContentModelHandler implements ExtensionModule {
 	}
 
 	/**
-	 * @param DOMElement $el
+	 * @param Element $el
 	 * @return array
 	 */
-	private function objectTableFrom( DOMElement $el ) {
+	private function objectTableFrom( Element $el ) {
 		Assert::invariant( DOMCompat::getClassList( $el )->contains( 'mw-json-object' ),
 			'Expected mw-json-object' );
 		$tbody = $el;
 		if ( $tbody->firstChild ) {
 			$child = $tbody->firstChild;
 			DOMUtils::assertElt( $child );
-			if ( $child->tagName === 'tbody' ) {
+			if ( DOMCompat::nodeName( $child ) === 'tbody' ) {
 				$tbody = $child;
 			}
 		}
@@ -247,11 +242,11 @@ class JSON extends ContentModelHandler implements ExtensionModule {
 	}
 
 	/**
-	 * @param DOMElement $tr
+	 * @param Element $tr
 	 * @param array &$obj
-	 * @param int|null $key
+	 * @param ?int $key
 	 */
-	private function objectRowFrom( DOMElement $tr, array &$obj, ?int $key ) {
+	private function objectRowFrom( Element $tr, array &$obj, ?int $key ) {
 		$td = $tr->firstChild;
 		if ( $key === null ) {
 			$key = $td->textContent;
@@ -262,17 +257,17 @@ class JSON extends ContentModelHandler implements ExtensionModule {
 	}
 
 	/**
-	 * @param DOMElement $el
+	 * @param Element $el
 	 * @return array
 	 */
-	private function arrayTableFrom( DOMElement $el ): array {
+	private function arrayTableFrom( Element $el ): array {
 		Assert::invariant( DOMCompat::getClassList( $el )->contains( 'mw-json-array' ),
 			'Expected ms-json-array' );
 		$tbody = $el;
 		if ( $tbody->firstChild ) {
 			$child = $tbody->firstChild;
 			DOMUtils::assertElt( $child );
-			if ( $child->tagName === 'tbody' ) {
+			if ( DOMCompat::nodeName( $child ) === 'tbody' ) {
 				$tbody = $child;
 			}
 		}
@@ -297,14 +292,13 @@ class JSON extends ContentModelHandler implements ExtensionModule {
 	}
 
 	/**
-	 * @param DOMElement $el
+	 * @param Element $el
 	 * @return array|object|false|float|int|string|null
 	 */
-	private function valueCellFrom( DOMElement $el ) {
-		Assert::invariant( $el->tagName === 'td', 'Expected tagName = td' );
+	private function valueCellFrom( Element $el ) {
+		Assert::invariant( DOMCompat::nodeName( $el ) === 'td', 'Expected tagName = td' );
 		$table = $el->firstChild;
-		if ( $table && DOMUtils::isElt( $table ) ) {
-			DOMUtils::assertElt( $table );
+		if ( $table instanceof Element ) {
 			if ( DOMCompat::getClassList( $table )->contains( 'mw-json-array' ) ) {
 				return self::arrayTableFrom( $table );
 			} elseif ( DOMCompat::getClassList( $table )->contains( 'mw-json-object' ) ) {
@@ -316,14 +310,14 @@ class JSON extends ContentModelHandler implements ExtensionModule {
 	}
 
 	/**
-	 * @param DOMElement $el
+	 * @param Element $el
 	 * @return false|float|int|string|null
 	 */
-	private function primitiveValueFrom( DOMElement $el ) {
+	private function primitiveValueFrom( Element $el ) {
 		if ( DOMCompat::getClassList( $el )->contains( 'mw-json-null' ) ) {
 			return null;
 		} elseif ( DOMCompat::getClassList( $el )->contains( 'mw-json-boolean' ) ) {
-			return [ false, true ][preg_match( '/true/', $el->textContent )];
+			return str_contains( $el->textContent, 'true' );
 		} elseif ( DOMCompat::getClassList( $el )->contains( 'mw-json-number' ) ) {
 			return floatval( $el->textContent );
 		} elseif ( DOMCompat::getClassList( $el )->contains( 'mw-json-string' ) ) {
@@ -335,19 +329,17 @@ class JSON extends ContentModelHandler implements ExtensionModule {
 
 	/**
 	 * DOM to JSON.
-	 * @param ParsoidExtensionAPI $API
-	 * @param DOMDocument $doc
-	 * @param SelserData|null $selserData
+	 * @param ParsoidExtensionAPI $extApi
+	 * @param ?SelserData $selserData
 	 * @return string
 	 */
 	public function fromDOM(
-		ParsoidExtensionAPI $API, DOMDocument $doc, ?SelserData $selserData = null
+		ParsoidExtensionAPI $extApi, ?SelserData $selserData = null
 	): string {
-		$body = DOMCompat::getBody( $doc );
-		Assert::invariant( DOMUtils::isBody( $body ), 'Expected a body node.' );
+		$body = DOMCompat::getBody( $extApi->getTopLevelDoc() );
 		$t = $body->firstChild;
 		DOMUtils::assertElt( $t );
-		Assert::invariant( $t && $t->tagName === 'table',
+		Assert::invariant( $t && DOMCompat::nodeName( $t ) === 'table',
 			'Expected tagName = table' );
 		self::rootValueTableFrom( $t );
 		return PHPUtils::jsonEncode( self::rootValueTableFrom( $t ) );

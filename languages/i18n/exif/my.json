@@ -192,5 +192,11 @@
 	"exif-iimcategory-wea": "ရာသီဥတု",
 	"exif-urgency-normal": "ပုံမှန် ($1)",
 	"exif-urgency-low": "နိမ့် ($1)",
-	"exif-urgency-high": "မြင့် ($1)"
+	"exif-urgency-high": "မြင့် ($1)",
+	"exif-firstphotodate": "ပထမဆုံးဓါတ်ပုံရက်စွဲ",
+	"exif-lastphotodate": "နောက်ဆုံးဓါတ်ပုံရက်စွဲ",
+	"exif-usepanoramaviewer-true": "လုပ်မည်",
+	"exif-usepanoramaviewer-false": "မလုပ်ပါ",
+	"exif-exposurelockused-true": "လုပ်မည်",
+	"exif-exposurelockused-false": "မလုပ်ပါ"
 }

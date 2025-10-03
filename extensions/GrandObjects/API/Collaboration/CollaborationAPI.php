@@ -18,7 +18,7 @@ class CollaborationAPI extends RESTAPI {
                 else{
                     $this->throwError("The collaboration <i>{$collab->getTitle()}</i> does not have a file by the id of {$this->getParam('file')}");
                 }
-                exit;
+                close();
             }
             return $collab->toJSON();
         }

@@ -135,7 +135,7 @@ class CreatePoll extends SpecialPage{
                         $j++;
                     }
                     header("Location: $wgServer$wgScriptPath/index.php?action=viewPoll&id=$collection_id");
-                    exit;
+                    close();
                 }
                 else{
                     $wgMessage->addError("There was an unknown problem creating the Poll.");

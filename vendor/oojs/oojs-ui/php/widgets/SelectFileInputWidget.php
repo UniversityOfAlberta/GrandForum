@@ -6,10 +6,20 @@ namespace OOUI;
  * Generic widget for buttons.
  */
 class SelectFileInputWidget extends InputWidget {
+	use RequiredElement;
 
 	/* Static Properties */
 
-	protected $accept, $placeholder;
+	/** @var string[]|null */
+	protected $accept;
+	/** @var bool */
+	protected $multiple;
+	/** @var string|null */
+	protected $placeholder;
+	/** @var array|null */
+	protected $button;
+	/** @var string|null */
+	protected $icon;
 
 	/**
 	 * @param array $config Configuration options
@@ -22,28 +32,23 @@ class SelectFileInputWidget extends InputWidget {
 	 *  and show a preview (for performance).
 	 */
 	public function __construct( array $config = [] ) {
-		// Config initialization
-		$config = array_merge( [
-			'accept' => null,
-			'multiple' => false,
-			'placeholder' => null,
-			'button' => null,
-			'icon' => null,
-		], $config );
-
 		// Parent constructor
 		parent::__construct( $config );
 
 		// Properties
-		$this->accept = $config['accept'];
-		$this->multiple = $config['multiple'];
-		$this->placeholder = $config['placeholder'];
-		$this->button = $config['button'];
-		$this->icon = $config['icon'];
+		$this->accept = $config['accept'] ?? null;
+		$this->multiple = $config['multiple'] ?? false;
+		$this->placeholder = $config['placeholder'] ?? null;
+		$this->button = $config['button'] ?? null;
+		$this->icon = $config['icon'] ?? null;
 
-		$this->addClasses( [ 'oo-ui-selectFileWidget' ] );
+		// Traits
+		$this->initializeRequiredElement(
+			array_merge( [ 'indicatorElement' => null ], $config )
+		);
 
 		// Initialization
+		$this->addClasses( [ 'oo-ui-selectFileInputWidget' ] );
 		$this->input->setAttributes( [
 			'type' => 'file'
 		] );
@@ -59,6 +64,7 @@ class SelectFileInputWidget extends InputWidget {
 		}
 	}
 
+	/** @inheritDoc */
 	public function getConfig( &$config ) {
 		if ( $this->accept !== null ) {
 			$config['accept'] = $this->accept;

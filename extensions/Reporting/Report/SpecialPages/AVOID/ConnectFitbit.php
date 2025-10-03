@@ -12,7 +12,7 @@ class ConnectFitbit extends SpecialPage{
     }
     
     function userCanExecute($user){
-        return $user->isLoggedIn();
+        return $user->isRegistered();
     }
 
     function execute($par){
@@ -27,9 +27,8 @@ class ConnectFitbit extends SpecialPage{
             echo "<html><script type='text/javascript'>
                 window.close();
             </script></html>";
-            exit;
         }
-        exit;
+        close();
     }
 
 }

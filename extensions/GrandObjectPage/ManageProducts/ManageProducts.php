@@ -75,7 +75,7 @@ class ManageProducts extends BackbonePage {
 	    global $wgMessage, $config, $wgServer, $wgScriptPath;
 	    if(isset($_GET['error']) && $_GET['error'] == 'access_denied'){
 	        echo "<script type='text/javascript'>window.close();</script>";
-	        exit;
+	        close();
 	    }
 	    else if(isset($_GET['code'])){
             //open connection
@@ -103,7 +103,7 @@ class ManageProducts extends BackbonePage {
                 $_COOKIE['orcid'] = $data->orcid;
                 $_COOKIE['access_token'] = $data->access_token;
                 echo "<script type='text/javascript'>window.close();</script>";
-                exit;
+                close();
             }
         }
 	}

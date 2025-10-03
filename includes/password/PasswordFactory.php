@@ -22,6 +22,8 @@
 
 declare( strict_types = 1 );
 
+use MediaWiki\MainConfigNames;
+
 /**
  * Factory class for creating and checking Password objects
  *
@@ -39,13 +41,15 @@ final class PasswordFactory {
 	/**
 	 * Mapping of password types to classes
 	 *
-	 * @var array
+	 * @var array[]
 	 * @see PasswordFactory::register
 	 * @see Setup.php
 	 */
 	private $types = [
 		'' => [ 'type' => '', 'class' => InvalidPassword::class ],
 	];
+
+	private const MIN_RANDOM_PASSWORD_LENGTH = 10;
 
 	/**
 	 * Most of the time you'll want to use MediaWikiServices::getInstance()->getPasswordFactory
@@ -73,7 +77,7 @@ final class PasswordFactory {
 	 * @param array $config Array of configuration options. 'class' is required (the Password
 	 *   subclass name), everything else is passed to the constructor of that class.
 	 */
-	public function register( string $type, array $config ) : void {
+	public function register( string $type, array $config ): void {
 		$config['type'] = $type;
 		$this->types[$type] = $config;
 	}
@@ -87,7 +91,7 @@ final class PasswordFactory {
 	 * @param string $type Password hash type
 	 * @throws InvalidArgumentException If the type is not registered
 	 */
-	public function setDefaultType( string $type ) : void {
+	public function setDefaultType( string $type ): void {
 		if ( !isset( $this->types[$type] ) ) {
 			throw new InvalidArgumentException( "Invalid password type $type." );
 		}
@@ -99,7 +103,7 @@ final class PasswordFactory {
 	 *
 	 * @return string
 	 */
-	public function getDefaultType() : string {
+	public function getDefaultType(): string {
 		return $this->default;
 	}
 
@@ -110,20 +114,20 @@ final class PasswordFactory {
 	 *
 	 * @param Config $config Configuration object to load data from
 	 */
-	public function init( Config $config ) : void {
-		foreach ( $config->get( 'PasswordConfig' ) as $type => $options ) {
+	public function init( Config $config ): void {
+		foreach ( $config->get( MainConfigNames::PasswordConfig ) as $type => $options ) {
 			$this->register( $type, $options );
 		}
 
-		$this->setDefaultType( $config->get( 'PasswordDefault' ) );
+		$this->setDefaultType( $config->get( MainConfigNames::PasswordDefault ) );
 	}
 
 	/**
 	 * Get the list of types of passwords
 	 *
-	 * @return array
+	 * @return array[]
 	 */
-	public function getTypes() : array {
+	public function getTypes(): array {
 		return $this->types;
 	}
 
@@ -138,7 +142,7 @@ final class PasswordFactory {
 	 * @return Password
 	 * @throws PasswordError If hash is invalid or type is not recognized
 	 */
-	public function newFromCiphertext( ?string $hash ) : Password {
+	public function newFromCiphertext( ?string $hash ): Password {
 		if ( $hash === null || $hash === '' ) {
 			return new InvalidPassword( $this, [ 'type' => '' ], null );
 		} elseif ( $hash[0] !== ':' ) {
@@ -162,7 +166,7 @@ final class PasswordFactory {
 	 * @return Password
 	 * @throws PasswordError If hash is invalid or type is not recognized
 	 */
-	public function newFromType( string $type ) : Password {
+	public function newFromType( string $type ): Password {
 		if ( !isset( $this->types[$type] ) ) {
 			throw new PasswordError( "Unrecognized password hash type $type." );
 		}
@@ -182,7 +186,7 @@ final class PasswordFactory {
 	 * @param Password|null $existing Optional existing hash to get options from
 	 * @return Password
 	 */
-	public function newFromPlaintext( ?string $password, Password $existing = null ) : Password {
+	public function newFromPlaintext( ?string $password, Password $existing = null ): Password {
 		if ( $password === null ) {
 			return new InvalidPassword( $this, [ 'type' => '' ], null );
 		}
@@ -209,7 +213,7 @@ final class PasswordFactory {
 	 *
 	 * @return bool True if needs update, false otherwise
 	 */
-	public function needsUpdate( Password $password ) : bool {
+	public function needsUpdate( Password $password ): bool {
 		if ( $password->getType() !== $this->default ) {
 			return true;
 		} else {
@@ -223,10 +227,10 @@ final class PasswordFactory {
 	 * @param int $minLength Minimum length of password to generate
 	 * @return string
 	 */
-	public static function generateRandomPasswordString( int $minLength = 10 ) : string {
+	public static function generateRandomPasswordString( int $minLength = 10 ): string {
 		// Decide the final password length based on our min password length,
-		// stopping at a minimum of 10 chars.
-		$length = max( 10, $minLength );
+		// requiring at least a minimum of self::MIN_RANDOM_PASSWORD_LENGTH chars.
+		$length = max( self::MIN_RANDOM_PASSWORD_LENGTH, $minLength );
 		// Multiply by 1.25 to get the number of hex characters we need
 		// Generate random hex chars
 		$hex = MWCryptRand::generateHex( ceil( $length * 1.25 ) );
@@ -239,7 +243,7 @@ final class PasswordFactory {
 	 *
 	 * @return InvalidPassword
 	 */
-	public static function newInvalidPassword() : InvalidPassword {
+	public static function newInvalidPassword(): InvalidPassword {
 		static $password = null;
 
 		if ( $password === null ) {

@@ -114,6 +114,7 @@ class UploadDef extends TypeDef {
 		} else {
 			$constant = '';
 			foreach ( get_defined_constants() as $c => $v ) {
+				// @phan-suppress-next-line PhanTypeComparisonFromArray
 				if ( $v === $err && substr( $c, 0, 11 ) === 'UPLOAD_ERR_' ) {
 					$constant = " ($c?)";
 				}
@@ -122,7 +123,7 @@ class UploadDef extends TypeDef {
 		}
 	}
 
-	public function checkSettings( string $name, $settings, array $options, array $ret ) : array {
+	public function checkSettings( string $name, $settings, array $options, array $ret ): array {
 		$ret = parent::checkSettings( $name, $settings, $options, $ret );
 
 		if ( isset( $settings[ParamValidator::PARAM_DEFAULT] ) ) {

@@ -89,7 +89,7 @@ END;
 	//Once a hook exists, use it instead.
 	function onSpecialRecentChangesPanel(&$extraOpts, $opts){
 	  //print_r($extraOpts);
-	  //	  exit;
+	  //	  close();
 	  //print "\n\n\n";
 	  
 	  $namespaceString = $extraOpts['namespace'][1];
@@ -171,7 +171,7 @@ END;
 		$dbr =& wfGetDB( DB_REPLICA );
 		$result = $dbr->select("${egAnnokiTablePrefix}extranamespaces", "nsUser", array("nsId" => $nsId) );
 
-		$row = $dbr->fetchRow($result);
+		$row = $result->fetchRow();
 
 		if (!$row)
 			return null;

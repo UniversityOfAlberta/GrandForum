@@ -15,7 +15,7 @@ class ProductAPI extends RESTAPI {
             if($this->getParam('bibtex') != ""){
                 header('Content-Type: text/plain');
                 echo $paper->toBibTeX();
-                exit;
+                close();
             }
             if($this->getParam('file') != ""){
                 $file = $paper->getData($this->getParam('file'));
@@ -30,7 +30,7 @@ class ProductAPI extends RESTAPI {
                 else{
                     $this->throwError("The product <i>{$paper->getTitle()}</i> does not have a file by the id of {$this->getParam('file')}");
                 }
-                exit;
+                close();
             }
             return $paper->toJSON();
         }

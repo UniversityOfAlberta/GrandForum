@@ -7,6 +7,8 @@ namespace OOUI;
  * OO.ui.FormLayout.
  */
 class DropdownInputWidget extends InputWidget {
+	use RequiredElement;
+
 	/**
 	 * HTML `<option>` tags for this widget.
 	 * @var Tag[]
@@ -22,19 +24,26 @@ class DropdownInputWidget extends InputWidget {
 		// Parent constructor
 		parent::__construct( $config );
 
+		// Traits
+		$this->initializeRequiredElement(
+			array_merge( [ 'indicatorElement' => null ], $config )
+		);
+
 		// Initialization
 		$this->setOptions( $config['options'] ?? [] );
 		$this->addClasses( [ 'oo-ui-dropdownInputWidget', 'oo-ui-dropdownInputWidget-php' ] );
 		$this->input->addClasses( [ 'oo-ui-indicator-down' ] );
 	}
 
+	/** @inheritDoc */
 	protected function getInputElement( $config ) {
 		return new Tag( 'select' );
 	}
 
+	/** @inheritDoc */
 	public function setValue( $value ) {
 		$this->value = $this->cleanUpValue( $value );
-		foreach ( $this->options as &$opt ) {
+		foreach ( $this->options as $opt ) {
 			if ( $opt->getAttribute( 'value' ) === $this->value ) {
 				$opt->setAttributes( [ 'selected' => 'selected' ] );
 			} else {
@@ -68,21 +77,22 @@ class DropdownInputWidget extends InputWidget {
 	 */
 	public function setOptions( $options ) {
 		$value = $this->getValue();
-		$isValueAvailable = false;
+		$availableValue = null;
 		$this->options = [];
 		$container = $this->input;
 
 		// Rebuild the dropdown menu
 		$this->input->clearContent();
 		foreach ( $options as $opt ) {
-			if ( empty( $opt['optgroup'] ) ) {
+			if ( !isset( $opt['optgroup'] ) ) {
 				$optValue = $this->cleanUpValue( $opt['data'] );
 				$option = ( new Tag( 'option' ) )
 					->setAttributes( [ 'value' => $optValue ] )
 					->appendContent( $opt['label'] ?? $optValue );
 
-				if ( $value === $optValue ) {
-					$isValueAvailable = true;
+				// Prefer the previous value, if available, otherwise select the first one
+				if ( $value === $optValue || $availableValue === null ) {
+					$availableValue = $optValue;
 				}
 				$container->appendContent( $option );
 			} else {
@@ -93,7 +103,7 @@ class DropdownInputWidget extends InputWidget {
 			}
 			// Add disabled attribute if required (both the <option> and
 			// <optgroup> elements can be disabled).
-			if ( isset( $opt[ 'disabled' ] ) && $opt[ 'disabled' ] ) {
+			if ( $opt['disabled'] ?? false ) {
 				$option->setAttributes( [ 'disabled' => 'disabled' ] );
 			}
 
@@ -101,19 +111,14 @@ class DropdownInputWidget extends InputWidget {
 		}
 
 		// Restore the previous value, or reset to something sensible
-		if ( $isValueAvailable ) {
-			// Previous value is still available
-			$this->setValue( $value );
-		} else {
-			// No longer valid, reset
-			if ( count( $options ) ) {
-				$this->setValue( $options[0]['data'] );
-			}
+		if ( $availableValue !== null ) {
+			$this->setValue( $availableValue );
 		}
 
 		return $this;
 	}
 
+	/** @inheritDoc */
 	public function getConfig( &$config ) {
 		$optionsConfig = [];
 		foreach ( $this->options as $option ) {

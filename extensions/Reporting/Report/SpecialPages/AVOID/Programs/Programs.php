@@ -15,7 +15,7 @@ class Programs extends SpecialPage {
 	}
 	
 	function userCanExecute($user){
-	    return ($user->isLoggedIn());
+	    return ($user->isRegistered());
 	}
 	
 	static function getProgramsJSON(){

@@ -38,7 +38,7 @@ class PeopleTableTab extends AbstractTab {
         $this->past = $past;
         if(isset($_GET['getHTML']) && @$_GET['tab'] == $this->id){
             echo $this->getHTML();
-            exit;
+            close();
         }
     }
     

@@ -24,7 +24,7 @@ class SpecialEventRegistrationTable extends SpecialPage{
                     echo base64_decode($registration->misc->PDF);
                 }
             }
-            exit;
+            close();
         }
         else if(isset($_GET['doc'])){
             foreach($registrations as $registration){
@@ -33,7 +33,7 @@ class SpecialEventRegistrationTable extends SpecialPage{
                     echo base64_decode($registration->misc->DOC);
                 }
             }
-            exit;
+            close();
         }
         $wgOut->addHTML("<table id='eventsTable' class='wikitable' frame='box' rules='all' width='100%'>
             <thead>

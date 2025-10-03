@@ -61,7 +61,7 @@ class MilestonesLog extends SpecialPage{
 	        }
 	        header('Content-Type: application/json');
 	        echo json_encode(array("data" => $data));
-	        exit;
+	        close();
 	    }
 	    return true;
 	}

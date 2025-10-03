@@ -86,7 +86,7 @@ class PublicProjectClusterTab extends AbstractTab {
 	        
 	        header("Content-Type: application/json");
 	        echo json_encode($data);
-	        exit;
+	        close();
         }
         return true;
 	}

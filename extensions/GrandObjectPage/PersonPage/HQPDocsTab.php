@@ -91,7 +91,7 @@ class HQPDocsTab extends AbstractEditableTab {
         }
         DBFunctions::commit();
         header("Location: {$this->person->getUrl()}?tab=epic");
-        exit;
+        close();
     }
 }
 ?>

@@ -1,12 +1,15 @@
 <?php
+declare( strict_types = 1 );
 
 namespace Wikimedia\Parsoid\Mocks;
 
 use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\ErrorLogHandler;
 use Monolog\Logger;
-use Psr\Log\LoggerInterface;
 use Wikimedia\Parsoid\Config\SiteConfig;
+use Wikimedia\Parsoid\Config\StubMetadataCollector;
+use Wikimedia\Parsoid\Core\ContentMetadataCollector;
+use Wikimedia\Parsoid\DOM\Document;
 use Wikimedia\Parsoid\Utils\Utils;
 
 class MockSiteConfig extends SiteConfig {
@@ -39,7 +42,7 @@ class MockSiteConfig extends SiteConfig {
 		'category_talk' => 15,
 	];
 
-	/** @var array<int, bool> */
+	/** @var array<int,bool> */
 	protected $namespacesWithSubpages = [];
 
 	/** @var array */
@@ -51,15 +54,15 @@ class MockSiteConfig extends SiteConfig {
 	/** @var string|null */
 	private $linkPrefixRegex = null;
 
+	/** @var string|bool */
+	private $externalLinkTarget;
+
 	/**
 	 * @param array $opts
 	 */
 	public function __construct( array $opts ) {
 		parent::__construct();
 
-		if ( isset( $opts['rtTestMode'] ) ) {
-			$this->rtTestMode = !empty( $opts['rtTestMode'] );
-		}
 		if ( isset( $opts['linting'] ) ) {
 			$this->linterEnabled = $opts['linting'];
 		}
@@ -69,6 +72,7 @@ class MockSiteConfig extends SiteConfig {
 		$this->tidyWhitespaceBugMaxLength = $opts['tidyWhitespaceBugMaxLength'] ?? null;
 		$this->linkPrefixRegex = $opts['linkPrefixRegex'] ?? null;
 		$this->linkTrailRegex = $opts['linkTrailRegex'] ?? '/^([a-z]+)/sD'; // enwiki default
+		$this->externalLinkTarget = $opts['externallinktarget'] ?? false;
 
 		// Use Monolog's PHP console handler
 		$logger = new Logger( "Parsoid CLI" );
@@ -76,14 +80,6 @@ class MockSiteConfig extends SiteConfig {
 		$handler->setFormatter( new LineFormatter( '%message%' ) );
 		$logger->pushHandler( $handler );
 		$this->setLogger( $logger );
-	}
-
-	/**
-	 * Set the log channel, for debuggings
-	 * @param LoggerInterface|null $logger
-	 */
-	public function setLogger( ?LoggerInterface $logger ): void {
-		$this->logger = $logger;
 	}
 
 	public function tidyWhitespaceBugMaxLength(): int {
@@ -96,6 +92,32 @@ class MockSiteConfig extends SiteConfig {
 
 	public function baseURI(): string {
 		return '//my.wiki.example/wikix/';
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public function exportMetadataToHead(
+		Document $document,
+		ContentMetadataCollector $metadata,
+		string $defaultTitle,
+		string $lang
+	): void {
+		'@phan-var StubMetadataCollector $metadata'; // @var StubMetadataCollector $metadata
+		$moduleLoadURI = $this->server() . $this->scriptpath() . '/load.php';
+		// Look for a displaytitle.
+		$displayTitle = $metadata->getPageProperty( 'displaytitle' ) ??
+			// Use the default title, properly escaped
+			Utils::escapeHtml( $defaultTitle );
+		$this->exportMetadataHelper(
+			$document,
+			$moduleLoadURI,
+			$metadata->getModules(),
+			$metadata->getModuleStyles(),
+			$metadata->getJsConfigVars(),
+			$displayTitle,
+			$lang
+		);
 	}
 
 	public function redirectRegexp(): string {
@@ -150,7 +172,7 @@ class MockSiteConfig extends SiteConfig {
 
 	/** @inheritDoc */
 	public function specialPageLocalName( string $alias ): ?string {
-		throw new \BadMethodCallException( 'Not implemented' );
+		return null;
 	}
 
 	/**
@@ -172,7 +194,7 @@ class MockSiteConfig extends SiteConfig {
 		return 'mywiki';
 	}
 
-	public function legalTitleChars() : string {
+	public function legalTitleChars(): string {
 		return ' %!"$&\'()*,\-.\/0-9:;=?@A-Z\\\\^_`a-z~\x80-\xFF+';
 	}
 
@@ -181,6 +203,7 @@ class MockSiteConfig extends SiteConfig {
 	}
 
 	protected function linkTrail(): string {
+		// @phan-suppress-previous-line PhanPluginNeverReturnMethod
 		throw new \BadMethodCallException(
 			'Should not be used. linkTrailRegex() is overridden here.' );
 	}
@@ -262,17 +285,27 @@ class MockSiteConfig extends SiteConfig {
 	}
 
 	/** @inheritDoc */
-	protected function getFunctionHooks(): array {
-		return []; // None for now
+	protected function haveComputedFunctionSynonyms(): bool {
+		return false;
+	}
+
+	/** @inheritDoc */
+	protected function updateFunctionSynonym( string $func, string $magicword, bool $caseSensitive ): void {
+		/* Nothing for now. Look at src/Config/Api/SiteConfig when mocking is needed. */
 	}
 
 	/** @inheritDoc */
 	protected function getMagicWords(): array {
-		// make all magic words case-sensitive
-		return [ 'toc'           => [ 1, 'toc' ],
-			'img_thumbnail' => [ 1, 'thumb' ],
-			'img_none'      => [ 1, 'none' ],
-			'__notoc__'     => [ 1, '__notoc__' ]
+		return [
+			'toc'             => [ 0, '__TOC__' ],
+			'img_thumbnail'   => [ 1, 'thumb' ],
+			'img_framed'      => [ 1, 'frame', 'framed' ],
+			'img_frameless'   => [ 1, 'frameless' ],
+			'img_manualthumb' => [ 1, 'thumbnail=$1', 'thumb=$1' ],
+			'img_none'        => [ 1, 'none' ],
+			'notoc'           => [ 0, '__NOTOC__' ],
+			'timedmedia_loop' => [ 0, 'loop' ],
+			'timedmedia_muted' => [ 0, 'muted' ],
 		];
 	}
 
@@ -303,7 +336,7 @@ class MockSiteConfig extends SiteConfig {
 			'img_class' => "/^(?:(?:class\=(.*?)))$/uS"
 		];
 		$regexes = array_intersect_key( $paramMWs, array_flip( $words ) );
-		return function ( $text ) use ( $regexes ) {
+		return static function ( $text ) use ( $regexes ) {
 			/**
 			 * $name is the canonical magic word name
 			 * $re has patterns for matching aliases
@@ -335,7 +368,6 @@ class MockSiteConfig extends SiteConfig {
 			'hiero' => true,
 			'charinsert' => true,
 			'inputbox' => true,
-			'imagemap' => true,
 			'source' => true,
 			'syntaxhighlight' => true,
 			'section' => true,
@@ -381,7 +413,7 @@ class MockSiteConfig extends SiteConfig {
 
 	/**
 	 * Set the fake timestamp for testing
-	 * @param int|null $ts Unix timestamp
+	 * @param ?int $ts Unix timestamp
 	 */
 	public function setFakeTimestamp( ?int $ts ): void {
 		$this->fakeTimestamp = $ts;
@@ -397,5 +429,19 @@ class MockSiteConfig extends SiteConfig {
 
 	public function scrubBidiChars(): bool {
 		return true;
+	}
+
+	/** @inheritDoc */
+	public function getNoFollowConfig(): array {
+		return [
+			'nofollow' => true,
+			'nsexceptions' => [ 1 ],
+			'domainexceptions' => [ 'www.example.com' ]
+		];
+	}
+
+	/** @inheritDoc */
+	public function getExternalLinkTarget() {
+		return $this->externalLinkTarget;
 	}
 }

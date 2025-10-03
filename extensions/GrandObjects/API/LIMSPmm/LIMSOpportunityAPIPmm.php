@@ -14,7 +14,7 @@ class LIMSOpportunityAPIPmm extends RESTAPI {
                     header('Content-Disposition: attachment; filename="'.$file['filename'].'"');
                     $exploded = explode("base64,", $file['data']);
                     echo base64_decode(@$exploded[1]);
-                    exit;
+                    close();
                 }
             }
             return $opportunity->toJSON();

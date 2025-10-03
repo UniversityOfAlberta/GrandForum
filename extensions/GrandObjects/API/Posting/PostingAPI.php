@@ -32,12 +32,12 @@ abstract class PostingAPI extends RESTAPI {
                 header('Last-Modified: '.gmdate(DATE_RFC1123, mktime(0, 0, 0, 1, 1, 2000)));
                 if(isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) && $this->getParam('md5') == $posting->getImageMD5($image_id)){
                     header('HTTP/1.1 304 Not Modified');
-                    exit;
+                    close();
                 }
                 $img = $posting->getImage($image_id);
                 $exploded = explode("base64,", $img);
                 echo base64_decode(@$exploded[1]);
-                exit;
+                close();
             }
             return $posting->toJSON();
         }

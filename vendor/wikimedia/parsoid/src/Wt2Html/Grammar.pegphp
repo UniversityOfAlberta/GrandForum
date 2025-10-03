@@ -5,10 +5,11 @@
  * used where further processing on the token stream is needed.
  */
 {
+	use Wikimedia\Assert\UnreachableException;
 	use Wikimedia\Parsoid\Config\Env;
 	use Wikimedia\Parsoid\Config\SiteConfig;
-	use Wikimedia\Parsoid\Config\WikitextConstants;
 	use Wikimedia\Parsoid\Core\DomSourceRange;
+	use Wikimedia\Parsoid\NodeData\DataParsoid;
 	use Wikimedia\Parsoid\Tokens\CommentTk;
 	use Wikimedia\Parsoid\Tokens\EndTagTk;
 	use Wikimedia\Parsoid\Tokens\EOFTk;
@@ -23,6 +24,7 @@
 	use Wikimedia\Parsoid\Utils\Utils;
 	use Wikimedia\Parsoid\Utils\PHPUtils;
 	use Wikimedia\Parsoid\Utils\WTUtils;
+	use Wikimedia\Parsoid\Wikitext\Consts;
 }
 {
 	/** @var Env */
@@ -39,14 +41,35 @@
 
 	private $extTags;
 
+	private $startTime;
+
+	/** @var string */
+	private $reUrltextLookahead;
+
+	/** @var string */
+	private $urltextPlainSegment = '';
+
+	/** @var bool */
+	private $urltextFoundAutolink = false;
+
 	protected function initialize() {
 		$this->env = $this->options['env'];
 		$this->siteConfig = $this->env->getSiteConfig();
 
 		$tokenizer = $this->options['pegTokenizer'];
 		$this->pipelineOpts = $tokenizer->getOptions();
+		// FIXME: inTemplate option may not always be set in
+		// standalone tokenizers user by some pipelines handlers.
 		$this->pipelineOffset = $this->options['pipelineOffset'] ?? 0;
 		$this->extTags = $this->siteConfig->getExtensionTagNameMap();
+
+		// Non-greedy text_char sequence: stop at ampersand, double-underscore,
+		 // magic link prefix or protocol
+		$this->reUrltextLookahead = '!(?:' .
+			'([^-\'<[{\n\r:;\]}|\!=&]*?)' .
+			'(?:__|$|[-\'<[{\n\r:;\]}|\!=&]|(RFC|PMID|ISBN|' .
+			'(?i)' . $this->siteConfig->getProtocolsRegex( true ) .
+			')))!A';
 	}
 
 	private $prevOffset = 0;
@@ -59,7 +82,7 @@
 	}
 
 	private function unreachable() {
-		throw new \Exception( "Grammar.pegphp: this should be unreachable" );
+		throw new UnreachableException( "Grammar.pegphp: this should be unreachable" );
 	}
 
 	// Some shorthands for legibility
@@ -73,13 +96,13 @@
 
 	private function tsrOffsets( $flag = 'default' ): SourceRange {
 		switch ( $flag ) {
-            case 'start':
-                return new SourceRange( $this->savedPos, $this->savedPos );
-            case 'end':
-                return new SourceRange( $this->currPos, $this->currPos );
-            default:
-                return new SourceRange( $this->savedPos, $this->currPos );
-        }
+			case 'start':
+				return new SourceRange( $this->savedPos, $this->savedPos );
+			case 'end':
+				return new SourceRange( $this->currPos, $this->currPos );
+			default:
+				return new SourceRange( $this->savedPos, $this->currPos );
+		}
 	}
 
 	/*
@@ -87,6 +110,13 @@
 	 * current expression can return an empty list (true).
 	 */
 	private function emitChunk( $tokens ) {
+		// FIXME: We don't expect nulls here, but looks like
+		// hack from I1c695ab6cdd3655e98877c175ddbabdee9dc44b7
+		// introduces them. Work around it for now!
+		if ( !$tokens ) {
+			return [];
+		}
+
 		// Shift tsr of all tokens by the pipeline offset
 		TokenUtils::shiftTokenTSR( $tokens, $this->pipelineOffset );
 		$this->env->log( 'trace/peg', $this->options['pipelineId'] ?? '0', '---->   ', $tokens );
@@ -123,23 +153,59 @@
 	private function isXMLTag( string $name, bool $block ): bool {
 		$lName = mb_strtolower( $name );
 		return $block ?
-			TokenUtils::isBlockTag( $lName ) :
-			isset( WikitextConstants::$HTML['HTML5Tags'][$lName] )
-			|| isset( WikitextConstants::$HTML['OlderHTMLTags'][$lName] );
+			TokenUtils::isWikitextBlockTag( $lName ) :
+			isset( Consts::$HTML['HTML5Tags'][$lName] )
+			|| isset( Consts::$HTML['OlderHTMLTags'][$lName] );
 	}
 
-	private function isExtTag( string $name ): bool {
-		$lName = mb_strtolower( $name );
-		$isInstalledExt = isset( $this->extTags[$lName] );
-		$isIncludeTag = TokenizerUtils::isIncludeTag( $lName );
-		return $isInstalledExt || $isIncludeTag;
-	}
-
-	private function maybeExtensionTag( Token $t ) {
+	private function maybeAnnotationOrExtensionTag( Token $t, ?bool $end, array $attribs, SourceRange $tsr ) {
 		$tagName = mb_strtolower( $t->getName() );
 
+		$isAnnotationTag = $this->siteConfig->isAnnotationTag( $tagName );
+		if ( !$isAnnotationTag ) {
+			$pipepos = strpos( $tagName, '|' );
+			if ( $pipepos ) {
+				$strBeforePipe = substr( $tagName, 0, $pipepos );
+				$isAnnotationTag = $this->siteConfig->isAnnotationTag( $strBeforePipe );
+				if ( $isAnnotationTag ) {
+					$attribs = [ new KV( "name", substr( $tagName, $pipepos + 1, strlen( $tagName ) - $pipepos - 1 ) ) ];
+					$tagName = $strBeforePipe;
+				}
+			}
+		}
+
+		if ( $isAnnotationTag ) {
+			$metaAttrs = [ new KV( 'typeof', 'mw:Annotation/' . $tagName . ($end ? '/End' : '') ) ];
+			if ( count( $attribs ) > 0 ) {
+				$attrMap = [];
+				foreach ( $attribs as $attr ) {
+					// If the key or the value is not a string, we replace it by the thing that generated it and
+					// consider that wikitext as a raw string instead.
+					$k = is_string( $attr->k ) ? $attr->k : $attr->ksrc;
+					$v = is_string( $attr->v ) ? $attr->v : $attr->vsrc;
+					$attrMap[$k] = $v;
+				}
+				$datamw = [];
+				// Possible follow-up in T295168 for attribute sanitation
+				$datamw['attrs'] = $attrMap;
+				array_push( $metaAttrs, new KV( 'data-mw', PHPUtils::jsonEncode( $datamw ) ) );
+			}
+			$dp = new DataParsoid();
+			$dp->tsr = $tsr;
+			$this->env->hasAnnotations = true;
+			// FIXME: Suppress annotation meta tokens from template pipelines
+			// since they may not have TSR values and won't get recognized as
+			// annotation ranges. Without TSR, they might end up stuck in
+			// fosterable positions and cause havoc on edits by breaking selser.
+			if ( empty( $this->pipelineOpts['inTemplate'] ) ) {
+				return [ new SelfclosingTagTk ( 'meta', $metaAttrs, $dp ) ];
+			} else {
+				return [];
+			}
+		}
+
 		$isInstalledExt = isset( $this->extTags[$tagName] );
-		$isIncludeTag = TokenizerUtils::isIncludeTag( $tagName );
+		$isIncludeTag = WTUtils::isIncludeTag( $tagName );
 
 		// Extensions have higher precedence when they shadow html tags.
 		if ( !( $isInstalledExt || $isIncludeTag ) ) {
@@ -173,7 +239,7 @@
 				break;
 
 			case TagTk::class:
-				$endTagRE = '~.*?(</\s*' . preg_quote( $tagName, '~' ) . '\s*>)~iusA';
+				$endTagRE = '~.*?(</' . preg_quote( $tagName, '~' ) . '\s*>)~iusA';
 				$tagContentFound = preg_match( $endTagRE, $this->input, $tagContent, 0, $dp->tsr->start );
 
 				if ( !$tagContentFound ) {
@@ -226,7 +292,7 @@
 					//
 					// Expand `extSrc` as long as there is a <tagName> found in the
 					// extension source body.
-					$startTagRE = '~<' . preg_quote( $tagName, '~' ) . '[^/<>]*>~i';
+					$startTagRE = '~<' . preg_quote( $tagName, '~' ) . '([^/>]|/(?!>))*>~i';
 					$s = substr( $extSrc, $dp->tsr->end - $dp->tsr->start );
 					while ( strlen( $s ) ) {
 						if ( !preg_match( $startTagRE, $s ) ) {
@@ -331,14 +397,14 @@ redirect =
 			$rw .= $c;
 		}
 		// Build a redirect token
+		$dp = new DataParsoid;
+		$dp->src = $rw;
+		$dp->tsr = $this->tsrOffsets();
+		$dp->linkTk = $link;
 		$redirect = new SelfclosingTagTk( 'mw:redirect',
 			// Put 'href' into attributes so it gets template-expanded
 			[ $link->getAttributeKV( 'href' ) ],
-			(object)[
-				'src' => $rw,
-				'tsr' => $this->tsrOffsets(),
-				'linkTk' => $link
-			]
+			$dp
 		);
 		return $redirect;
 	}
@@ -368,7 +434,25 @@ redirect_word =
  */
 start_async =
 	(
-		tlb
+		(
+			& {
+				$this->startTime = null;
+				if ( $this->env->profiling() ) {
+					$profile = $this->env->getCurrentProfile();
+					$this->startTime = microtime( true );
+				}
+				return true;
+			}
+			t:tlb
+			& {
+				if ( $this->env->profiling() ) {
+					$profile = $this->env->getCurrentProfile();
+					$profile->bumpTimeUse(
+						'PEG', 1000 * ( microtime( true ) - $this->startTime ), 'PEG' );
+				}
+				return true;
+			}
+		) { return $t; }
 		/ newlineToken* &{
 			// "tlb" matches "block" matches "sol" matches "newlineToken"
 			// But, "tlb" is prefixed with a !eof clause, so, we should only
@@ -409,7 +493,7 @@ tlb "tlb" =
  */
 block =
 	// has to be first alternative; otherwise gets parsed as a <ol>
-	&sof r:redirect cil:comment_or_includes bl:block_line? {
+	&sof r:redirect cil:comment_include_annotation* bl:block_line? {
 		return array_merge( [ $r ], $cil, $bl ?: [] );
 	}
 	/ block_lines
@@ -466,7 +550,8 @@ hr =
 	"----" d:$"-"*
 	// Check if a newline or content follows
 	lineContent:( &sol "" { return null; } / "" { return true; } ) {
-		$dataAttribs = (object)[ 'tsr' => $this->tsrOffsets() ];
+		$dataAttribs = new DataParsoid;
+		$dataAttribs->tsr = $this->tsrOffsets();
 		if ( $lineContent !== null ) {
 			$dataAttribs->lineContent = $lineContent;
 		}
@@ -505,18 +590,20 @@ paragraph =
 
 br =
 	s:optionalSpaceToken &newline {
+		$dp = new DataParsoid;
+		$dp->tsr = $this->tsrOffsets();
 		return array_merge( $s, [
-			new SelfclosingTagTk( 'br', [], (object)[ 'tsr' => $this->tsrOffsets() ] )
+			new SelfclosingTagTk( 'br', [], $dp )
 		] );
 	}
 
 inline_breaks =
 	& [=|!{}:;\r\n[\]\-]
 	(
-		extTag: <extTag>
+		annOrExtTag: <annOrExtTag>
 		h: <h>
 		extlink: <extlink>
-		templatedepth: <templatedepth>
+		intemplate: <intemplate>
 		preproc: <preproc>
 		equal: <equal>
 		table: <table>
@@ -529,10 +616,10 @@ inline_breaks =
 		th: <th>
 		& {
 			return TokenizerUtils::inlineBreaks( $this->input, $this->endOffset(), [
-				'extTag' => $extTag,
+				'annOrExtTag' => $annOrExtTag,
 				'h' => $h,
 				'extlink' => $extlink,
-				'templatedepth' => $templatedepth,
+				'intemplate' => $intemplate,
 				'preproc' => $preproc,
 				'equal' => $equal,
 				'table' => $table,
@@ -543,7 +630,7 @@ inline_breaks =
 				'linkdesc' => $linkdesc,
 				'colon' => $colon,
 				'th' => $th
-			] );
+			], $this->env );
 		}
 	)
 
@@ -560,7 +647,7 @@ inline_element =
 	& '<' r:( xmlish_tag / comment ) { return $r; }
 	/ & '{' r:tplarg_or_template { return $r; }
 	/ & "-{" r:lang_variant_or_tpl { return $r; }
-	// FIXME: The old parser's replaceInternalLinks2 splits on [[, resulting
+	// FIXME: The old parser's handleInternalLinks2 splits on [[, resulting
 	// in sequences with odd number of brackets parsing as text, and sequences
 	// with even number of brackets having its innermost pair parse as a
 	// wikilink.  For now, we faithfully reproduce what's found there but
@@ -583,7 +670,7 @@ heading =
 		)?
 		& { return $ce || strlen( $s ) > 2; }
 		endTPos:("" { return $this->endOffset(); })
-		spc:(spaces / comment)*
+		spc:( space / comment_include_annotation )*
 		&eolf
 		{
 			$c = null;
@@ -620,27 +707,25 @@ heading =
 				}
 			}
 
-			$tsr = $this->tsrOffsets( 'start' );
-			$tsr->end += $level;
+			$tagDP = new DataParsoid;
+			$tagDP->tsr = $this->tsrOffsets( 'start' );
+			$tagDP->tsr->end += $level;
 			// Match the old parser's behavior by (a) making headingIndex part of tokenizer
 			// state(don't reuse pipeline!) and (b) assigning the index when
 			// ==*== is tokenized, even if we're inside a template argument
 			// or other context which won't end up putting the heading
 			// on the output page.  T213468/T214538
 			$this->headingIndex++;
-			return array_merge(
-				[ new TagTk( 'h' . $level, [], (object)[
-					'tsr' => $tsr,
-					'tmp' => (object)[ 'headingIndex' => $this->headingIndex ]
-				] ) ],
-				$c,
-				[
-					new EndTagTk( 'h' . $level, [], (object)[
-						'tsr' => new SourceRange( $endTPos - $level, $endTPos ),
-					] ),
-					$spc
-				]
-			);
+			$tagDP->getTemp()->headingIndex = $this->headingIndex;
+			$res = [ new TagTk( 'h' . $level, [], $tagDP ) ];
+
+			PHPUtils::pushArray( $res, $c );
+
+			$endTagDP = new DataParsoid;
+			$endTagDP->tsr = new SourceRange( $endTPos - $level, $endTPos );
+			$res[] = new EndTagTk( 'h' . $level, [], $endTagDP );
+			$res[] = $spc;
+			return $res;
 		}
 	) { return $r; }
 
@@ -660,7 +745,9 @@ comment =
 		// WARNING(T279451): This encoding is important for the choice of key
 		// in WTUtils::fosterCommentData
 		$data = WTUtils::encodeComment( $c );
-		return [ new CommentTk( $data, (object)[ 'tsr' => $this->tsrOffsets() ] ) ];
+		$dp = new DataParsoid;
+		$dp->tsr = $this->tsrOffsets();
+		return [ new CommentTk( $data, $dp ) ];
 	}
 
 
@@ -669,10 +756,12 @@ comment =
 behavior_switch =
 	bs:$('__' behavior_text '__') {
 		if ( $this->siteConfig->isMagicWord( $bs ) ) {
+			$dp = new DataParsoid;
+			$dp->tsr = $this->tsrOffsets();
+			$dp->src = $bs;
+			$dp->magicSrc = $bs;
 			return [
-				new SelfclosingTagTk( 'behavior-switch', [ new KV( 'word', $bs ) ],
-					(object)[ 'tsr' => $this->tsrOffsets(), 'src' => $bs, 'magicSrc' => $bs ]
-				)
+				new SelfclosingTagTk( 'behavior-switch', [ new KV( 'word', $bs ) ], $dp )
 			];
 		} else {
 			return [ $bs ];
@@ -726,15 +815,18 @@ extlink "extlink" =
 		"]" {
 			$tsr1 = new SourceRange( $p0, $p1 );
 			$tsr2 = new SourceRange( $p2, $p3 );
+			$dp = new DataParsoid;
+			$dp->tsr = $this->tsrOffsets();
+			$dp->extLinkContentOffsets = $tsr2;
 			return [
-				new SelfclosingTagTk( 'extlink', [
+				new SelfclosingTagTk(
+					'extlink',
+					[
 						new KV( 'href', TokenizerUtils::flattenString( [ $addr, $target ] ), $tsr1->expandTsrV() ),
 						new KV( 'mw:content', $content ?? '', $tsr2->expandTsrV() ),
 						new KV( 'spaces', $sp )
-					], (object)[
-						'tsr' => $this->tsrOffsets(),
-						'extLinkContentOffsets' => $tsr2,
-					]
+					],
+					$dp
 				)
 			]; }
 	) { return $r; }
@@ -747,13 +839,16 @@ autoref =
 			'PMID' => '//www.ncbi.nlm.nih.gov/pubmed/%s?dopt=Abstract'
 		];
 		$tsr = $this->tsrOffsets();
+		$dp = new DataParsoid;
+		$dp->tsr = $tsr;
+		$dp->stx = 'magiclink';
 		return [
 			new SelfclosingTagTk( 'extlink', [
 					new KV( 'href', sprintf( $base_urls[ $ref ], $identifier ) ),
 					new KV( 'mw:content', TokenizerUtils::flattenString( [ $ref, $sp, $identifier ] ), $tsr->expandTsrV() ),
 					new KV( 'typeof', 'mw:ExtLink/' . $ref )
 				],
-				(object)[ 'stx' => 'magiclink', 'tsr' => $tsr ]
+				$dp
 			)
 		];
 	}
@@ -784,13 +879,16 @@ isbn =
 	}
 	{
 		$tsr = $this->tsrOffsets();
+		$dp = new DataParsoid;
+		$dp->stx = 'magiclink';
+		$dp->tsr = $tsr;
 		return [
 			new SelfclosingTagTk( 'extlink', [
 					new KV( 'href', 'Special:BookSources/' . $isbncode ),
 					new KV( 'mw:content', TokenizerUtils::flattenString( [ 'ISBN', $sp, $isbn ] ), $tsr->expandTsrV() ),
 					new KV( 'typeof', 'mw:WikiLink/ISBN' )
 				],
-				(object)[ 'stx' => 'magiclink', 'tsr' => $tsr ]
+				$dp
 			)
 		];
 	}
@@ -864,10 +962,7 @@ autourl =
 			$last = PHPUtils::lastItem( $url );
 			$trim = 0;
 			if ( is_string( $last ) ) {
-				$strip = ',;\.:!?';
-				if ( array_search( '(', $path ) === false ) {
-					$strip .= ')';
-				}
+				$strip = TokenizerUtils::getAutoUrlTerminatingChars( in_array( '(', $path, true ) );
 				$trim = strspn( strrev( $last ), $strip );
 				$url[ count( $url ) - 1 ] = substr( $last, 0, strlen( $last ) - $trim );
 			}
@@ -882,7 +977,9 @@ autourl =
 	&{ return $r !== null; }
 	{
 		$tsr = $this->tsrOffsets();
-		$res = [ new SelfclosingTagTk( 'urllink', [ new KV( 'href', $r, $tsr->expandTsrV() ) ], (object)[ 'tsr' => $tsr ] ) ];
+		$dp = new DataParsoid;
+		$dp->tsr = $tsr;
+		$res = [ new SelfclosingTagTk( 'urllink', [ new KV( 'href', $r, $tsr->expandTsrV() ) ], $dp ) ];
 		return $res;
 	}
 
@@ -909,15 +1006,7 @@ ipv6urladdr =
  */
 tplarg_or_template =
 	&'{{'
-	templatedepth:<templatedepth>
-	&{
-		// Refuse to recurse beyond `maxDepth` levels. Default in the old parser
-		// is $wgMaxTemplateDepth = 40; This is to prevent crashing from
-		// buggy wikitext with lots of unclosed template calls, as in
-		// eswiki/Usuario:C%C3%A1rdenas/PRUEBAS?oldid=651094
-		return $templatedepth + 1 < $this->siteConfig->getMaxTemplateDepth();
-	}
-	t:tplarg_or_template_guarded<templatedepth++> {
+	t:tplarg_or_template_guarded<intemplate=true> {
 		return $t;
 	}
 
@@ -996,11 +1085,13 @@ template_preproc =
 		// generically expanded. The TemplateHandler then needs to shift it out
 		// again.
 		array_unshift( $params, new KV( TokenizerUtils::flattenIfArray( $target['tokens'] ), '', $target['srcOffsets']->expandTsrK() ) );
-		$obj = new SelfclosingTagTk( 'template', $params,
-			(object)[
-				'tsr' => $this->tsrOffsets(), 'src' => $this->text(),
-				'tmp' => (object)[ 'leadWS' => $leadWS, 'trailWS' => $trailWS ]
-			] );
+		$dp = new DataParsoid;
+		$dp->tsr = $this->tsrOffsets();
+		$dp->src = $this->text();
+		$tmp = $dp->getTemp();
+		$tmp->leadWS = $leadWS;
+		$tmp->trailWS = $trailWS;
+		$obj = new SelfclosingTagTk( 'template', $params, $dp );
 		return $obj;
 	}
 	/ $('{{' space_or_newline* '}}')
@@ -1044,7 +1135,10 @@ tplarg_preproc =
 			$kvs[] = new KV( '', TokenizerUtils::flattenIfArray( $o['tokens'] ), $s->expandTsrV() );
 		}
 
-		$obj = new SelfclosingTagTk( 'templatearg', $kvs, (object)[ 'tsr' => $this->tsrOffsets(), 'src' => $this->text() ] );
+		$dp = new DataParsoid;
+		$dp->tsr = $this->tsrOffsets();
+		$dp->src = $this->text();
+		$obj = new SelfclosingTagTk( 'templatearg', $kvs, $dp );
 		return $obj;
 	}
 
@@ -1052,15 +1146,15 @@ template_param =
 	name:template_param_name
 	val:(
 		kEndPos:("" { return $this->endOffset(); })
-		optionalSpaceToken
+		// no optionalSpaceToken here, it's eaten by template_param_name
 		"="
 		vStartPos:("" { return $this->endOffset(); })
-		optionalSpaceToken
+		optSp:optionalSpaceToken
 		tpv:template_param_value? {
 			return [
 				'kEndPos' => $kEndPos,
 				'vStartPos' => $vStartPos,
-				'value' => $tpv ? $tpv['tokens'] : []
+				'value' => TokenizerUtils::flattenString( [ $optSp, $tpv['tokens'] ?? [] ] ),
 			];
 		}
 	)? {
@@ -1140,7 +1234,8 @@ broken_lang_variant =
 	}
 
 lang_variant =
-	lang_variant_preproc<&preproc="}-">
+	// FIXME: Maybe this should suppress "table" and "tableCellArg" like 'template_param_text' d too
+	lang_variant_preproc<&preproc="}-", extlink=false>
 	/ broken_lang_variant
 
 lang_variant_preproc =
@@ -1199,19 +1294,20 @@ lang_variant_preproc =
 		$variants = isset( $f['variants'] ) ? array_keys( $f['variants'] ) : [];
 		sort( $variants );
 
+		$dp = new DataParsoid;
+		$dp->tsr = new SourceRange( $lv0, $lv1 );
+		$dp->src = $lvsrc;
+		$dp->flags = $flags;
+		$dp->variants = $variants;
+		$dp->original = $f['original'];
+		$dp->flagSp = $f['sp'];
+		$dp->texts = $ts;
+
 		return [
 			new SelfclosingTagTk(
 				'language-variant',
 				$attribs,
-				(object)[
-					'tsr' => new SourceRange( $lv0, $lv1 ),
-					'src' => $lvsrc,
-					'flags' => $flags,
-					'variants' => $variants,
-					'original' => $f['original'],
-					'flagSp' => $f['sp'],
-					'texts' => $ts
-				]
+				$dp
 			)
 		];
 	}
@@ -1456,10 +1552,10 @@ wikilink_preproc =
 		// obj.source = input;
 		$obj->attribs[] = $hrefKV;
 		$obj->attribs = array_merge( $obj->attribs, $lcs );
-		$obj->dataAttribs = (object)[
-			'tsr' => $this->tsrOffsets(),
-			'src' => $this->text()
-		];
+		$dp = new DataParsoid;
+		$dp->tsr = $this->tsrOffsets();
+		$dp->src = $this->text();
+		$obj->dataAttribs = $dp;
 		return [ $obj ];
 	}
 
@@ -1471,7 +1567,7 @@ link_text_parameterized =
 	c:(
 		// This group is similar to "block_line" but "list_item"
 		// is omitted since `doBlockLevels` happens after
-		// `replaceInternalLinks2`, where newlines are stripped.
+		// `handleInternalLinks2`, where newlines are stripped.
 		(sol (heading / hr / full_table_in_link_caption))
 		/ urltext
 		/ (
@@ -1506,9 +1602,11 @@ quote =
 		// mw-quote token will be consumed in token transforms
 		$tsr = $this->tsrOffsets();
 		$tsr->start += $plainticks;
+		$dp = new DataParsoid;
+		$dp->tsr = $tsr;
 		$mwq = new SelfclosingTagTk( 'mw-quote',
 			[ new KV( 'value', substr( $quotes, $plainticks ) ) ],
-			(object)[ 'tsr' => $tsr ] );
+			$dp );
 		if ( strlen( $quotes ) > 2 ) {
 			$mwq->addAttribute( 'isSpace_1', $tsr->start > 0 && substr( $this->input, $tsr->start - 1, 1 ) === ' ');
 			$mwq->addAttribute( 'isSpace_2', $tsr->start > 1 && substr( $this->input, $tsr->start - 2, 1 ) === ' ');
@@ -1522,15 +1620,37 @@ quote =
  * Pre and xmlish tags
  ***********************************************************/
 
-extension_tag =
-	!<extTag>
+// FIXME: Temporary (?) hack to let us not horribly break on old tvar syntax
+// In coordination with language team, get rid of this hack once all old uses
+// are migrated to new syntax (T274881).
+tvar_old_syntax_closing_HACK =
+	"/>"
+	& { return $this->env->hasAnnotations && $this->siteConfig->isAnnotationTag( 'tvar' ); }
+	{
+		$metaAttrs = [ new KV( 'typeof', 'mw:Annotation/tvar/End' ) ];
+		$dp = new DataParsoid();
+		$dp->tsr = $this->tsrOffsets();
+		$dp->tsr->start--; // For "<" matched at the start of xmlish_tag rule
+		return [ new SelfclosingTagTk ( 'meta', $metaAttrs, $dp ) ];
+	}
+
+annotation_tag =
+	annToken:extension_annotation_tag
+	&{
+		return ( $annToken instanceof Token && $annToken->getName() !== 'extension' );
+	}
+	{ return $annToken; }
+
+extension_annotation_tag =
+	!<annOrExtTag>
 	extToken:xmlish_tag
-	// Account for `maybeExtensionTag` returning unmatched start / end tags
-	&{ return $extToken[0]->getName() === 'extension'; }
-	{ return $extToken[0]; }
+	// Account for `maybeAnnotationOrExtensionTag` returning unmatched start / end tags
+	&{ return !$extToken || $extToken[0]->getName() === 'extension' ||
+		($extToken[0]->getName() === 'meta' && preg_match( WTUtils::ANNOTATION_META_TYPE_REGEXP, $extToken[0]->getAttribute( 'typeof' ) ) > 0); }
+	{ return !$extToken ? '' : $extToken[0]; }
 
 nowiki =
-	extToken:extension_tag
+	extToken:extension_annotation_tag
 	&{ return $extToken->getAttribute( 'name' ) === 'nowiki'; }
 	{ return $extToken; }
 
@@ -1550,10 +1670,11 @@ nowiki_text =
  * parsed as regular inline, but the source positions of the tag are added
  * to allow reconstructing the unparsed text from the input. */
 
-// See http://www.w3.org/TR/html5/syntax.html#tag-open-state and
-// following paragraphs.
-tag_name_chars = [^\t\n\v />\0]
-tag_name = $([A-Za-z] tag_name_chars*)
+// See http://www.w3.org/TR/html5/syntax.html#tag-open-state and the following
+// paragraphs.  Note that we don't enforce ascii alpha for the first character
+// here because we need to be more permissive for extension tag names.  That
+// happens in xmlish_tag_opened below.
+tag_name = $[^\t\n\v />\0]+
 
 // This rule is used in carefully crafted places of xmlish tag tokenizing with
 // the inclusion of solidus to match where the spec would ignore those
@@ -1562,19 +1683,22 @@ tag_name = $([A-Za-z] tag_name_chars*)
 space_or_newline_or_solidus = space_or_newline / (s:"/" !">" { return $s; })
 
 xmlish_tag =
-	"<" tag:(xmlish_tag_opened<isBlock=false, extTag> / xmlish_tag_opened<isBlock=false, extTag=false>)
+	"<" tag:(xmlish_tag_opened<isBlock=false, annOrExtTag> / xmlish_tag_opened<isBlock=false, annOrExtTag=false> / tvar_old_syntax_closing_HACK )
 	{ return $tag; }
 
 xmlish_tag_opened =
 	end:"/"?
 	name: tag_name
-	extTag: <extTag>
+	annOrExtTag: <annOrExtTag>
 	isBlock: <isBlock>
 	& {
-		if ( $extTag ) {
-			return $this->isExtTag( $name );
+		if ( $annOrExtTag ) {
+			return WTUtils::isAnnOrExtTag( $this->env, $name );
 		} else {
-			return $this->isXMLTag( $name, $isBlock );
+			// Only enforce ascii alpha first char for non-extension tags.
+			// See tag_name above for the details.
+			return preg_match( '/^[A-Za-z]/', $name ) &&
+				$this->isXMLTag( $name, $isBlock );
 		}
 	}
 	// By the time we get to `doTableStuff` in the old parser, we've already
@@ -1589,7 +1713,7 @@ xmlish_tag_opened =
 
 		// Extension tags don't necessarily have the same semantics as html tags,
 		// so don't treat them as void elements.
-		$isVoidElt = Utils::isVoidElement( $lcName ) && !$extTag;
+		$isVoidElt = Utils::isVoidElement( $lcName ) && !$annOrExtTag;
 
 		// Support </br>
 		if ( $lcName === 'br' && $end ) {
@@ -1607,8 +1731,8 @@ xmlish_tag_opened =
 			$res->dataAttribs->noClose = true;
 		}
 
-		$met = $this->maybeExtensionTag( $res );
-		return ( is_array( $met ) ) ? $met : [ $met ];
+		$met = $this->maybeAnnotationOrExtensionTag( $res, $end, $attribs, $tsr );
+		return is_array( $met ) ? $met : [ $met ];
 	}
 
 /*
@@ -1618,7 +1742,7 @@ xmlish_tag_opened =
  * following paragraphs.
  */
 block_tag =
-	"<" tag:(xmlish_tag_opened<isBlock, extTag> / xmlish_tag_opened<isBlock, extTag=false>)
+	"<" tag:(xmlish_tag_opened<isBlock, annOrExtTag> / xmlish_tag_opened<isBlock, annOrExtTag=false>)
 	{ return $tag; }
 
 // A generic attribute that can span multiple lines.
@@ -1681,7 +1805,7 @@ table_attribute =
 // exception, since they're stripped beforehand.
 less_than =
 	$(
-		&<extTag>
+		&<annOrExtTag>
 		"<"
 	)
 
@@ -1722,7 +1846,7 @@ table_attribute_name =
 		t:(
 			$wikilink
 			/ directive
-			// Accept insane tags-inside-attributes as attribute names.
+			// Accept tags-inside-attributes as attribute names.
 			// The sanitizer will strip and shadow them for roundtripping.
 			// Example: <hiddentext>generated with.. </hiddentext>
 			/ &xmlish_tag ill:inlineline { return $ill; }
@@ -1777,7 +1901,9 @@ li =
 		// Leave bullets as an array -- list handler expects this
 		$tsr = $this->tsrOffsets( 'start' );
 		$tsr->end += count( $bullets );
-		$li = new TagTk( 'listItem', [ new KV( 'bullets', $bullets, $tsr->expandTsrV() ) ], (object)[ 'tsr' => $tsr ] );
+		$dp = new DataParsoid;
+		$dp->tsr = $tsr;
+		$li = new TagTk( 'listItem', [ new KV( 'bullets', $bullets, $tsr->expandTsrV() ) ], $dp );
 		return array_merge( [ $li ], $c ?: [] );
 	}
 
@@ -1791,14 +1917,16 @@ li =
  */
 hacky_dl_uses =
 	bullets:":"+
-	tbl:(table_line (sol table_line)*)
+	tbl:(table_line (sol+ table_line)*)
 	line:inlineline?
 	&comment_space_eolf
 {
 	// Leave bullets as an array -- list handler expects this
 	$tsr = $this->tsrOffsets( 'start' );
 	$tsr->end += count( $bullets );
-	$li = new TagTk( 'listItem', [ new KV( 'bullets', $bullets, $tsr->expandTsrV() ) ], (object)[ 'tsr' => $tsr ] );
+	$dp = new DataParsoid;
+	$dp->tsr = $tsr;
+	$li = new TagTk( 'listItem', [ new KV( 'bullets', $bullets, $tsr->expandTsrV() ) ], $dp );
 	return TokenizerUtils::flattenIfArray( [ $li, $tbl, $line ?: [] ] );
 }
 
@@ -1816,13 +1944,17 @@ dtdd =
 		$tsr->end += $numBullets;
 		$li1Bullets = $bullets;
 		$li1Bullets[] = ';';
-		$li1 = new TagTk( 'listItem', [ new KV( 'bullets', $li1Bullets, $tsr->expandTsrV() ) ], (object)[ 'tsr' => $tsr ] );
+		$dp = new DataParsoid;
+		$dp->tsr = $tsr;
+		$li1 = new TagTk( 'listItem', [ new KV( 'bullets', $li1Bullets, $tsr->expandTsrV() ) ], $dp );
 		// TSR: -1 for the intermediate ":"
 		$li2Bullets = $bullets;
 		$li2Bullets[] = ':';
 		$tsr2 = new SourceRange( $cpos - 1, $cpos );
-		$li2 = new TagTk( 'listItem', [ new KV( 'bullets', $li2Bullets, $tsr2->expandTsrV() ) ],
-			(object)[ 'tsr' => $tsr2, 'stx' => 'row' ] );
+		$dp2 = new DataParsoid;
+		$dp2->tsr = $tsr2;
+		$dp2->stx = 'row';
+		$li2 = new TagTk( 'listItem', [ new KV( 'bullets', $li2Bullets, $tsr2->expandTsrV() ) ], $dp2 );
 
 		return array_merge( [ $li1 ], $c ?: [], [ $li2 ], $d ?: [] );
 	}
@@ -1884,31 +2016,34 @@ inlineline_break_on_colon =
  ******************************************************************************/
 
 full_table_in_link_caption =
-	(! inline_breaks / & '{{!}}' )
+	!inline_breaks
 	// Note that "linkdesc" is suppressed here to provide a nested parsing
 	// context in which to parse the table.  Otherwise, we may break on
 	// on pipes in the `table_start_tag` and `table_row_tag` attributes.
 	// However, as a result, this can be more permissive than the old
-	// implementation, but likelier to match the users intent.
-	r: full_table_in_link_caption_parameterized<linkdesc=false, table> {
+	// implementation (legacy parser?), but likelier to match the users intent.
+	// Suppress the recursion protection from tableDataBlock since we're trying
+	// to parse a full table and if the link is itself nested in a table this
+	// will always stop.  Hopefully, this won't result in any overflows.
+	r: full_table_in_link_caption_parameterized<linkdesc=false, table, tableDataBlock=false> {
 		return $r;
 	}
 
 full_table_in_link_caption_parameterized =
-	table_start_tag optionalNewlines
+	table_start_tag
 	// Accept multiple end tags since a nested table may have been
 	// opened in the table content line.
 	(
-		(sol (table_content_line / tplarg_or_template) optionalNewlines)*
-		sol table_end_tag
+		(sol+ (table_content_line / tplarg_or_template))*
+		sol+ table_end_tag
 	)+
 
 // This rule assumes start-of-line position!
 table_line =
 	(! inline_breaks / & '{{!}}' )
 	tl:(
-		table_start_tag optionalNewlines
-		/ table_content_line<table> optionalNewlines
+		table_start_tag
+		/ table_content_line<table>
 		/ table_end_tag
 	) {
 		return $tl;
@@ -1936,14 +2071,15 @@ table_start_tag "table_start_tag" =
 			$tsEndPos = $coms['commentStartPos'];
 		}
 
-		$da = (object)[ 'tsr' => new SourceRange( $startPos, $tsEndPos ) ];
+		$dp = new DataParsoid;
+		$dp->tsr = new SourceRange( $startPos, $tsEndPos );
 		if ( $p !== '|' ) {
 			// Variation from default
-			$da->startTagSrc = $b . $p;
+			$dp->startTagSrc = $b . $p;
 		}
 
 		return array_merge( $sc,
-			[ new TagTk( 'table', $ta, $da ) ],
+			[ new TagTk( 'table', $ta, $dp ) ],
 			$coms ? $coms['buf'] : [],
 			$s2 );
 	}
@@ -1967,23 +2103,23 @@ table_row_tag =
 	p:pipe dashes:$"-"+
 	a:(table_attributes<table=false> / &{ $this->unreachable(); })
 	tagEndPos:("" { return $this->endOffset(); })
+	s2:space*
 	{
 		$coms = TokenizerUtils::popComments( $a );
 		if ( $coms ) {
 			$tagEndPos = $coms['commentStartPos'];
 		}
 
-		$da = (object)[
-			'tsr' => new SourceRange( $this->startOffset(), $tagEndPos ),
-			'startTagSrc' => $p . $dashes
-		];
+		$da = new DataParsoid;
+		$da->tsr = new SourceRange( $this->startOffset(), $tagEndPos );
+		$da->startTagSrc = $p . $dashes;
 
 		// We rely on our tree builder to close the row as needed. This is
 		// needed to support building tables from fragment templates with
 		// individual cells or rows.
 		$trToken = new TagTk( 'tr', $a, $da );
 
-		return array_merge( [ $trToken ], $coms ? $coms['buf'] : [] );
+		return array_merge( [ $trToken ], $coms ? $coms['buf'] : [], $s2 );
 	}
 
 tds =
@@ -2092,9 +2228,9 @@ table_end_tag =
 	p:pipe
 	b:"}"
 	{
-		$tblEnd = new EndTagTk( 'table', [], (object)[
-			'tsr' => new SourceRange( $startPos, $this->endOffset() ),
-		] );
+		$dp = new DataParsoid;
+		$dp->tsr = new SourceRange( $startPos, $this->endOffset() );
+		$tblEnd = new EndTagTk( 'table', [], $dp );
 		if ( $p !== '|' ) {
 			// p+"<brace-char>" is triggering some bug in pegJS
 			// I cannot even use that expression in the comment!
@@ -2128,8 +2264,8 @@ row_syntax_table_args =
  * text_char is not quite right and had to be augmented. Try to minimize /
  * clarify this carefully!
  *
- * This character class is inlined into urltext. Changes here may also need to
- * be reflected there.
+ * This character class is inlined into $this->reUrltextLookahead. Changes
+ * here may also need to be reflected there.
  */
 
 text_char = [^-'<[{\n\r:;\]}|!=]
@@ -2158,30 +2294,55 @@ text_char = [^-'<[{\n\r:;\]}|!=]
 
 urltext =
 	(
-		& [A-Za-z] al:autolink { return $al; }
+		/* Very special performance hack:
+		 * Look for a plain text sequence, and if found, pretend to match the
+		 * empty string, but then advance currPos in the action and return the
+		 * whole plain text segment as a single result.
+		 */
+		& {
+			if ( preg_match( $this->reUrltextLookahead, $this->input, $m, 0, $this->currPos ) ) {
+				$plain = $m[1];
+				$this->urltextPlainSegment = $plain;
+				$this->urltextFoundAutolink = ( $m[2] ?? '' ) !== '';
+				return (bool)strlen( $plain );
+			} else {
+				$this->urltextFoundAutolink = false;
+				return false;
+			}
+		}
+		'' {
+			$this->currPos += strlen( $this->urltextPlainSegment );
+			return $this->urltextPlainSegment;
+		}
+		/ & { return $this->urltextFoundAutolink; } al:autolink { return $al; }
 		/ & "&" he:htmlentity { return $he; }
 		/ & ('__') bs:behavior_switch { return $bs; }
-		// About 96% of text_char calls originated here, so inline it for efficiency
-		/ [^-'<[{\n\r:;\]}|!=]
+		/ text_char
 	)+
 
 raw_htmlentity =
-	m:$("&" [#0-9a-zA-Z]+ ";") {
+	m:$("&" [#0-9a-zA-Zרלמرلم]+ ";") {
 		return Utils::decodeWtEntities( $m );
 	}
 
 htmlentity =
 	cc:raw_htmlentity {
 		// if this is an invalid entity, don't tag it with 'mw:Entity'
-		if ( mb_strlen( $cc ) > 1 /* decoded entity would be 1 character */ ) {
+		// note that some entities (like &acE;) decode to 2 codepoints!
+		if ( mb_strlen( $cc ) > 2 /* decoded entity would be 1-2 codepoints */ ) {
 			return $cc;
 		}
+		$dpStart = new DataParsoid;
+		$dpStart->src = $this->text();
+		$dpStart->srcContent = $cc;
+		$dpStart->tsr = $this->tsrOffsets( 'start' );
+		$dpEnd = new DataParsoid;
+		$dpEnd->tsr = $this->tsrOffsets( 'end' );
 		return [
 			// If this changes, the nowiki extension's toDOM will need to follow suit
-			new TagTk( 'span', [ new KV( 'typeof', 'mw:Entity' ) ],
-				(object)[ 'src' => $this->text(), 'srcContent' => $cc, 'tsr' => $this->tsrOffsets( 'start' ) ] ),
+			new TagTk( 'span', [ new KV( 'typeof', 'mw:Entity' ) ], $dpStart ),
 			$cc,
-			new EndTagTk( 'span', [], (object)[ 'tsr' => $this->tsrOffsets( 'end' ) ] )
+			new EndTagTk( 'span', [], $dpEnd )
 		];
 	}
 
@@ -2235,21 +2396,10 @@ space_or_nbsp =
 space_or_nbsp_or_dash =
 	space_or_nbsp / "-"
 
-// Extra newlines followed by at least another newline. Usually used to
-// compress surplus newlines into a meta tag, so that they don't trigger
-// paragraphs.
-optionalNewlines =
-	spc:$([\n\r\t ] &[\n\r])* {
-		if ( strlen( $spc ) ) {
-			return [ $spc ];
-		} else {
-			return [];
-		}
-	}
+// Elements that do not break beginning or end of line for blocks (headers for instance)
+comment_include_annotation = comment / include_limits<sol_il> / annotation_tag
 
-comment_or_includes = (comment / include_limits<sol_il>)*
-
-sol = (empty_line_with_comments / sol_prefix) comment_or_includes
+sol = (empty_line_with_comments / sol_prefix) comment_include_annotation*
 
 sol_prefix =
 	newlineToken
@@ -2264,13 +2414,12 @@ sol_prefix =
 
 empty_line_with_comments =
 	sp:sol_prefix p:("" { return $this->endOffset(); }) c:(space* comment (space / comment)* newline)+ {
+		$dp = new DataParsoid;
+		$dp->tsr = new SourceRange( $p, $this->endOffset() );
+		$dp->tokens = TokenizerUtils::flattenIfArray( $c );
 		return [
 			$sp,
-			new SelfclosingTagTk( 'meta', [ new KV( 'typeof', 'mw:EmptyLine' ) ], (object)[
-					'tokens' => TokenizerUtils::flattenIfArray( $c ),
-					'tsr' => new SourceRange( $p, $this->endOffset() ),
-				]
-			)
+			new SelfclosingTagTk( 'meta', [ new KV( 'typeof', 'mw:EmptyLine' ) ], $dp )
 		];
 	}
 
@@ -2300,7 +2449,7 @@ include_limits =
 	& {
 		$il = $il[0];
 		$lname = mb_strtolower( $il->getName() );
-		if ( !TokenizerUtils::isIncludeTag( $lname ) ) { return false;  }
+		if ( !WTUtils::isIncludeTag( $lname ) ) { return false;  }
 		// Preserve SOL where necessary (for onlyinclude and noinclude)
 		// Note that this only works because we encounter <*include*> tags in
 		// the toplevel content and we rely on the php preprocessor to expand
@@ -2339,7 +2488,7 @@ comment_space_eolf = (space+ / comment)* eolf
 // plain-text content.
 directive =
 	comment
-	/ extension_tag
+	/ extension_annotation_tag
 	/ tplarg_or_template
 	/ & "-{" v:lang_variant_or_tpl { return $v; }
 	/ & "&" e:htmlentity { return $e; }

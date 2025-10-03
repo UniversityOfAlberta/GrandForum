@@ -3,11 +3,12 @@ declare( strict_types = 1 );
 
 namespace Wikimedia\Parsoid\Ext\Cite;
 
-use DOMDocument;
-use DOMElement;
 use stdClass;
+use Wikimedia\Parsoid\DOM\Document;
+use Wikimedia\Parsoid\DOM\Element;
 use Wikimedia\Parsoid\Ext\DOMUtils;
 use Wikimedia\Parsoid\Ext\ParsoidExtensionAPI;
+use Wikimedia\Parsoid\Utils\DOMCompat;
 
 /**
  * Helper class used by `<references>` implementation.
@@ -30,7 +31,6 @@ class RefGroup {
 	public $indexByName;
 
 	/**
-	 * RefGroup constructor.
 	 * @param string $group
 	 */
 	public function __construct( string $group = '' ) {
@@ -43,15 +43,15 @@ class RefGroup {
 	 * Generate leading linkbacks
 	 * @param ParsoidExtensionAPI $extApi
 	 * @param string $href
-	 * @param string|null $group
+	 * @param ?string $group
 	 * @param string $text
-	 * @param DOMDocument $ownerDoc
-	 * @return DOMElement
+	 * @param Document $ownerDoc
+	 * @return Element
 	 */
 	private static function createLinkback(
-		ParsoidExtensionAPI $extApi,
-		string $href, ?string $group, string $text, DOMDocument $ownerDoc
-	): DOMElement {
+		ParsoidExtensionAPI $extApi, string $href, ?string $group,
+		string $text, Document $ownerDoc
+	): Element {
 		$a = $ownerDoc->createElement( 'a' );
 		$s = $ownerDoc->createElement( 'span' );
 		$textNode = $ownerDoc->createTextNode( $text . ' ' );
@@ -67,11 +67,11 @@ class RefGroup {
 
 	/**
 	 * @param ParsoidExtensionAPI $extApi
-	 * @param DOMElement $refsList
+	 * @param Element $refsList
 	 * @param stdClass $ref
 	 */
 	public function renderLine(
-		ParsoidExtensionAPI $extApi, DOMElement $refsList, stdClass $ref
+		ParsoidExtensionAPI $extApi, Element $refsList, stdClass $ref
 	): void {
 		$ownerDoc = $refsList->ownerDocument;
 
@@ -97,22 +97,24 @@ class RefGroup {
 			]
 		);
 		if ( $refContentId ) {
-			$content = $extApi->getContentDOM( $refContentId );
-			// The data-mw and data-parsoid attributes aren't needed on the ref content
-			// in the references section. The content wrapper will remain in the original
-			// site where the <ref> tag showed up and will retain data-parsoid & data-mw.
-			ParsoidExtensionAPI::migrateChildrenBetweenDocs( $content, $reftextSpan, false );
+			// `sup` is the wrapper created by Ref::sourceToDom()'s call to
+			// `extApi->extTagToDOM()`.  Only its contents are relevant.
+			$sup = $extApi->getContentDOM( $refContentId )->firstChild;
+			DOMUtils::migrateChildren( $sup, $reftextSpan );
+			'@phan-var Element $sup';  /** @var Element $sup */
+			DOMCompat::remove( $sup );
+			$extApi->clearContentDOM( $refContentId );
 		}
 		$li->appendChild( $reftextSpan );
 
 		if ( count( $ref->linkbacks ) === 1 ) {
 			$linkback = self::createLinkback( $extApi, $ref->id, $refGroup, "↑", $ownerDoc );
-			$linkback->setAttribute( 'rel', 'mw:referencedBy' );
+			DOMUtils::addRel( $linkback, 'mw:referencedBy' );
 			$li->insertBefore( $linkback, $reftextSpan );
 		} else {
 			// 'mw:referencedBy' span wrapper
 			$span = $ownerDoc->createElement( 'span' );
-			$span->setAttribute( 'rel', 'mw:referencedBy' );
+			DOMUtils::addRel( $span, 'mw:referencedBy' );
 			$li->insertBefore( $span, $reftextSpan );
 
 			foreach ( $ref->linkbacks as $i => $lb ) {

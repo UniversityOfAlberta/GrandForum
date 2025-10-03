@@ -35,7 +35,7 @@ class DownloadReportItem extends StaticReportItem {
                 if($data != null && $data->hash == $hash){
                     header("Content-disposition: attachment; filename='".addslashes($data->name)."'");
                     echo base64_decode($data->file);
-                    exit;
+                    close();
                 }
             }
             

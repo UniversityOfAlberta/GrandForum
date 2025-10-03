@@ -11,7 +11,7 @@ const yaml = require('js-yaml');
 // don't need to start their own.
 let parsoidURLOpts = null;
 
-let htmlDiffConfig = null;
+let readViewStripBenchmark = null;
 
 // Read ids from a file and return the first line of the file
 function getTestRunId(opts) {
@@ -22,9 +22,8 @@ function getTestRunId(opts) {
 function _run(test) {
 	return rtTest.runTests(test.title, {
 		prefix: test.prefix,
-		rtTestMode: true,
 		parsoidURLOpts: parsoidURLOpts,
-		htmlDiffConfig: htmlDiffConfig
+		readViewStripBenchmark: readViewStripBenchmark
 	}, rtTest.xmlFormat).then(function(result) {
 		return result.output;
 	});
@@ -33,9 +32,10 @@ function _run(test) {
 function runRoundTripTest(config, test) {
 	if (!parsoidURLOpts) {
 		parsoidURLOpts = config.parsoidPHP;
-		const configFile = path.resolve(__dirname, './htmldiffs.config.yaml');
+
+		const configFile = path.resolve(__dirname, './readviewstrip.config.yaml');
 		if (fs.existsSync(configFile)) {
-			htmlDiffConfig = yaml.load(fs.readFileSync(configFile, 'utf8'));
+			readViewStripBenchmark = yaml.load(fs.readFileSync(configFile, 'utf8'));
 		}
 	}
 	return _run(test);

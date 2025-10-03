@@ -3,17 +3,18 @@ declare( strict_types = 1 );
 
 namespace Wikimedia\Parsoid\Html2Wt\DOMHandlers;
 
-use DOMElement;
-use DOMNode;
-use Wikimedia\Parsoid\Config\WikitextConstants;
+use Wikimedia\Parsoid\DOM\DocumentFragment;
+use Wikimedia\Parsoid\DOM\Element;
+use Wikimedia\Parsoid\DOM\Node;
+use Wikimedia\Parsoid\Utils\DOMCompat;
 use Wikimedia\Parsoid\Utils\DOMDataUtils;
 use Wikimedia\Parsoid\Utils\DOMUtils;
 use Wikimedia\Parsoid\Utils\WTUtils;
+use Wikimedia\Parsoid\Wikitext\Consts;
 
 /**
  * Factory for picking the right DOMHandler for a DOM element.
- * Porting note: this class is based on DOMHandlers.js and WikitextSerializer.getDOMHandler
- * PORT-FIXME: memoize handlers, maybe
+ * FIXME: memoize handlers, maybe?
  */
 class DOMHandlerFactory {
 
@@ -48,6 +49,9 @@ class DOMHandlerFactory {
 				return new DTHandler();
 			case 'figure':
 				return new FigureHandler();
+			// TODO: Remove when 2.1.x content is deprecated, since we no
+			// longer emit inline media in figure-inline.  See the test,
+			// "Serialize simple image with figure-inline wrapper"
 			case 'figure-inline':
 				return new MediaHandler();
 			case 'hr':
@@ -109,14 +113,18 @@ class DOMHandlerFactory {
 
 	/**
 	 * Get a DOMHandler for an element node.
-	 * @param DOMNode|null $node
-	 * @return DOMHandler|null
+	 * @param ?Node $node
+	 * @return DOMHandler
 	 */
-	public function getDOMHandler( ?DOMNode $node ): ?DOMHandler {
-		if ( !$node || !DOMUtils::isElt( $node ) ) {
+	public function getDOMHandler( ?Node $node ): DOMHandler {
+		if ( $node instanceof DocumentFragment ) {
+			return new BodyHandler();
+		}
+
+		if ( !( $node instanceof Element ) ) {
 			return new DOMHandler();
 		}
-		'@phan-var DOMElement $node';/** @var DOMElement $node */
+		'@phan-var Element $node';/** @var Element $node */
 
 		if ( WTUtils::isFirstEncapsulationWrapperNode( $node ) ) {
 			return new EncapsulatedContentHandler();
@@ -126,18 +134,18 @@ class DOMHandlerFactory {
 
 		// If available, use a specialized handler for serializing
 		// to the specialized syntactic form of the tag.
-		$handler = $this->newFromTagHandler( $node->nodeName . '_' . ( $dp->stx ?? null ) );
+		$handler = $this->newFromTagHandler( DOMCompat::nodeName( $node ) . '_' . ( $dp->stx ?? null ) );
 
 		// Unless a specialized handler is available, use the HTML handler
 		// for html-stx tags. But, <a> tags should never serialize as HTML.
-		if ( !$handler && ( $dp->stx ?? null ) === 'html' && $node->nodeName !== 'a' ) {
+		if ( !$handler && ( $dp->stx ?? null ) === 'html' && DOMCompat::nodeName( $node ) !== 'a' ) {
 			return new FallbackHTMLHandler();
 		}
 
 		// If in a HTML table tag, serialize table tags in the table
 		// using HTML tags, instead of native wikitext tags.
-		if ( isset( WikitextConstants::$HTML['ChildTableTags'][$node->nodeName] )
-			 && !isset( WikitextConstants::$ZeroWidthWikitextTags[$node->nodeName] )
+		if ( isset( Consts::$HTML['ChildTableTags'][DOMCompat::nodeName( $node )] )
+			 && !isset( Consts::$ZeroWidthWikitextTags[DOMCompat::nodeName( $node )] )
 			 && WTUtils::inHTMLTableTag( $node )
 		) {
 			return new FallbackHTMLHandler();
@@ -153,7 +161,7 @@ class DOMHandlerFactory {
 		}
 
 		// Pick the best available handler
-		return $handler ?: $this->newFromTagHandler( $node->nodeName ) ?: new FallbackHTMLHandler();
+		return $handler ?: $this->newFromTagHandler( DOMCompat::nodeName( $node ) ) ?: new FallbackHTMLHandler();
 	}
 
 }

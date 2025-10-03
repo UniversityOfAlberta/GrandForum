@@ -13,6 +13,7 @@ class Settings
 
     const FORMAT_TEXT = 'text';
     const FORMAT_JSON = 'json';
+    const FORMAT_GITLAB = 'gitlab';
     const FORMAT_CHECKSTYLE = 'checkstyle';
 
     /**
@@ -104,6 +105,12 @@ class Settings
     public $showDeprecated = false;
 
     /**
+     * Path to a file with syntax error callback
+     * @var string|null
+     */
+    public $syntaxErrorCallbackFile = null;
+
+    /**
      * @param array $paths
      */
     public function addPaths(array $paths)
@@ -173,6 +180,10 @@ class Settings
                         $settings->format = self::FORMAT_JSON;
                         break;
 
+                    case '--gitlab':
+                        $settings->format = self::FORMAT_GITLAB;
+                        break;
+
                     case '--checkstyle':
                         $settings->format = self::FORMAT_CHECKSTYLE;
                         break;
@@ -195,6 +206,10 @@ class Settings
 
                     case '--show-deprecated':
                         $settings->showDeprecated = true;
+                        break;
+
+                    case '--syntax-error-callback':
+                        $settings->syntaxErrorCallbackFile = $arguments->getNext();
                         break;
 
                     default:

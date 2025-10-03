@@ -1,10 +1,10 @@
 {
 	"@metadata": {
 		"authors": [
+			"JSantos",
 			"Joao Xavier",
 			"Lakaoso",
-			"Wyvernoid",
-			"JSantos"
+			"Wyvernoid"
 		]
 	},
 	"config-desc": "L'instalilo di MediaWiki",
@@ -52,7 +52,6 @@
 	"config-env-bad": "Omno verifikesis.\nVu NE POVAS intalar MediaWiki.",
 	"config-env-php": "PHP $1 instalesis.",
 	"config-unicode-using-intl": "Uzanta [https://php.net/manual/en/book.intl.php PHP intl extension] por normaligo Unicode.",
-	"config-unicode-pure-php-warning": "<strong>Atencez:</strong> La [https://php.net/manual/en/book.intl.php prolonguro PHP intl] ne esas disponebla por traktar skribo-normaligo \"Unicode\". Vice, uzesas la plu lenta laborado en pura PHP.\nSe vu administras pagini multe vizitata, vu mustas lektar la [https://www.mediawiki.org/wiki/Special:MyLanguage/Unicode_normalization_considerations skribo-normaligo Unicode].",
 	"config-unicode-update-warning": "<strong>Atencez:</strong> La versiono di ''Unicode normalization wrapper'' instalata en vua komputero uzas obsoleta versiono di la biblioteko del [http://site.icu-project.org/ projeto ICU].\nVu mustas instalar [https://www.mediawiki.org/wiki/Special:MyLanguage/Unicode_normalization_considerations la nova versiono] se vu deziras uzar Unicode.",
 	"config-no-db": "Ne povis trovar konvenanta ''driver'' por la datumaro! Vu mustas instalar ''driver'' por datumaro en PHP.\nLa sequanta {{PLURAL:$2|tipo|tipi}} di datumaro esas suportebla: $1.\n\nIf you compiled PHP yourself, reconfigure it with a database client enabled, for example, using <code>./configure --with-mysqli</code>.\nIf you installed PHP from a Debian or Ubuntu package, then you also need to install, for example, the <code>php-mysql</code> package.",
 	"config-outdated-sqlite": "<strong>Atencez:</strong> vu havas SQLite $2, quo esas inferiora a la minima versiono bezonata, $1. SQLite ne esos disponebla.",
@@ -99,7 +98,9 @@
 	"config-db-prefix": "Prefixo di la datumaro-tabelo (sen strekteti):",
 	"config-db-prefix-help": "If you need to share one database between multiple wikis, or between MediaWiki and another web application, you may choose to add a prefix to all the table names to avoid conflicts.\nDo not use spaces.\n\nThis field is usually left empty.",
 	"config-mysql-old": "Bezonesas MySQL $1 o plu recenta versiono. Vua versiono esas $2.",
+	"config-mariadb-old": "On bezonas MariaDB $1 o posa. Vu havas $2.",
 	"config-db-port": "Porto uzata por acesar la datumaro:",
+	"config-db-ssl": "Konektar per SSL",
 	"config-db-schema": "Skemo por MediaWiki (sen strekteti):",
 	"config-db-schema-help": "Ca ''schema'' por datumaro certe funcionos.\nModifikez ol NUR se vu FAKTE bezonos modifikar ol.",
 	"config-pg-test-error": "Ne povis konektar a la datumaro <strong>$1</strong>: $2",
@@ -175,7 +176,7 @@
 	"config-subscribe-help": "Ca esas listo di e-posti uzata por lansar anunci en poka quanti po foyo, inkluzite anunci pri sekureso.\nVu mustas abonar ol ed aktualigar vua instaluro MediaWiki kande nova versioni aparos.",
 	"config-subscribe-noemail": "You tried to subscribe to the release announcements mailing list without providing an email address.\nPlease provide an email address if you wish to subscribe to the mailing list.",
 	"config-pingback": "Partigez informi pri ca instalo kun altra developeri de MediaWiki.\n[https://foundation.wikimedia.org/wiki/MediaWiki_Pingback_Privacy_Statement Videz:''Privacy policy''].",
-	"config-pingback-help": "Se vu selektos ca opciono, MediaWiki periodale sendos 'ping' a https://www.mediawiki.org kun bazala informi pri ca instanco de MediaWiki. This data includes, for example, the type of system, PHP version, and chosen database backend. The Wikimedia Foundation shares this data with MediaWiki developers to help guide future development efforts. The following data will be sent for your system:\n<pre>$1</pre>\n\nThe privacy policy for this feature can be seen at https://foundation.wikimedia.org/wiki/MediaWiki_Pingback_Privacy_Statement.\n\nFor more general information about this feature, see https://www.mediawiki.org/wiki/Special:MyLanguage/Manual:$wgPingback.\n\nFor aggregated pingback data, see https://pingback.wmflabs.org/.",
+	"config-pingback-help": "Se vu selektos ca opciono, MediaWiki periodale sendos 'ping' a https://www.mediawiki.org kun bazala informi pri ca instanco de MediaWiki. This data includes, for example, the type of system, PHP version, and chosen database backend. The Wikimedia Foundation shares this data with MediaWiki developers to help guide future development efforts. The following data will be sent for your system:\n<pre>$1</pre>\n\nThe privacy policy for this feature can be seen at https://foundation.wikimedia.org/wiki/MediaWiki_Pingback_Privacy_Statement.\n\nFor more general information about this feature, see https://www.mediawiki.org/wiki/Special:MyLanguage/Manual:$wgPingback.\n\nFor aggregated pingback data, see https://pingback.wmcloud.org/.",
 	"config-almost-done": "Omno esas preske finata!\nNun vu povas saltar la cetera figuro, ed instalar nemediate la ''wiki''.",
 	"config-optional-continue": "Sendez plusa questioni a me.",
 	"config-optional-skip": "To esas tre tedanta, voluntez instalar la wiki.",
@@ -213,8 +214,18 @@
 	"config-upload-help": "File uploads potentially expose your server to security risks.\nFor more information, read the [https://www.mediawiki.org/wiki/Special:MyLanguage/Manual:Security security section] in the manual.\n\nTo enable file uploads, change the mode on the <code>images</code> subdirectory under MediaWiki's root directory so that the web server can write to it.\nThen enable this option.",
 	"config-upload-deleted": "Receveyo por efacita arkivi:",
 	"config-upload-deleted-help": "Selektez receveyo por efacita artikli. Prefereble, ol mustus acesesar per interreto.",
-	"config-logo": "URL dil logotipo*:",
-	"config-logo-help": "MediaWiki's default skin includes space for a 135x160 pixel logo above the sidebar menu.\nUpload an image of the appropriate size, and enter the URL here.\n\nYou can use <code>$wgStylePath</code> or <code>$wgScriptPath</code> if your logo is relative to those paths.\n\nIf you do not want a logo, leave this box blank.",
+	"config-personalization-settings": "Personalizo",
+	"config-logo-summary": "Por singla ek ca blanka spaci por plenigar, vu bezonos sendar imajo kun adequata grandeso, ed informar la URL en la buxi adinfre. Vu povos uzar <code>$wgStylePath</code> o <code>$wgScriptPath</code> se vua *logotipo relatas a ca treki. Vu povas nekompletigar irga ek la buxi adinfra.",
+	"config-logo-preview-main": "Chefpagino",
+	"config-logo-icon": "Logotipo* (ikono):",
+	"config-logo-icon-help": "L'ikono di vua logotipo* mustas esar quadratra, havanta adminime 50px, od esar arkivo SVG.",
+	"config-logo-wordmark": "Registro-vorto (''wordmark''; fakultativa):",
+	"config-logo-wordmark-help": "La nomo di vua ret-situo. Se vu ne nomizis ol, co ordinare divenos texto. Preferinde, uzez arkivo SVG kun altajo infre od admaxime egala a 30px.",
+	"config-logo-tagline": "Slogano (fakultativa):",
+	"config-logo-tagline-help": "La \"slogano\" di vua retosituo. Uzez to nur se vu kreis ''wordmark'' supre. Se vu ne kreis ol, ordinare uzesos texto. Ordinare, l'altajo dil \"slogano\" + texto ne mustos superirar 50px.",
+	"config-logo-sidebar": "Laterala logotipo* (fakultativa):",
+	"config-logo-filedrop": "Inkluzez arkivo di imajo hike",
+	"config-logo-sidebar-help": "Kelka ''skin'' de MediaWiki inkluzas logotipo* granda de 160px, kom parto de laterala menuo. Se ol ne kreesos, ol havos la sama ikono definita adsupre. Posible vu deziros havar propra grafikal imajo enkorpiganta texto ed ikono.",
 	"config-instantcommons": "Permisez Instant Commons",
 	"config-instantcommons-help": "[https://www.mediawiki.org/wiki/Special:MyLanguage/InstantCommons Instant Commons] is a feature that allows wikis to use images, sounds and other media found on the [https://commons.wikimedia.org/ Wikimedia Commons] site.\nIn order to do this, MediaWiki requires access to the Internet.\n\nFor more information on this feature, including instructions on how to set it up for wikis other than the Wikimedia Commons, consult [https://www.mediawiki.org/wiki/Special:MyLanguage/Manual:$wgForeignFileRepos the manual].",
 	"config-cc-error": "L'automatala selekto di la licenco \"Creative Commons\" ne efikeskis. Voluntez informar ol manuale.",
@@ -300,5 +311,5 @@
 	"config-extension-not-found": "Ne povis trovar la registro-arkivo por \"$1\"",
 	"config-extension-dependency": "Eroro pri dependo trovesis dum l'instalo dil extenso \"$1\": $2",
 	"mainpagetext": "<strong>MediaWiki instalesis sucese.</strong>",
-	"mainpagedocfooter": "Videz la [https://meta.wikimedia.org/wiki/Help:Contents Guidilo por Uzeri] por plusa informi pri quale uzar la wiki programo.\n\n== Komencar ==\n* [https://www.mediawiki.org/wiki/Special:MyLanguage/Manual:Configuration_settings Listo pri ''Configuration setting'']\n* [https://www.mediawiki.org/wiki/Special:MyLanguage/Manual:FAQ MediaWiki FAQ]\n* [https://lists.wikimedia.org/postorius/lists/mediawiki-announce.lists.wikimedia.org/ E-postala-listo por recevar mesaji de MediaWiki]\n* [https://www.mediawiki.org/wiki/Special:MyLanguage/Localisation#Translation_resources Trovar MediaWiki en vua linguo]\n* [https://www.mediawiki.org/wiki/Special:MyLanguage/Manual:Combating_spam Lernez quale kombatar ''spam'' en vua wiki]"
+	"mainpagedocfooter": "Videz la [https://www.mediawiki.org/wiki/Special:MyLanguage/Help:Contents Guidilo por Uzeri] por plusa informi pri quale uzar la wiki programo.\n\n== Komencar ==\n* [https://www.mediawiki.org/wiki/Special:MyLanguage/Manual:Configuration_settings Listo pri ''Configuration setting'']\n* [https://www.mediawiki.org/wiki/Special:MyLanguage/Manual:FAQ MediaWiki FAQ]\n* [https://lists.wikimedia.org/postorius/lists/mediawiki-announce.lists.wikimedia.org/ E-postala-listo por recevar mesaji de MediaWiki]\n* [https://www.mediawiki.org/wiki/Special:MyLanguage/Localisation#Translation_resources Trovar MediaWiki en vua linguo]\n* [https://www.mediawiki.org/wiki/Special:MyLanguage/Manual:Combating_spam Lernez quale kombatar ''spam'' en vua wiki]"
 }

@@ -2,13 +2,13 @@
 
 namespace Test\Parsoid\Utils;
 
-use DOMDocument;
-use DOMElement;
-use DOMNode;
-use stdClass;
 use Wikimedia\Parsoid\Config\Env;
+use Wikimedia\Parsoid\DOM\Element;
+use Wikimedia\Parsoid\DOM\Node;
 use Wikimedia\Parsoid\Mocks\MockEnv;
+use Wikimedia\Parsoid\Utils\DOMCompat;
 use Wikimedia\Parsoid\Utils\DOMTraverser;
+use Wikimedia\Parsoid\Utils\DTState;
 
 class DOMTraverserTest extends \PHPUnit\Framework\TestCase {
 
@@ -17,12 +17,15 @@ class DOMTraverserTest extends \PHPUnit\Framework\TestCase {
 	 * @covers \Wikimedia\Parsoid\Utils\DOMTraverser::addHandler
 	 * @covers \Wikimedia\Parsoid\Utils\DOMTraverser::traverse
 	 */
-	public function testTraverse( $callback, $nodeName, $env, $expectedTrace ) {
+	public function testTraverse(
+		callable $callback, ?string $nodeName, Env $env, array $expectedTrace,
+		bool $withTplInfo = false
+	) {
 		$html = <<<'HTML'
 <html><body>
 	<div id="x1">
-		<div id="x1_1"></div>
-		<blockquote id="x1_2">
+		<div id="x1_1" typeof="mw:Transclusion" about="#mwt1">
+		</div><blockquote id="x1_2" about="#mwt1">
 			<div id="x1_2_1"></div>
 			<div id="x1_2_2"></div>
 		</blockquote>
@@ -33,22 +36,22 @@ class DOMTraverserTest extends \PHPUnit\Framework\TestCase {
 	</div>
 </body></html>
 HTML;
-		$doc = new DOMDocument();
+		$doc = DOMCompat::newDocument( true );
 		$doc->loadHTML( $html );
 
-		$trace = [];
-		$traverser = new DOMTraverser();
+		$state = new DTState( [], true );
+		$state->trace = [];
+
+		$traverser = new DOMTraverser( $withTplInfo );
 		$traverser->addHandler( $nodeName, $callback );
-		$traverser->addHandler( null, function (
-			DOMNode $node, Env $env, array $options, bool $atTopLevel, ?stdClass $tplInfo
-		) use ( &$trace ) {
-			if ( $node instanceof DOMElement && $node->hasAttribute( 'id' ) ) {
-				$trace[] = $node->getAttribute( 'id' );
+		$traverser->addHandler( null, static function ( Node $node, Env $env, DTState $state ) {
+			if ( $node instanceof Element && $node->hasAttribute( 'id' ) ) {
+				$state->trace[] = $node->getAttribute( 'id' );
 			}
 			return true;
 		} );
-		$traverser->traverse( $env, $doc->documentElement, [], true, null );
-		$this->assertSame( $expectedTrace, $trace );
+		$traverser->traverse( $env, $doc->documentElement, $state );
+		$this->assertSame( $expectedTrace, $state->trace );
 	}
 
 	public function provideTraverse() {
@@ -56,16 +59,16 @@ HTML;
 
 		$expectError = $this->getMockBuilder( MockEnv::class )
 			->setConstructorArgs( [ [] ] )
-			->setMethods( [ 'log' ] )
+			->onlyMethods( [ 'log' ] )
 			->getMock();
 		$expectError->expects( $this->atLeastOnce() )
 			->method( 'log' )
 			->willReturnCallback( function ( $prefix ) {
-				$this->assertSame( $prefix, 'error' );
+				$this->assertSame( 'error', $prefix );
 			} );
 		$dontExpectError = $this->getMockBuilder( MockEnv::class )
 			->setConstructorArgs( [ [] ] )
-			->setMethods( [ 'log' ] )
+			->onlyMethods( [ 'log' ] )
 			->getMock();
 		$dontExpectError->expects( $this->never() )
 			->method( 'log' );
@@ -73,11 +76,10 @@ HTML;
 		return [
 			'basic' => [
 				'callback' => function (
-					DOMNode $node, Env $env, array $options, bool $atTopLevel,
-					?stdClass $tplInfo
+					Node $node, Env $env, ?DTState $state
 				) use ( $basicEnv ) {
 					$this->assertSame( $basicEnv, $env );
-					$this->assertTrue( $atTopLevel );
+					$this->assertTrue( $state->atTopLevel );
 					return true;
 				},
 				'nodeName' => null,
@@ -85,10 +87,7 @@ HTML;
 				'expectedTrace' => [ 'x1', 'x1_1', 'x1_2', 'x1_2_1', 'x1_2_2', 'x1_3', 'x2', 'x2_1' ],
 			],
 			'return true' => [
-				'callback' => function (
-					DOMNode $node, Env $env, array $options, bool $atTopLevel,
-					?stdClass $tplInfo
-				) {
+				'callback' => static function ( Node $node, Env $env ) {
 					return true;
 				},
 				'nodeName' => null,
@@ -96,11 +95,10 @@ HTML;
 				'expectedTrace' => [ 'x1', 'x1_1', 'x1_2', 'x1_2_1', 'x1_2_2', 'x1_3', 'x2', 'x2_1' ],
 			],
 			'return first child' => [
-				'callback' => function (
-					DOMNode $node, Env $env, array $options, bool $atTopLevel,
-					?stdClass $tplInfo
+				'callback' => static function (
+					Node $node, Env $env
 				) {
-					if ( $node instanceof DOMElement && $node->getAttribute( 'id' ) === 'x1_2' ) {
+					if ( $node instanceof Element && $node->getAttribute( 'id' ) === 'x1_2' ) {
 						return $node->firstChild;
 					}
 					return true;
@@ -110,11 +108,10 @@ HTML;
 				'expectedTrace' => [ 'x1', 'x1_1', 'x1_2_1', 'x1_2_2', 'x2', 'x2_1' ],
 			],
 			'return next sibling' => [
-				'callback' => function (
-					DOMNode $node, Env $env, array $options, bool $atTopLevel,
-					?stdClass $tplInfo
+				'callback' => static function (
+					Node $node, Env $env
 				) {
-					if ( $node instanceof DOMElement && $node->getAttribute( 'id' ) === 'x1_2' ) {
+					if ( $node instanceof Element && $node->getAttribute( 'id' ) === 'x1_2' ) {
 						return $node->nextSibling;
 					}
 					return true;
@@ -124,11 +121,10 @@ HTML;
 				'expectedTrace' => [ 'x1', 'x1_1', 'x1_3', 'x2', 'x2_1' ],
 			],
 			'return null' => [
-				'callback' => function (
-					DOMNode $node, Env $env, array $options, bool $atTopLevel,
-					?stdClass $tplInfo
+				'callback' => static function (
+					Node $node, Env $env
 				) {
-					if ( $node instanceof DOMElement && $node->getAttribute( 'id' ) === 'x1_2' ) {
+					if ( $node instanceof Element && $node->getAttribute( 'id' ) === 'x1_2' ) {
 						return null;
 					}
 					return true;
@@ -138,11 +134,10 @@ HTML;
 				'expectedTrace' => [ 'x1', 'x1_1', 'x2', 'x2_1' ],
 			],
 			'return another node' => [
-				'callback' => function (
-					DOMNode $node, Env $env, array $options, bool $atTopLevel,
-					?stdClass $tplInfo
+				'callback' => static function (
+					Node $node, Env $env
 				) {
-					if ( $node instanceof DOMElement && $node->getAttribute( 'id' ) === 'x1_2' ) {
+					if ( $node instanceof Element && $node->getAttribute( 'id' ) === 'x1_2' ) {
 						$newNode = $node->ownerDocument->createElement( 'div' );
 						$newNode->setAttribute( 'id', 'new' );
 						return $newNode;
@@ -154,11 +149,10 @@ HTML;
 				'expectedTrace' => [ 'x1', 'x1_1', 'new', 'x2', 'x2_1' ],
 			],
 			'name filter' => [
-				'callback' => function (
-					DOMNode $node, Env $env, array $options,
-					bool $atTopLevel, ?stdClass $tplInfo
+				'callback' => static function (
+					Node $node, Env $env
 				) {
-					if ( $node instanceof DOMElement && $node->getAttribute( 'id' ) === 'x1_2' ) {
+					if ( $node instanceof Element && $node->getAttribute( 'id' ) === 'x1_2' ) {
 						return null;
 					}
 					return true;
@@ -166,6 +160,42 @@ HTML;
 				'nodeName' => 'div',
 				'env' => $basicEnv,
 				'expectedTrace' => [ 'x1', 'x1_1', 'x1_2', 'x1_2_1', 'x1_2_2', 'x1_3', 'x2', 'x2_1' ],
+			],
+			'not traversing with tplinfo' => [
+				'callback' => function (
+					Node $node, Env $env, DTState $state
+				) {
+					if ( $node instanceof Element && $node->getAttribute( 'id' ) === 'x1_1' ) {
+						$this->assertTrue( $state->tplInfo === null );
+					}
+					return true;
+				},
+				'nodeName' => null,
+				'env' => $basicEnv,
+				'expectedTrace' => [ 'x1', 'x1_1', 'x1_2', 'x1_2_1', 'x1_2_2', 'x1_3', 'x2', 'x2_1' ],
+			],
+			'traversing with tplinfo' => [
+				'callback' => function (
+					Node $node, Env $env, DTState $state
+				) {
+					if ( $node instanceof Element && $node->getAttribute( 'id' ) === 'x1_1' ) {
+						$this->assertTrue( $state->tplInfo->first === $node );
+					}
+					if ( $node instanceof Element && $node->getAttribute( 'id' ) === 'x1_2' ) {
+						$this->assertTrue( $state->tplInfo->last === $node );
+					}
+					if ( $node instanceof Element && $node->getAttribute( 'id' ) === 'x1_2_1' ) {
+						$this->assertTrue( $state->tplInfo !== null );
+					}
+					if ( $node instanceof Element && $node->getAttribute( 'id' ) === 'x1_3' ) {
+						$this->assertTrue( $state->tplInfo === null );
+					}
+					return true;
+				},
+				'nodeName' => null,
+				'env' => $basicEnv,
+				'expectedTrace' => [ 'x1', 'x1_1', 'x1_2', 'x1_2_1', 'x1_2_2', 'x1_3', 'x2', 'x2_1' ],
+				'withTplInfo' => true,
 			],
 		];
 	}

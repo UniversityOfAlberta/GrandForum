@@ -43,30 +43,41 @@ if ( $parsoidMode === 'integrated' ) {
 	// same place as this file (since there will also be another copy of
 	// Parsoid included from the vendor/wikimedia/parsoid directory)
 	// @phan-suppress-next-line PhanUndeclaredClassStaticProperty
-	\AutoLoader::$psr4Namespaces += [
+	\AutoLoader::registerNamespaces( [
 		// Keep this in sync with the "autoload" clause in /composer.json!
 		'Wikimedia\\Parsoid\\' => __DIR__ . "/../src",
 		// And this is from autoload-dev
 		'Wikimedia\\Parsoid\\Tools\\' => __DIR__ . "/../tools/",
-	];
+	] );
 
 	abstract class Maintenance extends \Maintenance {
-		public function __construct() {
+		private $requiresParsoid;
+
+		/**
+		 * @param bool $requiresParsoid Whether parsoid-specific processing
+		 *   should be done (default: true)
+		 */
+		public function __construct( bool $requiresParsoid = true ) {
 			parent::__construct();
-			$this->requireExtension( 'Parsoid' );
+			$this->requiresParsoid = $requiresParsoid;
+			if ( $this->requiresParsoid ) {
+				$this->requireExtension( 'Parsoid' );
+			}
 		}
 
 		public function addDefaultParams(): void {
-			$this->addOption(
-				'integrated',
-				'Run parsoid integrated with a host MediaWiki installation ' .
-				'at MW_INSTALL_PATH'
-			);
-			$this->addOption(
-				'standalone',
-				'Run parsoid standalone, communicating with a host MediaWiki ' .
-				'using network API (see --domain option)'
-			);
+			if ( $this->requiresParsoid ) {
+				$this->addOption(
+					'integrated',
+					'Run parsoid integrated with a host MediaWiki installation ' .
+					'at MW_INSTALL_PATH'
+				);
+				$this->addOption(
+					'standalone',
+					'Run parsoid standalone, communicating with a host MediaWiki ' .
+					'using network API (see --domain option)'
+				);
+			}
 			parent::addDefaultParams();
 		}
 
@@ -77,9 +88,9 @@ if ( $parsoidMode === 'integrated' ) {
 		 * @inheritDoc
 		 */
 		public function addOption(
-			string $name, string $description, bool $required = false,
-			bool $withArg = false, bool $shortName = false,
-			bool $multiOccurrence = false
+			$name, $description, $required = false,
+			$withArg = false, $shortName = false,
+			$multiOccurrence = false
 		) {
 			parent::addOption(
 				$name, $description, $required, $withArg, $shortName,
@@ -106,17 +117,31 @@ if ( $parsoidMode === 'integrated' ) {
 	require_once __DIR__ . '/../vendor/autoload.php';
 
 	abstract class Maintenance extends OptsProcessor {
+		/** @var bool Whether to perform Parsoid-specific processing */
+		private $requiresParsoid;
+
+		/**
+		 * @param bool $requiresParsoid Whether parsoid-specific processing
+		 *   should be done (default: true)
+		 */
+		public function __construct( bool $requiresParsoid = true ) {
+			parent::__construct();
+			$this->requiresParsoid = $requiresParsoid;
+		}
+
 		public function addDefaultParams(): void {
-			$this->addOption(
-				'integrated',
-				'Run parsoid integrated with a host MediaWiki installation ' .
-				'at MW_INSTALL_PATH'
-			);
-			$this->addOption(
-				'standalone',
-				'Run parsoid standalone, communicating with a host MediaWiki ' .
-				'using network API (see --domain option)'
-			);
+			if ( $this->requiresParsoid ) {
+				$this->addOption(
+					'integrated',
+					'Run parsoid integrated with a host MediaWiki installation ' .
+					'at MW_INSTALL_PATH'
+				);
+				$this->addOption(
+					'standalone',
+					'Run parsoid standalone, communicating with a host MediaWiki ' .
+					'using network API (see --domain option)'
+				);
+			}
 			parent::addDefaultParams();
 		}
 
@@ -136,7 +161,7 @@ if ( $parsoidMode === 'integrated' ) {
 				$this->fatalError( 'This script must be run from the command line' );
 			}
 			# Make sure we can handle script parameters
-			if ( !defined( 'HPHP_VERSION' ) && !ini_get( 'register_argc_argv' ) ) {
+			if ( !ini_get( 'register_argc_argv' ) ) {
 				$this->fatalError( 'Cannot get command line arguments, register_argc_argv is set to false' );
 			}
 

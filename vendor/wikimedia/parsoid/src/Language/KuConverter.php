@@ -1,13 +1,14 @@
 <?php
+declare( strict_types = 1 );
 
 namespace Wikimedia\Parsoid\Language;
 
-use Wikimedia\LangConv\ReplacementMachine;
+use Wikimedia\LangConv\FstReplacementMachine;
 
 class KuConverter extends LanguageConverter {
 
 	public function loadDefaultTables() {
-		$this->setMachine( new ReplacementMachine( 'ku', [ 'ku-arab', 'ku-latn' ] ) );
+		$this->setMachine( new FstReplacementMachine( 'ku', [ 'ku-arab', 'ku-latn' ] ) );
 	}
 
 	// phpcs:ignore MediaWiki.Commenting.FunctionComment.MissingDocumentationPublic

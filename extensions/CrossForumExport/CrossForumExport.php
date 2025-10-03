@@ -25,7 +25,7 @@ class CrossForumExport extends SpecialPage {
     function execute($par){
         global $wgOut, $wgUser, $config;
         $this->getOutput()->setPageTitle("Cross Forum Export");
-        if($wgUser->isLoggedIn()){
+        if($wgUser->isRegistered()){
             // Handle Exporting
             $me = Person::newFromWgUser();
             $products = $me->getPapers("all", true, 'both', true, 'Public');
@@ -42,7 +42,7 @@ class CrossForumExport extends SpecialPage {
                     window.close();
                 }, 100);
             </script>";
-            exit;
+            close();
         }
         else{
             // Handle Login

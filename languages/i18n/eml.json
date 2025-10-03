@@ -1,13 +1,12 @@
 {
 	"@metadata": {
 		"authors": [
+			"Gloria sah",
 			"Lévi",
+			"Matma Rex",
 			"Ottaviano II",
 			"Timichal",
-			"Tèstaquêdra",
-			"Gloria sah",
-			"Matma Rex",
-			"Amire80"
+			"Tèstaquêdra"
 		]
 	},
 	"tog-underline": "Ligàm ipertestuêl:",
@@ -17,7 +16,6 @@
 	"tog-hidecategorization": "Lōga l'elèinch dal categoréi dal pâgini.",
 	"tog-extendwatchlist": "Fà vèder tóti 'l mudéfichi a i tgnû 'd ôc specêl, mìa sōl l'ûltma",
 	"tog-usenewrc": "Unés al mudéfichi per pògin int al j ûltmi mudéfichi e int i tgnû 'd ôc specêl",
-	"tog-numberheadings": "Numerasiòun avtomâtica di tétol ed sesiòun",
 	"tog-editondblclick": "Mudéfica dal pàgini cun un dòpi cléch",
 	"tog-editsectiononrightclick": "Mudéfica dal sesiòun cun un cléch a dréta in séma 'l tétol",
 	"tog-watchcreations": "Zûnta al pàgini fâti e i file carghê a i tgnû 'd ôc specêl",
@@ -99,7 +97,9 @@
 	"printableversion": "Versiòun ch'la 's pōl stampêr",
 	"permalink": "Colegamèint fés",
 	"print": "Stampèr",
+	"skin-view-view": "Lēś",
 	"edit": "Mudéfica",
+	"skin-view-edit": "Mudéfica",
 	"create-local": "Śòunta na descrisiòun lochèla",
 	"delete": "Scanşèla",
 	"protect": "Prutēz",
@@ -125,7 +125,7 @@
 	"userexists": "Al nòm utèint ch'èt siēlt l'è bèle stê druvê.\nCâten un èter, per piaşèir.",
 	"loginsuccess": "'''Adèsa t'é coleghê in {{SITENAME}} cun al nòm utèint \"$1\".'''",
 	"wrongpassword": "Nòm utèint o password che t'é més l'è şbaliêda. Prōva incòra.",
-	"blocked-mailpassword": "Al tó indirés IP l'é bluchê a la mudéfica.Per anticipêr abûş, an n'é mía permès druvêr  la funsiòun ed recóper 'password' da cl' indirés 'IP' ché.",
+	"blocked-mailpassword": "Al tó indirés IP l'é bluchê a la mudéfica.Per anticipêr abûş, an n'é mía permès druvêr la funsiòun ed recóper 'password' da cl' indirés 'IP' ché.",
 	"accountcreated": "T'é fât un nōv 'account'.",
 	"pt-login": "Intrèr",
 	"summary": "Mutîv d'al cambiamèint:",
@@ -145,6 +145,7 @@
 	"yourrealname": "Al tō nòm vèira:",
 	"yourlanguage": "Léngua:",
 	"newuserlogpage": "Regéster di nōv utèint",
+	"action-protect": "Prutēz",
 	"enhancedrc-history": "Stòria",
 	"recentchanges": "Ûltem cambiamèint",
 	"rcshowhideminor-hide": "Cuàcia",
@@ -174,7 +175,7 @@
 	"allpagessubmit": "Và",
 	"watchlist": "I lavōr che guêrd",
 	"watch": "Tîn a drē",
-	"watchthispage": "Tîn a drē  a cla pàgina ché",
+	"watchthispage": "Tîn a drē a cla pàgina ché",
 	"excontent": "al contgnû l'ēra: '$1'",
 	"excontentauthor": "al cuntgnû l'ēra: '$1', e l'ónich avtōr l'ēra \"[[Special:Contributions/$2|$2]]\"([[User talk:$2|msg]])",
 	"confirmdeletetext": "T'é drē scanşlêr 'na pàgina o na figûra, insèm a tóta la só stòria dal 'database'. Per piaşèir cunfērma ch'ét vō scanşlêrla, ch'ét sê j efèt ed la tó decişiòun e ch' la cumbîna cun al léni guîda dal [[{{MediaWiki:Policy-url}}]].",
@@ -191,8 +192,11 @@
 	"namespacesall": "tùt",
 	"specialpages": "Pàgini specêli",
 	"searchsuggest-search": "Sērca dèinter al {{SITENAME}}",
+	"mw-widgets-abandonedit": "Sî-'v sicûr ch'a vlî mulèr l'editasiòun sàinsa avér prìma salvê?",
 	"mw-widgets-abandonedit-discard": "Ann fer chèś ai cambiamèint",
 	"mw-widgets-abandonedit-keep": "Cuntinuèr l'editasiòun",
 	"mw-widgets-mediasearch-input-placeholder": "Serchèr un média",
-	"mw-widgets-mediasearch-noresults": "Mìa catê nisùn risultê."
+	"mw-widgets-mediasearch-noresults": "Mìa catê nisùn risultê.",
+	"skin-view-create-local": "Śòunta na descrisiòun lochèla",
+	"skin-action-protect": "Prutēz"
 }

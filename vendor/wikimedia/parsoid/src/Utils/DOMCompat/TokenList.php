@@ -3,9 +3,9 @@ declare( strict_types = 1 );
 
 namespace Wikimedia\Parsoid\Utils\DOMCompat;
 
-use DOMElement;
 use Iterator;
 use LogicException;
+use Wikimedia\Parsoid\DOM\Element;
 
 /**
  * Implements the parts of DOMTokenList interface which are used by Parsoid.
@@ -15,7 +15,7 @@ use LogicException;
  */
 class TokenList implements Iterator {
 
-	/** @var DOMElement The node whose classes are listed. */
+	/** @var Element The node whose classes are listed. */
 	protected $node;
 
 	/** @var string Copy of the attribute text, used for change detection. */
@@ -27,9 +27,9 @@ class TokenList implements Iterator {
 	private $classList;
 
 	/**
-	 * @param DOMElement $node The node whose classes are listed.
+	 * @param Element $node The node whose classes are listed.
 	 */
-	public function __construct( DOMElement $node ) {
+	public function __construct( $node ) {
 		$this->node = $node;
 		$this->lazyLoadClassList();
 	}
@@ -97,7 +97,7 @@ class TokenList implements Iterator {
 	/**
 	 * @return string
 	 */
-	public function current() {
+	public function current(): string {
 		$this->lazyLoadClassList();
 		return current( $this->classList );
 	}
@@ -105,7 +105,7 @@ class TokenList implements Iterator {
 	/**
 	 * @return void
 	 */
-	public function next() {
+	public function next(): void {
 		$this->lazyLoadClassList();
 		next( $this->classList );
 	}
@@ -113,7 +113,7 @@ class TokenList implements Iterator {
 	/**
 	 * @return int|null
 	 */
-	public function key() {
+	public function key(): ?int {
 		$this->lazyLoadClassList();
 		return key( $this->classList );
 	}
@@ -121,7 +121,7 @@ class TokenList implements Iterator {
 	/**
 	 * @return bool
 	 */
-	public function valid() {
+	public function valid(): bool {
 		$this->lazyLoadClassList();
 		return key( $this->classList ) !== null;
 	}
@@ -129,7 +129,7 @@ class TokenList implements Iterator {
 	/**
 	 * @return void
 	 */
-	public function rewind() {
+	public function rewind(): void {
 		$this->lazyLoadClassList();
 		reset( $this->classList );
 	}
@@ -138,10 +138,10 @@ class TokenList implements Iterator {
 	 * Set the classList property based on the class attribute of the wrapped element.
 	 */
 	private function lazyLoadClassList(): void {
-		$attrib = $this->node->getAttribute( 'class' );
+		$attrib = $this->node->getAttribute( 'class' ) ?? '';
 		if ( $attrib !== $this->attribute ) {
 			$this->attribute = $attrib;
-			$this->classList = preg_split( '/\s+/', $this->node->getAttribute( 'class' ), -1,
+			$this->classList = preg_split( '/\s+/', $attrib, -1,
 				PREG_SPLIT_NO_EMPTY );
 		}
 	}

@@ -79,7 +79,7 @@ class PersonProductAPI extends RESTAPI {
                 header('Content-Type: text/plain');
                 $collection = new Collection($products);
                 echo implode("", $collection->pluck('toBibTeX()'));
-                exit;
+                close();
             }
             return json_encode($json);
         }
@@ -109,7 +109,7 @@ class PersonProductAPI extends RESTAPI {
     
     function doPOST(){
         global $wgUser;
-        if($wgUser->isLoggedIn()){
+        if($wgUser->isRegistered()){
             if($this->getParam(0) == "person"){
                 $person = Person::newFromId($this->getParam('id'));
                 $product = Paper::newFromId($this->getParam('productId'));
@@ -148,7 +148,7 @@ class PersonProductAPI extends RESTAPI {
     
     function doDELETE(){
         global $wgUser;
-        if($wgUser->isLoggedIn()){
+        if($wgUser->isRegistered()){
             if($this->getParam(0) == "person"){
                 $person = Person::newFromId($this->getParam('id'));
                 $product = Paper::newFromId($this->getParam('productId'));

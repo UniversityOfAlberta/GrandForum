@@ -1,20 +1,19 @@
 <?php
 declare( strict_types = 1 );
 
-/**
- * Serializes language variant markup, like `-{ ... }-`.
- * @module
- */
-
 namespace Wikimedia\Parsoid\Html2Wt;
 
-use DOMElement;
 use Wikimedia\Assert\Assert;
-use Wikimedia\Parsoid\Config\WikitextConstants;
+use Wikimedia\Parsoid\DOM\Element;
 use Wikimedia\Parsoid\Html2Wt\ConstrainedText\LanguageVariantText;
+use Wikimedia\Parsoid\Utils\DOMCompat;
 use Wikimedia\Parsoid\Utils\DOMDataUtils;
 use Wikimedia\Parsoid\Utils\Utils;
+use Wikimedia\Parsoid\Wikitext\Consts;
 
+/**
+ * Serializes language variant markup, like `-{ ... }-`.
+ */
 class LanguageVariantHandler {
 	/**
 	 * @param array $a
@@ -37,16 +36,16 @@ class LanguageVariantHandler {
 	/**
 	 * Helper function: serialize a DOM string
 	 * @param SerializerState $state
-	 * @param string|bool $t
-	 * @param array|null $opts
-	 * @return ConstrainedText\ConstrainedText|string
+	 * @param string $t
+	 * @param ?array $opts
+	 * @return string
 	 */
 	private static function ser( SerializerState $state, string $t, ?array $opts ) {
-		$options = array_merge( [
+		$options =
+			( $opts ?? [] ) + [
 				'env' => $state->getEnv(),
 				'onSOL' => false
-			], $opts ?? []
-		);
+			];
 		return $state->serializer->htmlToWikitext( $options, $t );
 	}
 
@@ -70,7 +69,7 @@ class LanguageVariantHandler {
 	 * @return string
 	 */
 	private static function combine( string $flagStr, string $bodyStr, $useTrailingSemi ): string {
-		if ( !empty( $flagStr ) || preg_match( '/\|/', $bodyStr ) ) {
+		if ( !empty( $flagStr ) || str_contains( $bodyStr, '|' ) ) {
 			$flagStr .= '|';
 		}
 		if ( $useTrailingSemi !== false ) {
@@ -87,14 +86,14 @@ class LanguageVariantHandler {
 	 * @param array $flSp
 	 * @param array $flags
 	 * @param bool $noFilter
-	 * @param string|null $protectFunc
+	 * @param ?string $protectFunc
 	 * @return string
 	 */
 	private static function sortedFlags(
 		array $originalFlags, array $flSp, array $flags, bool $noFilter,
 		?string $protectFunc
 	): string {
-		$filterInternal = function ( $f ) use ( $noFilter ) {
+		$filterInternal = static function ( $f ) use ( $noFilter ) {
 			// Filter out internal-use-only flags
 			if ( $noFilter ) {
 				return true;
@@ -103,18 +102,18 @@ class LanguageVariantHandler {
 		};
 		$flags = array_filter( $flags, $filterInternal );
 
-		$sortByOriginalPosition = function ( $a, $b ) use ( $originalFlags ) {
+		$sortByOriginalPosition = static function ( $a, $b ) use ( $originalFlags ) {
 			$ai = $originalFlags[$a] ?? -1;
 			$bi = $originalFlags[$b] ?? -1;
 			return $ai - $bi;
 		};
 		usort( $flags, $sortByOriginalPosition );
 
-		$insertOriginalWhitespace = function ( $f ) use ( $originalFlags, $protectFunc, $flSp ) {
+		$insertOriginalWhitespace = static function ( $f ) use ( $originalFlags, $protectFunc, $flSp ) {
 			// Reinsert the original whitespace around the flag (if any)
 			$i = $originalFlags[$f] ?? null;
 			if ( !empty( $protectFunc ) ) {
-				$p = call_user_func_array( [ 'self', $protectFunc ], [ $f ] );
+				$p = call_user_func_array( [ self::class, $protectFunc ], [ $f ] );
 			} else {
 				$p = $f;
 			}
@@ -151,10 +150,10 @@ class LanguageVariantHandler {
 	/**
 	 * LanguageVariantHandler
 	 * @param SerializerState $state
-	 * @param DOMElement $node
+	 * @param Element $node
 	 * @return void
 	 */
-	public static function handleLanguageVariant( SerializerState $state, DOMElement $node ): void {
+	public static function handleLanguageVariant( SerializerState $state, Element $node ): void {
 		$dataMWV = DOMDataUtils::getJSONAttribute( $node, 'data-mw-variant', [] );
 		$dp = DOMDataUtils::getDataParsoid( $node );
 		$flSp = self::expandSpArray( $dp->flSp ?? [] );
@@ -184,13 +183,13 @@ class LanguageVariantHandler {
 		}
 
 		foreach ( get_object_vars( $dataMWV ) as $key => $val ) {
-			if ( isset( WikitextConstants::$LCNameMap[$key] ) ) {
-				$flags[WikitextConstants::$LCNameMap[$key]] = true;
+			if ( isset( Consts::$LCNameMap[$key] ) ) {
+				$flags[Consts::$LCNameMap[$key]] = true;
 			}
 		}
 
 		// Tweak flag set to account for implicitly-enabled flags.
-		if ( $node->tagName !== 'meta' ) {
+		if ( DOMCompat::nodeName( $node ) !== 'meta' ) {
 			$flags['$S'] = true;
 		}
 		if ( !isset( $flags['$S'] ) && !isset( $flags['T'] ) && !isset( $dataMWV->filter ) ) {

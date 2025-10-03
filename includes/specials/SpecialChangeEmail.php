@@ -21,8 +21,8 @@
  * @ingroup SpecialPage
  */
 
+use MediaWiki\Auth\AuthManager;
 use MediaWiki\Logger\LoggerFactory;
-use MediaWiki\MediaWikiServices;
 
 /**
  * Let users change their email address.
@@ -35,8 +35,13 @@ class SpecialChangeEmail extends FormSpecialPage {
 	 */
 	private $status;
 
-	public function __construct() {
+	/**
+	 * @param AuthManager $authManager
+	 */
+	public function __construct( AuthManager $authManager ) {
 		parent::__construct( 'ChangeEmail', 'editmyprivateinfo' );
+
+		$this->setAuthManager( $authManager );
 	}
 
 	public function doesWrites() {
@@ -47,18 +52,17 @@ class SpecialChangeEmail extends FormSpecialPage {
 	 * @return bool
 	 */
 	public function isListed() {
-		return MediaWikiServices::getInstance()->getAuthManager()
-			->allowsPropertyChange( 'emailaddress' );
+		return $this->getAuthManager()->allowsPropertyChange( 'emailaddress' );
 	}
 
 	/**
 	 * Main execution point
-	 * @param string $par
+	 * @param string|null $par
 	 */
 	public function execute( $par ) {
 		$out = $this->getOutput();
 		$out->disallowUserJs();
-
+		$out->addModules( 'mediawiki.special.changeemail' );
 		parent::execute( $par );
 	}
 
@@ -67,18 +71,15 @@ class SpecialChangeEmail extends FormSpecialPage {
 	}
 
 	protected function checkExecutePermissions( User $user ) {
-		$services = MediaWikiServices::getInstance();
-		if ( !$services->getAuthManager()->allowsPropertyChange( 'emailaddress' ) ) {
+		if ( !$this->getAuthManager()->allowsPropertyChange( 'emailaddress' ) ) {
 			throw new ErrorPageError( 'changeemail', 'cannotchangeemail' );
 		}
 
-		$this->requireLogin( 'changeemail-no-info' );
+		$this->requireNamedUser( 'changeemail-no-info' );
 
 		// This could also let someone check the current email address, so
 		// require both permissions.
-		if ( !$services->getPermissionManager()
-				->userHasRight( $this->getUser(), 'viewmyprivateinfo' )
-		) {
+		if ( !$this->getAuthority()->isAllowed( 'viewmyprivateinfo' ) ) {
 			throw new PermissionsError( 'viewmyprivateinfo' );
 		}
 
@@ -122,6 +123,7 @@ class SpecialChangeEmail extends FormSpecialPage {
 		$form->addHiddenFields( $this->getRequest()->getValues( 'returnto', 'returntoquery' ) );
 
 		$form->addHeaderText( $this->msg( 'changeemail-header' )->parseAsBlock() );
+		$form->setSubmitID( 'change_email_submit' );
 	}
 
 	public function onSubmit( array $data ) {
@@ -146,8 +148,12 @@ class SpecialChangeEmail extends FormSpecialPage {
 			$this->getOutput()->redirect( $titleObj->getFullUrlForRedirect( $query ) );
 		} elseif ( $this->status->value === 'eauth' ) {
 			# Notify user that a confirmation email has been sent...
-			$this->getOutput()->wrapWikiMsg( "<div class='error' style='clear: both;'>\n$1\n</div>",
-				'eauthentsent', $this->getUser()->getName() );
+			$out = $this->getOutput();
+			$out->addHTML(
+				Html::warningBox(
+					$out->msg( 'eauthentsent', $this->getUser()->getName() )->parse()
+				)
+			);
 			// just show the link to go back
 			$this->getOutput()->addReturnTo( $titleObj, wfCgiToArray( $query ) );
 		}

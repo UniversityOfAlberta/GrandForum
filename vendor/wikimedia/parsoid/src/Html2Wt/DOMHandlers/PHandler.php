@@ -3,14 +3,16 @@ declare( strict_types = 1 );
 
 namespace Wikimedia\Parsoid\Html2Wt\DOMHandlers;
 
-use DOMElement;
-use DOMNode;
 use stdClass;
-use Wikimedia\Parsoid\Config\WikitextConstants;
+use Wikimedia\Parsoid\DOM\Element;
+use Wikimedia\Parsoid\DOM\Node;
+use Wikimedia\Parsoid\DOM\Text;
 use Wikimedia\Parsoid\Html2Wt\SerializerState;
+use Wikimedia\Parsoid\Utils\DOMCompat;
 use Wikimedia\Parsoid\Utils\DOMDataUtils;
 use Wikimedia\Parsoid\Utils\DOMUtils;
 use Wikimedia\Parsoid\Utils\WTUtils;
+use Wikimedia\Parsoid\Wikitext\Consts;
 
 class PHandler extends DOMHandler {
 
@@ -24,16 +26,16 @@ class PHandler extends DOMHandler {
 
 	/** @inheritDoc */
 	public function handle(
-		DOMElement $node, SerializerState $state, bool $wrapperUnmodified = false
-	): ?DOMNode {
+		Element $node, SerializerState $state, bool $wrapperUnmodified = false
+	): ?Node {
 		// XXX: Handle single-line mode by switching to HTML handler!
 		$state->serializeChildren( $node );
 		return $node->nextSibling;
 	}
 
 	/** @inheritDoc */
-	public function before( DOMElement $node, DOMNode $otherNode, SerializerState $state ): array {
-		$otherNodeName = $otherNode->nodeName;
+	public function before( Element $node, Node $otherNode, SerializerState $state ): array {
+		$otherNodeName = DOMCompat::nodeName( $otherNode );
 		$tableCellOrBody = [ 'td', 'th', 'body' ];
 		if ( $node->parentNode === $otherNode
 			&& ( DOMUtils::isListItem( $otherNode ) || in_array( $otherNodeName, $tableCellOrBody, true ) )
@@ -45,8 +47,8 @@ class PHandler extends DOMHandler {
 			}
 		} elseif ( ( $otherNode === DOMUtils::previousNonDeletedSibling( $node )
 				// p-p transition
+				&& $otherNode instanceof Element // for static analyzers
 				&& $otherNodeName === 'p'
-				&& $otherNode instanceof DOMElement // for static analyzers
 				&& ( DOMDataUtils::getDataParsoid( $otherNode )->stx ?? null ) !== 'html' )
 			|| ( self::treatAsPPTransition( $otherNode )
 				&& $otherNode === DOMUtils::previousNonSepSibling( $node )
@@ -56,18 +58,20 @@ class PHandler extends DOMHandler {
 				// there => we can make do with 1 newline separator instead of 2
 				// before the P-tag.
 				&& !$this->currWikitextLineHasBlockNode( $state->currLine, $otherNode ) )
+			|| ( WTUtils::isMarkerAnnotation( DOMUtils::nextNonSepSibling( $otherNode ) )
+				&& DOMUtils::nextNonSepSibling( DOMUtils::nextNonSepSibling( $otherNode ) ) === $node )
 		) {
 			return [ 'min' => 2, 'max' => 2 ];
 		} elseif ( self::treatAsPPTransition( $otherNode )
-			|| ( DOMUtils::isBlockNode( $otherNode )
-				&& $otherNode->nodeName !== 'blockquote'
+			|| ( DOMUtils::isWikitextBlockNode( $otherNode )
+				&& DOMCompat::nodeName( $otherNode ) !== 'blockquote'
 				&& $node->parentNode === $otherNode )
 			// new p-node added after sol-transparent wikitext should always
 			// get serialized onto a new wikitext line.
 			|| ( WTUtils::emitsSolTransparentSingleLineWT( $otherNode )
 				&& WTUtils::isNewElt( $node ) )
 		) {
-			if ( !DOMUtils::hasAncestorOfName( $otherNode, 'figcaption' ) ) {
+			if ( !DOMUtils::hasNameOrHasAncestorOfName( $otherNode, 'figcaption' ) ) {
 				return [ 'min' => 1, 'max' => 2 ];
 			} else {
 				return [ 'min' => 0, 'max' => 2 ];
@@ -78,8 +82,8 @@ class PHandler extends DOMHandler {
 	}
 
 	/** @inheritDoc */
-	public function after( DOMElement $node, DOMNode $otherNode, SerializerState $state ): array {
-		if ( !( $node->lastChild && $node->lastChild->nodeName === 'br' )
+	public function after( Element $node, Node $otherNode, SerializerState $state ): array {
+		if ( !( $node->lastChild && DOMCompat::nodeName( $node->lastChild ) === 'br' )
 			&& self::isPPTransition( $otherNode )
 			// A new wikitext line could start at this P-tag. We have to figure out
 			// if 'node' needs a separation of 2 newlines from that P-tag. Examine
@@ -95,14 +99,14 @@ class PHandler extends DOMHandler {
 			 && !$this->newWikitextLineMightHaveBlockNode( $otherNode )
 		) {
 			return [ 'min' => 2, 'max' => 2 ];
-		} elseif ( DOMUtils::isBody( $otherNode ) ) {
+		} elseif ( DOMUtils::atTheTop( $otherNode ) ) {
 			return [ 'min' => 0, 'max' => 2 ];
 		} elseif ( self::treatAsPPTransition( $otherNode )
-			|| ( DOMUtils::isBlockNode( $otherNode )
-				&& $otherNode->nodeName !== 'blockquote'
+			|| ( DOMUtils::isWikitextBlockNode( $otherNode )
+				&& DOMCompat::nodeName( $otherNode ) !== 'blockquote'
 				&& $node->parentNode === $otherNode )
 		) {
-			if ( !DOMUtils::hasAncestorOfName( $otherNode, 'figcaption' ) ) {
+			if ( !DOMUtils::hasNameOrHasAncestorOfName( $otherNode, 'figcaption' ) ) {
 				return [ 'min' => 1, 'max' => 2 ];
 			} else {
 				return [ 'min' => 0, 'max' => 2 ];
@@ -119,20 +123,19 @@ class PHandler extends DOMHandler {
 	// DOM node that generated multiple wikitext lines.
 
 	/**
-	 * @param stdClass|null $line See SerializerState::$currLine
-	 * @param DOMNode $node
+	 * @param ?stdClass $line See SerializerState::$currLine
+	 * @param Node $node
 	 * @param bool $skipNode
 	 * @return bool
 	 */
 	private function currWikitextLineHasBlockNode(
-		?stdClass $line, DOMNode $node, bool $skipNode = false
+		?stdClass $line, Node $node, bool $skipNode = false
 	): bool {
 		$parentNode = $node->parentNode;
 		if ( !$skipNode ) {
 			// If this node could break this wikitext line and emit
 			// non-ws content on a new line, the P-tag will be on that new line
 			// with text content that needs P-wrapping.
-			// PORT-FIXME: does regex whitespace semantics change matter?
 			if ( preg_match( '/\n[^\s]/', $node->textContent ) ) {
 				return false;
 			}
@@ -148,7 +151,7 @@ class PHandler extends DOMHandler {
 				// If this node could break this wikitext line, we are done.
 				// This is conservative because textContent could be looking at descendents
 				// of 'node' that may not have been serialized yet. But this is safe.
-				if ( preg_match( '/\n/', $node->textContent ) ) {
+				if ( str_contains( $node->textContent, "\n" ) ) {
 					return false;
 				}
 
@@ -169,21 +172,21 @@ class PHandler extends DOMHandler {
 	}
 
 	/**
-	 * @param DOMNode $node
+	 * @param Node $node
 	 * @return bool
 	 */
-	private function newWikitextLineMightHaveBlockNode( DOMNode $node ): bool {
+	private function newWikitextLineMightHaveBlockNode( Node $node ): bool {
 		$node = DOMUtils::nextNonDeletedSibling( $node );
 		while ( $node ) {
-			if ( DOMUtils::isText( $node ) ) {
+			if ( $node instanceof Text ) {
 				// If this node will break this wikitext line, we are done!
 				if ( preg_match( '/\n/', $node->nodeValue ) ) {
 					return false;
 				}
-			} elseif ( DOMUtils::isElt( $node ) ) {
+			} elseif ( $node instanceof Element ) {
 				// These tags will always serialize onto a new line
 				if (
-					isset( WikitextConstants::$HTMLTagsRequiringSOLContext[$node->nodeName] ) &&
+					isset( Consts::$HTMLTagsRequiringSOLContext[DOMCompat::nodeName( $node )] ) &&
 					!WTUtils::isLiteralHTMLNode( $node )
 				) {
 					return false;
@@ -207,37 +210,38 @@ class PHandler extends DOMHandler {
 	 * Node is being serialized before/after a P-tag.
 	 * While computing newline constraints, this function tests
 	 * if node should be treated as a P-wrapped node.
-	 * @param DOMNode $node
+	 * @param Node $node
 	 * @return bool
 	 */
-	private static function treatAsPPTransition( DOMNode $node ): bool {
+	private static function treatAsPPTransition( Node $node ): bool {
 		// Treat text/p similar to p/p transition
 		// If an element, it should not be a:
 		// * block node or literal HTML node
 		// * template wrapper
-		// * mw:Includes meta or a SOL-transparent link
-		return DOMUtils::isText( $node )
-			|| ( !DOMUtils::isBody( $node )
-				&& !DOMUtils::isBlockNode( $node )
+		// * mw:Includes or Annotation meta or a SOL-transparent link
+		return $node instanceof Text
+			|| ( !DOMUtils::atTheTop( $node )
+				&& !DOMUtils::isWikitextBlockNode( $node )
 				&& !WTUtils::isLiteralHTMLNode( $node )
 				&& !WTUtils::isEncapsulationWrapper( $node )
 				&& !WTUtils::isSolTransparentLink( $node )
-				&& !DOMUtils::matchTypeOf( $node, '#^mw:Includes/#' ) );
+				&& !DOMUtils::matchTypeOf( $node, '#^mw:Includes/#' )
+				&& !DOMUtils::matchTypeOf( $node, '#^mw:Annotation/#' ) );
 	}
 
 	/**
 	 * Test if $node is a P-wrapped node or should be treated as one.
 	 *
-	 * @param DOMNode|null $node
+	 * @param ?Node $node
 	 * @return bool
 	 */
-	public static function isPPTransition( ?DOMNode $node ): bool {
+	public static function isPPTransition( ?Node $node ): bool {
 		if ( !$node ) {
 			return false;
 		}
-		return $node->nodeName === 'p'
-				&& $node instanceof DOMElement // for static analyzers
-				&& ( DOMDataUtils::getDataParsoid( $node )->stx ?? '' ) !== 'html'
+		return ( $node instanceof Element // for static analyzers
+				&& DOMCompat::nodeName( $node ) === 'p'
+				&& ( DOMDataUtils::getDataParsoid( $node )->stx ?? '' ) !== 'html' )
 			|| self::treatAsPPTransition( $node );
 	}
 

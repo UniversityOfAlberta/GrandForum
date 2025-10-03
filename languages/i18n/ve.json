@@ -1,10 +1,10 @@
 {
 	"@metadata": {
 		"authors": [
-			"Johannes Rohr (on ve.wikipedia.org)",
-			"Node ue",
 			"Ajeje Brazorf",
-			"Fierodelveneto"
+			"Fierodelveneto",
+			"Johannes Rohr (on ve.wikipedia.org)",
+			"Node ue"
 		]
 	},
 	"search": "Ṱolani",
@@ -17,8 +17,7 @@
 	"yourname": "Dzina ḽa mushumisi:",
 	"yourpassword": "Phasiwede:",
 	"changepassword": "Shandukisani phasiwede",
-	"username": "Dzina ḽa mushumisi:",
-	"rcfilters-clear-all-filters": "Clear all filters\n\n{{delete|the message is in english}}",
+	"username": "{{GENDER:$1|Dzina ḽa mushumisi}}:",
 	"newpages-username": "Dzina ḽa mushumisi:",
 	"version-other": "Zwiṅwe"
 }

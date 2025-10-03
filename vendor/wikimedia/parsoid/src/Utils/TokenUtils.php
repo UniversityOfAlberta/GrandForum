@@ -7,14 +7,11 @@ declare( strict_types = 1 );
  * (b) manipulating tokens, individually and as collections.
  */
 
-// phpcs:disable MediaWiki.Commenting.FunctionComment.MissingDocumentationPublic
-
 namespace Wikimedia\Parsoid\Utils;
 
-use DOMNode;
 use Wikimedia\Assert\Assert;
+use Wikimedia\Assert\UnreachableException;
 use Wikimedia\Parsoid\Config\Env;
-use Wikimedia\Parsoid\Config\WikitextConstants as Consts;
 use Wikimedia\Parsoid\Core\DomSourceRange;
 use Wikimedia\Parsoid\Tokens\CommentTk;
 use Wikimedia\Parsoid\Tokens\EndTagTk;
@@ -26,6 +23,7 @@ use Wikimedia\Parsoid\Tokens\SelfclosingTagTk;
 use Wikimedia\Parsoid\Tokens\SourceRange;
 use Wikimedia\Parsoid\Tokens\TagTk;
 use Wikimedia\Parsoid\Tokens\Token;
+use Wikimedia\Parsoid\Wikitext\Consts;
 
 class TokenUtils {
 	public const SOL_TRANSPARENT_LINK_REGEX =
@@ -41,35 +39,35 @@ class TokenUtils {
 	}
 
 	/**
-	 * Determine if a tag is block-level or not.
-	 *
-	 * `<video>` is removed from block tags, since it can be phrasing content.
-	 * This is necessary for it to render inline.
 	 * @param string $name
 	 * @return bool
 	 */
-	public static function isBlockTag( string $name ): bool {
-		return $name !== 'video' && isset( Consts::$HTML['HTML4BlockTags'][$name] );
+	public static function isWikitextBlockTag( string $name ): bool {
+		return isset( Consts::$wikitextBlockElems[$name] );
 	}
 
 	/**
-	 * In the PHP parser, these block tags open block-tag scope
+	 * In the legacy parser, these block tags open block-tag scope
 	 * See doBlockLevels in the PHP parser (includes/parser/Parser.php).
+	 *
 	 * @param string $name
 	 * @return bool
 	 */
 	public static function tagOpensBlockScope( string $name ): bool {
-		return isset( Consts::$BlockScopeOpenTags[$name] );
+		return isset( Consts::$blockElems[$name] ) ||
+			isset( Consts::$alwaysBlockElems[$name] );
 	}
 
 	/**
-	 * In the PHP parser, these block tags close block-tag scope
+	 * In the legacy parser, these block tags close block-tag scope
 	 * See doBlockLevels in the PHP parser (includes/parser/Parser.php).
+	 *
 	 * @param string $name
 	 * @return bool
 	 */
 	public static function tagClosesBlockScope( string $name ): bool {
-		return isset( Consts::$BlockScopeCloseTags[$name] );
+		return isset( Consts::$antiBlockElems[$name] ) ||
+			isset( Consts::$neverBlockElems[$name] );
 	}
 
 	/**
@@ -78,7 +76,7 @@ class TokenUtils {
 	 * @return bool
 	 */
 	public static function isTemplateToken( $token ): bool {
-		return $token && $token instanceof SelfclosingTagTk && $token->getName() === 'template';
+		return $token instanceof SelfclosingTagTk && $token->getName() === 'template';
 	}
 
 	/**
@@ -166,7 +164,7 @@ class TokenUtils {
 			return (bool)preg_match( '/^\s*$/D', $token );
 		} elseif ( self::isSolTransparentLinkTag( $token ) ) {
 			return true;
-		} elseif ( $token instanceof CommentTk ) {
+		} elseif ( $token instanceof CommentTk && !self::isTranslationUnitMarker( $env, $token ) ) {
 			return true;
 		} elseif ( self::isBehaviorSwitch( $env, $token ) ) {
 			return true;
@@ -175,6 +173,19 @@ class TokenUtils {
 		} else {  // only metas left
 			return !( isset( $token->dataAttribs->stx ) && $token->dataAttribs->stx === 'html' );
 		}
+	}
+
+	/**
+	 * HACK: Returns true if $token looks like a TU marker (<!--T:XXX-->) and if we could be in a
+	 * translate-annotated page.
+	 * @param Env $env
+	 * @param CommentTk $token
+	 * @return bool
+	 */
+	public static function isTranslationUnitMarker( Env $env, CommentTk $token ): bool {
+		return $env->hasAnnotations &&
+			$env->getSiteConfig()->isAnnotationTag( 'translate' ) &&
+			preg_match( '/^T:/', $token->value ) === 1;
 	}
 
 	/**
@@ -264,7 +275,7 @@ class TokenUtils {
 					$da = $t->dataAttribs;
 					$tsr = $da->tsr;
 					if ( $tsr ) {
-						if ( $offset !== false ) {
+						if ( $offset ) {
 							$da->tsr = $tsr->offset( $offset );
 						} else {
 							$da->tsr = null;
@@ -304,7 +315,7 @@ class TokenUtils {
 							}
 
 							// src offsets used to set mw:TemplateParams
-							if ( $offset === null ) {
+							if ( !$offset ) {
 								$a->srcOffsets = null;
 							} elseif ( $a->srcOffsets !== null ) {
 								$a->srcOffsets = $a->srcOffsets->offset( $offset );
@@ -394,20 +405,36 @@ class TokenUtils {
 			++$charPos;
 			$c = ord( $s[$bytePos] ) & 0xf8;
 			switch ( $c ) {
-				case 0x00: case 0x08: case 0x10: case 0x18:
-				case 0x20: case 0x28: case 0x30: case 0x38:
-				case 0x40: case 0x48: case 0x50: case 0x58:
-				case 0x60: case 0x68: case 0x70: case 0x78:
+				case 0x00:
+				case 0x08:
+				case 0x10:
+				case 0x18:
+				case 0x20:
+				case 0x28:
+				case 0x30:
+				case 0x38:
+				case 0x40:
+				case 0x48:
+				case 0x50:
+				case 0x58:
+				case 0x60:
+				case 0x68:
+				case 0x70:
+				case 0x78:
 					++$bytePos;
 					++$ucs2Pos;
 					break;
 
-				case 0xc0: case 0xc8: case 0xd0: case 0xd8:
+				case 0xc0:
+				case 0xc8:
+				case 0xd0:
+				case 0xd8:
 					$bytePos += 2;
 					++$ucs2Pos;
 					break;
 
-				case 0xe0: case 0xe8:
+				case 0xe0:
+				case 0xe8:
 					$bytePos += 3;
 					++$ucs2Pos;
 					break;
@@ -442,9 +469,9 @@ class TokenUtils {
 	 */
 	public static function convertTokenOffsets(
 		string $s, string $from, string $to, array $tokens
-	) : void {
+	): void {
 		$offsets = []; /* @var array<int> $offsets */
-		self::collectOffsets( $tokens, function ( $sr ) use ( &$offsets ) {
+		self::collectOffsets( $tokens, static function ( $sr ) use ( &$offsets ) {
 			if ( $sr instanceof DomSourceRange ) {
 				// Adjust the widths to be actual character offsets
 				if ( $sr->openWidth !== null ) {
@@ -466,10 +493,11 @@ class TokenUtils {
 			}
 		} );
 		self::convertOffsets( $s, $from, $to, $offsets );
-		self::collectOffsets( $tokens, function ( $sr ) use ( &$offsets ) {
+		self::collectOffsets( $tokens, static function ( $sr ) use ( &$offsets ) {
 			if ( $sr instanceof DomSourceRange ) {
 				// Adjust widths back from being character offsets
 				if ( $sr->openWidth !== null ) {
+					// @phan-suppress-next-line PhanPluginDuplicateExpressionAssignmentOperation; consistency
 					$sr->openWidth = $sr->openWidth - $sr->start;
 				}
 				if ( $sr->closeWidth !== null ) {
@@ -574,14 +602,14 @@ class TokenUtils {
 		for ( $i = 0, $l = count( $tokens ); $i < $l; $i++ ) {
 			$token = $tokens[$i];
 			if ( $token === null ) {
-				PHPUtils::unreachable( "No nulls expected." );
+				throw new UnreachableException( "No nulls expected." );
 			} elseif ( $token instanceof KV ) {
 				// Since this function is occasionally called on KV->v,
 				// whose signature recursively includes KV[], a mismatch with
 				// this function, we assert that those values are only
 				// included in safe places that don't intend to stringify
 				// their tokens.
-				PHPUtils::unreachable( "No KVs expected." );
+				throw new UnreachableException( "No KVs expected." );
 			} elseif ( is_string( $token ) ) {
 				$out .= $token;
 			} elseif ( is_array( $token ) ) {
@@ -601,23 +629,27 @@ class TokenUtils {
 				// If strict, return accumulated string on encountering first non-text token
 				return [ $out, array_slice( $tokens, $i ) ];
 			} elseif (
+				// This option shouldn't be used if the tokens have been
+				// expanded to DOM
 				!empty( $opts['unpackDOMFragments'] ) &&
 				( $token instanceof TagTk || $token instanceof SelfclosingTagTk ) &&
 				self::hasDOMFragmentType( $token )
 			) {
 				// Handle dom fragments
-				$fragmentMap = $opts['env']->getDOMFragmentMap();
-				$nodes = $fragmentMap[$token->dataAttribs->html];
-				$out .= array_reduce( $nodes, function ( string $prev, DOMNode $next ) {
-						// FIXME: The correct thing to do would be to return
-						// `next.outerHTML` for the current scenarios where
-						// `unpackDOMFragments` is used (expanded attribute
-						// values and reparses thereof) but we'd need to remove
-						// the span wrapping and typeof annotation of extension
-						// content and nowikis.  Since we're primarily expecting
-						// to find <translate> and <nowiki> here, this will do.
-						return $prev . $next->textContent;
-				}, '' );
+				$domFragment = $opts['env']->getDOMFragment(
+					$token->dataAttribs->html
+				);
+				// Calling `env->removeDOMFragment()` here is case dependent
+				// but should be rare enough when permissible that it can be
+				// ignored.
+				// FIXME: The correct thing to do would be to return
+				// `$domFragment.innerHTML` for the current scenarios where
+				// `unpackDOMFragments` is used (expanded attribute
+				// values and reparses thereof) but we'd need to remove
+				// the span wrapping and typeof annotation of extension
+				// content and nowikis.  Since we're primarily expecting
+				// to find <translate> and <nowiki> here, this will do.
+				$out .= $domFragment->textContent;
 				if ( $token instanceof TagTk ) {
 					$i += 1; // Skip the EndTagTK
 					Assert::invariant(
@@ -694,5 +726,25 @@ class TokenUtils {
 		}
 
 		return $tokens;
+	}
+
+	/**
+	 * Checks whether the provided meta tag token is an annotation start token
+	 * @param Token $t
+	 * @return bool
+	 */
+	public static function isAnnotationStartToken( Token $t ): bool {
+		$type = self::matchTypeOf( $t, WTUtils::ANNOTATION_META_TYPE_REGEXP );
+		return $type !== null && !str_ends_with( $type, '/End' );
+	}
+
+	/**
+	 * Checks whether the provided meta tag token is an annotation end token
+	 * @param Token $t
+	 * @return bool
+	 */
+	public static function isAnnotationEndToken( Token $t ): bool {
+		$type = self::matchTypeOf( $t, WTUtils::ANNOTATION_META_TYPE_REGEXP );
+		return $type !== null && str_ends_with( $type, '/End' );
 	}
 }

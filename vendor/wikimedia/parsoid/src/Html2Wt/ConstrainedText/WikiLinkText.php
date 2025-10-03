@@ -3,10 +3,11 @@ declare( strict_types = 1 );
 
 namespace Wikimedia\Parsoid\Html2Wt\ConstrainedText;
 
-use DOMElement;
-use stdClass;
 use Wikimedia\Parsoid\Config\Env;
 use Wikimedia\Parsoid\Config\SiteConfig;
+use Wikimedia\Parsoid\DOM\Element;
+use Wikimedia\Parsoid\NodeData\DataParsoid;
+use Wikimedia\Parsoid\Utils\DOMUtils;
 use Wikimedia\Parsoid\Utils\PHPUtils;
 
 /**
@@ -18,13 +19,13 @@ class WikiLinkText extends RegExpConstrainedText {
 
 	/**
 	 * @param string $text
-	 * @param DOMElement $node
+	 * @param Element $node
 	 * @param SiteConfig $siteConfig
 	 * @param string $type
 	 *   The type of the link, as described by the `rel` attribute.
 	 */
 	public function __construct(
-		string $text, DOMElement $node,
+		string $text, Element $node,
 		SiteConfig $siteConfig, string $type
 	) {
 		// category links/external links/images don't use link trails or prefixes
@@ -62,27 +63,26 @@ class WikiLinkText extends RegExpConstrainedText {
 
 	/**
 	 * @param string $text
-	 * @param DOMElement $node
-	 * @param stdClass $dataParsoid
+	 * @param Element $node
+	 * @param DataParsoid $dataParsoid
 	 * @param Env $env
 	 * @param array $opts
 	 * @return ?WikiLinkText
 	 */
 	protected static function fromSelSerImpl(
-		string $text, DOMElement $node, stdClass $dataParsoid,
+		string $text, Element $node, DataParsoid $dataParsoid,
 		Env $env, array $opts
 	): ?WikiLinkText {
-		$type = $node->getAttribute( 'rel' ) ?? '';
 		$stx = $dataParsoid->stx ?? '';
 		// TODO: Leaving this for backwards compatibility, remove when 1.5 is no longer bound
-		if ( $type === 'mw:ExtLink' ) {
+		if ( DOMUtils::hasRel( $node, 'mw:ExtLink' ) ) {
 			$type = 'mw:WikiLink/Interwiki';
 		}
 		if (
-			preg_match( '#^mw:WikiLink(/Interwiki)?$#D', $type ) &&
-			preg_match( '/^(simple|piped)$/D', $stx )
+			DOMUtils::matchRel( $node, '#^mw:WikiLink(/Interwiki)?$#D' ) &&
+			in_array( $stx, [ 'simple', 'piped' ], true )
 		) {
-			return new WikiLinkText( $text, $node, $env->getSiteConfig(), $type );
+			return new WikiLinkText( $text, $node, $env->getSiteConfig(), $node->getAttribute( 'rel' ) );
 		}
 		return null;
 	}

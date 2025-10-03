@@ -43,7 +43,7 @@ class CreateProjectAPI extends API{
 		if($project != null && $project->getName() != ""){
 		    if(!$noEcho){
 		        echo "This project already exists";
-		        exit;
+		        close();
 		    }
 		    return;
 		}

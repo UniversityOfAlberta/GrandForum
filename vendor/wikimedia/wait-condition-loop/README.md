@@ -19,39 +19,42 @@ either be an "instant" CPU-bound check or a blocking I/O call with a small timeo
 cases should automatically work without CPU intensive spin loops.
 
 Additional documentation about the library can be found on
-[MediaWiki.org](https://www.mediawiki.org/wiki/WaitConditionLoop).
+[mediawiki.org](https://www.mediawiki.org/wiki/WaitConditionLoop).
 
 
 Usage
 -----
-	// Pre-compute some value that will be needed later
-	$result = null;
-	$workCallback = function () use ( &$result ) {
-		$result = ( $result !== null ) ? $result : $this->doWork();
 
-		return $result
-	}
+```php
+// Pre-compute some value that will be needed later
+$result = null;
+$workCallback = function () use ( &$result ) {
+    $result = ( $result !== null ) ? $result : $this->doWork();
 
-	$loop = new WaitConditionLoop(
-		function () use ( ... ) {
-			if ( ... ) {
-				// Condition reached; stop loop
-				return WaitConditionLoop::CONDITION_REACHED;
-			}
-			// Condition not reached; keep checking
-			return WaitConditionLoop::CONDITION_CONTINUE;
-		},
-		3.0, // timeout in seconds
-		[ $workCallback ]
-	);
-	$status = $loop->invoke(); // CONDITION_* constant
+    return $result
+}
 
-	// Call $workCallback as needed later
+$loop = new WaitConditionLoop(
+    function () use ( ... ) {
+        if ( ... ) {
+            // Condition reached; stop loop
+            return WaitConditionLoop::CONDITION_REACHED;
+        }
+        // Condition not reached; keep checking
+        return WaitConditionLoop::CONDITION_CONTINUE;
+    },
+    3.0, // timeout in seconds
+    [ $workCallback ]
+);
+$status = $loop->invoke(); // CONDITION_* constant
+
+// Call $workCallback as needed later
+```
 
 Running tests
 -------------
 
-    composer install --prefer-dist
+    composer install
     composer test
 
 

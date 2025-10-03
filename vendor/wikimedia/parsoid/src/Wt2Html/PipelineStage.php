@@ -3,12 +3,10 @@ declare( strict_types = 1 );
 
 namespace Wikimedia\Parsoid\Wt2Html;
 
-use DOMDocument;
 use Generator;
-
 use Wikimedia\Parsoid\Config\Env;
+use Wikimedia\Parsoid\DOM\Document;
 use Wikimedia\Parsoid\Tokens\SourceRange;
-use Wikimedia\Parsoid\Utils\Title;
 use Wikimedia\Parsoid\Wt2Html\TT\TokenHandler;
 
 /**
@@ -27,7 +25,7 @@ abstract class PipelineStage {
 	/**
 	 * Previous pipeline stage that generates input for this stage.
 	 * Will be null for the first pipeline stage.
-	 * @var PipelineStage
+	 * @var ?PipelineStage
 	 */
 	protected $prevStage;
 
@@ -40,13 +38,21 @@ abstract class PipelineStage {
 	/** @var Env */
 	protected $env = null;
 
+	/** @var bool */
+	protected $atTopLevel;
+
+	/** @var Frame */
+	protected $frame;
+
 	/**
 	 * @param Env $env
-	 * @param PipelineStage|null $prevStage
+	 * @param ?PipelineStage $prevStage
 	 */
-	public function __construct( Env $env, PipelineStage $prevStage = null ) {
+	public function __construct( Env $env, ?PipelineStage $prevStage = null ) {
 		$this->env = $env;
 		$this->prevStage = $prevStage;
+		// Defaults to false and resetState initializes it
+		$this->atTopLevel = false;
 	}
 
 	/**
@@ -85,23 +91,16 @@ abstract class PipelineStage {
 	 * @param array $options
 	 */
 	public function resetState( array $options ): void {
-		/* Default implementation: Do nothing */
+		/* Default implementation */
+		$this->atTopLevel = $options['toplevel'] ?? false;
 	}
 
 	/**
-	 * Pass parent-frame, title and args of the new pipeline (for template expansions)
-	 * to the new pipeline's stages.
-	 *
-	 * FIXME: This can be refactored to deal directly with the pipeline's constructor
-	 * and TTM instead of exposing this on the pipeline.
-	 *
-	 * @param Frame|null $frame Parent pipeline frame
-	 * @param Title|null $title Title (template) being processed in this (nested) pipeline
-	 * @param array $args Template args for the title (template)
-	 * @param string $srcText The wikitext source for this frame
+	 * Set frame on this pipeline stage
+	 * @param Frame $frame Pipeline frame
 	 */
-	public function setFrame( ?Frame $frame, ?Title $title, array $args, string $srcText ): void {
-		/* Default implementation: Do nothing */
+	public function setFrame( Frame $frame ): void {
+		$this->frame = $frame;
 	}
 
 	/**
@@ -122,11 +121,14 @@ abstract class PipelineStage {
 	 * will be processed by this pipeline stage and no further input or an EOF
 	 * signal will follow.
 	 *
-	 * @param string|array|DOMDocument $input
-	 * @param array|null $options
-	 * @return array|DOMDocument
+	 * @param string|array|Document $input
+	 * @param ?array $options
+	 *  - atTopLevel: (bool) Whether we are processing the top-level document
+	 *  - sol: (bool) Whether input should be processed in start-of-line context
+	 *  - chunky (bool) Whether we are processing the input chunkily.
+	 * @return array|Document
 	 */
-	abstract public function process( $input, array $options = null );
+	abstract public function process( $input, ?array $options = null );
 
 	/**
 	 * Process wikitext, an array of tokens, or a DOM document depending on
@@ -137,8 +139,13 @@ abstract class PipelineStage {
 	 * Implementations that don't consume tokens (ex: Tokenizer, DOMPostProcessor)
 	 * will provide specialized implementations that handle their input type.
 	 *
-	 * @param string|array|DOMDocument $input
-	 * @param array|null $options
+	 * @param string|array|Document $input
+	 * @param ?array $options
+	 *  - atTopLevel: (bool) Whether we are processing the top-level document
+	 *  - sol: (bool) Whether input should be processed in start-of-line context
+	 * @return Generator
 	 */
-	abstract public function processChunkily( $input, ?array $options ): Generator;
+	abstract public function processChunkily(
+		$input, ?array $options
+	): Generator;
 }

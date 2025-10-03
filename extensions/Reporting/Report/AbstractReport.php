@@ -234,7 +234,7 @@ abstract class AbstractReport extends SpecialPage {
                 }
                 if(!$managerImpersonating && (($wgImpersonating && !$this->checkPermissions()) || !DBFunctions::DBWritable() || (isset($_POST['user']) && $_POST['user'] != $wgUser->getName()))){
                     header('HTTP/1.1 403 Authentication Required');
-                    exit;
+                    close();
                 }
             }
             if(!$this->checkPermissions()){
@@ -271,7 +271,7 @@ abstract class AbstractReport extends SpecialPage {
                 if($this->ajax){
                     header('Content-Type: text/json');
                     echo json_encode($json);
-                    exit;
+                    close();
                 }
             }
             if(isset($_GET['showSection'])){
@@ -282,12 +282,12 @@ abstract class AbstractReport extends SpecialPage {
                 session_write_close();
                 $this->currentSection->render();
                 echo $wgOut->getHTML();
-                exit;
+                close();
             }
             else if(isset($_GET['showInstructions'])){
                 session_write_close();
                 echo $this->currentSection->getInstructions();
-                exit;
+                close();
             }
             else if(isset($_GET['getProgress'])){
                 session_write_close();
@@ -299,7 +299,7 @@ abstract class AbstractReport extends SpecialPage {
                 }
                 header('Content-Type: text/json');
                 echo json_encode($prog);
-                exit;
+                close();
             }
             else if(isset($_GET['submitReport'])){
                 $me = Person::newFromId($wgUser->getId());
@@ -332,12 +332,12 @@ abstract class AbstractReport extends SpecialPage {
                     }
                     break; //Temporary solution to not submitting NI Report Comments PDF (2nd PDF and only 1 2nd PDF among all reports)
                 }
-                exit;
+                close();
             }
             else if(isset($_GET['getPDF'])){
                 header('Content-Type: application/json');
                 echo json_encode($this->getPDF());
-                exit;
+                close();
             }
             if(!$this->generatePDF){
                 $wgOut->setPageTitle($this->name);
@@ -1012,7 +1012,7 @@ abstract class AbstractReport extends SpecialPage {
         session_write_close();
         if($this->disabled){
             echo "This Report is disabled until further notice";
-            exit;
+            close();
         }
         $me = $person;
         if($person == null || $person->getId() == 0){
@@ -1058,7 +1058,7 @@ abstract class AbstractReport extends SpecialPage {
             $data = "";
             $pdf = PDFGenerator::generate("{$report->person->getNameForForms()}_{$report->name}", $wgOut->getHTML(), "", $me, $this->project, false, $report, false, $report->orientation);
             if($preview){
-                exit;
+                close();
             }
             $sto = new ReportStorage($this->person, $this->project);
             $sto->store_report($data, $pdf['html'],$pdf['pdf'], 0, 0, $report->pdfType, $this->year, $this->encrypt);
@@ -1088,7 +1088,7 @@ abstract class AbstractReport extends SpecialPage {
         echo json_encode($json);
         ob_flush();
         flush();
-        exit;
+        close();
     }
     
     // Marks the report as submitted
@@ -1420,7 +1420,7 @@ abstract class AbstractReport extends SpecialPage {
                     header("Content-Type: {$mimeType}");
                     header("Content-disposition: attachment; filename=\"".addslashes($fileName)."\"");
                     echo base64_decode($json->file);
-                    exit;
+                    close();
                 }
                 else{
                     if(isset($_GET['mime'])){
@@ -1431,10 +1431,10 @@ abstract class AbstractReport extends SpecialPage {
                     }
                     header("Content-disposition: attachment; filename=\"".addslashes($fileName)."\"");
                     echo $data;
-                    exit;
+                    close();
                 }
             }
-            exit;
+            close();
         }
         return true;
     }
@@ -1466,7 +1466,7 @@ abstract class AbstractReport extends SpecialPage {
             if(!$me->isLoggedIn() || 
                 $_FILES['image']['size'] >= 512*1024){
                 echo "alert('There was a problem with the uploaded file.  Make sure that it is a valid image and under 512KB.');";
-                exit;
+                close();
             }
             $src = $_FILES['image']['tmp_name'];
             $hash = md5($src);
@@ -1482,11 +1482,11 @@ abstract class AbstractReport extends SpecialPage {
                         top.$('input[aria-label=Height]').val($height);
                         top.$('.mce-btn.mce-open').parent().find('.mce-textbox').val('data:image/png;base64,".base64_encode($png)."').closest('.mce-window').find('.mce-primary').click();";
                 echo $str;
-                exit;
+                close();
             }
             else{
                 echo "alert('There was a problem with the uploaded file.  Make sure that it is a valid image and under 512KB.');";
-                exit;
+                close();
             }
         }
         return true;

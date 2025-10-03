@@ -30,13 +30,13 @@ class UserUnsubAPI extends API{
                     $wgMessage->addSuccess("You are already unsubscribed from AVOID Frailty");
                 }
                 $wgOut->output();
-                exit;
+                close();
             }
         }
         // No Person found
         $wgMessage->addError("This is not a valid unsubscribe code");
         $wgOut->output();
-        exit;
+        close();
 	}
 	
 	function isLoginRequired(){

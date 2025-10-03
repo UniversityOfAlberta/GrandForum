@@ -56,10 +56,10 @@ class CustomSpecialSearch extends SpecialSearch {
 			$namespaces .= Xml::openElement( 'span', array( 'style' => 'white-space: nowrap' ) );
 			//print_r($groups);
 			if ($ns < 100 || isset($groups[$name])) {
-				if (MWNamespace::isMain($ns)) {
+				if (MediaWikiServices::getInstance()->getNamespaceInfo()->isMain($ns)) {
 					$namespaces .= Xml::checkLabel( $name, "ns{$ns}", "mw-search-ns{$ns}", true );
 				}
-				else if (MWNamespace::isTalk($ns)) {
+				else if (MediaWikiServices::getInstance()->getNamespaceInfo()->isTalk($ns)) {
 					$namespaces .= Xml::hidden("ns{$ns}", "true");
 				}
 			}

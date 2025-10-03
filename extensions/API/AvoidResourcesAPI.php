@@ -161,7 +161,7 @@
                 $myJSON =json_encode($this->callAPI());
             }
             echo $myJSON;
-            exit;
+            close();
         }
 
         function isLoginRequired(){

@@ -260,7 +260,7 @@ class PersonProfileTab extends AbstractEditableTab {
     function showProfile($person, $visibility){
         global $wgUser, $config;
         $this->html .= "<div id='profileText' style='text-align:justify;'>";
-        $this->html .= $person->getProfile($wgUser->isLoggedIn());
+        $this->html .= $person->getProfile($wgUser->isRegistered());
         if($visibility['isMe'] || $visibility['isSupervisor']){
             $crc = "";
             $this->html .= "<ul>";
@@ -399,7 +399,7 @@ class PersonProfileTab extends AbstractEditableTab {
             $data = array_slice($data, 0, 75);
             header("Content-Type: application/json");
             echo json_encode($data);
-            exit;
+            close();
         }
         return true;
     }

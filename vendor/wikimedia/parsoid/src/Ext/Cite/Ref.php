@@ -3,14 +3,14 @@ declare( strict_types = 1 );
 
 namespace Wikimedia\Parsoid\Ext\Cite;
 
-use DOMElement;
-use DOMNode;
 use Exception;
+use Wikimedia\Parsoid\DOM\DocumentFragment;
+use Wikimedia\Parsoid\DOM\Element;
+use Wikimedia\Parsoid\DOM\Node;
 use Wikimedia\Parsoid\Ext\DOMDataUtils;
 use Wikimedia\Parsoid\Ext\DOMUtils;
 use Wikimedia\Parsoid\Ext\ExtensionTagHandler;
 use Wikimedia\Parsoid\Ext\ParsoidExtensionAPI;
-use Wikimedia\Parsoid\Ext\WTUtils;
 use Wikimedia\Parsoid\Utils\DOMCompat;
 
 /**
@@ -19,7 +19,9 @@ use Wikimedia\Parsoid\Utils\DOMCompat;
 class Ref extends ExtensionTagHandler {
 
 	/** @inheritDoc */
-	public function sourceToDom( ParsoidExtensionAPI $extApi, string $txt, array $extArgs ) {
+	public function sourceToDom(
+		ParsoidExtensionAPI $extApi, string $txt, array $extArgs
+	): ?DocumentFragment {
 		// Drop nested refs entirely, unless we've explicitly allowed them
 		$parentExtTag = $extApi->parentExtTag();
 		if ( $parentExtTag === 'ref' && empty( $extApi->parentExtTagOpts()['allowNestedRef'] ) ) {
@@ -55,31 +57,24 @@ class Ref extends ExtensionTagHandler {
 
 	/** @inheritDoc */
 	public function lintHandler(
-		ParsoidExtensionAPI $extApi, DOMElement $ref, callable $defaultHandler
-	): ?DOMNode {
-		// Don't lint the content of ref in ref, since it can lead to cycles
-		// using named refs
-		if ( WTUtils::fromExtensionContent( $ref, 'references' ) ) {
-			return $ref->nextSibling;
-		}
-		// Ignore content from reference errors
-		if ( DOMUtils::hasTypeOf( $ref, 'mw:Error' ) ) {
-			return $ref->nextSibling;
-		}
-		$refFirstChild = $ref->firstChild;
-		DOMUtils::assertElt( $refFirstChild );
-		$linkBackId = preg_replace( '/[^#]*#/', '', $refFirstChild->getAttribute( 'href' ), 1 );
-		$refNode = $ref->ownerDocument->getElementById( $linkBackId );
-		if ( $refNode ) {
-			// Ex: Buggy input wikitext without ref content
-			$defaultHandler( $refNode->lastChild );
+		ParsoidExtensionAPI $extApi, Element $ref, callable $defaultHandler
+	): ?Node {
+		$dataMw = DOMDataUtils::getDataMw( $ref );
+		if ( is_string( $dataMw->body->html ?? null ) ) {
+			$fragment = $extApi->htmlToDom( $dataMw->body->html );
+			$defaultHandler( $fragment );
+		} elseif ( is_string( $dataMw->body->id ?? null ) ) {
+			$refNode = DOMCompat::getElementById( $extApi->getTopLevelDoc(), $dataMw->body->id );
+			if ( $refNode ) {
+				$defaultHandler( $refNode );
+			}
 		}
 		return $ref->nextSibling;
 	}
 
 	/** @inheritDoc */
 	public function domToWikitext(
-		ParsoidExtensionAPI $extApi, DOMElement $node, bool $wrapperUnmodified
+		ParsoidExtensionAPI $extApi, Element $node, bool $wrapperUnmodified
 	) {
 		$startTagSrc = $extApi->extStartTagToWikitext( $node );
 		$dataMw = DOMDataUtils::getDataMw( $node );
@@ -99,40 +94,37 @@ class Ref extends ExtensionTagHandler {
 			$src = $extApi->htmlToWikitext( $html2wtOpts, $dataMw->body->html );
 		} elseif ( is_string( $dataMw->body->id ?? null ) ) {
 			// If the body isn't contained in data-mw.body.html, look if
-			// there's an element pointed to by body.id.
-			$bodyElt = DOMCompat::getElementById( $node->ownerDocument, $dataMw->body->id );
-			$editedDoc = $extApi->getPageConfig()->editedDoc ?? null;
-			if ( !$bodyElt && $editedDoc ) {
-				// Try to get to it from the top-level page.
-				// This can happen when the <ref> is inside another extension,
-				// most commonly inside <references>.
-				// The recursive call to serializeDOM puts us inside a new document.
-				$bodyElt = DOMCompat::getElementById( $editedDoc, $dataMw->body->id );
-			}
+			// there's an element pointed to by body->id.
+			$bodyElt = DOMCompat::getElementById( $extApi->getTopLevelDoc(), $dataMw->body->id );
+
+			// So far, this is specified for Cite and relies on the "id"
+			// referring to an element in the top level dom, even though the
+			// <ref> itself may be in embedded content,
+			// https://www.mediawiki.org/wiki/Specs/HTML/Extensions/Cite#Ref_and_References
+			// FIXME: This doesn't work if the <references> section
+			// itself is in embedded content, since we aren't traversing
+			// in there.
 
 			// If we couldn't find a body element, this is a bug.
 			// Add some extra debugging for the editing client (ex: VisualEditor)
 			if ( !$bodyElt ) {
 				$extraDebug = '';
 				$firstA = DOMCompat::querySelector( $node, 'a[href]' );
-				$href = $firstA->getAttribute( 'href' );
-				if ( $firstA && preg_match( '/^#/', $href ) ) {
-					try {
-						$ref = DOMCompat::querySelector( $node->ownerDocument, $href );
-						if ( $ref ) {
-							$extraDebug .= ' [own doc: ' . DOMCompat::getOuterHTML( $ref ) . ']';
+				if ( $firstA ) {
+					$href = $firstA->getAttribute( 'href' ) ?? '';
+					if ( str_starts_with( $href, '#' ) ) {
+						try {
+							$ref = DOMCompat::querySelector( $extApi->getTopLevelDoc(), $href );
+							if ( $ref ) {
+								$extraDebug .= ' [doc: ' . DOMCompat::getOuterHTML( $ref ) . ']';
+							}
+						} catch ( Exception $e ) {
+							// We are just providing VE with debugging info.
+							// So, ignore all exceptions / errors in this code.
 						}
-						$ref = DOMCompat::querySelector( $editedDoc, $href );
-						if ( $ref ) {
-							$extraDebug .= ' [main doc: ' . DOMCompat::getOuterHTML( $ref ) . ']';
+						if ( !$extraDebug ) {
+							$extraDebug = ' [reference ' . $href . ' not found]';
 						}
-					} catch ( Exception $e ) {
-						// We are just providing VE with debugging info.
-						// So, ignore all exceptions / errors in this code.
-					}
-
-					if ( !$extraDebug ) {
-						$extraDebug = ' [reference ' . $href . ' not found]';
 					}
 				}
 				$extApi->log(
@@ -145,12 +137,103 @@ class Ref extends ExtensionTagHandler {
 				return ''; // Drop it!
 			}
 
-			$src = $extApi->domToWikitext( $html2wtOpts, $bodyElt, true );
+			$hasRefName = strlen( $dataMw->attrs->name ?? '' ) > 0;
+			$hasFollow = strlen( $dataMw->attrs->follow ?? '' ) > 0;
+
+			if ( $hasFollow ) {
+				$about = $node->getAttribute( 'about' ) ?? '';
+				$followNode = DOMCompat::querySelector(
+					$bodyElt, "span[typeof~='mw:Cite/Follow'][about='{$about}']"
+				);
+				if ( $followNode ) {
+					$src = $extApi->domToWikitext( $html2wtOpts, $followNode, true );
+					$src = ltrim( $src, ' ' );
+				} else {
+					$src = '';
+				}
+			} else {
+				if ( $hasRefName ) {
+					// Follow content may have been added as spans, so drop it
+					if ( DOMCompat::querySelector( $bodyElt, "span[typeof~='mw:Cite/Follow']" ) ) {
+						$bodyElt = $bodyElt->cloneNode( true );
+						foreach ( $bodyElt->childNodes as $child ) {
+							if ( DOMUtils::hasTypeOf( $child, 'mw:Cite/Follow' ) ) {
+								// @phan-suppress-next-line PhanTypeMismatchArgumentSuperType
+								DOMCompat::remove( $child );
+							}
+						}
+					}
+				}
+
+				$src = $extApi->domToWikitext( $html2wtOpts, $bodyElt, true );
+			}
 		} else {
 			$extApi->log( 'error', 'Ref body unavailable for: ' . DOMCompat::getOuterHTML( $node ) );
 			return ''; // Drop it!
 		}
 
 		return $startTagSrc . $src . '</' . $dataMw->name . '>';
+	}
+
+	/** @inheritDoc */
+	public function diffHandler(
+		ParsoidExtensionAPI $extApi, callable $domDiff, Element $origNode,
+		Element $editedNode
+	): bool {
+		$origDataMw = DOMDataUtils::getDataMw( $origNode );
+		$editedDataMw = DOMDataUtils::getDataMw( $editedNode );
+
+		if ( isset( $origDataMw->body->html ) && isset( $editedDataMw->body->html ) ) {
+			$origFragment = $extApi->htmlToDom(
+				$origDataMw->body->html, $origNode->ownerDocument,
+				[ 'markNew' => true ]
+			);
+			$editedFragment = $extApi->htmlToDom(
+				$editedDataMw->body->html, $editedNode->ownerDocument,
+				[ 'markNew' => true ]
+			);
+			return call_user_func( $domDiff, $origFragment, $editedFragment );
+		} elseif ( isset( $origDataMw->body->id ) && isset( $editedDataMw->body->id ) ) {
+			$origId = $origDataMw->body->id;
+			$editedId = $editedDataMw->body->id;
+
+			// So far, this is specified for Cite and relies on the "id"
+			// referring to an element in the top level dom, even though the
+			// <ref> itself may be in embedded content,
+			// https://www.mediawiki.org/wiki/Specs/HTML/Extensions/Cite#Ref_and_References
+			// FIXME: This doesn't work if the <references> section
+			// itself is in embedded content, since we aren't traversing
+			// in there.
+			$origHtml = DOMCompat::getElementById( $origNode->ownerDocument, $origId );
+			$editedHtml = DOMCompat::getElementById( $editedNode->ownerDocument, $editedId );
+
+			if ( $origHtml && $editedHtml ) {
+				return call_user_func( $domDiff, $origHtml, $editedHtml );
+			} else {
+				// Log error
+				if ( !$origHtml ) {
+					$extApi->log(
+						'error/domdiff/orig/ref',
+						"extension src id {$origId} points to non-existent element for:",
+						DOMCompat::getOuterHTML( $origNode )
+					);
+				}
+				if ( !$editedHtml ) {
+					$extApi->log(
+						// use info level to avoid logspam for CX edits where translated
+						// docs might reference nodes not copied over from orig doc.
+						'info/domdiff/edited/ref',
+						"extension src id {$editedId} points to non-existent element for:",
+						DOMCompat::getOuterHTML( $editedNode )
+					);
+				}
+			}
+		}
+
+		// FIXME: Similar to DOMDiff::subtreeDiffers, maybe $editNode should
+		// be marked as inserted to avoid losing any edits, at the cost of
+		// more normalization
+
+		return false;
 	}
 }

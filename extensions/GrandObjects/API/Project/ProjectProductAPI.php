@@ -26,7 +26,7 @@ class ProjectProductAPI extends RESTAPI {
                 header('Content-Type: text/plain');
                 $collection = new Collection($products);
                 echo implode("", $collection->pluck('toBibTeX()'));
-                exit;
+                close();
             }
             return json_encode($json);
         }
@@ -58,7 +58,7 @@ class ProjectProductAPI extends RESTAPI {
     
     function doPOST(){
         global $wgUser;
-        if($wgUser->isLoggedIn()){
+        if($wgUser->isRegistered()){
             if($this->getParam(0) == "project"){
                 $project = Project::newFromId($this->getParam('id'));
                 $product = Paper::newFromId($this->getParam('productId'));
@@ -100,7 +100,7 @@ class ProjectProductAPI extends RESTAPI {
     
     function doDELETE(){
         global $wgUser;
-        if($wgUser->isLoggedIn()){
+        if($wgUser->isRegistered()){
             if($this->getParam(0) == "project"){
                 $project = Project::newFromId($this->getParam('id'));
                 $product = Paper::newFromId($this->getParam('productId'));

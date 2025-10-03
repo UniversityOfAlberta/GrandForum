@@ -9,8 +9,9 @@ namespace Wikimedia\Parsoid\Wt2Html\TT;
 
 use DateTime;
 use DateTimeZone;
-use stdClass;
 use Wikimedia\Parsoid\Config\Env;
+use Wikimedia\Parsoid\Core\Sanitizer;
+use Wikimedia\Parsoid\NodeData\DataParsoid;
 use Wikimedia\Parsoid\Tokens\EndTagTk;
 use Wikimedia\Parsoid\Tokens\KV;
 use Wikimedia\Parsoid\Tokens\SelfclosingTagTk;
@@ -290,7 +291,7 @@ class ParserFunctions {
 	public function pf_iferror( $token, Frame $frame, Params $params ): array {
 		$args = $params->args;
 		$target = $args[0]->k;
-		if ( array_search( 'class="error"', $target, true ) !== false ) {
+		if ( in_array( 'class="error"', $target, true ) ) {
 			return $this->expandKV( $args[1], $frame );
 		} else {
 			return $this->expandKV( $args[1], $frame, $target );
@@ -394,7 +395,7 @@ class ParserFunctions {
 		// Check http://www.mediawiki.org/wiki/Extension:TagParser for more info
 		// about the #tag parser function.
 		$target = $args[0]->k;
-		if ( !$target || $target === '' ) {
+		if ( !$target ) {
 			return [];
 		} else {
 			// remove tag-name
@@ -405,25 +406,24 @@ class ParserFunctions {
 	}
 
 	private function tag_worker( $target, array $kvs ) {
-		$contentToks = [];
+		$tagTk = new TagTk( $target );
+		$toks = [ $tagTk ];
 		$tagAttribs = [];
 		foreach ( $kvs as $kv ) {
 			if ( $kv->k === '' ) {
 				if ( is_array( $kv->v ) ) {
-					$contentToks = array_merge( $contentToks, $kv->v );
+					PHPUtils::pushArray( $toks, $kv->v );
 				} else {
-					$contentToks[] = $kv->v;
+					$toks[] = $kv->v;
 				}
 			} else {
 				$tagAttribs[] = $kv;
 			}
 		}
 
-		return array_merge(
-			[ new TagTk( $target, $tagAttribs ) ],
-			$contentToks,
-			[ new EndTagTk( $target ) ]
-		);
+		$tagTk->attribs = $tagAttribs;
+		$toks[] = new EndTagTk( $target );
+		return $toks;
 	}
 
 	public function pf_currentyear( $token, Frame $frame, Params $params ): array {
@@ -594,7 +594,7 @@ class ParserFunctions {
 		foreach ( $args as $item ) {
 			// FIXME: we are swallowing all errors
 			$res = $this->expandKV( $item, $frame, '', 'text/x-mediawiki/expanded', false );
-			$accum = array_merge( $accum, $res );
+			PHPUtils::pushArray( $accum, $res );
 		}
 
 		return [
@@ -708,12 +708,15 @@ class ParserFunctions {
 
 	private function encodeCharEntity( string $c, array &$tokens ) {
 		$enc = Utils::entityEncodeAll( $c );
+		$dp = new DataParsoid;
+		$dp->src = $enc;
+		$dp->srcContent = $c;
 		$tokens[] = new TagTk( 'span',
 			[ new KV( 'typeof', 'mw:Entity' ) ],
-			(object)[ 'src' => $enc, 'srcContent' => $c ]
+			$dp
 		);
 		$tokens[] = $c;
-		$tokens[] = new EndTagTk( 'span', [], new stdClass );
+		$tokens[] = new EndTagTk( 'span', [], new DataParsoid );
 	}
 
 	public function pf_anchorencode( $token, Frame $frame, Params $params ): array {
@@ -848,7 +851,7 @@ class ParserFunctions {
 
 	public function pf_server( $token, Frame $frame, Params $params ): array {
 		$args = $params->args;
-		$dataAttribs = Utils::clone( $token->dataAttribs );
+		$dataAttribs = $token->dataAttribs->clone();
 		return [
 			new TagTk( 'a', [
 					new KV( 'rel', 'nofollow' ),
@@ -896,6 +899,10 @@ class ParserFunctions {
 				]
 			)
 		];
+	}
+
+	public function pf_equal( $token, Frame $frame, Params $params ): array {
+		return [ '=' ];
 	}
 
 	// TODO: #titleparts, SUBJECTPAGENAME, BASEPAGENAME. SUBPAGENAME, DEFAULTSORT

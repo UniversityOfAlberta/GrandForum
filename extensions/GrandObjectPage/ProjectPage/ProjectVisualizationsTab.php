@@ -68,7 +68,7 @@ class ProjectVisualizationsTab extends AbstractTab {
     
     function showTimeline($project, $visibility){
         global $wgServer, $wgScriptPath, $wgTitle, $wgOut, $wgUser;
-        if($wgUser->isLoggedIn()){
+        if($wgUser->isRegistered()){
             $dataUrl = "$wgServer$wgScriptPath/index.php/{$wgTitle->getNSText()}:{$wgTitle->getText()}?action=getProjectTimelineData&project={$project->getId()}";
             $timeline = new VisTimeline($dataUrl);
             
@@ -94,7 +94,7 @@ class ProjectVisualizationsTab extends AbstractTab {
     
     function showDoughnut($project, $visibility){
         global $wgServer, $wgScriptPath, $wgTitle, $wgOut, $wgUser;
-        if($wgUser->isLoggedIn()){
+        if($wgUser->isRegistered()){
             $dataUrl = "$wgServer$wgScriptPath/index.php/{$wgTitle->getNSText()}:{$wgTitle->getText()}?action=getProjectDoughnutData&project={$project->getId()}";
             $doughnut = new Doughnut($dataUrl);
             $wgOut->addScript("<script type='text/javascript'>
@@ -116,7 +116,7 @@ class ProjectVisualizationsTab extends AbstractTab {
     
     function showChord($project, $visibility){
         global $wgServer, $wgScriptPath, $wgTitle, $wgOut, $wgUser;
-        if($wgUser->isLoggedIn()){
+        if($wgUser->isRegistered()){
             $dataUrl = "$wgServer$wgScriptPath/index.php/{$wgTitle->getNSText()}:{$wgTitle->getText()}?action=getProjectChordData&project={$project->getId()}";
             $chord = new Chord($dataUrl);
             $wgOut->addScript("<script type='text/javascript'>
@@ -138,7 +138,7 @@ class ProjectVisualizationsTab extends AbstractTab {
     
     function showWordle($project, $visibility){
         global $wgServer, $wgScriptPath, $wgTitle, $wgOut, $wgUser;
-        if($wgUser->isLoggedIn()){
+        if($wgUser->isRegistered()){
             $dataUrl = "$wgServer$wgScriptPath/index.php/{$wgTitle->getNSText()}:{$wgTitle->getText()}?action=getProjectWordleData&project={$project->getId()}&limit=250";
             $wordle = new Wordle($dataUrl);
             $wordle->width = "100%";
@@ -226,7 +226,7 @@ class ProjectVisualizationsTab extends AbstractTab {
             $array['items'] = $items;
             $array['groups'] = $groups;
             echo json_encode($array);
-            exit;
+            close();
         }
         return true;
     }
@@ -312,7 +312,7 @@ class ProjectVisualizationsTab extends AbstractTab {
             
             header("Content-Type: application/json");
             echo json_encode(array($array));
-            exit;
+            close();
         }
         return true;
 	}
@@ -468,7 +468,7 @@ class ProjectVisualizationsTab extends AbstractTab {
 
             header("Content-Type: application/json");
             echo json_encode($array);
-            exit;
+            close();
         }
         return true;
 	}
@@ -501,7 +501,7 @@ class ProjectVisualizationsTab extends AbstractTab {
             }
             header("Content-Type: application/json");
             echo json_encode($data);
-            exit;
+            close();
         }
         return true;
 	}

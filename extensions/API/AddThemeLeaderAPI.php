@@ -32,11 +32,11 @@ class AddThemeLeaderAPI extends API{
             if(!$noEcho){
                 if($person->getName() == null){
                     echo "There is no person by the name of '{$_POST['name']}'\n";
-                    exit;
+                    close();
                 }
                 else if($theme >= 1 && $theme <= 5){
                     echo "There is no theme by the number of '{$_POST['theme']}'\n";
-                    exit;
+                    close();
                 }
             }
             // Add entry into grand_theme_leaders

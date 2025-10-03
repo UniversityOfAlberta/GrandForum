@@ -11,10 +11,14 @@ use Wikimedia\TestingAccessWrapper;
  */
 class SiteConfigTest extends \PHPUnit\Framework\TestCase {
 
-	/** @return MockObject|SiteConfig */
+	/**
+	 * @param array $methods Subset of methods to mock.
+	 *
+	 * @return MockObject|SiteConfig
+	 */
 	private function getSiteConfig( array $methods = [] ) {
 		return $this->getMockBuilder( SiteConfig::class )
-			->setMethods( $methods )
+			->onlyMethods( $methods )
 			->getMockForAbstractClass();
 	}
 
@@ -47,12 +51,12 @@ class SiteConfigTest extends \PHPUnit\Framework\TestCase {
 	/**
 	 * @dataProvider provideMakeExtResourceURL
 	 */
-	public function testMakeExtResourceURL( $match, $href, $content, $expect ) {
+	public function testMakeExtResourceURL( array $match, string $href, string $content, string $expect ) {
 		$siteConfig = $this->getSiteConfig();
 		$this->assertSame( $expect, $siteConfig->makeExtResourceURL( $match, $href, $content ) );
 	}
 
-	public function provideMakeExtResourceURL() {
+	public function provideMakeExtResourceURL(): array {
 		return [
 			[
 				[ 'ISBN', '9780615720302' ], './Special:Booksources/9780615720302', 'ISBN 978-0615720302',
@@ -188,4 +192,205 @@ class SiteConfigTest extends \PHPUnit\Framework\TestCase {
 		);
 	}
 
+	/**
+	 * @dataProvider provideProtocolMethods
+	 */
+	public function testProtocolMethods( $link, $expectHas, $expectFind ) {
+		$siteConfig = $this->getSiteConfig( [ 'getProtocols' ] );
+		$siteConfig->method( 'getProtocols' )->willReturn( [ 'https' ] );
+
+		$this->assertSame( $expectHas, $siteConfig->hasValidProtocol( $link ) );
+		$this->assertSame( $expectFind, $siteConfig->findValidProtocol( $link ) );
+	}
+
+	public function provideProtocolMethods() {
+		return [
+			[ 'http://wikipedia.org',                       false, false ],
+			[ 'https://wikipedia.org',                      true, true ],
+			[ 'ftp://ftp.something.net',                    false, false ],
+			[ 'something http://wikipedia.org',             false, false ],
+			[ 'something https://wikipedia.org',            false, true ],
+			[ 'something ftp://ftp.something.net',          false, false ],
+			[ 'http://wikipedia.org https://wikipedia.org', false, true ],
+			[ 'https://wikipedia.org http://wikipedia.org', true, true ],
+		];
+	}
+
+	public function mockSpecialPageAlias( $specialPage ) {
+		if ( $specialPage === 'Booksources' ) {
+			return [ 'Booksources', 'BookSources' ]; // Mock value
+		} else {
+			throw new \BadMethodCallException( 'Not implemented' );
+		}
+	}
+
+	/**
+	 * @dataProvider provideGetResourceURLPatternMatcher
+	 */
+	public function testGetResourceURLPatternMatcher( $input, $res ) {
+		// Alternatively, we can construct a MockSiteConfig object and use it since
+		// it delegates all the work of the method under test to the base class.
+		// But, this technique is probably more resilient in case MockSiteConfig changes.
+		$siteConfig = $this->getSiteConfig( [ 'getSpecialNSAliases', 'getSpecialPageAliases' ] );
+		$siteConfig->method( 'getSpecialNSAliases' )->willReturn( [ 'Special', 'special' ] );
+		$siteConfig->method( 'getSpecialPageAliases' )->
+			will( $this->returnCallBack( [ $this, 'mockSpecialPageAlias' ] ) );
+
+		$matcher = $siteConfig->getExtResourceURLPatternMatcher();
+		$this->assertSame( $res, $matcher( $input ) );
+	}
+
+	public function provideGetResourceURLPatternMatcher() {
+		$isbnTests = [
+			[ "Special:BookSources/1234567890X",      [ 'ISBN', '1234567890X' ] ],
+			[ "Special:Booksources/1234567890X",      [ 'ISBN', '1234567890X' ] ],
+			[ "special:BookSources/1234567890X",      [ 'ISBN', '1234567890X' ] ],
+			[ "special:Booksources/1234567890X",      [ 'ISBN', '1234567890X' ] ],
+			[ "Special:BookSources/1234567890x",      [ 'ISBN', '1234567890x' ] ],
+			[ "Special:BookSources/1234567890",       [ 'ISBN', '1234567890' ] ],
+			[ "../Special:BookSources/1234567890",    [ 'ISBN', '1234567890' ] ],
+			[ "../../Special:BookSources/1234567890", [ 'ISBN', '1234567890' ] ],
+			[ "SPECIAL:BOOKSOURCES/1234567890",       [ 'ISBN', '1234567890' ] ], // see the ?i flag
+			[ "Special:BookSources/1234567890Y",      false ],
+			[ "special:boksources/1234567890",        false ],
+			[ "Notspecial:Booksources/1234567890",    false ],
+		];
+		$pmidTests = [
+			[ "//www.ncbi.nlm.nih.gov/pubmed/covid19?dopt=Abstract",        [ 'PMID', 'covid19' ] ],
+			[ "https://www.ncbi.nlm.nih.gov/pubmed/covid19?dopt=Abstract",  [ 'PMID', 'covid19' ] ],
+			[ "http://www.ncbi.nlm.nih.gov/pubmed/covid19?dopt=Abstract",   [ 'PMID', 'covid19' ] ],
+			[ "http://www.ncbi.nlm.nih.gov/pubmed/covid19",                 false ],
+			// FIXME T257629: Strange that our code treats "foobar://" as "foobar:" + "//"
+			[ "foobar://www.ncbi.nlm.nih.gov/pubmed/covid19?dopt=Abstract", [ 'PMID', 'covid19' ] ],
+			[ "http://www.ncbi.nlm.nih.gov/pubmed/covid19?dopt=Abstract&something_more",  false ],
+		];
+		$rfcTests = [
+			[ "//tools.ietf.org/html/rfc1234",        [ 'RFC', '1234' ] ],
+			[ "https://tools.ietf.org/html/rfc1234",  [ 'RFC', '1234' ] ],
+			[ "http://tools.ietf.org/html/rfc1234",   [ 'RFC', '1234' ] ],
+			// FIXME T257629: Strange that our code accepts RFCs with "_" and doesn't have more validity checking
+			// but, magic links are on the way out anyway.
+			[ "http://tools.ietf.org/html/rfc_1234",  [ 'RFC', '_1234' ] ],
+			// FIXME T257629: Strange that our code treats "foobar://" as "foobar:" + "//"
+			[ "foobar://tools.ietf.org/html/rfc1234", [ 'RFC', '1234' ] ],
+			[ "http://tools.ietf.org/html/RFC1234",   false ],
+			[ "http://tools.ietf.org/json/rfc1234",   false ],
+		];
+
+		return array_merge( $isbnTests, $pmidTests, $rfcTests );
+	}
+
+	private function setupMagicWordTestConfig(): SiteConfig {
+		$mws = [
+			"img_lossy"     => [ true, "lossy=$1" ],
+			"numberofwikis" => [ false, "numberofwikis" ], // variable
+			"lcfirst"       => [ false, "LCFIRST:" ], // is a no-hash function hook
+			"expr"          => [ false, "expr" ], // function hook with valid hashed version
+			"noglobal"      => [ true, "__NOGLOBAL__" ],
+			"defaultsort"   => [ true, "DEFAULTSORT:", "DEFAULTSORTKEY:", "DEFAULTCATEGORYSORT:" ],
+		];
+		// computed based on magicword array above
+		$functionSyns = [
+			"0" => [ "#expr" => "expr", "lcfirst" => "lcfirst" ],
+		];
+		$vars = [ "numberofwikis" ];
+		$siteConfig = $this->getSiteConfig( [
+			'getMagicWords', 'getFunctionSynonyms', 'getVariableIDs'
+		] );
+		$siteConfig->method( 'getMagicWords' )->willReturn( $mws );
+		$siteConfig->method( 'getFunctionSynonyms' )->willReturn( $functionSyns );
+		$siteConfig->method( 'getVariableIDs' )->willReturn( $vars );
+
+		return $siteConfig;
+	}
+
+	public function testMagicWords() {
+		// FIXME: Given that Parsoid proxies {{..}} wikitext to core for expansion,
+		// some of these tests don't mean a while lot right now. There are known
+		// bugs in SiteConfig right now.
+		$siteConfig = $this->setupMagicWordTestConfig();
+		// Expected results
+		$mwMap = [
+			'lossy=$1'             => [ true, 'img_lossy' ],
+			'numberofwikis'        => [ false, 'numberofwikis' ],
+			'lcfirst:'             => [ false, 'lcfirst' ],
+			'expr'                 => [ false, 'expr' ],
+			'__NOGLOBAL__'         => [ true, 'noglobal' ],
+			'DEFAULTSORT:'         => [ true, 'defaultsort' ],
+			'DEFAULTSORTKEY:'      => [ true, 'defaultsort' ],
+			'DEFAULTCATEGORYSORT:' => [ true, 'defaultsort' ]
+		];
+		$this->assertSame( $mwMap, $siteConfig->magicWords() );
+	}
+
+	public function testMwAliases() {
+		// FIXME: Given that Parsoid proxies {{..}} wikitext to core for expansion,
+		// some of these tests don't mean a while lot right now. There are known
+		// bugs in SiteConfig right now. (T257629)
+		$siteConfig = $this->setupMagicWordTestConfig();
+		$aliases = [
+			// FIXME: Should the magic word code be de-duping the aliases array?
+			"img_lossy"     => [ "lossy=$1" ],
+			"numberofwikis" => [ "numberofwikis", "numberofwikis" ],
+			"lcfirst"       => [ "LCFIRST:", "lcfirst:" ],
+			"expr"          => [ "expr", "expr" ],
+			"noglobal"      => [ "__NOGLOBAL__" ],
+			"defaultsort"   => [ "DEFAULTSORT:", "DEFAULTSORTKEY:", "DEFAULTCATEGORYSORT:" ],
+		];
+		$this->assertSame( $aliases, $siteConfig->mwAliases() );
+	}
+
+	/**
+	 * @dataProvider provideGetMagicWordForFunctionHooks
+	 */
+	public function testGetMagicWordForFunctionHooks( $input, $res ) {
+		$siteConfig = $this->setupMagicWordTestConfig();
+		$this->assertSame( $res, $siteConfig->getMagicWordForFunctionHook( $input ) );
+	}
+
+	public function provideGetMagicWordForFunctionHooks() {
+		return [
+			[ "LCFIRST" , "lcfirst" ],
+			[ "lcfirst" , "lcfirst" ],
+			[ "#expr"   , "expr" ],
+			[ "#EXPR"   , "expr" ],
+			[ "expr"    , null ],
+			[ "expr:"    , null ],
+			[ "#expr:"    , null ],
+			[ "lcfirst:", null ],
+			[ "#lcfirst", null ],
+		];
+	}
+
+	/**
+	 * @dataProvider provideGetMagicWordForVariable
+	 */
+	public function testGetMagicWordForVariable( $input, $res ) {
+		$siteConfig = $this->setupMagicWordTestConfig();
+		$this->assertSame( $res, $siteConfig->getMagicWordForVariable( $input ) );
+	}
+
+	public function provideGetMagicWordForVariable() {
+		return [
+			[ "numberofwikis" , "numberofwikis" ],
+			[ "NUMBEROFWIKIS" , null ],
+			[ "numberofadmins", null ],
+		];
+	}
+
+	/**
+	 * @dataProvider provideLinkTrailRegex
+	 */
+	public function testLinkTrailRegex( $input, $res ) {
+		$siteConfig = $this->getSiteConfig( [ 'linkTrail' ] );
+		$siteConfig->method( 'linkTrail' )->willReturn( $input );
+		$this->assertSame( $res, $siteConfig->linkTrailRegex() );
+	}
+
+	public function provideLinkTrailRegex() {
+		return [
+			[ '/^([a-z]+)(.*)$/sD', '/^([a-z]+)/sD' ], // enwiki
+			[ '/^()(.*)$/sD'      , null ] // zhwiki
+		];
+	}
 }

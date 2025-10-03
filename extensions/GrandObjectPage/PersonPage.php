@@ -19,12 +19,12 @@ class PersonPage {
         $referrer = @$_SERVER['HTTP_REFERER'];
         $cameFromWebsite = (@strstr($referrer, $config->getValue('networkSite')) !== false ||
                             @strstr($referrer, $config->getValue('domain')) !== false);
-        if($config->getValue('guestLockdown') && !$cameFromWebsite && !$user->isLoggedIn()){
+        if($config->getValue('guestLockdown') && !$cameFromWebsite && !$user->isRegistered()){
             $result = false;
             return true;
         }
         if($name == HQP){
-            $result = $user->isLoggedIn() || $config->getValue('hqpIsPublic');
+            $result = $user->isRegistered() || $config->getValue('hqpIsPublic');
         }
         return true;
     }
@@ -152,7 +152,7 @@ class PersonPage {
                         }
                         $tabbedPage->addTab(new HQPDocsTab($person, $visibility));
                     }
-                    if($wgUser->isLoggedIn() && $person->isRoleDuring(HQP, '0000-00-00 00:00:00', '2100-00-00 00:00:00')){
+                    if($wgUser->isRegistered() && $person->isRoleDuring(HQP, '0000-00-00 00:00:00', '2100-00-00 00:00:00')){
                         $tabbedPage->addTab(new HQPExitTab($person, $visibility));
                     }
                     if($config->getValue('projectsEnabled')){
@@ -183,7 +183,7 @@ class PersonPage {
                 self::showTitle($person, $visibility);
                 $wgOut->output();
                 $wgOut->disable();
-                exit;
+                close();
             }
             else if($person != null && 
                     $person->getName() != null && 
@@ -200,7 +200,7 @@ class PersonPage {
                 }
                 $wgOut->output();
                 $wgOut->disable();
-                exit;
+                close();
             }
             else if(array_search($role, $wgRoles) !== false && $wgTitle->getText() != "Mail Index" && strstr($wgTitle->getText(), "MAIL ") === false){
                 // User does not exist
@@ -210,7 +210,7 @@ class PersonPage {
                 $wgOut->addHTML("There is no user '$role:$name'");
                 $wgOut->output();
                 $wgOut->disable();
-                exit;
+                close();
             }
             else if($wgTitle->getText() == "Mail Index"){
                 TabUtils::clearActions();

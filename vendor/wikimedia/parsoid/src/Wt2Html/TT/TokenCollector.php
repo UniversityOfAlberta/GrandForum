@@ -4,6 +4,7 @@ declare( strict_types = 1 );
 namespace Wikimedia\Parsoid\Wt2Html\TT;
 
 use Wikimedia\Assert\Assert;
+use Wikimedia\Parsoid\NodeData\DataParsoid;
 use Wikimedia\Parsoid\Tokens\EndTagTk;
 use Wikimedia\Parsoid\Tokens\EOFTk;
 use Wikimedia\Parsoid\Tokens\KV;
@@ -17,16 +18,12 @@ use Wikimedia\Parsoid\Wt2Html\TokenTransformManager;
 /**
  * Small utility class that encapsulates the common 'collect all tokens
  * starting from a token of type x until token of type y or (optionally) the
- * end-of-input'. Only supported for synchronous in-order transformation
- * stages (SyncTokenTransformManager), as async out-of-order expansions
- * would wreak havoc with this kind of collector.
+ * end-of-input'.
  */
 abstract class TokenCollector extends TokenHandler {
-	protected $onAnyEnabled;
 	protected $scopeStack;
 
 	/**
-	 * TokenCollector constructor.
 	 * @param TokenTransformManager $manager manager enviroment
 	 * @param array $options various configuration options
 	 */
@@ -55,31 +52,37 @@ abstract class TokenCollector extends TokenHandler {
 	abstract protected function toEnd(): bool;
 
 	/**
-	 * FIXME: Document this
+	 * Whether to transform unmatched end tags. If this returns true,
+	 * unbalanced end tags will be passed to transform(). If it returns false,
+	 * they will be left in the token stream unmodified.
+	 *
 	 * @return bool
 	 */
 	abstract protected function ackEnd(): bool;
 
 	/**
-	 * FIXME: Document this
+	 * When an end delimiter is found, this function is called with the
+	 * collected token array including the start and end delimiters. The
+	 * subclass should transform it and return the result.
+	 *
 	 * @param array $array
-	 * @return array
+	 * @return TokenHandlerResult
 	 */
-	abstract protected function transformation( array $array ): array;
+	abstract protected function transformation( array $array ): TokenHandlerResult;
 
 	/**
 	 * Handle the delimiter token.
 	 * XXX: Adjust to sync phase callback when that is modified!
 	 * @param Token $token
-	 * @return array
+	 * @return TokenHandlerResult|null
 	 */
-	private function onDelimiterToken( Token $token ) : array {
+	private function onDelimiterToken( Token $token ): ?TokenHandlerResult {
 		$haveOpenTag = count( $this->scopeStack ) > 0;
 		if ( $token instanceof TagTk ) {
 			if ( count( $this->scopeStack ) === 0 ) {
 				$this->onAnyEnabled = true;
 				// Set up transforms
-				$this->manager->env->log( 'debug', 'starting collection on ', $token );
+				$this->env->log( 'debug', 'starting collection on ', $token );
 			}
 
 			// Push a new scope
@@ -87,48 +90,54 @@ abstract class TokenCollector extends TokenHandler {
 			$this->scopeStack[] = &$newScope;
 			$newScope[] = $token;
 
-			return [];
+			return new TokenHandlerResult( [] );
 		} elseif ( $token instanceof SelfclosingTagTk ) {
 			// We need to handle <ref /> for example, so call the handler.
 			return $this->transformation( [ $token, $token ] );
 		} elseif ( $haveOpenTag ) {
 			// EOFTk or EndTagTk
-			$this->manager->env->log( 'debug', 'finishing collection on ', $token );
+			$this->env->log( 'debug', 'finishing collection on ', $token );
 
 			// Pop top scope and push token onto it
 			$activeTokens = array_pop( $this->scopeStack );
 			$activeTokens[] = $token;
 
-			// clean up
-			if ( count( $this->scopeStack ) === 0 || $token instanceof EOFTk ) {
-				$this->onAnyEnabled = false;
-			}
-
 			if ( $token instanceof EndTagTk ) {
-				// Transformation can be either sync or async, but receives all collected
-				// tokens instead of a single token.
-				return $this->transformation( $activeTokens );
-				// XXX sync version: return tokens
+				// Transformation receives all collected tokens instead of a single token.
+				$res = $this->transformation( $activeTokens );
+
+				if ( count( $this->scopeStack ) === 0 ) {
+					$this->onAnyEnabled = false;
+					return $res;
+				} else {
+					// Merge tokens onto parent scope and return [].
+					// Only when we hit the bottom of the stack,
+					// we will return the collapsed token stream.
+					$topScope = array_pop( $this->scopeStack );
+					array_push( $this->scopeStack, array_merge( $topScope, $res->tokens ) );
+					return new TokenHandlerResult( [] );
+				}
 			} else {
 				// EOF -- collapse stack!
 				$allToks = [];
 				for ( $i = 0,  $n = count( $this->scopeStack );  $i < $n;  $i++ ) {
-					$allToks = array_merge( $allToks, $this->scopeStack[$i] );
+					PHPUtils::pushArray( $allToks, $this->scopeStack[$i] );
 				}
-				$allToks = array_merge( $allToks, $activeTokens );
+				PHPUtils::pushArray( $allToks, $activeTokens );
 
-				$res = $this->toEnd() ? $this->transformation( $allToks ) : [ 'tokens' => $allToks ];
-				if ( isset( $res['tokens'] ) ) {
-					if ( count( $res['tokens'] )
-						&& !( PHPUtils::lastItem( $res['tokens'] ) instanceof EOFTk )
-					) {
-						$this->manager->env->log( 'error', $this::name(), 'handler dropped the EOFTk!' );
+				$res = $this->toEnd() ? $this->transformation( $allToks ) : new TokenHandlerResult( $allToks );
+				if ( $res->tokens !== null
+					&& count( $res->tokens )
+					&& !( PHPUtils::lastItem( $res->tokens ) instanceof EOFTk )
+				) {
+					$this->env->log( 'error', $this::name(), 'handler dropped the EOFTk!' );
 
-						// preserve the EOFTk
-						$res['tokens'][] = $token;
-					}
+					// preserve the EOFTk
+					$res->tokens[] = $token;
 				}
 
+				$this->scopeStack = [];
+				$this->onAnyEnabled = false;
 				return $res;
 			}
 		} else {
@@ -138,7 +147,7 @@ abstract class TokenCollector extends TokenHandler {
 				return $this->transformation( [ $token ] );
 			} else {
 				// An unbalanced end tag. Ignore it.
-				return [ 'tokens' => [ $token ] ];
+				return null;
 			}
 		}
 	}
@@ -148,12 +157,12 @@ abstract class TokenCollector extends TokenHandler {
 	 * encountering the delimiter token, and collects all tokens until the end
 	 * token is reached.
 	 * @param Token|string $token
-	 * @return array
+	 * @return TokenHandlerResult
 	 */
-	private function onAnyToken( $token ) : array {
+	private function onAnyToken( $token ): TokenHandlerResult {
 		// Simply collect anything ordinary in between
 		$this->scopeStack[count( $this->scopeStack ) - 1][] = $token;
-		return [];
+		return new TokenHandlerResult( [] );
 	}
 
 	/**
@@ -162,23 +171,26 @@ abstract class TokenCollector extends TokenHandler {
 	 * @param string $tokenName
 	 * @param bool $isEnd
 	 * @param SourceRange $tsr
-	 * @param string|null $src
+	 * @param ?string $src
 	 * @return SelfclosingTagTk
 	 */
 	public static function buildMetaToken(
 		TokenTransformManager $manager, string $tokenName, bool $isEnd,
 		SourceRange $tsr, ?string $src
-	) : SelfclosingTagTk {
+	): SelfclosingTagTk {
 		if ( $isEnd ) {
 			$tokenName .= '/End';
 		}
 
 		$srcText = $manager->getFrame()->getSrcText();
 		$newSrc = $tsr->substr( $srcText );
+		$dp = new DataParsoid;
+		$dp->tsr = $tsr;
+		$dp->src = $newSrc;
 
 		return new SelfclosingTagTk( 'meta',
 			[ new KV( 'typeof', $tokenName ) ],
-			(object)[ 'tsr' => $tsr, 'src' => $newSrc ]
+			$dp
 		);
 	}
 
@@ -186,12 +198,13 @@ abstract class TokenCollector extends TokenHandler {
 	 * @param TokenTransformManager $manager
 	 * @param string $tokenName
 	 * @param Token $startDelim
-	 * @param Token|null $endDelim
+	 * @param ?Token $endDelim
 	 * @return SelfclosingTagTk
 	 */
 	protected static function buildStrippedMetaToken(
-		TokenTransformManager $manager, string $tokenName, Token $startDelim, ?Token $endDelim
-	) : SelfclosingTagTk {
+		TokenTransformManager $manager, string $tokenName, Token $startDelim,
+		?Token $endDelim
+	): SelfclosingTagTk {
 		$da = $startDelim->dataAttribs;
 		$tsr0 = $da ? $da->tsr : null;
 		$t0 = $tsr0 ? $tsr0->start : null;
@@ -211,21 +224,21 @@ abstract class TokenCollector extends TokenHandler {
 	/**
 	 * @inheritDoc
 	 */
-	public function onTag( Token $token ) {
-		return $token->getName() === $this::name() ? $this->onDelimiterToken( $token ) : $token;
+	public function onTag( Token $token ): ?TokenHandlerResult {
+		return $token->getName() === $this->name() ? $this->onDelimiterToken( $token ) : null;
 	}
 
 	/**
 	 * @inheritDoc
 	 */
-	public function onEnd( EOFTk $token ) {
-		return $this->onAnyEnabled ? $this->onDelimiterToken( $token ) : $token;
+	public function onEnd( EOFTk $token ): ?TokenHandlerResult {
+		return $this->onAnyEnabled ? $this->onDelimiterToken( $token ) : null;
 	}
 
 	/**
 	 * @inheritDoc
 	 */
-	public function onAny( $token ) {
+	public function onAny( $token ): ?TokenHandlerResult {
 		return $this->onAnyToken( $token );
 	}
 }

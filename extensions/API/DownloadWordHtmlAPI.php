@@ -53,7 +53,7 @@
                 . '</html>';
 
             echo $content;
-            exit;
+            close();
         }
 
         function isLoginRequired(){

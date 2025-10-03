@@ -19,8 +19,9 @@
  * @ingroup RevisionDelete
  */
 
-use MediaWiki\MediaWikiServices;
+use MediaWiki\Page\PageIdentity;
 use MediaWiki\Revision\RevisionRecord;
+use Wikimedia\Rdbms\LBFactory;
 
 /**
  * Abstract base class for a list of deletable items. The list class
@@ -34,9 +35,27 @@ use MediaWiki\Revision\RevisionRecord;
  * @method RevDelItem current()
  */
 abstract class RevDelList extends RevisionListBase {
-	public function __construct( IContextSource $context, Title $title, array $ids ) {
-		parent::__construct( $context, $title );
+
+	/** @var LBFactory */
+	private $lbFactory;
+
+	/**
+	 * @param IContextSource $context
+	 * @param PageIdentity $page
+	 * @param array $ids
+	 * @param LBFactory $lbFactory
+	 */
+	public function __construct(
+		IContextSource $context,
+		PageIdentity $page,
+		array $ids,
+		LBFactory $lbFactory
+	) {
+		parent::__construct( $context, $page );
+
+		// ids is a protected variable in RevisionListBase
 		$this->ids = $ids;
+		$this->lbFactory = $lbFactory;
 	}
 
 	/**
@@ -118,9 +137,14 @@ abstract class RevDelList extends RevisionListBase {
 		$comment = $params['comment'];
 		$perItemStatus = $params['perItemStatus'] ?? false;
 
+		// T387638 - Always ensure ->value['itemStatuses'] is set if requested
+		if ( $perItemStatus ) {
+			$status->value['itemStatuses'] = [];
+		}
+
 		// CAS-style checks are done on the _deleted fields so the select
 		// does not need to use FOR UPDATE nor be in the atomic section
-		$dbw = wfGetDB( DB_MASTER );
+		$dbw = $this->lbFactory->getMainLB()->getConnectionRef( DB_PRIMARY );
 		$this->res = $this->doQuery( $dbw );
 
 		$status->merge( $this->acquireItemLocks() );
@@ -128,7 +152,7 @@ abstract class RevDelList extends RevisionListBase {
 			return $status;
 		}
 
-		$dbw->startAtomic( __METHOD__ );
+		$dbw->startAtomic( __METHOD__, $dbw::ATOMIC_CANCELABLE );
 		$dbw->onTransactionResolution(
 			function () {
 				// Release locks on commit or error
@@ -137,14 +161,10 @@ abstract class RevDelList extends RevisionListBase {
 			__METHOD__
 		);
 
-		$missing = array_flip( $this->ids );
+		$missing = array_fill_keys( $this->ids, true );
 		$this->clearFileOps();
 		$idsForLog = [];
 		$authorActors = [];
-
-		if ( $perItemStatus ) {
-			$status->value['itemStatuses'] = [];
-		}
 
 		// For multi-item deletions, set the old/new bitfields in log_params such that "hid X"
 		// shows in logs if field X was hidden from ANY item and likewise for "unhid Y". Note the
@@ -259,8 +279,7 @@ abstract class RevDelList extends RevisionListBase {
 		$status->merge( $this->doPreCommitUpdates() );
 		if ( !$status->isOK() ) {
 			// Fatal error, such as no configured archive directory or I/O failures
-			$lbFactory = MediaWikiServices::getInstance()->getDBLoadBalancerFactory();
-			$lbFactory->rollbackMasterChanges( __METHOD__ );
+			$dbw->cancelAtomic( __METHOD__ );
 			return $status;
 		}
 
@@ -270,7 +289,7 @@ abstract class RevDelList extends RevisionListBase {
 		$this->updateLog(
 			$logType,
 			[
-				'title' => $this->title,
+				'page' => $this->page,
 				'count' => $successCount,
 				'newBits' => $virtualNewBits,
 				'oldBits' => $virtualOldBits,
@@ -315,12 +334,21 @@ abstract class RevDelList extends RevisionListBase {
 	}
 
 	/**
-	 * Reload the list data from the master DB. This can be done after setVisibility()
+	 * Reload the list data from the primary DB. This can be done after setVisibility()
 	 * to allow $item->getHTML() to show the new data.
+	 * @since 1.37
+	 */
+	public function reloadFromPrimary() {
+		$dbw = $this->lbFactory->getMainLB()->getConnectionRef( DB_PRIMARY );
+		$this->res = $this->doQuery( $dbw );
+	}
+
+	/**
+	 * @deprecated since 1.37; please use reloadFromPrimary() instead.
 	 */
 	public function reloadFromMaster() {
-		$dbw = wfGetDB( DB_MASTER );
-		$this->res = $this->doQuery( $dbw );
+		wfDeprecated( __METHOD__, '1.37' );
+		$this->reloadFromPrimary();
 	}
 
 	/**
@@ -329,7 +357,7 @@ abstract class RevDelList extends RevisionListBase {
 	 * @param array $params Associative array of parameters:
 	 *     newBits:         The new value of the *_deleted bitfield
 	 *     oldBits:         The old value of the *_deleted bitfield.
-	 *     title:           The target title
+	 *     page:            The target page reference
 	 *     ids:             The ID list
 	 *     comment:         The log comment
 	 *     authorActors:    The array of the actor IDs of the offenders
@@ -346,7 +374,7 @@ abstract class RevDelList extends RevisionListBase {
 		$logParams = $this->getLogParams( $params );
 		// Actually add the deletion log entry
 		$logEntry = new ManualLogEntry( $logType, $this->getLogAction() );
-		$logEntry->setTarget( $params['title'] );
+		$logEntry->setTarget( $params['page'] );
 		$logEntry->setComment( $params['comment'] );
 		$logEntry->setParameters( $logParams );
 		$logEntry->setPerformer( $this->getUser() );

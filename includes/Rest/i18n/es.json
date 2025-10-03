@@ -4,7 +4,10 @@
 			"DannyS712",
 			"Fitoschido",
 			"Ihojose",
-			"MarcoAurelio"
+			"MarcoAurelio",
+			"Eulalio",
+			"McDutchie",
+			"No se"
 		]
 	},
 	"rest-prefix-mismatch": "La ruta solicitada ($1) no estaba dentro de la ruta raíz ($2) de la API REST",
@@ -14,9 +17,11 @@
 	"rest-nonexistent-title-revision": "La versión especificada ($1) no existe para la página especificada ($2)",
 	"rest-nonexistent-revision": "No existe la revisión especificada ($1)",
 	"rest-nonexistent-user": "El usuario especificado ($1) no existe",
+	"rest-invalid-user": "El nombre de usuario especificado ($1) no es válido",
 	"rest-permission-denied-anon": "No accesible por usuario anónimo",
 	"rest-permission-denied-title": "El usuario no tiene permisos para leer el título ($1)",
 	"rest-permission-denied-revision": "El usuario no tiene acceso a la revisión solicitada ($1).",
+	"rest-resource-limit-exceeded": "Se excedieron los límites de recursos al procesar la solicitud.",
 	"rest-pagehistory-incompatible-params": "Los parámetros \"older_than\" y \"newer_than\" no se pueden especificar",
 	"rest-pagehistory-param-range-error": "El id de revisión debe ser mayor que 0",
 	"rest-pagehistory-timestamp-error": "No se puede recuperar la marca de tiempo para la revisión especificada ($1)",

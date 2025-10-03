@@ -1,5 +1,7 @@
 <?php
 
+use MediaWiki\MediaWikiServices;
+
 class ProjectWikiTab extends AbstractTab {
 
     var $project;
@@ -24,7 +26,7 @@ class ProjectWikiTab extends AbstractTab {
         $wgRequest->setVal("wpIgnoreWarning", true);
         $wgRequest->setVal("wpEditToken", $wgUser->getEditToken());
 
-        $upload = new SpecialUpload($wgRequest);
+        $upload = new SpecialUpload(MediaWikiServices::getInstance()->getRepoGroup());
 	    $upload->execute(null);
 	    if($upload->mLocalFile != null){
 	        $uploadName = preg_replace('/\s+/', ' ', str_replace("]", "-", str_replace("[", "-", str_replace("_", " ", ucfirst($name)))));
@@ -133,7 +135,7 @@ class ProjectWikiTab extends AbstractTab {
         foreach($pages as $page){
             if($page->getTitle()->getText() != "Main"){
                 $revId = $page->getRevIdFetched();
-                $revision = Revision::newFromId($revId);
+                $revision = MediaWikiServices::getInstance()->getRevisionLookup()->getRevisionById($revId);
 			    $date = $revision->getTimestamp();
 			    $year = substr($date, 0, 4);
 			    $month = substr($date, 4, 2);
@@ -141,7 +143,7 @@ class ProjectWikiTab extends AbstractTab {
 			    $hour = substr($date, 8, 2);
 			    $minute = substr($date, 10, 2);
 			    $second = substr($date, 12, 2);
-			    $editor = Person::newFromId($revision->getUser());
+			    $editor = Person::newFromId($revision->getUser()->getId());
 			    
 			    $this->html .= "<tr>\n";
                 $this->html .= "<td><a href='$wgServer$wgScriptPath/index.php/{$project->getName()}:".str_replace("'", "%27", "{$page->getTitle()->getText()}")."'>{$page->getTitle()->getText()}</a></td>\n";
@@ -159,7 +161,7 @@ class ProjectWikiTab extends AbstractTab {
             if($page->getTitle()->getText() != "Main"){
                 $img = $page->getPage()->getFile();
                 if($img->exists()){
-                    $editor = Person::newFromName($img->getUser());
+                    $editor = Person::newFromName(MediaWikiServices::getInstance()->getUserFactory()->newFromUserIdentity( $img->getUploader())->getId());
                     $date = $page->getTimestamp();
 			        $year = substr($date, 0, 4);
 			        $month = substr($date, 4, 2);

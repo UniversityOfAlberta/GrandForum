@@ -19,9 +19,7 @@ class ScriptUtils {
 	 */
 	private static function fetchFlagsMap( string $origFlag ): array {
 		$objFlags = explode( ',', $origFlag );
-		if ( array_search( 'selser', $objFlags ) !== false &&
-			array_search( 'wts', $objFlags ) === false
-		) {
+		if ( in_array( 'selser', $objFlags ) && !in_array( 'wts', $objFlags ) ) {
 			$objFlags[] = 'wts';
 		}
 		return array_fill_keys( $objFlags, true );
@@ -40,7 +38,6 @@ class ScriptUtils {
 				'- With one or more comma-separated flags, traces those specific phases',
 				'- Supported flags:',
 				'  * peg       : shows tokens emitted by tokenizer',
-				'  * ttm:1     : shows tokens flowing through stage 1 of the parsing pipeline',
 				'  * ttm:2     : shows tokens flowing through stage 2 of the parsing pipeline',
 				'  * ttm:3     : shows tokens flowing through stage 3 of the parsing pipeline',
 				'  * tsp       : shows tokens flowing through the TokenStreamPatcher '
@@ -50,22 +47,22 @@ class ScriptUtils {
 				'  * pre       : shows actions of the pre handler',
 				'  * p-wrap    : shows actions of the paragraph wrapper',
 				'  * html      : shows tokens that are sent to the HTML tree builder',
+				'  * remex     : shows RemexHtml\'s tree mutation events',
 				'  * dsr       : shows dsr computation on the DOM',
 				'  * tplwrap   : traces template wrapping code (currently only range overlap/nest/merge code)',
 				'  * wts       : trace actions of the regular wikitext serializer',
 				'  * selser    : trace actions of the selective serializer',
 				'  * domdiff   : trace actions of the DOM diffing code',
 				'  * wt-escape : debug wikitext-escaping',
-				'  * batcher   : trace API batch aggregation and dispatch',
 				'  * apirequest: trace all API requests',
-				'  * time      : trace times for various phases (right now, limited to DOMPP passes)',
-				'  * time/dompp: trace times for DOM Post processing passes',
+				'  * time      : trace times for various phases',
 				'',
 				'--debug enables tracing of all the above phases except Token Transform Managers',
 				'',
 				'Examples:',
 				'$ php parse.php --trace pre,p-wrap,html < foo',
-				'$ php parse.php --trace ttm:3,dsr < foo'
+				'$ php parse.php --trace ttm:3,dsr < foo',
+				''
 			]
 		);
 	}
@@ -90,15 +87,18 @@ class ScriptUtils {
 				'',
 				'  --- Dump flags for wt2html DOM passes ---',
 				'  * dom:pre-XXX       : dumps DOM before pass XXX runs',
+				'  * dom:pre-*         : dumps DOM before every pass',
 				'  * dom:post-XXX      : dumps DOM after pass XXX runs',
+				'  * dom:post-*        : dumps DOM after every pass',
 				'',
 				'    Available passes (in the order they run):',
 				'',
-				'      dpload, fostered, tb-fixups, Normalize, pwrap, ',
-				'      migrate-metas, pres, migrate-nls, dsr, tplwrap, ',
+				'      fostered, process-fixups, Normalize, pwrap, ',
+				'      media, migrate-metas, migrate-nls, dsr, tplwrap, ',
 				'      dom-unpack, pp:EXT (replace EXT with extension: Cite, Poem, etc)',
-				'      sections, heading-ids, lang-converter, Linter, ',
-				'      strip-metas, linkclasses, redlinks, downgrade',
+				'      fixups, strip-metas, lang-converter, redlinks, ',
+				'      displayspace, linkclasses, sections, convertoffsets',
+				'      i18n, cleanup',
 				'',
 				'  --- Dump flags for html2wt ---',
 				'  * dom:post-dom-diff : in selective serialization, dumps DOM after running dom diff',
@@ -106,7 +106,7 @@ class ScriptUtils {
 				"  * wt2html:limits    : dumps used resources (along with configured limits)\n",
 				"--debug dumps state at these different stages\n",
 				'Examples:',
-				'$ php parse.php --dump dom:pre-dpload,dom:pre-dsr,dom:pre-tplwrap < foo',
+				'$ php parse.php --dump dom:pre-dsr,dom:pre-tplwrap < foo',
 				'$ php parse.php --trace html --dump dom:pre-tplwrap < foo',
 				"\n"
 			]
@@ -218,7 +218,6 @@ class ScriptUtils {
 			'fetchTemplates',
 			'fetchImageInfo',
 			'expandExtensions',
-			'rtTestMode',
 			'addHTMLTemplateParameters'
 		];
 
@@ -371,11 +370,6 @@ class ScriptUtils {
 			'apiURL' => [
 				'description' => 'http path to remote API, e.g. http://en.wikipedia.org/w/api.php',
 				'default' => null
-			],
-			'rtTestMode' => [
-				'description' => 'Test in rt test mode (changes some parse & serialization strategies)',
-				'boolean' => true,
-				'default' => false
 			],
 			// handled by `setColorFlags`
 			'color' => [

@@ -62,7 +62,7 @@ class GrandAccess {
 	            $aRights[$i++] = $role->getRole().'_Wiki';
 	        }
 	    }
-	    if($user->isLoggedIn()){
+	    if($user->isRegistered()){
 	        $aRights[$i++] = "Poster";
 	        $aRights[$i++] = "Presentation";
 	    }

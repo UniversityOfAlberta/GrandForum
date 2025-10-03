@@ -15,7 +15,6 @@ use Wikimedia\Parsoid\Wt2Html\TokenTransformManager;
  */
 class IncludeOnly extends TokenCollector {
 	/**
-	 * IncludeOnly constructor.
 	 * @param TokenTransformManager $manager
 	 * @param array $options options
 	 */
@@ -53,18 +52,19 @@ class IncludeOnly extends TokenCollector {
 
 	/**
 	 * @param array $collection
-	 * @return array
+	 * @return TokenHandlerResult
 	 */
-	protected function transformation( array $collection ): array {
+	protected function transformation( array $collection ): TokenHandlerResult {
 		$start = array_shift( $collection );
 
 		// Handle self-closing tag case specially!
 		if ( $start instanceof SelfclosingTagTk ) {
+			$tsr = $start->dataAttribs->tsr ?? new SourceRange( null, null );
 			$token = TokenCollector::buildMetaToken(
 				$this->manager,
 				'mw:Includes/IncludeOnly',
 				false,
-				( $start->dataAttribs ?? (object)[ 'tsr' => new SourceRange( null, null ) ] )->tsr,
+				$tsr,
 				null
 			);
 			if ( $start->dataAttribs->src ) {
@@ -72,8 +72,7 @@ class IncludeOnly extends TokenCollector {
 				$token->addAttribute( 'data-mw', $datamw );
 			}
 			return ( $this->options['isInclude'] ) ?
-			[ 'tokens' => [] ] :
-			[ 'tokens' => [ $token ] ];
+				new TokenHandlerResult( [] ) : new TokenHandlerResult( [ $token ] );
 		}
 
 		$tokens = [];
@@ -82,8 +81,8 @@ class IncludeOnly extends TokenCollector {
 
 		if ( $this->options['isInclude'] ) {
 			// Just pass through the full collection including delimiters
-			$tokens = array_merge( $tokens, $collection );
-		} elseif ( empty( $this->options['inTemplate'] ) ) {
+			$tokens = $collection;
+		} elseif ( !$this->options['inTemplate'] ) {
 			// Content is stripped
 			// Add meta tags for open and close for roundtripping.
 			//
@@ -93,7 +92,7 @@ class IncludeOnly extends TokenCollector {
 			// and can be handled similarly by downstream handlers.
 			$name = 'mw:Includes/IncludeOnly';
 			$tokens[] = TokenCollector::buildStrippedMetaToken( $this->manager, $name,
-				$start, ( $eof ) ? null : $end );
+				$start, $eof ? null : $end );
 
 			if ( $start->dataAttribs->src ) {
 				$dataMw = PHPUtils::jsonEncode( [ 'src' => $start->dataAttribs->src ] );
@@ -105,9 +104,9 @@ class IncludeOnly extends TokenCollector {
 				// stripped token (above) got the entire tsr value, we are artificially
 				// setting the tsr on this node to zero-width to ensure that
 				// DSR computation comes out correct.
-				$tsr = ( $end->dataAttribs ?? (object)[ 'tsr' => new SourceRange( null, null ) ] )->tsr;
+				$endPos = isset( $end->dataAttribs->tsr ) ? $end->dataAttribs->tsr->end : null;
 				$tokens[] = TokenCollector::buildMetaToken( $this->manager, $name,
-					true, new SourceRange( $tsr->end, $tsr->end ), '' );
+					true, new SourceRange( $endPos, $endPos ), '' );
 			}
 		}
 
@@ -116,6 +115,6 @@ class IncludeOnly extends TokenCollector {
 			$tokens[] = $end;
 		}
 
-		return [ 'tokens' => $tokens ];
+		return new TokenHandlerResult( $tokens );
 	}
 }

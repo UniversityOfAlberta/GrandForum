@@ -3,11 +3,12 @@ declare( strict_types = 1 );
 
 namespace Wikimedia\Parsoid\Html2Wt;
 
-use DOMElement;
-use DOMNode;
 use stdClass;
-use Wikimedia\Parsoid\Config\Env;
+use Wikimedia\Assert\UnreachableException;
 use Wikimedia\Parsoid\Core\DomSourceRange;
+use Wikimedia\Parsoid\DOM\Element;
+use Wikimedia\Parsoid\DOM\Node;
+use Wikimedia\Parsoid\DOM\Text;
 use Wikimedia\Parsoid\Tokens\EndTagTk;
 use Wikimedia\Parsoid\Tokens\KV;
 use Wikimedia\Parsoid\Tokens\TagTk;
@@ -31,7 +32,7 @@ class WTSUtils {
 	}
 
 	/**
-	 * @param DomSourceRange|null $dsr
+	 * @param ?DomSourceRange $dsr
 	 * @return bool
 	 */
 	public static function hasValidTagWidths( ?DomSourceRange $dsr ): bool {
@@ -41,13 +42,13 @@ class WTSUtils {
 	/**
 	 * Get the attributes on a node in an array of KV objects.
 	 *
-	 * @param DOMElement $node
+	 * @param Element $node
 	 * @return KV[]
 	 */
-	public static function getAttributeKVArray( DOMElement $node ): array {
+	public static function getAttributeKVArray( Element $node ): array {
 		$kvs = [];
-		foreach ( DOMCompat::attributes( $node ) as $attrib ) {
-			$kvs[] = new KV( $attrib->name, $attrib->value );
+		foreach ( DOMUtils::attributes( $node ) as $name => $value ) {
+			$kvs[] = new KV( $name, $value );
 		}
 		return $kvs;
 	}
@@ -55,13 +56,13 @@ class WTSUtils {
 	/**
 	 * Create a `TagTk` corresponding to a DOM node.
 	 *
-	 * @param DOMElement $node
+	 * @param Element $node
 	 * @return TagTk
 	 */
-	public static function mkTagTk( DOMElement $node ): TagTk {
+	public static function mkTagTk( Element $node ): TagTk {
 		$attribKVs = self::getAttributeKVArray( $node );
 		return new TagTk(
-			$node->nodeName,
+			DOMCompat::nodeName( $node ),
 			$attribKVs,
 			DOMDataUtils::getDataParsoid( $node )
 		);
@@ -70,13 +71,13 @@ class WTSUtils {
 	/**
 	 * Create a `EndTagTk` corresponding to a DOM node.
 	 *
-	 * @param DOMElement $node
+	 * @param Element $node
 	 * @return EndTagTk
 	 */
-	public static function mkEndTagTk( DOMElement $node ): EndTagTk {
+	public static function mkEndTagTk( Element $node ): EndTagTk {
 		$attribKVs = self::getAttributeKVArray( $node );
 		return new EndTagTk(
-			$node->nodeName,
+			DOMCompat::nodeName( $node ),
 			$attribKVs,
 			DOMDataUtils::getDataParsoid( $node )
 		);
@@ -93,12 +94,12 @@ class WTSUtils {
 	 * fromsrc => bool (Whether we got the value from source-based roundtripping)
 	 * ]
 	 *
-	 * @param DOMElement $node
+	 * @param Element $node
 	 * @param string $name
 	 * @param ?string $curVal
 	 * @return array
 	 */
-	public static function getShadowInfo( DOMElement $node, string $name, ?string $curVal ): array {
+	public static function getShadowInfo( Element $node, string $name, ?string $curVal ): array {
 		$dp = DOMDataUtils::getDataParsoid( $node );
 
 		// Not the case, continue regular round-trip information.
@@ -139,11 +140,11 @@ class WTSUtils {
 	 * fromsrc => bool (Whether we got the value from source-based roundtripping)
 	 * ]
 	 *
-	 * @param DOMElement $node
+	 * @param Element $node
 	 * @param string $name
 	 * @return array
 	 */
-	public static function getAttributeShadowInfo( DOMElement $node, string $name ): array {
+	public static function getAttributeShadowInfo( Element $node, string $name ): array {
 		return self::getShadowInfo(
 			$node,
 			$name,
@@ -160,69 +161,19 @@ class WTSUtils {
 	}
 
 	/**
-	 * Emit the start tag source when not round-trip testing, or when the node is
-	 * not marked with autoInsertedStart.
-	 *
-	 * @param string $src
-	 * @param DOMElement $node
-	 * @param SerializerState $state
-	 * @param bool $dontEmit
-	 * @return bool
-	 */
-	public static function emitStartTag(
-		string $src, DOMElement $node, SerializerState $state, bool $dontEmit = false
-	): bool {
-		if ( empty( $state->rtTestMode ) ||
-			empty( DOMDataUtils::getDataParsoid( $node )->autoInsertedStart )
-		) {
-			if ( !$dontEmit ) {
-				$state->emitChunk( $src, $node );
-			}
-			return true;
-		} else {
-			// drop content
-			return false;
-		}
-	}
-
-	/**
-	 * Emit the start tag source when not round-trip testing, or when the node is
-	 * not marked with autoInsertedStart.
-	 *
-	 * @param string $src
-	 * @param DOMElement $node
-	 * @param SerializerState $state
-	 * @param bool $dontEmit
-	 * @return bool
-	 */
-	public static function emitEndTag(
-		string $src, DOMElement $node, SerializerState $state, bool $dontEmit = false
-	): bool {
-		if ( empty( $state->rtTestMode ) ||
-			empty( DOMDataUtils::getDataParsoid( $node )->autoInsertedEnd )
-		) {
-			if ( !$dontEmit ) {
-				$state->emitChunk( $src, $node );
-			}
-			return true;
-		} else {
-			// drop content
-			return false;
-		}
-	}
-
-	/**
 	 * In wikitext, did origNode occur next to a block node which has been
 	 * deleted? While looking for next, we look past DOM nodes that are
 	 * transparent in rendering. (See emitsSolTransparentSingleLineWT for
 	 * which nodes.)
 	 *
-	 * @param DOMNode|null $origNode
+	 * @param ?Node $origNode
 	 * @param bool $before
 	 * @return bool
 	 */
-	public static function nextToDeletedBlockNodeInWT( ?DOMNode $origNode, bool $before ): bool {
-		if ( !$origNode || DOMUtils::isBody( $origNode ) ) {
+	public static function nextToDeletedBlockNodeInWT(
+		?Node $origNode, bool $before
+	): bool {
+		if ( !$origNode || DOMUtils::atTheTop( $origNode ) ) {
 			return false;
 		}
 
@@ -257,17 +208,17 @@ class WTSUtils {
 	/**
 	 * Check if whitespace preceding this node would NOT trigger an indent-pre.
 	 *
-	 * @param DOMNode $node
-	 * @param DOMNode $sepNode
+	 * @param Node $node
+	 * @param Node $sepNode
 	 * @return bool
 	 */
-	public static function precedingSpaceSuppressesIndentPre( DOMNode $node, DOMNode $sepNode ): bool {
-		if ( $node !== $sepNode && DOMUtils::isText( $node ) ) {
+	public static function precedingSpaceSuppressesIndentPre( Node $node, Node $sepNode ): bool {
+		if ( $node !== $sepNode && $node instanceof Text ) {
 			// if node is the same as sepNode, then the separator text
 			// at the beginning of it has been stripped out already, and
 			// we cannot use it to test it for indent-pre safety
 			return (bool)preg_match( '/^[ \t]*\n/', $node->nodeValue );
-		} elseif ( $node->nodeName === 'br' ) {
+		} elseif ( DOMCompat::nodeName( $node ) === 'br' ) {
 			return true;
 		} elseif ( WTUtils::isFirstEncapsulationWrapperNode( $node ) ) {
 			DOMUtils::assertElt( $node );
@@ -279,19 +230,19 @@ class WTSUtils {
 	}
 
 	/**
-	 * @param DOMNode $node
+	 * @param Node $node
 	 * @return string
 	 */
-	public static function traceNodeName( DOMNode $node ): string {
+	public static function traceNodeName( Node $node ): string {
 		switch ( $node->nodeType ) {
 			case XML_ELEMENT_NODE:
-				return ( DOMUtils::isDiffMarker( $node ) ) ? 'DIFF_MARK' : 'NODE: ' . $node->nodeName;
+				return ( DOMUtils::isDiffMarker( $node ) ) ? 'DIFF_MARK' : 'NODE: ' . DOMCompat::nodeName( $node );
 			case XML_TEXT_NODE:
 				return 'TEXT: ' . PHPUtils::jsonEncode( $node->nodeValue );
 			case XML_COMMENT_NODE:
 				return 'CMT : ' . PHPUtils::jsonEncode( self::commentWT( $node->nodeValue ) );
 			default:
-				return $node->nodeName;
+				return DOMCompat::nodeName( $node );
 		}
 	}
 
@@ -299,16 +250,19 @@ class WTSUtils {
 	 * In selser mode, check if an unedited node's wikitext from source wikitext
 	 * is reusable as is.
 	 *
-	 * @param Env $env
-	 * @param DOMNode $node
+	 * @param SerializerState $state
+	 * @param Node $node
 	 * @return bool
 	 */
-	public static function origSrcValidInEditedContext( Env $env, DOMNode $node ): bool {
+	public static function origSrcValidInEditedContext( SerializerState $state, Node $node ): bool {
+		$env = $state->getEnv();
 		$prev = null;
 
 		if ( WTUtils::isRedirectLink( $node ) ) {
-			return DOMUtils::isBody( $node->parentNode ) && !$node->previousSibling;
-		} elseif ( $node->nodeName === 'th' || $node->nodeName === 'td' ) {
+			return DOMUtils::atTheTop( $node->parentNode ) && !$node->previousSibling;
+		} elseif ( self::dsrContainsOpenExtendedRangeAnnotationTag( $node, $state ) ) {
+			return false;
+		} elseif ( DOMCompat::nodeName( $node ) === 'th' || DOMCompat::nodeName( $node ) === 'td' ) {
 			DOMUtils::assertElt( $node );
 			// The wikitext representation for them is dependent
 			// on cell position (first cell is always single char).
@@ -331,7 +285,7 @@ class WTSUtils {
 			// showed up on the same line via the "||" or "!!" syntax, nothing
 			// to worry about.
 			return ( DOMDataUtils::getDataParsoid( $node )->stx ?? '' ) !== 'row';
-		} elseif ( $node->nodeName === 'tr' && DOMUtils::assertElt( $node ) &&
+		} elseif ( $node instanceof Element && DOMCompat::nodeName( $node ) === 'tr' &&
 			empty( DOMDataUtils::getDataParsoid( $node )->startTagSrc )
 		) {
 			// If this <tr> didn't have a startTagSrc, it would have been
@@ -342,29 +296,41 @@ class WTSUtils {
 			// we cannot simply reuse orig. wikitext for this <tr>.
 			return !DOMUtils::previousNonSepSibling( $node );
 		} elseif ( DOMUtils::isNestedListOrListItem( $node ) ) {
-			// If there are no previous siblings, bullets were assigned to
-			// containing elements in the ext.core.ListHandler. For example,
-			//
-			// *** a
-			//
-			// Will assign bullets as,
-			//
-			// <ul><li-*>
-			// <ul><li-*>
-			// <ul><li-*> a</li></ul>
-			// </li></ul>
-			// </li></ul>
-			//
-			// If we reuse the src for the inner li with the a, we'd be missing
-			// two bullets because the tag handler for lists in the serializer only
-			// emits start tag src when it hits a first child that isn't a list
-			// element. We need to walk up and get them.
-			$prev = $node->previousSibling;
-			if ( !$prev ) {
-				return false;
+			if ( DOMUtils::isList( $node ) ) {
+				// Lists never get bullets assigned to them. So, unless they
+				// start a fresh list ( => they have a previous sibling ),
+				// we cannot reuse source for nested lists.
+				if ( !$node->previousSibling ) {
+					return false;
+				}
+			} else {
+				// Consider this wikitext snippet and its output below:
+				//
+				//   ** a
+				//   *** b
+				//
+				//   <ul><li-*>
+				//   <ul><li-*> a              <-- cannot reuse source of this <li>
+				//   <ul><li-***> b</li></ul>  <-- can reuse source of this <li>
+				//   </li></ul>
+				//   </li></ul>
+				//
+				// If we reuse the src for the inner li with the a, we'd be missing
+				// one bullet because the tag handler for lists in the serializer only
+				// emits start tag src when it hits a first child that isn't a list
+				// element. We need to walk up and get the other bullet(s).
+				//
+				// The above logic can be condensed into this observation.
+				// Reusable nested <li> nodes will always have multiple bullets.
+				// Don't reuse source from any nested list
+				$dp = DOMDataUtils::getDataParsoid( $node );
+				if ( !isset( $dp->dsr ) || $dp->dsr->openWidth < 2 ) {
+					return false;
+				}
 			}
 
 			// If a previous sibling was modified, we can't reuse the start dsr.
+			$prev = $node->previousSibling;
 			while ( $prev ) {
 				if ( DOMUtils::isDiffMarker( $prev ) || DiffUtils::hasInsertedDiffMark( $prev, $env ) ) {
 					return false;
@@ -373,24 +339,41 @@ class WTSUtils {
 			}
 
 			return true;
+		} elseif ( WTUtils::isMovedMetaTag( $node ) ) {
+			return false;
 		} else {
 			return true;
 		}
 	}
 
 	/**
-	 * Extracts the media type from attribute string
-	 *
-	 * @param DOMElement $node
-	 * @return array
+	 * We keep track in $state of all extended ranges that are currently open by a <meta> tag.
+	 * This method checks whether the wikitext source pointed by the dsr of the node contains either
+	 * an opening or closing tag matching that annotation (<translate> or </translate> for example.)
+	 * @param Node $node
+	 * @param SerializerState $state
+	 * @return bool
 	 */
-	public static function getMediaType( DOMElement $node ): array {
-		$mediaType = DOMUtils::matchTypeOf( $node, '#^mw:(Image|Video|Audio)(/|$)#' );
-		$parts = explode( '/', $mediaType ?? '' );
-		return [
-			'rdfaType' => $parts[0] ?? '',
-			'format' => $parts[1] ?? '',
-		];
+	private static function dsrContainsOpenExtendedRangeAnnotationTag( Node $node,
+		SerializerState $state
+	): bool {
+		if ( empty( $state->openAnnotations ) || !$node instanceof Element ) {
+			return false;
+		}
+
+		$dsr = DOMDataUtils::getDataParsoid( $node )->dsr ?? null;
+		if ( !$dsr ) {
+			return false;
+		}
+		$src = $state->getOrigSrc( $dsr->innerStart(), $dsr->innerEnd() );
+		foreach ( $state->openAnnotations as $ann => $extended ) {
+			if ( $extended ) {
+				if ( preg_match( '</?' . $ann . '.*>', $src ) ) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	/**
@@ -413,8 +396,7 @@ class WTSUtils {
 			} elseif ( is_object( $a[0] ) ) {
 				$txt = $a[0]->txt ?? null;
 			} else {
-				PHPUtils::unreachable( 'Control should never get here!' );
-				break;
+				throw new UnreachableException( 'Control should never get here!' );
 			}
 			if ( $txt === $key ) {
 				$i = $k;
@@ -432,4 +414,15 @@ class WTSUtils {
 		}
 		return $ret;
 	}
+
+	/**
+	 * Escape `<nowiki>` tags.
+	 *
+	 * @param string $text
+	 * @return string
+	 */
+	public static function escapeNowikiTags( string $text ): string {
+		return preg_replace( '#<(/?nowiki\s*/?\s*)>#i', '&lt;$1&gt;', $text );
+	}
+
 }

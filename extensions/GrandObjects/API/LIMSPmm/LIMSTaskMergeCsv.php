@@ -94,7 +94,7 @@ class LIMSTaskMergeCSV extends RESTAPI {
         header('Content-Disposition: attachment; filename="'.$filename.'"');
         
         echo $final_csv_string;
-        exit;
+        close();
     }
 }
 ?>

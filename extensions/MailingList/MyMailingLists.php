@@ -35,7 +35,7 @@ class MyMailingLists extends SpecialPage{
                 }
             }
             redirect("$wgServer$wgScriptPath/index.php/Special:MyMailingLists");
-            exit;
+            close();
         }
         $publicLists = array();
         if($person->isRoleAtLeast(MANAGER)){
@@ -74,7 +74,7 @@ class MyMailingLists extends SpecialPage{
     static function createTab(&$tabs){
         global $config, $wgUser, $wgTitle, $wgServer, $wgScriptPath;
         $me = Person::newFromWgUser();
-        if($wgUser->isLoggedIn() && !$me->isCandidate()){
+        if($wgUser->isRegistered() && !$me->isCandidate()){
             if($config->getValue('networkName') == "BD" && !$me->isRoleAtLeast(STAFF)){
                 return true;
             }

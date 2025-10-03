@@ -30,15 +30,15 @@ function handleDuplicates($action, $request){
                 if($action == "getDuplicates"){
                     session_write_close();
                     $handler->handleGet();
-                    exit;
+                    close();
                 }
                 else if($action == "deleteDuplicates"){
                     $handler->handleDelete();
-                    exit;
+                    close();
                 }
                 else if($action == "ignoreDuplicates"){
                     $handler->handleIgnore();
-                    exit;
+                    close();
                 }
                 break;
             }

@@ -1,16 +1,17 @@
 {
 	"@metadata": {
 		"authors": [
+			"AnupamM",
 			"Phoenix303",
 			"Sachinkatiyar",
 			"Sahilrathod",
+			"Saurmandal",
 			"Sfic",
 			"Shyamal",
 			"Smtchahal",
 			"Vivek Rai",
 			"संजीव कुमार",
-			"AnupamM",
-			"Saurmandal"
+			"Abijeet Patro"
 		]
 	},
 	"config-desc": "मीडियाविकि के लिए इंस्टॉलर",
@@ -180,7 +181,7 @@
 	"config-subscribe-help": "यह एक कम प्रसिद्धि वाली मेल सूची है जिसके ज़रिए प्रकाशन की घोषणाएँ और सुरक्षा से जुड़ी ज़रूरी घोषणाएँ भेजी जाती हैं।\nआपको इसमें सदस्यता प्राप्त करना चाहिए और नए संस्करणों के आने पर अपनी मीडियाविकि स्थापना को अपडेट करना चाहिए।",
 	"config-subscribe-noemail": "आपने कोई ईमेल पता दिए बिना ही प्रकाशन घोषणाओं की मेल सूची में शामिल होने की कोशिश की।\nअगर आप मेल सूची में शामिल होना चाहते हैं तो कृपया एक ईमेल पता दर्ज करें।",
 	"config-pingback": "मीडियाविकि के विकासकों के साथ इस स्थापना के बारे में जानकारी बाँटें। [https://foundation.wikimedia.org/wiki/MediaWiki_Pingback_Privacy_Statement निजता नीति]।",
-	"config-pingback-help": "अगर आप इस विकल्प को चुनते हैं, मीडियाविकि नियमित रूप से  https://www.mediawiki.org को मीडियाविकि के इस उदाहरण की जानकारी के साथ पिंग करेगा। इस डेटा में कई चीज़ें शामिल होंगी, जैसे सिस्टम का प्रकार, PHP का संस्करण, और चयनित डेटाबेस बैक-एंड। विकिमीडिया संस्थान इस डेटा को मीडियाविकि के विकासकों के साथ बाँटती है ताकि भविष्य में विकास को बेहतर बनाया जा सके। आपके सिस्टम के लिए यह डेटा भेजी जाएगी: <pre>$1</pre>\n\nइस सुविधा की निजता नीति https://foundation.wikimedia.org/wiki/MediaWiki_Pingback_Privacy_Statement पर पाई जा सकती है।\n\nइस सुविधा के बारे में अधिक जानकारी के लिए https://www.mediawiki.org/wiki/Special:MyLanguage/Manual:$wgPingback देखें।\n\nवर्गीकृत पिंगबैक डेटा के लिए https://pingback.wmflabs.org/ देखें।",
+	"config-pingback-help": "अगर आप इस विकल्प को चुनते हैं, मीडियाविकि नियमित रूप से  https://www.mediawiki.org को मीडियाविकि के इस उदाहरण की जानकारी के साथ पिंग करेगा। इस डेटा में कई चीज़ें शामिल होंगी, जैसे सिस्टम का प्रकार, PHP का संस्करण, और चयनित डेटाबेस बैक-एंड। विकिमीडिया संस्थान इस डेटा को मीडियाविकि के विकासकों के साथ बाँटती है ताकि भविष्य में विकास को बेहतर बनाया जा सके। आपके सिस्टम के लिए यह डेटा भेजी जाएगी: <pre>$1</pre>\n\nइस सुविधा की निजता नीति https://foundation.wikimedia.org/wiki/MediaWiki_Pingback_Privacy_Statement पर पाई जा सकती है।\n\nइस सुविधा के बारे में अधिक जानकारी के लिए https://www.mediawiki.org/wiki/Special:MyLanguage/Manual:$wgPingback देखें।\n\nवर्गीकृत पिंगबैक डेटा के लिए https://pingback.wmcloud.org/ देखें।",
 	"config-almost-done": "काम लगभग पूरा हो चुका है!\nआप बाकी के कॉन्फ़िगरेशन को छोड़कर सीधे विकि को तुरंत स्थापित कर सकते हैं।",
 	"config-optional-continue": "मुझसे और सवाल पूछें।",
 	"config-optional-skip": "मैं पहले से ही ऊब चुका हूँ, बस विकि स्थापित करें।",
@@ -218,7 +219,18 @@
 	"config-upload-help": "अगर आप अपने सर्वर में फ़ाइलें अपलोड करने की सेवा दे रहे हैं तो आपको सुरक्षा से समझौता करना पड़ सकता है।\nअधिक जानकारी के लिए मैन्युअल में [https://www.mediawiki.org/wiki/Special:MyLanguage/Manual:Security सुरक्षा अनुभाग] देखें।\n\nफ़ाइल अपलोड सक्षम करने के लिए मीडियाविकि के फ़ोल्डर के <code>images</code> सबडिरेक्ट्री में जाने के बाद उसे सर्वर द्वारा लिखने लायक बनाएँ।\nइससे यह विकल्प सक्षम हो जाएगा।",
 	"config-upload-deleted": "हटाई गई फ़ाइलों के लिए डिरेक्ट्री:",
 	"config-upload-deleted-help": "एक डिरेक्ट्री चुनें जहाँ पर हटाई गई फ़ाइलों को संरक्षित किया जाएगा।\nइस तक वेब के ज़रिए पहुँचना संभव नहीं होना चाहिए।",
-	"config-logo": "''लोगो'' का पता:",
+	"config-personalization-settings": "अनुकूलन",
+	"config-logo-summary": "इनमें से हर फ़ील्ड के लिए आपको उचित आकार के साथ एक चित्र अपलोड करना होगा, और नीचे के बक्सों में उनके URL भरने होंगे। अगर आपका लोगो <code>$wgStylePath</code> या <code>$wgScriptPath</code> पथों से संबंधित है तो आप इनका इस्तेमाल कर सकते हैं।\nइन्हें भरना आवश्यक नहीं।",
+	"config-logo-preview-main": "मुखपृष्ठ",
+	"config-logo-icon": "लोगो (आइकॉन):",
+	"config-logo-icon-help": "आपका लोगो आइकॉन वर्गाकार, और आदर्श रूप से 50px से अधिक या फिर एक SVG होना चाहिए।",
+	"config-logo-wordmark": "वर्डमार्क (वैकल्पिक):",
+	"config-logo-wordmark-help": "आपकी साइट का नाम। अगर परिभाषित नहीं किया जाता है, यह आम तौर पर टेक्स्ट पर फ़ॉलबैक करेगा। आदर्श रूप से 30px या इससे कम ऊँचाई का एक SVG होना चाहिए।",
+	"config-logo-tagline": "टैगलाइन (वैकल्पिक):",
+	"config-logo-tagline-help": "आपकी साइट का टैगलाइन। तभी इस्तेमाल करें जब आपने ऊपर एक वर्डमार्क परिभाषित किया हो। अगर परिभाषित नहीं किया जाता है तो यह आम तौर पर टेक्स्ट पर फ़ॉलबैक करेगा। टैगलाइन और वर्डमार्क की ऊँचाई 50px से ज़्यादा नहीं होनी चाहिए।",
+	"config-logo-sidebar": "साइडबार का लोगो (वैकल्पिक):",
+	"config-logo-filedrop": "यहाँ पर एक चित्र फ़ाइल ड्रॉप करें",
+	"config-logo-sidebar-help": "कुछ मीडियाविकि स्किन्स पर 160 पिक्सेल की ऊँचाई वाला एक लोगो होता है जो साइडबार के मेन्यू का हिस्सा होता है। अगर परिभाषित नहीं किया जाता है तो यह ऊपर परिभाषित आइकॉन के समान होगा। आपको एक ऐसा ग्राफ़िक जोड़ना चाहिए जो वर्डमार्क और आइकॉन के लिए समान हो।",
 	"config-instantcommons": "Instant Commons सक्षम करें",
 	"config-instantcommons-help": "[https://www.mediawiki.org/wiki/Special:MyLanguage/InstantCommons Instant Commons] एक सुविधा है, जिससे आप विकि पर [https://commons.wikimedia.org/ विकिमीडिया कॉमन्स] साइट के किसी भी तस्वीर, आवाज़ या दूसरे फ़ाइल का इस्तेमाल कर सकते हैं।\nइसका इस्तेमाल करने के लिए मीडियाविकि को इंटरनेट से जुड़ने की ज़रूरत है।\n\nइस सुविधा की अधिक जानकारी के लिए, और इसे विकिमीडिया कॉमन्स के अलावा दूसरे विकियों के लिए कैसे सक्षम किया जा सकता है, इस जानकारी के लिए [https://www.mediawiki.org/wiki/Special:MyLanguage/Manual:$wgForeignFileRepos मैन्युअल] देखें।",
 	"config-cc-error": "क्रिएटिव कॉमन्स लाइसेंस चयनकर्ता से कोई जवाब नहीं आया।\nलाइसेंस का नाम खुद दर्ज करें।",
@@ -265,6 +277,7 @@
 	"config-install-user-missing": "निर्दिष्ट सदस्य \"$1\" मौजूद नहीं है।",
 	"config-install-user-missing-create": "निर्दिष्ट सदस्य \"$1\" मौजूद नहीं है।\nअगर आप इसे बनाना चाहते हैं तो कृपया नीचे के \"खाता बनाएँ\" बॉक्स पर क्लिक करें।",
 	"config-install-logo-blank": "एक मान्य लोगो URL दर्ज करें।",
+	"config-install-restore-services": "मीडियाविकि सेवाओं को पुनर्स्थापित किया जा रहा है",
 	"config-install-tables": "टेबल बन रहे हैं, पहला चरण",
 	"config-install-tables-exist": "<strong>चेतावनी:</strong> ऐसा लगता है कि मीडियाविकि टेबल पहले से मौजूद हैं।\nटेबल नहीं बनाए जाएँगे।",
 	"config-install-tables-failed": "<strong>त्रुटि:</strong> टेबल को इस त्रुटि के कारण न बनाया जा सका: $1",
@@ -303,5 +316,5 @@
 	"config-extension-not-found": "एक्सटेंशन \"$1\" के लिए पंजीकरण फ़ाइल नहीं मिला",
 	"config-extension-dependency": "एक्सटेंशन \"$1\" को स्थापित करते समय निर्भरता में त्रुटि आई: $2",
 	"mainpagetext": "<strong>मीडियाविकि स्थापित हो चुका है।</strong>",
-	"mainpagedocfooter": "इस विकि सॉफ़्टवेयर का किस प्रकार आप इस्तेमाल कर सकते हैं, इसकी जानकारी के लिए [https://meta.wikimedia.org/wiki/Help:Contents सदस्य गाइड] देखें।\n\n== शुरुआत करें ==\n* [https://www.mediawiki.org/wiki/Special:MyLanguage/Manual:Configuration_settings कॉन्फ़िगरेशन सेटिंग्स की सूची]\n* [https://www.mediawiki.org/wiki/Special:MyLanguage/Manual:FAQ मीडियाविकि के बारे में अक्सर पूछे जाने वाले सवाल]\n* [https://lists.wikimedia.org/postorius/lists/mediawiki-announce.lists.wikimedia.org/ मीडियाविकि प्रकाशन की मेल सूची]\n* [https://www.mediawiki.org/wiki/Special:MyLanguage/Localisation#Translation_resources आपकी भाषा में मीडियाविकि का अनुवाद]\n* [https://www.mediawiki.org/wiki/Special:MyLanguage/Manual:Combating_spam अपने विकि को स्पैम और बर्बरता से कैसे बचाएँ]"
+	"mainpagedocfooter": "इस विकि सॉफ़्टवेयर का किस प्रकार आप इस्तेमाल कर सकते हैं, इसकी जानकारी के लिए [https://www.mediawiki.org/wiki/Special:MyLanguage/Help:Contents सदस्य गाइड] देखें।\n\n== शुरुआत करें ==\n* [https://www.mediawiki.org/wiki/Special:MyLanguage/Manual:Configuration_settings कॉन्फ़िगरेशन सेटिंग्स की सूची]\n* [https://www.mediawiki.org/wiki/Special:MyLanguage/Manual:FAQ मीडियाविकि के बारे में अक्सर पूछे जाने वाले सवाल]\n* [https://lists.wikimedia.org/postorius/lists/mediawiki-announce.lists.wikimedia.org/ मीडियाविकि प्रकाशन की मेल सूची]\n* [https://www.mediawiki.org/wiki/Special:MyLanguage/Localisation#Translation_resources आपकी भाषा में मीडियाविकि का अनुवाद]\n* [https://www.mediawiki.org/wiki/Special:MyLanguage/Manual:Combating_spam अपने विकि को स्पैम और बर्बरता से कैसे बचाएँ]"
 }

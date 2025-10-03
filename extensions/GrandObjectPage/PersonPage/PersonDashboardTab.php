@@ -11,7 +11,7 @@ class PersonDashboardTab extends AbstractEditableTab {
         $this->visibility = $visibility;
         if(isset($_GET['showDashboard'])){
             echo $this->showDashboard($this->person, $this->visibility);
-            exit;
+            close();
         }
     }
     
@@ -235,7 +235,7 @@ class PersonDashboardTab extends AbstractEditableTab {
     function showDashboard($person, $visibility){
         global $wgUser;
         $html = "";
-        if($wgUser->isLoggedIn()){
+        if($wgUser->isRegistered()){
             $dashboard = null;
             $me = Person::newFromId($wgUser->getId());
             if($person->isRoleAtLeast(NI) || ($person->isRole(INACTIVE) && $person->wasLastRoleAtLeast(NI))){

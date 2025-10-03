@@ -4,7 +4,7 @@
 if(isset($_GET['clearSession'])){
     session_unset();
     session_destroy();
-    exit;
+    close();
 }
 else if(php_sapi_name() != 'cli' && isset($_SERVER['uid'])){
     // Load ShibAuthPlugin

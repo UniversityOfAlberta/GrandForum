@@ -47,7 +47,7 @@ class ProjectDescriptionAPI extends API{
         }
 		if(!$noEcho && $error != ""){
 		    echo "$error\n";
-		    exit;
+		    close();
 		}
 		if($error != ""){
 		    return $error;

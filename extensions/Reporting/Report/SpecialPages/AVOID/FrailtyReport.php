@@ -995,7 +995,7 @@ behaviour. They are not clinical recommendations, for which you should seek advi
         $html = $this->generateReport($person);
         if(isset($_GET['preview'])){
             echo $html;
-            exit;
+            close();
         }
         $dompdfOptions->setFontHeightRatio(1.0);
         $dompdfOptions->setDpi(96);
@@ -1013,8 +1013,7 @@ behaviour. They are not clinical recommendations, for which you should seek advi
         $dompdf->render();
         header("Content-Type: application/pdf");
         echo $dompdf->output();
-        exit;
-        
+        close();
     }
     
 }

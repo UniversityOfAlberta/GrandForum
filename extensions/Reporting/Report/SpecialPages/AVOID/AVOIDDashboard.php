@@ -21,13 +21,13 @@ class AVOIDDashboard extends SpecialPage {
     
     static function permissionError(){
         global $wgOut, $wgUser, $wgServer, $wgScriptPath;
-        if(!$wgUser->isLoggedIn()){
+        if(!$wgUser->isRegistered()){
             $wgOut->setPageTitle("Please Login");
             $wgOut->addHTML("<div class='program-body'>In order to view this page you must login.  Return to the <a href='$wgServer$wgScriptPath/index.php/Main_Page'>front page</a> to login.</div>");
             $wgOut->addHTML("<style> #avoidButtons { display: none; } </style>");
             $wgOut->output();
             $wgOut->disable();
-            exit;
+            close();
         }
         permissionError();
     }
@@ -35,7 +35,7 @@ class AVOIDDashboard extends SpecialPage {
 	function userCanExecute($user){
         global $config;
         $me = Person::newFromUser($user);
-        if(!$user->isLoggedIn()){
+        if(!$user->isRegistered()){
 	        AVOIDDashboard::permissionError();
 	    }
         if($config->getValue('networkFullName') == "AVOID Australia" &&
@@ -245,7 +245,7 @@ class AVOIDDashboard extends SpecialPage {
             echo "<html><script type='text/javascript'>
                 window.close();
             </script></html>";
-            exit;
+            close();
         }
         self::importFitBit();
         $dir = dirname(__FILE__) . '/';

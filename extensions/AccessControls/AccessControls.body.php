@@ -62,7 +62,7 @@ function checkPublicSections(&$parser, &$text){
 
 function parsePublicSections($title, $text){
 	global $wgUser, $wgScriptPath, $wgOut, $publicPresent;
-	if(!is_null($title) && !$wgOut->isDisabled() && !$wgUser->isLoggedIn()){
+	if(!is_null($title) && !$wgOut->isDisabled() && !$wgUser->isRegistered()){
 		$buffer = "";
 		$offset = 0;
 		
@@ -95,7 +95,7 @@ function parsePublicSections($title, $text){
 
 function checkLoggedIn($title, $article, $output, $user, $request, $mediaWiki){
     global $config, $wgUser;
-    if(!$user->isLoggedIn()){
+    if(!$user->isRegistered()){
         if((count($config->getValue('ipWhitelist')) == 0 || in_array($_SERVER['REMOTE_ADDR'], $config->getValue('ipWhitelist'))) &&
            isset($_GET['apiKey']) && 
            in_array($_GET['apiKey'], $config->getValue('apiKeys')) &&
@@ -118,7 +118,7 @@ function checkLoggedIn($title, $article, $output, $user, $request, $mediaWiki){
  */
 function touchUser(Title &$title, $unused, OutputPage $output, User $user, WebRequest $request, MediaWiki $mediaWiki){
     global $wgUser;
-	if(!$request->wasPosted() && $wgUser->isLoggedIn()){
+	if(!$request->wasPosted() && $wgUser->isRegistered()){
 	    $timestamp = date('YmdHis');
         DBFunctions::update('mw_user',
                             array('user_touched' => $timestamp),
@@ -166,7 +166,7 @@ function onUserCan2(&$title, &$user, $action, &$result) {
   }
   
   // Check public sections of wiki page
-  if(!$user->isLoggedIn() && $title->getNamespace() >= 0 && $action == 'read'){
+  if(!$user->isRegistered() && $title->getNamespace() >= 0 && $action == 'read'){
       $article = WikiPage::factory($title);
       if($article != null && $article->getContent() != null){
           $text = $article->getContent()->getText();
@@ -177,7 +177,7 @@ function onUserCan2(&$title, &$user, $action, &$result) {
       }
   }
 
-  if($user->isLoggedIn() && $title->getNamespace() == NS_MAIN && $action == 'read'){
+  if($user->isRegistered() && $title->getNamespace() == NS_MAIN && $action == 'read'){
     // A logged in user should be able to read any page in the main namespace
     
     $result = true;
@@ -215,7 +215,7 @@ function onUserCan2(&$title, &$user, $action, &$result) {
 	    }
 	    else if($action == 'read'){
 	        // Allow everyone to read
-	        if($person->isLoggedIn()){
+	        if($person->isRegistered()){
 	            $result = true;
 	            return true;
 	        }
@@ -395,7 +395,7 @@ function isPublicNS($nsId) {
 	$dbr = wfGetDB( DB_REPLICA );
 	$result = $dbr->select("${egAnnokiTablePrefix}extranamespaces", "public", array("nsId" => $nsId) );
 
-	if (!($row = $dbr->fetchRow($result)) || ($row[0] == 0)) {
+	if (!($row = $result->fetchRow()) || ($row[0] == 0)) {
 		return false;
 	}
 
@@ -502,7 +502,7 @@ function getExtraPermissions($title) {
 	$dbr = wfGetDB( DB_REPLICA );
 	$result = $dbr->select("${egAnnokiTablePrefix}pagepermissions", "group_id", array("page_id" => $title->getArticleID()) );
 	$extraPerm = array();
-	while ($row = $dbr->fetchRow($result)) {
+	while ($row = $result->fetchRow()) {
 	  $extraPerm[] = $row[0];
 	}
 	return $extraPerm;
@@ -548,7 +548,7 @@ function performActionOnTransclusion(&$text, &$error, $isSave){
 
 function logout($action, $article){
     global $wgUser, $wgServer, $wgScriptPath;
-    if($action == "logout" && $wgUser->isLoggedIn()){
+    if($action == "logout" && $wgUser->isRegistered()){
         $wgUser->logout();
         if(isset($_GET['returnto'])){
             redirect($_GET['returnto']);

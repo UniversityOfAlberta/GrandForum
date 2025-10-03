@@ -6,7 +6,7 @@ class Products extends BackbonePage {
     
     function userCanExecute($user){
         global $config;
-        if($config->getValue('guestLockdown') && !$user->isLoggedIn()){
+        if($config->getValue('guestLockdown') && !$user->isRegistered()){
             return false;
         }
         return true;

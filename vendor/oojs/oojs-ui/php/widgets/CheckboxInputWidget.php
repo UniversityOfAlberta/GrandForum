@@ -6,9 +6,11 @@ namespace OOUI;
  * Checkbox input widget.
  */
 class CheckboxInputWidget extends InputWidget {
+	use RequiredElement;
 
 	/* Static Properties */
 
+	/** @var string */
 	public static $tagName = 'span';
 
 	/* Properties */
@@ -16,9 +18,19 @@ class CheckboxInputWidget extends InputWidget {
 	/**
 	 * Whether the checkbox is selected.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $selected;
+
+	/**
+	 * @var bool
+	 */
+	protected $indeterminate;
+
+	/**
+	 * @var IconWidget
+	 */
+	protected $checkIcon;
 
 	/**
 	 * @param array $config Configuration options
@@ -37,6 +49,11 @@ class CheckboxInputWidget extends InputWidget {
 			'classes' => [ 'oo-ui-checkboxInputWidget-checkIcon' ],
 		] );
 
+		// Traits
+		$this->initializeRequiredElement(
+			array_merge( [ 'indicatorElement' => null ], $config )
+		);
+
 		// Initialization
 		$this->addClasses( [ 'oo-ui-checkboxInputWidget' ] );
 		// Required for pretty styling in WikimediaUI theme
@@ -45,6 +62,7 @@ class CheckboxInputWidget extends InputWidget {
 		$this->setIndeterminate( $config['indeterminate'] ?? false );
 	}
 
+	/** @inheritDoc */
 	protected function getInputElement( $config ) {
 		return ( new Tag( 'input' ) )->setAttributes( [ 'type' => 'checkbox' ] );
 	}
@@ -97,6 +115,7 @@ class CheckboxInputWidget extends InputWidget {
 		return $this->indeterminate;
 	}
 
+	/** @inheritDoc */
 	public function getConfig( &$config ) {
 		if ( $this->selected ) {
 			$config['selected'] = $this->selected;

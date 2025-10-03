@@ -25,7 +25,7 @@
             $response = curl_exec($ch);
             header('Content-Type: application/json');
             echo $response;
-            exit;
+            close();
         }
         
         function doPUT(){

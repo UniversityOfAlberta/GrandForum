@@ -15,7 +15,7 @@
 	"exif-imagedescription": "ناونیشان وێنە",
 	"exif-make": "کارخانەێ سازکەر دۊردۊن",
 	"exif-software": "نەرم ئەفزار ئسفادەکریاێ",
-	"exif-exifversion": "نسخەێ exif",
+	"exif-exifversion": "وەشان exif",
 	"exif-colorspace": "فەزاێ رەنگی",
 	"exif-pixelxdimension": "پیەنی وێنە",
 	"exif-pixelydimension": "بەرزی وێنە",
@@ -55,5 +55,9 @@
 	"exif-iimcategory-rel": "دین و باوەڕ",
 	"exif-iimcategory-sci": "زانست و تێکنۆلۆژی",
 	"exif-iimcategory-spo": "وەرزشت",
-	"exif-iimcategory-wea": "ئاو و هەوا"
+	"exif-iimcategory-wea": "ئاو و هەوا",
+	"exif-usepanoramaviewer-true": "ئەرێ",
+	"exif-usepanoramaviewer-false": "نە",
+	"exif-exposurelockused-true": "ئەرێ",
+	"exif-exposurelockused-false": "نە"
 }

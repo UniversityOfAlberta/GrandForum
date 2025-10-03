@@ -3,8 +3,8 @@ declare( strict_types = 1 );
 
 namespace Wikimedia\Parsoid\Ext\Gallery;
 
-use DOMDocument;
-use DOMElement;
+use Wikimedia\Parsoid\DOM\Document;
+use Wikimedia\Parsoid\DOM\Element;
 
 use Wikimedia\Parsoid\Ext\DOMUtils;
 use Wikimedia\Parsoid\Ext\ParsoidExtensionAPI;
@@ -13,16 +13,16 @@ use Wikimedia\Parsoid\Ext\PHPUtils;
 class PackedMode extends TraditionalMode {
 	/**
 	 * Create a PackedMode singleton.
-	 * @param string|null $mode Only used by subclasses.
+	 * @param ?string $mode Only used by subclasses.
 	 */
-	protected function __construct( string $mode = null ) {
+	protected function __construct( ?string $mode = null ) {
 		parent::__construct( $mode ?? 'packed' );
 		$this->scale = 1.5;
 		$this->padding = PHPUtils::arrayToObject( [ 'thumb' => 0, 'box' => 2, 'border' => 8 ] );
 	}
 
 	/** @inheritDoc */
-	protected function perRow( Opts $opts, DOMElement $ul ): void {
+	protected function perRow( Opts $opts, Element $ul ): void {
 		/* do nothing */
 	}
 
@@ -33,7 +33,7 @@ class PackedMode extends TraditionalMode {
 	}
 
 	/** @inheritDoc */
-	public function scaleMedia( Opts $opts, DOMElement $wrapper ) {
+	public function scaleMedia( Opts $opts, Element $wrapper ) {
 		$elt = $wrapper->firstChild->firstChild;
 		DOMUtils::assertElt( $elt );
 		$width = $elt->getAttribute( 'width' ) ?? '';
@@ -54,7 +54,7 @@ class PackedMode extends TraditionalMode {
 
 	/** @inheritDoc */
 	protected function galleryText(
-		DOMDocument $doc, DOMElement $box, ?DOMElement $gallerytext, float $width
+		Document $doc, Element $box, ?Element $gallerytext, float $width
 	): void {
 		if ( $this->useTraditionalGalleryText() ) {
 			parent::galleryText( $doc, $box, $gallerytext, $width );
@@ -65,11 +65,20 @@ class PackedMode extends TraditionalMode {
 		}
 		$div = $doc->createElement( 'div' );
 		$div->setAttribute( 'class', 'gallerytext' );
-		ParsoidExtensionAPI::migrateChildrenBetweenDocs( $gallerytext, $div );
+		ParsoidExtensionAPI::migrateChildrenAndTransferWrapperDataAttribs(
+			$gallerytext, $div
+		);
 		$wrapper = $doc->createElement( 'div' );
 		$wrapper->setAttribute( 'class', 'gallerytextwrapper' );
 		$wrapper->setAttribute( 'style', 'width: ' . ceil( $width - 20 ) . 'px;' );
 		$wrapper->appendChild( $div );
 		$box->appendChild( $wrapper );
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getModules(): array {
+		return [ 'mediawiki.page.gallery' ];
 	}
 }

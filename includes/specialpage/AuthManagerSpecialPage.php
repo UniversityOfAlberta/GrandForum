@@ -4,13 +4,14 @@ use MediaWiki\Auth\AuthenticationRequest;
 use MediaWiki\Auth\AuthenticationResponse;
 use MediaWiki\Auth\AuthManager;
 use MediaWiki\Logger\LoggerFactory;
-use MediaWiki\MediaWikiServices;
 use MediaWiki\Session\Token;
 
 /**
  * A special page subclass for authentication-related special pages. It generates a form from
  * a set of AuthenticationRequest objects, submits the result to AuthManager and
  * partially handles the response.
+ *
+ * @note Call self::setAuthManager from special page constructor when extending
  *
  * @stable to extend
  */
@@ -121,7 +122,7 @@ abstract class AuthManagerSpecialPage extends SpecialPage {
 	 * @return bool False if execution should be stopped.
 	 */
 	protected function handleReturnBeforeExecute( $subPage ) {
-		$authManager = MediaWikiServices::getInstance()->getAuthManager();
+		$authManager = $this->getAuthManager();
 		$key = 'AuthManagerSpecialPage:return:' . $this->getName();
 
 		if ( $subPage === 'return' ) {
@@ -159,7 +160,7 @@ abstract class AuthManagerSpecialPage extends SpecialPage {
 	 * @throws ErrorPageError When the user is not allowed to use this page.
 	 */
 	protected function handleReauthBeforeExecute( $subPage ) {
-		$authManager = MediaWikiServices::getInstance()->getAuthManager();
+		$authManager = $this->getAuthManager();
 		$request = $this->getRequest();
 		$key = 'AuthManagerSpecialPage:reauth:' . $this->getName();
 
@@ -270,7 +271,7 @@ abstract class AuthManagerSpecialPage extends SpecialPage {
 			}
 		}
 
-		$allReqs = MediaWikiServices::getInstance()->getAuthManager()->getAuthenticationRequests(
+		$allReqs = $this->getAuthManager()->getAuthenticationRequests(
 			$this->authAction, $this->getUser() );
 		$this->authRequests = array_filter( $allReqs, function ( $req ) {
 			return !in_array( get_class( $req ), $this->getRequestBlacklist(), true );
@@ -318,7 +319,7 @@ abstract class AuthManagerSpecialPage extends SpecialPage {
 	 * @throws LogicException if $action is invalid
 	 */
 	protected function isActionAllowed( $action ) {
-		$authManager = MediaWikiServices::getInstance()->getAuthManager();
+		$authManager = $this->getAuthManager();
 		if ( !in_array( $action, static::$allowedActions, true ) ) {
 			throw new InvalidArgumentException( 'invalid action: ' . $action );
 		}
@@ -362,7 +363,7 @@ abstract class AuthManagerSpecialPage extends SpecialPage {
 			throw new InvalidArgumentException( 'invalid action: ' . $action );
 		}
 
-		$authManager = MediaWikiServices::getInstance()->getAuthManager();
+		$authManager = $this->getAuthManager();
 		$returnToUrl = $this->getPageTitle( 'return' )
 			->getFullURL( $this->getPreservedParams( true ), false, PROTO_HTTPS );
 
@@ -372,7 +373,7 @@ abstract class AuthManagerSpecialPage extends SpecialPage {
 			case AuthManager::ACTION_LOGIN_CONTINUE:
 				return $authManager->continueAuthentication( $requests );
 			case AuthManager::ACTION_CREATE:
-				return $authManager->beginAccountCreation( $this->getUser(), $requests,
+				return $authManager->beginAccountCreation( $this->getAuthority(), $requests,
 					$returnToUrl );
 			case AuthManager::ACTION_CREATE_CONTINUE:
 				return $authManager->continueAccountCreation( $requests );
@@ -450,10 +451,12 @@ abstract class AuthManagerSpecialPage extends SpecialPage {
 				$status = Status::newFatal( new RawMessage( '$1', [ $status ] ) );
 			} elseif ( is_array( $status ) ) {
 				if ( is_string( reset( $status ) ) ) {
+					// @phan-suppress-next-line PhanParamTooFewUnpack
 					$status = Status::newFatal( ...$status );
 				} elseif ( is_array( reset( $status ) ) ) {
 					$ret = Status::newGood();
 					foreach ( $status as $message ) {
+						// @phan-suppress-next-line PhanParamTooFewUnpack
 						$ret->fatal( ...$message );
 					}
 					$status = $ret;
@@ -713,7 +716,7 @@ abstract class AuthManagerSpecialPage extends SpecialPage {
 			] );
 
 			if ( isset( $singleFieldInfo['options'] ) ) {
-				$descriptor['options'] = array_flip( array_map( function ( $message ) {
+				$descriptor['options'] = array_flip( array_map( static function ( $message ) {
 					/** @var Message $message */
 					return $message->parse();
 				}, $singleFieldInfo['options'] ) );
@@ -790,7 +793,7 @@ abstract class AuthManagerSpecialPage extends SpecialPage {
 	}
 
 	/**
-	 * Apply defaults to a form descriptor, without creating non-existend fields.
+	 * Apply defaults to a form descriptor, without creating non-existent fields.
 	 *
 	 * Overrides $formDescriptor fields with their $defaultFormDescriptor equivalent, but
 	 * only if the field is defined in $fieldInfo, uses the special 'basefield' property to

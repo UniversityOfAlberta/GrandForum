@@ -25,7 +25,7 @@ class BudgetReportItem extends AbstractReportItem {
 		        header('Content-Type: application/vnd.ms-excel');
 		        header("Content-disposition: attachment; filename=\"Budget.xls\"");
 		        echo $data;
-		        exit;
+		        close();
 		    }
 		}
 		if(isset($_GET['budgetUploadForm']) && $_GET['budgetUploadForm'] == $this->getPostId()){
@@ -222,7 +222,7 @@ class BudgetReportItem extends AbstractReportItem {
 		            });
 		        </script>
 	          </html>";
-	    exit;
+	    close();
 	}
 	
 	function colorBudget($budget){

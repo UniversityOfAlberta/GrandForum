@@ -44,7 +44,7 @@ class Tag {
 	/**
 	 * Infusion support.
 	 *
-	 * @var boolean Whether to serialize tag/element/widget state for client-side use.
+	 * @var bool Whether to serialize tag/element/widget state for client-side use.
 	 */
 	protected $infusable = false;
 
@@ -112,6 +112,9 @@ class Tag {
 		return $this;
 	}
 
+	/**
+	 * @return string
+	 */
 	public function getTag() {
 		return $this->tag;
 	}
@@ -142,7 +145,7 @@ class Tag {
 	/**
 	 * Set value of input element ('value' attribute for most, element content for textarea).
 	 *
-	 * @param string $value Value to set
+	 * @param mixed $value New value should usually be a string
 	 * @return $this
 	 */
 	public function setValue( $value ) {
@@ -178,8 +181,8 @@ class Tag {
 	 * @return $this
 	 */
 	public function removeContent( ...$content ) {
-		if ( is_array( $content[ 0 ] ) ) {
-			$content = $content[ 0 ];
+		if ( $content && is_array( $content[ 0 ] ) ) {
+			return $this->removeContent( ...$content[0] );
 		}
 		foreach ( $content as $item ) {
 			if ( !is_string( $item ) ) {
@@ -209,15 +212,14 @@ class Tag {
 	 * Objects that are already in $this->content will be moved
 	 * to the end of the list, not duplicated.
 	 *
-	 * @param string|Tag|HtmlSnippet|array $content Can be an array only if no $params are passed.
-	 * @param string|Tag|HtmlSnippet ...$params Content to append
+	 * @param string|Tag|HtmlSnippet|array ...$content Content to append
 	 * @return $this
 	 */
-	public function appendContent( $content, ...$params ) {
-		if ( !is_array( $content ) ) {
-			$content = func_get_args();
+	public function appendContent( ...$content ) {
+		if ( $content && is_array( $content[ 0 ] ) ) {
+			return $this->appendContent( ...$content[0] );
 		}
-		$this->removeContent( $content );
+		$this->removeContent( ...$content );
 		$this->content = array_merge( $this->content, $content );
 		return $this;
 	}
@@ -237,15 +239,15 @@ class Tag {
 	 * This, however, is not acceptable
 	 * * $tag->prependContent( [ $element1, $element2 ], $element3 );
 	 *
-	 * @param string|Tag|HtmlSnippet ...$content Content to prepend. Strings will be HTML-escaped
+	 * @param string|Tag|HtmlSnippet|array ...$content Content to prepend. Strings will be HTML-escaped
 	 *   for output, use a HtmlSnippet instance to prevent that.
 	 * @return $this
 	 */
 	public function prependContent( ...$content ) {
-		if ( is_array( $content[ 0 ] ) ) {
-			$content = $content[ 0 ];
+		if ( $content && is_array( $content[ 0 ] ) ) {
+			return $this->prependContent( ...$content[0] );
 		}
-		$this->removeContent( $content );
+		$this->removeContent( ...$content );
 		array_splice( $this->content, 0, 0, $content );
 		return $this;
 	}
@@ -300,6 +302,7 @@ class Tag {
 		return $this->infusable;
 	}
 
+	/** @var int */
 	private static $elementId = 0;
 
 	/**
@@ -329,7 +332,7 @@ class Tag {
 	 * Return an augmented `attributes` array, including synthetic attributes
 	 * which are created from other properties (like the `classes` array)
 	 * but which shouldn't be retained in the user-visible `attributes`.
-	 * @return array An attributes array.
+	 * @return string[]
 	 */
 	protected function getGeneratedAttributes() {
 		// Copy attributes, add `class` attribute from `$this->classes` array.
@@ -360,12 +363,12 @@ class Tag {
 	 * vulnerability. (Note that URLs must be HTML-escaped regardless of this check.)
 	 *
 	 * The point is to disallow 'javascript:' URLs (there are no good reasons to ever use them
-	 * anyway), but there's no good way to blacklist them because of very lax parsing in browsers.
+	 * anyway), but there's no good way to prohibit them because of very lax parsing in browsers.
 	 *
 	 * An URL is safe if:
 	 *
 	 *  - it is empty, or
-	 *  - it starts with a whitelisted protocol, followed by a colon (absolute URL), or
+	 *  - it starts with an allowed protocol, followed by a colon (absolute URL), or
 	 *  - it starts with two slashes `//` (protocol-relative URL), or
 	 *  - it starts with a single slash `/`, or dot and slash `./` (relative URL), or
 	 *  - it starts with a question mark `?` (replace query part in current URL), or
@@ -379,7 +382,7 @@ class Tag {
 	 */
 	public static function isSafeUrl( $url ) {
 		// Keep this function in sync with OO.ui.isSafeUrl
-		$protocolWhitelist = [
+		$protocolAllowList = [
 			// Sourced from MediaWiki's $wgUrlProtocols
 			'bitcoin', 'ftp', 'ftps', 'geo', 'git', 'gopher', 'http', 'https', 'irc', 'ircs',
 			'magnet', 'mailto', 'mms', 'news', 'nntp', 'redis', 'sftp', 'sip', 'sips', 'sms', 'ssh',
@@ -390,7 +393,7 @@ class Tag {
 			return true;
 		}
 
-		foreach ( $protocolWhitelist as $protocol ) {
+		foreach ( $protocolAllowList as $protocol ) {
 			if ( self::stringStartsWith( $url, $protocol . ':' ) ) {
 				return true;
 			}
@@ -452,7 +455,7 @@ class Tag {
 			// Use single-quotes around the attribute value in HTML, because
 			// some of the values might be JSON strings
 			// 1. Encode both single and double quotes (and other special chars)
-			$value = htmlspecialchars( $value, ENT_QUOTES );
+			$value = htmlspecialchars( $value ?? '', ENT_QUOTES );
 			// 2. Decode double quotes, for readability.
 			$value = str_replace( '&quot;', '"', $value );
 			// 3. Wrap attribute value in single quotes in the HTML.
@@ -462,10 +465,10 @@ class Tag {
 		// Content
 		$content = '';
 		foreach ( $this->content as $part ) {
-			if ( is_string( $part ) ) {
-				$content .= htmlspecialchars( $part );
-			} elseif ( $part instanceof Tag || $part instanceof HtmlSnippet ) {
+			if ( $part instanceof Tag || $part instanceof HtmlSnippet ) {
 				$content .= (string)$part;
+			} else {
+				$content .= htmlspecialchars( (string)$part );
 			}
 		}
 
@@ -484,7 +487,8 @@ class Tag {
 	/**
 	 * Magic method implementation.
 	 *
-	 * PHP doesn't allow __toString to throw exceptions and will trigger a fatal error if it does.
+	 * It was not possible to throw an exception from within a __toString() method prior to PHP 7.4.0.
+	 * Doing so will result in a fatal error.
 	 * This is a wrapper around the real toString() to convert them to errors instead.
 	 *
 	 * @return string
@@ -494,7 +498,6 @@ class Tag {
 			return $this->toString();
 		} catch ( Exception $ex ) {
 			trigger_error( (string)$ex, E_USER_ERROR );
-			return '';
 		}
 	}
 }

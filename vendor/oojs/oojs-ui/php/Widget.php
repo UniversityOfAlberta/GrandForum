@@ -14,7 +14,7 @@ class Widget extends Element {
 	/**
 	 * Disabled.
 	 *
-	 * @var boolean Widget is disabled
+	 * @var bool Widget is disabled
 	 */
 	protected $disabled = false;
 
@@ -25,15 +25,12 @@ class Widget extends Element {
 	 *      - bool $config['disabled'] Disable (default: false)
 	 */
 	public function __construct( array $config = [] ) {
-		// Initialize config
-		$config = array_merge( [ 'disabled' => false ], $config );
-
 		// Parent constructor
 		parent::__construct( $config );
 
 		// Initialization
 		$this->addClasses( [ 'oo-ui-widget' ] );
-		$this->setDisabled( $config['disabled'] );
+		$this->setDisabled( $config['disabled'] ?? false );
 	}
 
 	/**
@@ -57,7 +54,11 @@ class Widget extends Element {
 		$this->disabled = (bool)$disabled;
 		$this->toggleClasses( [ 'oo-ui-widget-disabled' ], $this->disabled );
 		$this->toggleClasses( [ 'oo-ui-widget-enabled' ], !$this->disabled );
-		$this->setAttributes( [ 'aria-disabled' => $this->disabled ? 'true' : 'false' ] );
+		if ( $this->disabled ) {
+			$this->setAttributes( [ 'aria-disabled' => 'true' ] );
+		} else {
+			$this->removeAttributes( [ 'aria-disabled' ] );
+		}
 
 		return $this;
 	}
@@ -85,6 +86,7 @@ class Widget extends Element {
 		}
 	}
 
+	/** @inheritDoc */
 	public function getConfig( &$config ) {
 		if ( $this->disabled ) {
 			$config['disabled'] = $this->disabled;

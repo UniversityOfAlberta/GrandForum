@@ -12,10 +12,10 @@ use Wikimedia\Parsoid\Parsoid;
 
 class TemplateDataTest extends TestCase {
 
-	private $defaultContentVersion = '2.1.0';
+	private static $defaultContentVersion = Parsoid::AVAILABLE_VERSIONS[0];
 
-	private function verifyTransformation( $newHTML, $origHTML, $origWT, $expectedWT, $description,
-		$contentVersion = null ) {
+	private function verifyTransformation( string $newHTML, ?string $origHTML, ?string $origWT, string $expectedWT,
+		string $description, ?string $contentVersion = null ) {
 		$parserOpts = [];
 		$opts = [];
 
@@ -102,6 +102,7 @@ class TemplateDataTest extends TestCase {
 					'edited' => "{{InlineTplNoParamOrder|f1=BAR|f2=foo}}"
 				]
 			],
+
 			// 5. block-tpl (but written in inline format originally); no param order
 			[
 				'name' => 'Enforce block format',
@@ -353,7 +354,7 @@ class TemplateDataTest extends TestCase {
 				]
 			],
 
-			// 19. Custom block formatting 5 - T199849
+			// 20. Custom block formatting 5 - T199849
 			[
 				'name' => 'Custom block formatting 5 - T199849',
 				'html' => "x\n" . '<span about="#mwt1" typeof="mw:Transclusion" data-mw=' . "'" .
@@ -370,7 +371,7 @@ class TemplateDataTest extends TestCase {
 				]
 			],
 
-			// 20. Custom block formatting 6
+			// 21. Custom block formatting 6
 			[
 				'name' => 'Custom block formatting 6',
 				'html' => 'x<span about="#mwt1" typeof="mw:Transclusion" data-parsoid=' . "'" .
@@ -383,13 +384,62 @@ class TemplateDataTest extends TestCase {
 					'new_content' => "x{{BlockFormattedTpl_3|\n f1    = |\n f2    = foo}}y", // normalized
 					'edited' => "x{{BlockFormattedTpl_3|\n f1    = |\n f2    = BAR}}y" // normalized
 				]
-			]
+			],
+
+			// 22. Block formatting without params - T282031
+			[
+				'name' => 'Block formatting without params',
+				'html' => 'x<span about="#mwt1" typeof="mw:Transclusion" data-parsoid=' . "'" .
+					'{"pi":[[]]}' . "' data-mw='" .
+					'{"parts":[{"template":{"target":{"wt":"BlockTplNoParamOrder",' .
+					'"href":"./Template:BlockTplNoParamOrder"},"params":{' .
+					'},"i":0}}]}' . "'" . '>something</span>y',
+				'wt' => [
+					'no_selser' => "x{{BlockTplNoParamOrder}}y",
+					'new_content' => "x{{BlockTplNoParamOrder}}y", // normalized
+					'edited' => "x{{BlockTplNoParamOrder}}y" // normalized
+				]
+			],
+
+			// 23. Sort arguments as in data-mw - T304730
+			[
+				'name' => 'Sort arguments as in data-mw',
+				'html' => '<span about="#mwt1" typeof="mw:Transclusion" data-mw=\'' .
+					'{"parts":[{"template":{"target":{"wt":"Meh", "href":"./Template:Meh"},"params":{' .
+						'"f1":{"wt":"foo"},' .
+						'"f2":{"wt":"foo"},' .
+						'"f3":{"wt":"foo"},' .
+						'"f4":{"wt":"foo"},' .
+						'"f5":{"wt":"foo"},' .
+						'"f6":{"wt":"foo"},' .
+						'"f7":{"wt":"foo"},' .
+						'"f8":{"wt":"foo"},' .
+						'"f9":{"wt":"foo"},' .
+						'"f10":{"wt":"foo"},' .
+						'"f11":{"wt":"foo"},' .
+						'"f12":{"wt":"foo"},' .
+						'"f13":{"wt":"foo"},' .
+						'"f14":{"wt":"foo"},' .
+						'"f15":{"wt":"foo"},' .
+						'"f16":{"wt":"foo"},' .
+						'"f17":{"wt":"foo"}' .
+					'},"i":0}}]}' . "'" . '>foo</span>',
+				'wt' => [
+					'no_selser' => "{{Meh|f1=foo|f2=foo|f3=foo|f4=foo|f5=foo|f6=foo|f7=foo|f8=foo|" .
+						"f9=foo|f10=foo|f11=foo|f12=foo|f13=foo|f14=foo|f15=foo|f16=foo|f17=foo}}",
+					'new_content' => "{{Meh|f1=foo|f2=foo|f3=foo|f4=foo|f5=foo|f6=foo|f7=foo|f8=foo|" .
+						"f9=foo|f10=foo|f11=foo|f12=foo|f13=foo|f14=foo|f15=foo|f16=foo|f17=foo}}",
+					'edited' => "{{Meh|f1=BAR|f2=foo|f3=foo|f4=foo|f5=foo|f6=foo|f7=foo|f8=foo|" .
+						"f9=foo|f10=foo|f11=foo|f12=foo|f13=foo|f14=foo|f15=foo|f16=foo|f17=foo}}"
+				]
+			],
+
 		];
 	}
 
 	/**
 	 * @covers \Wikimedia\Parsoid\Parsoid::html2wikitext
-	 * @covers \Wikimedia\Parsoid\Core\WikitextContentModelHandler::fromDOM
+	 * @covers \Wikimedia\Parsoid\Wikitext\ContentModelHandler::fromDOM
 	 * @dataProvider defineTestData
 	 */
 	public function testTemplateData(
@@ -420,7 +470,7 @@ class TemplateDataTest extends TestCase {
 	public function defineVersionTestData(): array {
 		return [
 			[
-				'contentVersion' => $this->defaultContentVersion,
+				'contentVersion' => self::$defaultContentVersion,
 				'html' => '<span about="#mwt1" typeof="mw:Transclusion" data-parsoid=' . "'" .
 					'{"pi":[[{"k":"f1"},{"k":"f1"}]]}' . "' data-mw='" .
 					'{"parts":[{"template":{"target":{"wt":"TplWithoutTemplateData",' .
@@ -436,7 +486,7 @@ class TemplateDataTest extends TestCase {
 
 	/**
 	 * @covers \Wikimedia\Parsoid\Parsoid::html2wikitext
-	 * @covers \Wikimedia\Parsoid\Core\WikitextContentModelHandler::fromDOM
+	 * @covers \Wikimedia\Parsoid\Wikitext\ContentModelHandler::fromDOM
 	 * @dataProvider defineVersionTestData
 	 */
 	public function testTemplateDataVersion(

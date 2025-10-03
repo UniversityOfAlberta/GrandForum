@@ -146,7 +146,7 @@ class ApiResult implements ApiSerializable {
 	private $errorFormatter;
 
 	/**
-	 * @param int|bool $maxSize Maximum result "size", or false for no limit
+	 * @param int|false $maxSize Maximum result "size", or false for no limit
 	 */
 	public function __construct( $maxSize ) {
 		$this->maxSize = $maxSize;
@@ -154,7 +154,6 @@ class ApiResult implements ApiSerializable {
 	}
 
 	/**
-	 * Set the error formatter
 	 * @since 1.25
 	 * @param ApiErrorFormatter $formatter
 	 */
@@ -171,10 +170,9 @@ class ApiResult implements ApiSerializable {
 		return $this->data;
 	}
 
-	/************************************************************************//**
-	 * @name   Content
-	 * @{
-	 */
+	/***************************************************************************/
+	// region   Content
+	/** @name   Content */
 
 	/**
 	 * Clear the current result data.
@@ -307,7 +305,7 @@ class ApiResult implements ApiSerializable {
 					"Conflicting keys ($keys) when attempting to merge element $name"
 				);
 			}
-		} else {
+		} elseif ( $value !== $arr[$name] ) {
 			throw new RuntimeException(
 				"Attempting to add element $name=$value, existing value is {$arr[$name]}"
 			);
@@ -351,18 +349,18 @@ class ApiResult implements ApiSerializable {
 				$value = (array)$value + [ self::META_TYPE => 'assoc' ];
 			}
 		}
-		if ( is_array( $value ) ) {
-			// Work around https://bugs.php.net/bug.php?id=45959 by copying to a temporary
-			// (in this case, foreach gets $k === "1" but $tmp[$k] assigns as if $k === 1)
-			$tmp = [];
-			foreach ( $value as $k => $v ) {
-				$tmp[$k] = self::validateValue( $v );
+
+		if ( is_string( $value ) ) {
+			// Optimization: avoid querying the service locator for each value.
+			static $contentLanguage = null;
+			if ( !$contentLanguage ) {
+				$contentLanguage = MediaWikiServices::getInstance()->getContentLanguage();
 			}
-			$value = $tmp;
-		} elseif ( is_float( $value ) && !is_finite( $value ) ) {
-			throw new InvalidArgumentException( 'Cannot add non-finite floats to ApiResult' );
-		} elseif ( is_string( $value ) ) {
-			$value = MediaWikiServices::getInstance()->getContentLanguage()->normalize( $value );
+			$value = $contentLanguage->normalize( $value );
+		} elseif ( is_array( $value ) ) {
+			foreach ( $value as $k => $v ) {
+				$value[$k] = self::validateValue( $v );
+			}
 		} elseif ( $value !== null && !is_scalar( $value ) ) {
 			$type = gettype( $value );
 			// phpcs:ignore MediaWiki.Usage.ForbiddenFunctions.is_resource
@@ -370,6 +368,8 @@ class ApiResult implements ApiSerializable {
 				$type .= '(' . get_resource_type( $value ) . ')';
 			}
 			throw new InvalidArgumentException( "Cannot add $type to ApiResult" );
+		} elseif ( is_float( $value ) && !is_finite( $value ) ) {
+			throw new InvalidArgumentException( 'Cannot add non-finite floats to ApiResult' );
 		}
 
 		return $value;
@@ -503,12 +503,11 @@ class ApiResult implements ApiSerializable {
 			self::OVERRIDE | self::NO_SIZE_CHECK );
 	}
 
-	/** @} */
+	// endregion -- end of Content
 
-	/************************************************************************//**
-	 * @name   Metadata
-	 * @{
-	 */
+	/***************************************************************************/
+	// region   Metadata
+	/** @name   Metadata */
 
 	/**
 	 * Set the name of the content field name (META_CONTENT)
@@ -633,7 +632,7 @@ class ApiResult implements ApiSerializable {
 		}
 		$arr[self::META_INDEXED_TAG_NAME] = $tag;
 		foreach ( $arr as $k => &$v ) {
-			if ( !self::isMetadataKey( $k ) && is_array( $v ) ) {
+			if ( is_array( $v ) && !self::isMetadataKey( $k ) ) {
 				self::setIndexedTagNameRecursive( $v, $tag );
 			}
 		}
@@ -748,7 +747,7 @@ class ApiResult implements ApiSerializable {
 	public static function setArrayTypeRecursive( array &$arr, $type, $kvpKeyName = null ) {
 		self::setArrayType( $arr, $type, $kvpKeyName );
 		foreach ( $arr as $k => &$v ) {
-			if ( !self::isMetadataKey( $k ) && is_array( $v ) ) {
+			if ( is_array( $v ) && !self::isMetadataKey( $k ) ) {
 				self::setArrayTypeRecursive( $v, $type, $kvpKeyName );
 			}
 		}
@@ -766,21 +765,23 @@ class ApiResult implements ApiSerializable {
 		self::setArrayTypeRecursive( $arr, $tag, $kvpKeyName );
 	}
 
-	/** @} */
+	// endregion -- end of Metadata
 
-	/************************************************************************//**
-	 * @name   Utility
-	 * @{
-	 */
+	/***************************************************************************/
+	// region   Utility
+	/** @name   Utility */
 
 	/**
 	 * Test whether a key should be considered metadata
 	 *
-	 * @param string $key
+	 * @param string|int $key
 	 * @return bool
 	 */
 	public static function isMetadataKey( $key ) {
-		return substr( $key, 0, 1 ) === '_';
+		// Optimization: This is a very hot and highly optimized code path. Note that ord() only
+		// considers the first character and also works with empty strings and integers.
+		// 95 corresponds to the '_' character.
+		return ord( $key ) === 95;
 	}
 
 	/**
@@ -790,7 +791,7 @@ class ApiResult implements ApiSerializable {
 	 * @since 1.25
 	 * @param array $dataIn
 	 * @param array $transforms
-	 * @return array|object
+	 * @return array|stdClass
 	 */
 	protected static function applyTransformations( array $dataIn, array $transforms ) {
 		$strip = $transforms['Strip'] ?? 'none';
@@ -828,7 +829,7 @@ class ApiResult implements ApiSerializable {
 			}
 			if ( !in_array( 'nobool', $transforms['BC'], true ) ) {
 				$boolKeys = isset( $metadata[self::META_BC_BOOLS] )
-					? array_flip( $metadata[self::META_BC_BOOLS] )
+					? array_fill_keys( $metadata[self::META_BC_BOOLS], true )
 					: [];
 			}
 
@@ -898,6 +899,7 @@ class ApiResult implements ApiSerializable {
 				$keepMetadata = &$metadata;
 				break;
 			case 'bc':
+				// @phan-suppress-next-line PhanTypeMismatchArgumentNullableInternal Type mismatch on pass-by-ref args
 				$keepMetadata = array_intersect_key( $metadata, [
 					self::META_INDEXED_TAG_NAME => 1,
 					self::META_SUBELEMENTS => 1,
@@ -907,94 +909,118 @@ class ApiResult implements ApiSerializable {
 				throw new InvalidArgumentException( __METHOD__ . ': Unknown value for "Strip"' );
 		}
 
-		// Type transformation
-		if ( $transformTypes !== null ) {
-			if ( $defaultType === 'array' && $maxKey !== count( $data ) - 1 ) {
-				$defaultType = 'assoc';
-			}
-
-			// Override type, if provided
-			$type = $defaultType;
-			if ( isset( $metadata[self::META_TYPE] ) && $metadata[self::META_TYPE] !== 'default' ) {
-				$type = $metadata[self::META_TYPE];
-			}
-			if ( ( $type === 'kvp' || $type === 'BCkvp' ) &&
-				empty( $transformTypes['ArmorKVP'] )
-			) {
-				$type = 'assoc';
-			} elseif ( $type === 'BCarray' ) {
-				$type = 'array';
-			} elseif ( $type === 'BCassoc' ) {
-				$type = 'assoc';
-			}
-
-			// Apply transformation
-			switch ( $type ) {
-				case 'assoc':
-					$metadata[self::META_TYPE] = 'assoc';
-					$data += $keepMetadata;
-					return empty( $transformTypes['AssocAsObject'] ) ? $data : (object)$data;
-
-				case 'array':
-					ksort( $data );
-					$data = array_values( $data );
-					$metadata[self::META_TYPE] = 'array';
-					return $data + $keepMetadata;
-
-				case 'kvp':
-				case 'BCkvp':
-					$key = $metadata[self::META_KVP_KEY_NAME] ?? $transformTypes['ArmorKVP'];
-					$valKey = isset( $transforms['BC'] ) ? '*' : 'value';
-					$assocAsObject = !empty( $transformTypes['AssocAsObject'] );
-					$merge = !empty( $metadata[self::META_KVP_MERGE] );
-
-					$ret = [];
-					foreach ( $data as $k => $v ) {
-						if ( $merge && ( is_array( $v ) || is_object( $v ) ) ) {
-							$vArr = (array)$v;
-							if ( isset( $vArr[self::META_TYPE] ) ) {
-								$mergeType = $vArr[self::META_TYPE];
-							} elseif ( is_object( $v ) ) {
-								$mergeType = 'assoc';
-							} else {
-								$keys = array_keys( $vArr );
-								sort( $keys, SORT_NUMERIC );
-								$mergeType = ( $keys === array_keys( $keys ) ) ? 'array' : 'assoc';
-							}
-						} else {
-							$mergeType = 'n/a';
-						}
-						if ( $mergeType === 'assoc' ) {
-							$item = $vArr + [
-								$key => $k,
-							];
-							if ( $strip === 'none' ) {
-								self::setPreserveKeysList( $item, [ $key ] );
-							}
-						} else {
-							$item = [
-								$key => $k,
-								$valKey => $v,
-							];
-							if ( $strip === 'none' ) {
-								$item += [
-									self::META_PRESERVE_KEYS => [ $key ],
-									self::META_CONTENT => $valKey,
-									self::META_TYPE => 'assoc',
-								];
-							}
-						}
-						$ret[] = $assocAsObject ? (object)$item : $item;
-					}
-					$metadata[self::META_TYPE] = 'array';
-
-					return $ret + $keepMetadata;
-
-				default:
-					throw new UnexpectedValueException( "Unknown type '$type'" );
-			}
-		} else {
+		// No type transformation
+		if ( $transformTypes === null ) {
 			return $data + $keepMetadata;
+		}
+
+		if ( $defaultType === 'array' && $maxKey !== count( $data ) - 1 ) {
+			$defaultType = 'assoc';
+		}
+
+		// Override type, if provided
+		$type = $defaultType;
+		if ( isset( $metadata[self::META_TYPE] ) && $metadata[self::META_TYPE] !== 'default' ) {
+			$type = $metadata[self::META_TYPE];
+		}
+		if ( ( $type === 'kvp' || $type === 'BCkvp' ) &&
+			empty( $transformTypes['ArmorKVP'] )
+		) {
+			$type = 'assoc';
+		} elseif ( $type === 'BCarray' ) {
+			$type = 'array';
+		} elseif ( $type === 'BCassoc' ) {
+			$type = 'assoc';
+		}
+
+		// Apply transformation
+		switch ( $type ) {
+			case 'assoc':
+				$metadata[self::META_TYPE] = 'assoc';
+				$data += $keepMetadata;
+				return empty( $transformTypes['AssocAsObject'] ) ? $data : (object)$data;
+
+			case 'array':
+				// Sort items in ascending order by key. Note that $data may contain a mix of number and string keys,
+				// for which the sorting behavior of krsort() with SORT_REGULAR is inconsistent between PHP versions.
+				// Given a comparison of a string key and a number key, PHP < 8.2 coerces the string key into a number
+				// (which yields zero if the string was non-numeric), and then performs the comparison,
+				// while PHP >= 8.2 makes the behavior consistent with stricter numeric comparisons introduced by
+				// PHP 8.0 in that if the string key is non-numeric, it converts the number key into a string
+				// and compares those two strings instead. We therefore use a custom comparison function
+				// implementing PHP >= 8.2 ordering semantics to ensure consistent ordering of items
+				// irrespective of the PHP version (T326480).
+				uksort( $data, static function ( $a, $b ): int {
+					// In a comparison of a number or numeric string with a non-numeric string,
+					// coerce both values into a string prior to comparing and compare the resulting strings.
+					// Note that PHP prior to 8.0 did not consider numeric strings with trailing whitespace
+					// to be numeric, so trim the inputs prior to the numeric checks to make the behavior
+					// consistent across PHP versions.
+					if ( is_numeric( trim( $a ) ) xor is_numeric( trim( $b ) ) ) {
+						return (string)$a <=> (string)$b;
+					}
+
+					return $a <=> $b;
+				} );
+
+				$data = array_values( $data );
+				$metadata[self::META_TYPE] = 'array';
+				// @phan-suppress-next-line PhanTypeMismatchReturnNullable Type mismatch on pass-by-ref args
+				return $data + $keepMetadata;
+
+			case 'kvp':
+			case 'BCkvp':
+				$key = $metadata[self::META_KVP_KEY_NAME] ?? $transformTypes['ArmorKVP'];
+				$valKey = isset( $transforms['BC'] ) ? '*' : 'value';
+				$assocAsObject = !empty( $transformTypes['AssocAsObject'] );
+				$merge = !empty( $metadata[self::META_KVP_MERGE] );
+
+				$ret = [];
+				foreach ( $data as $k => $v ) {
+					if ( $merge && ( is_array( $v ) || is_object( $v ) ) ) {
+						$vArr = (array)$v;
+						if ( isset( $vArr[self::META_TYPE] ) ) {
+							$mergeType = $vArr[self::META_TYPE];
+						} elseif ( is_object( $v ) ) {
+							$mergeType = 'assoc';
+						} else {
+							$keys = array_keys( $vArr );
+							sort( $keys, SORT_NUMERIC );
+							$mergeType = ( $keys === array_keys( $keys ) ) ? 'array' : 'assoc';
+						}
+					} else {
+						$mergeType = 'n/a';
+					}
+					if ( $mergeType === 'assoc' ) {
+						// @phan-suppress-next-line PhanPossiblyUndeclaredVariable vArr set when used
+						$item = $vArr + [
+							$key => $k,
+						];
+						if ( $strip === 'none' ) {
+							self::setPreserveKeysList( $item, [ $key ] );
+						}
+					} else {
+						$item = [
+							$key => $k,
+							$valKey => $v,
+						];
+						if ( $strip === 'none' ) {
+							$item += [
+								self::META_PRESERVE_KEYS => [ $key ],
+								self::META_CONTENT => $valKey,
+								self::META_TYPE => 'assoc',
+							];
+						}
+					}
+					$ret[] = $assocAsObject ? (object)$item : $item;
+				}
+				$metadata[self::META_TYPE] = 'array';
+
+				// @phan-suppress-next-line PhanTypeMismatchReturnNullable Type mismatch on pass-by-ref args
+				return $ret + $keepMetadata;
+
+			default:
+				throw new UnexpectedValueException( "Unknown type '$type'" );
 		}
 	}
 
@@ -1005,8 +1031,8 @@ class ApiResult implements ApiSerializable {
 	 * ones.
 	 *
 	 * @since 1.25
-	 * @param array|object $data
-	 * @return array|object
+	 * @param array|stdClass $data
+	 * @return array|stdClass
 	 */
 	public static function stripMetadata( $data ) {
 		if ( is_array( $data ) || is_object( $data ) ) {
@@ -1038,9 +1064,9 @@ class ApiResult implements ApiSerializable {
 	 * ones.
 	 *
 	 * @since 1.25
-	 * @param array|object $data
+	 * @param array|stdClass $data
 	 * @param array|null &$metadata Store metadata here, if provided
-	 * @return array|object
+	 * @return array|stdClass
 	 */
 	public static function stripMetadataNonRecursive( $data, &$metadata = null ) {
 		if ( !is_array( $metadata ) ) {
@@ -1206,11 +1232,15 @@ class ApiResult implements ApiSerializable {
 		}
 	}
 
-	/** @} */
+	// endregion -- end of Utility
 
 }
 
-/**
- * For really cool vim folding this needs to be at the end:
- * vim: foldmarker=@{,@} foldmethod=marker
+/*
+ * This file uses VisualStudio style region/endregion fold markers which are
+ * recognised by PHPStorm. If modelines are enabled, the following editor
+ * configuration will also enable folding in vim, if it is in the last 5 lines
+ * of the file. We also use "@name" which creates sections in Doxygen.
+ *
+ * vim: foldmarker=//\ region,//\ endregion foldmethod=marker
  */

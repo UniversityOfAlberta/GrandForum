@@ -94,7 +94,7 @@ class PharmacyMap extends BackbonePage {
             if($clicks >= 5){
                 Gamification::log("5CommunitySupports");
             }
-            exit;
+            close();
         }
         $json = self::getCategoryJSON();
         $wgOut->addHTML("<script type='text/javascript'>
@@ -128,7 +128,7 @@ class PharmacyMap extends BackbonePage {
     
     static function createSubTabs(&$tabs){
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle;
-        if($wgUser->isLoggedIn()){
+        if($wgUser->isRegistered()){
             if(AVOIDDashboard::checkAllSubmissions($wgUser->getId()) && (new self())->userCanExecute($wgUser)){
                 $selected = @($wgTitle->getText() == "PharmacyMap") ? "selected" : false;
                 $tabs["Map"]['subtabs'][] = TabUtils::createSubTab("Community Programs", "{$wgServer}{$wgScriptPath}/index.php/Special:PharmacyMap", $selected);

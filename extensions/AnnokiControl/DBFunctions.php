@@ -182,16 +182,10 @@ class DBFunctions {
 		    }
 		    
 		    $result = DBFunctions::$dbr->query($sql);
-		    
 	        $rows = array();
 	        if($result != null){
-	            if(DBFunctions::$mysqlnd){
-	                $rows = mysqli_fetch_all(ResultWrapper::unwrap($result), MYSQLI_ASSOC);
-	            }
-	            else{
-	                while ($row = mysqli_fetch_array(ResultWrapper::unwrap($result), MYSQLI_ASSOC)) {
-		                $rows[] = $row;
-	                }
+	            while($row=$result->fetchRow()){
+		            $rows[] = $row;
 	            }
 	        }
 	        self::$lastResult = count($rows);

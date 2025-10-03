@@ -3,8 +3,7 @@ declare( strict_types = 1 );
 
 namespace Wikimedia\Parsoid\Ext\Gallery;
 
-use DOMDocument;
-use DOMElement;
+use Wikimedia\Parsoid\DOM\DocumentFragment;
 
 use Wikimedia\Parsoid\Ext\ParsoidExtensionAPI;
 
@@ -24,6 +23,20 @@ abstract class Mode {
 	}
 
 	/**
+	 * @return array
+	 */
+	public function getModules(): array {
+		return [];
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getModuleStyles(): array {
+		return [];
+	}
+
+	/**
 	 * Format the dimensions as a string.
 	 * @param Opts $opts
 	 * @return string
@@ -34,13 +47,14 @@ abstract class Mode {
 	 * Render HTML for the given lines in this mode.
 	 * @param ParsoidExtensionAPI $extApi
 	 * @param Opts $opts
-	 * @param DOMElement|null $caption
+	 * @param ?DocumentFragment $caption
 	 * @param ParsedLine[] $lines
-	 * @return DOMDocument
+	 * @return DocumentFragment
 	 */
 	abstract public function render(
-		ParsoidExtensionAPI $extApi, Opts $opts, ?DOMElement $caption, array $lines
-	): DOMDocument;
+		ParsoidExtensionAPI $extApi, Opts $opts, ?DocumentFragment $caption,
+		array $lines
+	): DocumentFragment;
 
 	/**
 	 * Return the Mode object with the given name,

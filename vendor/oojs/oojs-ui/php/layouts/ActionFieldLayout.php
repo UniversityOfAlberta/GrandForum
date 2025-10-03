@@ -15,6 +15,16 @@ class ActionFieldLayout extends FieldLayout {
 	protected $buttonWidget;
 
 	/**
+	 * @var Tag
+	 */
+	protected $button;
+
+	/**
+	 * @var Tag
+	 */
+	protected $input;
+
+	/**
 	 * @param Widget $fieldWidget Field widget
 	 * @param ButtonWidget|ButtonInputWidget $buttonWidget Field widget
 	 * @param array $config Configuration options
@@ -24,8 +34,7 @@ class ActionFieldLayout extends FieldLayout {
 		// Allow passing positional parameters inside the config array
 		if ( is_array( $fieldWidget ) && isset( $fieldWidget['fieldWidget'] ) ) {
 			$config = $fieldWidget;
-			$fieldWidget = $config['fieldWidget'];
-			$buttonWidget = $config['buttonWidget'];
+			[ 'fieldWidget' => $fieldWidget, 'buttonWidget' => $buttonWidget ] = $config;
 		}
 
 		// Parent constructor
@@ -49,6 +58,7 @@ class ActionFieldLayout extends FieldLayout {
 			->appendContent( $this->input, $this->button );
 	}
 
+	/** @inheritDoc */
 	public function getConfig( &$config ) {
 		$config['buttonWidget'] = $this->buttonWidget;
 		return parent::getConfig( $config );

@@ -182,7 +182,7 @@
             $message .= "--".$uid."--";
             
             mail($config->getValue('supportEmail'), "[{$config->getValue('networkName')}] {$subj}", $message, $header, $wgAdditionalMailParams);
-            exit;
+            close();
         }
         return true;
     }

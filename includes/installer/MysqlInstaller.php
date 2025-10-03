@@ -21,9 +21,11 @@
  * @ingroup Installer
  */
 
+use MediaWiki\MediaWikiServices;
 use Wikimedia\Rdbms\Database;
 use Wikimedia\Rdbms\DBConnectionError;
 use Wikimedia\Rdbms\DBQueryError;
+use Wikimedia\Rdbms\IDatabase;
 
 /**
  * Class for setting up the MediaWiki database using MySQL.
@@ -38,6 +40,7 @@ class MysqlInstaller extends DatabaseInstaller {
 		'wgDBname',
 		'wgDBuser',
 		'wgDBpassword',
+		'wgDBssl',
 		'wgDBprefix',
 		'wgDBTableOptions',
 	];
@@ -50,8 +53,12 @@ class MysqlInstaller extends DatabaseInstaller {
 
 	public $supportedEngines = [ 'InnoDB' ];
 
-	public static $minimumVersion = '5.5.8';
-	protected static $notMinimumVersionMessage = 'config-mysql-old';
+	private const MIN_VERSIONS = [
+		'MySQL' => '5.7.0',
+		'MariaDB' => '10.3',
+	];
+	public static $minimumVersion;
+	protected static $notMinimumVersionMessage;
 
 	public $webUserPrivs = [
 		'DELETE',
@@ -85,6 +92,7 @@ class MysqlInstaller extends DatabaseInstaller {
 			[],
 			$this->parent->getHelpBox( 'config-db-host-help' )
 		) .
+			$this->getCheckBox( 'wgDBssl', 'config-db-ssl' ) .
 			Html::openElement( 'fieldset' ) .
 			Html::element( 'legend', [], wfMessage( 'config-db-wiki-settings' )->text() ) .
 			$this->getTextBox( 'wgDBname', 'config-db-name', [ 'dir' => 'ltr' ],
@@ -97,7 +105,7 @@ class MysqlInstaller extends DatabaseInstaller {
 
 	public function submitConnectForm() {
 		// Get variables from the request.
-		$newValues = $this->setVarsFromRequest( [ 'wgDBserver', 'wgDBname', 'wgDBprefix' ] );
+		$newValues = $this->setVarsFromRequest( [ 'wgDBserver', 'wgDBname', 'wgDBprefix', 'wgDBssl' ] );
 
 		// Validate them.
 		$status = Status::newGood();
@@ -134,7 +142,15 @@ class MysqlInstaller extends DatabaseInstaller {
 		'@phan-var Database $conn';
 
 		// Check version
-		return static::meetsMinimumRequirement( $conn->getServerVersion() );
+		return static::meetsMinimumRequirement( $conn );
+	}
+
+	public static function meetsMinimumRequirement( IDatabase $conn ) {
+		$type = str_contains( $conn->getSoftwareLink(), 'MariaDB' ) ? 'MariaDB' : 'MySQL';
+		self::$minimumVersion = self::MIN_VERSIONS[$type];
+		// Used messages: config-mysql-old, config-mariadb-old
+		self::$notMinimumVersionMessage = 'config-' . strtolower( $type ) . '-old';
+		return parent::meetsMinimumRequirement( $conn );
 	}
 
 	/**
@@ -148,6 +164,7 @@ class MysqlInstaller extends DatabaseInstaller {
 				'host' => $this->getVar( 'wgDBserver' ),
 				'user' => $this->getVar( '_InstallUser' ),
 				'password' => $this->getVar( '_InstallPassword' ),
+				'ssl' => $this->getVar( 'wgDBssl' ),
 				'dbname' => false,
 				'flags' => 0,
 				'tablePrefix' => $this->getVar( 'wgDBprefix' ) ] );
@@ -178,7 +195,7 @@ class MysqlInstaller extends DatabaseInstaller {
 		if ( $conn->tableExists( "revision", __METHOD__ ) ) {
 			$revision = $this->escapeLikeInternal( $this->getVar( 'wgDBprefix' ) . 'revision', '\\' );
 			$res = $conn->query( "SHOW TABLE STATUS LIKE '$revision'", __METHOD__ );
-			$row = $conn->fetchObject( $res );
+			$row = $res->fetchObject();
 			if ( !$row ) {
 				$this->parent->showMessage( 'config-show-table-status' );
 				$existingSchema = false;
@@ -286,7 +303,7 @@ class MysqlInstaller extends DatabaseInstaller {
 		$res = $conn->select( 'INFORMATION_SCHEMA.USER_PRIVILEGES', '*',
 			[ 'GRANTEE' => $quotedUser ], __METHOD__ );
 		$insertMysql = false;
-		$grantOptions = array_flip( $this->webUserPrivs );
+		$grantOptions = array_fill_keys( $this->webUserPrivs, true );
 		foreach ( $res as $row ) {
 			if ( $row->PRIVILEGE_TYPE == 'INSERT' ) {
 				$insertMysql = true;
@@ -397,10 +414,11 @@ class MysqlInstaller extends DatabaseInstaller {
 		if ( !$create ) {
 			// Test the web account
 			try {
-				Database::factory( 'mysql', [
+				MediaWikiServices::getInstance()->getDatabaseFactory()->create( 'mysql', [
 					'host' => $this->getVar( 'wgDBserver' ),
 					'user' => $this->getVar( 'wgDBuser' ),
 					'password' => $this->getVar( 'wgDBpassword' ),
+					'ssl' => $this->getVar( 'wgDBssl' ),
 					'dbname' => false,
 					'flags' => 0,
 					'tablePrefix' => $this->getVar( 'wgDBprefix' )
@@ -497,6 +515,7 @@ class MysqlInstaller extends DatabaseInstaller {
 					'host' => $server,
 					'user' => $dbUser,
 					'password' => $password,
+					'ssl' => $this->getVar( 'wgDBssl' ),
 					'dbname' => false,
 					'flags' => 0,
 					'tablePrefix' => $this->getVar( 'wgDBprefix' )
@@ -538,7 +557,7 @@ class MysqlInstaller extends DatabaseInstaller {
 							$grantableNames[] = $fullName;
 							break;
 						} else {
-							// If we couldn't create for some bizzare reason and the
+							// If we couldn't create for some bizarre reason and the
 							// user probably doesn't exist, skip the grant
 							$this->db->rollback( __METHOD__ );
 							$status->warning( 'config-install-user-create-failed', $dbUser, $dqe->getMessage() );
@@ -630,10 +649,12 @@ class MysqlInstaller extends DatabaseInstaller {
 
 	public function getLocalSettings() {
 		$prefix = LocalSettingsGenerator::escapePhpString( $this->getVar( 'wgDBprefix' ) );
+		$useSsl = $this->getVar( 'wgDBssl' ) ? 'true' : 'false';
 		$tblOpts = LocalSettingsGenerator::escapePhpString( $this->getTableOptions() );
 
 		return "# MySQL specific settings
 \$wgDBprefix = \"{$prefix}\";
+\$wgDBssl = {$useSsl};
 
 # MySQL table options to use during installation or update
 \$wgDBTableOptions = \"{$tblOpts}\";";

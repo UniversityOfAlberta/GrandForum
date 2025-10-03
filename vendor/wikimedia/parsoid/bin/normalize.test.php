@@ -7,24 +7,25 @@ require_once __DIR__ . '/../vendor/autoload.php';
 use Wikimedia\Parsoid\Html2Wt\DOMNormalizer;
 use Wikimedia\Parsoid\Mocks\MockEnv;
 use Wikimedia\Parsoid\Utils\ContentUtils;
+use Wikimedia\Parsoid\Utils\DOMCompat;
 
 $html = file_get_contents( $argv[1] );
 
 $mockEnv = new MockEnv( [] );
 $mockState = (object)[
 	"env" => $mockEnv,
-	"selserMode" => true,
-	"rtTestMode" => false,
+	"selserMode" => true
 ];
-$body = ContentUtils::ppToDOM( $mockEnv, $html, [ "markNew" => true ] );
+
+$doc = ContentUtils::createAndLoadDocument( $html, [ "markNew" => true ] );
+$body = DOMCompat::getBody( $doc );
 
 $norm = new DOMNormalizer( $mockState );
 $norm->normalize( $body );
 
-$opts = [ 'env' => $mockEnv,
+$opts = [
 	'keepTmp' => true,
 	'storeDiffMark' => true,
-	'tunnelFosteredContent' => true,
 ];
-ContentUtils::dumpDOM( $body, 'DOM post-normalization', $opts );
+print ContentUtils::dumpDOM( $body, 'DOM post-normalization', $opts );
 print "\n";

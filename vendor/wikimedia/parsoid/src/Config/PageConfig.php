@@ -3,20 +3,10 @@ declare( strict_types = 1 );
 
 namespace Wikimedia\Parsoid\Config;
 
-use DOMDocument;
-
 /**
  * Page-level configuration interface for Parsoid
  */
 abstract class PageConfig {
-
-	/**
-	 * The owner document of the page. Used to transfer context between WikitextSerializer and
-	 * some extensions, see WikitextSerializer::serializeDOM.
-	 * PORT-FIXME this should not be here.
-	 * @var DOMDocument|null
-	 */
-	public $editedDoc;
 
 	/**
 	 * Non-null to record the fact that conversion has been done on
@@ -24,6 +14,15 @@ abstract class PageConfig {
 	 * @var ?string
 	 */
 	private $htmlVariant = null;
+
+	/**
+	 * Base constructor.
+	 *
+	 * This constructor is public because it is used to create mock objects
+	 * in our test suite.
+	 */
+	public function __construct() {
+	}
 
 	/**
 	 * Get content model

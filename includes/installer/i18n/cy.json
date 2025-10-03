@@ -2,9 +2,10 @@
 	"@metadata": {
 		"authors": [
 			"Lloffiwr",
-			"Xxglennxx",
 			"Robin Owain",
-			"Afalau"
+			"Xxglennxx",
+			"Afalau",
+			"Ceirios"
 		]
 	},
 	"config-desc": "Y gosodwr ar gyfer MediaWiki",
@@ -33,6 +34,8 @@
 	"config-admin-password": "Cyfrinair:",
 	"config-admin-password-confirm": "Cyfrinair eto:",
 	"config-profile-wiki": "Agor wici",
+	"config-logo-icon": "Logo (eicon):",
+	"config-logo-sidebar": "Logo bar ochr (dewisol):",
 	"config-extensions": "Ychwanegynnau",
 	"config-skins": "Gweddau",
 	"config-download-localsettings": "Lawrlwythwch <code>LocalSettings.php</code>",

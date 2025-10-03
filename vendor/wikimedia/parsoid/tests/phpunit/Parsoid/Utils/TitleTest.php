@@ -57,17 +57,21 @@ class TitleTest extends \PHPUnit\Framework\TestCase {
 		];
 	}
 
-	/** @return MockObject|MockSiteConfig */
-	private function getMockSiteConfig( $lang = 'en' ) {
+	/**
+	 * @param string $lang
+	 *
+	 * @return MockObject|MockSiteConfig
+	 */
+	private function getMockSiteConfig( string $lang = 'en' ) {
 		$siteConfig = $this->getMockBuilder( MockSiteConfig::class )
 			->setConstructorArgs( [ [] ] )
-			->setMethods( [ 'lang', 'namespaceCase', 'specialPageLocalName' ] )
+			->onlyMethods( [ 'lang', 'namespaceCase', 'specialPageLocalName' ] )
 			->getMock();
-		$siteConfig->method( 'namespaceCase' )->willReturnCallback( function ( $ns ) {
+		$siteConfig->method( 'namespaceCase' )->willReturnCallback( static function ( $ns ) {
 			return $ns === 15 ? 'case-sensitive' : 'first-letter';
 		} );
 		$siteConfig->method( 'lang' )->willReturn( $lang );
-		$siteConfig->method( 'specialPageLocalName' )->willReturnCallback( function ( $alias ) {
+		$siteConfig->method( 'specialPageLocalName' )->willReturnCallback( static function ( $alias ) {
 			if ( $alias === 'DoesNotExist' ) {
 				return null;
 			}
@@ -253,6 +257,7 @@ class TitleTest extends \PHPUnit\Framework\TestCase {
 			'Too long (special)' => [ "Special:$x513", 'title-invalid-too-long' ],
 			'Empty except for namespace' => [ 'User:', 'title-invalid-empty' ],
 			'Empty except for namespace+fragment' => [ 'User:#frag', 'title-invalid-empty' ],
+			'Leading colon' => [ 'User::Hiho', 'title-invalid-leading-colon' ],
 
 			// == More tests copied from the JS module ==
 			[ ':', 'title-invalid-empty' ],

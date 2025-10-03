@@ -321,7 +321,7 @@ class UserTagsAPI extends API{
 
         $myJSON = json_encode($tags);
         echo $myJSON;
-        exit;
+        close();
     }
 
    function isLoginRequired(){

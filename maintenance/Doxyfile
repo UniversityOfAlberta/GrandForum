@@ -6,7 +6,6 @@
 # Some placeholders have been added for MediaWiki usage:
 # OUTPUT_DIRECTORY = {{OUTPUT_DIRECTORY}}
 # CURRENT_VERSION  = {{CURRENT_VERSION}}
-# STRIP_FROM_PATH  = {{STRIP_FROM_PATH}}
 # INPUT            = {{INPUT}}
 #
 # To generate documentation run: php mwdocgen.php --no-extensions
@@ -38,7 +37,6 @@ ABBREVIATE_BRIEF       = "The $name class" \
 ALWAYS_DETAILED_SEC    = NO
 INLINE_INHERITED_MEMB  = NO
 FULL_PATH_NAMES        = YES
-STRIP_FROM_PATH        = {{STRIP_FROM_PATH}}
 STRIP_FROM_INC_PATH    =
 SHORT_NAMES            = NO
 JAVADOC_AUTOBRIEF      = YES
@@ -50,18 +48,21 @@ TAB_SIZE               = 4
 ALIASES                = "type{1}=<b> \1 </b>:" \
                          "types{2}=<b> \1 </b> or <b> \2 </b>:" \
                          "types{3}=<b> \1 </b>, <b> \2 </b>, or <b> \3 </b>:" \
-                         "access=\par Access:\n" \
-                         "private=\access private" \
-                         "protected=\access protected" \
+                         "access=\par Access:" \
+                         "private=\par \"Access: private\"" \
+                         "protected=\par \"Access: protected\"" \
+                         "internal=\par \"Access: internal\"" \
+                         "unstable=\par \"Stability: unstable\"" \
+                         "stable=\par \"Stability: stable\"" \
+                         "newable=\par \"Stability: newable\"" \
                          "copyright=\note" \
                          "license=\note" \
                          "inheritDoc=\inheritdoc" \
-                         "codeCoverageIgnore=" \
-                         "codingStandardsIgnoreEnd=" \
-                         "codingStandardsIgnoreStart=" \
-                         "phan=" \
-                         "suppress=" \
-                         "stable=Stable"
+                         "codeCoverageIgnore=\noop" \
+                         "codingStandardsIgnoreEnd=\noop" \
+                         "codingStandardsIgnoreStart=\noop" \
+                         "phan=\noop" \
+                         "suppress=\noop"
 OPTIMIZE_OUTPUT_FOR_C  = NO
 OPTIMIZE_OUTPUT_JAVA   = NO
 OPTIMIZE_FOR_FORTRAN   = NO
@@ -83,7 +84,7 @@ LOOKUP_CACHE_SIZE      = 2
 # Build related configuration options
 #---------------------------------------------------------------------------
 EXTRACT_ALL            = YES
-EXTRACT_PRIVATE        = YES
+EXTRACT_PRIVATE        = NO
 EXTRACT_PACKAGE        = NO
 EXTRACT_STATIC         = YES
 EXTRACT_LOCAL_CLASSES  = YES
@@ -134,8 +135,7 @@ WARN_LOGFILE           =
 INPUT                  = {{INPUT}}
 INPUT_ENCODING         = UTF-8
 FILE_PATTERNS          = *.php \
-                         *.md \
-                         *.inc
+                         *.md
 RECURSIVE              = YES
 EXCLUDE                = {{EXCLUDE}}
 EXCLUDE_SYMLINKS       = YES
@@ -143,8 +143,7 @@ EXCLUDE_PATTERNS       = LocalSettings.php \
                          .svn \
                          */.git/* \
                          */includes/libs/*/README.md \
-                         */maintenance/*/README.md \
-                         {{EXCLUDE_PATTERNS}}
+                         */maintenance/*/README.md
 EXCLUDE_SYMBOLS        =
 EXAMPLE_PATH           =
 EXAMPLE_PATTERNS       = *

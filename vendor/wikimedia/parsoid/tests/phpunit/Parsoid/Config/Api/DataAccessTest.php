@@ -4,6 +4,7 @@ namespace Test\Parsoid\Config\Api;
 
 use Wikimedia\Parsoid\Config\Api\DataAccess;
 use Wikimedia\Parsoid\Config\PageContent;
+use Wikimedia\Parsoid\Config\StubMetadataCollector;
 use Wikimedia\Parsoid\Mocks\MockPageConfig;
 
 /**
@@ -11,7 +12,7 @@ use Wikimedia\Parsoid\Mocks\MockPageConfig;
  */
 class DataAccessTest extends \PHPUnit\Framework\TestCase {
 
-	protected function getDataAccess( string $filename ) {
+	protected function getDataAccess( string $filename ): DataAccess {
 		$helper = new TestApiHelper( $this, $filename );
 		return new DataAccess( $helper, null, [] );
 	}
@@ -35,22 +36,22 @@ class DataAccessTest extends \PHPUnit\Framework\TestCase {
 
 		$this->assertSame( [
 			'Foo' => [ 'pageId' => 1, 'revId' => 10, 'missing' => false,
-				'known' => true, 'redirect' => true, 'disambiguation' => false,
+				'known' => true, 'redirect' => true, 'linkclasses' => [],
 				'invalid' => false ],
 			'Bar_(disambiguation)' => [ 'pageId' => 2, 'revId' => 11, 'missing' => false,
-				'known' => true, 'redirect' => false, 'disambiguation' => true,
+				'known' => true, 'redirect' => false, 'linkclasses' => [ 'mw-disambig' ],
 				'invalid' => false ],
 			'Special:SpecialPages' => [ 'pageId' => null, 'revId' => null, 'missing' => false,
-				'known' => true, 'redirect' => false, 'disambiguation' => false,
+				'known' => true, 'redirect' => false, 'linkclasses' => [],
 				'invalid' => false ],
 			'ThisPageDoesNotExist' => [ 'pageId' => null, 'revId' => null, 'missing' => true,
-				'known' => false, 'redirect' => false, 'disambiguation' => false,
+				'known' => false, 'redirect' => false, 'linkclasses' => [],
 				'invalid' => false ],
 			'File:Example.svg' => [ 'pageId' => null, 'revId' => null,	'missing' => true,
-				'known' => true, 'redirect' => false, 'disambiguation' => false,
+				'known' => true, 'redirect' => false, 'linkclasses' => [],
 				'invalid' => false ],
 			':' => [ 'pageId' => null, 'revId' => null, 'missing' => false,
-					'known' => false, 'redirect' => false, 'disambiguation' => false,
+					'known' => false, 'redirect' => false, 'linkclasses' => [],
 					'invalid' => true ],
 		], $data );
 	}
@@ -74,75 +75,88 @@ class DataAccessTest extends \PHPUnit\Framework\TestCase {
 				"descriptionshorturl" => "//commons.wikimedia.org/w/index.php?curid=937952",
 				'mime' => 'image/svg+xml',
 				'mediatype' => 'DRAWING',
+				'badFile' => false
 			],
 			'DoesNotExist.png' => null,
 		];
 		foreach ( $files as $file => $dims ) {
 			$pageConfig = new MockPageConfig( [ 'title' => 'Foobar' ], null );
-			$data = $this->getDataAccess( "fileinfo.$file" )->getFileInfo( $pageConfig, [ $file => $dims ] );
-			$this->assertSame( [ $file => $results[$file] ], $data );
+			$data = $this->getDataAccess( "fileinfo.$file" )->getFileInfo( $pageConfig, [ [ $file, $dims ] ] );
+			$this->assertSame( [ $results[$file] ], $data );
 		}
 	}
 
 	public function testDoPst() {
 		$pageConfig = new MockPageConfig( [ 'title' => 'Foobar' ], null );
 		$da = $this->getDataAccess( 'dopst' );
-		$ret = $da->doPst( $pageConfig, 'Foobar.{{cn}} {{subst:unsigned|Example}} ~~~~~' );
+		$ret = $da->doPst( $pageConfig, 'Foobar.[[Category:Foo|Bar]]{{cn}} {{subst:unsigned|Example}} ~~~~~' );
 		$this->assertIsString( $ret );
-		$this->assertSame( 'Foobar.{{cn}} <!-- Template:Unsigned -->', substr( $ret, 0, 40 ) );
+		$this->assertSame( 'Foobar.[[Category:Foo|Bar]]{{cn}} <!-- Template:Unsigned -->', substr( $ret, 0, 60 ) );
 
 		// Test caching. Cache miss would make TestApiHelper throw.
 		$this->assertSame(
-			$ret, $da->doPst( $pageConfig, 'Foobar.{{cn}} {{subst:unsigned|Example}} ~~~~~' )
+			$ret, $da->doPst( $pageConfig, 'Foobar.[[Category:Foo|Bar]]{{cn}} {{subst:unsigned|Example}} ~~~~~' )
 		);
 	}
 
 	public function testParseWikitext() {
 		$pageConfig = new MockPageConfig( [ 'title' => 'Foobar' ], null );
 		$da = $this->getDataAccess( 'parse' );
-		$ret = $da->parseWikitext( $pageConfig, 'Foobar.{{cn}} {{subst:unsigned|Example}} ~~~~~' );
-		$this->assertEquals( [
+		$metadata = new StubMetadataCollector();
+		$ret = $da->parseWikitext(
+			$pageConfig, $metadata, 'Foobar.[[Category:Foo|Bar]]{{cn}} {{subst:unsigned|Example}} ~~~~~'
+		);
+		$this->assertEquals(
 			// phpcs:ignore Generic.Files.LineLength.TooLong
-			'html' => "<p>Foobar.<sup class=\"noprint Inline-Template Template-Fact\" style=\"white-space:nowrap;\">&#91;<i><a href=\"/wiki/Wikipedia:Citation_needed\" title=\"Wikipedia:Citation needed\"><span title=\"This claim needs references to reliable sources.\">citation needed</span></a></i>&#93;</sup> {{subst:unsigned|Example}} ~~~~~\n</p>",
-			'modules' => [],
-			'modulestyles' => [],
-			'modulescripts' => [],
-			'categories' => [
-				'All_articles_with_unsourced_statements' => '',
-				'Articles_with_unsourced_statements' => '',
-			],
-		], $ret );
+			"<p>Foobar.<sup class=\"noprint Inline-Template Template-Fact\" style=\"white-space:nowrap;\">[<i><a href=\"/wiki/Wikipedia:Citation_needed\" title=\"Wikipedia:Citation needed\"><span title=\"This claim needs references to reliable sources.\">citation needed</span></a></i>]</sup> {{subst:unsigned|Example}} ~~~~~\n</p>", $ret );
+		$this->assertEquals( [], $metadata->getModules() );
+		$this->assertEquals( [
+			'ext.discussionTools.init.styles',
+		], $metadata->getModuleStyles() );
+		$this->assertEquals( [], $metadata->getJsConfigVars() );
+		$this->assertEquals( [
+			'Foo' => 'Bar',
+		], $metadata->getCategories() );
 
 		// Test caching. Cache miss would make TestApiHelper throw.
 		$this->assertSame(
-			$ret, $da->parseWikitext( $pageConfig, 'Foobar.{{cn}} {{subst:unsigned|Example}} ~~~~~' )
+			$ret,
+			$da->parseWikitext(
+				$pageConfig, $metadata, 'Foobar.[[Category:Foo|Bar]]{{cn}} {{subst:unsigned|Example}} ~~~~~'
+			)
 		);
 	}
 
 	public function testPreprocessWikitext() {
 		$pageConfig = new MockPageConfig( [ 'title' => 'Foobar' ], null );
 		$da = $this->getDataAccess( 'preprocess' );
-		$ret = $da->preprocessWikitext( $pageConfig, 'Foobar.{{cn}} {{subst:unsigned|Example}} ~~~~~' );
-		$this->assertEquals( [
+		$metadata = new StubMetadataCollector();
+		$ret = $da->preprocessWikitext(
+			$pageConfig, $metadata, 'Foobar.[[Category:Foo|Bar]]{{cn}} {{subst:unsigned|Example}} ~~~~~'
+		);
+		$this->assertEquals(
 			// phpcs:ignore Generic.Files.LineLength.TooLong
-			'wikitext' => "Foobar.[[Category:All articles with unsourced statements]][[Category:Articles with unsourced statements ]]<sup class=\"noprint Inline-Template Template-Fact\" style=\"white-space:nowrap;\">&#91;<i>[[Wikipedia:Citation needed|<span title=\"This claim needs references to reliable sources.\">citation needed</span>]]</i>&#93;</sup> {{subst:unsigned|Example}} ~~~~~",
-			'modules' => [],
-			'modulestyles' => [],
-			'modulescripts' => [],
-			'categories' => [],
-			'properties' => [],
-		], $ret );
+			"Foobar.[[Category:Foo|Bar]]<sup class=\"noprint Inline-Template Template-Fact\" style=\"white-space:nowrap;\">&#91;<i>[[Wikipedia:Citation needed|<span title=\"This claim needs references to reliable sources.\">citation needed</span>]]</i>&#93;</sup> {{subst:unsigned|Example}} ~~~~~",
+			$ret
+		);
+		$this->assertEquals( [], $metadata->getModules() );
+		$this->assertEquals( [], $metadata->getModuleStyles() );
+		$this->assertEquals( [], $metadata->getJsConfigVars() );
+		$this->assertEquals( [], $metadata->getCategories() );
 
 		// Test caching. Cache miss would make TestApiHelper throw.
 		$this->assertSame(
-			$ret, $da->preprocessWikitext( $pageConfig, 'Foobar.{{cn}} {{subst:unsigned|Example}} ~~~~~' )
+			$ret,
+			$da->preprocessWikitext(
+				$pageConfig, $metadata, 'Foobar.[[Category:Foo|Bar]]{{cn}} {{subst:unsigned|Example}} ~~~~~'
+			)
 		);
 	}
 
-	public function testFetchPageContent() {
+	public function testFetchTemplateSource() {
 		$pageConfig = new MockPageConfig( [ 'title' => 'Foobar' ], null );
 		$da = $this->getDataAccess( 'pagecontent-cur' );
-		$c = $da->fetchPageContent( $pageConfig, 'Help:Sample page' );
+		$c = $da->fetchTemplateSource( $pageConfig, 'Help:Sample page' );
 		$this->assertInstanceOf( PageContent::class, $c );
 		$this->assertSame( [ 'main' ], $c->getRoles() );
 		$this->assertSame( 'wikitext', $c->getModel( 'main' ) );
@@ -154,19 +168,7 @@ class DataAccessTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		// Test caching. Cache miss would make TestApiHelper throw.
-		$this->assertEquals( $c, $da->fetchPageContent( $pageConfig, 'Help:Sample page' ) );
-
-		$c = $this->getDataAccess( 'pagecontent-old' )
-			  ->fetchPageContent( $pageConfig, 'Help:Sample page', 776171508 );
-		$this->assertInstanceOf( PageContent::class, $c );
-		$this->assertSame( [ 'main' ], $c->getRoles() );
-		$this->assertSame( 'wikitext', $c->getModel( 'main' ) );
-		$this->assertSame( 'text/x-wiki', $c->getFormat( 'main' ) );
-		$this->assertSame(
-			// phpcs:ignore Generic.Files.LineLength.TooLong
-			"Our '''world''' is a planet where human beings have formed many societies.\n\nNobody knows whether there are intelligent beings on other worlds.\n\nThere are about one septillion (10<sup>24</sup>) worlds in the universe.\n\n<!-- All the contet here is public domain and has been copied from https://www.mediawiki.org/w/index.php?title=Help:Sample_page&oldid=2331983. Only add content here that has been previously been placed in the public domain as this page is used to generate screenshots -->",
-			$c->getContent( 'main' )
-		);
+		$this->assertEquals( $c, $da->fetchTemplateSource( $pageConfig, 'Help:Sample page' ) );
 	}
 
 	public function testFetchTemplateData() {

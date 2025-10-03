@@ -1,9 +1,10 @@
 {
 	"name": "Parsoid",
-	"description": "The Parsoid extension enables the REST API for Parsoid.  This is needed to support VisualEditor.",
+	"description": "The Parsoid extension enables the REST API for Parsoid. This is needed to support VisualEditor.",
 	"url": "https://www.mediawiki.org/wiki/Parsoid/PHP",
+	"license-name": "GPL-2.0-or-later",
 	"requires": {
-		"MediaWiki": "^1.34",
+		"MediaWiki": ">= 1.39",
 		"platform": {
 			"php": ">= 7.2"
 		}
@@ -12,10 +13,9 @@
 		"MWParsoid\\": "extension/src"
 	},
 	"config": {
-		"ParsoidSettings": {
-			"value": {
-				"useSelser": true
-			}
+		"ParsoidEnableREST": {
+			"value": true,
+			"description": "Whether to enable Parsoid REST API"
 		}
 	},
 	"Hooks": {
@@ -24,41 +24,7 @@
 	"HookHandlers": {
 		"UnitTestsListHandler": { "class": "\\MWParsoid\\UnitTestsListHandler" }
 	},
-	"RestRoutes": [
-		{
-			"path": "/{domain}/v3/page/{format}/{title}",
-			"class": "MWParsoid\\Rest\\Handler\\PageHandler",
-			"factory": "MWParsoid\\Rest\\Handler\\PageHandler::factory",
-			"method": "GET"
-		},
-		{
-			"path": "/{domain}/v3/page/{format}/{title}/{revision}",
-			"class": "MWParsoid\\Rest\\Handler\\PageHandler",
-			"factory": "MWParsoid\\Rest\\Handler\\PageHandler::factory",
-			"method": "GET"
-		},
-		{
-			"path": "/{domain}/v3/transform/{from}/to/{format}",
-			"class": "MWParsoid\\Rest\\Handler\\TransformHandler",
-			"factory": "MWParsoid\\Rest\\Handler\\TransformHandler::factory",
-			"method": "POST"
-		},
-		{
-			"path": "/{domain}/v3/transform/{from}/to/{format}/{title}",
-			"class": "MWParsoid\\Rest\\Handler\\TransformHandler",
-			"factory": "MWParsoid\\Rest\\Handler\\TransformHandler::factory",
-			"method": "POST"
-		},
-		{
-			"path": "/{domain}/v3/transform/{from}/to/{format}/{title}/{revision}",
-			"class": "MWParsoid\\Rest\\Handler\\TransformHandler",
-			"factory": "MWParsoid\\Rest\\Handler\\TransformHandler::factory",
-			"method": "POST"
-		}
-	],
-	"ServiceWiringFiles": [
-		"extension/ServiceWiring.php"
-	],
+	"callback": "\\MWParsoid\\RegistrationHookHandler::onRegistration",
 	"load_composer_autoloader": false,
 	"manifest_version": 2
 }

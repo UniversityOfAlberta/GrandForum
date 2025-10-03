@@ -30,7 +30,7 @@ class ProjectMainTab extends AbstractEditableTab {
                 $this->html .= "<div style='margin-left: 5px; margin-top: -20px;'>&#10551;<small> Evolved from ".implode(", ", $predLinks)."</small></div>";
             }
         }
-        if(!$project->isSubProject() && $wgUser->isLoggedIn() && MailingList::isSubscribed($project, $me)){
+        if(!$project->isSubProject() && $wgUser->isRegistered() && MailingList::isSubscribed($project, $me)){
             // Show a mailing list link if the person is subscribed
             $this->html .="<h3><a href='$wgServer$wgScriptPath/index.php/Mail:{$project->getName()}'>{$project->getName()} Mailing List</a></h3>";
         }

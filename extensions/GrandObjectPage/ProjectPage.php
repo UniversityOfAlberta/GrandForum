@@ -48,14 +48,14 @@ class ProjectPage {
                                                        $me->isThemeCoordinatorOf($project->getParent())))){
                     TabUtils::clearActions();
                     permissionError();
-                    exit;
+                    close();
                 }
                 return true;
             }
 
             // Project Exists and it is the right Namespace
             if($project != null && $project->getName() != null){
-                if($config->getValue('guestLockdown') && !$wgUser->isLoggedIn()){
+                if($config->getValue('guestLockdown') && !$wgUser->isRegistered()){
                     permissionError();
                 }
                 if($project->getStatus() == 'Proposed' && !$me->isMemberOf($project) && !$me->isRoleAtLeast(STAFF)){
@@ -166,7 +166,7 @@ class ProjectPage {
                 }
                 $wgOut->output();
                 $wgOut->disable();
-                exit;
+                close();
             }
         }
         return true;
@@ -192,7 +192,7 @@ class ProjectPage {
                 $myProjects[$proj->getName()] = $proj;
             }
             //$projects = array_merge($projects, $me->getThemeProjects());
-            if(!$wgUser->isLoggedIn() || count($myProjects) == 0 || $me->isRoleAtLeast(MANAGER)){
+            if(!$wgUser->isRegistered() || count($myProjects) == 0 || $me->isRoleAtLeast(MANAGER)){
                 return true;
             }
 

@@ -21,6 +21,9 @@
  * @file
  */
 
+use MediaWiki\MainConfigNames;
+use MediaWiki\MediaWikiServices;
+
 /**
  * @defgroup Feed Feed
  */
@@ -78,6 +81,17 @@ class FeedItem {
 		$string = str_replace( "\r\n", "\n", $string );
 		$string = preg_replace( '/[\x00-\x08\x0b\x0c\x0e-\x1f]/', '', $string );
 		return htmlspecialchars( $string );
+	}
+
+	/**
+	 * Encode $string so that it can be safely embedded in a XML document,
+	 * returning `null` if $string was `null`.
+	 * @since 1.44 (also backported to 1.39.12, 1.42.6 and 1.43.1)
+	 * @param string|null $string
+	 * @return string|null
+	 */
+	public function xmlEncodeNullable( ?string $string ): ?string {
+		return $string !== null ? $this->xmlEncode( $string ) : null;
 	}
 
 	/**
@@ -162,8 +176,9 @@ class FeedItem {
 	 * @return string
 	 */
 	public function getLanguage() {
-		global $wgLanguageCode;
-		return LanguageCode::bcp47( $wgLanguageCode );
+		$languageCode = MediaWikiServices::getInstance()->getMainConfig()
+			->get( MainConfigNames::LanguageCode );
+		return LanguageCode::bcp47( $languageCode );
 	}
 
 	/**

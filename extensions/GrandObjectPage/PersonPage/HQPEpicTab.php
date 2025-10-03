@@ -575,7 +575,7 @@ learning, mentorship, or AGE-WELL network activities (e.g. participate in a Pitc
         Notification::addNotification($this->person, $user, "EPIC Tab Updated", "{$this->person->getNameForForms()} updated their EPIC Tab", "{$this->person->getUrl()}?tab=epic", false);
         DBFunctions::commit();
         header("Location: {$this->person->getUrl()}?tab=epic");
-        exit;
+        close();
     }
     
     function canEdit(){

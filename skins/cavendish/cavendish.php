@@ -59,35 +59,34 @@ class CavendishTemplate extends QuickTemplate {
 		<link type="image/x-icon" href="<?php echo $wgServer.$wgScriptPath.'/favicon.png'; ?>" rel="shortcut icon" />
 		<link rel='stylesheet' id='roboto-css'  href='//fonts.googleapis.com/css?family=Roboto%3A400%2C400i%2C500%2C500i%2C700%2C700i&#038;ver=4.9.13' type='text/css' media='all' />
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
-		<link type="text/css" href="<?php $this->text('stylepath') ?>/smoothness/jquery-ui-1.8.21.custom.css" rel="Stylesheet" />
+		<link type="text/css" href="<?php echo $wgServer.$wgScriptPath; ?>/skins/smoothness/jquery-ui-1.8.21.custom.css" rel="Stylesheet" />
 
-		<link rel="stylesheet" href="<?php $this->text('stylepath') ?>/<?php $this->text('stylename') ?>/autocomplete.css" type="text/css" />
-		<link rel="stylesheet" href="<?php $this->text('stylepath') ?>/<?php $this->text('stylename') ?>/rte-content.css" type="text/css" />
+		<link rel="stylesheet" href="<?php echo $wgServer.$wgScriptPath; ?>/skins/cavendish/autocomplete.css" type="text/css" />
+		<link rel="stylesheet" href="<?php echo $wgServer.$wgScriptPath; ?>/skins/cavendish/rte-content.css" type="text/css" />
 
 		<!-- Multiple Select-->
-		<link rel="stylesheet" href="<?php $this->text('stylepath') ?>/<?php $this->text('stylename') ?>/multiple-select.css" type="text/css" />
-		
-		<link type="text/css" href="<?php $this->text('stylepath') ?>/<?php $this->text('stylename') ?>/jquery.qtip.min.css" rel="Stylesheet" />
-		<link type="text/css" href="<?php $this->text('stylepath') ?>/<?php $this->text('stylename') ?>/chosen/chosen.css.php" rel="Stylesheet" />
+		<link type="text/css" href="<?php echo $wgServer.$wgScriptPath; ?>/skins/cavendish/multiple-select.css" rel="Stylesheet" />
+		<link type="text/css" href="<?php echo $wgServer.$wgScriptPath; ?>/skins/cavendish/jquery.qtip.min.css" rel="Stylesheet" />
+		<link type="text/css" href="<?php echo $wgServer.$wgScriptPath; ?>/skins/cavendish/chosen/chosen.css.php" rel="Stylesheet" />
 
-		<link rel="stylesheet" href="<?php $this->text('stylepath') ?>/common/shared.css" type="text/css" media="screen" />
-		<link rel="stylesheet" href="<?php $this->text('stylepath') ?>/common/commonPrint.css" type="text/css" media="print" />
-		<link rel="stylesheet" href="<?php $this->text('stylepath') ?>/<?php $this->text('stylename') ?>/print.css" type="text/css" media="print" />
-		<link type="text/css" href="<?php $this->text('stylepath') ?>/common/carousel.css" rel="Stylesheet" />
+		<link rel="stylesheet" href="<?php echo $wgServer.$wgScriptPath; ?>/skins/common/shared.css" type="text/css" media="screen" />
+		<link rel="stylesheet" href="<?php echo $wgServer.$wgScriptPath; ?>/skins/common/commonPrint.css" type="text/css" media="print" />
+		<link rel="stylesheet" href="<?php echo $wgServer.$wgScriptPath; ?>/skins/cavendish/print.css" type="text/css" media="print" />
+		<link type="text/css" href="<?php echo $wgServer.$wgScriptPath; ?>/skins/common/carousel.css" rel="Stylesheet" />
 		
 		<link type="text/css" href="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/DataTables/css/cavendish/jquery.dataTables.css" rel="Stylesheet" />
 		<link type="text/css" rel="stylesheet" href="<?php echo "$wgServer$wgScriptPath"; ?>/skins/simplePagination/simplePagination.css" />
 		
-		<link type="text/css" rel="stylesheet" href="<?php echo "$wgServer$wgScriptPath"; ?>/skins/<?php $this->text('stylename') ?>/content.css?<?php echo filemtime('skins/cavendish/content.css'); ?>" />
-		<link type="text/css" rel="stylesheet" href="<?php echo "$wgServer$wgScriptPath"; ?>/skins/<?php $this->text('stylename') ?>/template.css?<?php echo filemtime('skins/cavendish/template.css'); ?>" />
-		<link type="text/css" rel="stylesheet" href="<?php echo "$wgServer$wgScriptPath"; ?>/skins/<?php $this->text('stylename') ?>/basetemplate.css?<?php echo filemtime('skins/cavendish/basetemplate.css'); ?>" />
-		<link type="text/css" rel="stylesheet" href="<?php echo "$wgServer$wgScriptPath"; ?>/skins/<?php $this->text('stylename') ?>/cavendish.css?<?php echo filemtime('skins/cavendish/cavendish.css'); ?>" />
-		<link type="text/css" rel="stylesheet" href="<?php echo "$wgServer$wgScriptPath"; ?>/skins/<?php $this->text('stylename') ?>/main.css?<?php echo filemtime('skins/cavendish/main.css'); ?>" />
-		<style type="text/css" media="screen,projection">/*<![CDATA[*/ @import "<?php $this->text('stylepath') ?>/<?php $this->text('stylename') ?>/extensions.css"; /*]]>*/</style>
-		<style <?php if(empty($this->data['printable']) ) { ?>media="print"<?php } ?> type="text/css">/*<![CDATA[*/ @import "<?php $this->text('stylepath') ?>/<?php $this->text('stylename') ?>/print.css"; /*]]>*/</style>
+		<link type="text/css" rel="stylesheet" href="<?php echo "$wgServer$wgScriptPath"; ?>/skins/cavendish/content.css?<?php echo filemtime('skins/cavendish/content.css'); ?>" />
+		<link type="text/css" rel="stylesheet" href="<?php echo "$wgServer$wgScriptPath"; ?>/skins/cavendish/template.css?<?php echo filemtime('skins/cavendish/template.css'); ?>" />
+		<link type="text/css" rel="stylesheet" href="<?php echo "$wgServer$wgScriptPath"; ?>/skins/cavendish/basetemplate.css?<?php echo filemtime('skins/cavendish/basetemplate.css'); ?>" />
+		<link type="text/css" rel="stylesheet" href="<?php echo "$wgServer$wgScriptPath"; ?>/skins/cavendish/cavendish.css?<?php echo filemtime('skins/cavendish/cavendish.css'); ?>" />
+		<link type="text/css" rel="stylesheet" href="<?php echo "$wgServer$wgScriptPath"; ?>/skins/cavendish/main.css?<?php echo filemtime('skins/cavendish/main.css'); ?>" />
+		<style type="text/css" media="screen,projection">/*<![CDATA[*/ @import "<?php echo $wgServer.$wgScriptPath; ?>/skins/cavendish/extensions.css"; /*]]>*/</style>
+		<style <?php if(empty($this->data['printable']) ) { ?>media="print"<?php } ?> type="text/css">/*<![CDATA[*/ @import "<?php echo $wgServer.$wgScriptPath; ?>/skins/cavendish/print.css"; /*]]>*/</style>
 		
-		<link rel="stylesheet" type="text/css" media="print" href="<?php $this->text('stylepath') ?>/common/commonPrint.css" />
-		<link type="text/css" href="<?php $this->text('stylepath') ?>/switcheroo/switcheroo.css" rel="Stylesheet" />
+		<link rel="stylesheet" type="text/css" media="print" href="<?php echo $wgServer.$wgScriptPath; ?>/skins/common/commonPrint.css" />
+		<link type="text/css" href="<?php echo $wgServer.$wgScriptPath; ?>/skins/switcheroo/switcheroo.css" rel="Stylesheet" />
 		<link type="text/css" href="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/tagIt/css/jquery.tagit.css" rel="Stylesheet" />
 		<link type="text/css" href="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/tagIt/css/tagit.ui-zendesk.css" rel="Stylesheet" />
 		<link type="text/css" href="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jqueryDropdown/cavendish/jquery.dropdown.css" rel="Stylesheet" />
@@ -912,7 +911,7 @@ class CavendishTemplate extends QuickTemplate {
             if(count($config->getValue("socialLinks")) > 0){
 	            echo "<a id='share' style='cursor:pointer;' name='share_32x32' class='menuTooltipHTML'><img src='$wgServer$wgScriptPath/skins/icons/white/share_32x32.png' style='height: 16px;' /></a>";
 	        }
-	        if($wgUser->isLoggedIn()){
+	        if($wgUser->isRegistered()){
 		        $p = Person::newFromId($wgUser->getId());
 		        
 		        $notificationAnimation = "";
@@ -1107,7 +1106,7 @@ class CavendishTemplate extends QuickTemplate {
 	    </div>
 		<div id="bodyContent" class=' <?php if(isset($_COOKIE['sideToggled']) && $_COOKIE['sideToggled'] == 'in') echo "menu-in";?>'>
 			<?php if($this->data['sitenotice']) { ?><div id="siteNotice"><?php $this->html('sitenotice') ?></div><?php } ?>
-			<h1><?php $this->text('title') ?></h1>
+			<h1><?php $this->html('title') ?></h1>
 			<div id='wgMessages'><?php $wgMessage->showMessages(); ?></div>
 			<h3 id="siteSub"><?php $this->msg('tagline') ?></h3>
 			<div id="contentSub"><?php $this->html('subtitle') ?></div>
@@ -1119,7 +1118,7 @@ class CavendishTemplate extends QuickTemplate {
 			<!-- end content -->
 			<?php if($this->data['dataAfterContent']) { $this->html ('dataAfterContent'); } ?>
 			<div id="footer"><table style="width:100%"><tr><td align="left" width="1%" nowrap="nowrap">
-		    <?php if($this->data['copyrightico']) { ?><div id="f-copyrightico"><?php $this->html('copyrightico') ?></div><?php } ?></td><td align="center">
+		    </td><td align="center">
     <?php	// Generate additional footer links
 		    $footerlinks = array(
 			    'lastmod', 'viewcount', 'numberofwatchingusers', 'credits', 'copyright',
@@ -1209,7 +1208,7 @@ class CavendishTemplate extends QuickTemplate {
         $GLOBALS['toolbox']['Postings'] = TabUtils::createToolboxHeader("Postings");
         $GLOBALS['toolbox']['Other'] = TabUtils::createToolboxHeader("Other");
         
-		if($wgUser->isLoggedIn()){
+		if($wgUser->isRegistered()){
 		    $me = Person::newFromWgUser();
 		    if(!$me->isAuthenticated() && !($wgImpersonating || $wgDelegating) && !isExtensionEnabled("GoogleLogin") && !isExtensionEnabled("OpenIDConnect")){
 		        $wgUser->logout();
@@ -1225,16 +1224,16 @@ class CavendishTemplate extends QuickTemplate {
 	        if($config->getValue("showUploadFile") && !$me->isCandidate()){
 	            $GLOBALS['toolbox']['Other']['links'][1000] = TabUtils::createToolboxLink("Upload File", "$wgServer$wgScriptPath/index.php/Special:Upload");
 	        }
-	        if($wgUser->isLoggedIn() && $config->getValue('networkName') == "AGE-WELL"){ 
+	        if($wgUser->isRegistered() && $config->getValue('networkName') == "AGE-WELL"){ 
 	            $GLOBALS['toolbox']['Other']['links'][] = TabUtils::createToolboxLink("Members' Intranet", "$wgServer$wgScriptPath/index.php/Resources");
 	        }
-	        if($wgUser->isLoggedIn() && $config->getValue('networkName') == "GlycoNet"){
+	        if($wgUser->isRegistered() && $config->getValue('networkName') == "GlycoNet"){
 	            $GLOBALS['toolbox']['Other']['links'][] = TabUtils::createToolboxLink("Logos/Templates", "$wgServer$wgScriptPath/index.php/Logos_Templates");
 	            $GLOBALS['toolbox']['Other']['links'][] = TabUtils::createToolboxLink("E-Resource Library", "$wgServer$wgScriptPath/index.php/E-Resource_Library");
 	            $GLOBALS['toolbox']['Other']['links'][] = TabUtils::createToolboxLink("Ecosystem Map", "$wgServer$wgScriptPath/index.php/Ecosystem_Map");
 	            $GLOBALS['toolbox']['Other']['links'][] = TabUtils::createToolboxLink("Forum Help and FAQs", "$wgServer$wgScriptPath/index.php/FAQ");
 	        }
-	        /*if($wgUser->isLoggedIn() && $config->getValue('networkName') == "BD"){
+	        /*if($wgUser->isRegistered() && $config->getValue('networkName') == "BD"){
 	            $GLOBALS['toolbox']['Other']['links'][] = TabUtils::createToolboxLink("Resources", "$wgServer$wgScriptPath/index.php/Resources");
 	        }*/
 	        if($config->getValue("showOtherTools") && !$me->isCandidate()){

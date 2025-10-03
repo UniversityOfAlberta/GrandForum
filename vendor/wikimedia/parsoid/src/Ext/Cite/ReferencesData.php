@@ -3,8 +3,8 @@ declare( strict_types = 1 );
 
 namespace Wikimedia\Parsoid\Ext\Cite;
 
-use DOMElement;
 use stdClass;
+use Wikimedia\Parsoid\Core\Sanitizer;
 use Wikimedia\Parsoid\Ext\ParsoidExtensionAPI;
 
 class ReferencesData {
@@ -12,27 +12,60 @@ class ReferencesData {
 	/**
 	 * @var int
 	 */
-	private $index;
+	private $index = 0;
 
 	/**
 	 * @var RefGroup[]
 	 */
-	private $refGroups;
+	private $refGroups = [];
+
+	/** @var array */
+	public $embeddedErrors = [];
+
+	/** @var array */
+	private $inEmbeddedContent = [];
+
+	/** @var string */
+	public $referencesGroup = '';
 
 	/**
-	 * ReferencesData constructor.
+	 * @return bool
 	 */
-	public function __construct() {
-		$this->index = 0;
-		$this->refGroups = [];
+	public function inReferencesContent(): bool {
+		return $this->inEmbeddedContent( 'references' );
+	}
+
+	/**
+	 * @param ?string $needle
+	 * @return bool
+	 */
+	public function inEmbeddedContent( ?string $needle = null ): bool {
+		if ( $needle ) {
+			return in_array( $needle, $this->inEmbeddedContent, true );
+		} else {
+			return count( $this->inEmbeddedContent ) > 0;
+		}
+	}
+
+	/**
+	 * @param string $needle
+	 */
+	public function pushEmbeddedContentFlag( string $needle = 'embed' ) {
+		array_unshift( $this->inEmbeddedContent, $needle );
+	}
+
+	public function popEmbeddedContentFlag() {
+		array_shift( $this->inEmbeddedContent );
 	}
 
 	/**
 	 * @param string $groupName
 	 * @param bool $allocIfMissing
-	 * @return RefGroup|null
+	 * @return ?RefGroup
 	 */
-	public function getRefGroup( string $groupName = '', bool $allocIfMissing = false ): ?RefGroup {
+	public function getRefGroup(
+		string $groupName, bool $allocIfMissing = false
+	): ?RefGroup {
 		if ( !isset( $this->refGroups[$groupName] ) && $allocIfMissing ) {
 			$this->refGroups[$groupName] = new RefGroup( $groupName );
 		}
@@ -40,88 +73,84 @@ class ReferencesData {
 	}
 
 	/**
-	 * @param string|null $groupName
+	 * @param string $groupName
 	 */
-	public function removeRefGroup( ?string $groupName = null ): void {
-		if ( $groupName !== null ) {
-			// '' is a valid group (the default group)
-			unset( $this->refGroups[$groupName] );
-		}
+	public function removeRefGroup( string $groupName ): void {
+		// '' is a valid group (the default group)
+		unset( $this->refGroups[$groupName] );
+	}
+
+	/**
+	 * Normalizes and sanitizes a reference key
+	 *
+	 * @param string $key
+	 * @return string
+	 */
+	private function normalizeKey( string $key ): string {
+		$ret = Sanitizer::escapeIdForAttribute( $key );
+		$ret = preg_replace( '/__+/', '_', $ret );
+		// FIXME: The extension to the legacy parser does the following too,
+		// but Parsoid hasn't ported it yet and needs investigation of
+		// whether it's still relevant in the Parsoid context.
+		// $ret = Sanitizer::safeEncodeAttribute( $ret );
+		return $ret;
 	}
 
 	/**
 	 * @param ParsoidExtensionAPI $extApi
 	 * @param string $groupName
 	 * @param string $refName
-	 * @param string $about
-	 * @param bool $skipLinkback
-	 * @param DOMElement $linkBack
 	 * @return stdClass
 	 */
 	public function add(
-		ParsoidExtensionAPI $extApi, string $groupName, string $refName,
-		string $about, bool $skipLinkback, DOMElement $linkBack
+		ParsoidExtensionAPI $extApi, string $groupName, string $refName
 	): stdClass {
 		$group = $this->getRefGroup( $groupName, true );
-		// Looks like Cite.php doesn't try to fix ids that already have
-		// a "_" in them. Ex: name="a b" and name="a_b" are considered
-		// identical. Not sure if this is a feature or a bug.
-		// It also considers entities equal to their encoding
-		// (i.e. '&' === '&amp;'), which is done:
-		//  in PHP: Sanitizer#decodeTagAttributes and
-		//  in Parsoid: ExtensionHandler#normalizeExtOptions
-		$refName = $extApi->sanitizeHTMLId( $refName );
 		$hasRefName = strlen( $refName ) > 0;
 
-		if ( $hasRefName && isset( $group->indexByName[$refName] ) ) {
-			$ref = $group->indexByName[$refName];
-			if ( $ref->contentId && !$ref->hasMultiples ) {
-				$ref->hasMultiples = true;
-				// Use the non-pp version here since we've already stored attribs
-				// before putting them in the map.
-				$ref->cachedHtml = $extApi->getContentHTML( $ref->contentId );
-			}
-			$ref->nodes[] = $linkBack;
-		} else {
-			// The ids produced Cite.php have some particulars:
-			// Simple refs get 'cite_ref-' + index
-			// Refs with names get 'cite_ref-' + name + '_' + index + (backlink num || 0)
-			// Notes (references) whose ref doesn't have a name are 'cite_note-' + index
-			// Notes whose ref has a name are 'cite_note-' + name + '-' + index
-			$n = $this->index;
-			$refKey = strval( 1 + $n );
-			$refIdBase = 'cite_ref-' . ( $hasRefName ? $refName . '_' . $refKey : $refKey );
-			$noteId = 'cite_note-' . ( $hasRefName ? $refName . '-' . $refKey : $refKey );
+		// The ids produced Cite.php have some particulars:
+		// Simple refs get 'cite_ref-' + index
+		// Refs with names get 'cite_ref-' + name + '_' + index + (backlink num || 0)
+		// Notes (references) whose ref doesn't have a name are 'cite_note-' + index
+		// Notes whose ref has a name are 'cite_note-' + name + '-' + index
+		$n = $this->index;
+		$refKey = strval( 1 + $n );
 
-			// bump index
-			$this->index += 1;
+		$refNameSanitized = $this->normalizeKey( $refName );
 
-			$ref = (object)[
-				'about' => $about,
-				'contentId' => null,
-				'dir' => '',
-				'group' => $group->name,
-				'groupIndex' => count( $group->refs ) + 1,
-				'index' => $n,
-				'key' => $refIdBase,
-				'id' => $hasRefName ? $refIdBase . '-0' : $refIdBase,
-				'linkbacks' => [],
-				'name' => $refName,
-				'target' => $noteId,
-				'hasMultiples' => false,
-				// Just used for comparison when we have multiples
-				'cachedHtml' => '',
-				'nodes' => [],
-			];
-			$group->refs[] = $ref;
-			if ( $hasRefName ) {
-				$group->indexByName[$refName] = $ref;
-				$ref->nodes[] = $linkBack;
-			}
-		}
+		$refIdBase = 'cite_ref-' . ( $hasRefName ? $refNameSanitized . '_' . $refKey : $refKey );
+		$noteId = 'cite_note-' . ( $hasRefName ? $refNameSanitized . '-' . $refKey : $refKey );
 
-		if ( !$skipLinkback ) {
-			$ref->linkbacks[] = $ref->key . '-' . count( $ref->linkbacks );
+		// bump index
+		$this->index += 1;
+
+		$ref = (object)[
+			// Pointer to the contents of the ref, accessible with the
+			// $extApi->getContentDOM(), to be used when serializing the
+			// references group.  It gets set when extracting the ref from a
+			// node and not $missingContent.  Note that that might not
+			// be the first one for named refs.  Also, for named refs, it's
+			// used to detect multiple conflicting definitions.
+			'contentId' => null,
+			// Just used for comparison when we have multiples
+			'cachedHtml' => null,
+			'dir' => '',
+			'group' => $group->name,
+			'groupIndex' => count( $group->refs ) + 1,
+			'index' => $n,
+			'key' => $refIdBase,
+			'id' => $hasRefName ? $refIdBase . '-0' : $refIdBase,
+			'linkbacks' => [],
+			'name' => $refName,
+			'target' => $noteId,
+			'nodes' => [],
+			'embeddedNodes' => [],
+		];
+
+		$group->refs[] = $ref;
+
+		if ( $hasRefName ) {
+			$group->indexByName[$refName] = $ref;
 		}
 
 		return $ref;

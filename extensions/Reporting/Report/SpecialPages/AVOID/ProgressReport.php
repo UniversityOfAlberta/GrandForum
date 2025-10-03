@@ -929,7 +929,7 @@ class ProgressReport extends SpecialPage {
         $html = $this->generateReport();
         if(isset($_GET['preview'])){
             echo $html;
-            exit;
+            close();
         }
         $dompdfOptions->setFontHeightRatio(1.0);
         $dompdfOptions->setDpi(96);
@@ -947,7 +947,7 @@ class ProgressReport extends SpecialPage {
         $dompdf->render();
         header("Content-Type: application/pdf");
         echo $dompdf->output();
-        exit;
+        close();
         
     }
     

@@ -4,6 +4,7 @@ use MediaWiki\Auth\AuthenticationRequest;
 use MediaWiki\Auth\AuthenticationResponse;
 use MediaWiki\Auth\AuthManager;
 use MediaWiki\Auth\PasswordAuthenticationRequest;
+use MediaWiki\MainConfigNames;
 use MediaWiki\Session\SessionManager;
 
 /**
@@ -19,8 +20,12 @@ class SpecialChangeCredentials extends AuthManagerSpecialPage {
 	/** Change action needs user data; remove action does not */
 	protected static $loadUserData = true;
 
-	public function __construct( $name = 'ChangeCredentials' ) {
-		parent::__construct( $name, 'editmyprivateinfo' );
+	/**
+	 * @param AuthManager $authManager
+	 */
+	public function __construct( AuthManager $authManager ) {
+		parent::__construct( 'ChangeCredentials', 'editmyprivateinfo' );
+		$this->setAuthManager( $authManager );
 	}
 
 	protected function getGroupName() {
@@ -67,8 +72,9 @@ class SpecialChangeCredentials extends AuthManagerSpecialPage {
 			return;
 		}
 
-		$this->getOutput()->addBacklinkSubtitle( $this->getPageTitle() );
-
+		$out = $this->getOutput();
+		$out->addModules( 'mediawiki.special.changecredentials' );
+		$out->addBacklinkSubtitle( $this->getPageTitle() );
 		$status = $this->trySubmit();
 
 		if ( $status === false || !$status->isOK() ) {
@@ -126,6 +132,17 @@ class SpecialChangeCredentials extends AuthManagerSpecialPage {
 					'autocomplete' => 'new-password',
 					'placeholder-message' => 'createacct-yourpasswordagain-ph',
 				],
+				// T263927 - the Chromium password form guide recommends always having a username field
+				'username' => [
+					'type' => 'text',
+					'baseField' => 'password',
+					'autocomplete' => 'username',
+					'nodata' => true,
+					'readonly' => true,
+					'cssclass' => 'mw-htmlform-hidden-field',
+					'label-message' => 'userlogin-yourname',
+					'placeholder-message' => 'userlogin-yourname-ph',
+				],
 			] );
 		}
 	}
@@ -164,16 +181,16 @@ class SpecialChangeCredentials extends AuthManagerSpecialPage {
 		$form->addPreText(
 			Html::openElement( 'dl' )
 			. Html::element( 'dt', [], $this->msg( 'credentialsform-provider' )->text() )
-			. Html::element( 'dd', [], $info['provider'] )
+			. Html::element( 'dd', [], $info['provider']->text() )
 			. Html::element( 'dt', [], $this->msg( 'credentialsform-account' )->text() )
-			. Html::element( 'dd', [], $info['account'] )
+			. Html::element( 'dd', [], $info['account']->text() )
 			. Html::closeElement( 'dl' )
 		);
 
 		// messages used: changecredentials-submit removecredentials-submit
 		$form->setSubmitTextMsg( static::$messagePrefix . '-submit' );
 		$form->showCancel()->setCancelTarget( $this->getReturnUrl() ?: Title::newMainPage() );
-
+		$form->setSubmitID( 'change_credentials_submit' );
 		return $form;
 	}
 
@@ -209,7 +226,7 @@ class SpecialChangeCredentials extends AuthManagerSpecialPage {
 		$groupedRequests = [];
 		foreach ( $this->authRequests as $req ) {
 			$info = $req->describeCredentials();
-			$groupedRequests[(string)$info['provider']][] = $req;
+			$groupedRequests[$info['provider']->text()][] = $req;
 		}
 
 		$linkRenderer = $this->getLinkRenderer();
@@ -222,7 +239,7 @@ class SpecialChangeCredentials extends AuthManagerSpecialPage {
 				$out->addHTML( Html::rawElement( 'dd', [],
 					$linkRenderer->makeLink(
 						$this->getPageTitle( $req->getUniqueId() ),
-						$info['account']
+						$info['account']->text()
 					)
 				) );
 			}
@@ -245,8 +262,11 @@ class SpecialChangeCredentials extends AuthManagerSpecialPage {
 			$out->redirect( $returnUrl );
 		} else {
 			// messages used: changecredentials-success removecredentials-success
-			$out->wrapWikiMsg( "<div class=\"successbox\">\n$1\n</div>", static::$messagePrefix
-				. '-success' );
+			$out->addHtml(
+				Html::successBox(
+					$out->msg( static::$messagePrefix . '-success' )->parse()
+				)
+			);
 			$out->returnToMain();
 		}
 	}
@@ -268,6 +288,6 @@ class SpecialChangeCredentials extends AuthManagerSpecialPage {
 	}
 
 	protected function getRequestBlacklist() {
-		return $this->getConfig()->get( 'ChangeCredentialsBlacklist' );
+		return $this->getConfig()->get( MainConfigNames::ChangeCredentialsBlacklist );
 	}
 }

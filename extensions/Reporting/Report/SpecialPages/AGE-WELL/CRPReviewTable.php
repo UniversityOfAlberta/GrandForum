@@ -29,7 +29,7 @@ class CRPReviewTable extends SpecialPage{
             header('Content-Type: data:application/vnd.ms-excel');
             header('Content-Disposition: attachment; filename="'.$_GET['key'].' Review.xls"');
             echo CRPReviewTable::generateHTML($_GET['year'], $_GET['key']);
-            exit;
+            close();
         }
         $data = DBFunctions::select(array('grand_eval'),
                                     array('DISTINCT type', 'year'),

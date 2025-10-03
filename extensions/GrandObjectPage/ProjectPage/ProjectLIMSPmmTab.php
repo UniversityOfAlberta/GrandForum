@@ -23,7 +23,7 @@ class ProjectLIMSPmmTab extends AbstractEditableTab {
 
     function generateEditBody(){
         global $wgUser, $wgServer, $wgScriptPath, $config, $wgOut;
-    if ($wgUser->isLoggedIn()) {
+    if ($wgUser->isRegistered()) {
         $project = $this->project;
 
         $limsPmm = new LIMSPmm();
@@ -88,7 +88,7 @@ class ProjectLIMSPmmTab extends AbstractEditableTab {
     function generateBody()
 {
     global $wgUser, $wgServer, $wgScriptPath, $config, $wgOut;
-    if ($wgUser->isLoggedIn()) {
+    if ($wgUser->isRegistered()) {
         $project = $this->project;
 
         $limsPmm = new LIMSPmm();

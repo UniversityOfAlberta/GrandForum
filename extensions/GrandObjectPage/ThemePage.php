@@ -32,14 +32,14 @@ class ThemePage {
                    !$theme->userCanEdit()){
                     TabUtils::clearActions();
                     permissionError();
-                    exit;
+                    close();
                 }
                 return true;
             }
 
             // Project Exists and it is the right Namespace
             if($theme != null && $theme->getAcronym() != null){
-                if($config->getValue('guestLockdown') && !$wgUser->isLoggedIn()){
+                if($config->getValue('guestLockdown') && !$wgUser->isRegistered()){
                     permissionError();
                 }
                 $isLead = $theme->userCanEdit();
@@ -88,7 +88,7 @@ class ThemePage {
                 
                 $wgOut->output();
                 $wgOut->disable();
-                exit;
+                close();
             }
         }
         return true;

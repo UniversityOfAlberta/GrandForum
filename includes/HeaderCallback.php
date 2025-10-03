@@ -23,8 +23,6 @@ class HeaderCallback {
 		// it will have to be loaded at some point anyway.
 		// This can be removed once we require PHP 8.0+.
 		class_exists( \WebRequest::class );
-		// Likewise, cache the request ID.
-		\WebRequest::getRequestId();
 
 		header_register_callback( [ __CLASS__, 'callback' ] );
 	}
@@ -83,12 +81,12 @@ class HeaderCallback {
 	 * @since 1.29
 	 */
 	public static function warnIfHeadersSent() {
-		if ( headers_sent() && !self::$messageSent ) {
+		if ( !self::$messageSent && headers_sent( $filename, $line ) ) {
 			self::$messageSent = true;
 			\MWDebug::warning( 'Headers already sent, should send headers earlier than ' .
 				wfGetCaller( 3 ) );
 			$logger = \MediaWiki\Logger\LoggerFactory::getInstance( 'headers-sent' );
-			$logger->error( 'Warning: headers were already sent from the location below', [
+			$logger->error( 'Warning: headers were already sent (output started at ' . $filename . ':' . $line . ')', [
 				'exception' => self::$headersSentException,
 				'detection-trace' => new \Exception( 'Detected here' ),
 			] );

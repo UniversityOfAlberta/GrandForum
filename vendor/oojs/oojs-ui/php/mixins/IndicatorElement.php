@@ -70,7 +70,7 @@ trait IndicatorElement {
 	/**
 	 * Get indicator name.
 	 *
-	 * @return string Symbolic name of indicator
+	 * @return string|null Symbolic name of indicator, null if not set
 	 */
 	public function getIndicator() {
 		return $this->indicatorName;
@@ -85,4 +85,18 @@ trait IndicatorElement {
 	public function getIndicatorElement() {
 		return $this->indicator;
 	}
+
+	/**
+	 * Toggle CSS classes.
+	 *
+	 * @param array $classes List of classes to add
+	 * @param bool|null $toggle Add classes
+	 * @return $this
+	 */
+	abstract public function toggleClasses( array $classes, $toggle = null );
+
+	/**
+	 * @param callable $func
+	 */
+	abstract public function registerConfigCallback( callable $func );
 }

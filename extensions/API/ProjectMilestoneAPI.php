@@ -106,12 +106,12 @@ class ProjectMilestoneAPI extends API{
 		if(!$noEcho){
 		    if($project == null || $project->getName() == null){
 		        echo "A valid project must be provided\n";
-		        exit;
+		        close();
 		    }
 		    $person = Person::newFromName($_POST['user_name']);
             if($person == null || $person->getName() == ""){
                 echo "A valid user name must be provided\n";
-                exit;
+                close();
             }
 		}
 		

@@ -1,14 +1,15 @@
 <?php
+declare( strict_types = 1 );
 
 namespace Wikimedia\Parsoid\Wt2Html;
 
 use Generator;
 use Wikimedia\Parsoid\Config\Env;
-use Wikimedia\Parsoid\Tokens\SourceRange;
+use Wikimedia\Parsoid\Config\Profile;
+use Wikimedia\Parsoid\Tokens\SelfclosingTagTk;
 use Wikimedia\Parsoid\Utils\PHPUtils;
-use Wikimedia\Parsoid\Utils\Title;
-use Wikimedia\Parsoid\Utils\Utils;
 use Wikimedia\Parsoid\Wt2Html\TT\TokenHandler;
+use Wikimedia\Parsoid\Wt2Html\TT\TraceProxy;
 
 /**
  * Token transformation manager. Individual transformations
@@ -22,48 +23,50 @@ use Wikimedia\Parsoid\Wt2Html\TT\TokenHandler;
  */
 class TokenTransformManager extends PipelineStage {
 	/** @var array */
-	private $options = null;
+	private $options;
 
 	/** @var string */
 	private $traceType = "";
 
-	/** @var array */
-	private $traceState = null;
+	/** @var bool */
+	private $traceEnabled;
 
 	/** @var TokenHandler[] */
 	private $transformers = [];
 
-	/** @var Frame */
-	private $frame;
+	/** @var int For TraceProxy */
+	public $tokenTimes = 0;
+
+	/** @var Profile|null For TraceProxy */
+	public $profile;
+
+	/** @var bool */
+	private $hasShuttleTokens = false;
 
 	/**
 	 * @param Env $env
 	 * @param array $options
 	 * @param string $stageId
-	 * @param PipelineStage|null $prevStage
+	 * @param ?PipelineStage $prevStage
 	 */
-	public function __construct( Env $env, array $options, string $stageId, $prevStage = null ) {
+	public function __construct(
+		Env $env, array $options, string $stageId,
+		?PipelineStage $prevStage = null
+	) {
 		parent::__construct( $env, $prevStage );
 		$this->options = $options;
-		$this->traceType = 'trace/ttm:' . preg_replace( '/TokenTransform/', '', $stageId );
 		$this->pipelineId = null;
-		$this->frame = $env->topFrame;
+		$this->traceType = 'trace/ttm:' . str_replace( 'TokenTransform', '', $stageId );
+		$this->traceEnabled = $env->hasTraceFlags();
+	}
 
-		// Compute tracing state
-		$this->traceState = null;
-		if ( $env->hasTraceFlags() ) {
-			$this->traceState = [
-				'tokenTimes' => 0,
-				'traceTime' => $env->hasTraceFlag( 'time' ),
-				'tracer' => function ( $token, $transformer ) use ( $env ) {
-					$cname = Utils::stripNamespace( get_class( $transformer ) );
-					$cnameStr = $cname . str_repeat( ' ', 23 - strlen( $cname ) ) . "|";
-					$env->log(
-						$this->traceType, $this->pipelineId, $cnameStr,
-						PHPUtils::jsonEncode( $token )
-					);
-				},
-			];
+	/**
+	 * @param int $id
+	 */
+	public function setPipelineId( int $id ): void {
+		parent::setPipelineId( $id );
+		foreach ( $this->transformers as $transformer ) {
+			$transformer->setPipelineId( $id );
 		}
 	}
 
@@ -75,18 +78,32 @@ class TokenTransformManager extends PipelineStage {
 	}
 
 	/**
-	 * @inheritDoc
+	 * @return array
 	 */
-	public function addTransformer( TokenHandler $t ): void {
-		$this->transformers[] = $t;
+	public function getOptions(): array {
+		return $this->options;
 	}
 
 	/**
-	 * Get this manager's tracing state object
-	 * @return array|null
+	 * @inheritDoc
 	 */
-	public function getTraceState(): ?array {
-		return $this->traceState;
+	public function addTransformer( TokenHandler $t ): void {
+		if ( $this->traceEnabled ) {
+			$this->transformers[] = new TraceProxy( $this, $this->options, $this->traceType, $t );
+		} else {
+			$this->transformers[] = $t;
+		}
+	}
+
+	/**
+	 * @param array $toks
+	 * @return array
+	 */
+	public function shuttleTokensToEndOfStage( array $toks ): array {
+		$this->hasShuttleTokens = true;
+		$ttmEnd = new SelfclosingTagTk( 'mw:ttm-end' );
+		$ttmEnd->dataAttribs->getTemp()->shuttleTokens = $toks;
+		return [ $ttmEnd ];
 	}
 
 	/**
@@ -100,8 +117,11 @@ class TokenTransformManager extends PipelineStage {
 		}
 
 		$startTime = null;
-		if ( isset( $this->traceState['traceTime'] ) ) {
-			$startTime = PHPUtils::getStartHRTime();
+		$profile = $this->profile = $this->env->profiling() ? $this->env->getCurrentProfile() : null;
+
+		if ( $profile ) {
+			$startTime = microtime( true );
+			$this->tokenTimes = 0;
 		}
 
 		foreach ( $this->transformers as $transformer ) {
@@ -109,17 +129,31 @@ class TokenTransformManager extends PipelineStage {
 				if ( count( $tokens ) === 0 ) {
 					break;
 				}
-				if ( $this->traceState ) {
-					$this->traceState['transformer'] = get_class( $transformer );
-				}
-
 				$tokens = $transformer->process( $tokens );
 			}
 		}
 
-		if ( isset( $this->traceState['traceTime'] ) ) {
-			$this->env->bumpTimeUse( 'SyncTTM',
-				( PHPUtils::getStartHRTime() - $startTime - $this->traceState['tokenTimes'] ),
+		// Unpack tokens that were shuttled to the end of the stage.  This happens
+		// when we used a nested pipeline to process tokens to the end of the
+		// current stage but then they need to be reinserted into the stream
+		// and we don't want them to be processed by subsequent handlers again.
+		if ( $this->hasShuttleTokens ) {
+			$this->hasShuttleTokens = false;
+			$accum = [];
+			foreach ( $tokens as $i => $t ) {
+				if ( $t instanceof SelfclosingTagTk && $t->getName() === 'mw:ttm-end' ) {
+					$toks = $t->dataAttribs->getTemp()->shuttleTokens;
+					PHPUtils::pushArray( $accum, $toks );
+				} else {
+					$accum[] = $t;
+				}
+			}
+			$tokens = $accum;
+		}
+
+		if ( $profile ) {
+			$profile->bumpTimeUse( 'TTM',
+				( microtime( true ) - $startTime ) * 1000 - $this->tokenTimes,
 				'TTM' );
 		}
 
@@ -130,51 +164,24 @@ class TokenTransformManager extends PipelineStage {
 	 * @inheritDoc
 	 */
 	public function resetState( array $opts ): void {
+		$this->hasShuttleTokens = false;
+		parent::resetState( $opts );
 		foreach ( $this->transformers as $transformer ) {
 			$transformer->resetState( $opts );
 		}
 	}
 
 	/**
-	 * @inheritDoc
-	 */
-	public function setSourceOffsets( SourceRange $so ): void {
-		foreach ( $this->transformers as $transformer ) {
-			$transformer->setSourceOffsets( $so );
-		}
-	}
-
-	/**
-	 * @inheritDoc
-	 */
-	public function setFrame(
-		?Frame $parentFrame, ?Title $title, array $args, string $srcText
-	): void {
-		// now actually set up the frame
-		if ( !$parentFrame ) {
-			$this->frame = $this->env->topFrame->newChild(
-				$title, $args, $srcText
-			);
-		} elseif ( !$title ) {
-			$this->frame = $parentFrame->newChild(
-				$parentFrame->getTitle(), $parentFrame->getArgs()->args, $srcText
-			);
-		} else {
-			$this->frame = $parentFrame->newChild(
-				$title, $args, $srcText
-			);
-		}
-	}
-
-	/**
+	 * See PipelineStage::process docs as well. This doc block refines
+	 * the generic arg types to be specific to this pipeline stage.
+	 *
 	 * Process a chunk of tokens.
 	 *
 	 * @param array $tokens Array of tokens to process
-	 * @param array|null $opts
+	 * @param ?array $opts
 	 * @return array Returns the array of processed tokens
 	 */
-	public function process( $tokens, array $opts = null ): array {
-		'@phan-var array $tokens'; // @var array $tokens
+	public function process( $tokens, ?array $opts = null ): array {
 		return $this->processChunk( $tokens );
 	}
 

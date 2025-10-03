@@ -92,9 +92,11 @@ $wgExtensionCredits['specialpage'][] = array(
 				       
 function permissionError(){
     global $wgOut, $wgUser, $wgServer, $wgScriptPath;
+    $e = new \Exception;
+var_dump($e->getTraceAsString());
     $wgOut->setPageTitle("Permission error");
     $wgOut->addHTML("<p>You are not allowed to execute the action you have requested.</p>");
-    if(!$wgUser->isLoggedIn()){
+    if(!$wgUser->isRegistered()){
         $wgOut->addHTML("<p>Login to your account or return to <a href='$wgServer$wgScriptPath/index.php/Main_Page'>Main Page</a>.</p>");
     }
     else{
@@ -102,7 +104,7 @@ function permissionError(){
     }
     $wgOut->output();
     $wgOut->disable();
-    exit;
+    close();
 }
 
 function isValidEmailAddr($addr, &$result){

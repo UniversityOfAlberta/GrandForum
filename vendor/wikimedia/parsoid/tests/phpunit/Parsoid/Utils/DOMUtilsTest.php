@@ -1,8 +1,9 @@
 <?php
 namespace spec\Parsoid\Utils;
 
-use DOMElement;
 use PHPUnit\Framework\TestCase;
+use Wikimedia\Parsoid\DOM\Document;
+use Wikimedia\Parsoid\DOM\Element;
 use Wikimedia\Parsoid\Html2Wt\DOMDiff;
 use Wikimedia\Parsoid\Mocks\MockEnv;
 use Wikimedia\Parsoid\Utils\ContentUtils;
@@ -15,6 +16,9 @@ use Wikimedia\Parsoid\Utils\DOMUtils;
  * @coversDefaultClass \Wikimedia\Parsoid\Utils\DOMUtils
  */
 class DOMUtilsTest extends TestCase {
+
+	/** @var Document[] */
+	private $liveDocs = [];
 
 	/**
 	 * @covers ::isDiffMarker
@@ -157,6 +161,8 @@ class DOMUtilsTest extends TestCase {
 			$this->selectNode( $body, 'body > p:nth-child(1)' ),
 			[ 'modified-wrapper' ]
 		);
+
+		$this->expectNotToPerformAssertions();
 	}
 
 	/**
@@ -176,6 +182,8 @@ class DOMUtilsTest extends TestCase {
 			$this->selectNode( $body, 'body > p:nth-child(1)' ),
 			[ 'modified-wrapper' ]
 		);
+
+		$this->expectNotToPerformAssertions();
 	}
 
 	/**
@@ -199,25 +207,35 @@ class DOMUtilsTest extends TestCase {
 			$this->selectNode( $body, 'body > p:nth-child(1)' ),
 			[ 'modified-wrapper' ]
 		);
+
+		$this->expectNotToPerformAssertions();
 	}
 
 	/**
 	 * @param string $html1
 	 * @param string $html2
-	 * @return DOMElement
+	 * @return Element
 	 */
-	private function parseAndDiff( string $html1, string $html2 ): DOMElement {
+	private function parseAndDiff( string $html1, string $html2 ): Element {
 		$mockEnv = new MockEnv( [] );
-		$body1 = ContentUtils::ppToDOM( $mockEnv, $html1 );
-		$body2 = ContentUtils::ppToDOM( $mockEnv, $html2 );
+
+		$doc1 = ContentUtils::createAndLoadDocument( $html1 );
+		$doc2 = ContentUtils::createAndLoadDocument( $html2 );
+
+		$body1 = DOMCompat::getBody( $doc1 );
+		$body2 = DOMCompat::getBody( $doc2 );
 
 		$domDiff = new DOMDiff( $mockEnv );
 		$domDiff->diff( $body1, $body2 );
 
-		return $body2;
+		// Prevent GC from reclaiming doc2 once we exit this function.
+		// Necessary hack because we use PHPDOM which wraps libxml.
+		$this->liveDocs[] = $doc2;
+
+		return DOMCompat::getBody( $doc2 );
 	}
 
-	private function selectNode( DOMElement $body, string $selector ): DOMElement {
+	private function selectNode( Element $body, string $selector ): Element {
 		$nodes = DOMCompat::querySelectorAll( $body, $selector );
 		if ( count( $nodes ) !== 1 ) {
 			$this->fail( 'It should be exactly one node for the selector' );
@@ -225,7 +243,7 @@ class DOMUtilsTest extends TestCase {
 		return $nodes[0];
 	}
 
-	private function checkMarkers( DOMElement $node, array $markers ): void {
+	private function checkMarkers( Element $node, array $markers ): void {
 		$data = DOMDataUtils::getNodeData( $node );
 		$diff = $data->parsoid_diff->diff;
 		if ( count( $markers ) !== count( $diff ) ) {

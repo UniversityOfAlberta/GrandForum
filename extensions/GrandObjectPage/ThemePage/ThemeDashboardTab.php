@@ -11,13 +11,13 @@ class ThemeDashboardTab extends AbstractTab {
         $this->visibility = $visibility;
         if(isset($_GET['showDashboard'])){
             echo $this->showDashboard($this->theme, $this->visibility);
-            exit;
+            close();
         }
     }
     
     function generateBody(){
         global $wgUser, $wgServer, $wgScriptPath;
-        if(!$wgUser->isLoggedIn()){
+        if(!$wgUser->isRegistered()){
             return;
         }
         $this->html .= "<div id='ajax_dashboard'><br /><span class='throbber'></span></div>";

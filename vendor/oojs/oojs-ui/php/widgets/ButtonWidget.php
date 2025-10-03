@@ -17,6 +17,7 @@ class ButtonWidget extends Widget {
 
 	/* Static Properties */
 
+	/** @var string */
 	public static $tagName = 'span';
 
 	/* Properties */
@@ -24,7 +25,7 @@ class ButtonWidget extends Widget {
 	/**
 	 * Whether button is active.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $active = false;
 
@@ -47,7 +48,7 @@ class ButtonWidget extends Widget {
 	 *
 	 * True if search engines should avoid following this hyperlink.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $noFollow = true;
 
@@ -64,7 +65,7 @@ class ButtonWidget extends Widget {
 	 *      - string $config['href'] Hyperlink to visit when clicked
 	 *      - string $config['target'] Target to open hyperlink in
 	 *      - bool $config['noFollow'] Search engine traversal hint (default: true)
-	 *      - string[] $config['rel'] Relationship attributes for the hyperlink
+	 *      - string|string[] $config['rel'] Relationship attributes for the hyperlink
 	 */
 	public function __construct( array $config = [] ) {
 		// Parent constructor
@@ -195,21 +196,13 @@ class ButtonWidget extends Widget {
 	 * @return $this
 	 */
 	public function setNoFollow( $noFollow ) {
-		if ( $this->noFollow ) {
-			if ( !$noFollow ) {
-				$relationship = $this->rel;
-				$index = array_search( 'nofollow', $relationship );
-				unset( $relationship[$index] );
-
-				$this->setRel( $relationship );
-			}
-		} else {
+		if ( $noFollow !== $this->noFollow ) {
 			if ( $noFollow ) {
-				$this->setRel( array_merge(
-					$this->rel,
-					[ 'nofollow' ]
-				) );
+				$rel = array_merge( $this->rel, [ 'nofollow' ] );
+			} else {
+				$rel = array_diff( $this->rel, [ 'nofollow' ] );
 			}
+			$this->setRel( $rel );
 		}
 
 		return $this;
@@ -222,12 +215,13 @@ class ButtonWidget extends Widget {
 	 * @return $this
 	 */
 	public function setRel( $rel ) {
-		$this->rel = is_array( $rel ) ? $rel : [ $rel ];
+		$this->rel = $rel === '' ? [] : (array)$rel;
 		// For backwards compatibility
 		$this->noFollow = in_array( 'nofollow', $this->rel );
 
-		if ( $this->rel ) {
-			$this->button->setAttributes( [ 'rel' => implode( ' ', $this->rel ) ] );
+		$value = implode( ' ', $this->rel );
+		if ( $value !== '' ) {
+			$this->button->setAttributes( [ 'rel' => $value ] );
 		} else {
 			$this->button->removeAttributes( [ 'rel' ] );
 		}
@@ -258,6 +252,7 @@ class ButtonWidget extends Widget {
 		return $this->active;
 	}
 
+	/** @inheritDoc */
 	public function getConfig( &$config ) {
 		if ( $this->active !== false ) {
 			$config['active'] = $this->active;

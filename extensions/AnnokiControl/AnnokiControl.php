@@ -1,7 +1,10 @@
 <?php
+
+use MediaWiki\MediaWikiServices;
+
 if (!defined('MEDIAWIKI')) {
   echo "This file is a MediaWiki extension, and cannot be accessed independantly.";
-  exit( 1 );
+  close();
 }
 
 define('ANNOKI', true);
@@ -30,6 +33,12 @@ function redirect($url){
     session_write_close();
     header("Location: $url");
     DBFunctions::commit();
+    close();
+}
+
+function close(){
+    MediaWikiServices::getInstance()->getDBLoadBalancerFactory()->shutdown();
+    DeferredUpdates::doUpdates();
     exit;
 }
 

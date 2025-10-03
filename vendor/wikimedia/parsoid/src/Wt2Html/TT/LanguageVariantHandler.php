@@ -3,7 +3,7 @@ declare( strict_types = 1 );
 
 namespace Wikimedia\Parsoid\Wt2Html\TT;
 
-use Wikimedia\Parsoid\Config\WikitextConstants;
+use Wikimedia\Parsoid\NodeData\DataParsoid;
 use Wikimedia\Parsoid\Tokens\EndTagTk;
 use Wikimedia\Parsoid\Tokens\EOFTk;
 use Wikimedia\Parsoid\Tokens\KV;
@@ -11,10 +11,10 @@ use Wikimedia\Parsoid\Tokens\SourceRange;
 use Wikimedia\Parsoid\Tokens\TagTk;
 use Wikimedia\Parsoid\Tokens\Token;
 use Wikimedia\Parsoid\Utils\ContentUtils;
-use Wikimedia\Parsoid\Utils\DOMCompat;
 use Wikimedia\Parsoid\Utils\DOMUtils;
 use Wikimedia\Parsoid\Utils\PHPUtils;
 use Wikimedia\Parsoid\Utils\PipelineUtils;
+use Wikimedia\Parsoid\Wikitext\Consts;
 use Wikimedia\Parsoid\Wt2Html\TokenTransformManager;
 
 /**
@@ -39,10 +39,10 @@ class LanguageVariantHandler extends TokenHandler {
 		// we're going to fetch the actual token list from attribs
 		// (this ensures that it has gone through the earlier stages
 		// of the pipeline already to be expanded)
-		$t = preg_replace( '/^mw:lv/', '', $t, 1 );
+		$t = PHPUtils::stripPrefix( $t, 'mw:lv' );
 		$srcOffsets = $attribs[$t]->srcOffsets;
-		$doc = PipelineUtils::processContentInPipeline(
-			$manager->env, $manager->getFrame(), array_merge( $attribs[$t]->v, [ new EOFTk() ] ),
+		$domFragment = PipelineUtils::processContentInPipeline(
+			$this->env, $manager->getFrame(), array_merge( $attribs[$t]->v, [ new EOFTk() ] ),
 			[
 				'pipelineType' => 'tokens/x-mediawiki/expanded',
 				'pipelineOpts' => [
@@ -55,15 +55,17 @@ class LanguageVariantHandler extends TokenHandler {
 			]
 		);
 		return [
-			'xmlstr' => ContentUtils::ppToXML( DOMCompat::getBody( $doc ), [ 'innerXML' => true ] ),
-			'isBlock' => DOMUtils::hasBlockElementDescendant( DOMCompat::getBody( $doc ) )
+			'xmlstr' => ContentUtils::ppToXML(
+				$domFragment, [ 'innerXML' => true ]
+			),
+			'isBlock' => DOMUtils::hasBlockElementDescendant( $domFragment ),
 		];
 	}
 
 	/**
 	 * compress a whitespace sequence
-	 * @param array|null $a
-	 * @return array|null
+	 * @param ?array $a
+	 * @return ?array
 	 */
 	private function compressSpArray( ?array $a ): ?array {
 		$result = [];
@@ -92,9 +94,9 @@ class LanguageVariantHandler extends TokenHandler {
 	 * Main handler.
 	 * See {@link TokenTransformManager#addTransform}'s transformation parameter
 	 * @param Token $token
-	 * @return array
+	 * @return TokenHandlerResult|null
 	 */
-	private function onLanguageVariant( Token $token ): array {
+	private function onLanguageVariant( Token $token ): ?TokenHandlerResult {
 		$manager = $this->manager;
 		$options = $this->options;
 		$attribs = $token->attribs;
@@ -165,19 +167,19 @@ class LanguageVariantHandler extends TokenHandler {
 				'show' => true
 			];
 		} else {
-			$dataMWV = array_reduce( $flags, function ( array $dmwv, string $f ) use ( &$sawFlagA ) {
-				if ( array_key_exists( $f, WikitextConstants::$LCFlagMap ) ) {
-					if ( WikitextConstants::$LCFlagMap[$f] ) {
-						$dmwv[WikitextConstants::$LCFlagMap[$f]] = true;
+			$dataMWV = [];
+			foreach ( $flags as $f ) {
+				if ( array_key_exists( $f, Consts::$LCFlagMap ) ) {
+					if ( Consts::$LCFlagMap[$f] ) {
+						$dataMWV[Consts::$LCFlagMap[$f]] = true;
 						if ( $f === 'A' ) {
 							$sawFlagA = true;
 						}
 					}
 				} else {
-					$dmwv['error'] = true;
+					$dataMWV['error'] = true;
 				}
-				return $dmwv;
-			}, [] );
+			}
 			// (this test is done at the top of ConverterRule::getRuleConvertedStr)
 			// (also partially in ConverterRule::parse)
 			if ( count( $texts ) === 1 &&
@@ -185,7 +187,7 @@ class LanguageVariantHandler extends TokenHandler {
 			) {
 				if ( isset( $dataMWV['add'] ) || isset( $dataMWV['remove'] ) ) {
 					$variants = [ '*' ];
-					$twoway = array_map( function ( string $code ) use ( $texts, &$sawTwoway ) {
+					$twoway = array_map( static function ( string $code ) use ( $texts, &$sawTwoway ) {
 						return [ 'l' => $code, 't' => $texts[0]['text'] ];
 					}, $variants );
 					$sawTwoway = true;
@@ -250,45 +252,40 @@ class LanguageVariantHandler extends TokenHandler {
 		// contains only inline content, could contain block content,
 		// or never contains any content.
 
-		$das = [
-			'fl' => $dataAttribs->original, // original "fl"ags
-			'flSp' => $this->compressSpArray( $flagSp ), // spaces around flags
-			'src' => $dataAttribs->src,
-			'tSp' => $this->compressSpArray( $textSp ), // spaces around texts
-			'tsr' => new SourceRange( $tsr->start, $isMeta ? $tsr->end : ( $tsr->end - 2 ) )
-		];
-
-		if ( $das['flSp'] === null ) {
-			unset( $das['flSp'] );
+		$das = new DataParsoid;
+		$das->fl = $dataAttribs->original; // original "fl"ags
+		$flSp = $this->compressSpArray( $flagSp ); // spaces around flags
+		if ( $flSp !== null ) {
+			$das->flSp = $flSp;
 		}
-
-		if ( $das['tSp'] === null ) {
-			unset( $das['tSp'] );
+		$das->src = $dataAttribs->src;
+		$tSp = $this->compressSpArray( $textSp ); // spaces around texts
+		if ( $tSp !== null ) {
+			$das->tSp = $tSp;
 		}
+		$das->tsr = new SourceRange( $tsr->start, $isMeta ? $tsr->end : ( $tsr->end - 2 ) );
 
 		PHPUtils::sortArray( $dataMWV );
 		$tokens = [
 			new TagTk( $isMeta ? 'meta' : ( $isBlock ? 'div' : 'span' ), [
 					new KV( 'typeof', 'mw:LanguageVariant' ),
 					new KV( 'data-mw-variant', PHPUtils::jsonEncode( $dataMWV ) )
-				], (object)$das
+				], $das
 			)
 		];
 		if ( !$isMeta ) {
-			$tokens[] = new EndTagTk( $isBlock ? 'div' : 'span', [],
-				(object)[
-					'tsr' => new SourceRange( $tsr->end - 2, $tsr->end )
-				]
-			);
+			$metaDP = new DataParsoid;
+			$metaDP->tsr = new SourceRange( $tsr->end - 2, $tsr->end );
+			$tokens[] = new EndTagTk( $isBlock ? 'div' : 'span', [], $metaDP );
 		}
 
-		return [ 'tokens' => $tokens ];
+		return new TokenHandlerResult( $tokens );
 	}
 
 	/**
 	 * @inheritDoc
 	 */
-	public function onTag( Token $token ) {
-		return $token->getName() === 'language-variant' ? $this->onLanguageVariant( $token ) : $token;
+	public function onTag( Token $token ): ?TokenHandlerResult {
+		return $token->getName() === 'language-variant' ? $this->onLanguageVariant( $token ) : null;
 	}
 }

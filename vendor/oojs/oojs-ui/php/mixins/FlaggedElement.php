@@ -37,7 +37,7 @@ trait FlaggedElement {
 		$this->setFlags( $config['flags'] ?? null );
 
 		$this->registerConfigCallback( function ( &$config ) {
-			if ( !empty( $this->flags ) ) {
+			if ( $this->flags ) {
 				$config['flags'] = $this->getFlags();
 			}
 		} );
@@ -131,4 +131,9 @@ trait FlaggedElement {
 
 		return $this;
 	}
+
+	/**
+	 * @param callable $func
+	 */
+	abstract public function registerConfigCallback( callable $func );
 }

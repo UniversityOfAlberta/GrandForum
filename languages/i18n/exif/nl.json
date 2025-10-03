@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Danieldegroot2",
 			"GerardM",
 			"Mainframe98",
 			"Mar(c)",
@@ -9,8 +10,7 @@
 			"SPQRobin",
 			"Siebrand",
 			"Sjoerddebruin",
-			"Slomox",
-			"Danieldegroot2"
+			"Slomox"
 		]
 	},
 	"exif-imagewidth": "Breedte",
@@ -201,9 +201,10 @@
 	"exif-photometricinterpretation-3": "Palet",
 	"exif-photometricinterpretation-4": "Transparantiemasker",
 	"exif-photometricinterpretation-5": "Gescheiden (waarschijnlijk CMYK)",
-	"exif-photometricinterpretation-8": "CIE L*a*b*",
 	"exif-photometricinterpretation-9": "CIE L*a*b* (ICC-codering)",
 	"exif-photometricinterpretation-10": "CIE L*a*b* (ITU-codering)",
+	"exif-photometricinterpretation-32803": "Kleurenfilterserie",
+	"exif-photometricinterpretation-34892": "Lineair rauw",
 	"exif-unknowndate": "Datum onbekend",
 	"exif-orientation-1": "Normaal",
 	"exif-orientation-2": "Horizontaal gespiegeld",
@@ -223,7 +224,7 @@
 	"exif-exposureprogram-3": "Diafragmaprioriteit",
 	"exif-exposureprogram-4": "Sluiterprioriteit",
 	"exif-exposureprogram-5": "Creatief (voorkeur voor grote scherptediepte)",
-	"exif-exposureprogram-6": "Actie (voorkeur voor hoge sluitersnelheid)",
+	"exif-exposureprogram-6": "Actieprogramma (gericht op een hoge sluitersnelheid)",
 	"exif-exposureprogram-7": "Portret (detailopname met onscherpe achtergrond)",
 	"exif-exposureprogram-8": "Landschap (scherpe achtergrond)",
 	"exif-subjectdistance-value": "$1 meter",
@@ -365,5 +366,32 @@
 	"exif-urgency-normal": "Normaal ($1)",
 	"exif-urgency-low": "Laag ($1)",
 	"exif-urgency-high": "Hoog ($1)",
-	"exif-urgency-other": "Door gebruiker gedefinieerde prioriteit ($1)"
+	"exif-urgency-other": "Door gebruiker gedefinieerde prioriteit ($1)",
+	"exif-firstphotodate": "Datum eerste foto",
+	"exif-lastphotodate": "Datum laatste foto",
+	"exif-projectiontype": "Projectietype",
+	"exif-projectiontype-equirectangular": "Afstandsgetrouw",
+	"exif-usepanoramaviewer": "Panoramaviewer gebruiken",
+	"exif-usepanoramaviewer-true": "Ja",
+	"exif-usepanoramaviewer-false": "Nee",
+	"exif-exposurelockused": "Belichtingsvergrendeling gebruikt",
+	"exif-exposurelockused-true": "Ja",
+	"exif-exposurelockused-false": "Nee",
+	"exif-poseheadingdegrees": "Positie-richting (graden)",
+	"exif-posepitchdegrees": "Stamphoek (graden)",
+	"exif-poserolldegrees": "Slingerhoek (graden)",
+	"exif-initialviewheadingdegrees": "Aanvankelijke zichtrichting (graden)",
+	"exif-initialviewpitchdegrees": "Aanvankelijke zichtstamphoek (graden)",
+	"exif-initialviewrolldegrees": "Aanvankelijke zichtslingerhoek (graden)",
+	"exif-initialhorizontalfovdegrees": "Aanvankelijk gezichtsveld (horizontale graden)",
+	"exif-initialverticalfovdegrees": "Aanvankelijk gezichtsveld (verticale graden)",
+	"exif-sourcephotoscount": "Aantal bronfoto's",
+	"exif-croppedareaimagewidthpixels": "Bijgesneden panoramabreedte",
+	"exif-croppedareaimageheightpixels": "Bijgesneden panoramahoogte",
+	"exif-fullpanowidthpixels": "Volledige panoramabreedte",
+	"exif-fullpanoheightpixels": "Volledige panoramahoogte",
+	"exif-croppedarealeftpixels": "Linker uitsnede van panorama",
+	"exif-croppedareatoppixels": "Bovenzijde uitsnede van panorama",
+	"exif-initialcameradolly": "Eerste cameradolly",
+	"exif-stitchingsoftware": "Software voor het samenvoegen"
 }

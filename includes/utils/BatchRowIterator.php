@@ -89,6 +89,11 @@ class BatchRowIterator implements RecursiveIterator {
 	protected $options = [];
 
 	/**
+	 * @var string|null For debugging which method is using this class.
+	 */
+	protected $caller;
+
+	/**
 	 * @stable to call
 	 *
 	 * @param IDatabase $db The database to read from
@@ -150,6 +155,20 @@ class BatchRowIterator implements RecursiveIterator {
 	}
 
 	/**
+	 * Use ->setCaller( __METHOD__ ) to indicate which code is using this
+	 * class. Only used in debugging output.
+	 * @since 1.36
+	 *
+	 * @param string $caller
+	 * @return self
+	 */
+	public function setCaller( $caller ) {
+		$this->caller = $caller;
+
+		return $this;
+	}
+
+	/**
 	 * Extracts the primary key(s) from a database row.
 	 *
 	 * @param stdClass $row An individual database row from this iterator
@@ -179,7 +198,7 @@ class BatchRowIterator implements RecursiveIterator {
 	}
 
 	/**
-	 * Reset the iterator to the begining of the table.
+	 * Reset the iterator to the beginning of the table.
 	 */
 	public function rewind(): void {
 		$this->key = -1; // self::next() will turn this into 0
@@ -212,11 +231,16 @@ class BatchRowIterator implements RecursiveIterator {
 	 * Fetch the next set of rows from the database.
 	 */
 	public function next(): void {
+		$caller = __METHOD__;
+		if ( (string)$this->caller !== '' ) {
+			$caller .= " (for {$this->caller})";
+		}
+
 		$res = $this->db->select(
 			$this->table,
 			$this->fetchColumns,
 			$this->buildConditions(),
-			__METHOD__,
+			$caller,
 			[
 				'LIMIT' => $this->batchSize,
 				'ORDER BY' => $this->orderBy,

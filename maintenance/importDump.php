@@ -35,16 +35,23 @@ require_once __DIR__ . '/Maintenance.php';
  * @ingroup Maintenance
  */
 class BackupReader extends Maintenance {
+	/** @var int */
 	public $reportingInterval = 100;
+	/** @var int */
 	public $pageCount = 0;
+	/** @var int */
 	public $revCount = 0;
+	/** @var bool */
 	public $dryRun = false;
+	/** @var bool */
 	public $uploads = false;
+	/** @var int */
 	protected $uploadCount = 0;
+	/** @var string|false */
 	public $imageBasePath = false;
 	/** @var array|false */
 	public $nsFilter = false;
-	/** @var bool|resource */
+	/** @var resource|false */
 	public $stderr;
 	/** @var callable|null */
 	protected $importCallback;
@@ -52,7 +59,7 @@ class BackupReader extends Maintenance {
 	protected $logItemCallback;
 	/** @var callable|null */
 	protected $uploadCallback;
-	/** @var int */
+	/** @var float */
 	protected $startTime;
 
 	public function __construct() {
@@ -96,7 +103,9 @@ TEXT
 		);
 		$this->addOption( 'image-base-path', 'Import files from a specified path', false, true );
 		$this->addOption( 'skip-to', 'Start from nth page by skipping first n-1 pages', false, true );
-		$this->addOption( 'username-prefix', 'Prefix for interwiki usernames', false, true );
+		$this->addOption( 'username-prefix',
+			'Prefix for interwiki usernames; a trailing ">" will be added. Default: "imported>"',
+			false, true );
 		$this->addOption( 'no-local-users',
 			'Treat all usernames as interwiki. ' .
 			'The default is to assign edits to local users where they exist.',
@@ -106,7 +115,7 @@ TEXT
 	}
 
 	public function execute() {
-		if ( wfReadOnly() ) {
+		if ( MediaWikiServices::getInstance()->getReadOnlyMode()->isReadOnly() ) {
 			$this->fatalError( "Wiki is in read-only mode; you'll need to disable it for import to work." );
 		}
 
@@ -218,7 +227,7 @@ TEXT
 			if ( !$this->dryRun ) {
 				// bluuuh hack
 				// call_user_func( $this->uploadCallback, $revision );
-				$dbw = $this->getDB( DB_MASTER );
+				$dbw = $this->getDB( DB_PRIMARY );
 
 				return $dbw->deadlockLoop( [ $revision, 'importUpload' ] );
 			}
@@ -282,6 +291,9 @@ TEXT
 		}
 
 		$file = fopen( $filename, 'rt' );
+		if ( $file === false ) {
+			$this->fatalError( error_get_last()['message'] ?? 'Could not open file' );
+		}
 
 		return $this->importFromHandle( $file );
 	}
@@ -299,7 +311,9 @@ TEXT
 		$this->startTime = microtime( true );
 
 		$source = new ImportStreamSource( $handle );
-		$importer = new WikiImporter( $source, $this->getConfig() );
+		$importer = MediaWikiServices::getInstance()
+			->getWikiImporterFactory()
+			->getWikiImporter( $source );
 
 		// Updating statistics require a lot of time so disable it
 		$importer->disableStatisticsUpdate();
@@ -310,18 +324,15 @@ TEXT
 		if ( $this->hasOption( 'no-updates' ) ) {
 			$importer->setNoUpdates( true );
 		}
-		if ( $this->hasOption( 'username-prefix' ) ) {
-			$importer->setUsernamePrefix(
-				$this->getOption( 'username-prefix' ),
-				!$this->hasOption( 'no-local-users' )
-			);
-		}
+		$importer->setUsernamePrefix(
+			$this->getOption( 'username-prefix', 'imported' ),
+			!$this->hasOption( 'no-local-users' )
+		);
 		if ( $this->hasOption( 'rootpage' ) ) {
 			$statusRootPage = $importer->setTargetRootPage( $this->getOption( 'rootpage' ) );
 			if ( !$statusRootPage->isGood() ) {
 				// Die here so that it doesn't print "Done!"
 				$this->fatalError( $statusRootPage->getMessage( false, false, 'en' )->text() );
-				return false;
 			}
 		}
 		if ( $this->hasOption( 'skip-to' ) ) {
@@ -330,7 +341,7 @@ TEXT
 			$this->pageCount = $nthPage - 1;
 		}
 		$importer->setPageCallback( [ $this, 'reportPage' ] );
-		$importer->setNoticeCallback( function ( $msg, $params ) {
+		$importer->setNoticeCallback( static function ( $msg, $params ) {
 			echo wfMessage( $msg, $params )->text() . "\n";
 		} );
 		$this->importCallback = $importer->setRevisionCallback(

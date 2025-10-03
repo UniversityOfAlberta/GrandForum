@@ -1,6 +1,8 @@
 <?php
 
+use MediaWiki\MainConfigNames;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Site\MediaWikiPageNameNormalizer;
 
 /**
  * Represents a single site.
@@ -91,7 +93,7 @@ class Site implements Serializable {
 	 *
 	 * @since 1.21
 	 *
-	 * @var array[]|false
+	 * @var string[][]|false
 	 */
 	protected $localIds = [];
 
@@ -398,12 +400,15 @@ class Site implements Serializable {
 	 * @see Site::normalizePageName
 	 *
 	 * @since 1.21
+	 * @since 1.37 Added $followRedirect
 	 *
 	 * @param string $pageName
+	 * @param int $followRedirect either MediaWikiPageNameNormalizer::FOLLOW_REDIRECT or
+	 * MediaWikiPageNameNormalizer::NOFOLLOW_REDIRECT
 	 *
 	 * @return string|false
 	 */
-	public function normalizePageName( $pageName ) {
+	public function normalizePageName( $pageName, $followRedirect = MediaWikiPageNameNormalizer::FOLLOW_REDIRECT ) {
 		return $pageName;
 	}
 
@@ -486,7 +491,7 @@ class Site implements Serializable {
 	 *
 	 * @since 1.21
 	 *
-	 * @return string|null
+	 * @return int|null
 	 */
 	public function getInternalId() {
 		return $this->internalId;
@@ -610,7 +615,7 @@ class Site implements Serializable {
 	}
 
 	/**
-	 * Returns the path of the provided type or false if there is no such path.
+	 * Returns the path of the provided type or null if there is no such path.
 	 *
 	 * @since 1.21
 	 *
@@ -620,7 +625,7 @@ class Site implements Serializable {
 	 */
 	public function getPath( $pathType ) {
 		$paths = $this->getAllPaths();
-		return array_key_exists( $pathType, $paths ) ? $paths[$pathType] : null;
+		return $paths[$pathType] ?? null;
 	}
 
 	/**
@@ -632,7 +637,7 @@ class Site implements Serializable {
 	 * @return string[]
 	 */
 	public function getAllPaths() {
-		return array_key_exists( 'paths', $this->extraData ) ? $this->extraData['paths'] : [];
+		return $this->extraData['paths'] ?? [];
 	}
 
 	/**
@@ -656,10 +661,11 @@ class Site implements Serializable {
 	 * @return Site
 	 */
 	public static function newForType( $siteType ) {
-		global $wgSiteTypes;
+		$siteTypes = MediaWikiServices::getInstance()->getMainConfig()->get(
+			MainConfigNames::SiteTypes );
 
-		if ( array_key_exists( $siteType, $wgSiteTypes ) ) {
-			return new $wgSiteTypes[$siteType]();
+		if ( array_key_exists( $siteType, $siteTypes ) ) {
+			return new $siteTypes[$siteType]();
 		}
 
 		return new Site();
@@ -679,7 +685,7 @@ class Site implements Serializable {
 	/**
 	 * @see Serializable::serialize
 	 *
-	 * @since 1.35.6
+	 * @since 1.38
 	 *
 	 * @return array
 	 */
@@ -712,7 +718,7 @@ class Site implements Serializable {
 	/**
 	 * @see Serializable::unserialize
 	 *
-	 * @since 1.35.6
+	 * @since 1.38
 	 *
 	 * @param array $fields
 	 */

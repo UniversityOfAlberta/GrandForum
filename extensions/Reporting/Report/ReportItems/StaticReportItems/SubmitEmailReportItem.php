@@ -9,7 +9,7 @@ class SubmitEmailReportItem extends StaticReportItem {
                 Gamification::log("SubmitCommunityProgram");
             }
             $this->sendEmail();
-            exit;
+            close();
         }
         $report = $this->getReport();
         $section = $this->getSection();

@@ -22,8 +22,8 @@ class CustomSearchEngine extends SearchMySQL {
 				$namespaces[$id] = $nsName;
 			}
 			
-			else if (MWNamespace::isTalk($id)) {
-				$main = MWNamespace::getSubject($id);
+			else if (MediaWikiServices::getInstance()->getNamespaceInfo()->isTalk($id)) {
+			    $main = MediaWikiServices::getInstance()->getNamespaceInfo()->getSubject($id);
 				if(array_key_exists($main, $wgExtraNamespaces)){
 					$mainName = $wgExtraNamespaces[$main];
 					if (isset($accessibleNS[$mainName])) {

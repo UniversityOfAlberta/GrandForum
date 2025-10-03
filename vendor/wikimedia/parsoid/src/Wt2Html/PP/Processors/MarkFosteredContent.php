@@ -3,16 +3,18 @@ declare( strict_types = 1 );
 
 namespace Wikimedia\Parsoid\Wt2Html\PP\Processors;
 
-use DOMDocument;
-use DOMElement;
-use DOMNode;
-use stdClass;
 use Wikimedia\Assert\Assert;
 use Wikimedia\Parsoid\Config\Env;
+use Wikimedia\Parsoid\DOM\Comment;
+use Wikimedia\Parsoid\DOM\Document;
+use Wikimedia\Parsoid\DOM\Element;
+use Wikimedia\Parsoid\DOM\Node;
+use Wikimedia\Parsoid\DOM\Text;
+use Wikimedia\Parsoid\NodeData\DataParsoid;
+use Wikimedia\Parsoid\NodeData\TempData;
+use Wikimedia\Parsoid\Utils\DOMCompat;
 use Wikimedia\Parsoid\Utils\DOMDataUtils;
 use Wikimedia\Parsoid\Utils\DOMUtils;
-use Wikimedia\Parsoid\Utils\PHPUtils;
-use Wikimedia\Parsoid\Utils\Utils;
 use Wikimedia\Parsoid\Utils\WTUtils;
 use Wikimedia\Parsoid\Wt2Html\Wt2HtmlDOMProcessor;
 
@@ -30,14 +32,14 @@ class MarkFosteredContent implements Wt2HtmlDOMProcessor {
 	/**
 	 * Create a new DOM node with attributes.
 	 *
-	 * @param DOMDocument $document
+	 * @param Document $document
 	 * @param string $type
 	 * @param array $attrs
-	 * @return DOMElement
+	 * @return Element
 	 */
 	private static function createNodeWithAttributes(
-		DOMDocument $document, string $type, array $attrs
-	): DOMElement {
+		Document $document, string $type, array $attrs
+	): Element {
 		$node = $document->createElement( $type );
 		DOMUtils::addAttributes( $node, $attrs );
 		return $node;
@@ -46,17 +48,17 @@ class MarkFosteredContent implements Wt2HtmlDOMProcessor {
 	/**
 	 * Cleans up transclusion shadows, keeping track of fostered transclusions
 	 *
-	 * @param DOMNode $node
+	 * @param Node $node
 	 * @return bool
 	 */
-	private static function removeTransclusionShadows( DOMNode $node ): bool {
+	private static function removeTransclusionShadows( Node $node ): bool {
 		$sibling = null;
 		$fosteredTransclusions = false;
-		if ( $node instanceof DOMElement ) {
+		if ( $node instanceof Element ) {
 			if ( DOMUtils::isMarkerMeta( $node, 'mw:TransclusionShadow' ) ) {
 				$node->parentNode->removeChild( $node );
 				return true;
-			} elseif ( !empty( DOMDataUtils::getDataParsoid( $node )->tmp->inTransclusion ) ) {
+			} elseif ( DOMDataUtils::getDataParsoid( $node )->getTempFlag( TempData::IN_TRANSCLUSION ) ) {
 				$fosteredTransclusions = true;
 			}
 			$node = $node->firstChild;
@@ -75,11 +77,11 @@ class MarkFosteredContent implements Wt2HtmlDOMProcessor {
 	 * Inserts metas around the fosterbox and table
 	 *
 	 * @param Env $env
-	 * @param DOMNode $fosterBox
-	 * @param DOMElement $table
+	 * @param Node $fosterBox
+	 * @param Element $table
 	 */
 	private static function insertTransclusionMetas(
-		Env $env, DOMNode $fosterBox, DOMElement $table
+		Env $env, Node $fosterBox, Element $table
 	): void {
 		$aboutId = $env->newAboutId();
 
@@ -93,11 +95,10 @@ class MarkFosteredContent implements Wt2HtmlDOMProcessor {
 				'typeof' => 'mw:Transclusion',
 			]
 		);
-		DOMDataUtils::setDataParsoid( $s, (object)[
-				'tsr' => Utils::clone( DOMDataUtils::getDataParsoid( $table )->tsr ),
-				'tmp' => PHPUtils::arrayToObject( [ 'fromFoster' => true ] ),
-			]
-		);
+		$dp = new DataParsoid;
+		$dp->tsr = clone DOMDataUtils::getDataParsoid( $table )->tsr;
+		$dp->setTempFlag( TempData::FROM_FOSTER );
+		DOMDataUtils::setDataParsoid( $s, $dp );
 		$fosterBox->parentNode->insertBefore( $s, $fosterBox );
 
 		$e = self::createNodeWithAttributes( $table->ownerDocument, 'meta', [
@@ -115,13 +116,12 @@ class MarkFosteredContent implements Wt2HtmlDOMProcessor {
 		while ( $sibling ) {
 			if ( !WTUtils::isTplStartMarkerMeta( $sibling ) &&
 				( WTUtils::hasParsoidAboutId( $sibling ) ||
-					DOMUtils::isMarkerMeta( $sibling, 'mw:EndTag' ) ||
 					DOMUtils::isMarkerMeta( $sibling, 'mw:TransclusionShadow' )
 				)
 			) {
 				$sibling = $sibling->nextSibling;
 				$beforeText = null;
-			} elseif ( DOMUtils::isComment( $sibling ) || DOMUtils::isText( $sibling ) ) {
+			} elseif ( $sibling instanceof Comment || $sibling instanceof Text ) {
 				if ( !$beforeText ) {
 					$beforeText = $sibling;
 				}
@@ -135,16 +135,18 @@ class MarkFosteredContent implements Wt2HtmlDOMProcessor {
 	}
 
 	/**
-	 * @param DOMDocument $doc
+	 * @param Document $doc
 	 * @param bool $inPTag
-	 * @return DOMElement
+	 * @return Element
 	 */
-	private static function getFosterContentHolder( DOMDocument $doc, bool $inPTag ): DOMElement {
+	private static function getFosterContentHolder( Document $doc, bool $inPTag ): Element {
 		$fosterContentHolder = $doc->createElement( $inPTag ? 'span' : 'p' );
-		DOMDataUtils::setDataParsoid(
-			$fosterContentHolder,
-			(object)[ 'fostered' => true, 'tmp' => new stdClass ]
-		);
+		$dp = new DataParsoid;
+		$dp->fostered = true;
+		// Set autoInsertedStart for bug-compatibility with the old ProcessTreeBuilderFixups code
+		$dp->autoInsertedStart = true;
+
+		DOMDataUtils::setDataParsoid( $fosterContentHolder, $dp );
 		return $fosterContentHolder;
 	}
 
@@ -154,10 +156,10 @@ class MarkFosteredContent implements Wt2HtmlDOMProcessor {
 	 * - Wraps the whole thing (table + fosterbox) with transclusion metas if
 	 *   there is any fostered transclusion content.
 	 *
-	 * @param DOMNode $node
+	 * @param Node $node
 	 * @param Env $env
 	 */
-	private static function processRecursively( DOMNode $node, Env $env ): void {
+	private static function processRecursively( Node $node, Env $env ): void {
 		$c = $node->firstChild;
 
 		while ( $c ) {
@@ -165,13 +167,15 @@ class MarkFosteredContent implements Wt2HtmlDOMProcessor {
 			$fosteredTransclusions = false;
 
 			if ( DOMUtils::hasNameAndTypeOf( $c, 'table', 'mw:FosterBox' ) ) {
-				$inPTag = DOMUtils::hasAncestorOfName( $c->parentNode, 'p' );
+				$inPTag = DOMUtils::hasNameOrHasAncestorOfName( $c->parentNode, 'p' );
 				$fosterContentHolder = self::getFosterContentHolder( $c->ownerDocument, $inPTag );
 
 				// mark as fostered until we hit the table
-				while ( $sibling && ( !DOMUtils::isElt( $sibling ) || $sibling->nodeName !== 'table' ) ) {
+				while ( $sibling &&
+					( !( $sibling instanceof Element ) || DOMCompat::nodeName( $sibling ) !== 'table' )
+				) {
 					$next = $sibling->nextSibling;
-					if ( $sibling instanceof DOMElement ) {
+					if ( $sibling instanceof Element ) {
 						// TODO: Note the similarity here with the p-wrapping pass.
 						// This can likely be combined in some more maintainable way.
 						if (
@@ -207,7 +211,7 @@ class MarkFosteredContent implements Wt2HtmlDOMProcessor {
 
 				// we should be able to reach the table from the fosterbox
 				Assert::invariant(
-					$table && $table instanceof DOMElement && $table->nodeName === 'table',
+					$table instanceof Element && DOMCompat::nodeName( $table ) === 'table',
 					"Table isn't a sibling. Something's amiss!"
 				);
 
@@ -226,7 +230,7 @@ class MarkFosteredContent implements Wt2HtmlDOMProcessor {
 
 			} elseif ( DOMUtils::isMarkerMeta( $c, 'mw:TransclusionShadow' ) ) {
 				$c->parentNode->removeChild( $c );
-			} elseif ( DOMUtils::isElt( $c ) ) {
+			} elseif ( $c instanceof Element ) {
 				if ( $c->hasChildNodes() ) {
 					self::processRecursively( $c, $env );
 				}
@@ -240,7 +244,7 @@ class MarkFosteredContent implements Wt2HtmlDOMProcessor {
 	 * @inheritDoc
 	 */
 	public function run(
-		Env $env, DOMElement $root, array $options = [], bool $atTopLevel = false
+		Env $env, Node $root, array $options = [], bool $atTopLevel = false
 	): void {
 		self::processRecursively( $root, $env );
 	}

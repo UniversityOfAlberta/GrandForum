@@ -15,6 +15,7 @@
 	"rest-permission-denied-anon": "No accessible per a usuaris anònims",
 	"rest-permission-denied-title": "L'usuari no té permisos per a llegir el títol ($1)",
 	"rest-permission-denied-revision": "L'usuari no té accés a revisió sol·licitada ($1).",
+	"rest-resource-limit-exceeded": "S'han exhaurit els límits de recursos en processar la sol·licitud.",
 	"rest-pagehistory-param-range-error": "L'ID de la revisió ha de ser més gran que 0",
 	"rest-pagehistory-timestamp-error": "No es pot recuperar la marca horària de la revisió especificada ($1)",
 	"rest-pagehistorycount-type-unrecognized": "El tipus de recompte ($1) especificat no és vàlid",

@@ -40,7 +40,6 @@ class MockEnvTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertSame( 946782245, $env->getSiteConfig()->fakeTimestamp() );
-		$this->assertFalse( $env->getSiteConfig()->rtTestMode() );
 		ob_start();
 		$env->log( 'prefix', 'foo', function () {
 			$this->fail( 'Callback should not be called' );
@@ -51,11 +50,11 @@ class MockEnvTest extends \PHPUnit\Framework\TestCase {
 	public function testEnvOptions() {
 		$mockDataAccess = $this->getMockBuilder( DataAccess::class )->getMockForAbstractClass();
 		$mockPageConfig = $this->getMockBuilder( PageConfig::class )
-			->setMethods( [ 'getRevisionContent', 'getTitle' ] )
+			->onlyMethods( [ 'getRevisionContent', 'getTitle' ] )
 			->getMockForAbstractClass();
 		$mockPageContent = $this->getMockBuilder( PageContent::class )->getMockForAbstractClass();
 		$mockSiteConfig = $this->getMockBuilder( SiteConfig::class )
-			->setMethods( [ 'legalTitleChars' ] )
+			->onlyMethods( [ 'legalTitleChars' ] )
 			->getMockForAbstractClass();
 
 		$mockPageConfig->method( 'getTitle' )->willReturn( 'Main Page' );

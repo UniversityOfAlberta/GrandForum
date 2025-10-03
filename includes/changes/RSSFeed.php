@@ -31,12 +31,12 @@ class RSSFeed extends ChannelFeed {
 	/**
 	 * Format a date given a timestamp. If a timestamp is not given, nothing is returned
 	 *
-	 * @param int|null $ts Timestamp
+	 * @param string|int|null $ts Timestamp
 	 * @return string|null Date string
 	 */
 	private function formatTime( $ts ) {
 		if ( $ts ) {
-			return gmdate( 'D, d M Y H:i:s \G\M\T', wfTimestamp( TS_UNIX, $ts ) );
+			return gmdate( 'D, d M Y H:i:s \G\M\T', (int)wfTimestamp( TS_UNIX, $ts ) );
 		}
 		return null;
 	}
@@ -72,7 +72,7 @@ class RSSFeed extends ChannelFeed {
 			"permalink" => $item->rssIsPermalink,
 			"uniqueID" => $item->getUniqueID(),
 			"description" => $item->getDescription(),
-			"date" => $this->xmlEncode( $this->formatTime( $item->getDate() ) ),
+			"date" => $this->xmlEncodeNullable( $this->formatTime( $item->getDate() ) ),
 			"author" => $item->getAuthor()
 		];
 		$comments = $item->getCommentsUnescaped();

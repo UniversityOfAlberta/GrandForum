@@ -142,7 +142,7 @@ abstract class GenericArrayObject extends ArrayObject {
 	protected function setElement( $index, $value ) {
 		if ( !$this->hasValidType( $value ) ) {
 			throw new InvalidArgumentException(
-				'Can only add '	. $this->getObjectType() . ' implementing objects to '
+				'Can only add ' . $this->getObjectType() . ' implementing objects to '
 				. static::class . '.'
 			);
 		}
@@ -190,7 +190,7 @@ abstract class GenericArrayObject extends ArrayObject {
 	/**
 	 * @see Serializable::serialize
 	 *
-	 * @since 1.35.6
+	 * @since 1.38
 	 *
 	 * @return array
 	 */
@@ -228,7 +228,7 @@ abstract class GenericArrayObject extends ArrayObject {
 	/**
 	 * @see Serializable::unserialize
 	 *
-	 * @since 1.35.6
+	 * @since 1.38
 	 *
 	 * @param array $serializationData
 	 */

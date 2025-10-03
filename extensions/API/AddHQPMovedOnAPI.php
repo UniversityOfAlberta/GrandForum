@@ -33,7 +33,7 @@ class AddHQPMovedOnAPI extends API{
 		if(!$noEcho){
             if($person->getName() == null){
                 echo "There is no person by the name of '{$_POST['user']}'\n";
-                exit;
+                close();
             }
         }
 		$supervisors = $person->getSupervisors(true);

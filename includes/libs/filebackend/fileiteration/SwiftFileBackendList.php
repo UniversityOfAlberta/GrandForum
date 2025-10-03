@@ -24,7 +24,7 @@
 
 /**
  * SwiftFileBackend helper class to page through listings.
- * Swift also has a listing limit of 10,000 objects for sanity.
+ * Swift also has a listing limit of 10,000 objects for performance.
  * Do not use this class from places outside SwiftFileBackend.
  *
  * @ingroup FileBackend
@@ -130,7 +130,7 @@ abstract class SwiftFileBackendList implements Iterator {
 	 *
 	 * @param string $container Resolved container name
 	 * @param string $dir Resolved path relative to container
-	 * @param string &$after
+	 * @param string &$after @phan-output-reference
 	 * @param int $limit
 	 * @param array $params
 	 * @return Traversable|array

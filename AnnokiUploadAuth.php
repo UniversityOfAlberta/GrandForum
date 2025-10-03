@@ -65,7 +65,7 @@ if ($egAnProtectUploads){
     $match = substr(strstr($filename, '!'),1);
     $unarchivedTitle =  Title::makeTitleSafe( NS_FILE, $match);
   }
-  if (!MediaWikiServices::getInstance()->getPermissionManager()->userCan('read', $wgUser, $unarchivedTitle) || !$wgUser->isLoggedIn()){
+  if (!$wgUser->isRegistered() || !MediaWikiServices::getInstance()->getPermissionManager()->userCan('read', $wgUser, $unarchivedTitle)){
     wfDebugLog( 'AnnokiUploadAuth', 'User does not have access to '.$unarchivedTitle->getPrefixedText());
     $errorFile = 'extensions/AccessControls/images/errorFile.gif';
     StreamFile::stream($errorFile, array( 'Cache-Control: private', 'Vary: Cookie' ));
@@ -88,7 +88,7 @@ if( !$wgUser->getId() && ( !is_array( $wgWhitelistRead ) || !in_array( $title, $
 	$dbr = wfGetDB(DB_REPLICA);
 	$result = $dbr->query($sql);
 	$rows = array();
-	while($row = $dbr->fetchRow($result)){
+	while($row = $result->fetchRow()){
 		$rows[] = $row;
 	}
 	if(count($rows) > 0){

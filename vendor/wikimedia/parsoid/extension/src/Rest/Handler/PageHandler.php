@@ -20,10 +20,11 @@ declare( strict_types = 1 );
 
 namespace MWParsoid\Rest\Handler;
 
+use MediaWiki\Rest\Handler\ParsoidFormatHelper;
+use MediaWiki\Rest\Handler\ParsoidHandler as CoreParsoidHandler;
+use MediaWiki\Rest\HttpException;
 use MediaWiki\Rest\Response;
-use MediaWiki\Revision\RevisionAccessException;
 use MediaWiki\Revision\SlotRecord;
-use MWParsoid\Rest\FormatHelper;
 use Wikimedia\ParamValidator\ParamValidator;
 use Wikimedia\Parsoid\Config\PageConfig;
 
@@ -33,7 +34,10 @@ use Wikimedia\Parsoid\Config\PageConfig;
  * - /{domain}/v3/page/{format}/{title}/{revision}
  * @see https://www.mediawiki.org/wiki/Parsoid/API#GET
  */
-class PageHandler extends ParsoidHandler {
+class PageHandler extends CoreParsoidHandler {
+
+	// NOTE: this controls redirects by overriding methods!
+	use EndpointRedirectTrait;
 
 	/** @inheritDoc */
 	public function getParamSettings() {
@@ -66,45 +70,23 @@ class PageHandler extends ParsoidHandler {
 		$request = $this->getRequest();
 		$format = $request->getPathParam( 'format' );
 
-		if ( !in_array( $format, FormatHelper::VALID_PAGE, true ) ) {
-			return $this->getResponseFactory()->createHttpError( 404, [
-				'message' => "Invalid page format: ${format}",
-			] );
+		if ( !in_array( $format, ParsoidFormatHelper::VALID_PAGE, true ) ) {
+			throw new HttpException(
+				"Invalid page format: ${format}", 404
+			);
 		}
 
 		$attribs = $this->getRequestAttributes();
 
-		if ( !$this->acceptable( $attribs ) ) {
-			return $this->getResponseFactory()->createHttpError( 406, [
-				'message' => 'Not acceptable',
-			] );
-		}
-
-		$oldid = (int)$attribs['oldid'];
-
-		try {
-			$pageConfig = $this->createPageConfig(
-				$attribs['pageName'], $oldid
+		if ( !$this->acceptable( $attribs ) ) { // mutates $attribs
+			throw new HttpException(
+				'Not acceptable', 406
 			);
-		} catch ( RevisionAccessException $exception ) {
-			return $this->getResponseFactory()->createHttpError( 404, [
-				'message' => 'The specified revision is deleted or suppressed.',
-			] );
 		}
 
-		// T234549
-		if ( $pageConfig->getRevisionContent() === null ) {
-			return $this->getResponseFactory()->createHttpError( 404, [
-				'message' => 'The specified revision does not exist.',
-			] );
-		}
+		$pageConfig = $this->tryToCreatePageConfig( $attribs );
 
-		if ( $format === FormatHelper::FORMAT_WIKITEXT ) {
-			if ( !$oldid ) {
-				return $this->createRedirectToOldidResponse(
-					$pageConfig, $attribs
-				);
-			}
+		if ( $format === ParsoidFormatHelper::FORMAT_WIKITEXT ) {
 			return $this->getPageContentResponse( $pageConfig, $attribs );
 		} else {
 			return $this->wt2html( $pageConfig, $attribs );
@@ -118,21 +100,22 @@ class PageHandler extends ParsoidHandler {
 	 * @param PageConfig $pageConfig
 	 * @param array $attribs Request attributes from getRequestAttributes()
 	 * @return Response
+	 * @throws HttpException
 	 */
 	protected function getPageContentResponse(
 		PageConfig $pageConfig, array $attribs
 	) {
 		$content = $pageConfig->getRevisionContent();
 		if ( !$content ) {
-			return $this->getResponseFactory()->createHttpError( 404, [
-				'message' => 'The specified revision does not exist.',
-			] );
+			throw new HttpException(
+				'The specified revision does not exist.', 404
+			);
 		}
 		$response = $this->getResponseFactory()->create();
 		$response->setStatus( 200 );
 		$response->setHeader( 'X-ContentModel', $content->getModel( SlotRecord::MAIN ) );
-		FormatHelper::setContentType(
-			$response, FormatHelper::FORMAT_WIKITEXT,
+		ParsoidFormatHelper::setContentType(
+			$response, ParsoidFormatHelper::FORMAT_WIKITEXT,
 			$attribs['envOptions']['outputContentVersion']
 		);
 		$response->getBody()->write( $content->getContent( SlotRecord::MAIN ) );

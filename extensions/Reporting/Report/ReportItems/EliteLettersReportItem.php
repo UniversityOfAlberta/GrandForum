@@ -5,7 +5,7 @@ class EliteLettersReportItem extends MultiTextReportItem {
     function render(){
         if(isset($_GET['sendEmails'])){
             $this->sendEmail();
-            exit;
+            close();
         }
         parent::render();
     }

@@ -17,7 +17,7 @@ function MultimediaSearch($action, $request){
     if($action == "MaterialSearch"){
         header("Content-type: text/json");
         echo Material::search($_GET['phrase']);
-        exit;
+        close();
     }
     return true;
 }

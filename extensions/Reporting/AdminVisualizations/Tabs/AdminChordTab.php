@@ -170,7 +170,7 @@ class AdminChordTab extends AbstractTab {
 
             header("Content-Type: application/json");
             echo json_encode($array);
-            exit;
+            close();
         }
         return true;
 	}

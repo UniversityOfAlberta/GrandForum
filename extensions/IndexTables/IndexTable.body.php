@@ -190,7 +190,7 @@ class IndexTable {
 
     static function userCanExecute(&$title, &$user, $action, &$result){
         global $wgOut, $wgServer, $wgScriptPath, $config;
-        if($config->getValue('guestLockdown') && !$user->isLoggedIn()){
+        if($config->getValue('guestLockdown') && !$user->isRegistered()){
             $result = false;
             return true;
         }
@@ -222,7 +222,7 @@ class IndexTable {
                 $wgOut->loginToUse();
                 $wgOut->output();
                 $wgOut->disable();
-                exit;
+                close();
                 return true;
             }
             $wgOut->addScript("<script type='text/javascript'>

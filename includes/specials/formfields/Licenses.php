@@ -71,7 +71,7 @@ class Licenses extends HTMLFormField {
 		// in the default site language (= get the translation from MediaWiki:Licenses)
 		// Also see https://phabricator.wikimedia.org/T3495
 		$defaultMsg = wfMessage( 'licenses' )->inContentLanguage();
-		if ( !$defaultMsg->exists() || $defaultMsg->plain() === '-' ) {
+		if ( $defaultMsg->isDisabled() ) {
 			$defaultMsg = wfMessage( 'licenses' )->inLanguage(
 				MediaWikiServices::getInstance()->getContentLanguage() );
 		}
@@ -97,21 +97,20 @@ class Licenses extends HTMLFormField {
 		foreach ( $lines as $line ) {
 			if ( strpos( $line, '*' ) !== 0 ) {
 				continue;
-			} else {
-				list( $level, $line ) = $this->trimStars( $line );
+			}
+			list( $level, $line ) = $this->trimStars( $line );
 
-				if ( strpos( $line, '|' ) !== false ) {
-					$obj = $this->buildLine( $line );
-					$this->stackItem( $this->lines, $levels, $obj );
-				} else {
-					if ( $level < count( $levels ) ) {
-						$levels = array_slice( $levels, 0, $level );
-					}
-					if ( $level == count( $levels ) ) {
-						$levels[$level - 1] = $line;
-					} elseif ( $level > count( $levels ) ) {
-						$levels[] = $line;
-					}
+			if ( strpos( $line, '|' ) !== false ) {
+				$obj = $this->buildLine( $line );
+				$this->stackItem( $this->lines, $levels, $obj );
+			} else {
+				if ( $level < count( $levels ) ) {
+					$levels = array_slice( $levels, 0, $level );
+				}
+				if ( $level == count( $levels ) ) {
+					$levels[$level - 1] = $line;
+				} elseif ( $level > count( $levels ) ) {
+					$levels[] = $line;
 				}
 			}
 		}
@@ -183,12 +182,12 @@ class Licenses extends HTMLFormField {
 		$msgObj = $this->msg( $message );
 		$text = $msgObj->exists() ? $msgObj->text() : $message;
 		$attribs['value'] = $value;
-		if ( $value === $this->selected ) {
+		if ( $value === $this->selected && !isset( $attribs['disabled'] ) ) {
 			$attribs['selected'] = 'selected';
 		}
 
 		$val = str_repeat( /* &nbsp */ "\u{00A0}", $depth * 2 ) . $text;
-		return str_repeat( "\t", $depth ) . Xml::element( 'option', $attribs, $val ) . "\n";
+		return str_repeat( "\t", $depth ) . Html::element( 'option', $attribs, $val ) . "\n";
 	}
 
 	/** #@- */

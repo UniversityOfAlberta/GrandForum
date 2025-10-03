@@ -19,7 +19,7 @@ class IndexLayout extends MenuLayout {
 	 */
 	protected $tabPanel;
 	/**
-	 * @var PanelLayout[]
+	 * @var TabPanelLayout[]
 	 */
 	protected $tabPanels;
 	/**
@@ -82,6 +82,7 @@ class IndexLayout extends MenuLayout {
 			->appendContent( $this->tabSelectWidget );
 	}
 
+	/** @inheritDoc */
 	public function getConfig( &$config ) {
 		$config = parent::getConfig( $config );
 		if ( !$this->autoFocus ) {
@@ -120,11 +121,17 @@ class IndexLayout extends MenuLayout {
 		return $this->tabPanels[$name];
 	}
 
+	/**
+	 * @return TabPanelLayout|null
+	 */
 	public function getCurrentTabPanel() {
 		$name = $this->getCurrentTabPanelName();
 		return $name ? $this->getTabPanel( $name ) : null;
 	}
 
+	/**
+	 * @return string
+	 */
 	public function getCurrentTabPanelName() {
 		return $this->currentTabPanelName;
 	}
@@ -143,8 +150,9 @@ class IndexLayout extends MenuLayout {
 			$this->tabPanels[ $tabPanel->getName() ] = $tabPanel;
 			$tabItem = new TabOptionWidget( array_merge( [
 				'data' => $tabPanel->getName(),
+				'label' => $tabPanel->getLabel(),
 			], $tabPanel->getTabItemConfig() ) );
-			$tabPanel->setTabItem( $tabItem );
+			// TODO: Set aria-labelledby/aria-controls as in .js
 			$tabItems[] = $tabItem;
 		}
 		$this->tabSelectWidget->addItems( $tabItems );

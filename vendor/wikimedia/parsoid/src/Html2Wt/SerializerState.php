@@ -4,14 +4,17 @@ declare( strict_types = 1 );
 namespace Wikimedia\Parsoid\Html2Wt;
 
 use Composer\Semver\Semver;
-use DOMElement;
-use DOMNode;
 use stdClass;
 use Wikimedia\Assert\Assert;
 use Wikimedia\Parsoid\Config\Env;
 use Wikimedia\Parsoid\Core\SelserData;
+use Wikimedia\Parsoid\DOM\DocumentFragment;
+use Wikimedia\Parsoid\DOM\Element;
+use Wikimedia\Parsoid\DOM\Node;
+use Wikimedia\Parsoid\DOM\Text;
 use Wikimedia\Parsoid\Ext\ParsoidExtensionAPI;
 use Wikimedia\Parsoid\Html2Wt\ConstrainedText\ConstrainedText;
+use Wikimedia\Parsoid\Utils\DOMCompat;
 use Wikimedia\Parsoid\Utils\DOMDataUtils;
 use Wikimedia\Parsoid\Utils\DOMUtils;
 use Wikimedia\Parsoid\Utils\PHPUtils;
@@ -34,14 +37,11 @@ class SerializerState {
 		static $solWikitextRegexp = null;
 		if ( $solWikitextRegexp === null ) {
 			$sol = PHPUtils::reStrip(
-				$this->env->getSiteConfig()->solTransparentWikitextNoWsRegexp(),
+				$this->env->getSiteConfig()->solTransparentWikitextNoWsRegexp( true ),
 				'@'
 			);
 			$solWikitextRegexp = '@' .
-				'^((?:' . $sol . '|' .
-				# SSS FIXME: What about onlyinclude and noinclude?
-				'<includeonly>.*?</includeonly>' .
-				')*)' .
+				'^(' . $sol . ')' .
 				'([\ \*#:;{\|!=].*)$' .
 				'@D';
 		}
@@ -58,41 +58,25 @@ class SerializerState {
 		static $solRegexp = null;
 		if ( $solRegexp === null ) {
 			$sol = PHPUtils::reStrip(
-				$this->env->getSiteConfig()->solTransparentWikitextNoWsRegexp(),
+				$this->env->getSiteConfig()->solTransparentWikitextNoWsRegexp( true ),
 				'@'
 			);
-			$solRegexp = '@' .
-				'(^|\\n)' .
-				'(' .
-				# SSS FIXME: What about onlyinclude and noinclude?
-				'<includeonly>.*?</includeonly>' .
-				'|' . $sol .
-				')*$' .
-				'@D';
+			$solRegexp = '@(^|\n)' . $sol . '$@D';
 		}
 		return $solRegexp;
 	}
 
 	/**
-	 * Are we currently running round-trip tests?  If yes, then we know
-	 * there won't be any edits and we more aggressively try to use original
-	 * source and source flags during serialization since this is a test of
-	 * Parsoid's efficacy in preserving information.
-	 * @var bool
-	 */
-	public $rtTestMode = true;
-
-	/**
 	 * Separator information:
 	 * - constraints (array<array|int>|null): min/max number of newlines
 	 * - src (string|null): collected separator text from DOM text/comment nodes
-	 * - lastSourceNode (?DOMNode): Seems to be bookkeeping to make sure we don't reuse
+	 * - lastSourceNode (?Node): Seems to be bookkeeping to make sure we don't reuse
 	 *     original separators when `emitChunk` is called
 	 *     consecutively on the same node.  However, it also
 	 *     differs from `state.prevNode` in that it only gets
 	 *     updated when a node calls `emitChunk` so that nodes
 	 *     serializing `justChildren` don't mix up `buildSep`.
-	 * PORT-FIXME: could use a dedicated class
+	 * FIXME: could use a dedicated class
 	 * @var stdClass
 	 */
 	public $sep;
@@ -204,12 +188,12 @@ class SerializerState {
 	 * This array is used by the wikitext escaping algorithm -- represents
 	 * a "single line" of output wikitext as represented by a block node in
 	 * the DOM.
-	 * - firstNode (?DOMNode): first DOM node processed on this line
+	 * - firstNode (?Node): first DOM node processed on this line
 	 * - text (string): output so far from all nodes on the current line
 	 * - chunks (ConstrainedText[]): list of chunks comprising the current line
 	 * @var stdClass
 	 * XXX: replace with output buffering per line
-	 * PORT-FIXME: could use a dedicated class
+	 * FIXME: could use a dedicated class
 	 */
 	public $currLine;
 
@@ -231,7 +215,7 @@ class SerializerState {
 	/** @var ParsoidExtensionAPI */
 	public $extApi;
 
-	/** @var ConstrainedText|string The serialized output */
+	/** @var string The serialized output */
 	public $out = '';
 
 	/**
@@ -270,10 +254,10 @@ class SerializerState {
 
 	/**
 	 * Should we run the wikitext escaping code on the wikitext chunk
-	 * that will be emitted? True unless we are in HTML <pre>.
+	 * that will be emitted?
 	 * @var bool
 	 */
-	public $escapeText = false;
+	public $needsEscaping = false;
 
 	/**
 	 * Used as fast patch for special protected characters in WikitextEscapeHandlers and
@@ -282,11 +266,20 @@ class SerializerState {
 	 */
 	public $protect;
 
+	/** @var Separators */
+	public $separators;
+
 	/** @var Env */
 	private $env;
 
-	/** @var DOMElement */
+	/** @var Element */
+	public $currNode;
+
+	/** @var Element */
 	private $prevNode;
+
+	/** @var array */
+	public $openAnnotations;
 
 	/**
 	 * Log prefix to use in trace output
@@ -294,23 +287,31 @@ class SerializerState {
 	 */
 	private $logPrefix = 'OUT:';
 
+	public $haveTrimmedWsDSR = false;
+
 	/**
 	 * @param WikitextSerializer $serializer
-	 * @param array $options
+	 * @param array $options List of options for serialization:
+	 *   - onSOL: (bool)
+	 *   - inPHPBlock: (bool)
+	 *   - inAttribute: (bool)
+	 *   - protect: (string)
+	 *   - selserData: (SelserData)
 	 */
 	public function __construct( WikitextSerializer $serializer, array $options = [] ) {
 		$this->env = $serializer->env;
 		$this->serializer = $serializer;
 		$this->extApi = new ParsoidExtensionAPI( $this->env, [ 'html2wt' => [ 'state' => $this ] ] );
-		foreach ( $options as $name => $option ) {
-			// PORT-FIXME validate
-			if ( !( $option instanceof Env ) ) {
-				$this->$name = Utils::clone( $option );
-			}
-		}
+		$this->onSOL = $options['onSOL'] ?? $this->onSOL;
+		$this->inPHPBlock = $options['inPHPBlock'] ?? $this->inPHPBlock;
+		$this->inAttribute = $options['inAttribute'] ?? $this->inAttribute;
+		$this->protect = $options['protect'] ?? null;
+		$this->selserData = $options['selserData'] ?? null;
 		$this->resetCurrLine( null );
 		$this->singleLineContext = new SingleLineContext();
 		$this->resetSep();
+		$this->haveTrimmedWsDSR = Semver::satisfies( $this->env->getInputContentVersion(), '>=2.1.1' );
+		$this->separators = new Separators( $this->env, $this );
 	}
 
 	/**
@@ -333,23 +334,26 @@ class SerializerState {
 		$this->useWhitespaceHeuristics =
 			Semver::satisfies( $this->env->getInputContentVersion(), '>=1.7.0' );
 		$this->selserMode = $selserMode;
-		$this->rtTestMode = $this->rtTestMode && !$this->selserMode; // Always false in selser mode.
 	}
 
 	/**
-	 * Appends the seperator source and updates the SOL state if necessary.
+	 * Appends the separator source to the separator src buffer.
+	 * Don't update $state->onSOL since this string hasn't been emitted yet.
+	 * If content handlers change behavior based on whether this newline will
+	 * be emitted or not, they should peek into this buffer (ex: see TDHandler
+	 * and THHandler code).
+	 *
 	 * @param string $src
 	 */
 	public function appendSep( string $src ): void {
 		$this->sep->src = ( $this->sep->src ?: '' ) . $src;
-		$this->sepIntroducedSOL( $src );
 	}
 
 	/**
 	 * Cycle the state after processing a node.
-	 * @param DOMNode $node
+	 * @param Node $node
 	 */
-	public function updateSep( DOMNode $node ): void {
+	public function updateSep( Node $node ): void {
 		$this->sep->lastSourceNode = $node;
 	}
 
@@ -363,9 +367,9 @@ class SerializerState {
 
 	/**
 	 * Reset the current line state.
-	 * @param DOMNode|null $node
+	 * @param ?Node $node
 	 */
-	private function resetCurrLine( ?DOMNode $node ): void {
+	private function resetCurrLine( ?Node $node ): void {
 		$this->currLine = (object)[
 			'text' => '',
 			'chunks' => [],
@@ -395,7 +399,9 @@ class SerializerState {
 			$start <= $end &&
 			// FIXME: Having a $start greater than the source length is
 			// probably a canary for corruption.  Maybe we should be throwing
-			// here instead.  See T240053
+			// here instead.  See T240053.
+			// But, see comment in UnpackDOMFragments where we very very rarely
+			// can deliberately set DSR to point outside page source.
 			$start <= strlen( $this->selserData->oldText )
 		) {
 			return substr( $this->selserData->oldText, $start, $end - $start );
@@ -406,9 +412,9 @@ class SerializerState {
 
 	/**
 	 * Like it says on the tin.
-	 * @param DOMNode $node
+	 * @param Node $node
 	 */
-	public function updateModificationFlags( DOMNode $node ): void {
+	public function updateModificationFlags( Node $node ): void {
 		$this->prevNodeUnmodified = $this->currNodeUnmodified;
 		$this->currNodeUnmodified = false;
 		$this->prevNode = $node;
@@ -417,45 +423,46 @@ class SerializerState {
 	/**
 	 * Separators put us in SOL state.
 	 * @param string $sep
+	 * @param Node $node
 	 */
-	private function sepIntroducedSOL( string $sep ): void {
+	private function sepIntroducedSOL( string $sep, Node $node ): void {
 		// Don't get tripped by newlines in comments!  Be wary of nowikis added
 		// by makeSepIndentPreSafe on the last line.
-		if ( substr( preg_replace( Utils::COMMENT_REGEXP, '', $sep ), -1 ) === "\n" ) {
-			// Since we are stashing away newlines for emitting
-			// before the next element, we are in SOL state wrt
-			// the content of that next element.
-			//
-			// FIXME: The only serious caveat is if all these newlines
-			// will get stripped out in the context of any parent node
-			// that suppress newlines (ex: <li> nodes that are forcibly
-			// converted to non-html wikitext representation -- newlines
-			// will get suppressed in those context). We currently don't
-			// handle arbitrary HTML which cause these headaches. And,
-			// in any case, we might decide to emit such HTML as native
-			// HTML to avoid these problems. To be figured out later when
-			// it is a real issue.
+		$nonCommentSep = preg_replace( Utils::COMMENT_REGEXP, '', $sep );
+		if ( substr( $nonCommentSep, -1 ) === "\n" ) {
 			$this->onSOL = true;
+		}
+
+		if ( str_contains( $nonCommentSep, "\n" ) ) {
+			// process escapes in our full line
+			$this->flushLine();
+			$this->resetCurrLine( $node );
 		}
 	}
 
 	/**
 	 * Accumulates chunks on the current line.
-	 * @param ConstrainedText $text
-	 * @param DOMNode $node
+	 * @param ConstrainedText $chunk
+	 * @param string $logPrefix
 	 */
-	private function pushToCurrLine( ConstrainedText $text, DOMNode $node ) {
-		// TODO $node is probably not needed since ConstrainedText already includes it
-		$this->currLine->chunks[] = $text;
+	private function pushToCurrLine( ConstrainedText $chunk, string $logPrefix ) {
+		// Emitting text that has not been escaped
+		$this->currLine->text .= $chunk->text;
+
+		$this->currLine->chunks[] = $chunk;
+
+		$this->serializer->trace( '--->', $logPrefix, static function () use ( $chunk ) {
+			return PHPUtils::jsonEncode( $chunk->text );
+		} );
 	}
 
 	/**
-	 * Pushes the seperator to the current line and resets the separator state.
+	 * Pushes the separator to the current line and resets the separator state.
 	 * @param string $sep
-	 * @param DOMNode $node
+	 * @param Node $node
 	 * @param string $debugPrefix
 	 */
-	private function emitSep( string $sep, DOMNode $node, string $debugPrefix ): void {
+	private function emitSep( string $sep, Node $node, string $debugPrefix ): void {
 		$sep = ConstrainedText::cast( $sep, $node );
 
 		// Replace newlines if we're in a single-line context
@@ -463,130 +470,155 @@ class SerializerState {
 			$sep->text = preg_replace( '/\n/', ' ', $sep->text );
 		}
 
-		$this->pushToCurrLine( $sep, $node );
+		$this->pushToCurrLine( $sep, $debugPrefix );
+		$this->sepIntroducedSOL( $sep->text, $node );
 
 		// Reset separator state
 		$this->resetSep();
 		$this->updateSep( $node );
-
-		$this->sepIntroducedSOL( $sep->text );
-
-		$this->serializer->trace( '--->', $debugPrefix, function () use ( $sep ) {
-			return PHPUtils::jsonEncode( $sep->text );
-		} );
 	}
 
 	/**
-	 * Determines if we can use the original seperator for this node or if we
+	 * Determines if we can use the original separator for this node or if we
 	 * need to build one based on its constraints, and then emits it.
 	 *
-	 * The following comment applies to `origSepUsable` but is placed outside the
-	 * function body since character count (including comments) can prevent
-	 * inlining in older versions of v8 (node < 8.3).
-	 *
-	 * ---
-	 *
-	 * When block nodes are deleted, the deletion affects whether unmodified
-	 * newline separators between a pair of unmodified P tags can be reused.
-	 *
-	 * Example:
-	 * ```
-	 * Original WT  : "<div>x</div>foo\nbar"
-	 * Original HTML: "<div>x</div><p>foo</p>\n<p>bar</p>"
-	 * Edited HTML  : "<p>foo</p>\n<p>bar</p>"
-	 * Annotated DOM: "<mw:DiffMarker is-block><p>foo</p>\n<p>bar</p>"
-	 * Expected WT  : "foo\n\nbar"
-	 * ```
-	 *
-	 * Note the additional newline between "foo" and "bar" even though originally,
-	 * there was just a single newline.
-	 *
-	 * So, even though the two P tags and the separator between them is
-	 * unmodified, it is insufficient to rely on just that. We have to look at
-	 * what has happened on the two wikitext lines onto which the two P tags
-	 * will get serialized.
-	 *
-	 * Now, if you check the code for `nextToDeletedBlockNodeInWT`, that code is
-	 * not really looking at ALL the nodes before/after the nodes that could
-	 * serialize onto the wikitext lines. It is looking at the immediately
-	 * adjacent nodes, i.e. it is not necessary to look if a block-tag was
-	 * deleted 2 or 5 siblings away. If we had to actually examine all of those,
-	 * nodes, this would get very complex, and it would be much simpler to just
-	 * discard the original separators => potentially lots of dirty diffs.
-	 *
-	 * To understand why it is sufficient (for correctness) to examine just
-	 * the immediately adjacent nodes, let us look at an additional example.
-	 * ```
-	 * Original WT  : "a<div>b</div>c<div>d</div>e\nf"
-	 * Original HTML: "<p>a</p><div>b</div><p>c</p><div>d</div><p>e</p>\n<p>f</p>"
-	 * ```
-	 * Note how `<block>` tags and `<p>` tags interleave in the HTML. This would be
-	 * the case always no matter how much inline content showed up between the
-	 * block tags in wikitext. If the b-`<div>` was deleted, we don't care
-	 * about it, since we still have the d-`<div>` before the P tag that preserves
-	 * the correctness of the single `"\n"` separator. If the d-`<div>` was deleted,
-	 * we conservatively ignore the original separator and let normal P-P constraints
-	 * take care of it. At worst, we might generate a dirty diff in this scenario.
-	 *
-	 * @param DOMNode $node
+	 * @param Node $node
 	 */
-	private function emitSepForNode( DOMNode $node ): void {
-		$again = ( $node === $this->sep->lastSourceNode );
-		$origSepUsable = !$again
-			&& $this->prevNodeUnmodified && !WTSUtils::nextToDeletedBlockNodeInWT( $this->prevNode, true )
-			&& $this->currNodeUnmodified && !WTSUtils::nextToDeletedBlockNodeInWT( $node, false );
+	private function emitSepForNode( Node $node ): void {
+		/* When block nodes are deleted, the deletion affects whether unmodified
+		 * newline separators between a pair of unmodified P tags can be reused.
+		 *
+		 * Example:
+		 * ```
+		 * Original WT  : "<div>x</div>foo\nbar"
+		 * Original HTML: "<div>x</div><p>foo</p>\n<p>bar</p>"
+		 * Edited HTML  : "<p>foo</p>\n<p>bar</p>"
+		 * Annotated DOM: "<mw:DiffMarker is-block><p>foo</p>\n<p>bar</p>"
+		 * Expected WT  : "foo\n\nbar"
+		 * ```
+		 *
+		 * Note the additional newline between "foo" and "bar" even though originally,
+		 * there was just a single newline.
+		 *
+		 * So, even though the two P tags and the separator between them is
+		 * unmodified, it is insufficient to rely on just that. We have to look at
+		 * what has happened on the two wikitext lines onto which the two P tags
+		 * will get serialized.
+		 *
+		 * Now, if you check the code for `nextToDeletedBlockNodeInWT`, that code is
+		 * not really looking at ALL the nodes before/after the nodes that could
+		 * serialize onto the wikitext lines. It is looking at the immediately
+		 * adjacent nodes, i.e. it is not necessary to look if a block-tag was
+		 * deleted 2 or 5 siblings away. If we had to actually examine all of those,
+		 * nodes, this would get very complex, and it would be much simpler to just
+		 * discard the original separators => potentially lots of dirty diffs.
+		 *
+		 * To understand why it is sufficient (for correctness) to examine just
+		 * the immediately adjacent nodes, let us look at an additional example.
+		 * ```
+		 * Original WT  : "a<div>b</div>c<div>d</div>e\nf"
+		 * Original HTML: "<p>a</p><div>b</div><p>c</p><div>d</div><p>e</p>\n<p>f</p>"
+		 * ```
+		 * Note how `<block>` tags and `<p>` tags interleave in the HTML. This would be
+		 * the case always no matter how much inline content showed up between the
+		 * block tags in wikitext. If the b-`<div>` was deleted, we don't care
+		 * about it, since we still have the d-`<div>` before the P tag that preserves
+		 * the correctness of the single `"\n"` separator. If the d-`<div>` was deleted,
+		 * we conservatively ignore the original separator and let normal P-P constraints
+		 * take care of it. At worst, we might generate a dirty diff in this scenario. */
+		$origSepNeeded = ( $node !== $this->sep->lastSourceNode );
+		$origSepUsable = $origSepNeeded &&
+			(
+				// first-content-node of <body> ($this->prevNode)
+				(
+					DOMUtils::isBody( $this->prevNode ) &&
+					$node->parentNode === $this->prevNode
+				)
+				||
+				// unmodified sibling node of $this->prevNode
+				(
+					$this->prevNode && $this->prevNodeUnmodified &&
+					$node->parentNode === $this->prevNode->parentNode &&
+					!WTSUtils::nextToDeletedBlockNodeInWT( $this->prevNode, true )
+				)
+			) &&
+			$this->currNodeUnmodified && !WTSUtils::nextToDeletedBlockNodeInWT( $node, false );
 
 		$origSep = null;
 		if ( $origSepUsable ) {
-			if ( DOMUtils::isElt( $this->prevNode ) && DOMUtils::isElt( $node ) ) {
-				'@phan-var DOMElement $node';/** @var DOMElement $node */
+			if ( $this->prevNode instanceof Element && $node instanceof Element ) {
+				'@phan-var Element $node';/** @var Element $node */
 				$origSep = $this->getOrigSrc(
-					DOMDataUtils::getDataParsoid( $this->prevNode )->dsr->end,
+					// <body> won't have DSR in body_only scenarios
+					( DOMUtils::isBody( $this->prevNode ) ?
+						0 : DOMDataUtils::getDataParsoid( $this->prevNode )->dsr->end ),
 					DOMDataUtils::getDataParsoid( $node )->dsr->start
 				);
-			} else {
+			} elseif ( $this->sep->src && WTSUtils::isValidSep( $this->sep->src ) ) {
+				// We don't know where '$this->sep->src' comes from. So, reuse it
+				// only if it is a valid separator string.
 				$origSep = $this->sep->src;
 			}
 		}
 
-		if ( $origSep !== null && WTSUtils::isValidSep( $origSep ) ) {
+		if ( $origSep !== null ) {
 			$this->emitSep( $origSep, $node, 'ORIG-SEP:' );
 		} else {
-			$sep = $this->serializer->buildSep( $node );
+			$sep = $this->separators->buildSep( $node );
 			$this->emitSep( $sep ?: '', $node, 'SEP:' );
 		}
 	}
 
 	/**
+	 * Recovers and emits any trimmed whitespace for $node
+	 * @param Node $node
+	 * @param bool $leading
+	 *   if true, trimmed leading whitespace is emitted
+	 *   if false, trimmed railing whitespace is emitted
+	 * @return string|null
+	 */
+	public function recoverTrimmedWhitespace( Node $node, bool $leading ): ?string {
+		$sep = $this->separators->recoverTrimmedWhitespace( $node, $leading );
+		$this->serializer->trace( '--->', "TRIMMED-SEP:", static function () use ( $sep ) {
+			return PHPUtils::jsonEncode( $sep );
+		} );
+		return $sep;
+	}
+
+	/**
 	 * Pushes the chunk to the current line.
 	 * @param ConstrainedText|string $res
-	 * @param DOMNode $node
+	 * @param Node $node
 	 */
-	public function emitChunk( $res, DOMNode $node ): void {
+	public function emitChunk( $res, Node $node ): void {
 		$res = ConstrainedText::cast( $res, $node );
 
 		// Replace newlines if we're in a single-line context
 		if ( $this->singleLineContext->enforced() ) {
-			$res->text = preg_replace( '/\n/', ' ', $res->text );
+			$res->text = str_replace( "\n", ' ', $res->text );
 		}
 
 		// Emit separator first
 		if ( $res->noSep ) {
 			/* skip separators for internal tokens from SelSer */
+			if ( $this->onSOL ) {
+				// process escapes in our full line
+				$this->flushLine();
+				$this->resetCurrLine( $node );
+			}
 		} else {
 			$this->emitSepForNode( $node );
 		}
 
-		if ( $this->onSOL ) {
-			// process escapes in our full line
-			$this->flushLine();
-			$this->resetCurrLine( $node );
+		$needsEscaping = $this->needsEscaping;
+		if ( $needsEscaping && $this->currNode instanceof Text ) {
+			$needsEscaping = !$this->inHTMLPre && ( $this->onSOL || !$this->currNodeUnmodified );
 		}
 
 		// Escape 'res' if necessary
-		if ( $this->escapeText ) {
+		if ( $needsEscaping ) {
 			$res = new ConstrainedText( [
-				'text' => $this->serializer->escapeWikiText( $this, $res->text, [
+				'text' => $this->serializer->escapeWikitext( $this, $res->text, [
 					'node' => $node,
 					'isLastChild' => DOMUtils::nextNonDeletedSibling( $node ) === null,
 				] ),
@@ -594,7 +626,7 @@ class SerializerState {
 				'suffix' => $res->suffix,
 				'node' => $res->node,
 			] );
-			$this->escapeText = false;
+			$this->needsEscaping = false;
 		} else {
 			// If 'res' is coming from selser and the current node is a paragraph tag,
 			// check if 'res' might need some leading chars nowiki-escaped before being output.
@@ -624,20 +656,20 @@ class SerializerState {
 				// same line as the block tag) => we can save some effort by eliminating
 				// scenarios where 'this.prevNodeUnmodified' is true.
 				 && !$this->prevNodeUnmodified
-				&& $node->nodeName === 'p' && !WTUtils::isLiteralHTMLNode( $node )
+				&& DOMCompat::nodeName( $node ) === 'p' && !WTUtils::isLiteralHTMLNode( $node )
 			) {
 				$pChild = DOMUtils::firstNonSepChild( $node );
 				// If a text node, we have to make sure that the text doesn't
 				// get reparsed as non-text in the wt2html pipeline.
-				if ( $pChild && DOMUtils::isText( $pChild ) ) {
-					$match = $res->match( $this->solWikitextRegexp() );
+				if ( $pChild instanceof Text ) {
+					$match = $res->matches( $this->solWikitextRegexp(), $this->env );
 					if ( $match && isset( $match[2] ) ) {
 						if ( preg_match( '/^([\*#:;]|{\||.*=$)/D', $match[2] )
 							// ! and | chars are harmless outside tables
-							|| ( preg_match( '/^[\|!]/', $match[2] ) && $this->wikiTableNesting > 0 )
+							|| ( strspn( $match[2], '|!' ) && $this->wikiTableNesting > 0 )
 							// indent-pres are suppressed inside <blockquote>
 							|| ( preg_match( '/^ [^\s]/', $match[2] )
-								&& !DOMUtils::hasAncestorOfName( $node, 'blockquote' ) )
+								&& !DOMUtils::hasNameOrHasAncestorOfName( $node, 'blockquote' ) )
 						) {
 							$res = ConstrainedText::cast( ( $match[1] ?: '' )
 								. '<nowiki>' . substr( $match[2], 0, 1 ) . '</nowiki>'
@@ -648,17 +680,11 @@ class SerializerState {
 			}
 		}
 
-		// Emitting text that has not been escaped
-		$this->currLine->text .= $res->text;
-
 		// Output res
-		$this->serializer->trace( '--->', $this->logPrefix, function () use ( $res ) {
-			return PHPUtils::jsonEncode( $res->text );
-		} );
-		$this->pushToCurrLine( $res, $node );
+		$this->pushToCurrLine( $res, $this->logPrefix );
 
 		// Update sol flag. Test for newlines followed by optional includeonly or comments
-		if ( !$res->match( $this->solRegexp() ) ) {
+		if ( !$res->matches( $this->solRegexp(), $this->env ) ) {
 			$this->onSOL = false;
 		}
 
@@ -669,13 +695,13 @@ class SerializerState {
 	/**
 	 * Serialize the children of a DOM node, sharing the global serializer state.
 	 * Typically called by a DOM-based handler to continue handling its children.
-	 * @param DOMElement $node
-	 * @param callable|null $wtEscaper ( $state, $text, $opts )
+	 * @param Element|DocumentFragment $node
+	 * @param ?callable $wtEscaper ( $state, $text, $opts )
 	 *   PORT-FIXME document better; should this be done via WikitextEscapeHandlers somehow?
-	 * @param DOMNode|null $firstChild
+	 * @param ?Node $firstChild
 	 */
 	public function serializeChildren(
-		DOMElement $node, callable $wtEscaper = null, DOMNode $firstChild = null
+		Node $node, ?callable $wtEscaper = null, ?Node $firstChild = null
 	): void {
 		// SSS FIXME: Unsure if this is the right thing always
 		if ( $wtEscaper ) {
@@ -699,11 +725,14 @@ class SerializerState {
 
 	/**
 	 * Abstracts some steps taken in `serializeChildrenToString` and `serializeDOM`
-	 * @param DOMElement $node
-	 * @param callable|null $wtEscaper See {@link serializeChildren()}
+	 *
+	 * @param Element|DocumentFragment $node
+	 * @param ?callable $wtEscaper See {@link serializeChildren()}
 	 * @internal For use by WikitextSerializer only
 	 */
-	public function kickOffSerialize( DOMElement $node, callable $wtEscaper = null ): void {
+	public function kickOffSerialize(
+		Node $node, ?callable $wtEscaper = null
+	): void {
 		$this->updateSep( $node );
 		$this->currNodeUnmodified = false;
 		$this->updateModificationFlags( $node );
@@ -721,13 +750,13 @@ class SerializerState {
 	 * FIXME(arlorla): Shouldn't affect the separator state, but accidents have
 	 * have been known to happen. T109793 suggests using its own wts / state.
 	 *
-	 * @param DOMElement $node
-	 * @param callable|null $wtEscaper See {@link serializeChildren()}
+	 * @param Element|DocumentFragment $node
+	 * @param ?callable $wtEscaper See {@link serializeChildren()}
 	 * @param string $inState
 	 * @return string
 	 */
 	private function serializeChildrenToString(
-		DOMElement $node, ?callable $wtEscaper, string $inState
+		Node $node, ?callable $wtEscaper, string $inState
 	): string {
 		$states = [ 'inLink', 'inCaption', 'inIndentPre', 'inHTMLPre', 'inPHPBlock', 'inAttribute' ];
 		Assert::parameter( in_array( $inState, $states, true ), '$inState', 'Must be one of: '
@@ -752,7 +781,9 @@ class SerializerState {
 		$this->atStartOfOutput = false;
 		$this->$inState = true;
 
+		$this->singleLineContext->disable();
 		$this->kickOffSerialize( $node, $wtEscaper );
+		$this->singleLineContext->pop();
 
 		// restore the state
 		$bits = $this->out;
@@ -772,32 +803,55 @@ class SerializerState {
 
 	/**
 	 * Serialize children of a link to a string
-	 * @param DOMElement $node
-	 * @param callable|null $wtEscaper See {@link serializeChildren()}
+	 * @param Element|DocumentFragment $node
+	 * @param ?callable $wtEscaper See {@link serializeChildren()}
 	 * @return string
 	 */
-	public function serializeLinkChildrenToString( $node, $wtEscaper = null ): string {
+	public function serializeLinkChildrenToString(
+		Node $node, ?callable $wtEscaper = null
+	): string {
 		return $this->serializeChildrenToString( $node, $wtEscaper, 'inLink' );
 	}
 
 	/**
 	 * Serialize children of a caption to a string
-	 * @param DOMElement $node
-	 * @param callable|null $wtEscaper See {@link serializeChildren()}
+	 * @param Element|DocumentFragment $node
+	 * @param ?callable $wtEscaper See {@link serializeChildren()}
 	 * @return string
 	 */
-	public function serializeCaptionChildrenToString( $node, $wtEscaper = null ): string {
+	public function serializeCaptionChildrenToString(
+		Node $node, ?callable $wtEscaper = null
+	): string {
 		return $this->serializeChildrenToString( $node, $wtEscaper, 'inCaption' );
 	}
 
 	/**
 	 * Serialize children of an indent-pre to a string
-	 * @param DOMElement $node
-	 * @param callable|null $wtEscaper See {@link serializeChildren()}
+	 * @param Element|DocumentFragment $node
+	 * @param ?callable $wtEscaper See {@link serializeChildren()}
 	 * @return string
 	 */
-	public function serializeIndentPreChildrenToString( $node, $wtEscaper = null ): string {
+	public function serializeIndentPreChildrenToString(
+		Node $node, ?callable $wtEscaper = null
+	): string {
 		return $this->serializeChildrenToString( $node, $wtEscaper, 'inIndentPre' );
+	}
+
+	/**
+	 * Take notes of the open annotation ranges and whether they have been extended.
+	 * @param string $ann
+	 * @param bool $extended
+	 */
+	public function openAnnotationRange( string $ann, bool $extended ) {
+		$this->openAnnotations[$ann] = $extended;
+	}
+
+	/**
+	 * Removes the corresponding annotation range from the list of open ranges.
+	 * @param string $ann
+	 */
+	public function closeAnnotationRange( string $ann ) {
+		unset( $this->openAnnotations[$ann] );
 	}
 
 }

@@ -53,7 +53,7 @@ class LOITable extends SpecialPage{
         
         if($project == null || $project->getId() == 0){
             echo "There was an error creating the project";
-            exit;
+            close();
         }
         
         $this->saveBlobValue('PROJ_STATUS', 
@@ -114,17 +114,17 @@ class LOITable extends SpecialPage{
         global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle, $wgMessage;
         if(isset($_GET['saveDates'])){
             $this->saveDates();
-            exit;
+            close();
         }
         if(isset($_GET['createProject'])){
             $this->createProject();
             header('Content-Type: text/html');
-            exit;
+            close();
         }
         if(isset($_GET['updateProjStatus'])){
             $this->updateProjStatus();
             header('Content-Type: text/html');
-            exit;
+            close();
         }
         $people = Person::getAllCandidates();
         $this->getOutput()->setPageTitle("LOI Table");

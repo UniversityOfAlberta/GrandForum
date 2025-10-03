@@ -266,7 +266,7 @@ class HQPProfileTab extends AbstractEditableTab {
         }
         
         header("Location: {$this->person->getUrl()}?tab=hqp-profile");
-        exit;
+        close();
     }
     
     function canEdit(){

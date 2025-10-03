@@ -32,7 +32,7 @@ class GeoCodeAPI extends API{
             }
             header('Content-Type: application/json');
             echo $result;
-            exit;
+            close();
         }
 	}
 	

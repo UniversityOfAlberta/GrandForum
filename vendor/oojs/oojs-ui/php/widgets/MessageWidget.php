@@ -26,6 +26,11 @@ class MessageWidget extends Widget {
 	protected $type;
 
 	/**
+	 * @var ButtonWidget|null
+	 */
+	protected $closeButton = null;
+
+	/**
 	 * Map legal types to their OOUI icon
 	 *
 	 * @var array
@@ -58,15 +63,36 @@ class MessageWidget extends Widget {
 		$this->initializeFlaggedElement( $config );
 
 		$this->setType( $config['type'] ?? $this->defaultType );
-		$this->setInline( isset( $config['inline'] ) && (bool)$config['inline'] );
+		$this->setInline( $config['inline'] ?? false );
+
+		// If an icon is passed in, set it again as setType will
+		// have overridden the setIcon call in the IconElement constructor
+		if ( isset( $config['icon'] ) ) {
+			$this->setIcon( $config['icon'] );
+		}
+
+		if ( !$this->inline && !empty( $config['showClose'] ) ) {
+			$this->closeButton = new ButtonWidget( [
+				'classes' => [ 'oo-ui-messageWidget-close' ],
+				'framed' => false,
+				'icon' => 'close',
+				// TODO We have no way to use localisation messages in PHP
+				// (and to use different languages when used from MediaWiki)
+				// 'label' => msg( 'ooui-popup-widget-close-button-aria-label' ),
+				// 'invisibleLabel' => true
+			] );
+			$this->addClasses( [ 'oo-ui-messageWidget-showClose' ] );
+		}
 
 		$this->addClasses( [ 'oo-ui-messageWidget' ] );
-		$this->appendContent( [ $this->icon, $this->label ] );
+		$this->appendContent( [ $this->icon, $this->label, $this->closeButton ] );
 	}
 
+	/** @inheritDoc */
 	public function getConfig( &$config ) {
 		$config['type'] = $this->type;
 		$config['inline'] = $this->inline;
+		$config['showClose'] = $this->closeButton !== null;
 
 		return parent::getConfig( $config );
 	}

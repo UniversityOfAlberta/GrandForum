@@ -4,15 +4,21 @@ declare( strict_types = 1 );
 namespace Wikimedia\Parsoid\Utils;
 
 use Composer\Semver\Semver;
-use DOMDocument;
-use DOMElement;
-use DOMNode;
 use stdClass;
 use Wikimedia\Assert\Assert;
+use Wikimedia\Assert\UnreachableException;
 use Wikimedia\Parsoid\Config\Env;
-use Wikimedia\Parsoid\Core\DataParsoid;
 use Wikimedia\Parsoid\Core\DomSourceRange;
-use Wikimedia\Parsoid\Core\PageBundle;
+use Wikimedia\Parsoid\DOM\Document;
+use Wikimedia\Parsoid\DOM\Element;
+use Wikimedia\Parsoid\DOM\Node;
+use Wikimedia\Parsoid\NodeData\DataBag;
+use Wikimedia\Parsoid\NodeData\DataI18n;
+use Wikimedia\Parsoid\NodeData\DataParsoid;
+use Wikimedia\Parsoid\NodeData\I18nInfo;
+use Wikimedia\Parsoid\NodeData\NodeData;
+use Wikimedia\Parsoid\NodeData\ParamInfo;
+use Wikimedia\Parsoid\NodeData\TempData;
 use Wikimedia\Parsoid\Tokens\SourceRange;
 
 /**
@@ -22,11 +28,11 @@ class DOMDataUtils {
 	public const DATA_OBJECT_ATTR_NAME = 'data-object-id';
 
 	/**
-	 * Return the dynamic "bag" property of a DOMDocument.
-	 * @param DOMDocument $doc
+	 * Return the dynamic "bag" property of a Document.
+	 * @param Document $doc
 	 * @return DataBag
 	 */
-	public static function getBag( DOMDocument $doc ): DataBag {
+	public static function getBag( Document $doc ): DataBag {
 		// This is a dynamic property; it is not declared.
 		// All references go through here so we can suppress phan's complaint.
 		// @phan-suppress-next-line PhanUndeclaredProperty
@@ -34,12 +40,50 @@ class DOMDataUtils {
 	}
 
 	/**
+	 * @param Document $doc
+	 */
+	public static function prepareDoc( Document $doc ) {
+		// `bag` is a deliberate dynamic property; see DOMDataUtils::getBag()
+		// @phan-suppress-next-line PhanUndeclaredProperty dynamic property
+		$doc->bag = new DataBag();
+
+		// Cache the head and body.
+		DOMCompat::getHead( $doc );
+		DOMCompat::getBody( $doc );
+	}
+
+	/**
+	 * @param Document $topLevelDoc
+	 * @param Document $childDoc
+	 */
+	public static function prepareChildDoc( Document $topLevelDoc, Document $childDoc ) {
+		// @phan-suppress-next-line PhanUndeclaredProperty dynamic property
+		Assert::invariant( $topLevelDoc->bag instanceof DataBag, 'doc bag not set' );
+		// @phan-suppress-next-line PhanUndeclaredProperty dynamic property
+		$childDoc->bag = $topLevelDoc->bag;
+	}
+
+	/**
+	 * Stash $obj in $doc and return an id for later retrieval
+	 * @param Document $doc
+	 * @param NodeData $obj
+	 * @return int
+	 */
+	public static function stashObjectInDoc( Document $doc, NodeData $obj ): int {
+		return self::getBag( $doc )->stashObject( $obj );
+	}
+
+	/**
 	 * Does this node have any attributes?
-	 * @param DOMElement $node
+	 * @param Element $node
 	 * @return bool
 	 */
-	public static function noAttrs( DOMElement $node ): bool {
-		$numAttrs = count( DOMCompat::attributes( $node ) );
+	public static function noAttrs( Element $node ): bool {
+		// The 'xmlns' attribute is "invisible" T235295
+		if ( $node->hasAttribute( 'xmlns' ) ) {
+			return false;
+		}
+		$numAttrs = count( $node->attributes );
 		return $numAttrs === 0 ||
 			( $numAttrs === 1 && $node->hasAttribute( self::DATA_OBJECT_ATTR_NAME ) );
 	}
@@ -47,13 +91,13 @@ class DOMDataUtils {
 	/**
 	 * Get data object from a node.
 	 *
-	 * @param DOMElement $node node
-	 * @return stdClass
+	 * @param Element $node node
+	 * @return NodeData
 	 */
-	public static function getNodeData( DOMElement $node ): stdClass {
+	public static function getNodeData( Element $node ): NodeData {
 		if ( !$node->hasAttribute( self::DATA_OBJECT_ATTR_NAME ) ) {
 			// Initialized on first request
-			$dataObject = new stdClass;
+			$dataObject = new NodeData;
 			self::setNodeData( $node, $dataObject );
 			return $dataObject;
 		}
@@ -65,9 +109,8 @@ class DOMDataUtils {
 			$dataObject = null; // Make phan happy
 		}
 		Assert::invariant( isset( $dataObject ), 'Bogus docId given!' );
-		'@phan-var stdClass $dataObject'; // @var stdClass $dataObject
 		if ( isset( $dataObject->storedId ) ) {
-			PHPUtils::unreachable(
+			throw new UnreachableException(
 				'Trying to fetch node data without loading!' .
 				// If this node's data-object id is different from storedId,
 				// it will indicate that the data-parsoid object was shared
@@ -82,59 +125,142 @@ class DOMDataUtils {
 	/**
 	 * Set node data.
 	 *
-	 * @param DOMElement $node node
-	 * @param stdClass $data data
+	 * @param Element $node node
+	 * @param NodeData $data data
 	 */
-	public static function setNodeData( DOMElement $node, stdClass $data ): void {
-		$docId = self::getBag( $node->ownerDocument )->stashObject( $data );
+	public static function setNodeData( Element $node, NodeData $data ): void {
+		$docId = self::stashObjectInDoc( $node->ownerDocument, $data );
 		$node->setAttribute( self::DATA_OBJECT_ATTR_NAME, (string)$docId );
 	}
 
 	/**
 	 * Get data parsoid info from a node.
 	 *
-	 * @param DOMElement $node node
+	 * @param Element $node node
 	 * @return DataParsoid
 	 */
-	public static function getDataParsoid( DOMElement $node ): stdClass {
+	public static function getDataParsoid( Element $node ): DataParsoid {
 		$data = self::getNodeData( $node );
 		if ( !isset( $data->parsoid ) ) {
-			$data->parsoid = new stdClass;
-		}
-		if ( !isset( $data->parsoid->tmp ) ) {
-			$data->parsoid->tmp = new stdClass;
+			$data->parsoid = new DataParsoid;
 		}
 		return $data->parsoid;
 	}
 
-	/** Set data parsoid info on a node.
+	/**
+	 * Set data parsoid info on a node.
 	 *
-	 * @param DOMElement $node node
-	 * @param stdClass $dp data-parsoid
+	 * @param Element $node node
+	 * @param DataParsoid $dp data-parsoid
 	 */
-	public static function setDataParsoid( DOMElement $node, stdClass $dp ): void {
+	public static function setDataParsoid( Element $node, DataParsoid $dp ): void {
 		$data = self::getNodeData( $node );
 		$data->parsoid = $dp;
 	}
 
 	/**
+	 * Returns the i18n information of a node. This is in private access because it shouldn't
+	 * typically be used directly; instead getDataNodeI18n and getDataAttrI18n should be used.
+	 * @param Element $node
+	 * @return DataI18n|null
+	 */
+	private static function getDataI18n( Element $node ): ?DataI18n {
+		$data = self::getNodeData( $node );
+		// We won't set a default value for this property
+		return $data->i18n ?? null;
+	}
+
+	/**
+	 * Sets the i18n information of a node. This is in private access because it shouldn't
+	 * typically be used directly; instead setDataNodeI18n and setDataAttrI18n should be used.
+	 * @param Element $node
+	 * @param DataI18n $i18n
+	 * @return void
+	 */
+	private static function setDataI18n( Element $node, DataI18n $i18n ) {
+		$data = self::getNodeData( $node );
+		$data->i18n = $i18n;
+	}
+
+	/**
+	 * Retrieves internationalization (i18n) information of a node (typically for localization)
+	 * @param Element $node
+	 * @return ?I18nInfo
+	 */
+	public static function getDataNodeI18n( Element $node ): ?I18nInfo {
+		$data = self::getNodeData( $node );
+		// We won't set a default value for this property
+		if ( !isset( $data->i18n ) ) {
+			return null;
+		}
+		return $data->i18n->getSpanInfo();
+	}
+
+	/**
+	 * Sets internationalization (i18n) information of a node, used for later localization
+	 * @param Element $node
+	 * @param I18nInfo $i18n
+	 * @return void
+	 */
+	public static function setDataNodeI18n( Element $node, I18nInfo $i18n ) {
+		$data = self::getNodeData( $node );
+		if ( !isset( $data->i18n ) ) {
+			$data->i18n = new DataI18n();
+		}
+		$data->i18n->setSpanInfo( $i18n );
+	}
+
+	/**
+	 * Retrieves internationalization (i18n) information of an attribute value (typically for
+	 * localization)
+	 * @param Element $node
+	 * @param string $name
+	 * @return ?I18nInfo
+	 */
+	public static function getDataAttrI18n( Element $node, string $name ): ?I18nInfo {
+		$data = self::getNodeData( $node );
+		// We won't set a default value for this property
+		if ( !isset( $data->i18n ) ) {
+			return null;
+		}
+		return $data->i18n->getAttributeInfo( $name );
+	}
+
+	/**
+	 * Sets internationalization (i18n) information of a attribute value, used for later
+	 * localization
+	 * @param Element $node
+	 * @param string $name
+	 * @param I18nInfo $i18n
+	 * @return void
+	 */
+	public static function setDataAttrI18n( Element $node, string $name, I18nInfo $i18n ) {
+		$data = self::getNodeData( $node );
+		if ( !isset( $data->i18n ) ) {
+			$data->i18n = new DataI18n();
+		}
+		$data->i18n->setAttributeInfo( $name, $i18n );
+	}
+
+	/**
 	 * Get data diff info from a node.
 	 *
-	 * @param DOMElement $node node
+	 * @param Element $node node
 	 * @return ?stdClass
 	 */
-	public static function getDataParsoidDiff( DOMElement $node ): ?stdClass {
+	public static function getDataParsoidDiff( Element $node ): ?stdClass {
 		$data = self::getNodeData( $node );
 		// We won't set a default value for this property
 		return $data->parsoid_diff ?? null;
 	}
 
-	/** Set data diff info on a node.
+	/**
+	 * Set data diff info on a node.
 	 *
-	 * @param DOMElement $node node
+	 * @param Element $node node
 	 * @param ?stdClass $diffObj data-parsoid-diff object
 	 */
-	public static function setDataParsoidDiff( DOMElement $node, ?stdClass $diffObj ): void {
+	public static function setDataParsoidDiff( Element $node, ?stdClass $diffObj ): void {
 		$data = self::getNodeData( $node );
 		$data->parsoid_diff = $diffObj;
 	}
@@ -142,10 +268,10 @@ class DOMDataUtils {
 	/**
 	 * Get data meta wiki info from a node.
 	 *
-	 * @param DOMElement $node node
+	 * @param Element $node node
 	 * @return stdClass
 	 */
-	public static function getDataMw( DOMElement $node ): stdClass {
+	public static function getDataMw( Element $node ): stdClass {
 		$data = self::getNodeData( $node );
 		if ( !isset( $data->mw ) ) {
 			$data->mw = new stdClass;
@@ -153,12 +279,13 @@ class DOMDataUtils {
 		return $data->mw;
 	}
 
-	/** Set data meta wiki info from a node.
+	/**
+	 * Set data meta wiki info from a node.
 	 *
-	 * @param DOMElement $node node
+	 * @param Element $node node
 	 * @param ?stdClass $dmw data-mw
 	 */
-	public static function setDataMw( DOMElement $node, ?stdClass $dmw ): void {
+	public static function setDataMw( Element $node, ?stdClass $dmw ): void {
 		$data = self::getNodeData( $node );
 		$data->mw = $dmw;
 	}
@@ -166,22 +293,31 @@ class DOMDataUtils {
 	/**
 	 * Check if there is meta wiki info in a node.
 	 *
-	 * @param DOMElement $node node
+	 * @param Element $node node
 	 * @return bool
 	 */
-	public static function validDataMw( DOMElement $node ): bool {
+	public static function validDataMw( Element $node ): bool {
 		return (array)self::getDataMw( $node ) !== [];
+	}
+
+	/**
+	 * Check if there is i18n info on a node (for the node or its attributes)
+	 * @param Element $node
+	 * @return bool
+	 */
+	public static function validDataI18n( Element $node ): bool {
+		return self::getDataI18n( $node ) !== null;
 	}
 
 	/**
 	 * Get an object from a JSON-encoded XML attribute on a node.
 	 *
-	 * @param DOMElement $node node
+	 * @param Element $node node
 	 * @param string $name name
 	 * @param mixed $defaultVal
 	 * @return mixed
 	 */
-	public static function getJSONAttribute( DOMElement $node, string $name, $defaultVal ) {
+	public static function getJSONAttribute( Element $node, string $name, $defaultVal ) {
 		if ( !$node->hasAttribute( $name ) ) {
 			return $defaultVal;
 		}
@@ -191,7 +327,7 @@ class DOMDataUtils {
 			return $decoded;
 		} else {
 			error_log( 'ERROR: Could not decode attribute-val ' . $attVal .
-				' for ' . $name . ' on node ' . $node->nodeName );
+				' for ' . $name . ' on node ' . DOMCompat::nodeName( $node ) );
 			return $defaultVal;
 		}
 	}
@@ -199,11 +335,11 @@ class DOMDataUtils {
 	/**
 	 * Set a attribute on a node with a JSON-encoded object.
 	 *
-	 * @param DOMElement $node node
+	 * @param Element $node node
 	 * @param string $name Name of the attribute.
 	 * @param mixed $obj value of the attribute to
 	 */
-	public static function setJSONAttribute( DOMElement $node, string $name, $obj ): void {
+	public static function setJSONAttribute( Element $node, string $name, $obj ): void {
 		$val = $obj === [] ? '{}' : PHPUtils::jsonEncode( $obj );
 		$node->setAttribute( $name, $val );
 	}
@@ -215,11 +351,11 @@ class DOMDataUtils {
 	 * This is effectively a call of 'setShadowInfoIfModified' except
 	 * there is no original value, so by definition, $val is modified.
 	 *
-	 * @param DOMElement $node node
+	 * @param Element $node node
 	 * @param string $name Name of the attribute.
 	 * @param mixed $val val
 	 */
-	public static function setShadowInfo( DOMElement $node, string $name, $val ): void {
+	public static function setShadowInfo( Element $node, string $name, $val ): void {
 		$dp = self::getDataParsoid( $node );
 		if ( !isset( $dp->a ) ) {
 			$dp->a = [];
@@ -238,14 +374,14 @@ class DOMDataUtils {
 	 * - the new value is recorded in data-parsoid->a and
 	 * - the original value is recorded in data-parsoid->sa
 	 *
-	 * @param DOMElement $node node
+	 * @param Element $node node
 	 * @param string $name Name of the attribute.
 	 * @param mixed $val val
 	 * @param mixed $origVal original value (null is a valid value)
 	 * @param bool $skipOrig
 	 */
 	public static function setShadowInfoIfModified(
-		DOMElement $node, string $name, $val, $origVal, bool $skipOrig = false
+		Element $node, string $name, $val, $origVal, bool $skipOrig = false
 	): void {
 		if ( !$skipOrig && ( $val === $origVal || $origVal === null ) ) {
 			return;
@@ -271,14 +407,14 @@ class DOMDataUtils {
 	 * Set an attribute and shadow info to a node.
 	 * Similar to the method on tokens
 	 *
-	 * @param DOMElement $node node
+	 * @param Element $node node
 	 * @param string $name Name of the attribute.
 	 * @param mixed $val value
 	 * @param mixed $origVal original value
 	 * @param bool $skipOrig
 	 */
 	public static function addNormalizedAttribute(
-		DOMElement $node, string $name, $val, $origVal, bool $skipOrig = false
+		Element $node, string $name, $val, $origVal, bool $skipOrig = false
 	): void {
 		if ( $name === 'id' ) {
 			DOMCompat::setIdAttribute( $node, $val );
@@ -290,10 +426,10 @@ class DOMDataUtils {
 
 	/**
 	 * Get this document's pagebundle object
-	 * @param DOMDocument $doc
+	 * @param Document $doc
 	 * @return stdClass
 	 */
-	public static function getPageBundle( DOMDocument $doc ): stdClass {
+	public static function getPageBundle( Document $doc ): stdClass {
 		return self::getBag( $doc )->getPageBundle();
 	}
 
@@ -305,13 +441,13 @@ class DOMDataUtils {
 	 * ```
 	 * but attempts to keep user defined ids.
 	 *
-	 * @param DOMElement $node node
+	 * @param Element $node node
 	 * @param Env $env environment
 	 * @param stdClass $data data
 	 * @param array $idIndex Index of used id attributes in the DOM
 	 */
 	public static function storeInPageBundle(
-		DOMElement $node, Env $env, stdClass $data, array $idIndex
+		Element $node, Env $env, stdClass $data, array $idIndex
 	): void {
 		$uid = $node->getAttribute( 'id' ) ?? '';
 		$document = $node->ownerDocument;
@@ -341,23 +477,23 @@ class DOMDataUtils {
 	}
 
 	/**
-	 * @param DOMDocument $doc doc
+	 * @param Document $doc doc
 	 * @param stdClass $obj object
 	 */
-	public static function injectPageBundle( DOMDocument $doc, stdClass $obj ): void {
+	public static function injectPageBundle( Document $doc, stdClass $obj ): void {
 		$pb = PHPUtils::jsonEncode( $obj );
-		$script = $doc->createElement( 'script' );
-		DOMCompat::setIdAttribute( $script, 'mw-pagebundle' );
-		$script->setAttribute( 'type', 'application/x-mw-pagebundle' );
+		$script = DOMUtils::appendToHead( $doc, 'script', [
+			'id' => 'mw-pagebundle',
+			'type' => 'application/x-mw-pagebundle',
+		] );
 		$script->appendChild( $doc->createTextNode( $pb ) );
-		DOMCompat::getHead( $doc )->appendChild( $script );
 	}
 
 	/**
-	 * @param DOMDocument $doc doc
+	 * @param Document $doc doc
 	 * @return stdClass|null
 	 */
-	public static function extractPageBundle( DOMDocument $doc ): ?stdClass {
+	public static function extractPageBundle( Document $doc ): ?stdClass {
 		$pb = null;
 		$dpScriptElt = DOMCompat::getElementById( $doc, 'mw-pagebundle' );
 		if ( $dpScriptElt ) {
@@ -368,86 +504,85 @@ class DOMDataUtils {
 	}
 
 	/**
-	 * Applies the `data-*` attributes JSON structure to the document.
-	 * Leaves `id` attributes behind -- they are used by citation
-	 * code to extract `<ref>` body from the DOM.
-	 *
-	 * @param DOMDocument $doc doc
-	 * @param PageBundle $pb page bundle
-	 */
-	public static function applyPageBundle( DOMDocument $doc, PageBundle $pb ): void {
-		DOMUtils::visitDOM( DOMCompat::getBody( $doc ), function ( DOMNode $node ) use ( &$pb ): void {
-			if ( $node instanceof DOMElement ) {
-				$id = $node->getAttribute( 'id' ) ?? '';
-				if ( isset( $pb->parsoid['ids'][$id] ) ) {
-					self::setJSONAttribute( $node, 'data-parsoid', $pb->parsoid['ids'][$id] );
-				}
-				if ( isset( $pb->mw['ids'][$id] ) ) {
-					// Only apply if it isn't already set.  This means earlier
-					// applications of the pagebundle have higher precedence,
-					// inline data being the highest.
-					if ( !$node->hasAttribute( 'data-mw' ) ) {
-						self::setJSONAttribute( $node, 'data-mw', $pb->mw['ids'][$id] );
-					}
-				}
-			}
-		} );
-	}
-
-	/**
 	 * Walk DOM from node downward calling loadDataAttribs
 	 *
-	 * @param DOMNode $node node
+	 * @param Node $node node
 	 * @param array $options options
 	 */
-	public static function visitAndLoadDataAttribs( DOMNode $node, array $options = [] ): void {
+	public static function visitAndLoadDataAttribs( Node $node, array $options = [] ): void {
 		DOMUtils::visitDOM( $node, [ self::class, 'loadDataAttribs' ], $options );
 	}
 
 	/**
 	 * Massage the data parsoid object loaded from a node attribute
-	 * into expected shape. When we create a first-class object for
-	 * data-parsoid, this will move into the constructor.
+	 * into expected shape.
 	 *
-	 * @param stdClass $dp
+	 * @param stdClass $stdDP
 	 * @param array $options
-	 * @param DOMElement|null $node
+	 * @param ?Element $node
+	 * @return DataParsoid
 	 */
 	public static function massageLoadedDataParsoid(
-		stdClass $dp, array $options = [], DOMElement $node = null
-	): void {
-		if ( isset( $dp->sa ) ) {
-			$dp->sa = (array)$dp->sa;
-		}
-		if ( isset( $dp->a ) ) {
-			$dp->a = (array)$dp->a;
-		}
-		if ( isset( $dp->dsr ) ) {
-			$dp->dsr = DomSourceRange::fromArray( $dp->dsr );
-		}
-		if ( isset( $dp->tsr ) ) {
-			// tsr is generally for tokens, not DOM trees.
-			/* @phan-suppress-next-line PhanTypeMismatchArgument */
-			$dp->tsr = SourceRange::fromArray( $dp->tsr );
-		}
-		if ( isset( $dp->extTagOffsets ) ) {
-			/* @phan-suppress-next-line PhanTypeMismatchArgument */
-			$dp->extTagOffsets = DomSourceRange::fromArray( $dp->extTagOffsets );
-		}
-		if ( isset( $dp->extLinkContentOffsets ) ) {
-			$dp->extLinkContentOffsets =
-				/* @phan-suppress-next-line PhanTypeMismatchArgument */
-				SourceRange::fromArray( $dp->extLinkContentOffsets );
-		}
-		if ( !empty( $options['markNew'] ) ) {
-			$dp->tmp = PHPUtils::arrayToObject( $dp->tmp ?? [] );
-			$dp->tmp->isNew = !$node->hasAttribute( 'data-parsoid' );
-		}
-		if ( isset( $dp->optList ) ) {
-			foreach ( $dp->optList as &$item ) {
-				$item = (array)$item;
+		stdClass $stdDP, array $options = [], ?Element $node = null
+	): DataParsoid {
+		$dp = new DataParsoid;
+		foreach ( $stdDP as $key => $value ) {
+			switch ( $key ) {
+				case 'a':
+				case 'sa':
+					$dp->$key = (array)$value;
+					break;
+
+				case 'dsr':
+				case 'extTagOffsets':
+					if ( $value !== null ) {
+						$dp->$key = DomSourceRange::fromArray( $value );
+					}
+					break;
+
+				case 'tsr':
+				case 'extLinkContentOffsets':
+					if ( $value !== null ) {
+						$dp->$key = SourceRange::fromArray( $value );
+					}
+					break;
+
+				case 'optList':
+					$optList = [];
+					foreach ( $value as $item ) {
+						$optList[] = (array)$item;
+					}
+					$dp->optList = $optList;
+					break;
+
+				case 'pi':
+					$pi = [];
+					foreach ( $value as $item ) {
+						$pi2 = [];
+						foreach ( $item as $item2 ) {
+							$pi2[] = ParamInfo::newFromJson( $item2 );
+						}
+						$pi[] = $pi2;
+					}
+					$dp->pi = $pi;
+					break;
+
+				case 'tmp':
+					$tmp = new TempData;
+					foreach ( $value as $key2 => $value2 ) {
+						$tmp->$key2 = $value2;
+					}
+					$dp->tmp = $tmp;
+					break;
+
+				default:
+					$dp->$key = $value;
 			}
 		}
+		if ( !empty( $options['markNew'] ) ) {
+			$dp->setTempFlag( TempData::IS_NEW, !$node->hasAttribute( 'data-parsoid' ) );
+		}
+		return $dp;
 	}
 
 	/**
@@ -458,17 +593,18 @@ class DOMDataUtils {
 	 * using this.ppTo* should be sufficient and using these directly should be
 	 * avoided.
 	 *
-	 * @param DOMNode $node node
+	 * @param Node $node node
 	 * @param array $options options
 	 */
-	public static function loadDataAttribs( DOMNode $node, array $options ): void {
-		if ( !( $node instanceof DOMElement ) ) {
+	public static function loadDataAttribs( Node $node, array $options ): void {
+		if ( !( $node instanceof Element ) ) {
 			return;
 		}
 		// Reset the node data object's stored state, since we're reloading it
-		self::setNodeData( $node, new stdClass );
-		$dp = self::getJSONAttribute( $node, 'data-parsoid', new stdClass );
-		self::massageLoadedDataParsoid( $dp, $options, $node );
+		self::setNodeData( $node, new NodeData );
+		$dp = self::massageLoadedDataParsoid(
+			self::getJSONAttribute( $node, 'data-parsoid', new stdClass ),
+			$options, $node );
 		self::setDataParsoid( $node, $dp );
 		$node->removeAttribute( 'data-parsoid' );
 		$dmw = self::getJSONAttribute( $node, 'data-mw', null );
@@ -477,18 +613,24 @@ class DOMDataUtils {
 		$dpd = self::getJSONAttribute( $node, 'data-parsoid-diff', null );
 		self::setDataParsoidDiff( $node, $dpd );
 		$node->removeAttribute( 'data-parsoid-diff' );
+		if ( $node->hasAttribute( 'data-mw-i18n' ) ) {
+			$dataI18n = $node->getAttribute( 'data-mw-i18n' );
+			$i18n = DataI18n::fromJson( PHPUtils::jsonDecode( $dataI18n, true ) );
+			self::setDataI18n( $node, $i18n );
+			$node->removeAttribute( 'data-mw-i18n' );
+		}
 	}
 
 	/**
 	 * Builds an index of id attributes seen in the DOM
-	 * @param DOMNode $node
+	 * @param Node $node
 	 * @return array
 	 */
-	public static function usedIdIndex( DOMNode $node ): array {
+	public static function usedIdIndex( Node $node ): array {
 		$index = [];
 		DOMUtils::visitDOM( DOMCompat::getBody( $node->ownerDocument ),
-			function ( DOMNode $n, ?array $options = null ) use ( &$index ) {
-				if ( $n instanceof DOMElement && $n->hasAttribute( 'id' ) ) {
+			static function ( Node $n, ?array $options = null ) use ( &$index ) {
+				if ( $n instanceof Element && $n->hasAttribute( 'id' ) ) {
 					$index[$n->getAttribute( 'id' )] = true;
 				}
 			},
@@ -500,10 +642,10 @@ class DOMDataUtils {
 	/**
 	 * Walk DOM from node downward calling storeDataAttribs
 	 *
-	 * @param DOMNode $node node
+	 * @param Node $node node
 	 * @param array $options options
 	 */
-	public static function visitAndStoreDataAttribs( DOMNode $node, array $options = [] ): void {
+	public static function visitAndStoreDataAttribs( Node $node, array $options = [] ): void {
 		// PORT-FIXME: storeDataAttribs calls storeInPageBundle which calls getElementById.
 		// PHP's `getElementById` implementation is broken, and we work around that by
 		// using Zest which uses XPath. So, getElementById call can be O(n) and calling it
@@ -517,25 +659,28 @@ class DOMDataUtils {
 	}
 
 	/**
-	 * PORT_FIXME This function needs an accurate description
+	 * Copy data attributes from the bag to either JSON-encoded attributes on
+	 * each node, or the page bundle, erasing the data-object-id attributes.
 	 *
-	 * @param DOMNode $node node
-	 * @param ?array|null $options options
+	 * @param Node $node node
+	 * @param ?array $options options
+	 *   - discardDataParsoid: Discard DataParsoid objects instead of storing them
+	 *   - keepTmp: Preserve DataParsoid::$tmp
+	 *   - storeInPageBundle: If true, data will be stored in the page bundle
+	 *     instead of data-parsoid and data-mw.
+	 *   - env: The Env object required for various features
+	 *   - idIndex: Array of used ID attributes
 	 */
-	public static function storeDataAttribs( DOMNode $node, ?array $options = null ): void {
+	public static function storeDataAttribs( Node $node, ?array $options = null ): void {
 		$options = $options ?? [];
-		if ( !( $node instanceof DOMElement ) ) {
+		if ( !( $node instanceof Element ) ) {
 			return;
 		}
 		Assert::invariant( empty( $options['discardDataParsoid'] ) || empty( $options['keepTmp'] ),
 			'Conflicting options: discardDataParsoid and keepTmp are both enabled.' );
 		$dp = self::getDataParsoid( $node );
-		// $dp will be a DataParsoid object once but currently it is an stdClass
-		// with a fake type hint. Unfake it to prevent phan complaining about unset().
-		'@phan-var stdClass $dp';
-		// @phan-suppress-next-line PhanRedundantCondition
 		$discardDataParsoid = !empty( $options['discardDataParsoid'] );
-		if ( !empty( $dp->tmp->isNew ) ) {
+		if ( $dp->getTempFlag( TempData::IS_NEW ) ) {
 			// Only necessary to support the cite extension's getById,
 			// that's already been loaded once.
 			//
@@ -552,12 +697,8 @@ class DOMDataUtils {
 		}
 		$data = null;
 		if ( !$discardDataParsoid ) {
-			// @phan-suppress-next-line PhanRedundantCondition
-			if ( !empty( $options['keepTmp'] ) ) {
-				if ( isset( $dp->tmp->tplRanges ) ) {
-					unset( $dp->tmp->tplRanges );
-				}
-			} else {
+			if ( empty( $options['keepTmp'] ) ) {
+				// @phan-suppress-next-line PhanTypeObjectUnsetDeclaredProperty
 				unset( $dp->tmp );
 			}
 
@@ -567,14 +708,7 @@ class DOMDataUtils {
 				self::setJSONAttribute( $node, 'data-parsoid', $dp );
 			}
 		}
-		// We need to serialize diffs only under special circumstances.
-		// So, do it on demand.
-		if ( !empty( $options['storeDiffMark'] ) ) {
-			$dpDiff = self::getDataParsoidDiff( $node );
-			if ( $dpDiff ) {
-				self::setJSONAttribute( $node, 'data-parsoid-diff', $dpDiff );
-			}
-		}
+
 		// Strip invalid data-mw attributes
 		if ( self::validDataMw( $node ) ) {
 			if (
@@ -588,6 +722,11 @@ class DOMDataUtils {
 				self::setJSONAttribute( $node, 'data-mw', self::getDataMw( $node ) );
 			}
 		}
+
+		if ( self::validDataI18n( $node ) ) {
+			self::setJSONAttribute( $node, 'data-mw-i18n', self::getDataI18n( $node ) );
+		}
+
 		// Store pagebundle
 		if ( $data !== null ) {
 			self::storeInPageBundle( $node, $options['env'], $data, $options['idIndex'] );

@@ -54,7 +54,7 @@ class Validate implements LoggerAwareInterface {
 	use LoggerAwareTrait;
 
 	/**
-	 * Create new instance, with a logger
+	 * Creates a new instance, with a logger
 	 *
 	 * @param LoggerInterface $logger
 	 */
@@ -69,10 +69,12 @@ class Validate implements LoggerAwareInterface {
 	 * @param mixed &$val Current value to validate
 	 * @param bool $standalone If this is a simple property or array
 	 */
-	public function validateBoolean( $info, &$val, $standalone ) {
+	public function validateBoolean( $info, &$val, $standalone ): void {
 		if ( !$standalone ) {
 			// this only validates standalone properties, not arrays, etc
+			// @codeCoverageIgnoreStart
 			return;
+			// @codeCoverageIgnoreEnd
 		}
 		if ( $val !== 'True' && $val !== 'False' ) {
 			$this->logger->info( __METHOD__ . " Expected True or False but got $val" );
@@ -87,10 +89,12 @@ class Validate implements LoggerAwareInterface {
 	 * @param mixed &$val Current value to validate
 	 * @param bool $standalone If this is a simple property or array
 	 */
-	public function validateRational( $info, &$val, $standalone ) {
+	public function validateRational( $info, &$val, $standalone ): void {
 		if ( !$standalone ) {
 			// this only validates standalone properties, not arrays, etc
+			// @codeCoverageIgnoreStart
 			return;
+			// @codeCoverageIgnoreEnd
 		}
 		if ( !preg_match( '/^(?:-?\d+)\/(?:\d+[1-9]|[1-9]\d*)$/D', $val ) ) {
 			$this->logger->info( __METHOD__ . " Expected rational but got $val" );
@@ -101,17 +105,19 @@ class Validate implements LoggerAwareInterface {
 	/**
 	 * function to validate rating properties -1, 0-5
 	 *
-	 * if its outside of range put it into range.
+	 * if its outside of range, put it into range.
 	 *
 	 * @see MWG spec
 	 * @param array $info Information about current property
 	 * @param mixed &$val Current value to validate
 	 * @param bool $standalone If this is a simple property or array
 	 */
-	public function validateRating( $info, &$val, $standalone ) {
+	public function validateRating( $info, &$val, $standalone ): void {
 		if ( !$standalone ) {
 			// this only validates standalone properties, not arrays, etc
+			// @codeCoverageIgnoreStart
 			return;
+			// @codeCoverageIgnoreEnd
 		}
 		if ( !preg_match( '/^[-+]?\d*(?:\.?\d*)$/D', $val )
 			|| !is_numeric( $val )
@@ -135,8 +141,6 @@ class Validate implements LoggerAwareInterface {
 		if ( $nVal > 5 ) {
 			$this->logger->info( __METHOD__ . " Rating too high, setting to 5" );
 			$val = '5';
-
-			return;
 		}
 	}
 
@@ -147,10 +151,12 @@ class Validate implements LoggerAwareInterface {
 	 * @param mixed &$val Current value to validate
 	 * @param bool $standalone If this is a simple property or array
 	 */
-	public function validateInteger( $info, &$val, $standalone ) {
+	public function validateInteger( $info, &$val, $standalone ): void {
 		if ( !$standalone ) {
 			// this only validates standalone properties, not arrays, etc
+			// @codeCoverageIgnoreStart
 			return;
+			// @codeCoverageIgnoreEnd
 		}
 		if ( !preg_match( '/^[-+]?\d+$/D', $val ) ) {
 			$this->logger->info( __METHOD__ . " Expected integer but got $val" );
@@ -166,16 +172,18 @@ class Validate implements LoggerAwareInterface {
 	 * @param mixed &$val Current value to validate
 	 * @param bool $standalone If this is a simple property or array
 	 */
-	public function validateClosed( $info, &$val, $standalone ) {
+	public function validateClosed( $info, &$val, $standalone ): void {
 		if ( !$standalone ) {
 			// this only validates standalone properties, not arrays, etc
+			// @codeCoverageIgnoreStart
 			return;
+			// @codeCoverageIgnoreEnd
 		}
 
-		// check if its in a numeric range
+		// check if it's in a numeric range
 		$inRange = false;
 		if ( is_numeric( $val )
-			&& isset( $info['rangeLow'], $info['rangeHigh'] )
+			&& isset( $info['rangeLow'] ) && isset( $info['rangeHigh'] )
 			&& ( (int)$val <= $info['rangeHigh'] ) && ( (int)$val >= $info['rangeLow'] )
 		) {
 			$inRange = true;
@@ -194,10 +202,12 @@ class Validate implements LoggerAwareInterface {
 	 * @param mixed &$val Current value to validate
 	 * @param bool $standalone If this is a simple property or array
 	 */
-	public function validateReal( $info, &$val, $standalone ) {
+	public function validateReal( $info, &$val, $standalone ): void {
 		if ( !$standalone ) {
 			// this only validates standalone properties, not arrays, etc
+			// @codeCoverageIgnoreStart
 			return;
+			// @codeCoverageIgnoreEnd
 		}
 
 		$isReal = is_numeric( $val ) && (float)$val;
@@ -207,13 +217,13 @@ class Validate implements LoggerAwareInterface {
 			return;
 		}
 
-		// check if its in a numeric range
-		if ( isset( $info['rangeLow'], $info['rangeHigh'] )
+		// check if it's in a numeric range
+		if ( isset( $info['rangeLow'] ) && isset( $info['rangeHigh'] )
 			&& ( (float)$val > $info['rangeHigh'] || (float)$val < $info['rangeLow'] )
 		) {
 			$this->logger->info(
-			  __METHOD__
-			  . " Expected value within range of ${info['rangeLow']}-${info['rangeHigh']}, but got $val"
+				__METHOD__
+				. " Expected value within range of {$info['rangeLow']}-{$info['rangeHigh']}, but got $val"
 			);
 			$val = null;
 		}
@@ -226,30 +236,35 @@ class Validate implements LoggerAwareInterface {
 	 * @param mixed &$val Current value to validate
 	 * @param bool $standalone If this is a simple property or array
 	 */
-	public function validateFlash( $info, &$val, $standalone ) {
+	public function validateFlash( $info, &$val, $standalone ): void {
 		if ( $standalone ) {
 			// this only validates flash structs, not individual properties
+			// @codeCoverageIgnoreStart
 			return;
+			// @codeCoverageIgnoreEnd
 		}
-		if ( !isset( $val['Fired'],
-			$val['Function'],
-			$val['Mode'],
-			$val['RedEyeMode'],
-			$val['Return'] )
+		if ( !isset( $val['Fired'] ) ||
+			!isset( $val['Function'] ) ||
+			!isset( $val['Mode'] ) ||
+			!isset( $val['RedEyeMode'] ) ||
+			!isset( $val['Return'] )
 		) {
 			$this->logger->info( __METHOD__ . ' Flash structure did not have all the required components' );
 			$val = null;
 		} else {
+			// @phan-suppress-next-line PhanTypeInvalidRightOperandOfBitwiseOp
 			$val = ( 0 | ( $val['Fired'] === 'True' )
 				| ( (int)$val['Return'] << 1 )
 				| ( (int)$val['Mode'] << 3 )
+				// @phan-suppress-next-line PhanTypeInvalidLeftOperandOfIntegerOp
 				| ( ( $val['Function'] === 'True' ) << 5 )
+				// @phan-suppress-next-line PhanTypeInvalidLeftOperandOfIntegerOp
 				| ( ( $val['RedEyeMode'] === 'True' ) << 6 ) );
 		}
 	}
 
 	/**
-	 * function to validate LangCode properties ( en-GB, etc )
+	 * function to validate LangCode properties ( en-GB, etc. )
 	 *
 	 * This is just a naive check to make sure it somewhat looks like a lang code.
 	 *
@@ -261,10 +276,12 @@ class Validate implements LoggerAwareInterface {
 	 * @param mixed &$val Current value to validate
 	 * @param bool $standalone If this is a simple property or array
 	 */
-	public function validateLangCode( $info, &$val, $standalone ) {
+	public function validateLangCode( $info, &$val, $standalone ): void {
 		if ( !$standalone ) {
 			// this only validates standalone properties, not arrays, etc
+			// @codeCoverageIgnoreStart
 			return;
+			// @codeCoverageIgnoreEnd
 		}
 		if ( !preg_match( '/^[-A-Za-z0-9]{2,}$/D', $val ) ) {
 			// this is a rather naive check.
@@ -285,25 +302,25 @@ class Validate implements LoggerAwareInterface {
 	 * YYYY-MM-DDThh:mm:ss.sTZD
 	 *
 	 * @param array $info Information about current property
-	 * @param mixed &$val Current value to validate. Converts to TS_EXIF as a side-effect.
+	 * @param mixed &$val Current value to validate. Converts to TS_EXIF as a side effect.
 	 *    in cases where there's only a partial date, it will give things like
 	 *    2011:04.
 	 * @param bool $standalone If this is a simple property or array
 	 */
-	public function validateDate( $info, &$val, $standalone ) {
+	public function validateDate( $info, &$val, $standalone ): void {
 		if ( !$standalone ) {
 			// this only validates standalone properties, not arrays, etc
+			// @codeCoverageIgnoreStart
 			return;
+			// @codeCoverageIgnoreEnd
 		}
 		$res = [];
-		// @codingStandardsIgnoreStart Long line that cannot be broken
 		if ( !preg_match(
 			/* ahh! scary regex... */
+			// phpcs:ignore Generic.Files.LineLength
 			'/^([0-3]\d{3})(?:-([01]\d)(?:-([0-3]\d)(?:T([0-2]\d):([0-6]\d)(?::([0-6]\d)(?:\.\d+)?)?([-+]\d{2}:\d{2}|Z)?)?)?)?$/D',
 			$val, $res )
 		) {
-			// @codingStandardsIgnoreEnd
-
 			$this->logger->info( __METHOD__ . " Expected date but got $val" );
 			$val = null;
 			return;
@@ -319,7 +336,7 @@ class Validate implements LoggerAwareInterface {
 		 */
 
 		/*
-		 * First of all, if year = 0000, Something is wrongish,
+		 * First of all, if year = 0000, Something is wrong-ish,
 		 * so don't extract. This seems to happen when
 		 * some programs convert between metadata formats.
 		 */
@@ -330,7 +347,8 @@ class Validate implements LoggerAwareInterface {
 			return;
 		}
 
-		if ( !isset( $res[4] ) ) { // hour
+		// hour
+		if ( !isset( $res[4] ) ) {
 			// just have the year month day (if that)
 			$val = $res[1];
 			if ( isset( $res[2] ) ) {
@@ -374,7 +392,7 @@ class Validate implements LoggerAwareInterface {
 		if ( substr( $res[7], 0, 1 ) === '-' ) {
 			$offset = -$offset;
 		}
-		$val = ConvertibleTimestamp::convert( TS_EXIF, $unix + $offset );
+		$val = ConvertibleTimestamp::convert( TS_EXIF, (int)$unix + $offset );
 
 		if ( $stripSeconds ) {
 			// If seconds weren't specified, remove the trailing ':00'.
@@ -392,11 +410,14 @@ class Validate implements LoggerAwareInterface {
 	 * @param array $info Unused (info about prop)
 	 * @param string &$val GPS string in either DDD,MM,SSk or
 	 *   or DDD,MM.mmk form
-	 * @param bool $standalone If its a simple prop (should always be true)
+	 * @param bool $standalone If it's a simple prop (should always be true)
 	 */
-	public function validateGPS( $info, &$val, $standalone ) {
+	public function validateGPS( $info, &$val, $standalone ): void {
 		if ( !$standalone ) {
+			// this only validates standalone properties, not arrays, etc
+			// @codeCoverageIgnoreStart
 			return;
+			// @codeCoverageIgnoreEnd
 		}
 
 		$m = [];

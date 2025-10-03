@@ -44,7 +44,7 @@ class TabbedPage {
             if(isset($_GET['showTab']) && $_GET['showTab'] == $tab->id){
                 $tab->generatebody();
                 echo $tab->html;
-                exit;
+                close();
             }
             if($tab instanceof AbstractEditableTab && $tab->canEdit()){
                 if(isset($_POST['submit']) && 
@@ -151,7 +151,7 @@ class TabbedPage {
                 ini_set('zlib.output_compression','0');
             }
             echo $pdf['pdf'];
-            exit;
+            close();
         }
         $wgOut->addHTML("</ul><h1 class='custom-title'>{$wgOut->getPageTitle()}</h1>");
         $i = 0;

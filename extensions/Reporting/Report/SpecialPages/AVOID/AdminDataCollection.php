@@ -76,7 +76,7 @@ class AdminDataCollection extends SpecialPage{
         global $wgUser, $wgOut, $wgServer, $wgScriptPath, $wgTitle;
         if(isset($_GET['updateProgramAttendance'])){
             $this->updateProgramAttendance();
-            exit;
+            close();
         }
         $this->getOutput()->setPageTitle("Users");
         $people = array();

@@ -3,15 +3,16 @@ declare( strict_types = 1 );
 
 namespace Wikimedia\Parsoid\Html2Wt\DOMHandlers;
 
-use DOMElement;
-use DOMNode;
 use LogicException;
+use Wikimedia\Parsoid\DOM\DocumentFragment;
+use Wikimedia\Parsoid\DOM\Element;
+use Wikimedia\Parsoid\DOM\Node;
+use Wikimedia\Parsoid\DOM\Text;
 use Wikimedia\Parsoid\Html2Wt\SerializerState;
 use Wikimedia\Parsoid\Html2Wt\WTSUtils;
 use Wikimedia\Parsoid\Utils\DOMCompat;
 use Wikimedia\Parsoid\Utils\DOMDataUtils;
 use Wikimedia\Parsoid\Utils\DOMUtils;
-use Wikimedia\Parsoid\Utils\Utils;
 use Wikimedia\Parsoid\Utils\WTUtils;
 
 /**
@@ -59,62 +60,62 @@ class DOMHandler {
 	/**
 	 * Serialize a DOM node to wikitext.
 	 * Serialized wikitext should be returned via $state::emitChunk().
-	 * @param DOMElement $node
+	 * @param Element $node
 	 * @param SerializerState $state
 	 * @param bool $wrapperUnmodified
-	 * @return DOMNode|null The node to continue with (need not be an element always)
+	 * @return Node|null The node to continue with (need not be an element always)
 	 */
 	public function handle(
-		DOMElement $node, SerializerState $state, bool $wrapperUnmodified = false
-	): ?DOMNode {
+		Element $node, SerializerState $state, bool $wrapperUnmodified = false
+	): ?Node {
 		throw new LogicException( 'Not implemented.' );
 	}
 
 	/**
 	 * How many newlines should be emitted *before* this node?
 	 *
-	 * @param DOMElement $node
-	 * @param DOMNode $otherNode
+	 * @param Element $node
+	 * @param Node $otherNode
 	 * @param SerializerState $state
 	 * @return array
 	 */
-	public function before( DOMElement $node, DOMNode $otherNode, SerializerState $state ): array {
+	public function before( Element $node, Node $otherNode, SerializerState $state ): array {
 		return [];
 	}
 
 	/**
 	 * How many newlines should be emitted *after* this node?
 	 *
-	 * @param DOMElement $node
-	 * @param DOMNode $otherNode
+	 * @param Element $node
+	 * @param Node $otherNode
 	 * @param SerializerState $state
 	 * @return array
 	 */
-	public function after( DOMElement $node, DOMNode $otherNode, SerializerState $state ): array {
+	public function after( Element $node, Node $otherNode, SerializerState $state ): array {
 		return [];
 	}
 
 	/**
 	 * How many newlines should be emitted before the first child?
 	 *
-	 * @param DOMElement $node
-	 * @param DOMNode $otherNode
+	 * @param Element|DocumentFragment $node
+	 * @param Node $otherNode
 	 * @param SerializerState $state
 	 * @return array
 	 */
-	public function firstChild( DOMElement $node, DOMNode $otherNode, SerializerState $state ): array {
+	public function firstChild( Node $node, Node $otherNode, SerializerState $state ): array {
 		return [];
 	}
 
 	/**
 	 * How many newlines should be emitted after the last child?
 	 *
-	 * @param DOMElement $node
-	 * @param DOMNode $otherNode
+	 * @param Element|DocumentFragment $node
+	 * @param Node $otherNode
 	 * @param SerializerState $state
 	 * @return array
 	 */
-	public function lastChild( DOMElement $node, DOMNode $otherNode, SerializerState $state ): array {
+	public function lastChild( Node $node, Node $otherNode, SerializerState $state ): array {
 		return [];
 	}
 
@@ -125,22 +126,22 @@ class DOMHandler {
 	 *
 	 * @return bool
 	 */
-	public function isForceSOL(): bool {
+	public function forceSOL(): bool {
 		return $this->forceSOL;
 	}
 
 	/**
 	 * List helper: This is a shared *after* newline handler for list items.
 	 *
-	 * @param DOMElement $node
-	 * @param DOMNode $otherNode
+	 * @param Element $node
+	 * @param Node $otherNode
 	 * @return array An array in the form [ 'min' => <int>, 'max' => <int> ] or an empty array.
 	 */
-	protected function wtListEOL( DOMElement $node, DOMNode $otherNode ): array {
-		if ( !DOMUtils::isElt( $otherNode ) || DOMUtils::isBody( $otherNode ) ) {
+	protected function wtListEOL( Element $node, Node $otherNode ): array {
+		if ( !( $otherNode instanceof Element ) || DOMUtils::atTheTop( $otherNode ) ) {
 			return [ 'min' => 0, 'max' => 2 ];
 		}
-		'@phan-var DOMElement $otherNode';/** @var DOMElement $otherNode */
+		'@phan-var Element $otherNode';/** @var Element $otherNode */
 
 		if ( WTUtils::isFirstEncapsulationWrapperNode( $otherNode ) ) {
 			return [ 'min' => DOMUtils::isList( $node ) ? 1 : 0, 'max' => 2 ];
@@ -151,11 +152,11 @@ class DOMHandler {
 		if ( $nextSibling === $otherNode && ( $dp->stx ?? null ) === 'html' || isset( $dp->src ) ) {
 			return [ 'min' => 0, 'max' => 2 ];
 		} elseif ( $nextSibling === $otherNode && DOMUtils::isListOrListItem( $otherNode ) ) {
-			if ( DOMUtils::isList( $node ) && $otherNode->nodeName === $node->nodeName ) {
+			if ( DOMUtils::isList( $node ) && DOMCompat::nodeName( $otherNode ) === DOMCompat::nodeName( $node ) ) {
 				// Adjacent lists of same type need extra newline
 				return [ 'min' => 2, 'max' => 2 ];
 			} elseif ( DOMUtils::isListItem( $node )
-				|| in_array( $node->parentNode->nodeName, [ 'li', 'dd' ], true )
+				|| in_array( DOMCompat::nodeName( $node->parentNode ), [ 'li', 'dd' ], true )
 			) {
 				// Top-level list
 				return [ 'min' => 1, 'max' => 1 ];
@@ -163,13 +164,14 @@ class DOMHandler {
 				return [ 'min' => 1, 'max' => 2 ];
 			}
 		} elseif ( DOMUtils::isList( $otherNode )
-			|| ( DOMUtils::isElt( $otherNode ) && ( $dp->stx ?? null ) === 'html' )
+			|| ( $otherNode instanceof Element && ( $dp->stx ?? null ) === 'html' )
 		) {
 			// last child in ul/ol (the list element is our parent), defer
 			// separator constraints to the list.
 			return [];
-		} elseif ( DOMUtils::isBlockNode( $node->parentNode )
-			&& DOMUtils::lastNonSepChild( $node->parentNode ) === $node
+		} elseif (
+			DOMUtils::isWikitextBlockNode( $node->parentNode ) &&
+			DOMUtils::lastNonSepChild( $node->parentNode ) === $node
 		) {
 			// A list in a block node (<div>, <td>, etc) doesn't need a trailing empty line
 			// if it is the last non-separator child (ex: <div>..</ul></div>)
@@ -177,17 +179,21 @@ class DOMHandler {
 		} elseif ( DOMUtils::isFormattingElt( $otherNode ) ) {
 			return [ 'min' => 1, 'max' => 1 ];
 		} else {
-			return [ 'min' => WTUtils::isNewElt( $node ) ? 2 : 1, 'max' => 2 ];
+			return [
+				'min' => WTUtils::isNewElt( $node ) && !WTUtils::isMarkerAnnotation( $otherNode )
+					? 2 : 1,
+				'max' => 2
+			];
 		}
 	}
 
 	/**
 	 * List helper: DOM-based list bullet construction.
 	 * @param SerializerState $state
-	 * @param DOMElement $node
+	 * @param Element $node
 	 * @return string
 	 */
-	protected function getListBullets( SerializerState $state, DOMElement $node ): string {
+	protected function getListBullets( SerializerState $state, Element $node ): string {
 		$parentTypes = [
 			'ul' => '*',
 			'ol' => '#'
@@ -206,28 +212,29 @@ class DOMHandler {
 		$space = $this->getLeadingSpace( $state, $node, ' ' );
 
 		$res = '';
-		while ( $node ) {
+		while ( !DOMUtils::atTheTop( $node ) ) {
 			$dp = DOMDataUtils::getDataParsoid( $node );
-			$stx = $dp->stx ?? null;
-			if ( $stx !== 'html' && isset( $listTypes[$node->nodeName] ) ) {
-				if ( $node->nodeName === 'li' ) {
+			if ( isset( $listTypes[DOMCompat::nodeName( $node )] ) ) {
+				if ( DOMCompat::nodeName( $node ) === 'li' ) {
 					$parentNode = $node->parentNode;
-					while ( $parentNode && !( isset( $parentTypes[$parentNode->nodeName] ) ) ) {
+					while ( $parentNode && !( isset( $parentTypes[DOMCompat::nodeName( $parentNode )] ) ) ) {
 						$parentNode = $parentNode->parentNode;
 					}
 
 					if ( $parentNode ) {
-						$res = $parentTypes[$parentNode->nodeName] . $res;
+						if ( !WTUtils::isLiteralHTMLNode( $parentNode ) ) {
+							$res = $parentTypes[DOMCompat::nodeName( $parentNode )] . $res;
+						}
 					} else {
 						$state->getEnv()->log( 'error/html2wt', 'Input DOM is not well-formed.',
 							"Top-level <li> found that is not nested in <ol>/<ul>\n LI-node:",
 							DOMCompat::getOuterHTML( $node )
 						);
 					}
-				} else {
-					$res = $listTypes[$node->nodeName] . $res;
+				} elseif ( !WTUtils::isLiteralHTMLNode( $node ) ) {
+					$res = $listTypes[DOMCompat::nodeName( $node )] . $res;
 				}
-			} elseif ( $stx !== 'html' ||
+			} elseif ( !WTUtils::isLiteralHTMLNode( $node ) ||
 				empty( $dp->autoInsertedStart ) || empty( $dp->autoInsertedEnd )
 			) {
 				break;
@@ -242,24 +249,24 @@ class DOMHandler {
 
 	/**
 	 * Helper: Newline constraint helper for table nodes
-	 * @param DOMElement $node
-	 * @param DOMNode $origNode
+	 * @param Node $node
+	 * @param Node $origNode
 	 * @return int
 	 */
-	protected function maxNLsInTable( DOMElement $node, DOMNode $origNode ): int {
+	protected function maxNLsInTable( Node $node, Node $origNode ): int {
 		return ( WTUtils::isNewElt( $node ) || WTUtils::isNewElt( $origNode ) ) ? 1 : 2;
 	}
 
 	/**
 	 * Private helper for serializing table nodes
 	 * @param string $symbol
-	 * @param string|null $endSymbol
+	 * @param ?string $endSymbol
 	 * @param SerializerState $state
-	 * @param DOMElement $node
+	 * @param Element $node
 	 * @return string
 	 */
 	private function serializeTableElement(
-		string $symbol, ?string $endSymbol, SerializerState $state, DOMElement $node
+		string $symbol, ?string $endSymbol, SerializerState $state, Element $node
 	): string {
 		$token = WTSUtils::mkTagTk( $node );
 		$sAttribs = $state->serializer->serializeAttributes( $node, $token );
@@ -275,9 +282,9 @@ class DOMHandler {
 	/**
 	 * Helper: Handles content serialization for table nodes
 	 * @param string $symbol
-	 * @param string|null $endSymbol
+	 * @param ?string $endSymbol
 	 * @param SerializerState $state
-	 * @param DOMElement $node
+	 * @param Element $node
 	 * @param bool $wrapperUnmodified
 	 * @return string
 	 */
@@ -285,7 +292,7 @@ class DOMHandler {
 		string $symbol,
 		?string $endSymbol,
 		SerializerState $state,
-		DOMElement $node,
+		Element $node,
 		bool $wrapperUnmodified
 	): string {
 		if ( $wrapperUnmodified ) {
@@ -302,10 +309,10 @@ class DOMHandler {
 	 * table-cell markup if a table cell is added before this cell.
 	 *
 	 * @param SerializerState $state
-	 * @param DOMElement $node
+	 * @param Element $node
 	 * @return bool
 	 */
-	protected function stxInfoValidForTableCell( SerializerState $state, DOMElement $node ): bool {
+	protected function stxInfoValidForTableCell( SerializerState $state, Element $node ): bool {
 		// If row syntax is not set, nothing to worry about
 		if ( ( DOMDataUtils::getDataParsoid( $node )->stx ?? null ) !== 'row' ) {
 			return true;
@@ -313,7 +320,7 @@ class DOMHandler {
 
 		// If we have an identical previous sibling, nothing to worry about
 		$prev = DOMUtils::previousNonDeletedSibling( $node );
-		return $prev !== null && $prev->nodeName === $node->nodeName;
+		return $prev !== null && DOMCompat::nodeName( $prev ) === DOMCompat::nodeName( $node );
 	}
 
 	/**
@@ -322,31 +329,19 @@ class DOMHandler {
 	 * based on node state (whether the node is original or new content) and other
 	 * state (HTML version, whether selective serialization is enabled or not).
 	 * @param SerializerState $state
-	 * @param DOMElement $node
+	 * @param Element $node
 	 * @param string $newEltDefault
 	 * @return string
 	 */
 	protected function getLeadingSpace(
-		SerializerState $state, DOMElement $node, string $newEltDefault
+		SerializerState $state, Element $node, string $newEltDefault
 	): string {
 		$space = '';
-		$fc = DOMUtils::firstNonDeletedChild( $node );
 		if ( WTUtils::isNewElt( $node ) ) {
+			$fc = DOMUtils::firstNonDeletedChild( $node );
 			// PORT-FIXME are different \s semantics going to be a problem?
-			if ( $fc && ( !DOMUtils::isText( $fc ) || !preg_match( '/^\s/', $fc->nodeValue ) ) ) {
+			if ( $fc && ( !( $fc instanceof Text ) || !preg_match( '/^\s/', $fc->nodeValue ) ) ) {
 				$space = $newEltDefault;
-			}
-		} elseif ( $state->useWhitespaceHeuristics && $state->selserMode
-			&& ( !$fc || !DOMUtils::isElt( $fc ) || WTUtils::isNewElt( $fc ) )
-		) {
-			$dsr = DOMDataUtils::getDataParsoid( $node )->dsr ?? null;
-			if ( Utils::isValidDSR( $dsr, true ) ) {
-				$offset = $dsr->innerStart();
-				$space = $offset < $dsr->innerEnd() ?
-					( $state->getOrigSrc( $offset, $offset + 1 ) ?? '' ) : '';
-				if ( !preg_match( '/[ \t]/', $space ) ) {
-					$space = '';
-				}
 			}
 		}
 		return $space;
@@ -358,34 +353,19 @@ class DOMHandler {
 	 * (whether the node is original or new content) and other state (HTML version,
 	 * whether selective serialization is enabled or not).
 	 * @param SerializerState $state
-	 * @param DOMElement $node
+	 * @param Element $node
 	 * @param string $newEltDefault
 	 * @return string
 	 */
 	protected function getTrailingSpace(
-		SerializerState $state, DOMElement $node, string $newEltDefault
+		SerializerState $state, Element $node, string $newEltDefault
 	): string {
 		$space = '';
-		$lc = DOMUtils::lastNonDeletedChild( $node );
 		if ( WTUtils::isNewElt( $node ) ) {
+			$lc = DOMUtils::lastNonDeletedChild( $node );
 			// PORT-FIXME are different \s semantics going to be a problem?
-			if ( $lc && ( !DOMUtils::isText( $lc ) || !preg_match( '/\s$/D', $lc->nodeValue ) ) ) {
+			if ( $lc && ( !( $lc instanceof Text ) || !preg_match( '/\s$/D', $lc->nodeValue ) ) ) {
 				$space = $newEltDefault;
-			}
-		} elseif ( $state->useWhitespaceHeuristics && $state->selserMode
-			&& ( !$lc || !DOMUtils::isElt( $lc ) || WTUtils::isNewElt( $lc ) )
-		) {
-			$dsr = DOMDataUtils::getDataParsoid( $node )->dsr ?? null;
-			if ( Utils::isValidDSR( $dsr, true ) ) {
-				$offset = $dsr->innerEnd() - 1;
-				// The > instead of >= is to deal with an edge case
-				// = = where that single space is captured by the
-				// getLeadingSpace case above
-				$space = $offset > $dsr->innerStart() ?
-					( $state->getOrigSrc( $offset, $offset + 1 ) ?? '' ) : '';
-				if ( !preg_match( '/[ \t]/', $space ) ) {
-					$space = '';
-				}
 			}
 		}
 		return $space;
@@ -394,14 +374,14 @@ class DOMHandler {
 	/**
 	 * Helper: Is this node auto-inserted by the HTML5 tree-builder
 	 * during wt->html?
-	 * @param DOMNode $node
+	 * @param Node $node
 	 * @return bool
 	 */
-	protected function isBuilderInsertedElt( DOMNode $node ): bool {
-		if ( !DOMUtils::isElt( $node ) ) {
+	protected function isBuilderInsertedElt( Node $node ): bool {
+		if ( !( $node instanceof Element ) ) {
 			return false;
 		}
-		'@phan-var DOMElement $node';/** @var DOMElement $node */
+		'@phan-var Element $node';/** @var Element $node */
 		$dp = DOMDataUtils::getDataParsoid( $node );
 		return !empty( $dp->autoInsertedStart ) && !empty( $dp->autoInsertedEnd );
 	}
@@ -410,10 +390,10 @@ class DOMHandler {
 	 * Uneditable forms wrapped with mw:Placeholder tags OR unedited nowikis
 	 * N.B. We no longer emit self-closed nowikis as placeholders, so remove this
 	 * once all our stored content is updated.
-	 * @param DOMElement $node
+	 * @param Element $node
 	 * @param SerializerState $state
 	 */
-	protected function emitPlaceholderSrc( DOMElement $node, SerializerState $state ) {
+	protected function emitPlaceholderSrc( Element $node, SerializerState $state ) {
 		$dp = DOMDataUtils::getDataParsoid( $node );
 		if ( preg_match( '!<nowiki\s*/>!', $dp->src ?? '' ) ) {
 			$state->hasSelfClosingNowikis = true;

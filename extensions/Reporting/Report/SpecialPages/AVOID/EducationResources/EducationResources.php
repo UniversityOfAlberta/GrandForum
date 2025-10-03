@@ -18,7 +18,7 @@ class EducationResources extends SpecialPage {
 	function userCanExecute($user){
         global $config;
         $me = Person::newFromUser($user);
-        if(!$user->isLoggedIn() && $config->getValue("networkFullName") != "AVOID AB"){
+        if(!$user->isRegistered() && $config->getValue("networkFullName") != "AVOID AB"){
 	        AVOIDDashboard::permissionError();
 	    }
         if($config->getValue('networkFullName') == "AVOID Australia" &&
@@ -155,7 +155,7 @@ class EducationResources extends SpecialPage {
                                 foreach($subResources as $resource){
                                     if(isset($_GET['clickedResource']) && $_GET['clickedResource'] == "{$category->id}-{$resource->file}"){
                                         Gamification::log("EducationResource/".md5("{$category->id}-{$resource->file}"));
-                                        exit;
+                                        close();
                                     }
                                     if($resource->file == ""){
                                         $wgOut->addHTML("<li>{$resource->title}</li>");
@@ -176,7 +176,7 @@ class EducationResources extends SpecialPage {
                         foreach($resources as $resource){
                             if(isset($_GET['clickedResource']) && $_GET['clickedResource'] == "{$category->id}-{$resource->file}"){
                                 Gamification::log("EducationResource/".md5("{$category->id}-{$resource->file}"));
-                                exit;
+                                close();
                             }
                             if($resource->file == ""){
                                 $wgOut->addHTML("<li>{$resource->title}</li>");

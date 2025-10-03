@@ -15,7 +15,7 @@ class PersonVisualizationsTab extends AbstractTab {
         global $wgUser, $wgOut, $wgServer, $wgScriptPath;
         $me = Person::newFromWgUser();
         $this->html = "";
-        if($wgUser->isLoggedIn()){
+        if($wgUser->isRegistered()){
             $wgOut->addScript("<script type='text/javascript'>
                 $(document).ready(function(){
                     $('#personVis').tabs({selected: 0});
@@ -61,7 +61,7 @@ class PersonVisualizationsTab extends AbstractTab {
     
     function showTimeline($person, $visibility){
         global $wgServer, $wgScriptPath, $wgTitle, $wgOut, $wgUser;
-        if($wgUser->isLoggedIn()){
+        if($wgUser->isRegistered()){
             $dataUrl = "$wgServer$wgScriptPath/index.php/{$wgTitle->getNSText()}:{$wgTitle->getText()}?action=getTimelineData&person={$person->getId()}";
             $timeline = new VisTimeline($dataUrl);
             $timeline->height = "600px";
@@ -87,7 +87,7 @@ class PersonVisualizationsTab extends AbstractTab {
     
     function showDoughnut($person, $visibility){
         global $wgServer, $wgScriptPath, $wgTitle, $wgOut, $wgUser;
-        if($wgUser->isLoggedIn()){
+        if($wgUser->isRegistered()){
             $dataUrl = "$wgServer$wgScriptPath/index.php/{$wgTitle->getNSText()}:{$wgTitle->getText()}?action=getDoughnutData&person={$person->getId()}";
             $doughnut = new Doughnut($dataUrl);
             $wgOut->addScript("<script type='text/javascript'>
@@ -235,7 +235,7 @@ class PersonVisualizationsTab extends AbstractTab {
             $array['items'] = $items;
             $array['groups'] = $groups;
             echo json_encode($array);
-            exit;
+            close();
         }
         return true;
     }
@@ -258,7 +258,7 @@ class PersonVisualizationsTab extends AbstractTab {
             
             $legend[$i]['name'] = "Institution";
             $legend[$i++]['color'] = "#B26060";
-            if($me->isLoggedIn()){
+            if($me->isRegistered()){
                 $legend[$i]['name'] = "Co-authorship";
                 $legend[$i++]['color'] = "#6191B3";
             }
@@ -354,7 +354,7 @@ class PersonVisualizationsTab extends AbstractTab {
             
             header("Content-Type: application/json");
             echo json_encode(array($array));
-            exit;
+            close();
         }
         return true;
 	}
@@ -460,7 +460,7 @@ class PersonVisualizationsTab extends AbstractTab {
 
             header("Content-Type: application/json");
             echo json_encode($array);
-            exit;
+            close();
 	    }
 	}
 

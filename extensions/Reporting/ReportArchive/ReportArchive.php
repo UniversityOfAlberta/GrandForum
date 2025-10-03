@@ -52,7 +52,7 @@ class ReportArchive extends SpecialPage {
     }
     
     function userCanExecute($user){
-        if($user->isLoggedIn()){
+        if($user->isRegistered()){
             $person = Person::newFromWgUser();
             if($person->isLoggedIn()){
                 return true;
@@ -115,7 +115,7 @@ class ReportArchive extends SpecialPage {
             header("Content-Description: File Transfer");
             header('Content-Disposition: attachment; filename="Merged.doc"');
             echo self::htmlContents(implode("<br clear=all style='mso-special-character:line-break;page-break-before:always'>", $tomerge));
-            exit;
+            close();
         }
         else if(isset($_GET['merge']) && $merge != ""){
             $cover = isset($_GET['cover']);
@@ -161,7 +161,7 @@ class ReportArchive extends SpecialPage {
             header('Pragma: public');
             ini_set('zlib.output_compression','0');
             echo $contents;
-            exit;
+            close();
         }
         if(isset($_GET['getpdf']) && $action != "") {
             $tok = $action;
@@ -235,7 +235,7 @@ class ReportArchive extends SpecialPage {
                     header('Content-Disposition: attachment; filename="'.$name.'"');
                     $content = self::htmlContents($html);
                     echo $content;
-                    exit;
+                    close();
                 }
                 else{
                     if ($pdf == false || $len == 0) {

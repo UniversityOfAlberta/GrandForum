@@ -18,13 +18,11 @@ class MockEnv {
 				magicWordCanonicalName: function() { return "toc"; }	// mock function returns string for BehaviorSwitchHandler
 			},
 			parsoid: {
-				rtTestMode: false,
 				debug: argv.debug,
 			},
 		};
 		this.log = argv.log ? this._log : this._emptyLog;
 		this.wrapSections = true; // always wrap sections!
-		this.scrubWikitext = argv.scrubWikitext;
 
 		this.setVariable = function(variable, state) { this[variable] = state; };	// mock function to set variable state for BehaviorSwitchHandler
 	}

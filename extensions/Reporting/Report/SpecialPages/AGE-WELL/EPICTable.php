@@ -82,7 +82,7 @@ class EPICTable extends SpecialPage{
             echo "\"{$this->getBlobValue($epic->getId(),'3A_EX')}\",";
             echo "\n";
         }
-        exit;
+        close();
     }
     
     function generateHTML($wgOut){

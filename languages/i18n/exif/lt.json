@@ -359,5 +359,13 @@
 	"exif-urgency-normal": "Normalus ( $1 )",
 	"exif-urgency-low": "Žemas ( $1 )",
 	"exif-urgency-high": "Aukštas ( $1 )",
-	"exif-urgency-other": "Vartotojo nustatyta pirmenybė ($1)"
+	"exif-urgency-other": "Vartotojo nustatyta pirmenybė ($1)",
+	"exif-firstphotodate": "Pirmos nuotraukos data",
+	"exif-lastphotodate": "Paskutinės nuotraukos data",
+	"exif-projectiontype": "Projekcijos tipas",
+	"exif-usepanoramaviewer": "Naudoti panoramos peržiūrą",
+	"exif-usepanoramaviewer-true": "Taip",
+	"exif-usepanoramaviewer-false": "Ne",
+	"exif-exposurelockused-true": "Taip",
+	"exif-exposurelockused-false": "Ne"
 }

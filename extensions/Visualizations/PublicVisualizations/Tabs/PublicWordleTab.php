@@ -86,7 +86,7 @@ class PublicWordleTab extends AbstractTab {
             $data = array_slice($data, 0, 300);
             header("Content-Type: application/json");
             echo json_encode($data);
-            exit;
+            close();
         }
         return true;
 	}

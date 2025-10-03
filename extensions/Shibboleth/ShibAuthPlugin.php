@@ -150,7 +150,7 @@ function ShibUserLoadFromSession($user, $result)
 	}
  
 	//They already with us?  If so, nix this function, we're good.
-	if($user->isLoggedIn())
+	if($user->isRegistered())
 	{
 		ShibBringBackAA();
 		return true;

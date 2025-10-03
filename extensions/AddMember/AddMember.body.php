@@ -13,7 +13,7 @@ class UserCreate {
     static function createNotification(){
         global $notifications, $wgUser, $wgServer, $wgScriptPath;
         $groups = $wgUser->getGroups();
-        if($wgUser->isLoggedIn()){
+        if($wgUser->isRegistered()){
             $me = Person::newFromId($wgUser->getId());
             if($me->isRoleAtLeast(STAFF)){
                 $data = DBFunctions::select(array('grand_user_request'),

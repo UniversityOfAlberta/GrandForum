@@ -1,10 +1,11 @@
 <?php
 
+use MediaWiki\MediaWikiServices;
+
 class SpecialSideUserLogin extends SpecialUserLogin {
 
-    function __construct(){
-        parent::__construct();
-        
+    public function __construct() {
+        parent::__construct(MediaWikiServices::getInstance()->getAuthManager());
     }
     
     protected function mainLoginForm( array $requests, $msg = '', $msgtype = 'error' ) {

@@ -29,7 +29,7 @@ class PublicVisualizations extends SpecialPage{
 	function userCanExecute($user){
 	    global $config;
 	    if($config->getValue('guestLockdown')){
-	        return $user->isLoggedIn();
+	        return $user->isRegistered();
 	    }
         return true;
     }

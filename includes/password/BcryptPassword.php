@@ -31,17 +31,17 @@ declare( strict_types = 1 );
  * @since 1.24
  */
 class BcryptPassword extends ParameterizedPassword {
-	protected function getDefaultParams() : array {
+	protected function getDefaultParams(): array {
 		return [
 			'rounds' => $this->config['cost'],
 		];
 	}
 
-	protected function getDelimiter() : string {
+	protected function getDelimiter(): string {
 		return '$';
 	}
 
-	protected function parseHash( ?string $hash ) : void {
+	protected function parseHash( ?string $hash ): void {
 		parent::parseHash( $hash );
 
 		$this->params['rounds'] = (int)$this->params['rounds'];
@@ -53,7 +53,7 @@ class BcryptPassword extends ParameterizedPassword {
 	 * @throws PasswordError If bcrypt has an unknown error
 	 * @throws MWException If bcrypt is not supported by PHP
 	 */
-	public function crypt( string $password ) : void {
+	public function crypt( string $password ): void {
 		if ( !defined( 'CRYPT_BLOWFISH' ) ) {
 			throw new MWException( 'Bcrypt is not supported.' );
 		}
@@ -77,7 +77,7 @@ class BcryptPassword extends ParameterizedPassword {
 		$hash = crypt( $password,
 			sprintf( '$2y$%02d$%s', (int)$this->params['rounds'], $this->args[0] ) );
 
-		if ( !is_string( $hash ) || strlen( $hash ) <= 13 ) {
+		if ( strlen( $hash ) <= 13 ) {
 			throw new PasswordError( 'Error when hashing password.' );
 		}
 

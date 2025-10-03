@@ -28,6 +28,7 @@
 	"paramvalidator-maxbytes": "Le valor del parametro \"$1\" non pote haber plus de $3 byte{{PLURAL:$3||s}} (ha $4).",
 	"paramvalidator-maxchars": "Le valor del parametro \"$1\" non pote haber plus de $3 character{{PLURAL:$3||es}} (ha $4).",
 	"paramvalidator-missingparam": "Le parametro \"$1\" debe esser definite.",
+	"paramvalidator-notmulti": "Le parametro \"$1\" accepta solmente un valor. Le separation de valores multiple U+001F pote solmente esser usate pro parametros con multiple valores.",
 	"paramvalidator-outofrange-max": "Le valor \"$2\" del parametro \"$1\" non debe esser superior a $4.",
 	"paramvalidator-outofrange-minmax": "Le valor \"$2\" del parametro \"$1\" debe esser inter $3 e $4.",
 	"paramvalidator-outofrange-min": "Le valor \"$2\" del parametro \"$1\" non debe esser inferior a $3.",

@@ -3,10 +3,11 @@ declare( strict_types = 1 );
 
 namespace Wikimedia\Parsoid\Html2Wt\DOMHandlers;
 
-use DOMElement;
-use DOMNode;
+use Wikimedia\Parsoid\DOM\Element;
+use Wikimedia\Parsoid\DOM\Node;
+use Wikimedia\Parsoid\Html2Wt\DiffUtils;
 use Wikimedia\Parsoid\Html2Wt\SerializerState;
-use Wikimedia\Parsoid\Html2Wt\WTSUtils;
+use Wikimedia\Parsoid\Utils\DOMCompat;
 use Wikimedia\Parsoid\Utils\DOMDataUtils;
 use Wikimedia\Parsoid\Utils\DOMUtils;
 
@@ -18,8 +19,8 @@ class THHandler extends DOMHandler {
 
 	/** @inheritDoc */
 	public function handle(
-		DOMElement $node, SerializerState $state, bool $wrapperUnmodified = false
-	): ?DOMNode {
+		Element $node, SerializerState $state, bool $wrapperUnmodified = false
+	): ?Node {
 		$dp = DOMDataUtils::getDataParsoid( $node );
 		$usableDP = $this->stxInfoValidForTableCell( $state, $node );
 		$attrSepSrc = $usableDP ? ( $dp->attrSepSrc ?? null ) : null;
@@ -31,7 +32,9 @@ class THHandler extends DOMHandler {
 		// T149209: Special case to deal with scenarios
 		// where the previous sibling put us in a SOL state
 		// (or will put in a SOL state when the separator is emitted)
-		if ( $state->onSOL || ( $state->sep->constraints['min'] ?? 0 ) > 0 ) {
+		$min = $state->sep->constraints['min'] ?? 0;
+		$max = $state->sep->constraints['max'] ?? 1;
+		if ( $min > 0 || ( $max > 0 && str_contains( $state->sep->src ?? '', "\n" ) ) ) {
 			// You can use both "!!" and "||" for same-row headings (ugh!)
 			$startTagSrc = preg_replace( '/!!/', '!', $startTagSrc, 1 );
 			$startTagSrc = preg_replace( '/\|\|/', '!', $startTagSrc, 1 );
@@ -42,17 +45,13 @@ class THHandler extends DOMHandler {
 		$leadingSpace = $this->getLeadingSpace( $state, $node, '' );
 		// If the HTML for the first th is not enclosed in a tr-tag,
 		// we start a new line.  If not, tr will have taken care of it.
-		WTSUtils::emitStartTag( $thTag . $leadingSpace,
-			$node,
-			$state
-		);
-		$thHandler = function ( $state, $text, $opts ) use ( $node ) {
+		$state->emitChunk( $thTag . $leadingSpace, $node );
+		$thHandler = static function ( $state, $text, $opts ) use ( $node ) {
 			return $state->serializer->wteHandlers->thHandler( $node, $state, $text, $opts );
 		};
 
 		$nextTh = DOMUtils::nextNonSepSibling( $node );
-		$nextUsesRowSyntax = DOMUtils::isElt( $nextTh )
-			&& $nextTh instanceof DOMElement // for static analyzers
+		$nextUsesRowSyntax = $nextTh instanceof Element
 			&& ( DOMDataUtils::getDataParsoid( $nextTh )->stx ?? null ) === 'row';
 
 		// For empty cells, emit a single whitespace to make wikitext
@@ -65,8 +64,18 @@ class THHandler extends DOMHandler {
 		$state->serializeChildren( $node, $thHandler );
 
 		// PORT-FIXME does regexp whitespace semantics change matter?
-		if ( $nextUsesRowSyntax && !preg_match( '/\s$/D', $state->currLine->text ) ) {
-			$trailingSpace = $this->getTrailingSpace( $state, $node, '' );
+		if ( !preg_match( '/\s$/D', $state->currLine->text ) ) {
+			$trailingSpace = null;
+			if ( $nextUsesRowSyntax ) {
+				$trailingSpace = $this->getTrailingSpace( $state, $node, '' );
+			}
+			// Recover any trimmed whitespace only on unmodified nodes
+			if ( !$trailingSpace ) {
+				$lastChild = DOMUtils::lastNonSepChild( $node );
+				if ( $lastChild && !DiffUtils::hasDiffMarkers( $lastChild, $state->getEnv() ) ) {
+					$trailingSpace = $state->recoverTrimmedWhitespace( $node, false );
+				}
+			}
 			if ( $trailingSpace ) {
 				$state->appendSep( $trailingSpace );
 			}
@@ -75,8 +84,8 @@ class THHandler extends DOMHandler {
 	}
 
 	/** @inheritDoc */
-	public function before( DOMElement $node, DOMNode $otherNode, SerializerState $state ): array {
-		if ( $otherNode->nodeName === 'th'
+	public function before( Element $node, Node $otherNode, SerializerState $state ): array {
+		if ( DOMCompat::nodeName( $otherNode ) === 'th'
 			&& ( DOMDataUtils::getDataParsoid( $node )->stx ?? null ) === 'row'
 		) {
 			// force single line
@@ -87,8 +96,8 @@ class THHandler extends DOMHandler {
 	}
 
 	/** @inheritDoc */
-	public function after( DOMElement $node, DOMNode $otherNode, SerializerState $state ): array {
-		if ( $otherNode->nodeName === 'td' ) {
+	public function after( Element $node, Node $otherNode, SerializerState $state ): array {
+		if ( DOMCompat::nodeName( $otherNode ) === 'td' ) {
 			// Force a newline break
 			return [ 'min' => 1, 'max' => $this->maxNLsInTable( $node, $otherNode ) ];
 		} else {

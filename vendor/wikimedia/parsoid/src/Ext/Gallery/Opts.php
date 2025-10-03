@@ -3,12 +3,10 @@ declare( strict_types = 1 );
 
 namespace Wikimedia\Parsoid\Ext\Gallery;
 
+use Wikimedia\Parsoid\Core\Sanitizer;
 use Wikimedia\Parsoid\Ext\ParsoidExtensionAPI;
 use Wikimedia\Parsoid\Ext\Utils;
 
-/**
- * @class
- */
 class Opts {
 	/**
 	 * Parse options from an attribute array.
@@ -16,10 +14,17 @@ class Opts {
 	 * @param array<string,string> $attrs The attribute array
 	 */
 	public function __construct( ParsoidExtensionAPI $extApi, array $attrs ) {
-		foreach ( $extApi->getSiteConfig()->galleryOptions() as $k => $v ) {
-			$this->$k = $v;
-		}
+		// Set default values from config
+		// The options 'showDimensions' and 'showBytes' for traditional mode are not implemented,
+		// They are not used for galleries in wikitext (only on category pages or special pages)
+		// The deprecated option 'captionLength' for traditional mode is not implemented.
+		$galleryOptions = $extApi->getSiteConfig()->galleryOptions();
+		$this->imagesPerRow = $galleryOptions['imagesPerRow'];
+		$this->imageWidth = $galleryOptions['imageWidth'];
+		$this->imageHeight = $galleryOptions['imageHeight'];
+		$this->mode = $galleryOptions['mode'];
 
+		// Override values from given attributes
 		if ( is_numeric( $attrs['perrow'] ?? null ) ) {
 			$this->imagesPerRow = intval( $attrs['perrow'], 10 );
 		}
@@ -44,14 +49,14 @@ class Opts {
 		$this->caption = (bool)( $attrs['caption'] ?? false );
 
 		// TODO: Good contender for T54941
-		$validUlAttrs = $extApi->getValidHTMLAttributes( 'ul' );
+		$validUlAttrs = Sanitizer::attributesAllowedInternal( 'ul' );
 		$this->attrs = [];
 		foreach ( $attrs as $k => $v ) {
 			if ( !isset( $validUlAttrs[$k] ) ) {
 				continue;
 			}
 			if ( $k === 'style' ) {
-				$v = $extApi->sanitizeCss( $v );
+				$v = Sanitizer::checkCss( $v );
 			}
 			$this->attrs[$k] = $v;
 		}

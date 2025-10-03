@@ -504,7 +504,7 @@ class UserInPersonFrailtyIndexAPI extends UserFrailtyIndexAPI {
         $scores = $this->getFrailtyScore($user_id);
         $myJSON = json_encode($scores);
         echo $myJSON;
-        exit;
+        close();
     }
 
 

@@ -52,9 +52,14 @@ define("EOT", "9999-01-01"); // End of Time
 $path = array( $IP, "$IP/includes", "$IP/languages" );
 set_include_path( implode( PATH_SEPARATOR, $path ) . PATH_SEPARATOR . get_include_path() );
 
+
 require_once("Classes/countries.php");
-require_once( "$IP/includes/DefaultSettings.php" );
+require_once( "$IP/Classes/Patch.php" );
 require_once( "$IP/config/ForumConfig.php" );
+
+$wgDeprecationReleaseLimit = '1.0';
+
+$wgBaseDirectory = MW_INSTALL_PATH;
 
 ## Path settings
 $wgSitename         = $config->getValue("siteName");
@@ -245,8 +250,8 @@ $wgImpersonating = false;
 $wgDelegating = false;
 $wgRealUser;
 
-if (($key = array_search('application/zip', $wgMimeTypeBlacklist)) !== false) {
-    unset($wgMimeTypeBlacklist[$key]);
+if (($key = array_search('application/zip', $wgMimeTypeExclusions)) !== false) {
+    unset($wgMimeTypeExclusions[$key]);
 }
 
 // Whether or not to show custom deprication notices

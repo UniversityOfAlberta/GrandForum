@@ -21,6 +21,7 @@
  * @ingroup Installer
  */
 
+use MediaWiki\MediaWikiServices;
 use Wikimedia\Rdbms\Database;
 use Wikimedia\Rdbms\DatabasePostgres;
 use Wikimedia\Rdbms\DBConnectionError;
@@ -40,6 +41,7 @@ class PostgresInstaller extends DatabaseInstaller {
 		'wgDBname',
 		'wgDBuser',
 		'wgDBpassword',
+		'wgDBssl',
 		'wgDBmwschema',
 	];
 
@@ -47,7 +49,7 @@ class PostgresInstaller extends DatabaseInstaller {
 		'_InstallUser' => 'postgres',
 	];
 
-	public static $minimumVersion = '9.2';
+	public static $minimumVersion = '10';
 	protected static $notMinimumVersionMessage = 'config-postgres-old';
 	public $maxRoleSearchDepth = 5;
 
@@ -69,6 +71,7 @@ class PostgresInstaller extends DatabaseInstaller {
 			$this->parent->getHelpBox( 'config-db-host-help' )
 		) .
 			$this->getTextBox( 'wgDBport', 'config-db-port' ) .
+			$this->getCheckBox( 'wgDBssl', 'config-db-ssl' ) .
 			Html::openElement( 'fieldset' ) .
 			Html::element( 'legend', [], wfMessage( 'config-db-wiki-settings' )->text() ) .
 			$this->getTextBox(
@@ -92,6 +95,7 @@ class PostgresInstaller extends DatabaseInstaller {
 		$newValues = $this->setVarsFromRequest( [
 			'wgDBserver',
 			'wgDBport',
+			'wgDBssl',
 			'wgDBname',
 			'wgDBmwschema'
 		] );
@@ -125,8 +129,7 @@ class PostgresInstaller extends DatabaseInstaller {
 		$conn = $status->value;
 
 		// Check version
-		$version = $conn->getServerVersion();
-		$status = static::meetsMinimumRequirement( $version );
+		$status = static::meetsMinimumRequirement( $conn );
 		if ( !$status->isOK() ) {
 			return $status;
 		}
@@ -161,14 +164,14 @@ class PostgresInstaller extends DatabaseInstaller {
 	protected function openConnectionWithParams( $user, $password, $dbName, $schema ) {
 		$status = Status::newGood();
 		try {
-			$db = Database::factory( 'postgres', [
+			$db = MediaWikiServices::getInstance()->getDatabaseFactory()->create( 'postgres', [
 				'host' => $this->getVar( 'wgDBserver' ),
 				'port' => $this->getVar( 'wgDBport' ),
 				'user' => $user,
 				'password' => $password,
+				'ssl' => $this->getVar( 'wgDBssl' ),
 				'dbname' => $dbName,
 				'schema' => $schema,
-				'keywordTableMap' => [ 'user' => 'mwuser', 'text' => 'pagecontent' ],
 			] );
 			$status->value = $db;
 		} catch ( DBConnectionError $e ) {
@@ -273,6 +276,7 @@ class PostgresInstaller extends DatabaseInstaller {
 					'port' => $this->getVar( 'wgDBport' ),
 					'user' => $user,
 					'password' => $password,
+					'ssl' => $this->getVar( 'wgDBssl' ),
 					'dbname' => $db
 				];
 				$conn = Database::factory( 'postgres', $p );
@@ -492,7 +496,7 @@ class PostgresInstaller extends DatabaseInstaller {
 
 		$dbName = $this->getVar( 'wgDBname' );
 
-		$exists = $conn->selectField( '"pg_catalog"."pg_database"', '1',
+		$exists = (bool)$conn->selectField( '"pg_catalog"."pg_database"', '1',
 			[ 'datname' => $dbName ], __METHOD__ );
 		if ( !$exists ) {
 			$safedb = $conn->addIdentifierQuotes( $dbName );
@@ -579,10 +583,12 @@ class PostgresInstaller extends DatabaseInstaller {
 
 	public function getLocalSettings() {
 		$port = $this->getVar( 'wgDBport' );
+		$useSsl = $this->getVar( 'wgDBssl' ) ? 'true' : 'false';
 		$schema = $this->getVar( 'wgDBmwschema' );
 
 		return "# Postgres specific settings
 \$wgDBport = \"{$port}\";
+\$wgDBssl = {$useSsl};
 \$wgDBmwschema = \"{$schema}\";";
 	}
 
@@ -621,17 +627,18 @@ class PostgresInstaller extends DatabaseInstaller {
 
 			return $status;
 		}
-		$error = $conn->sourceFile( $this->getSchemaPath( $conn ) );
+
+		$error = $conn->sourceFile( $this->getGeneratedSchemaPath( $conn ) );
 		if ( $error !== true ) {
 			$conn->reportQueryError( $error, 0, '', __METHOD__ );
 			$conn->rollback( __METHOD__ );
-			$status->fatal( 'config-install-tables-manual-failed', $error );
+			$status->fatal( 'config-install-tables-failed', $error );
 		} else {
-			$error = $conn->sourceFile( $this->getGeneratedSchemaPath( $conn ) );
+			$error = $conn->sourceFile( $this->getSchemaPath( $conn ) );
 			if ( $error !== true ) {
 				$conn->reportQueryError( $error, 0, '', __METHOD__ );
 				$conn->rollback( __METHOD__ );
-				$status->fatal( 'config-install-tables-failed', $error );
+				$status->fatal( 'config-install-tables-manual-failed', $error );
 			} else {
 				$conn->commit( __METHOD__ );
 			}
@@ -642,6 +649,11 @@ class PostgresInstaller extends DatabaseInstaller {
 		}
 
 		return $status;
+	}
+
+	public function createManualTables() {
+		// Already handled above. Do nothing.
+		return Status::newGood();
 	}
 
 	public function getGlobalDefaults() {
@@ -664,7 +676,7 @@ class PostgresInstaller extends DatabaseInstaller {
 		 */
 		$conn = $status->value;
 
-		$exists = $conn->selectField( '"pg_catalog"."pg_language"', '1',
+		$exists = (bool)$conn->selectField( '"pg_catalog"."pg_language"', '1',
 			[ 'lanname' => 'plpgsql' ], __METHOD__ );
 		if ( $exists ) {
 			// Already exists, nothing to do
@@ -673,7 +685,7 @@ class PostgresInstaller extends DatabaseInstaller {
 
 		// plpgsql is not installed, but if we have a pg_pltemplate table, we
 		// should be able to create it
-		$exists = $conn->selectField(
+		$exists = (bool)$conn->selectField(
 			[ '"pg_catalog"."pg_class"', '"pg_catalog"."pg_namespace"' ],
 			'1',
 			[
@@ -684,7 +696,7 @@ class PostgresInstaller extends DatabaseInstaller {
 			__METHOD__ );
 		if ( $exists ) {
 			try {
-				$conn->query( 'CREATE LANGUAGE plpgsql' );
+				$conn->query( 'CREATE LANGUAGE plpgsql', __METHOD__ );
 			} catch ( DBQueryError $e ) {
 				return Status::newFatal( 'config-pg-no-plpgsql', $this->getVar( 'wgDBname' ) );
 			}

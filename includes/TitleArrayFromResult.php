@@ -35,8 +35,10 @@ class TitleArrayFromResult extends TitleArray implements Countable {
 	/** @var IResultWrapper */
 	public $res;
 
+	/** @var int */
 	public $key;
 
+	/** @var Title|false */
 	public $current;
 
 	/**
@@ -69,16 +71,16 @@ class TitleArrayFromResult extends TitleArray implements Countable {
 		return $this->res->numRows();
 	}
 
-	public function current() {
+	public function current(): Title {
 		return $this->current;
 	}
 
-	public function key() {
+	public function key(): int {
 		return $this->key;
 	}
 
 	public function next(): void {
-		$row = $this->res->next();
+		$row = $this->res->fetchObject();
 		$this->setCurrent( $row );
 		$this->key++;
 	}

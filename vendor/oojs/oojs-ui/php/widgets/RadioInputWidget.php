@@ -6,9 +6,11 @@ namespace OOUI;
  * Radio input widget.
  */
 class RadioInputWidget extends InputWidget {
+	use RequiredElement;
 
 	/* Static Properties */
 
+	/** @var string */
 	public static $tagName = 'span';
 
 	/**
@@ -20,6 +22,11 @@ class RadioInputWidget extends InputWidget {
 		// Parent constructor
 		parent::__construct( $config );
 
+		// Traits
+		$this->initializeRequiredElement(
+			array_merge( [ 'indicatorElement' => null ], $config )
+		);
+
 		// Initialization
 		$this->addClasses( [ 'oo-ui-radioInputWidget' ] );
 		// Required for pretty styling in WikimediaUI theme
@@ -27,6 +34,7 @@ class RadioInputWidget extends InputWidget {
 		$this->setSelected( $config['selected'] ?? false );
 	}
 
+	/** @inheritDoc */
 	protected function getInputElement( $config ) {
 		return ( new Tag( 'input' ) )->setAttributes( [ 'type' => 'radio' ] );
 	}
@@ -56,6 +64,7 @@ class RadioInputWidget extends InputWidget {
 		return $this->input->getAttribute( 'checked' ) === 'checked';
 	}
 
+	/** @inheritDoc */
 	public function getConfig( &$config ) {
 		if ( $this->isSelected() ) {
 			$config['selected'] = true;

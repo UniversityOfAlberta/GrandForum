@@ -117,7 +117,7 @@ class Element extends Tag {
 	}
 
 	/**
-	 * Toggle visiblity of an element.
+	 * Toggle visibility of an element.
 	 *
 	 * @param bool|null $show Make element visible, omit to toggle visibility
 	 * @return $this
@@ -158,17 +158,13 @@ class Element extends Tag {
 	 * @return bool All methods are supported
 	 */
 	public function supports( $methods ) {
-		$support = 0;
-		$methods = (array)$methods;
-
-		foreach ( $methods as $method ) {
-			if ( method_exists( $this, $method ) ) {
-				$support++;
-				continue;
+		foreach ( (array)$methods as $method ) {
+			if ( !method_exists( $this, $method ) ) {
+				return false;
 			}
 		}
 
-		return count( $methods ) === $support;
+		return true;
 	}
 
 	/**
@@ -194,7 +190,7 @@ class Element extends Tag {
 	public function getConfig( &$config ) {
 		// If there are traits, add their config
 		foreach ( $this->configCallbacks as $func ) {
-			call_user_func_array( $func, [ &$config ] );
+			$func( $config );
 		}
 
 		if ( $this->data !== null ) {
@@ -219,7 +215,7 @@ class Element extends Tag {
 		$config = $this->getConfig( $config );
 		// Post-process config array to turn Tag references into ID references
 		// and HtmlSnippet references into a { html: 'string' } JSON form.
-		$replaceElements = function ( &$item ) {
+		$replaceElements = static function ( &$item ) {
 			if ( $item instanceof Tag ) {
 				$item->ensureInfusableId();
 				$item = [ 'tag' => $item->getAttribute( 'id' ) ];
@@ -241,6 +237,9 @@ class Element extends Tag {
 		return str_replace( 'OOUI\\', 'OO.ui.', get_class( $this ) );
 	}
 
+	/**
+	 * @return string[]
+	 */
 	protected function getGeneratedAttributes() {
 		$attributesArray = parent::getGeneratedAttributes();
 		// Add `data-ooui` attribute from serialized config array.

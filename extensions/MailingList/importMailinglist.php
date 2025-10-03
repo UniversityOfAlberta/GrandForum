@@ -87,7 +87,7 @@ function parseMailArchive($filename, $proj_id) {
 		$result = $dbr->query($sql);
 		$data = array();
 		$username = "";
-		while ($row = $dbr->fetchRow($result)) {
+		while ($row = $result->fetchRow()) {
 			$data[] = $row;
 		}
 		
