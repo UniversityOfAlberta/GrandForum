@@ -9,7 +9,7 @@ $dbr = wfGetDB(DB_REPLICA);
 $result = $dbr->query($sql);
 
 $mailmanArchivesPaths = array();
-while ($row = $dbr->fetchObject($result)) {
+while ($row = $result->fetchObject()) {
 	$mailmanArchivesPaths[$row->projectid] = $wdMailmanArchives . "/" . $row->mailListName;
 }
 
