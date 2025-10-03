@@ -57,6 +57,19 @@ require_once("Classes/countries.php");
 require_once( "$IP/Classes/Patch.php" );
 require_once( "$IP/config/ForumConfig.php" );
 
+// Hack to change to MYSQLI_ASSOC in doFetchRow
+$objPatch = new Patch("$IP/includes/libs/rdbms/database/resultwrapper/MysqliResultWrapper.php");
+$objPatch->redefineFunction("
+    protected function doFetchRow() {
+	\$array = \$this->result->fetch_array(MYSQLI_ASSOC); // Changed to MYSQLI_ASSOC
+	\$this->checkFetchError();
+	if ( \$array === null ) {
+		return false;
+	}
+	return \$array;
+}");
+eval($objPatch->getCode());
+
 $wgDeprecationReleaseLimit = '1.0';
 
 $wgBaseDirectory = MW_INSTALL_PATH;

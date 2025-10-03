@@ -540,7 +540,6 @@ class Person extends BackboneModel {
                                               'candidate' => NEQ(1),
                                               WHERE_OR('user_id') => EQ($me->getId())),
                                         array('user_name' => 'ASC'));
-            
             foreach($data as $row){
                 self::$allPeopleCache[] = $row['user_id'];
             }
