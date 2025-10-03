@@ -1343,6 +1343,13 @@ class Person extends BackboneModel {
     }
     
     /**
+     * Alias for isLoggedIn
+     */
+    function isRegistered(){
+        $this->isLoggedIn();
+    }
+    
+    /**
      * Returns when the User registered
      * @param boolean $format Whether to format to yyyy-mm-dd
      * @return string The string representing the date that this user Registered
