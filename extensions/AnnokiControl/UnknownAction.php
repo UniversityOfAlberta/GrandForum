@@ -22,7 +22,8 @@ class UnknownAction extends Action {
                 $ret = $obj->{$fn}($name, $this->getArticle());
             }
             else{
-                eval("\$ret = $action('$name', \$this->getArticle());");
+                $ret = call_user_func($action, $name, $this->getArticle());
+                //eval("\$ret = $action('$name', \$this->getArticle());");
             }
             if($ret === false){
                 return;
