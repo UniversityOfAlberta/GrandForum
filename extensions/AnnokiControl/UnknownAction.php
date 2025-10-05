@@ -23,7 +23,6 @@ class UnknownAction extends Action {
             }
             else{
                 $ret = call_user_func($action, $name, $this->getArticle());
-                //eval("\$ret = $action('$name', \$this->getArticle());");
             }
             if($ret === false){
                 return;
