@@ -19,9 +19,9 @@ class LIMSTaskAPIPmm extends RESTAPI {
             }
             return $task->toJSON();
         }
-        else{
-            $opportunity = LIMSOpportunityPmm::newFromId($this->getParam('opportunity_id'));
-            $tasks = new Collection($opportunity->getTasks());
+        else {
+            $project = Project::newFromId($this->getParam('project_id'));
+            $tasks = new Collection($project->getTasks());
             return $tasks->toJSON();
         }
     }
@@ -30,7 +30,7 @@ class LIMSTaskAPIPmm extends RESTAPI {
         $me = Person::newFromWgUser();  
         if(LIMSTaskPmm::isAllowedToCreate()){
             $task = new LIMSTaskPmm(array());
-            $task->opportunity = $this->POST('opportunity');
+            $task->projectId = $this->POST('projectId');
             $task->assignees = $this->POST('assignees');
             $task->reviewers = $this->POST('reviewers');
             $task->task = $this->POST('task');
@@ -53,6 +53,7 @@ class LIMSTaskAPIPmm extends RESTAPI {
         $task = LIMSTaskPmm::newFromId($this->getParam('id'));
         if($task->isAllowedToEdit()){
             $task->assignees = $this->POST('assignees');
+            $task->projectId = $this->POST('projectId');
             $task->reviewers = $this->POST('reviewers');
             $task->task = $this->POST('task');
             $task->dueDate = $this->POST('dueDate');

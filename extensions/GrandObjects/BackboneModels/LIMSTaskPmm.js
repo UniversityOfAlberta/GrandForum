@@ -1,7 +1,6 @@
 LIMSTaskPmm = Backbone.Model.extend({
 
     toDelete: false,
-    opportunity: null, // Parent obj
 
     initialize: function(){
     
@@ -14,7 +13,7 @@ LIMSTaskPmm = Backbone.Model.extend({
     defaults: function() {
         return{
             id: null,
-            opportunity: "",
+            projectId: "",
             assignees: [],
             task: "",
             taskType:"",
@@ -38,10 +37,15 @@ LIMSTaskPmm = Backbone.Model.extend({
  */
 LIMSTasksPmm = Backbone.Collection.extend({
     model: LIMSTaskPmm,
-    
-    opportunity: null,
-    
+    projectId: null,
+    initialize: function(models, options) {
+        if (options && options.projectId) {
+            this.projectId = options.projectId;
+        }
+    },
+
     url: function(){
-        return 'index.php?action=api.limsopportunitypmm/' + this.opportunity.get('id') + '/tasks';
-    }
+    return '/index.php?action=api.limstaskpmm/project/' + this.projectId;
+}
+
 });

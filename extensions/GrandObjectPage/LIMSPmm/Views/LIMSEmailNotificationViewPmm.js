@@ -5,17 +5,18 @@ LIMSEmailNotificationViewPmm = Backbone.View.extend({
     },
     
     initialize: function(options) {
-        this.opportunity = options.opportunity;
-        this.project = options.project;
+        this.projectId = options.projectId;
+        this.tasks = options.tasks;
         
         this.model = new Backbone.Model({
             taskName: '',
             taskType: '',
             assigneeStatus: '',
-            emailContent: ''
+            emailContent: '',
+            emailSubject: ''
         });
                 
-        this.listenTo(this.opportunity.tasks, "sync add remove", this.render);
+        this.listenTo(this.tasks, "sync add remove", this.render);
         
         this.template = _.template($('#lims_email_notification_view_template').html());
     },
@@ -26,7 +27,7 @@ LIMSEmailNotificationViewPmm = Backbone.View.extend({
         if (!filterType) return options;
 
         var allFilterOptions = {
-            'taskName': this.opportunity.tasks.pluck('task') || [],
+            'taskName': this.tasks.pluck('task') || [],
             'taskType': ['Planning', 'Screening', 'Data Extraction', 'Analysis and Report Writing'],
             'assigneeStatus': ['Assigned', 'Done', 'Closed']
         };
@@ -54,15 +55,17 @@ LIMSEmailNotificationViewPmm = Backbone.View.extend({
         if (assigneeStatusOption !== ''){ filters['assigneeStatus'] = assigneeStatusOption }
 
         var emailContent = this.model.get('emailContent');
-        
+        var emailSubject = this.model.get('emailSubject');
+
         if (Object.keys(filters).length === 0 || !emailContent) {
             alert('Please fill in all fields before sending.');
             return;
         }
         
         var payload = {
-            action: "send_notification",
+            projectId: this.projectId,
             filters: filters,
+            emailSubject: emailSubject,
             emailContent: emailContent
         };
         
@@ -71,7 +74,7 @@ LIMSEmailNotificationViewPmm = Backbone.View.extend({
         $button.prop('disabled', true).text('Sending...');
         
         $.ajax({
-            url: 'index.php?action=api.limsopportunitypmm/' + this.opportunity.get('id'),
+            url: 'index.php?action=api.notifications',
             method: 'POST',
             data: JSON.stringify(payload),
             contentType: 'application/json',
@@ -94,6 +97,7 @@ LIMSEmailNotificationViewPmm = Backbone.View.extend({
             taskName: '',
             taskType: '',
             assigneeStatus: '',
+            emailSubject: '',
             emailContent: ''
         });
         
@@ -113,7 +117,7 @@ LIMSEmailNotificationViewPmm = Backbone.View.extend({
         this.$('.email-accordion').accordion({
             collapsible: true,
             active: isInitialized ? wasActive : false,
-            heightStyle: "content"
+            autoHeight: false
         });
         
         this.$el.attr('style', 'margin-bottom: 20px;');

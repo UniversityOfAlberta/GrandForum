@@ -1,8 +1,6 @@
 <?php
 
 class ProjectLIMSPmmTab extends AbstractEditableTab {
-
-
     var $project;
     var $visibility;
 
@@ -16,107 +14,46 @@ class ProjectLIMSPmmTab extends AbstractEditableTab {
     }
 
     function canEdit() {
-        $me = Person::newFromWgUser();
-        return ($me->isRoleAtLeast(STAFF) || $me->isMemberOf($this->project));
-        // return $this->project->userCanEdit();
+        return $this->project->isAllowedToView();
     }
 
     function generateEditBody(){
-        global $wgUser, $wgServer, $wgScriptPath, $config, $wgOut;
-    if ($wgUser->isRegistered()) {
-        $project = $this->project;
+        return $this->generateView(true);
+    }
 
-        $limsPmm = new LIMSPmm();
-        $limsPmm->loadTemplates();
-        $limsPmm->loadModels();
-        $limsPmm->loadHelpers();
-        $limsPmm->loadViews();
-        $wgOut->addScript("<link href='$wgServer$wgScriptPath/extensions/GrandObjectPage/LIMSPmm/style.css' type='text/css' rel='stylesheet' />");
+    function handleEdit() {}
 
-        $this->html = "
+    function generateBody(){
+        return $this->generateView(false);
+    }
 
-            <div id='lims-contact-container'></div>
-            <script>
-                $(document).ready(function() {
-                        var contactModel = new LIMSContactPmm({ projectId: {$project->getId()} });
-                        var contactView = new LIMSContactEditViewPmm({ 
-                            model: contactModel,
-                             el: '#lims-contact-container',
-                             isDialog: true
+    private function generateView($isEditMode) {
+        global $wgUser, $wgServer, $wgScriptPath, $wgOut;
+        if ($wgUser->isRegistered()) {
+            $projectId = $this->project->getId();
+
+            $limsPmm = new LIMSPmm();
+            $limsPmm->loadTemplates();
+            $limsPmm->loadModels();
+            $limsPmm->loadHelpers();
+            $limsPmm->loadViews();
+            $wgOut->addScript("<link href='$wgServer$wgScriptPath/extensions/GrandObjectPage/LIMSPmm/style.css' type='text/css' rel='stylesheet' />");
+            $isEditModeJS = $isEditMode ? 'true' : 'false';
+            $this->html = "
+                <div id='lims_pmm_project_task_container'></div>
+                <script>
+                    $(document).ready(function() {
+                        new ProjectTaskView({
+                            el: '#lims_pmm_project_task_container',
+                            projectId: {$projectId},
+                            isEditMode: {$isEditModeJS}
                         });
-                        contactModel.fetch();
-                        
-                        $('form').on('submit', function(e){
-                                if(this.submitted == 'Cancel'){
-                                    return true;
-                                }
-                                if($('button[value=\"Save {$this->name}\"]').is(':visible')){
-                                    e.preventDefault();
-                                    $('button[value=\"Save {$this->name}\"]').prop('disabled', true);
-                                    
-                                    // Save Contact
-                                    $.when.apply(null, contactView.save()).done(function(){
-                                        // Save Opportunities
-                                        $.when.apply(null, contactView.saveOpportunities()).done(function(){
-                                            // Save Tasks
-                                            $.when.apply(null, contactView.saveTasks()).done(function(){
-                                                $('form').off('submit');
-                                                $('button[value=\"Save {$this->name}\"]').prop('disabled', false);
-                                                _.delay(function(){
-                                                    $('button[value=\"Save {$this->name}\"]').click();
-                                                }, 10);
-                                            }.bind(this));
-                                        }.bind(this));
-                                    }.bind(this)).fail(function(e){
-                                        $('button[value=\"Save {$this->name}\"]').prop('disabled', false);
-                                        clearAllMessages();
-                                        addError(e.responseText, true);
-                                    }.bind(this));
-                                }
-                        });
-                 });
-            </script>
-        ";
+                    });
+                </script>
+            ";
+        }
+        return $this->html;
     }
-    return $this->html;
-    }
-
-    function handleEdit() {
-        
-    }
-
-    function generateBody()
-{
-    global $wgUser, $wgServer, $wgScriptPath, $config, $wgOut;
-    if ($wgUser->isRegistered()) {
-        $project = $this->project;
-
-        $limsPmm = new LIMSPmm();
-        $limsPmm->loadTemplates();
-        $limsPmm->loadModels();
-        $limsPmm->loadHelpers();
-        $limsPmm->loadViews();
-        $wgOut->addScript("<link href='$wgServer$wgScriptPath/extensions/GrandObjectPage/LIMSPmm/style.css' type='text/css' rel='stylesheet' />");
-
-        $this->html = "
-
-            <div id='lims-contact-container'></div>
-            <script>
-                $(document).ready(function() {
-                        var contactModel = new LIMSContactPmm({ projectId: {$project->getId()} });
-                        var contactView = new LIMSContactViewPmm({ 
-                            model: contactModel,
-                             el: '#lims-contact-container',
-                             isDialog: true
-                        });
-                 });
-            </script>
-        ";
-    }
-    return $this->html;
-}
-
-
 }
 
 ?>

@@ -14,32 +14,22 @@ class LIMSPmm extends BackbonePage {
     
     function getTemplates(){
         return array('Backbone/*',
-                     'lims_contacts_table',
-                     'lims_contact',
-                     'lims_contact_edit',
-                     'lims_opportunity',
-                     'lims_opportunity_edit',
-                     'lims_task',
-                     'lims_task_edit',
                     'lims_status_change',
                     'lims_status_check',
                     'lims_comment_history',
-                'lims_email_notification_view');
+                    'lims_email_notification_view',
+                    'project_tasks_main',
+                    'task_row');
     }
     
     function getViews(){
         return array('Backbone/*',
-                     'LIMSContactsTableViewPmm',
-                     'LIMSContactViewPmm',
-                     'LIMSContactEditViewPmm',
-                     'LIMSOpportunityViewPmm',
-                     'LIMSOpportunityEditViewPmm',
-                     'LIMSTaskViewPmm',
-                     'LIMSTaskEditViewPmm',
                     'LIMSStatusChangeViewPmm',
                     'LIMSStatusCheckViewPmm',
                     'LIMSCommentHistoryPmm',
-                'LIMSEmailNotificationViewPmm');
+                    'LIMSEmailNotificationViewPmm',
+                    'ProjectTaskView',
+                    'TaskRowView');
     }
     
     function getModels(){

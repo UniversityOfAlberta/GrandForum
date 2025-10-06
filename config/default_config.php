@@ -261,6 +261,9 @@
     
     // Whether or not to show the sidebar (it will still be visible when not logged in)
     $config->setValue("showSideBar", true);
+
+    // Whether or not to show the sidebar to members (it will still be visible when not logged in)
+    $config->setValue("showSideBarToMember", true);
     
     // Whether or not to show Add Member in the sidebar
     $config->setValue("showAddMember", true);

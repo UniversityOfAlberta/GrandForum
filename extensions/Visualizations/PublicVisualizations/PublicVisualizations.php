@@ -31,7 +31,20 @@ class PublicVisualizations extends SpecialPage{
 	    if($config->getValue('guestLockdown')){
 	        return $user->isRegistered();
 	    }
-        return true;
+
+        if (!$user->isRegistered()){
+            return false;
+        }
+
+        $me = Person::newFromWgUser();
+        $allProjects = Project::getAllProjects();
+
+        foreach($allProjects as $proj){
+            if($proj->isAllowedToEdit($me)){
+                return true;
+            }
+        }
+        return false;
     }
 
     function execute($par){

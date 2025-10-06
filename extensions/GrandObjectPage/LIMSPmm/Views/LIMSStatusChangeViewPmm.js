@@ -12,13 +12,9 @@ LIMSStatusChangeViewPmm = Backbone.View.extend({
         this.isDialog = options.isDialog || false;
         this.selectTemplate();
         this.render();
-        
-        
     },
 
     selectTemplate: function(){
-
-        
         // Get project role for current user
         var userRole = _.pluck(_.filter(me.get('roles'), function(el){ 
             return el.title == this.project.get("name") ||  el.role !== PL; 

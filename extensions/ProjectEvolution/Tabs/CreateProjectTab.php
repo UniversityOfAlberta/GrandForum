@@ -205,6 +205,8 @@ EOF;
         $table->append($phaseRow);
         $table->append($effectiveRow);
         $table->append($plRow);
+        $table->append($challengeFieldSet);
+
 
         $sectionMap = $config->getValue('projectSectionMap');
         if ($sectionMap && is_array($sectionMap)) {
@@ -259,7 +261,6 @@ EOF;
         $table->append($longDescRow);
         
         $form->append($table);
-        $form->append($challengeFieldSet);
 
         return $form;
     }

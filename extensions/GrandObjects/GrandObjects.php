@@ -229,18 +229,12 @@ $apiRequest->addAction('Hidden','limstask', 'LIMSTaskAPI');
 $apiRequest->addAction('Hidden','limstask/:id', 'LIMSTaskAPI');
 
 // LIMSPmm
-$apiRequest->addAction('Hidden','limscontactpmm', 'LIMSContactAPIPmm');
-$apiRequest->addAction('Hidden','limscontactpmm/:id', 'LIMSContactAPIPmm');
-$apiRequest->addAction('Hidden','limscontactpmm/:contact_id/limsopportunitiespmm', 'LIMSOpportunityAPIPmm');
-$apiRequest->addAction('Hidden','limscontactpmm/project/:project_id', 'LIMSContactAPIPmm');
-$apiRequest->addAction('Hidden','limsopportunitypmm', 'LIMSOpportunityAPIPmm');
-$apiRequest->addAction('Hidden','limsopportunitypmm/:id', 'LIMSOpportunityAPIPmm');
-$apiRequest->addAction('Hidden','limsopportunitypmm/:id/files/:file_id', 'LIMSOpportunityAPIPmm');
-$apiRequest->addAction('Hidden','limsopportunitypmm/:opportunity_id/tasks', 'LIMSTaskAPIPmm');
 $apiRequest->addAction('Hidden','limstaskpmm', 'LIMSTaskAPIPmm');
 $apiRequest->addAction('Hidden','limstaskpmm/:id', 'LIMSTaskAPIPmm');
+$apiRequest->addAction('Hidden','limstaskpmm/project/:project_id', 'LIMSTaskAPIPmm');
 $apiRequest->addAction('Hidden','limstaskpmm/:id/files/:file_id', 'LIMSTaskAPIPmm');
-$apiRequest->addAction('Hidden','limstaskpmm/:id/merge_csvs', 'LIMSTaskMergeCsv');
+$apiRequest->addAction('Hidden','limstaskpmm/:id/merge_files', 'LIMSTaskMergeFiles');
+$apiRequest->addAction('Hidden','notifications', 'LIMSSendNotifications');
 
 // DataCollection
 $apiRequest->addAction('Hidden','datacollection', 'DataCollectionAPI');
@@ -307,8 +301,6 @@ function createModels(){
     addScript("LIMSOpportunity");
     addScript("LIMSTask");
     addScript("LIMSContact");
-    addScript("LIMSContactPmm");
-    addScript("LIMSOpportunityPmm");
     addScript("LIMSTaskPmm");
     return true;
 }
