@@ -92,8 +92,6 @@ $wgExtensionCredits['specialpage'][] = array(
 				       
 function permissionError(){
     global $wgOut, $wgUser, $wgServer, $wgScriptPath;
-    $e = new \Exception;
-var_dump($e->getTraceAsString());
     $wgOut->setPageTitle("Permission error");
     $wgOut->addHTML("<p>You are not allowed to execute the action you have requested.</p>");
     if(!$wgUser->isRegistered()){
