@@ -203,7 +203,7 @@ class ProjectWikiTab extends AbstractTab {
         foreach($pages as $page){
             if($page->getTitle()->getText() != "Main"){
                 $revId = $page->getRevIdFetched();
-                $revision = Revision::newFromId($revId);
+                $revision = MediaWikiServices::getInstance()->getRevisionLookup()->getRevisionById($revId);
 			    $date = $revision->getTimestamp();
 			    $year = substr($date, 0, 4);
 			    $month = substr($date, 4, 2);
@@ -211,7 +211,7 @@ class ProjectWikiTab extends AbstractTab {
 			    $hour = substr($date, 8, 2);
 			    $minute = substr($date, 10, 2);
 			    $second = substr($date, 12, 2);
-			    $editor = Person::newFromId($revision->getUser());
+			    $editor = Person::newFromId($revision->getUser()->getId());
 			    
 			    $this->html .= "<tr>\n";
                 $this->html .= "<td><a href='$wgServer$wgScriptPath/index.php/{$project->getName()}:".str_replace("'", "%27", "{$page->getTitle()->getText()}")."'>{$page->getTitle()->getText()}</a></td>\n";
