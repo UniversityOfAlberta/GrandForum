@@ -53,7 +53,7 @@ function registerExtraNamespaces(&$namespaces) {
 			$wgUserNamespaces[$nsId] = array("id" => $extraNamespace["nsUser"], "name" => $extraNamespace["user_name"]);
 		}*/
 		if (!MediaWikiServices::getInstance()->getNamespaceInfo()->isTalk($nsId)) {
-			$talk = MediaWikiServices::getInstance()->getNamespaceInfo()->isTalk($nsId);
+			$talk = MediaWikiServices::getInstance()->getNamespaceInfo()->getTalk($nsId);
 			$namespaces[$talk] = "{$nsName}_Talk";
 		}
 	}
