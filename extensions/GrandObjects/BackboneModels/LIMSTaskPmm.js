@@ -45,7 +45,7 @@ LIMSTasksPmm = Backbone.Collection.extend({
     },
 
     url: function(){
-    return '/index.php?action=api.limstaskpmm/project/' + this.projectId;
+    return 'index.php?action=api.limstaskpmm/project/' + this.projectId;
 }
 
 });
