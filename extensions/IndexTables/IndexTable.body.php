@@ -329,9 +329,13 @@ class IndexTable {
     private static function generateProjectsTable($status, $type="Research"){
         global $wgScriptPath, $wgServer, $wgOut, $wgUser, $config;
         $me = Person::newFromId($wgUser->getId());
+        $identifierHeader = "";
         $themesHeader = "";
         $datesHeader = "";
         $idHeader = "";
+        if($config->getValue('showIdentifier')){
+            $identifierHeader = "<th>Identifier</th>";
+        }
         if($type != "Administrative"){
             $phases = @explode(",", $_GET['phases']);
             $themesHeader = "<th>{$config->getValue('projectThemes', $phases[0])}</th>";
@@ -347,7 +351,7 @@ class IndexTable {
         $wgOut->addHTML("
             <table class='indexTable' style='display:none;' frame='box' rules='all'>
             <thead>
-            <tr><th>Identifier</th><th>Name</th><th>Leaders</th>{$themesHeader}{$datesHeader}{$idHeader}</tr></thead><tbody>");
+            <tr>{$identifierHeader}<th>Name</th><th>Leaders</th>{$themesHeader}{$datesHeader}{$idHeader}</tr></thead><tbody>");
         foreach($data as $proj){
             if(isset($_GET['phases']) && strstr($_GET['phases'], $proj->getPhase()) === false){
                 continue;
@@ -361,10 +365,11 @@ class IndexTable {
                     }
                 }
                 $subProjects = (count($subProjects) > 0) ? " (".implode(", ", $subProjects).")" : "";
-                $wgOut->addHTML("
-                    <tr>
-                    <td align='left'><a href='{$proj->getUrl()}'>{$proj->getName()}</a> {$subProjects}</td>
-                    <td align='left'>{$proj->getFullName()}</td>");
+                $wgOut->addHTML("<tr>");
+                if($identifierHeader != ""){
+                    $wgOut->addHTML("<td align='left'><a href='{$proj->getUrl()}'>{$proj->getName()}</a> {$subProjects}</td>");
+                }
+                $wgOut->addHTML("<td align='left'><span style='display:none;'>{$proj->getFullName()}</span><a href='{$proj->getUrl()}'>{$proj->getFullName()}</a></td>");
                 $leaders = array();
                 if(!$proj->isDeleted()){
                     foreach($proj->getAllPeople(PL) as $leader){

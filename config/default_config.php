@@ -288,6 +288,9 @@
     
     // Whether to show sub-project field on project views
     $config->setValue("showSubProject", true);
+    
+    // Whether to show the 'Identifier' column on the project index table
+    $config->setValue("showIdentifier", true);
 
     // Whether to show phase field on project views
     $config->setValue("projectPhase", true);
