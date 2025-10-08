@@ -6,12 +6,7 @@
             <SectionPermission id="atsec_votes" permissions="" />
             <SectionPermission id="summary" permissions="rw" />
         </Role>
-        <Role role="DEAN" start="{$this_year}-07-01" end="{$next_year}-07-01">
-            <SectionPermission id="atsec" permissions="rw" />
-            <SectionPermission id="atsec_votes" permissions="rw" />
-            <SectionPermission id="summary" permissions="rw" />
-        </Role>
-        <Role role="VDEAN" start="{$this_year}-07-01" end="{$next_year}-07-01">
+        <Role role="FEC_CHAIR" start="{$this_year}-07-01" end="{$next_year}-07-01">
             <SectionPermission id="atsec" permissions="rw" />
             <SectionPermission id="atsec_votes" permissions="rw" />
             <SectionPermission id="summary" permissions="rw" />
@@ -278,8 +273,7 @@
                 ]]>
             </ReportItem>
             <If if="{or({contains({$my_roles},ADMIN)},
-                        {contains({$my_roles},DEAN)},
-                        {contains({$my_roles},VDEAN)},
+                        {contains({$my_roles},FEC_CHAIR)},
                         {contains({$my_roles},HR)},
                         {==({$user_id},8960)})}"><!-- Get Rid of this for Elizabeth Hodges -->
                 <ReportItem id="da" type="PDFReportItem" reportType="ChairTable" section="Dean Advice" noRenderIfNull="true" class="downloadPDF" buttonName="Dean's Advice">
@@ -319,7 +313,7 @@
                     </td>
                 ]]>
             </Static>
-            <If if="{or({contains({$my_roles},ViceDean)},{contains({$my_roles},ATSEC)})}">
+            <If if="{or({contains({$my_roles},FEC_CHAIR)},{contains({$my_roles},ATSEC)})}">
                 <!-- Increment Vote -->
                 <ReportItem id="vote" type="Select" blobType="BLOB_TEXT" blobItem="VOTE" blobSubItem="{$user_id}" options="|Yes|No|Abstain" width="80px" encrypt="true">
                     <![CDATA[
@@ -361,7 +355,7 @@
                 </ReportItem>
                 
                 <!-- Comments -->
-                <If if="{contains({$my_roles},ViceDean)}">
+                <If if="{contains({$my_roles},FEC_CHAIR)}">
                     <Static>
                         <![CDATA[
                             <td>
@@ -434,8 +428,7 @@
             ]]>
         </Static>
         <If if="{or({contains({$my_roles},ADMIN)},
-                    {contains({$my_roles},DEAN)},
-                    {contains({$my_roles},VDEAN)},
+                    {contains({$my_roles},FEC_CHAIR)},
                     {contains({$my_roles},HR)})}">
             <Static>
                 <![CDATA[
@@ -690,7 +683,7 @@
     <ReportSection id="summary" tooltip="Summary Table" name="Summary Table" title="Summary Table" blobSection="SUMMARY" type="EditableReportSection">
         <Static>
             <![CDATA[
-                <table id='summary' class='wikitable' frame=box' rules='all'>
+                <table id='chairTable' class='wikitable' frame=box' rules='all'>
                     <thead>
                         <tr>
                             <th colspan='4'>Person</th>
@@ -844,10 +837,10 @@
                     </tbody>
                 </table>
                 <script type='text/javascript'>
-                    $('#summary').DataTable({
+                    $('#chairTable').DataTable({
                         scrollX: true,
                         'aLengthMenu': [[100,-1], [100,'All']], 
-                        'iDisplayLength': -1, 
+                        'iDisplayLength': -1,
                         'dom': 'Blfrtip',
                         'buttons': [
                             'excel'
