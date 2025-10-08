@@ -8,8 +8,9 @@ $wgHooks['ToolboxLinks'][] = 'LIMSPmm::createSideBarLink';
 class LIMSPmm extends BackbonePage {
     
     function userCanExecute($user){
-        $me = Person::newFromUser($user);
-        return $me->isRoleAtLeast(STAFF);
+        // $me = Person::newFromUser($user);
+        // return $me->isRoleAtLeast(STAFF);
+        return false;
     }
     
     function getTemplates(){

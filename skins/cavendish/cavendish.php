@@ -330,15 +330,6 @@ class CavendishTemplate extends QuickTemplate {
 		    boardMods = <?php echo json_encode($config->getValue('boardMods')); ?>;
 		    showSideBar = <?php var_export($config->getValue('showSideBar')) ?>;
 			showSideBarToMember = <?php var_export($config->getValue('showSideBarToMember')) ?>;
-			isProjectLeader = <?php echo json_encode((function($user){
-				$allProjects = Project::getAllProjects();
-				foreach($allProjects as $proj){
-					if($proj->isAllowedToEdit($user)){
-						return true;
-					}
-				}
-				return false;
-				})($me)); ?>;
 
 		    embed = <?php var_export(isset($_GET['embed'])); ?>;
 		    
@@ -354,6 +345,10 @@ class CavendishTemplate extends QuickTemplate {
 		        echo $me->toJSON();
 		    ?>
 		    );
+
+			const userRoles = _.pluck(me.get('roles'), 'role');
+			const isUserPriviledged = _.intersection(userRoles, [PL, STAFF, MANAGER, ADMIN]).length > 0 ;
+			
 		    
 		    productStructure = <?php
 		        $structure = Product::structure();
@@ -443,7 +438,7 @@ class CavendishTemplate extends QuickTemplate {
                     }
                     $("#bodyContent").css('top', top);
                     if(me.isLoggedIn() && showSideBar){
-						if (showSideBarToMember || isProjectLeader) {
+						if (showSideBarToMember || isUserPriviledged) {
                         	$("#side").show();
 						} else {
  							$("#side").hide();
