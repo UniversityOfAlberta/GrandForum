@@ -168,7 +168,8 @@ EOF;
         $longDescRow->append(new CustomElement("{$pre}_long_description", "Description", "", $longDescEditorHTML, VALIDATE_NOTHING));
               
         //Challenges
-        $challengeFieldSet = new FieldSet("{$pre}_challenges_set", "Theme");
+        $challengeRow = new FormTableRow("{$pre}_challenge_row");
+        $challengeFieldSet = new FieldSet("{$pre}_challenges_set"); // theme
        
         $challengeNames = array();
         $challenges = Theme::getAllThemes();
@@ -178,6 +179,9 @@ EOF;
 
         $challengeRadioBox = new VerticalCheckBox2("{$pre}_challenge", "", array(), $challengeNames, VALIDATE_NOTHING);
         $challengeFieldSet->append($challengeRadioBox);
+        $challengeLabel = new Label("{$pre}_themes", "Theme", "The full description of the project", VALIDATE_NOTHING);
+        $challengeRow->append($challengeLabel);
+        $challengeRow->append($challengeFieldSet);
 
         if(!$config->getValue("projectTypes")){
             $typeRow->hide();
@@ -201,11 +205,11 @@ EOF;
         $table->append($subprojectRow);
         $table->append($subprojectDDRow);
         $table->append($statusRow);
+        $table->append($challengeRow);
         $table->append($typeRow);
         $table->append($phaseRow);
         $table->append($effectiveRow);
         $table->append($plRow);
-        $table->append($challengeFieldSet);
 
 
         $sectionMap = $config->getValue('projectSectionMap');
