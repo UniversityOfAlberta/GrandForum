@@ -45,6 +45,7 @@ function redirect($url){
 
 function close(){
     MediaWikiServices::getInstance()->getDBLoadBalancerFactory()->shutdown();
+    DeferredUpdates::doUpdates();
     exit;
 }
 
