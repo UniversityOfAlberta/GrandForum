@@ -93,14 +93,17 @@ class IncrementReportItem extends SelectReportItem {
                 }
                 break;
             case "T1":
+            case "T4":
                 $increment = Person::getSalaryIncrement($this->getReport()->year, 'atsec1');
                 $maxSalary = Person::getMaxSalary($this->getReport()->year, 'atsec1');
                 break;
             case "T2":
+            case "T5":
                 $increment = Person::getSalaryIncrement($this->getReport()->year, 'atsec2');
                 $maxSalary = Person::getMaxSalary($this->getReport()->year, 'atsec2');
                 break;
             case "T3":
+            case "T6":
                 $increment = Person::getSalaryIncrement($this->getReport()->year, 'atsec3');
                 $maxSalary = Person::getMaxSalary($this->getReport()->year, 'atsec3');
                 break;
