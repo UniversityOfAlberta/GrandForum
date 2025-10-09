@@ -56,7 +56,7 @@
                 ]]>
             </ReportItem>
             <!-- Rebuttal -->
-            <If if="{!=({$user_id},23673)}">
+            <If if="{!=(1,0)}"> <!-- edit this line if there the rebuttal should be hidden. (ie. {!=({$user_id},23673)} ) -->
                 <Static>
                     {set(fileRebuttal, {getBlobMD5(RP_FEC,REBUTTAL,REBUTTAL,0,{$user_id},0)})}
                 </Static>
