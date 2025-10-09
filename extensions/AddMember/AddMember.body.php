@@ -51,7 +51,7 @@ class UserCreate {
                 $noProjects = true;
                 if(isset($_POST['wpNS'])){
                     $box = $_POST['wpNS'];
-                    while (list ($key,$val) = @each($box)) {
+                    foreach($box as $key => $val){
                         if($val != null && $val != ""){
                             $split = explode(":", $val);
                             if(count($split) == 1 || $split[0] == "$role"){

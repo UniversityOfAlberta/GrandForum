@@ -104,7 +104,7 @@ class AddMember extends SpecialPage{
                 $_POST['user_name'] = $user->getName();
                 $_POST['wpUserType'] = (isset($_POST['wpUserType'])) ? implode(", ", $_POST['wpUserType']) : "";
                 $_POST['wpUserSubType'] = (isset($_POST['wpUserSubType'])) ? implode(", ", $_POST['wpUserSubType']) : "";
-                $_POST['wpNS'] = (isset($_POST['wpNS'])) ? @implode(", ", array_unique($_POST['wpNS'])) : "";
+                $_POST['wpNS'] = (isset($_POST['wpNS']) && !empty($_POST['wpNS'])) ? @implode(", ", array_unique($_POST['wpNS'])) : "";
                 $result = APIRequest::doAction('RequestUser', false);
                 if($result){
                     $form->reset();
