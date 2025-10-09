@@ -727,6 +727,9 @@ class Paper extends BackboneModel{
             return "Published";
         }
         if($this->category == "Publication" && $this->acceptance_date != "0000-00-00" && $this->acceptance_date != ""){
+            if($this->status == "Revision Requested"){
+                return $this->status;
+            }
             return "Accepted";
         }
         return $this->status;

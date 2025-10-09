@@ -83,7 +83,7 @@
         <% } %>
         <tr>
             <% if(!_.isEmpty(this.model.getAcceptanceDateLabel())){ %>
-                <td class="label"><%= this.model.getAcceptanceDateLabel() %>:</td>
+                <td id="acceptanceDateLabel" class="label"><%= this.model.getAcceptanceDateLabel() %>:</td>
                 <td class="field"><%= HTML.DatePicker(this, 'acceptance_date', {format: 'yy-mm-dd', id: 'acceptance_date'}) %></td>
             <% } else { %>
                 <td colspan="2"></td>
