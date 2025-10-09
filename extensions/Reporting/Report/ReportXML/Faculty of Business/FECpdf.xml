@@ -7,5 +7,42 @@
                 {$item}
             ]]>
         </ReportItem>
+        <If if="{>({getText(RP_LETTER5, TABLE, ADMIN, {$user_id}, 1, 0, {$last_year})}, 0)}" after="additionalData">
+            <ReportItem id="admin" type="BookmarkReportItem" title="Administration">
+                <![CDATA[
+                    <h2>Administration</h2>
+                ]]>
+            </ReportItem>
+            <ReportItem id="admin_title" type="Text" blobItem="ADMIN_TITLE" blobSection="FEC_ADDITIONAL_INFO">
+                <![CDATA[
+                    <h3>Position Title</h3>
+                    {$item}<br />
+                ]]>
+            </ReportItem>
+            <ReportItem id="admin_expectation" type="Textarea" blobItem="ADMIN_EXPECTATION" blobSection="FEC_ADDITIONAL_INFO" rich="true">
+                <![CDATA[
+                    <h3>Position Expectation</h3>
+                    {$item}
+                ]]>
+            </ReportItem>
+            <ReportItem id="admin_completion" type="Textarea" blobItem="ADMIN_COMPLETION" blobSection="FEC_ADDITIONAL_INFO" rich="true">
+                <![CDATA[
+                    <h3>Completion of Expected Tasks</h3>
+                    {$item}
+                ]]>
+            </ReportItem>
+            <ReportItem id="admin_accomplishments" type="Textarea" blobItem="ADMIN_ACCOMPLISHMENTS" blobSection="FEC_ADDITIONAL_INFO" rich="true">
+                <![CDATA[
+                    <h3>Main / Noteworthy Accomplishments</h3>
+                    {$item}
+                ]]>
+            </ReportItem>
+            <ReportItem id="admin_leadership" type="Textarea" blobItem="ADMIN_LEADERSHIP" blobSection="FEC_ADDITIONAL_INFO" rich="true">
+                <![CDATA[
+                    <h3>Leadership / Innovation Activities</h3>
+                    {$item}
+                ]]>
+            </ReportItem>
+        </If>
     </ReportSection>
 </Report>

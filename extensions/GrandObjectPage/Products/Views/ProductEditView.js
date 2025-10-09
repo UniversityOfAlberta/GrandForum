@@ -25,6 +25,7 @@ ProductEditView = Backbone.View.extend({
                     this.listenTo(this.model, "change:category", this.render);
                     this.listenTo(this.model, "change:type", this.render);
                     this.listenTo(this.model, "change:access", this.render);
+                    this.listenTo(this.model, "change:status", this.updateAcceptanceDateLabel);
                 }.bind(this)
             });
         }
@@ -35,6 +36,7 @@ ProductEditView = Backbone.View.extend({
             this.listenTo(this.model, "change:category", this.render);
             this.listenTo(this.model, "change:type", this.render);
             this.listenTo(this.model, "change:access", this.render);
+            this.listenTo(this.model, "change:status", this.updateAcceptanceDateLabel);
         }
     },
     
@@ -57,9 +59,11 @@ ProductEditView = Backbone.View.extend({
     
     updateStatus: function(){
         _.defer(function(){
+            this.$("[name=status] option").prop("disabled", false); // Reset the options
             var currentDate = new Date().toISOString().substr(0, 10);
             if(this.model.get('category') == "Publication" && this.model.get('date') != ZOT && 
                                                               this.model.get('date') != ""){
+                // Publication Date was specified
                 if(currentDate < this.model.get('date')){
                     this.$("[name=status]").val("Accepted").change();
                     this.$("[name=status]").prop("disabled", true);
@@ -71,13 +75,31 @@ ProductEditView = Backbone.View.extend({
             }
             else if(this.model.get('category') == "Publication" && this.model.get('acceptance_date') != ZOT && 
                                                                    this.model.get('acceptance_date') != ""){
-                this.$("[name=status]").val("Accepted").change();
-                this.$("[name=status]").prop("disabled", true);
+                // Only Acceptance Date specified
+                if(this.model.get('status') != "Revision Requested"){
+                    this.$("[name=status]").val("Accepted").change();
+                }
+                this.$("[name=status] option").each(function(){
+                    if($(this).text() != "Revision Requested" && $(this).text() != "Accepted"){
+                        $(this).prop("disabled", true);
+                    }
+                });
+                this.$("[name=status]").prop("disabled", false);
             }
             else{
+                // No dates specified
                 this.$("[name=status]").prop("disabled", false);
             }
         }.bind(this));
+    },
+    
+    updateAcceptanceDateLabel: function(){
+        if(this.model.get('status') == "Revision Requested"){
+            this.$("#acceptanceDateLabel").text("Decision Date:");
+        }
+        else{
+            this.$("#acceptanceDateLabel").text(this.model.getAcceptanceDateLabel() + ":");
+        }
     },
     
     changeStart: function(){
@@ -484,8 +506,7 @@ ProductEditView = Backbone.View.extend({
             this.$("[name=date]").change();
             this.changePeerReviewed();
         }.bind(this));
-        //this.updateStatus();
-        
+        this.updateAcceptanceDateLabel();
         return this.$el;
     }
 

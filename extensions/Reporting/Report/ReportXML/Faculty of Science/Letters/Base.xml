@@ -471,7 +471,7 @@
         </Static>
         <Static id="from">
             <![CDATA[
-                            Eleni Stroulia<br />
+                            Anthony Singhal<br />
                             Vice Dean of Science<br />
                             Chair Faculty Evaluation Committee
             ]]>
@@ -519,7 +519,7 @@
                 <div class='previewnodisplay'><img src='skins/Signature2.png' style='height: 3em;' /></div>
                 <div class='generatenodisplay'><img src='{$wgServer}{$wgScriptPath}/skins/Signature2.png' style='height: 3em;' /></div>
                 <br />
-                Eleni Stroulia<br />
+                Anthony Singhal<br />
                 Vice Dean of Science<br />
                 Chair of the Science Faculty Evaluation Committee
                 </div>

@@ -179,7 +179,7 @@
                         </tbody>
                         </table>
                         <hr class="pdfnodisplay" />
-                        <script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/Reporting/Report/scripts/recommendations.js'></script>
+                        <script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/Reporting/Report/scripts/recommendations.js?20251001'></script>
                     ]]>
                 </ReportItem>
                 <ReportItem id="comments" type="Textarea" blobType="BLOB_TEXT" blobItem="COMMENTS" blobSubItem="{$user_id}" encrypt="true">

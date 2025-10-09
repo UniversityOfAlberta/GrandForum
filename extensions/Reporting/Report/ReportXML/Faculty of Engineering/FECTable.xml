@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report extends="../FECTable">
+<Report extends="../FECTable" disabled="false">
     <Permissions>
         <Role role="FEC Engineering" start="{$this_year}-07-01" end="{$next_year}-07-01">
             <SectionPermission id="fec" permissions="rw" />
@@ -14,6 +14,8 @@
                     <thead>
                         <tr>
                             <th width="1%">Case#</th>
+                            <th width="1%">Cohort#</th>
+                            <th width="1%">Review#</th>
                             <th>Name</th>
                             <th>Rank</th>
                             <th>Department</th>
@@ -35,6 +37,8 @@
                 <![CDATA[
                     <tr data-id="{$user_id}">
                         <td class="casenumber" style='white-space:nowrap;'>{getExtra()}</td>
+                        <td class="cohortnumber" style='white-space:nowrap;'>{user_case_number(2)}</td>
+                        <td class="reviewnumber" style='white-space:nowrap;'>{user_case_number(3)}</td>
                         <td><a href="{$user_url}" target="_blank">{$user_name}</a></td>
                         <td style='white-space:nowrap;'>{$user_title}</td>
                         <td>{$user_depts}</td>
@@ -52,7 +56,7 @@
                 ]]>
             </ReportItem>
             <!-- Rebuttal -->
-            <If if="{!=({$user_id},23673)}">
+            <If if="{!=(1,0)}"> <!-- edit this line if there the rebuttal should be hidden. (ie. {!=({$user_id},23673)} ) -->
                 <Static>
                     {set(fileRebuttal, {getBlobMD5(RP_FEC,REBUTTAL,REBUTTAL,0,{$user_id},0)})}
                 </Static>
@@ -94,8 +98,7 @@
                 ]]>
             </ReportItem>
             <If if="{or({contains({$my_roles},ADMIN)},
-                        {contains({$my_roles},DEAN)},
-                        {contains({$my_roles},VDEAN)},
+                        {contains({$my_roles},FEC_CHAIR)},
                         {contains({$my_roles},HR)}">
                 <ReportItem id="da" type="PDFReportItem" reportType="ChairTable" section="Dean Advice" noRenderIfNull="true" class="downloadPDF" buttonName="Dean's Advice">
                     <![CDATA[
@@ -138,7 +141,7 @@
                     </td>
                 ]]>
             </Static>
-            <If if="{or({contains({$my_roles},Dean)},{contains({$my_roles},FEC)})}">
+            <If if="{or({contains({$my_roles},FEC_CHAIR)},{contains({$my_roles},FEC)})}">
                 <!-- Increment Vote -->
                 <ReportItem id="vote" type="Select" blobType="BLOB_TEXT" blobItem="VOTE" blobSubItem="{$user_id}" options="|Yes|No|Abstain" width="80px" encrypt="true">
                     <![CDATA[
@@ -180,7 +183,7 @@
                 </ReportItem-->
                 
                 <!-- Comments -->
-                <If if="{or({contains({$my_roles},Dean)})}">
+                <If if="{or({contains({$my_roles},FEC_CHAIR)})}">
                     <Static>
                         <![CDATA[
                             <td>
@@ -257,5 +260,117 @@
                 </script>
             ]]>
         </ReportItem>
+    </ReportSection>
+    <ReportSection id="fec_votes">
+        <ReportItem id="header">
+            <![CDATA[
+                <table id='chairTable' class='wikitable' frame='box' rules='all'>
+                    <thead>
+                        <tr>
+                            <th rowspan='2' width="1%">Case#</th>
+                            <th rowspan='2' width="1%">Cohort#</th>
+                            <th rowspan='2' width="1%">Review#</th>
+                            <th rowspan='2'>Name</th>
+                            <th rowspan='2'>Rank</th>
+                            <th rowspan='2'>Department</th>
+                            <th rowspan='2'>Recommended Increment</th>
+                            <th rowspan='2'>Revised Increment</th>
+                            <th colspan='4'>Increment Votes</th>
+                            <th colspan='4'>Tenure Votes</th>
+                            <th colspan='4'>Promotion Votes</th>
+                            <th rowspan='2'>HR Comments</th>
+                        </tr>
+                        <tr>
+                            <th>Y</th>
+                            <th>N</th>
+                            <th>A</th>
+                            <th>Freeze</th>
+                            <th>Y</th>
+                            <th>N</th>
+                            <th>A</th>
+                            <th>Freeze</th>
+                            <th>Y</th>
+                            <th>N</th>
+                            <th>A</th>
+                            <th>Freeze</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="faculty">
+            <Static>
+                <![CDATA[
+                    <tr>
+                        <td style='white-space:nowrap;'>{getExtra()}</td>
+                        <td style='white-space:nowrap;'>{user_case_number(2)}</td>
+                        <td style='white-space:nowrap;'>{user_case_number(3)}</td>
+                        <td><a href="{$user_url}" target="_blank">{$user_name}</a></td>
+                        <td>{$user_level}</td>
+                        <td>{$user_dept}</td>
+                ]]>
+            </Static>
+            <If if="{contains({$my_roles},HR)}">
+                <![CDATA[
+                    <td>{getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)}</td>
+                    <td>
+                        {getText(RP_FEC_TABLE, TABLE, INCREMENT, {$user_id}, 1, 0)}
+                    </td>
+                ]]>
+            </If>
+            <Else>
+                <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSubItem="{$user_id}" personId="1" width="80px" history="false" encrypt="true">
+                    <![CDATA[
+                        <td>{getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)}</td>
+                        <td class='revised_increment_{$user_id}'>
+                            {$item}
+                        </td>
+                    ]]>
+                </ReportItem>
+            </Else>
+            
+            <!-- Increment Votes -->
+            <ReportItem id="freeze" type="VoteResultsReportItem" voteType="increment" freezeId="vote_{$user_id}" blobItem="FREEZE" blobSubItem="{$user_id}" voteBlobItem="VOTE" personId="1" width="75px">
+                <![CDATA[
+                        {$item}
+                ]]>
+            </ReportItem>
+            
+            <!-- Tenure Votes -->
+            <ReportItem id="t_freeze" type="VoteResultsReportItem" voteType="tenure" freezeId="t_vote_{$user_id}" blobItem="T_FREEZE" blobSubItem="{$user_id}" voteBlobItem="T_VOTE" personId="1" width="75px">
+                <![CDATA[
+                        {$item}
+                ]]>
+            </ReportItem>
+            
+            <!-- Promotion Votes -->
+            <ReportItem id="p_freeze" type="VoteResultsReportItem" voteType="promotion" freezeId="p_vote_{$user_id}" blobItem="P_FREEZE" blobSubItem="{$user_id}" voteBlobItem="P_VOTE" personId="1" width="75px">
+                <![CDATA[
+                        {$item}
+                ]]>
+            </ReportItem>
+            <If if="{contains({$my_roles},HR)}">
+                <ReportItem id="comments" type="Textarea" blobType="BLOB_TEXT" blobItem="COMMENTS" blobSubItem="{$user_id}" personId="1" height="75px" encrypt="true">
+                    <![CDATA[
+                        <td>
+                            {$item}
+                        </td>
+                    ]]>
+                </ReportItem>
+            </If>
+            <Else>
+                <![CDATA[
+                    <td>
+                        {getText(RP_FEC_TABLE, TABLE, COMMENTS, {$user_id}, 1, 0)}
+                    </td>
+                ]]>
+            </Else>
+            
+            <Static>
+                <![CDATA[
+                    </tr>
+                ]]>
+            </Static>
+        </ReportItemSet>
     </ReportSection>
 </Report>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name=" " title=" " headerName=" " reportType="RP_SABBATICAL" pdfType="RP_SABBATICAL" pdfFiles="SabbaticalApplication" ajax="true">
+<Report name=" " title=" " headerName=" " reportType="RP_SABBATICAL" pdfType="RP_SABBATICAL" pdfFiles="SabbaticalApplication" ajax="true" disabled="true">
     <Permissions>
         <Role role="Faculty">
             <SectionPermission id="sabbatical" permissions="rw" />
@@ -167,8 +167,32 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="submit" tooltip="Review of on-line report content" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
-        <ReportItem id="submit" type="SimpleReviewSubmitReportItem" buttonText="Submit" />
+    <ReportSection id="submit" tooltip="Review of on-line report content" name="Submit" blobSection="SEC_SUBMIT" type="EditableReportSection" renderpdf="false">
+        <ReportItem id="submit" type="SimpleReviewSubmitReportItem" />
+        <Static>
+            <![CDATA[
+                <h3>3. Submit PDF</h3>
+            ]]>
+        </Static>
+        <ReportItem id="submitted" type="FakeSubmitReportItem" blobItem="SUBMITTED" success="Your Sabbatical Leave application has been submitted successfully." instructions="" encrypt="true">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <Static>
+            <![CDATA[
+                <script type='text/javascript'>
+                    setInterval(function(){
+                        if($('#download_button_SabbaticalApplication').is(':disabled')){
+                            $('#submit_review').prop('disabled', true);
+                        }
+                        else{
+                            $('#submit_review').prop('disabled', false);
+                        }
+                    }, 100);
+                </script>
+            ]]>
+        </Static>
         <ReportItem id="report_review" type="ReviewReportItem">
             <![CDATA[
                 <h2>Preview</h2>

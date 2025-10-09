@@ -164,6 +164,7 @@
     $config->setConst("VDEAN",      "ViceDean");
     $config->setConst("DEAN",       "Dean");
     $config->setConst("DEANEA",     "DeanEA");
+    $config->setConst("FEC_CHAIR",  "FECChair");
     $config->setConst("EA",         "EA");
     $config->setConst("NI",         "FacultyNI");
     $config->setConst("AR",         "Faculty");

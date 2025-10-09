@@ -2,9 +2,14 @@
 
 class IncrementReportItem extends SelectReportItem {
 
+    function getFECType(){
+        $person = Person::newFromId($this->blobSubItem);
+        return  $person->getFECType($this->getReport()->year.CYCLE_START_MONTH);
+    }
+
 	function parseOptions(){
 	    $person = Person::newFromId($this->blobSubItem);
-	    $fecType = $person->getFECType($this->getReport()->year.CYCLE_START_MONTH);
+	    $fecType = $this->getFECType();
 	    switch($fecType){
 	        default:
 	        case "A1":
@@ -47,6 +52,11 @@ class IncrementReportItem extends SelectReportItem {
 	            break;
 	    }
 	    
+	    if(getFaculty() == 'Rehabilitation Medicine' && strstr($fecType, "T") !== false){
+	        // FRM ATS
+	        return $options;
+	    }
+	    
 	    $salary = $person->getSalary($this->getReport()->year);
 	    $increment = "0A";
         $maxSalary = 0;
@@ -83,14 +93,17 @@ class IncrementReportItem extends SelectReportItem {
                 }
                 break;
             case "T1":
+            case "T4":
                 $increment = Person::getSalaryIncrement($this->getReport()->year, 'atsec1');
                 $maxSalary = Person::getMaxSalary($this->getReport()->year, 'atsec1');
                 break;
             case "T2":
+            case "T5":
                 $increment = Person::getSalaryIncrement($this->getReport()->year, 'atsec2');
                 $maxSalary = Person::getMaxSalary($this->getReport()->year, 'atsec2');
                 break;
             case "T3":
+            case "T6":
                 $increment = Person::getSalaryIncrement($this->getReport()->year, 'atsec3');
                 $maxSalary = Person::getMaxSalary($this->getReport()->year, 'atsec3');
                 break;
@@ -129,6 +142,7 @@ class IncrementReportItem extends SelectReportItem {
 	    global $wgServer, $wgScriptPath;
 	    $history = (strtolower($this->getAttr("history", "true")) == "true");
 	    $person = Person::newFromId($this->blobSubItem);
+	    $fecType = $this->getFECType();
 	    $replacedText = "";
 	    if($history){
 	        $popup = "<div id='previousIncrements{$this->blobSubItem}' title='Previous Increments' style='display:none;'>
@@ -173,6 +187,14 @@ class IncrementReportItem extends SelectReportItem {
 	            }
 	        });
 	    </script>";
+	    if(getFaculty() == 'Rehabilitation Medicine' && strstr($fecType, "T") !== false){
+	        // FRM ATS
+	        $this->value .= "<script type='text/javascript'>
+	            $('select[name={$this->getPostId()}]').width(100);
+	            $('select[name={$this->getPostId()}]').combobox();
+	            $('input#combo_{$this->getPostId()}').forceNumeric({max: 3.00, min: 0.00, decimals: 2});
+	        </script>";
+	    }
 	    parent::render();
 	}
 

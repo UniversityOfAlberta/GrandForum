@@ -170,11 +170,11 @@ class ReportArchive extends SpecialPage {
             $daUrl = "";
             $caUrl = "";
             $ddUrl = "";
-            if(date('Y-m-d') >= "$y-10-29"){
-                $recc = ReportStorage::list_reports(array($person->getId()), 1, 0, "CHAIR_EVALRecommendations", $y);
-                $da = ReportStorage::list_reports(array($person->getId()), 1, 0, "CHAIR_EVALDean Advice", $y);
-                $ca = ReportStorage::list_reports(array($person->getId()), 1, 0, "CHAIR_EVALChair Advice", $y);
-                $dd = ReportStorage::list_reports(array($person->getId()), 1, 0, "CHAIR_EVALDean Decision", $y);
+            if(date('Y-m-d') >= "$y-11-01"){
+                $recc = ReportStorage::list_reports(array($person->getId()), 0, 1, 0, "CHAIR_EVALRecommendations", $y);
+                $da = ReportStorage::list_reports(array($person->getId()), 0, 1, 0, "CHAIR_EVALDean Advice", $y);
+                $ca = ReportStorage::list_reports(array($person->getId()), 0, 1, 0, "CHAIR_EVALChair Advice", $y);
+                $dd = ReportStorage::list_reports(array($person->getId()), 0, 1, 0, "CHAIR_EVALDean Decision", $y);
                 
                 if(count($recc) > 0){
                     $pdf = PDF::newFromToken($recc[0]['token']);

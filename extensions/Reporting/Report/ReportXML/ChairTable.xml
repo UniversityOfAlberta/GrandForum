@@ -587,7 +587,7 @@
                     });
                     $(".increment select").first().trigger('change');
                 </script>
-                <script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/Reporting/Report/scripts/recommendations.js'></script>
+                <script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/Reporting/Report/scripts/recommendations.js?20251001'></script>
             ]]>
         </Static>
         <Static>
@@ -1075,7 +1075,7 @@
                     });
                     $(".increment select").first().trigger('change');
                 </script>
-                <script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/Reporting/Report/scripts/recommendations.js'></script>
+                <script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/Reporting/Report/scripts/recommendations.js?20251001'></script>
             ]]>
         </Static>
     </ReportSection>
@@ -1248,7 +1248,7 @@
                         $("#Recommendations").trigger('click');
                     });
                 </script>
-                <script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/Reporting/Report/scripts/recommendations.js'></script>
+                <script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/Reporting/Report/scripts/recommendations.js?20251001'></script>
             ]]>
         </Static>
     </ReportSection>
@@ -1460,7 +1460,7 @@
                         </tbody>
                         </table>
                         <hr class="pdfnodisplay" />
-                        <script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/Reporting/Report/scripts/recommendations.js'></script>
+                        <script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/Reporting/Report/scripts/recommendations.js?20251001'></script>
                     ]]>
                 </ReportItem>
                 <ReportItem id="file1" type="Upload" blobItem="FILE1" blobSubItem="{$user_id}" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="30" encrypt="true">

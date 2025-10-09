@@ -196,8 +196,8 @@ class ReportXMLParser {
             if(isset($attributes->ajax) && strtolower($attributes->ajax) == 'true'){
                 $this->report->ajax = true;
             }
-            if(isset($attributes->disabled) && strtolower($attributes->disabled) == 'true'){
-                $this->report->setDisabled(true);
+            if(isset($attributes->disabled)){
+                $this->report->setDisabled((strtolower($attributes->disabled) == 'true'));
             }
             if(isset($attributes->personId)){
                 $id = $this->report->varSubstitute("{$attributes->personId}");

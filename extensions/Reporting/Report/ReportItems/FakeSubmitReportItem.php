@@ -6,14 +6,16 @@ class FakeSubmitReportItem extends TextReportItem {
         global $wgOut;
         $wgOut->addHTML("<div id='fake_submit' style='display:none;'>");
         parent::render();
+        $success = $this->getAttr('success', "Your recommendation has been submitted.");
+        $instructions = $this->getAttr('instructions', "Submitting your recommendation will mark your reviews as 'submitted', however you may continue to edit your recommendation after submitting if needed.");
         $wgOut->addHTML("</div>");
         if($this->getBlobValue() == "Submitted"){
-            $wgOut->addHTML("<div class='success'>Your recommendation has been submitted.</div>");
+            $wgOut->addHTML("<div class='success'>{$success}</div>");
         }
         $wgOut->addHTML("<div>
-                            Submitting your recommendation will mark your reviews as 'submitted', however you may continue to edit your recommendation after submitting if needed.
+                            {$instructions}
                         </div><br />
-                        <a class='button' id='submit_review'>Submit</a>
+                        <button id='submit_review' type='button'>Submit</button>
                         <script type='text/javascript'>
                             $('#reportFooter').prev().hide();
                             $('#reportFooter').hide();

@@ -2,7 +2,7 @@
 <Products>
 
     <!-- Publications -->
-    <Publications category="Publication" citationFormat="{%Authors} {(%Dates).} {%Title.} {&lt;i>%Venue&lt;/i>}{, %Volume}{(%Issue)}{ #%Articleno}{, %Pages.} {%Publisher}">
+    <Publications category="Publication" citationFormat="{%Authors} {(%Dates).} {%Title.} {&lt;i>%Venue&lt;/i>}{, %Volume}{(%Issue)}{ #%Articleno}{, %Pages.} {%Publisher}&lt;br />{DOI: %doi}">
         <Publication type="Bachelors Thesis" status="Submitted|Revision Requested|Accepted|In Press|Published|Rejected">
             <title></title>
             <data>

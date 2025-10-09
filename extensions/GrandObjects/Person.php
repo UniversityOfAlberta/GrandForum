@@ -3220,9 +3220,11 @@ class Person extends BackboneModel {
     
     function isRetired($date=null){ return false; }
     
+    function isTeachingProfessor($date=null){ return false; }
+    
     function getFECType($date=null){ return ""; }
 
-    function getCaseNumber($year=YEAR){ return ""; }
+    function getCaseNumber($year=YEAR, $which=""){ return ""; }
     
     function getSalary($year){ return ""; }
     
@@ -4039,6 +4041,15 @@ class FullPerson extends Person {
         return ($this->dateOfRetirement != "" && $date >= substr($this->dateOfRetirement, 0, 10));
     }
     
+    function isTeachingProfessor($date=null){
+        foreach($this->getUniversitiesDuring($date, $date) as $uni){
+            if(strstr($uni['position'], "Teaching Professor") !== false){
+                return true;
+            }
+        }
+        return false;
+    }
+    
     /**
      * N1XXX - New assistant professor, associate professor, or professor.
      * M1XXX - New FSO2, FSO3, or FSO4.
@@ -4052,6 +4063,9 @@ class FullPerson extends Person {
      * T1XXX - Assistant Lecturer
      * T2XXX - Associate Lecturer
      * T3XXX - Full Lecturer
+     * T4XXX - Assistant Teaching Professor
+     * T5XXX - Associate Teaching Professor
+     * T6XXX - Full Teaching Professor
      */
     function getFECType($date=null){
         if($date == null){
@@ -4061,16 +4075,16 @@ class FullPerson extends Person {
             return "";
         }
         else if($this->isNew($date) && $this->isATSEC1(EOT)){
-            return "T1";                          
+            return (!$this->isTeachingProfessor($date)) ? "T1" : "T4";
         }
         if($this->isRoleOn("ATS", $date) && $this->isATSEC1($date)){
-            return "T1";
+            return (!$this->isTeachingProfessor($date)) ? "T1" : "T4";
         }
         else if($this->isRoleOn("ATS", $date) && $this->isATSEC2($date)){
-            return "T2";
+            return (!$this->isTeachingProfessor($date)) ? "T2" : "T5";
         }
         else if($this->isRoleOn("ATS", $date) && $this->isATSEC3($date)){
-            return "T3";
+            return (!$this->isTeachingProfessor($date)) ? "T3" : "T6";
         }
         else if($this->isNew($date) && ($this->isAssistantProfessor(EOT) ||
                                         $this->isAssociateProfessor(EOT) ||
@@ -4109,9 +4123,9 @@ class FullPerson extends Person {
     /**
      * Returns the precomputed case number for this Person
      */
-    function getCaseNumber($year=YEAR){
-        if(DBCache::exists("case_number{$this->getId()}_{$year}")){
-            return DBCache::fetch("case_number{$this->getId()}_{$year}");
+    function getCaseNumber($year=YEAR, $which=""){
+        if(DBCache::exists("case_number{$which}_{$this->getId()}_{$year}")){
+            return DBCache::fetch("case_number{$which}_{$this->getId()}_{$year}");
         }
         else{
             $data = DBFunctions::select(array('grand_case_numbers'),
@@ -4119,10 +4133,10 @@ class FullPerson extends Person {
                                         array('user_id' => $this->getId(),
                                               'year' => $year));
             if(!empty($data)){
-                DBCache::store("case_number{$this->getId()}_{$year}", $data[0]['number']);
-                return $data[0]['number'];
+                DBCache::store("case_number{$which}_{$this->getId()}_{$year}", $data[0]["number{$which}"]);
+                return $data[0]["number{$which}"];
             }
-            DBCache::store("case_number{$this->getId()}_{$year}", "");
+            DBCache::store("case_number{$which}_{$this->getId()}_{$year}", "");
             return "";
         }
     }
