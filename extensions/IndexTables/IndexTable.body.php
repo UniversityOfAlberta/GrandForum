@@ -348,10 +348,67 @@ class IndexTable {
             $idHeader = "<th style='white-space:nowrap;'>Project Id</th>";
         }
         $data = Project::getAllProjectsEver(($status != "Active"));
-        $wgOut->addHTML("
+        
+        $filters = "";
+        $sectionMap = $config->getValue('projectSectionMap');
+        if(!empty($sectionMap)){
+            $filters = "<button id='filtersButton' type='button' style='margin-left:1em;'>Show Filters</button>
+            <div id='filters' style='margin-bottom: 0.5em; display:none;'>
+                <fieldset>
+                    <legend>Filters</legend>
+                    <div style='display: inline-block; vertical-align: top; margin-right: 1em;'>
+                        <table id='leftSearchTable'>";
+            foreach($sectionMap as $key => $value){
+                $widget = "";
+                if(isset($value['select'])){
+                    $widget = new SelectBox("description{$key}", "{$value[0]}", "", $value['select'], VALIDATE_NOTHING);
+                }
+                else {
+                    $widget = new TextField("description{$key}", "{$value[0]}", "", VALIDATE_NOTHING);
+                    if(@is_numeric($value['text'])){
+                        $widget->attr('size', $value['text']);
+                    }
+                }
+                $widget->attr('data-index', $key);
+                $filters .= "<tr><td class='label'>{$value[0]}</span></td><td>{$widget->render()}</td></tr>";
+            }
+            $filters .= "</table>
+                    </div>
+                    <div style='display: inline-block; vertical-align: top;'>
+                        <table id='rightSearchTable'>
+                            <tr />
+                        </table>
+                    </div>
+                </fieldset>
+            </div>
+            <script type='text/javascript'>
+                $('#filtersButton').click(function(){
+                    if($('#filtersButton').text() == 'Show Filters'){ 
+                        $('#filtersButton').text('Hide Filters');
+                    } else {
+                        $('#filtersButton').text('Show Filters'); 
+                    }
+                    $('#filters').slideToggle();
+                });
+            </script>";
+        }
+        $wgOut->addHTML("{$filters}
             <table class='indexTable' style='display:none;' frame='box' rules='all'>
             <thead>
-            <tr>{$identifierHeader}<th>Name</th><th>Leaders</th>{$themesHeader}{$datesHeader}{$idHeader}</tr></thead><tbody>");
+            <tr>
+                {$identifierHeader}
+                <th>Name</th>
+                <th>Leaders</th>
+                {$themesHeader}
+                {$datesHeader}
+                {$idHeader}");
+        if(!empty($sectionMap)){
+            foreach($sectionMap as $key => $value){
+                $wgOut->addHTML("<th class='$key' style='display:none;'>{$value[0]}</th>");
+            }
+        }
+        $wgOut->addHTML("</tr>
+            </thead><tbody>");
         foreach($data as $proj){
             if(isset($_GET['phases']) && strstr($_GET['phases'], $proj->getPhase()) === false){
                 continue;
@@ -398,22 +455,41 @@ class IndexTable {
                 if($idHeader){
                     $wgOut->addHTML("<td align='center'>{$proj->getId()}</td>\n");
                 }
+                if(!empty($sectionMap)){
+                    $description = $proj->getDescription();
+                    foreach($sectionMap as $key => $value){
+                        @$wgOut->addHTML("<td class='$key' style='display:none;'>{$description[$key]}</td>");
+                    }
+                }
                 $wgOut->addHTML("</tr>\n");
             }
         }
         $wgOut->addHTML("</tbody></table>");
-        $wgOut->addHTML("<script type='text/javascript'>$('.indexTable').dataTable({
-                                                                            'aLengthMenu': [[100,-1], [100,'All']], 
-                                                                            'iDisplayLength': -1, 
-                                                                            'autoWidth': false,
-                                                                            'dom': 'Blfrtip',
-                                                                            columnDefs: [
-                                                                               {type: 'natural', targets: 0}
-                                                                            ],
-                                                                            'buttons': [
-                                                                                'excel', 'pdf'
-                                                                            ]
-                                                                         });</script>");
+        $wgOut->addHTML("<script type='text/javascript'>
+            var table = $('.indexTable').DataTable({
+                'aLengthMenu': [[100,-1], [100,'All']], 
+                'iDisplayLength': -1, 
+                'autoWidth': false,
+                'dom': 'Blfrtip',
+                columnDefs: [
+                   {type: 'natural', targets: 0}
+                ],
+                'buttons': [
+                    'excel', 'pdf'
+                ]
+             });
+             
+             var filtersButton = $('#filtersButton').detach();
+             $('.dataTables_length').append(filtersButton);
+             
+             $('#filters').on('keyup change', 'input, select', function(){
+                table
+                    .column('.' + $(this).data('index'))
+                    .search(this.value)
+                    .draw();
+             });
+                                     
+        </script>");
         return true;
     }
 
