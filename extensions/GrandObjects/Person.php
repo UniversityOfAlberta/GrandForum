@@ -4350,16 +4350,16 @@ class FullPerson extends Person {
             return "";
         }
         else if($this->isNew($date) && $this->isATSEC1("9999-99-99")){
-            return (!$this->isTeachingProfessor()) ? "T1" : "T4";
+            return (!$this->isTeachingProfessor($date)) ? "T1" : "T4";
         }
         if($this->isRoleOn("ATS", $date) && $this->isATSEC1($date)){
-            return (!$this->isTeachingProfessor()) ? "T1" : "T4";
+            return (!$this->isTeachingProfessor($date)) ? "T1" : "T4";
         }
         else if($this->isRoleOn("ATS", $date) && $this->isATSEC2($date)){
-            return (!$this->isTeachingProfessor()) ? "T2" : "T5";
+            return (!$this->isTeachingProfessor($date)) ? "T2" : "T5";
         }
         else if($this->isRoleOn("ATS", $date) && $this->isATSEC3($date)){
-            return (!$this->isTeachingProfessor()) ? "T3" : "T6";
+            return (!$this->isTeachingProfessor($date)) ? "T3" : "T6";
         }
         else if($this->isNew($date) && ($this->isAssistantProfessor("9999-99-99") ||
                                         $this->isAssociateProfessor("9999-99-99") ||
