@@ -979,8 +979,8 @@ class CavendishTemplate extends QuickTemplate {
             
             $GLOBALS['tabs']['Other'] = TabUtils::createTab("", "");
             $GLOBALS['tabs']['Main'] = TabUtils::createTab($config->getValue("networkName"), "$wgServer$wgScriptPath/index.php/Main_Page");
-            $GLOBALS['tabs']['Profile'] = TabUtils::createTab("My Profile");
-            $GLOBALS['tabs']['Manager'] = TabUtils::createTab("<span class='en'>Manager</span><span class='fr'>Gérant</span>");
+            $GLOBALS['tabs']['Profile'] = TabUtils::createTab("<en>My Profile</en><fr>Mon profil</fr>");
+            $GLOBALS['tabs']['Manager'] = TabUtils::createTab("<en>Manager</en><fr>Gérant</fr>");
             
             Hooks::run('TopLevelTabs', array(&$GLOBALS['tabs']));
             Hooks::run('SubLevelTabs', array(&$GLOBALS['tabs']));

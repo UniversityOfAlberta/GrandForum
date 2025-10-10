@@ -352,7 +352,7 @@ class IndexTable {
         $filters = "";
         $sectionMap = $config->getValue('projectSectionMap');
         if(!empty($sectionMap)){
-            $filters = "<button id='filtersButton' type='button' style='margin-left:1em;'>Show Filters</button>
+            $filters = "<button id='filtersButton' type='button' style='margin-left:1em;'><en>Show Filters</en><fr>Afficher les filtres</fr></button>
             <div id='filters' style='margin-bottom: 0.5em; display:none;'>
                 <fieldset>
                     <legend>Filters</legend>
@@ -383,10 +383,10 @@ class IndexTable {
             </div>
             <script type='text/javascript'>
                 $('#filtersButton').click(function(){
-                    if($('#filtersButton').text() == 'Show Filters'){ 
-                        $('#filtersButton').text('Hide Filters');
+                    if($('#filtersButton en').text() == 'Show Filters'){ 
+                        $('#filtersButton').html('<en>Hide Filters</en><fr>Masquer les filtres</fr>');
                     } else {
-                        $('#filtersButton').text('Show Filters'); 
+                        $('#filtersButton').html('<en>Show Filters</en><fr>Afficher les filtres</fr>'); 
                     }
                     $('#filters').slideToggle();
                 });
