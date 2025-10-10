@@ -67,7 +67,7 @@ You should log in and change your password now.';
         if(@$_GET['lang'] == 'fr' || @$_GET['lang'] == 'en'){
             if($user->isRegistered() && $user->getOption("language") != $_GET['lang']){
                 MediaWikiServices::getInstance()->getUserOptionsManager()->setOption( $user, "language", $_GET['lang'] );
-                $user->saveSettings();
+                MediaWikiServices::getInstance()->getUserOptionsManager()->saveOptions( $user );
                 DBFunctions::commit();
             }
             else{
