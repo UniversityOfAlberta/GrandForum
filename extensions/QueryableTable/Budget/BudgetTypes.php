@@ -44,6 +44,7 @@ $cellTypes[V_PERS_NOT_NULL] = "VPersNotNullCell";
 
 //Budget Structures
 define('NETWORK_BUDGET_STRUCTURE', 0);
+define('NETWORK_NI_BUDGET_STRUCTURE', 0);
 define('SUPPLEMENTAL_STRUCTURE', 1);
 define('REPORT_STRUCTURE', 2);
 define('REPORT2_STRUCTURE', 3);

@@ -209,7 +209,12 @@ class PersonDataQualityTab extends AbstractTab {
             return array();
         }
 
-        $ni_errors = array();
+        $ni_errors = array('profile_errors' => array(),
+                           'student_errors' => array(),
+                           'paper_errors' => array(),
+                           'profile_pub' => array(),
+                           'profile_pri' => array()
+                           );
 
         $name = $person->getName();
         $name_normal = $person->getNameForForms();
