@@ -1,17 +1,61 @@
 <?php
 
-autoload_register('GrandObjectPage/ProjectPage');
-
 UnknownAction::createAction('ProjectVisualizationsTab::getProjectTimelineData');
 UnknownAction::createAction('ProjectVisualizationsTab::getProjectDoughnutData');
 UnknownAction::createAction('ProjectVisualizationsTab::getProjectChordData');
 UnknownAction::createAction('ProjectVisualizationsTab::getProjectWordleData');
+UnknownAction::createAction('ProjectPage::sendJoinRequest');
 
 $wgHooks['ArticleViewHeader'][] = 'ProjectPage::processPage';
 $wgHooks['TopLevelTabs'][] = 'ProjectPage::createTab';
 $wgHooks['SubLevelTabs'][] = 'ProjectPage::createSubTabs';
 
 class ProjectPage {
+    static function sendJoinRequest(){ 
+        header('Content-type: application/json');
+        global $wgUser;
+        if (!$wgUser->isRegistered()) {
+            echo json_encode(['success' => false, 'error' => 'Permission denied. You must be logged in to make a request.']);
+            close();
+        }
+        $me = Person::newFromId($wgUser->getId());
+        $projectId = isset($_POST['projectId']) ? intval($_POST['projectId']) : 0;
+        $message = isset($_POST['message']) ? trim($_POST['message']) : '';
+
+        if ($projectId === 0) {
+            echo json_encode(['success' => false, 'error' => 'Invalid project specified.']);
+            close();
+        }
+
+        $project = Project::newFromId($projectId);
+        if (!$project) {
+            echo json_encode(['success' => false, 'error' => 'Project not found.']);
+            close();
+        }
+
+        $projectLeaders = $project->getLeaders();
+        $notificationSubject = "New Join Request for Project: {$project->getName()}";
+        $userFullName = $me->getFirstName() . ' ' . $me->getLastName();
+        $notificationBody = "User <b>{$userFullName}</b> ({$me->getEmail()}) has requested to join the project: <b>{$project->getName()}</b>.";
+
+        if (!empty($message)) {
+            $notificationBody .= "<br><br><b>Message from user:</b><br>" . htmlspecialchars($message);
+        }
+
+        foreach ($projectLeaders as $leader) {
+            Notification::addNotification(
+                $me,
+                $leader,
+                $notificationSubject,
+                $notificationBody,
+                $project->getUrl(),
+                true
+            );
+        }
+
+        echo json_encode(['success' => true, 'message' => 'Your request to join has been sent successfully!']);
+        close();
+    }
 
     static function processPage($article, $outputDone, $pcache){
         global $wgOut, $wgTitle, $wgUser, $wgRoles, $wgServer, $wgScriptPath, $config;
@@ -150,7 +194,127 @@ class ProjectPage {
                     }
                 }
                 $tabbedPage->showPage();
+                if ($config->getValue('enableJoinRequest') && $wgUser->isRegistered() && !$me->isMemberOf($project)) {
+
+                    $wgOut->addHTML('<a href="#" id="request-to-join-btn" style="display:none;">Request to Join?</a>');
+                    
+                    $userFirstName = htmlspecialchars($me->getFirstName(), ENT_QUOTES);
+                    $userLastName = htmlspecialchars($me->getLastName(), ENT_QUOTES);
+                    $userEmail = htmlspecialchars($me->getEmail(), ENT_QUOTES);
+
+
+                    $modalHTML = <<<HTML
+                    <div id="requestJoinDialog" title="Request to Join Project" style="display:none;">
+                        <form>
+                            <table width="100%" style="border-spacing: 0 10px;">
+                                <tr>
+                                    <td width="25%"><label>First Name:</label></td>
+                                    <td><input type="text" value="{$userFirstName}" readonly style="width:95%; background-color:#eee; padding: 5px;" /></td>
+                                </tr>
+                                <tr>
+                                    <td><label>Last Name:</label></td>
+                                    <td><input type="text" value="{$userLastName}" readonly style="width:95%; background-color:#eee; padding: 5px;" /></td>
+                                </tr>
+                                <tr>
+                                    <td><label>Email:</label></td>
+                                    <td><input type="email" value="{$userEmail}" readonly style="width:95%; background-color:#eee; padding: 5px;" /></td>
+                                </tr>
+                                <tr>
+                                    <td style="vertical-align:top;"><label for="request-join-message">Message (Optional):</label></td>
+                                    <td><textarea id="request-join-message" rows="5" placeholder="Include a brief message for the project leader..." style="width:95%; padding: 5px;"></textarea></td>
+                                </tr>
+                            </table>
+                        </form>
+                    </div>
+                    HTML;
+                    $wgOut->addHTML($modalHTML);
+
+                    $ajaxUrl = $wgServer . $wgScriptPath . '/index.php?action=ProjectPage::sendJoinRequest';
+                    $currentProjectId = $project->getId();
                 
+                    $inlineJs = <<<JS
+                    $(document).ready(function() {
+                        
+                        var dataToSend = {};
+                        var dialogElement = $("div#requestJoinDialog");
+                        var requestButton = $('#request-to-join-btn');
+
+                        var membersHeadline = $('span.mw-headline:contains("Members")').closest('h2');
+                        if (membersHeadline.length) {
+                            requestButton.css({ 'float': 'right', 'display': 'inline-block'}).prependTo(membersHeadline);
+                        }
+
+                        dialogElement.dialog({
+                            autoOpen: false,
+                            width: '35em',
+                            modal: true,
+                            buttons: {
+                                "Submit Request": {
+                                    text: "Submit Request",
+                                    click: function() {
+                                        var submitBtn = $(this).dialog('widget').find('button:contains("Submit Request")');
+                                        submitBtn.prop('disabled', true).text('Sending...');
+                                        
+                                        dataToSend.projectId = {$currentProjectId};
+                                        dataToSend.message = $("#request-join-message").val();
+
+                                        $.post('{$ajaxUrl}', dataToSend)
+                                        .done(function(response) {
+                                            if (response.success) {
+                                                if (typeof addSuccess === 'function') {
+                                                    clearSuccess();
+                                                    addSuccess('Your request has been sent successfully.');
+                                                } else {
+                                                    alert('Your request has been sent successfully.');
+                                                }
+                                                dialogElement.dialog('close');
+                                            } else {
+                                                alert('Error: ' + (response.error || 'Could not process request.'));
+                                            }
+                                        })
+                                        .fail(function(jqXHR, textStatus, errorThrown) {
+                                            console.error("AJAX Error:", jqXHR.responseText);
+                                            alert('An unexpected server error occurred.');
+                                        })
+                                        .always(function() {
+                                            submitBtn.prop('disabled', false).text('Submit Request');
+                                        });
+                                    }
+                                },
+                                "Cancel": {
+                                    text: "Cancel",
+                                    click: function() {
+                                        $(this).dialog('close');
+                                    }
+                                }
+                            }
+                        });
+
+                        requestButton.click(function(e) {
+                            e.preventDefault();
+                            dataToSend = {}; 
+                            $("#request-join-message").val('');
+                            dialogElement.dialog('open');
+                            $(window).resize();
+                        });
+
+                        $(window).resize(function() {
+                            var desiredWidth = "35em";
+                            if (window.matchMedia('(max-width: 767px)').matches) {
+                                desiredWidth = $(window).width() * 0.95;
+                            }
+
+                            if (dialogElement.is(':visible')) {
+                                dialogElement.dialog({
+                                    width: desiredWidth,
+                                    position: { my: "center", at: "center", of: window }
+                                });
+                            }
+                        }).resize();
+                    });
+                    JS;
+                    $wgOut->addInlineScript($inlineJs);
+                }
                 if(!$edit){
                     $allProjects = array_values(Project::getAllProjects());
                     $prev = null;
