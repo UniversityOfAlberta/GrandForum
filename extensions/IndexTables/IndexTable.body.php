@@ -321,6 +321,30 @@ class IndexTable {
         return true;
     }
 
+    private static function renderFilters($filters){
+        $html = "";
+        foreach($filters as $key => $value){
+            $widget = "";
+            if(isset($value['select'])){
+                $widget = new SelectBox("description{$key}", "{$value[0]}", "", $value['select'], VALIDATE_NOTHING);
+                $widget->attr('style', 'max-width: 400px;');
+            }
+            else if(isset($value['checkbox'])){
+                $widget = new SelectBox("description{$key}", "{$value[0]}", "", array_merge(array(""), $value['checkbox']), VALIDATE_NOTHING);
+                $widget->attr('style', 'max-width: 400px;');
+            }
+            else {
+                $widget = new TextField("description{$key}", "{$value[0]}", "", VALIDATE_NOTHING);
+                if(@is_numeric($value['text'])){
+                    $widget->attr('size', $value['text']);
+                }
+            }
+            $widget->attr('data-index', $key);
+            $html .= "<tr><td class='label'>{$value[0]}</span></td><td>{$widget->render()}</td></tr>";
+        }
+        return $html;
+    }
+
     /**
      * Generates the Table for the projects
      * Consists of the following columns
@@ -357,26 +381,13 @@ class IndexTable {
                 <fieldset>
                     <legend>Filters</legend>
                     <div style='display: inline-block; vertical-align: top; margin-right: 1em;'>
-                        <table id='leftSearchTable'>";
-            foreach($sectionMap as $key => $value){
-                $widget = "";
-                if(isset($value['select'])){
-                    $widget = new SelectBox("description{$key}", "{$value[0]}", "", $value['select'], VALIDATE_NOTHING);
-                }
-                else {
-                    $widget = new TextField("description{$key}", "{$value[0]}", "", VALIDATE_NOTHING);
-                    if(@is_numeric($value['text'])){
-                        $widget->attr('size', $value['text']);
-                    }
-                }
-                $widget->attr('data-index', $key);
-                $filters .= "<tr><td class='label'>{$value[0]}</span></td><td>{$widget->render()}</td></tr>";
-            }
-            $filters .= "</table>
+                        <table id='leftSearchTable'>".
+                            self::renderFilters(array_slice($sectionMap, 0, ceil(count($sectionMap)/2)))."
+                        </table>
                     </div>
                     <div style='display: inline-block; vertical-align: top;'>
                         <table id='rightSearchTable'>
-                            <tr />
+                            ".self::renderFilters(array_slice($sectionMap, ceil(count($sectionMap)/2)))."
                         </table>
                     </div>
                 </fieldset>
@@ -458,7 +469,11 @@ class IndexTable {
                 if(!empty($sectionMap)){
                     $description = $proj->getDescription();
                     foreach($sectionMap as $key => $value){
-                        @$wgOut->addHTML("<td class='$key' style='display:none;'>{$description[$key]}</td>");
+                        $desc = @$description[$key];
+                        if(!is_array($desc)){
+                            $desc = array($desc);
+                        }
+                        $wgOut->addHTML("<td class='$key' style='display:none;'>".implode("; ", $desc)."</td>");
                     }
                 }
                 $wgOut->addHTML("</tr>\n");

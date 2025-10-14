@@ -652,19 +652,30 @@ class ProjectMainTab extends AbstractEditableTab {
                         $this->html .= "<div>{$text}</div>";
                     }
                     else{
-                        $exploded = explode("|", $text, 2);
-                        if(count($exploded) == 1){
-                            $this->html .= "<div id='description{$key}'>{$exploded[0]}</div>";
+                        if(!is_array($text)){
+                            $text = array($text);
                         }
-                        else {
-                            $this->html .= "<div id='description{$key}'><en>".@trim($exploded[0])."</en><fr>".trim($exploded[1])."</fr></div>";
+                        $texts = array();
+                        foreach($text as $t){
+                            $exploded = explode("|", $t, 2);
+                            if(count($exploded) == 1){
+                                $texts[] = $exploded[0];
+                            }
+                            else {
+                                $texts[] = "<en>".@trim($exploded[0])."</en><fr>".trim($exploded[1])."</fr>";
+                            }
                         }
+                        $this->html .= "<div id='description{$key}'>".implode("; ", $texts)."</div>";
                     }
                 }
                 else{
                     if(isset($value['select'])){
                         $select = new SelectBox("description{$key}", "{$value[0]}", $text, $value['select'], VALIDATE_NOTHING);
                         $this->html .= $select->render();
+                    }
+                    else if(isset($value['checkbox'])){
+                        $checkbox = new VerticalCheckBox("description{$key}", "{$value[0]}", $text, $value['checkbox'], VALIDATE_NOTHING);
+                        $this->html .= $checkbox->render();
                     }
                     else if(isset($value['text'])){
                         $textField = new TextField("description{$key}", "{$value[0]}", $text, VALIDATE_NOTHING);
