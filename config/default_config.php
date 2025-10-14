@@ -154,6 +154,19 @@
     // The terminology to use for "Product"
     $config->setValue("productsTerm", "Product");
     
+    // Show request to join button on project bio tab
+    $config->setValue("enableJoinRequest", false);
+
+    // Status dropdown on user profile page options
+    $config->setValue("userStatusOptions", array(
+        "Senior",
+        "Regular",
+        "ECR",
+        "Unavailable",
+        "Looking for Collaborators",
+        "Looking for Projects to Join"
+    ));
+
     // The Default productVisibility
     $config->setValue("productVisibility", "Forum");
     

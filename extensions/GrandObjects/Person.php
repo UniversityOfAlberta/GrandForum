@@ -5091,6 +5091,23 @@ class Person extends BackboneModel {
         }
     }
 
+    function getStatuses($delim = null) {
+        $statuses = array();
+        if (isset($this->extra['status']) && is_array($this->extra['status'])) {
+            $statuses = $this->extra['status'];
+        }
+        if ($delim !== null) {
+            return implode($delim, $statuses);
+        }
+        return $statuses;
+    }
+
+    function setStatuses($statuses) {
+        if (is_array($statuses)) {
+            $this->extra['status'] = $statuses;
+        }
+    }
+
     /**
      * Returns all resources that are clipped by user
      * @return json of resources
