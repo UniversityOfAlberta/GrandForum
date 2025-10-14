@@ -79,15 +79,6 @@ class ProjectPage {
                 $wgOut->clearHTML();
                 $wgOut->setPageTitle("{$project->getFullName()} ({$project->getName()})");
 
-                $styleTag = '<style>
-                .custom-title {
-                    position: sticky !important;
-                    top: 0 !important;
-                    background: white !important;
-                }
-                </style>';
-
-                $wgOut->addHTML($styleTag);
                 
                 $visibility = array();
                 if(!$project->isDeleted()){
