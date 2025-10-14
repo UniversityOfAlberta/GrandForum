@@ -3,11 +3,13 @@
 class MultiSelectBox extends UIElement {
 
     var $options = array();
-    
-    function __construct($id, $name, $value, $options, $validations=VALIDATE_NOTHING){
+    var $display_format = null;
+
+    function __construct($id, $name, $value, $options, $validations=VALIDATE_NOTHING, $display_format=null){
         parent::__construct($id, $name, $value, $validations);
         $this->options = $options;
         $this->attr('size', '6');
+        $this->display_format = $display_format;
     }
     
     function render(){
@@ -17,8 +19,11 @@ class MultiSelectBox extends UIElement {
             if(in_array($option, $this->value) || in_array($key, $this->value)){
                 $selected = " selected";
             }
-            $html .= "<option $selected value='{$key}'>{$key} - {$option}</option>";
-        }
+            if ($this->display_format === 'simple') {
+                $html .= "<option $selected value='{$option}'>{$option}</option>";
+            } else {
+                $html .= "<option $selected value='{$key}'>{$key} - {$option}</option>";
+            }        }
         return $html."</select>";
     }
     

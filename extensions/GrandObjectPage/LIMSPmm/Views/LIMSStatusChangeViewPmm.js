@@ -10,8 +10,29 @@ LIMSStatusChangeViewPmm = Backbone.View.extend({
     initialize: function(options) {
         this.project = options.project;
         this.isDialog = options.isDialog || false;
+        this.listenTo(this.model, 'change:displayFiles', this.handleFileChange);
         this.selectTemplate();
         this.render();
+    },
+
+    handleFileChange: function() {
+        var displayFiles = this.model.get('displayFiles') || {};
+        var displayStatuses = _.clone(this.model.get('displayStatuses')) || {};
+
+        for (assigneeId in displayFiles) {
+            var fileInfo = displayFiles[assigneeId];
+            var changed = false;
+
+            if (displayStatuses[assigneeId] === 'Assigned' && fileInfo && !_.isEmpty(fileInfo.data) && !fileInfo.delete) {
+                displayStatuses[assigneeId] = 'Done';
+                changed = true;
+            }
+
+            if (changed) {
+                this.model.set('displayStatuses', displayStatuses, {silent: true});
+                this.render();
+            }
+        }
     },
 
     selectTemplate: function(){
@@ -68,7 +89,6 @@ LIMSStatusChangeViewPmm = Backbone.View.extend({
             var fileChanged = (data.displayFiles[assigneeId] && !_.isEmpty(data.displayFiles[assigneeId].data)) || (data.displayFiles[assigneeId] && data.displayFiles[assigneeId].delete);
             var reviewerChanged = data.displayReviewers[assigneeId] && data.displayReviewers[assigneeId].id && !_.isEqual(data.displayReviewers[assigneeId], data.reviewers[assigneeId]);
             var commentAdded = data.displayComments[assigneeId] && data.displayComments[assigneeId] !== '';
-
             var hasMeaningfulChange = statusChanged || fileChanged || reviewerChanged || commentAdded;
             if (hasMeaningfulChange && !wasExplicitlyAssigned) {
                 finalAssignees.push({id: assigneeId});

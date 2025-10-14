@@ -20,7 +20,11 @@ class PersonProfileTab extends AbstractEditableTab {
         $this->showContact($this->person, $this->visibility);
         $crdc = $this->person->getCRDC(", ");
         $keywords = $this->person->getKeywords(", ");
-        if($this->person->getProfile() != "" || $crdc != "" || $keywords != ""){
+        $statuses = "";
+        if (!empty($config->getValue("userStatusOptions"))) {
+            $statuses = $this->person->getStatuses(", ");
+        }
+        if($this->person->getProfile() != "" || $crdc != "" || $keywords != "" || $statuses != ""){
             $this->html .= "<h2 style='margin-top:0;padding-top:0;'>Profile</h2>
                             <table>";
             if($me->isRoleAtLeast(STAFF)){
@@ -30,6 +34,7 @@ class PersonProfileTab extends AbstractEditableTab {
                 $this->html .= ($this->person->getEmployeeId() != "") ? "<tr><td valign='top' align='right' style='white-space: nowrap;'><b>Employee Id:</b></td><td>{$this->person->getEmployeeId()}</td></tr>" : "";
             }
             $this->html .= ($keywords != "") ? "<tr><td valign='top' align='right' style='white-space: nowrap;'><b>Keywords:</b></td><td>{$keywords}</td></tr>" : "";
+            $this->html .= ($statuses != "") ? "<tr><td valign='top' align='right' style='white-space: nowrap;'><b>Status:</b></td><td>{$statuses}</td></tr>" : "";
             $this->html .= ($crdc != "") ? "<tr><td valign='top' align='right' style='white-space: nowrap;'><b>CRDC Codes:</b></td><td>{$crdc}</td></tr>" : "";
             $this->html .= "</table>";
             $this->showProfile($this->person, $this->visibility);
@@ -111,13 +116,18 @@ class PersonProfileTab extends AbstractEditableTab {
         $this->person->publicProfile = @$_POST['public_profile'];
         $this->person->privateProfile = @$_POST['private_profile'];
         $this->person->pronouns = @$_POST['pronouns'];
-        $this->person->update();
         if(isset($_POST['crdc'])){
             $this->person->setCRDC($_POST['crdc']);
         }
         $this->person->setKeywords(explode(",", $_POST['keywords']));
         $this->person->setAliases(explode(";", $_POST['aliases']));
         
+        if (isset($_POST['user_status']) && is_array($_POST['user_status'])) {
+            $this->person->setStatuses($_POST['user_status']);
+        } else {
+            $this->person->setStatuses([]);
+        }
+        $this->person->update();
         // Update Role Titles
         if(isset($_POST['role_title'])){
             foreach($this->person->getRoles() as $role){
@@ -324,6 +334,25 @@ class PersonProfileTab extends AbstractEditableTab {
         $this->html .= "
                 <h3>Keywords:</h3>
                 <input class='keywords' type='text' name='keywords' value='' />";
+
+        $allStatuses = $config->getValue("userStatusOptions");
+        if (!empty($allStatuses)) {
+            $selectedStatuses = $person->getStatuses();
+            
+            $statusField = new MultiSelectBox(
+                "user_status",
+                "User Status",
+                $selectedStatuses,
+                $allStatuses,
+                null,
+                'simple'
+            );
+
+            $this->html .= "
+                    <h3>User Status:</h3>
+                    {$statusField->render()}";
+        }
+
         if($config->getValue("publicProfileOnly")){
             $this->html .= "
                 <h3>Profile:</h3>
@@ -343,6 +372,7 @@ class PersonProfileTab extends AbstractEditableTab {
             $('input.keywords').tagit({
                 allowSpaces: true
             });
+            $('select[name=\"user_status[]\"]').chosen({width: '200px'});
             $('textarea.profile').tinymce({
                 theme: 'modern',
                 relative_urls : false,
