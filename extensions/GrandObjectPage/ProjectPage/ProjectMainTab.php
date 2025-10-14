@@ -653,7 +653,12 @@ class ProjectMainTab extends AbstractEditableTab {
                     }
                     else{
                         $exploded = explode("|", $text, 2);
-                        $this->html .= "<div id='description{$key}'><en>".@trim($exploded[0])."</en><fr>".@trim($exploded[1])."</fr></div>";
+                        if(count($exploded) == 1){
+                            $this->html .= "<div id='description{$key}'>{$exploded[0]}</div>";
+                        }
+                        else {
+                            $this->html .= "<div id='description{$key}'><en>".@trim($exploded[0])."</en><fr>".trim($exploded[1])."</fr></div>";
+                        }
                     }
                 }
                 else{
