@@ -54,6 +54,12 @@ class ProjectMainTab extends AbstractEditableTab {
         $this->html .= "    <div style='white-space:nowrap;margin-right:30px;'>
                                 <table>
                             $title";
+
+        if ($config->getValue('enableJoinRequest') && $wgUser->isRegistered() && !$me->isMemberOf($project) && $project->getStatus() != "Ended" && count($project->getLeaders()) > 0) {
+            $this->html .= "<tr><td colspan='2'>
+                                <a href='#' id='request-to-join-btn' class='button'>Request to Join?</a>
+                            </td></tr>";
+        }
         if($project->getType() != "Administrative" && count(Theme::getAllThemes()) > 0){
             $this->showChallenge();
         }
