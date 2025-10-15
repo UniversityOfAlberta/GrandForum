@@ -1,7 +1,7 @@
 <%
     var canEdit = isEditMode && isLeaderAllowedToEdit;
 %>
-<% if (!canEdit) { %>
+<% if (!canEdit && project.status != 'Ended') { %>
     <div id="emailAccordion"></div>
 <% } %>
 <div id="project_tasks_main_template">
