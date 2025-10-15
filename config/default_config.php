@@ -158,14 +158,7 @@
     $config->setValue("enableJoinRequest", false);
 
     // Status dropdown on user profile page options
-    $config->setValue("userStatusOptions", array(
-        "Senior",
-        "Regular",
-        "ECR",
-        "Unavailable",
-        "Looking for Collaborators",
-        "Looking for Projects to Join"
-    ));
+    $config->setValue("userStatusOptions", array());
 
     // The Default productVisibility
     $config->setValue("productVisibility", "Forum");

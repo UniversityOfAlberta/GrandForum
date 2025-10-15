@@ -14,6 +14,9 @@ class ProjectLIMSPmmTab extends AbstractEditableTab {
     }
 
     function canEdit() {
+         if ($this->project->getStatus() == 'Ended') {
+            return false;
+        }
         return $this->project->isAllowedToView();
     }
 
