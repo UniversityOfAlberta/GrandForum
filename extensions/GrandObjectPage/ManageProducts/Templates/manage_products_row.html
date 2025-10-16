@@ -1,5 +1,5 @@
 <% if(!publicationsFrozen){ %>
-    <td class="checkboxCell" style="<% if(!hasProjects){ %> background: #ffeeaa; background-clip: padding-box; <% } %>" align="center">
+    <td class="checkboxCell projectCell" style="<% if(!hasProjects){ %> background: #ffeeaa; background-clip: padding-box; <% } %>" align="center">
         <%= HTML.ProjectSelector(this, 'projects', {otherOnly: true, 
                                                     allProjects: this.allProjects, 
                                                     projects: this.projects,
@@ -7,7 +7,7 @@
                                                     oldProjects: this.oldProjects}) %>
     </td>
     <% _.each(this.parent.projects.models, function(p){ %>
-        <td class="checkboxCell" style="<% if(!hasProjects){ %> background: #ffeeaa; background-clip: padding-box; <% } %>">
+        <td class="checkboxCell projectCell" style="<% if(!hasProjects){ %> background: #ffeeaa; background-clip: padding-box; <% } %>">
             <div class="checkboxOuter" data-project="<%= p.get('id') %>">
                 <% var projectChecked = this.projectSelectorView.projectChecked(p.get('id')); %>
                 <input id="projects_<%= p.get('name') %>" data-project="<%= p.get('id') %>" type="checkbox" name="project" <%= projectChecked %> /><% if(projectChecked != "" && p.get('subprojects').length > 0){ %><div data-project="<%= p.get('id') %>" class="showSubprojects">&#9660;</div><% } %>
@@ -22,12 +22,11 @@
     <td style="border-left: 2px solid #C8C8C8;overflow:visible;max-width:none;" align="left">
         <span class="edit-icon" style="margin-right:3px;"></span><span class="copy-icon" title="Duplicate" style="margin-right:3px;"><span class="throbber" style="display:none;" ></span></span><span class="delete-icon" style="margin-left:3px;"></span>
     </td>
-    <td align="center">
+    <td align="center" class="privateCell">
         <span style="display:none;">-<%= access_id %></span><%= HTML.CheckBox(this, 'access_id', {value: me.get('id'), default: 0}) %>
     </td>
 <% } %>
 <td align="center">
-    
     <% if(access_id != 0){ %>
         <span style="display:none;">Private</span>
         <img src="<%= wgServer + wgScriptPath %>/skins/icons/glyphicons_052_eye_close.png" style="height: 19px;" title="Private" />

@@ -638,6 +638,49 @@
         </Activity>
     </Activities>
     
+    <!-- Events -->
+    <Events category="Event">
+        <Event type="Workshop" status="Invited|Not Invited">
+            <data>
+                <field label="Event Title" type="String">conference</field>
+                <field label="Location" type="String">location</field>
+                <field label="Organizing Body" type="String">organizing_body</field>
+                <field label="URL" type="URL">url</field>
+                <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
+            </data>
+        </Event>
+        
+        <Event type="Consultations" status="Invited|Not Invited">
+            <data>
+                <field label="Event Title" type="String">conference</field>
+                <field label="Location" type="String">location</field>
+                <field label="Organizing Body" type="String">organizing_body</field>
+                <field label="URL" type="URL">url</field>
+                <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
+            </data>
+        </Event>
+        
+        <Event type="Conference" status="Invited|Not Invited">
+            <data>
+                <field label="Event Title" type="String">conference</field>
+                <field label="Location" type="String">location</field>
+                <field label="Organizing Body" type="String">organizing_body</field>
+                <field label="URL" type="URL">url</field>
+                <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
+            </data>
+        </Event>
+    
+        <Event type="Misc" status="Invited|Not Invited">
+            <data>
+                <field label="Event Title" type="String">conference</field>
+                <field label="Location" type="String">location</field>
+                <field label="Organizing Body" type="String">organizing_body</field>
+                <field label="URL" type="URL">url</field>
+                <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
+            </data>
+        </Event>
+    </Events>
+    
     <!-- IP Management -->
     <IPManagements category="IP Management" citationFormat="{%Authors} {(%YYYY).} &lt;i>{%Title.}&lt;/i> {%Issue} {%Url}">
         <IPManagement type="Patent" status="">

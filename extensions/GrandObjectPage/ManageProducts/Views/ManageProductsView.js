@@ -78,6 +78,9 @@ ManageProductsView = Backbone.View.extend({
             var projects = [this.project.toJSON()];
         }
         var model = new Product({authors: [me.toJSON()], projects: projects});
+        if(this.categories.length == 1){
+            model.set('category', this.categories[0]);
+        }
         var view = new ProductEditView({el: this.editDialog, model: model, isDialog: true});
         this.editDialog.view = view;
         this.editDialog.dialog({
@@ -195,7 +198,11 @@ ManageProductsView = Backbone.View.extend({
         var models = _.pluck(_.pluck(this.subViews, 'model'), 'id');
         var frag = document.createDocumentFragment();
         this.products.each(function(p, i){
+            if(this.project.id != null && p.get('access_id') != 0){
+                return;
+            }
             if(!_.contains(models, p.id)){
+                
                 // Product isn't in the table yet
                 this.listenTo(p, "dirty", this.productChanged);
                 if(p.dirty == undefined){

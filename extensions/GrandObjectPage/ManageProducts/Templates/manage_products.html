@@ -89,13 +89,13 @@
         </p>
     <% } %>
 </div>
-<p>
+<p class="manageProductButtons">
     <% if(!publicationsFrozen){ %>
         <button id="addProductButton" type="button">Add <%= productsTerm %></button>
         <button id="addFromDOIButton" type="button">Add From DOI</button>
-        <button id="uploadCCVButton" type="button">Upload CCV</button>
+        <!--button id="uploadCCVButton" type="button">Upload CCV</button-->
         <button id="importBibTexButton" type="button">Import BibTeX</button>
-        <% if(orcidId != ""){ %>
+        <% if(orcidId != "" && this.categories.length == 0){ %>
             <button id="importOrcidButton" type="button" style="height: 29px; vertical-align: middle;"><img src="https://orcid.org/sites/default/files/images/orcid_16x16.png" />&nbsp;Import ORCID</button>
         <% } %>
         <% if(productStructure.categories['Activity'] != undefined && 
@@ -130,12 +130,12 @@
         </tr>
         <tr style="border-bottom: 2px solid #C8C8C8;">
             <% if(!publicationsFrozen){ %>
-                <th width="40px"></th>
+                <th width="40px" class="projectCell"></th>
                 <% _.each(this.projects.models, function(p){ %>
-                    <th width="40px" class="checkboxCell"><% if(this.project.get('id') == null){ %><input class="selectAll" data-project="<%= p.id %>" type="checkbox" /><% } %></th>
+                    <th width="40px" class="checkboxCell projectCell"><% if(this.project.get('id') == null){ %><input class="selectAll" data-project="<%= p.id %>" type="checkbox" /><% } %></th>
                 <% }.bind(this)) %>
                 <th width="1%" style="border-left: 2px solid #C8C8C8;">Edit</th>
-                <th width="1%">Private</th>
+                <th width="1%" class="privateCell">Private</th>
             <% } %>
             <th width="3%">Visibility</th>
             <th width="3%" style="min-width: 70px;">Date</th>

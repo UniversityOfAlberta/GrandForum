@@ -121,12 +121,16 @@ Person = Backbone.Model.extend({
         return this.privateProducts;
     },
     
-    getManagedProducts: function(projectId){
-        if(projectId != undefined){
-            this.managedProducts.url = this.urlRoot + '/' + this.get('id') + '/products/managed/' + projectId;
+    getManagedProducts: function(projectId, clone){
+        var managedProducts = this.managedProducts;
+        if(clone != undefined){
+            managedProducts = _.clone(this.managedProducts)
         }
-        this.managedProducts.fetch();
-        return this.managedProducts;
+        if(projectId != undefined){
+            managedProducts.url = this.urlRoot + '/' + this.get('id') + '/products/managed/' + projectId;
+        }
+        managedProducts.fetch();
+        return managedProducts;
     },
     
     getAdminProducts: function(){

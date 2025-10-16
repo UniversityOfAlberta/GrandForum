@@ -2,6 +2,8 @@
 
 class ManageProductsReportItem extends StaticReportItem {
 
+    static $loaded = false;
+
     function render(){
         global $wgOut, $wgUser, $wgServer, $wgScriptPath;
         
@@ -14,31 +16,46 @@ class ManageProductsReportItem extends StaticReportItem {
             $studentNames[] = $hqp->getName();
             $studentFullNames[] = $hqp->getNameForForms();
         }
-        
+        $view = "";
         // Load the scripts for Manage People so that the University editing can be used
-        $manageProducts = new ManageProducts();
-        $scripts = array_merge($manageProducts->loadTemplates(true),
-                               $manageProducts->loadModels(true),
-                               $manageProducts->loadViews(true));
+        if(!self::$loaded){
+            $manageProducts = new ManageProducts();
+            $scripts = array_merge($manageProducts->loadTemplates(true),
+                                   $manageProducts->loadModels(true),
+                                   $manageProducts->loadViews(true));
+            $view .= "<style>
+                    #manageProductsDescription { display: none; }
+                    #listTable thead tr:first-child { display: none; }
+                    #listTable .projectCell { display: none; }
+                    #listTable .privateCell { display: none; }
+                    #listTable tr { border-bottom: none !important; }
+                    #listTable td, #listTable th { border-left: none !important; }
+                    #saveProducts, #deletePrivate, #releasePrivate { display: none !important; }
+                    .manageProductButtons { position: absolute; left: 5px; z-index: 1; }
+                 </style>".
+                 implode("", $scripts)."
+                 <link href='$wgServer$wgScriptPath/extensions/GrandObjectPage/ManageProducts/style.css' type='text/css' rel='stylesheet' />
+                 <script type='text/javascript'>
+                    publicationsFrozen = false;
+                    students = ".json_encode($students).";
+                    studentNames = ".json_encode($studentNames).";
+                    studentFullNames = ".json_encode($studentFullNames).";
+                 </script>";
+            self::$loaded = true;
+        }
         $projectJSON = ($this->projectId != 0) ? ", project: new Project(".Project::newFromId($this->projectId)->toJSON().")" : "";
         $projectId = ($this->projectId != 0) ? "{$this->projectId}" : "undefined";
         
         $categories = json_encode(array_filter(explode(",", $this->getAttr('categories'))));
 
-        $view = "<style>
-                    #manageProductsDescription { display: none; }
-                 </style>
-                 <link href='$wgServer$wgScriptPath/extensions/GrandObjectPage/ManageProducts/style.css' type='text/css' rel='stylesheet' />"
-                .implode("", $scripts)."
-                 <div id='manageProducts'></div>
-                 <script type='text/javascript'>    
-                     var publicationsFrozen = false;
-                     var students = ".json_encode($students).";
-                     var studentNames = ".json_encode($studentNames).";
-                     var studentFullNames = ".json_encode($studentFullNames).";
-                     var products = me.getManagedProducts($projectId);
-                     products.all = false;
-                     view = new ManageProductsView({el: $('#manageProducts'), model: products, categories: {$categories} {$projectJSON}});
+        $view .= "<div id='{$this->id}' style='position: relative;'></div>
+                 <script type='text/javascript'>
+                    function {$this->id}(){
+                         var products = me.getManagedProducts($projectId, true);
+                         products.all = false;
+                         var view = new ManageProductsView({el: $('#{$this->id}'), model: products, categories: {$categories} {$projectJSON}});
+                     }
+                     {$this->id}();
                  </script>";
         
         $item = $this->processCData($view);

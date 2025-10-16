@@ -63,6 +63,26 @@ class ImportBibTeXAPI extends API{
         $checkProduct = Product::newFromTitle($paper['title']);
         if((!$overwrite && $checkProduct->exists()) ||
            (!$overwrite && $checkBibProduct->exists())){
+            $product = ($checkProduct->exists()) ? $checkProduct : $checkBibProduct;
+            $product->getProjects();
+            $product->getAuthors();
+            if(!is_array($product->projects)){ $product->projects = array(); }
+            if($_POST['project'] != "" && array_search($_POST['project'], array_column($product->projects, 'id')) === false){
+                // If project was specified, update it even if overwrite wasn't specified
+                $project = Project::newFromId($_POST['project']);
+                if($project != null){
+                    $product->projects[] = $project;
+                }
+                $product->deleted = 0;
+                $status = $product->update();
+                if($status){
+                    $product = Product::newFromId($product->getId());
+                    return $product;
+                }
+                else{
+                    return null;
+                }
+            }
             return null;
         }
         if(@trim($paper['doi']) != "" && $checkBibProduct->getId() != 0){
@@ -107,8 +127,9 @@ class ImportBibTeXAPI extends API{
         if($product->status == ""){ $product->status = "Published"; }
         $product->date = @"{$paper['year']}-{$this->getMonth($paper['month'])}-01";
         $product->data = array();
+        $product->getProjects();
         if(!is_array($product->projects)){ $product->projects = array(); }
-        if($_POST['project'] != "" && count($product->projects) == 0){
+        if($_POST['project'] != "" && array_search($_POST['project'], array_column($product->projects, 'id')) === false){
             $project = Project::newFromId($_POST['project']);
             if($project != null){
                 $product->projects[] = $project;
@@ -202,20 +223,21 @@ class ImportBibTeXAPI extends API{
 
             $errorProducts = array();
             $overwrite = (isset($_POST['overwrite']) && strtolower($_POST['overwrite']) == "yes") ? true : false;
+            $private = ($_POST['project'] == "") ? true : false;
             if(is_array($bib->m_entries) && count($bib->m_entries) > 0){
                 foreach($bib->m_entries as $paper){
                     $type = (isset(self::$bibtexHash[strtolower($paper['bibtex_type'])])) ? self::$bibtexHash[strtolower($paper['bibtex_type'])] : "Misc";
                     if(is_array($type)){
                         // Could map to different types
                         foreach($type as $t){
-                            $product = $this->createProduct($paper, null, $t, $overwrite);
+                            $product = $this->createProduct($paper, null, $t, $overwrite, $private);
                             if($product !== false){
                                 break;
                             }
                         }
                     }
                     else{
-                        $product = $this->createProduct($paper, null, $type, $overwrite);
+                        $product = $this->createProduct($paper, null, $type, $overwrite, $private);
                     }
                     if($product != null && $product !== false){
                         $createdProducts[] = $product;
