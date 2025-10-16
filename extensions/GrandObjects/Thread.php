@@ -71,6 +71,9 @@ class Thread extends BackboneModel{
         static function getAllThreads(){
             $threads = array();
             $me = Person::newFromWgUser();
+            if(!$me->isLoggedIn()){
+                return $threads;
+            }
 	    $meId = ($me->getId() ?: "0");
             $meName = str_replace(".", " ", $me->getName());
             if($me->isRoleAtLeast(MANAGER)){

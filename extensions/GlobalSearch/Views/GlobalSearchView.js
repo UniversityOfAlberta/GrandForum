@@ -100,18 +100,6 @@ GlobalSearchResultsView = Backbone.View.extend({
         "personResults" : function(){
             return new PersonResultsView({parent: this, model: new GlobalSearch({group: 'people', search: ''})});
         },
-        "projectResults" : function(){
-            return new ProjectResultsView({parent: this, model: new GlobalSearch({group: 'projects', search: ''})});
-        },
-        "productResults" : function(){
-            return new ProductResultsView({parent: this, model: new GlobalSearch({group: 'products', search: ''})});
-        },
-        "wikiResults" : function(){
-            return new WikiResultsView({parent: this, model: new GlobalSearch({group: 'wikipage', search: ''})});
-        },
-        "pdfResults" : function(){
-            return new PDFResultsView({parent: this, model: new GlobalSearch({group: 'pdf', search: ''})});
-        },
         "storyResults" : function(){
             return new StoryResultsView({parent: this, model: new GlobalSearch({group: 'stories', search: ''})});
         },
@@ -405,22 +393,6 @@ PersonResultsView = ResultsView.extend({
     }
 });
 
-ProjectResultsView = ResultsView.extend({
-    maxResults: 3,
-    
-    createCardView: function(model){
-        return new SmallProjectCardView({model: model});
-    },
-    
-    createModel: function(obj){
-        return new Project({id: obj});
-    },
-    
-    render: function(){
-        this.$el.html(this.template({group: "Projects"}));
-    }
-});
-
 StoryResultsView = ResultsView.extend({
     maxResults: 4,
 
@@ -450,53 +422,5 @@ ThreadResultsView = ResultsView.extend({
 
     render: function(){
         this.$el.html(this.template({group: "Threads"}));
-    }
-});
-
-ProductResultsView = ResultsView.extend({
-    maxResults: 4,
-    
-    createCardView: function(model){
-        return new SmallProductCardView({model: model});
-    },
-    
-    createModel: function(obj){
-        return new Product({id: obj});
-    },
-    
-    render: function(){
-        this.$el.html(this.template({group: productsTerm.pluralize()}));
-    }
-});
-
-WikiResultsView = ResultsView.extend({
-    maxResults: 3,
-
-    createCardView: function(model){
-        return new SmallWikiCardView({model: model});
-    },
-    
-    createModel: function(obj){
-        return new WikiPage({id: obj});
-    },
-    
-    render: function(){
-        this.$el.html(this.template({group: "Wiki Pages"}));
-    }
-});
-
-PDFResultsView = ResultsView.extend({
-    maxResults: 4,
-
-    createCardView: function(model){
-        return new SmallPDFCardView({model: model});
-    },
-    
-    createModel: function(obj){
-        return new PDF({id: obj});
-    },
-    
-    render: function(){
-        this.$el.html(this.template({group: "Reports"}));
     }
 });

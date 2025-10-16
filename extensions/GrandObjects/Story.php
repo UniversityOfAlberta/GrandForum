@@ -69,6 +69,9 @@ class Story extends BackboneModel{
         static function getAllUserStories(){
             $stories = array();
             $me = Person::newFromWgUser();
+            if(!$me->isLoggedIn()){
+                return $stories;
+            }
             if($me->isRoleAtLeast(MANAGER)){
             	$data = DBFunctions::select(array('grand_user_stories'),
                 	                        array('*'),
