@@ -63,7 +63,7 @@ class TemplateReport extends AbstractReport{
                     $tabs["Dean"]['subtabs'][] = TabUtils::createSubTab("Annual Reports", "{$url}ChairTable", $selected);
                 }
                 
-                if($person->isRole(FEC_CHAIR) || $person->isRole(HR) || $person->isRole("FEC")){
+                if($person->isRole(FEC_CHAIR) || $person->isRole(HR) || $person->isRole("FEC") || $person->isRole("FEC ".getFaculty())){
                     $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "FECTable")) ? "selected" : false;
                     $tabs["FEC"]['subtabs'][] = TabUtils::createSubTab("Annual Reports", "{$url}FECTable", $selected);
                 }
