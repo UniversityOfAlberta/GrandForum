@@ -11,7 +11,10 @@ $wgHooks['TopLevelTabs'][] = 'ProjectPage::createTab';
 $wgHooks['SubLevelTabs'][] = 'ProjectPage::createSubTabs';
 
 class ProjectPage {
-    static function sendJoinRequest(){ 
+    static function sendJoinRequest($action, $article){
+        if ($action != 'sendJoinRequest') {
+            return true;
+        }
         header('Content-type: application/json');
         global $wgUser;
         if (!$wgUser->isRegistered()) {
@@ -194,10 +197,13 @@ class ProjectPage {
                     }
                 }
                 $tabbedPage->showPage();
-                if ($config->getValue('enableJoinRequest') && $wgUser->isRegistered() && !$me->isMemberOf($project)) {
-
-                    $wgOut->addHTML('<a href="#" id="request-to-join-btn" style="display:none;">Request to Join?</a>');
-                    
+                if (
+                    $config->getValue('enableJoinRequest') &&
+                    $wgUser->isRegistered() &&
+                    !$me->isMemberOf($project) &&
+                    $project->getStatus() != "Ended" &&
+                    count($project->getLeaders()) > 0
+                ) {
                     $userFirstName = htmlspecialchars($me->getFirstName(), ENT_QUOTES);
                     $userLastName = htmlspecialchars($me->getLastName(), ENT_QUOTES);
                     $userEmail = htmlspecialchars($me->getEmail(), ENT_QUOTES);
@@ -229,7 +235,7 @@ class ProjectPage {
                     HTML;
                     $wgOut->addHTML($modalHTML);
 
-                    $ajaxUrl = $wgServer . $wgScriptPath . '/index.php?action=ProjectPage::sendJoinRequest';
+                    $ajaxUrl = $wgServer . $wgScriptPath . '/index.php?action=sendJoinRequest';
                     $currentProjectId = $project->getId();
                 
                     $inlineJs = <<<JS
