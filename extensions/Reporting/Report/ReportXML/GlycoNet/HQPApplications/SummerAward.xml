@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="GlycoNet Summer Awards" reportType="RP_HQP_SUMMER" pdfType="HQP_SUMMER" pdfFiles="HQPApplications/SummerAwardPDF" ajax="true" disabled="false" year="2025">
+<Report name="GlycoNet Summer Awards" reportType="RP_HQP_SUMMER" pdfType="HQP_SUMMER" pdfFiles="HQPApplications/SummerAwardPDF" ajax="true" disabled="false" year="2026">
     <Permissions>
         <Role role="HQP">
             <SectionPermission id="background" permissions="rw" />
@@ -46,7 +46,7 @@
             <SectionPermission id="review" permissions="" />
             <SectionPermission id="submit" permissions="" />
         </Role>
-        <If if="{>({timestamp(Y-m-d)},2025-01-26)}">
+        <If if="{>({timestamp(Y-m-d)},2026-01-26)}">
             <SectionPermission id="background" permissions="-" />
             <SectionPermission id="application" permissions="-" />
             <SectionPermission id="hqp_description" permissions="-" />
@@ -294,6 +294,9 @@
                     
                     <h2>Project Description</h2>
                     {getHTML(RP_HQP_SUMMER, DESCRIPTION, DESCRIPTION, {$parent_id}, {$user_id}, 0)}
+                    
+                    <h2>Trainee Training Plan</h2>
+                    {getHTML(RP_HQP_SUMMER, DESCRIPTION, PLAN, {$parent_id}, {$user_id}, 0)}
                 ]]>
             </Static>
             <ReportItem id="figures" type="UploadPDF" blobItem="FIGURES" personId="{$user_id}" blobSubItem="{$parent_id}" mimeType="application/pdf" fileSize="5">
@@ -349,6 +352,13 @@
                     <![CDATA[
                         <h2>Project Description - <small>750 words maximum, including references</small></h2>
                         <p>Describe the proposed summer research project, emphasizing the student's role and alignment with one or more of GlycoNet's themes. Please use <i>Journal of Biological Chemistry</i> style for references.</p>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                <ReportItem id="plan" type="Textarea" blobItem="PLAN" blobSubItem="{$user_id}" rich="true" height="300px">
+                    <![CDATA[
+                        <h2>Trainee Training Plan</h2>
+                        <p>Describe the training plan for the trainee(s) involved in this project. Outline the mentoring approach, training opportunities, and anticipated outcomes that will enhance the trainee’s development.</p>
                         {$item}
                     ]]>
                 </ReportItem>
