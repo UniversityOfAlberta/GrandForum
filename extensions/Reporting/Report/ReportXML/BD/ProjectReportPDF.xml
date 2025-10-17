@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="Project Report" reportType="RP_PROJECT_REPORT_{GET(id)}" pdfType="RP_PROJECT_REPORT_{GET(id)}" year="0" personId="0" ajax="true" disabled="false">
-    <ReportSection id="report" type="NextPrevReportSection" name="Project Report" title="{$project_full_name} ({$project_name})&lt;br /&gt;{replace(Q,R,{replace(_,:,{GET(id)})})} Report">
+    <ReportSection id="report" type="NextPrevReportSection" name="Project Report" title="{$project_full_name} ({$project_name})&lt;br /&gt;{replace(Q,R,{replace(_,:,{GET(id)})})} Report" pagebreak="false">
         <!-- Team Information -->
         <Static>
             <![CDATA[
@@ -84,40 +84,349 @@
             </ReportItem>
         </If>
     </ReportSection>
-    <ReportSection id="publications" type="ReportSection" name="Outputs" title="Outputs" pagebreak="false">
-        <Static>
+    <ReportSection id="publications" type="EditableReportSection" name="Outputs" title="Outputs" blobSection="OUTPUTS" pagebreak="false" delete="true">
+        <!-- Publications -->
+        <ReportItem id="publications" type="Radio" blobItem="PUBLICATIONS" options="Yes|No">
             <![CDATA[
-                <table class='wikitable small' frame='box' rules='all' style='width:100%;'>
-                    <thead>
-                        <tr>
-                            <th>Type</th>
-                            <th>Title</th>
-                            <th>Date</th>
-                            <th>Link</th>
-                            <th>Citation</th>
-                        </tr>
-                    </thead>
-                    <tbody>
+                <h3>Have you or your team published or produced any academic or non-academic publications?</h3>
+                {$item}
             ]]>
-        </Static>
-        <ReportItemSet type="ProjectProducts" start="{projectReportStartDate({GET(id)})}" end="{projectReportEndDate({GET(id)})}">
+        </ReportItem>
+        <If if="{==({getText(RP_PROJECT_REPORT_{GET(id)}, OUTPUTS, PUBLICATIONS, 0, 0, {$project_id})}, Yes)}">
             <Static>
                 <![CDATA[
-                    <tr>
-                        <td>{$product_type}</td>
-                        <td valign='top'>{$product_title}</td>
-                        <td style='white-space: nowrap;'>{date_format({strtotime({$product_date})}, M Y)}</td>
-                        <td>{if("{getProductData(url)}" != "", <a class='externalLink' href='{getProductData(url)}'>Link</a>)}</td>
-                        <td valign='top'>{$product_citation}</td>
-                    </tr>
+                    <table class='wikitable small' frame='box' rules='all' style='width:100%;'>
+                        <thead>
+                            <tr>
+                                <th>Type</th>
+                                <th>Title</th>
+                                <th>Date</th>
+                                <th>Link</th>
+                                <th>Citation</th>
+                            </tr>
+                        </thead>
+                        <tbody>
                 ]]>
             </Static>
-        </ReportItemSet>
-        <Static>
+            <ReportItemSet type="ProjectProducts" start="{projectReportStartDate({GET(id)})}" end="{projectReportEndDate({GET(id)})}" category="Publication">
+                <Static>
+                    <![CDATA[
+                        <tr>
+                            <td>{$product_type}</td>
+                            <td valign='top'>{$product_title}</td>
+                            <td style='white-space: nowrap;'>{date_format({strtotime({$product_date})}, M Y)}</td>
+                            <td>{if("{getProductData(url)}" != "", <a class='externalLink' href='{getProductData(url)}'>Link</a>)}</td>
+                            <td valign='top'>{$product_citation}</td>
+                        </tr>
+                    ]]>
+                </Static>
+            </ReportItemSet>
+            <Static>
+                <![CDATA[
+                        </tbody>
+                    </table>
+                ]]>
+            </Static>
+        </If>
+        
+        <!-- Conferences -->
+        <ReportItem id="conferences" type="Radio" blobItem="CONFERENCES" options="Yes|No">
             <![CDATA[
-                    </tbody>
-                </table>
+                <h3>Have you or your team presented, chaired, or contributed to any conferences, panels, or symposiums?</h3>
+                {$item}
             ]]>
-        </Static>
+        </ReportItem>
+        <If if="{==({getText(RP_PROJECT_REPORT_{GET(id)}, OUTPUTS, CONFERENCES, 0, 0, {$project_id})}, Yes)}">
+            <Static>
+                <![CDATA[
+                    <table class='wikitable small' frame='box' rules='all' style='width:100%;'>
+                        <thead>
+                            <tr>
+                                <th>Type</th>
+                                <th>Title</th>
+                                <th>Date</th>
+                                <th>Link</th>
+                                <th>Citation</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                ]]>
+            </Static>
+            <ReportItemSet type="ProjectProducts" start="{projectReportStartDate({GET(id)})}" end="{projectReportEndDate({GET(id)})}" category="Conferences">
+                <Static>
+                    <![CDATA[
+                        <tr>
+                            <td>{$product_type}</td>
+                            <td valign='top'>{$product_title}</td>
+                            <td style='white-space: nowrap;'>{date_format({strtotime({$product_date})}, M Y)}</td>
+                            <td>{if("{getProductData(url)}" != "", <a class='externalLink' href='{getProductData(url)}'>Link</a>)}</td>
+                            <td valign='top'>{$product_citation}</td>
+                        </tr>
+                    ]]>
+                </Static>
+            </ReportItemSet>
+            <Static>
+                <![CDATA[
+                        </tbody>
+                    </table>
+                ]]>
+            </Static>
+        </If>
+        
+        <!-- Events -->
+        <ReportItem id="events" type="Radio" blobItem="EVENTS" options="Yes|No">
+            <![CDATA[
+                <h3>Have you or your team organized or participated in any public or internal events?</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <If if="{==({getText(RP_PROJECT_REPORT_{GET(id)}, OUTPUTS, EVENTS, 0, 0, {$project_id})}, Yes)}">
+            <Static>
+                <![CDATA[
+                    <table class='wikitable small' frame='box' rules='all' style='width:100%;'>
+                        <thead>
+                            <tr>
+                                <th>Type</th>
+                                <th>Title</th>
+                                <th>Date</th>
+                                <th>Link</th>
+                                <th>Citation</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                ]]>
+            </Static>
+            <ReportItemSet type="ProjectProducts" start="{projectReportStartDate({GET(id)})}" end="{projectReportEndDate({GET(id)})}" category="Event">
+                <Static>
+                    <![CDATA[
+                        <tr>
+                            <td>{$product_type}</td>
+                            <td valign='top'>{$product_title}</td>
+                            <td style='white-space: nowrap;'>{date_format({strtotime({$product_date})}, M Y)}</td>
+                            <td>{if("{getProductData(url)}" != "", <a class='externalLink' href='{getProductData(url)}'>Link</a>)}</td>
+                            <td valign='top'>{$product_citation}</td>
+                        </tr>
+                    ]]>
+                </Static>
+            </ReportItemSet>
+            <Static>
+                <![CDATA[
+                        </tbody>
+                    </table>
+                ]]>
+            </Static>
+        </If>
+        
+        <!-- Awards -->
+        <ReportItem id="awards" type="Radio" blobItem="AWARDS" options="Yes|No">
+            <![CDATA[
+                <h3>Have you or your team received any awards, stipends, or research funding?</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <If if="{==({getText(RP_PROJECT_REPORT_{GET(id)}, OUTPUTS, AWARDS, 0, 0, {$project_id})}, Yes)}">
+            <Static>
+                <![CDATA[
+                    <table class='wikitable small' frame='box' rules='all' style='width:100%;'>
+                        <thead>
+                            <tr>
+                                <th>Type</th>
+                                <th>Title</th>
+                                <th>Date</th>
+                                <th>Link</th>
+                                <th>Citation</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                ]]>
+            </Static>
+            <ReportItemSet type="ProjectProducts" start="{projectReportStartDate({GET(id)})}" end="{projectReportEndDate({GET(id)})}" category="Award">
+                <Static>
+                    <![CDATA[
+                        <tr>
+                            <td>{$product_type}</td>
+                            <td valign='top'>{$product_title}</td>
+                            <td style='white-space: nowrap;'>{date_format({strtotime({$product_date})}, M Y)}</td>
+                            <td>{if("{getProductData(url)}" != "", <a class='externalLink' href='{getProductData(url)}'>Link</a>)}</td>
+                            <td valign='top'>{$product_citation}</td>
+                        </tr>
+                    ]]>
+                </Static>
+            </ReportItemSet>
+            <Static>
+                <![CDATA[
+                        </tbody>
+                    </table>
+                ]]>
+            </Static>
+        </If>
+        
+        <!-- Partnerships/Collaborations -->
+        <ReportItem id="partners" type="Radio" blobItem="PARTNERS" options="Yes|No">
+            <![CDATA[
+                <h3>Have you or your team developed or maintained any formal or informal partnerships or collaborations?</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <If if="{==({getText(RP_PROJECT_REPORT_{GET(id)}, OUTPUTS, PARTNERS, 0, 0, {$project_id})}, Yes)}">
+            <Static>
+                <![CDATA[
+                    <h4>Partnerships</h4>
+                    <table class='wikitable small' frame='box' rules='all' style='width:100%;'>
+                        <thead>
+                            <tr>
+                                <th>Type</th>
+                                <th>Title</th>
+                                <th>Date</th>
+                                <th>Indigenous</th>
+                                <th>Citation</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                ]]>
+            </Static>
+            <ReportItemSet type="ProjectProducts" start="{projectReportStartDate({GET(id)})}" end="{projectReportEndDate({GET(id)})}" category="Partnership">
+                <Static>
+                    <![CDATA[
+                        <tr>
+                            <td>{$product_type}</td>
+                            <td valign='top'>{$product_title}</td>
+                            <td style='white-space: nowrap;'>{date_format({strtotime({$product_date})}, M Y)}</td>
+                            <td>{getProductData(indigenous)}</td>
+                            <td valign='top'>{$product_citation}</td>
+                        </tr>
+                    ]]>
+                </Static>
+            </ReportItemSet>
+            <Static>
+                <![CDATA[
+                        </tbody>
+                    </table><br />
+                ]]>
+            </Static>
+            <Static>
+                <![CDATA[
+                    <h4>Collaborations</h4>
+                    <table class='wikitable small' frame='box' rules='all' style='width:100%;'>
+                        <thead>
+                            <tr>
+                                <th>Type</th>
+                                <th>Title</th>
+                                <th>Date</th>
+                                <th>Indigenous</th>
+                                <th>Citation</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                ]]>
+            </Static>
+            <ReportItemSet type="ProjectProducts" start="{projectReportStartDate({GET(id)})}" end="{projectReportEndDate({GET(id)})}" category="Collaboration">
+                <Static>
+                    <![CDATA[
+                        <tr>
+                            <td>{$product_type}</td>
+                            <td valign='top'>{$product_title}</td>
+                            <td style='white-space: nowrap;'>{date_format({strtotime({$product_date})}, M Y)}</td>
+                            <td>{getProductData(indigenous)}</td>
+                            <td valign='top'>{$product_citation}</td>
+                        </tr>
+                    ]]>
+                </Static>
+            </ReportItemSet>
+            <Static>
+                <![CDATA[
+                        </tbody>
+                    </table>
+                ]]>
+            </Static>
+        </If>
+        
+        <!-- Research Outputs -->
+        <ReportItem id="research1" type="Radio" blobItem="RESEARCH1" options="Yes|No">
+            <![CDATA[
+                <h3>Have you or your team created or updated any research outputs, data tools, dashboards, or digital storytelling projects?</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <If if="{==({getText(RP_PROJECT_REPORT_{GET(id)}, OUTPUTS, RESEARCH1, 0, 0, {$project_id})}, Yes)}">
+            <Static>
+                <![CDATA[
+                    <table class='wikitable small' frame='box' rules='all' style='width:100%;'>
+                        <thead>
+                            <tr>
+                                <th>Type</th>
+                                <th>Title</th>
+                                <th>Date</th>
+                                <th>Link</th>
+                                <th>Citation</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                ]]>
+            </Static>
+            <ReportItemSet type="ProjectProducts" start="{projectReportStartDate({GET(id)})}" end="{projectReportEndDate({GET(id)})}" category="Research Output">
+                <Static>
+                    <![CDATA[
+                        <tr>
+                            <td>{$product_type}</td>
+                            <td valign='top'>{$product_title}</td>
+                            <td style='white-space: nowrap;'>{date_format({strtotime({$product_date})}, M Y)}</td>
+                            <td>{if("{getProductData(url)}" != "", <a class='externalLink' href='{getProductData(url)}'>Link</a>)}</td>
+                            <td valign='top'>{$product_citation}</td>
+                        </tr>
+                    ]]>
+                </Static>
+            </ReportItemSet>
+            <Static>
+                <![CDATA[
+                        </tbody>
+                    </table>
+                ]]>
+            </Static>
+        </If>
+        
+        <!-- Research Activity -->
+        <ReportItem id="research2" type="Radio" blobItem="RESEARCH2" options="Yes|No">
+            <![CDATA[
+                <h3>Have you or your team conducted any research activities such as fieldwork, experiments, or community engagement?</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <If if="{==({getText(RP_PROJECT_REPORT_{GET(id)}, OUTPUTS, RESEARCH2, 0, 0, {$project_id})}, Yes)}">
+            <Static>
+                <![CDATA[
+                    <table class='wikitable small' frame='box' rules='all' style='width:100%;'>
+                        <thead>
+                            <tr>
+                                <th>Type</th>
+                                <th>Title</th>
+                                <th>Date</th>
+                                <th>Link</th>
+                                <th>Citation</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                ]]>
+            </Static>
+            <ReportItemSet type="ProjectProducts" start="{projectReportStartDate({GET(id)})}" end="{projectReportEndDate({GET(id)})}" category="Research Activity">
+                <Static>
+                    <![CDATA[
+                        <tr>
+                            <td>{$product_type}</td>
+                            <td valign='top'>{$product_title}</td>
+                            <td style='white-space: nowrap;'>{date_format({strtotime({$product_date})}, M Y)}</td>
+                            <td>{if("{getProductData(url)}" != "", <a class='externalLink' href='{getProductData(url)}'>Link</a>)}</td>
+                            <td valign='top'>{$product_citation}</td>
+                        </tr>
+                    ]]>
+                </Static>
+            </ReportItemSet>
+            <Static>
+                <![CDATA[
+                        </tbody>
+                    </table>
+                ]]>
+            </Static>
+        </If>
     </ReportSection>
 </Report>

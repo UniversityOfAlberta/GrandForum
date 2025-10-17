@@ -4,18 +4,21 @@
         <Role role="Staff+">
             <SectionPermission id="report" permissions="rw" />
             <SectionPermission id="publications" permissions="rw" />
+            <SectionPermission id="publications2" permissions="rw" />
             <SectionPermission id="people" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
         <Role role="PL">
             <SectionPermission id="report" permissions="rw" />
             <SectionPermission id="publications" permissions="rw" />
+            <SectionPermission id="publications2" permissions="--" />
             <SectionPermission id="people" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
         <Role role="PS">
             <SectionPermission id="report" permissions="rw" />
             <SectionPermission id="publications" permissions="rw" />
+            <SectionPermission id="publications2" permissions="--" />
             <SectionPermission id="people" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
@@ -23,6 +26,7 @@
         <If if="{!matches({GET(id)},^[0-9][0-9][0-9][0-9]_Q[1-4])}">
             <SectionPermission id="report" permissions="--" />
             <SectionPermission id="publications" permissions="--" />
+            <SectionPermission id="publications2" permissions="--" />
             <SectionPermission id="people" permissions="--" />
             <SectionPermission id="submit" permissions="--" />
         </If>
@@ -266,6 +270,7 @@
     <ReportSection id="publications_new" type="EditableReportSection" name="New Outputs" title="New Outputs" blobSection="OUTPUTS">
         <Static>
             <![CDATA[
+                <p><b>Note:</b> All outputs are shown in the tables below, however only those with dates between {projectReportStartDate({GET(id)})} and {projectReportEndDate({GET(id)})} will be shown in the submitted pdf.</p> 
                 <h2>In last 6 months</h2>
             ]]>
         </Static>
@@ -433,7 +438,7 @@
             ]]>
         </ReportItem>
         
-        <!-- Research Outputs -->
+        <!-- Research Activity -->
         <ReportItem id="research2" type="Radio" blobItem="RESEARCH2" options="Yes|No">
             <![CDATA[
                 <h3>Have you or your team conducted any research activities such as fieldwork, experiments, or community engagement?</h3>
