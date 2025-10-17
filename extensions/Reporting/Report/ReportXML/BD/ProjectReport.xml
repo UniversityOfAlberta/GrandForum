@@ -4,21 +4,21 @@
         <Role role="Staff+">
             <SectionPermission id="report" permissions="rw" />
             <SectionPermission id="publications" permissions="rw" />
-            <SectionPermission id="publications2" permissions="rw" />
+            <SectionPermission id="publications_new" permissions="rw" />
             <SectionPermission id="people" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
         <Role role="PL">
             <SectionPermission id="report" permissions="rw" />
             <SectionPermission id="publications" permissions="rw" />
-            <SectionPermission id="publications2" permissions="--" />
+            <SectionPermission id="publications_new" permissions="--" />
             <SectionPermission id="people" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
         <Role role="PS">
             <SectionPermission id="report" permissions="rw" />
             <SectionPermission id="publications" permissions="rw" />
-            <SectionPermission id="publications2" permissions="--" />
+            <SectionPermission id="publications_new" permissions="--" />
             <SectionPermission id="people" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
@@ -26,7 +26,7 @@
         <If if="{!matches({GET(id)},^[0-9][0-9][0-9][0-9]_Q[1-4])}">
             <SectionPermission id="report" permissions="--" />
             <SectionPermission id="publications" permissions="--" />
-            <SectionPermission id="publications2" permissions="--" />
+            <SectionPermission id="publications_new" permissions="--" />
             <SectionPermission id="people" permissions="--" />
             <SectionPermission id="submit" permissions="--" />
         </If>
