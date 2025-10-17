@@ -296,26 +296,26 @@
             ]]>
         </ReportItem>
         
-        <!-- Activities -->
-        <ReportItem id="activities" type="Radio" blobItem="ACTIVITIES" options="Yes|No">
+        <!-- Conferences -->
+        <ReportItem id="conferences" type="Radio" blobItem="CONFERENCES" options="Yes|No">
             <![CDATA[
                 <h3>Have you or your team presented, chaired, or contributed to any conferences, panels, or symposiums?</h3>
-                <div id='activities_q'>{$item}</div>
+                <div id='conferences_q'>{$item}</div>
             ]]>
         </ReportItem>
-        <ReportItem id="activities_table" type="ManageProductsReportItem" categories="Activity">
+        <ReportItem id="conferences_table" type="ManageProductsReportItem" categories="Conference">
             <![CDATA[
-                <div id='activities' style='display:none;'>
+                <div id='conferences' style='display:none;'>
                     {$item}
                 </div>
                 <script type='text/javascript'>
-                    $('#activities_q input').change(function(){
-                        var val = $('#activities_q input:checked').val();
+                    $('#conferences_q input').change(function(){
+                        var val = $('#conferences_q input:checked').val();
                         if(val == 'Yes'){
-                            $('#activities').slideDown();
+                            $('#conferences').slideDown();
                         }
                         else{
-                            $('#activities').slideUp();
+                            $('#conferences').slideUp();
                         }
                     }).change();
                 </script>
@@ -355,7 +355,7 @@
                 <div id='awards_q'>{$item}</div>
             ]]>
         </ReportItem>
-        <ReportItem id="events_table" type="ManageProductsReportItem" categories="Event">
+        <ReportItem id="awards_table" type="ManageProductsReportItem" categories="Award">
             <![CDATA[
                 <div id='awards' style='display:none;'>
                     {$item}
@@ -368,6 +368,91 @@
                         }
                         else{
                             $('#awards').slideUp();
+                        }
+                    }).change();
+                </script>
+            ]]>
+        </ReportItem>
+        
+        <!-- Partnerships/Collaborations -->
+        <ReportItem id="partners" type="Radio" blobItem="PARTNERS" options="Yes|No">
+            <![CDATA[
+                <h3>Have you or your team developed or maintained any formal or informal partnerships or collaborations?</h3>
+                <div id='partners_q'>{$item}</div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="partners_table" type="ManageProductsReportItem" categories="Partnership">
+            <![CDATA[
+                <div id='partners' style='display:none;'>
+                    <h4>Parterships</h4>
+                    {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="collaborations_table" type="ManageProductsReportItem" categories="Collaboration">
+            <![CDATA[
+                    <h4>Collaborations</h4>
+                    {$item}
+                </div>
+                <script type='text/javascript'>
+                    $('#partners_q input').change(function(){
+                        var val = $('#partners_q input:checked').val();
+                        if(val == 'Yes'){
+                            $('#partners').slideDown();
+                        }
+                        else{
+                            $('#partners').slideUp();
+                        }
+                    }).change();
+                </script>
+            ]]>
+        </ReportItem>
+        
+        <!-- Research Outputs -->
+        <ReportItem id="research1" type="Radio" blobItem="RESEARCH1" options="Yes|No">
+            <![CDATA[
+                <h3>Have you or your team created or updated any research outputs, data tools, dashboards, or digital storytelling projects?</h3>
+                <div id='research1_q'>{$item}</div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="research1_table" type="ManageProductsReportItem" categories="Research Output">
+            <![CDATA[
+                <div id='research1' style='display:none;'>
+                    {$item}
+                </div>
+                <script type='text/javascript'>
+                    $('#research1_q input').change(function(){
+                        var val = $('#research1_q input:checked').val();
+                        if(val == 'Yes'){
+                            $('#research1').slideDown();
+                        }
+                        else{
+                            $('#research1').slideUp();
+                        }
+                    }).change();
+                </script>
+            ]]>
+        </ReportItem>
+        
+        <!-- Research Outputs -->
+        <ReportItem id="research2" type="Radio" blobItem="RESEARCH2" options="Yes|No">
+            <![CDATA[
+                <h3>Have you or your team conducted any research activities such as fieldwork, experiments, or community engagement?</h3>
+                <div id='research2_q'>{$item}</div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="research2_table" type="ManageProductsReportItem" categories="Research Activity">
+            <![CDATA[
+                <div id='research2' style='display:none;'>
+                    {$item}
+                </div>
+                <script type='text/javascript'>
+                    $('#research2_q input').change(function(){
+                        var val = $('#research2_q input:checked').val();
+                        if(val == 'Yes'){
+                            $('#research2').slideDown();
+                        }
+                        else{
+                            $('#research2').slideUp();
                         }
                     }).change();
                 </script>

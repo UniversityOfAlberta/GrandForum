@@ -139,7 +139,9 @@
             <% } %>
             <th width="3%">Visibility</th>
             <th width="3%" style="min-width: 70px;">Date</th>
-            <th width="12%">Category</th>
+            <% if(this.categories.length != 1) { %>
+                <th width="12%">Category</th>
+            <% } %>
             <th width="13%">Type</th>
             <th width="35%">Title</th>
             <th width="35%">Authors</th>

@@ -570,6 +570,7 @@ class Paper extends BackboneModel{
                     $citationFormat = @("{$tattrs->citationFormat}" != "") ? "{$tattrs->citationFormat}" : "{$cattrs->citationFormat}";
                     $tname = "{$tattrs->type}";
                     $tname = str_replace('{$networkName}', $config->getValue('networkName'), $tname);
+                    $tlabel = isset($tattrs->label) ? "{$tattrs->label}" : $tname;
                     $ccvType = "{$tattrs->ccv_name}";
                     $ccvType = ($ccvType == "") ? $tname : $ccvType;
                     if(trim("{$tattrs->status}") != ""){
@@ -579,6 +580,7 @@ class Paper extends BackboneModel{
                         $tstatus = array();
                     }
                     $categories['categories'][$cname]['types'][$tname] = array('data' => array(),
+                                                                               'label' => $tlabel,
                                                                                'status' => $tstatus,
                                                                                'type' => $ccvType,
                                                                                'citationFormat' => $citationFormat,

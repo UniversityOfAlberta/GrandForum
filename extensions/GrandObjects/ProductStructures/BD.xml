@@ -469,6 +469,67 @@
             </data>
         </Publication>
         
+        <Publication type="Blog" status="Submitted|In Preparation|Revision Requested|Under Review|Accepted|In Press|Published|e-pub, ahead of print|Rejected">
+            <data>
+                <field label="URL" type="URL">url</field>
+                <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
+            </data>
+        </Publication>
+        
+        <Publication type="Policy Brief" status="Submitted|In Preparation|Revision Requested|Under Review|Accepted|In Press|Published|e-pub, ahead of print|Rejected">
+            <title ccv_id="dd692787647b495fbadb038b6937950d" ccv_name="Report Title"></title>
+            <data>
+                <field label="Date Submitted" type="Date">date_submitted</field>
+                <field label="Date Accepted" type="Date">date_accepted</field>
+                <field label="Lead Author">lead_author</field>
+                <field label="Internal Collaboration" type="Check">collaboration</field>
+                <field label="UCalgary Collaboration" type="Check">ucalgary</field>
+                <field label="International Co-author" type="Check">partner</field>
+                <field label="HQP Led" type="Check">hqp</field>
+                <field label="Impact Factor" type="String">impact_factor</field>
+                <field ccv_id="212fa7b750264e6496a9e4a4c4968810" ccv_name="Other Organization" label="Published In" type="String">published_in</field>
+                <field label="Pages" type="String">pages</field>
+                <field ccv_id="e3264fc9e17442e492bc8d5dca60e165" ccv_name="Editors" label="Editor" type="String">editor</field>
+                <field label="Publisher" type="String">publisher</field>
+                <field label="Article Number" type="String">number</field>
+                <field ccv_id="d570e2086e0e4e7d911cbb631a631af5" ccv_name="URL" label="Publication URL" type="URL">url</field>
+                <field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
+                <field label="#Citations" type="String">citations</field>
+                <field label="Citation source URL" type="URL">citations_url</field>
+                <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
+            </data>
+            <date ccv_id="a1f619a230b5452b9f0c8337b23f43af" ccv_name="Date"></date>
+            <authors ccv_id="0cf4ffe90f0b496483a8937b96a0224c" ccv_name="Authors"></authors>
+            <description ccv_id="694c4c7bf6ad47309ab6f77f4fee1869" ccv_name="Description / Contribution Value"></description>
+        </Publication>
+        
+        <Publication type="Working Paper or Report" status="Submitted|In Preparation|Revision Requested|Under Review|Accepted|In Press|Published|e-pub, ahead of print|Rejected">
+            <title ccv_id="dd692787647b495fbadb038b6937950d" ccv_name="Report Title"></title>
+            <data>
+                <field label="Date Submitted" type="Date">date_submitted</field>
+                <field label="Date Accepted" type="Date">date_accepted</field>
+                <field label="Lead Author">lead_author</field>
+                <field label="Internal Collaboration" type="Check">collaboration</field>
+                <field label="UCalgary Collaboration" type="Check">ucalgary</field>
+                <field label="International Co-author" type="Check">partner</field>
+                <field label="HQP Led" type="Check">hqp</field>
+                <field label="Impact Factor" type="String">impact_factor</field>
+                <field ccv_id="212fa7b750264e6496a9e4a4c4968810" ccv_name="Other Organization" label="Published In" type="String">published_in</field>
+                <field label="Pages" type="String">pages</field>
+                <field ccv_id="e3264fc9e17442e492bc8d5dca60e165" ccv_name="Editors" label="Editor" type="String">editor</field>
+                <field label="Publisher" type="String">publisher</field>
+                <field label="Article Number" type="String">number</field>
+                <field ccv_id="d570e2086e0e4e7d911cbb631a631af5" ccv_name="URL" label="Publication URL" type="URL">url</field>
+                <field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
+                <field label="#Citations" type="String">citations</field>
+                <field label="Citation source URL" type="URL">citations_url</field>
+                <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
+            </data>
+            <date ccv_id="a1f619a230b5452b9f0c8337b23f43af" ccv_name="Date"></date>
+            <authors ccv_id="0cf4ffe90f0b496483a8937b96a0224c" ccv_name="Authors"></authors>
+            <description ccv_id="694c4c7bf6ad47309ab6f77f4fee1869" ccv_name="Description / Contribution Value"></description>
+        </Publication>
+        
         <Publication type="Database" status="Submitted|In Preparation|Revision Requested|Under Review|Accepted|In Press|Published|e-pub, ahead of print|Rejected">
             <data>
                 <field label="Lead Author">lead_author</field>
@@ -553,6 +614,45 @@
             </data>
         </Publication>
     </Publications>
+    
+    <!-- Conference -->
+    <Conferences category="Conference">
+        <Conference type="Conference Presentation" status="Invited|Not Invited">
+            <data>
+                <field label="Event Type" type="String">event_type</field>
+                <field label="Event Title" type="String">conference</field>
+                <field label="Location" type="String">location</field>
+                <field label="Organizing Body" type="String">organizing_body</field>
+                <field label="Chair Name" type="String">chair_name</field>
+                <field label="URL" type="URL">url</field>
+                <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
+            </data>
+        </Conference>
+        
+        <Conference type="Panel Invitation" status="Invited|Not Invited">
+            <data>
+                <field label="Event Type" type="String">event_type</field>
+                <field label="Event Title" type="String">conference</field>
+                <field label="Location" type="String">location</field>
+                <field label="Organizing Body" type="String">organizing_body</field>
+                <field label="Chair Name" type="String">chair_name</field>
+                <field label="URL" type="URL">url</field>
+                <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
+            </data>
+        </Conference>
+        
+        <Conference type="Keynote Speech" status="Invited|Not Invited">
+            <data>
+                <field label="Event Type" type="String">event_type</field>
+                <field label="Event Title" type="String">conference</field>
+                <field label="Location" type="String">location</field>
+                <field label="Organizing Body" type="String">organizing_body</field>
+                <field label="Chair Name" type="String">chair_name</field>
+                <field label="URL" type="URL">url</field>
+                <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
+            </data>
+        </Conference>
+    </Conferences>
 
     <!-- Activities -->
     <Activities category="Activity">
@@ -796,6 +896,26 @@
     
     <!-- Awards -->
     <Awards category="Award" citationFormat="{%Authors} {(%YYYY).} {%Title.} {%Institution} ({%Value, }{%Frequency})">
+        <Award type="Stipend">
+            <authors label="Recipient"></authors>
+            <data>
+                <field label="Frequency" type="String">frequency</field>
+                <field label="Awarding Institution" type="String">institution</field>
+                <field label="Value (if applicable)" type="String">value</field>
+                <field label="URL" type="URL">url</field>
+                <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
+            </data>
+        </Award>
+        <Award type="Research Funding">
+            <authors label="Recipient"></authors>
+            <data>
+                <field label="Frequency" type="String">frequency</field>
+                <field label="Awarding Institution" type="String">institution</field>
+                <field label="Value (if applicable)" type="String">value</field>
+                <field label="URL" type="URL">url</field>
+                <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
+            </data>
+        </Award>
         <Award type="Award">
             <authors label="Recipient"></authors>
             <data>
@@ -807,5 +927,357 @@
             </data>
         </Award>
     </Awards>
+    
+    <Partnerships category="Partnership" citationFormat="{%Authors} {(%YYYY).} {%Title.}">
+        <Partnership type="Canadian academic institutions">
+            <authors label="Contact"></authors>
+            <data>
+                <field label="Institution" type="String">institution</field>
+                <field label="URL" type="URL">url</field>
+                <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
+            </data>
+        </Partnership>
+        
+        <Partnership type="Academic and research institutions abroad" label="Academic and research institutions abroad (including research hospitals)">
+            <authors label="Contact"></authors>
+            <data>
+                <field label="Canadian Indigenous Organization" type="Select" options="Yes|No">indigenous</field>
+                <field label="URL" type="URL">url</field>
+                <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
+            </data>
+        </Partnership>
+        
+        <Partnership type="Private sector in Canada">
+            <authors label="Contact"></authors>
+            <data>
+                <field label="Canadian Indigenous Organization" type="Select" options="Yes|No">indigenous</field>
+                <field label="URL" type="URL">url</field>
+                <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
+            </data>
+        </Partnership>
+        
+        <Partnership type="Private sector abroad">
+            <authors label="Contact"></authors>
+            <data>
+                <field label="Canadian Indigenous Organization" type="Select" options="Yes|No">indigenous</field>
+                <field label="URL" type="URL">url</field>
+                <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
+            </data>
+        </Partnership>
+        
+        <Partnership type="Public sector in Canada">
+            <authors label="Contact"></authors>
+            <data>
+                <field label="Canadian Indigenous Organization" type="Select" options="Yes|No">indigenous</field>
+                <field label="URL" type="URL">url</field>
+                <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
+            </data>
+        </Partnership>
+        
+        <Partnership type="Public sector abroad">
+            <authors label="Contact"></authors>
+            <data>
+                <field label="Canadian Indigenous Organization" type="Select" options="Yes|No">indigenous</field>
+                <field label="URL" type="URL">url</field>
+                <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
+            </data>
+        </Partnership>
+        
+        <Partnership type="Philanthropic/not-for-profit/other in Canada">
+            <authors label="Contact"></authors>
+            <data>
+                <field label="Canadian Indigenous Organization" type="Select" options="Yes|No">indigenous</field>
+                <field label="URL" type="URL">url</field>
+                <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
+            </data>
+        </Partnership>
+        
+        <Partnership type="Philanthropic/not-for-profit/other abroad">
+            <authors label="Contact"></authors>
+            <data>
+                <field label="Canadian Indigenous Organization" type="Select" options="Yes|No">indigenous</field>
+                <field label="URL" type="URL">url</field>
+                <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
+            </data>
+        </Partnership>
+        
+        <Partnership type="Academic and research institutions in Canada" label="Academic and research institutions in Canada (inlcuding research hospitals)">
+            <authors label="Contact"></authors>
+            <data>
+                <field label="Canadian Indigenous Organization" type="Select" options="Yes|No">indigenous</field>
+                <field label="URL" type="URL">url</field>
+                <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
+            </data>
+        </Partnership>
+        
+        <Partnership type="Community-based Interest Group in Canada">
+            <authors label="Contact"></authors>
+            <data>
+                <field label="Canadian Indigenous Organization" type="Select" options="Yes|No">indigenous</field>
+                <field label="URL" type="URL">url</field>
+                <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
+            </data>
+        </Partnership>
+        
+        <Partnership type="Community-based Interest Groups Abroad">
+            <authors label="Contact"></authors>
+            <data>
+                <field label="Canadian Indigenous Organization" type="Select" options="Yes|No">indigenous</field>
+                <field label="URL" type="URL">url</field>
+                <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
+            </data>
+        </Partnership>
+    </Partnerships>
+    
+    <Collaborations category="Collaboration" citationFormat="{%Authors} {(%YYYY).} {%Title.}">
+        <Collaboration type="Canadian academic institution">
+            <authors label="Contact"></authors>
+            <data>
+                <field label="Institution" type="String">institution</field>
+                <field label="URL" type="URL">url</field>
+                <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
+            </data>
+        </Collaboration>
+        
+        <Collaboration type="Academic and research institution abroad" label="Academic and research institution abroad (including research hospitals)">
+            <authors label="Contact"></authors>
+            <data>
+                <field label="Canadian Indigenous Organization" type="Select" options="Yes|No">indigenous</field>
+                <field label="URL" type="URL">url</field>
+                <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
+            </data>
+        </Collaboration>
+        
+        <Collaboration type="Private sector in Canada">
+            <authors label="Contact"></authors>
+            <data>
+                <field label="Canadian Indigenous Organization" type="Select" options="Yes|No">indigenous</field>
+                <field label="URL" type="URL">url</field>
+                <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
+            </data>
+        </Collaboration>
+        
+        <Collaboration type="Private sector abroad">
+            <authors label="Contact"></authors>
+            <data>
+                <field label="Canadian Indigenous Organization" type="Select" options="Yes|No">indigenous</field>
+                <field label="URL" type="URL">url</field>
+                <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
+            </data>
+        </Collaboration>
+        
+        <Collaboration type="Public sector in Canada">
+            <authors label="Contact"></authors>
+            <data>
+                <field label="Canadian Indigenous Organization" type="Select" options="Yes|No">indigenous</field>
+                <field label="URL" type="URL">url</field>
+                <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
+            </data>
+        </Collaboration>
+        
+        <Collaboration type="Public sector abroad">
+            <authors label="Contact"></authors>
+            <data>
+                <field label="Canadian Indigenous Organization" type="Select" options="Yes|No">indigenous</field>
+                <field label="URL" type="URL">url</field>
+                <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
+            </data>
+        </Collaboration>
+        
+        <Collaboration type="Philanthropic/not-for-profit/other in Canada">
+            <authors label="Contact"></authors>
+            <data>
+                <field label="Canadian Indigenous Organization" type="Select" options="Yes|No">indigenous</field>
+                <field label="URL" type="URL">url</field>
+                <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
+            </data>
+        </Collaboration>
+        
+        <Collaboration type="Philanthropic/not-for-profit/other abroad">
+            <authors label="Contact"></authors>
+            <data>
+                <field label="Canadian Indigenous Organization" type="Select" options="Yes|No">indigenous</field>
+                <field label="URL" type="URL">url</field>
+                <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
+            </data>
+        </Collaboration>
+        
+        <Collaboration type="Academic and research institution in Canada" label="Academic and research institution in Canada (inlcuding research hospitals)">
+            <authors label="Contact"></authors>
+            <data>
+                <field label="Canadian Indigenous Organization" type="Select" options="Yes|No">indigenous</field>
+                <field label="URL" type="URL">url</field>
+                <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
+            </data>
+        </Collaboration>
+        
+        <Collaboration type="Community-based Interest Group in Canada">
+            <authors label="Contact"></authors>
+            <data>
+                <field label="Canadian Indigenous Organization" type="Select" options="Yes|No">indigenous</field>
+                <field label="URL" type="URL">url</field>
+                <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
+            </data>
+        </Collaboration>
+        
+        <Collaboration type="Community-based Interest Groups Abroad">
+            <authors label="Contact"></authors>
+            <data>
+                <field label="Canadian Indigenous Organization" type="Select" options="Yes|No">indigenous</field>
+                <field label="URL" type="URL">url</field>
+                <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
+            </data>
+        </Collaboration>
+    </Collaborations>
+    
+    <!-- Research Output -->
+    <ResearchOutputs category="Research Output" citationFormat="{%Authors} {(%YYYY).} {%Title.}">
+        <ResearchOutput type="Policy evaluation" label="Policy evaluation (evaluations, formal reports, government documents)">
+            <authors></authors>
+            <data>
+                <field label="URL" type="URL">url</field>
+                <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
+            </data>
+        </ResearchOutput>
+        
+        <ResearchOutput type="Data Portal">
+            <authors></authors>
+            <data>
+                <field label="URL" type="URL">url</field>
+                <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
+            </data>
+        </ResearchOutput>
+        
+        <ResearchOutput type="Dashboard">
+            <authors></authors>
+            <data>
+                <field label="URL" type="URL">url</field>
+                <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
+            </data>
+        </ResearchOutput>
+        
+        <ResearchOutput type="Software tool">
+            <authors></authors>
+            <data>
+                <field label="URL" type="URL">url</field>
+                <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
+            </data>
+        </ResearchOutput>
+        
+        <ResearchOutput type="Analytical model">
+            <authors></authors>
+            <data>
+                <field label="URL" type="URL">url</field>
+                <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
+            </data>
+        </ResearchOutput>
+        
+        <ResearchOutput type="Data visualization">
+            <authors></authors>
+            <data>
+                <field label="URL" type="URL">url</field>
+                <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
+            </data>
+        </ResearchOutput>
+        
+        <ResearchOutput type="E-health intervention">
+            <authors></authors>
+            <data>
+                <field label="URL" type="URL">url</field>
+                <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
+            </data>
+        </ResearchOutput>
+        
+        <ResearchOutput type="Digital storytelling">
+            <authors></authors>
+            <data>
+                <field label="URL" type="URL">url</field>
+                <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
+            </data>
+        </ResearchOutput>
+    </ResearchOutputs>
+    
+    <!-- Research Activity -->
+    <ResearchActivities category="Research Activity" citationFormat="{%Authors} {(%YYYY).} {%Title.}">
+        <ResearchActivity type="Pilot project">
+            <authors></authors>
+            <data>
+                <field label="URL" type="URL">url</field>
+                <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
+            </data>
+        </ResearchActivity>
+        
+        <ResearchActivity type="Photovoice">
+            <authors></authors>
+            <data>
+                <field label="URL" type="URL">url</field>
+                <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
+            </data>
+        </ResearchActivity>
+        
+        <ResearchActivity type="Focus group + participants">
+            <authors></authors>
+            <data>
+                <field label="URL" type="URL">url</field>
+                <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
+            </data>
+        </ResearchActivity>
+        
+        <ResearchActivity type="Sharing circle + participants">
+            <authors></authors>
+            <data>
+                <field label="URL" type="URL">url</field>
+                <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
+            </data>
+        </ResearchActivity>
+        
+        <ResearchActivity type="Survey + participants">
+            <authors></authors>
+            <data>
+                <field label="URL" type="URL">url</field>
+                <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
+            </data>
+        </ResearchActivity>
+        
+        <ResearchActivity type="Virtual Reality (VR) experiment">
+            <authors></authors>
+            <data>
+                <field label="URL" type="URL">url</field>
+                <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
+            </data>
+        </ResearchActivity>
+        
+        <ResearchActivity type="Policy workshop">
+            <authors></authors>
+            <data>
+                <field label="URL" type="URL">url</field>
+                <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
+            </data>
+        </ResearchActivity>
+        
+        <ResearchActivity type="Environmental scan">
+            <authors></authors>
+            <data>
+                <field label="URL" type="URL">url</field>
+                <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
+            </data>
+        </ResearchActivity>
+        
+        <ResearchActivity type="Intervention">
+            <authors></authors>
+            <data>
+                <field label="URL" type="URL">url</field>
+                <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
+            </data>
+        </ResearchActivity>
+        
+        <ResearchActivity type="Co-design">
+            <authors></authors>
+            <data>
+                <field label="URL" type="URL">url</field>
+                <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
+            </data>
+        </ResearchActivity>
+    </ResearchActivities>
 
 </Products>

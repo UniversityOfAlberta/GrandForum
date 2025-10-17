@@ -31,8 +31,11 @@ class ManageProductsReportItem extends StaticReportItem {
                     #listTable tr { border-bottom: none !important; }
                     #listTable td, #listTable th { border-left: none !important; }
                     #saveProducts, #deletePrivate, #releasePrivate { display: none !important; }
-                    .manageProductButtons { position: absolute; left: 5px; z-index: 1; }
-                 </style>".
+                    .manageProductButtons { position: absolute; left: 5px; z-index: 1; } ";
+            if($this->getAttr('categories') != ""){
+                $view .= "tr#category { display: none; }";
+            }
+            $view .= "</style>".
                  implode("", $scripts)."
                  <link href='$wgServer$wgScriptPath/extensions/GrandObjectPage/ManageProducts/style.css' type='text/css' rel='stylesheet' />
                  <script type='text/javascript'>

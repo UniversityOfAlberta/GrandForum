@@ -41,9 +41,11 @@
 <td>
     <%= date %>
 </td>
-<td>
-    <%= category %>
-</td>
+<% if(this.parent.categories.length != 1) { %>
+    <td>
+        <%= category %>
+    </td>
+<% } %>
 <td>
     <%= type %>
 </td>

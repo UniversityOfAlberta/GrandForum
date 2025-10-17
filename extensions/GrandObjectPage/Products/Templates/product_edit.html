@@ -40,7 +40,7 @@
             <td class="label">Type:</td>
             <td class="field" colspan="2">
                 <% var def = (type == "") ? [{option: "Choose a Type...", value: ""}] : []; %>
-                <%= HTML.Select(this, 'type', {options: def.concat(this.model.getPossibleTypes())}) %>
+                <%= HTML.Select(this, 'type', {options: def.concat(_.map(this.model.getPossibleTypes(), function(val){ return {option: productStructure.categories[category].types[val].label, value: val} }) )}) %>
                 <% if(type.split('Misc').length > 1){ %>
                     <br />
                     <%= HTML.MiscAutoComplete(this, 'type', {size: '30', placeholder: "Specify type...", misc: this.model.getPossibleMiscTypes(), style: 'margin-top: 4px;'}) %>
