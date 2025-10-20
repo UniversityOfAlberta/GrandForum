@@ -34,15 +34,15 @@ class Report extends AbstractReport{
         switch($q){
             default:
             case "Q1":
-                $start = ($year-1)."-11-15";
+                $start = ($year-1)."-10-15";
                 break;
             case "Q2":
-                $start = ($year)."-02-15";
+                $start = ($year)."-04-15";
                 break;
-            case "Q3":
+            case "Q3": // Old
                 $start = ($year)."-06-15";
                 break;
-            case "Q4": // Old
+            case "Q4": // Older
                 $start = ($year)."-09-15";
                 break;
         }
@@ -55,15 +55,15 @@ class Report extends AbstractReport{
         switch($q){
             default:
             case "Q1":
-                $end = ($year)."-02-15";
+                $end = ($year)."-04-15";
                 break;
             case "Q2":
-                $end = ($year)."-06-15";
+                $end = ($year)."-10-15";
                 break;
-            case "Q3":
+            case "Q3": // Old
                 $end = ($year)."-09-15";
                 break;
-            case "Q4": // Old
+            case "Q4": // Older
                 $end = ($year)."-12-15";
                 break;
         }
@@ -72,10 +72,13 @@ class Report extends AbstractReport{
     
     /**
      * CURRENT:
-     *  R1: Feb 15, 2024
+     *  R1: Apr 15, 2026
+     *  R2: Oct 15, 2026
+     * OLD:
+     *  R1: Feb 15, 2025
      *  R2: Jun 15, 2025
      *  R3: Oct 15, 2025
-     * OLD:
+     * OLDER:
      *  Q1: Mar 15, 2024
      *  Q2: Jun 15, 2024
      *  Q3: Sep 15, 2024
@@ -84,16 +87,22 @@ class Report extends AbstractReport{
     static function dateToProjectQuarter($date){
         $year = substr($date,0,4);
         $month = substr($date,5,5);
-        if($month <= "02-15"){
+        if($year >= 2026 && $month <= "04-15"){
             return ($year)."_Q1";
         }
-        else if($month <= "06-15"){
+        else if($year >= 2026 && $month <= "10-15"){
             return ($year)."_Q2";
         }
-        else if($month <= "10-15"){
+        if($year >= 2024 && $month <= "02-15"){ // Old
+            return ($year)."_Q1";
+        }
+        else if($year >= 2024 && $month <= "06-15"){ // Old
+            return ($year)."_Q2";
+        }
+        else if($year >= 2024 && $month <= "10-15"){ // Old
             return ($year)."_Q3";
         }
-        else {
+        else { // Older
             return ($year+1)."_Q1";
         }
         return "";
@@ -101,7 +110,7 @@ class Report extends AbstractReport{
     
     /**
      * CURRENT:
-     *  R1: Mar 15, 2024
+     *  R1: Mar 15, 2025
      *  R2: Jul 15, 2025
      *  R3: Nov 15, 2025
      * OLD:
@@ -122,7 +131,7 @@ class Report extends AbstractReport{
         else if($month <= "11-15"){
             return ($year)."_Q3";
         }
-        else{
+        else{ // Old
             return ($year+1)."_Q1";
         }
         return "";
@@ -136,32 +145,26 @@ class Report extends AbstractReport{
         }
         $url = "$wgServer$wgScriptPath/index.php/Special:Report?report=";
         $projects = $person->leadership();
-        $themes = $person->getLeadThemes();
         foreach($projects as $project){
-            for($i=0;$i<4;$i++){
-                $date = date('Y-m-d', time() - 3600*24*30*4*$i - 3600*24*89);
+            $last = "";
+            $nQuarters = 0;
+            for($i=0;$i<365;$i++){
+                $date = date('Y-m-d', time() - 3600*24*$i - (3600*24*30*3 - 1));
                 if($date >= $project->getStartDate()){
                     $quarter = self::dateToProjectQuarter($date);
-                    $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "ProjectReport" && @$_GET['project'] == $project->getName() && @$_GET['id'] == $quarter)) ? "selected" : false;
-                    $link = "{$url}ProjectReport&project={$project->getName()}&id={$quarter}";
-                    if($i == 0){
-                        $tabs["ProjectReports"]['subtabs'][] = TabUtils::createSubTab("{$project->getName()}", $link, $selected);
+                    if($last != $quarter){
+                        $nQuarters++;
+                        $last = $quarter;
+                        $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "ProjectReport" && @$_GET['project'] == $project->getName() && @$_GET['id'] == $quarter)) ? "selected" : false;
+                        $link = "{$url}ProjectReport&project={$project->getName()}&id={$quarter}";
+                        if($i == 0){
+                            $tabs["ProjectReports"]['subtabs'][] = TabUtils::createSubTab("{$project->getName()}", $link, $selected);
+                        }
+                        $tabs["ProjectReports"]['subtabs'][count($tabs["ProjectReports"]['subtabs'])-1]['dropdown'][] = TabUtils::createSubTab(str_replace("Q", "R", str_replace("_", " ", $quarter)), $link, $selected);
+                        if($nQuarters >= 2){
+                            break;
+                        }
                     }
-                    $tabs["ProjectReports"]['subtabs'][count($tabs["ProjectReports"]['subtabs'])-1]['dropdown'][] = TabUtils::createSubTab(str_replace("Q", "R", str_replace("_", " ", $quarter)), $link, $selected);
-                }
-            }
-        }
-        foreach($themes as $theme){
-            for($i=0;$i<4;$i++){
-                $date = date('Y-m-d', time() - 3600*24*30*4*$i - 3600*24*89);
-                if($date >= $theme->getCreated()){
-                    $quarter = self::dateToThemeQuarter($date);
-                    $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "ThemeReport" && @$_GET['project'] == $theme->getAcronym() && @$_GET['id'] == $quarter)) ? "selected" : false;
-                    $link = "{$url}ThemeReport&project={$theme->getAcronym()}&id={$quarter}";
-                    if($i == 0){
-                        $tabs["ThemeReports"]['subtabs'][] = TabUtils::createSubTab("{$theme->getAcronym()}", $link, $selected);
-                    }
-                    $tabs["ThemeReports"]['subtabs'][count($tabs["ThemeReports"]['subtabs'])-1]['dropdown'][] = TabUtils::createSubTab(str_replace("Q", "R", str_replace("_", " ", $quarter)), $link, $selected);
                 }
             }
         }

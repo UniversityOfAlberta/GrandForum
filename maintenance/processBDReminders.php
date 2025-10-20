@@ -24,11 +24,10 @@ $future3 = date('m-d', time() - 86400*4);
 $future3Date = date('F j, Y', time() - 86400*4);
 
 $projectQ = Report::dateToProjectQuarter($today);
-$themeQ = Report::dateToThemeQuarter($today);
+//$themeQ = Report::dateToThemeQuarter($today);
 
 // Project Reports (2 weeks)
-if($future == "02-15" ||
-   $future == "06-15" ||
+if($future == "04-15" ||
    $future == "10-15"){
     $message = "Dear Project Leads,
 
@@ -44,8 +43,7 @@ if($future == "02-15" ||
 }
 
 // Project Reports (30 days)
-if($future2 == "02-15" ||
-   $future2 == "06-15" ||
+if($future2 == "04-15" ||
    $future2 == "10-15"){
     $message = "Dear Project Leads,
 
@@ -61,8 +59,7 @@ if($future2 == "02-15" ||
 }
 
 // Project Reports (-4 days)
-if($future3 == "02-15" ||
-   $future3 == "06-15" ||
+if($future3 == "04-15" ||
    $future3 == "10-15"){
     $projectQ = Report::dateToProjectQuarter($today4DaysAgo);
     $message = "Dear Project Leads,
@@ -79,6 +76,7 @@ if($future3 == "02-15" ||
 }
 
 // Theme Reports
+/*
 if($future == "03-15" ||
    $future == "07-15" ||
    $future == "11-15"){
@@ -94,6 +92,7 @@ if($future == "03-15" ||
     sendMail("Theme Reports Due", $message, "bd-themeleaders@forum.bridgingdivides.ca");
     sendMail("Theme Reports Due", $message, "bd-staff@forum.bridgingdivides.ca");
 }
+*/
 
 function getBlobValue($item, $person){
     $blob = new ReportBlob(BLOB_TEXT, 0, $person->getId(), 0);

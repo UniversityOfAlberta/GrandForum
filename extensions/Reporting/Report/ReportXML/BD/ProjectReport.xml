@@ -39,15 +39,10 @@
         </Static>
         <If if="{==({get(quarter)},1)}">
             <![CDATA[
-                <h3>{get(year)}:R{get(quarter)} Report - Submit by: February 15, {get(year)}</h3>
+                <h3>{get(year)}:R{get(quarter)} Report - Submit by: April 15, {get(year)}</h3>
             ]]>
         </If>
         <ElseIf if="{==({get(quarter)},2)}">
-            <![CDATA[
-                <h3>{get(year)}:R{get(quarter)} Report - Submit by: June 15, {get(year)}</h3>
-            ]]>
-        </ElseIf>
-        <ElseIf if="{==({get(quarter)},3)}">
             <![CDATA[
                 <h3>{get(year)}:R{get(quarter)} Report - Submit by: October 15, {get(year)}</h3>
             ]]>
@@ -63,11 +58,16 @@
         </Static>
         <!-- Year Header -->
         <For from="{$project_start}" to="{timestamp(Y)}">
-            <If if="{>=({$getExtra},2024)}">
+            <If if="{>=({$getExtra},2026)}">
+                <![CDATA[
+                    <th colspan='2'>{$getExtra}</th>
+                ]]>
+            </If>
+            <ElseIf if="{>=({$getExtra},2024)}">
                 <![CDATA[
                     <th colspan='3'>{$getExtra}</th>
                 ]]>
-            </If>
+            </ElseIf>
             <Else>
                 <![CDATA[
                     <th colspan='4'>{$getExtra}</th>
@@ -87,8 +87,8 @@
                     {set(y, {$getExtra})}
                 ]]>
             </Static>
-            <If if="{>=({$getExtra},2024)}">
-                <For from="1" to="3">
+            <If if="{>=({$getExtra},2026)}">
+                <For from="1" to="2">
                     <Static>
                         <![CDATA[
                             {set(q, {$getExtra})}
@@ -97,6 +97,16 @@
                     </Static>
                 </For>
             </If>
+            <ElseIf if="{>=({$getExtra},2024)}">
+                <For from="1" to="3">
+                    <Static>
+                        <![CDATA[
+                            {set(q, {$getExtra})}
+                            <th>R{get(q)}</th>
+                        ]]>
+                    </Static>
+                </For>
+            </ElseIf>
             <Else>
                 <For from="1" to="4">
                     <Static>
@@ -121,8 +131,8 @@
                     {set(y, {$getExtra})}
                 ]]>
             </Static>
-            <If if="{>=({$getExtra},2024)}">
-                <For from="1" to="3">
+            <If if="{>=({$getExtra},2026)}">
+                <For from="1" to="2">
                     <Static>
                         <![CDATA[
                             {set(q, {$getExtra})}
@@ -135,6 +145,20 @@
                     </ReportItem>
                 </For>
             </If>
+            <ElseIf if="{>=({$getExtra},2024)}">
+                <For from="1" to="3">
+                    <Static>
+                        <![CDATA[
+                            {set(q, {$getExtra})}
+                        ]]>
+                    </Static>
+                    <ReportItem id="pdf" type="PDFReportItem" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />" class="" project="true" reportType="ProjectReport" pdfType="RP_PROJECT_REPORT_{get(y)}_Q{get(q)}" year="0" showWord="true">
+                        <![CDATA[
+                            <td style='padding-left:0.5em; padding-right:0.5em;'>{$item}</td>
+                        ]]>
+                    </ReportItem>
+                </For>
+            </ElseIf>
             <Else>
                 <For from="1" to="4">
                     <Static>

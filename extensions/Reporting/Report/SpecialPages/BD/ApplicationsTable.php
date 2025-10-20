@@ -100,6 +100,7 @@ class ApplicationsTable extends SpecialPage{
         $max = Report::dateToProjectQuarter(date('Y-m-d'));
         for($y=date('Y');$y>=substr($config->getValue('projectPhaseDates')[1],0,4);$y--){
             $nQ = ($y >= 2024) ? 3 : 4;
+            $nQ = ($y >= 2026) ? 2 : $nQ;
             for($q=$nQ;$q>=1;$q--){
                 $quarter = "{$y}_Q{$q}";
                 if($quarter <= $max){
@@ -116,6 +117,7 @@ class ApplicationsTable extends SpecialPage{
         $max = Report::dateToThemeQuarter(date('Y-m-d'));
         for($y=date('Y');$y>=substr($config->getValue('projectPhaseDates')[1],0,4);$y--){
             $nQ = ($y >= 2024) ? 3 : 4;
+            $nQ = ($y >= 2026) ? 2 : $nQ;
             for($q=$nQ;$q>=1;$q--){
                 $quarter = "{$y}_Q{$q}";
                 if($quarter <= $max){
