@@ -66,7 +66,7 @@ var TaskRowView = Backbone.View.extend({
     },
 
     checkStatus: function(){
-        var checkStatusDialog = $('<div></div>');
+        var checkStatusDialog = $('<div id="check-status-modal"></div>');
         var view = new LIMSStatusCheckViewPmm({el: checkStatusDialog, model: this.model, isDialog: true, project: this.project});
         
         $('body').append(checkStatusDialog);
@@ -340,7 +340,7 @@ var TaskRowView = Backbone.View.extend({
     },
 
     changeStatus: function(){
-        var changeStatusDialog = $('<div></div>');
+        var changeStatusDialog = $('<div id="change-status-modal"></div>');
         var view = new LIMSStatusChangeViewPmm({el: changeStatusDialog, model: this.model, isDialog: true, project: this.project});
 
         $('body').append(changeStatusDialog);
