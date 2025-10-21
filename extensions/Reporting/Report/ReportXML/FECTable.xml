@@ -282,6 +282,9 @@
                         });
                     });
                 </script>
+                <div style='float: left; margin-bottom: 1em;'>
+                    <b style='color: red;'>NOTE:</b> Only have one tab/browser with this page at a time.
+                </div>
             ]]>
         </Static>
         <Static id="header">
