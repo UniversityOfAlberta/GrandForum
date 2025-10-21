@@ -36,7 +36,8 @@ ProductEditView = Backbone.View.extend({
     events: {
         "click #saveProduct": "saveProduct",
         "click #cancel": "cancel",
-        "click #btnViewAvailableTags": "toggleTagsList"
+        "click #btnViewAvailableTags": "toggleTagsList",
+        "click #showInstructions": "showInstructions"
     },
     
     validate: function(){
@@ -95,6 +96,11 @@ ProductEditView = Backbone.View.extend({
             tagsDiv.slideUp(300);
             $('#btnViewAvailableTags').text('View Tags');
         }
+    },
+    
+    showInstructions: function(){
+        this.$("#showInstructions").hide();
+        this.$("#productAuthorsInstructions").slideDown();
     },
     
     renderAuthorsWidget: function(){
@@ -164,11 +170,11 @@ ProductEditView = Backbone.View.extend({
         });
         this.$("#productAuthors").html(html);
         if(tagLimit > 1){
-            this.$("#productAuthors").append("<p><i>Drag to re-order each " + this.model.getAuthorsLabel().toLowerCase() + "</i></p>");
+            this.$("#productAuthorsInstructions").append("<p><i>Drag to re-order each " + this.model.getAuthorsLabel().toLowerCase() + "</i></p>");
         }
-        this.$("#productAuthors").append("<p><i>Right-Click " + this.model.getAuthorsLabel().toLowerCase() + " to toggle between non-" + networkName + " and " + networkName + " member (if they are known).</i></p>");
-        this.$("#productAuthors").append("<p><i>If the lead " + this.model.getAuthorsLabel().toLowerCase() + " is defined, you can indicate them by double-clicking on their name.</i></p>");
-        this.$("#productAuthors").append("<p><i>Colour Background: " + this.model.getAuthorsLabel().toLowerCase() + " is <b>known</b> to " + networkName + ".<br />" + 
+        this.$("#productAuthorsInstructions").append("<p><i>Right-Click " + this.model.getAuthorsLabel().toLowerCase() + " to toggle between non-" + networkName + " and " + networkName + " member (if they are known).</i></p>");
+        this.$("#productAuthorsInstructions").append("<p><i>If the lead " + this.model.getAuthorsLabel().toLowerCase() + " is defined, you can indicate them by double-clicking on their name.</i></p>");
+        this.$("#productAuthorsInstructions").append("<p><i>Colour Background: " + this.model.getAuthorsLabel().toLowerCase() + " is <b>known</b> to " + networkName + ".<br />" + 
                                          "   <i>White Background: " + this.model.getAuthorsLabel().toLowerCase() + " is <b>not known</b> to " + networkName + ".</i></p>");
         
         // Ordering authors

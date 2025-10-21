@@ -1,33 +1,5 @@
 <div id="dialogMessages"></div>
-<span class="label" style="display:inline-block;">Title:</span> <%= HTML.TextBox(this, 'title', {size: '50'}) %>
-<div id="authors">
-    <h2><%= this.model.getAuthorsLabel().pluralize() %></h2>
-    <div id="productAuthors">
-        
-    </div>
-</div>
-<div id="description">
-    <h2>Description</h2>
-    <%= HTML.TextArea(this, 'description', {style: 'height:175px;width:650px;'}) %>
-</div>
-<h2>Information</h2>
 <table id="productData" width="100%">
-    <tr id="tags">
-        <td class="label">Tags:</td>
-        <td class="field" colspan="2">
-            <div id="productTags" style="max-width:550px;width:100%;display:inline-block;vertical-align:middle;"></div>
-            <div style="display:inline-block;vertical-align: middle;margin-top:2px;">
-                <a id="btnViewAvailableTags" class="button">View Tags</a>
-                <div id="availableTagsDiv" style="display:none";>
-                    <ul id="availableTags">
-                    <% _.each(this.availableTags, function(tag) { %>
-                        <li><%= tag %></li>
-                    <% }) %>
-                    </ul>
-                </div>
-            </div>
-        </td>
-    </tr>
     <tr id="category">
         <td class="label">Category:</td>
         <td class="field">
@@ -49,17 +21,9 @@
             </td>
         </tr>
     <% } %>
-    <tr id="visibility">
-        <td class="label">Visibility:</td>
-        <td class="field" colspan="2">
-            <%= HTML.Select(this, 'access', {options: allowedVisibility}) %>
-            <div style="display:inline-block;">
-                <ul style="margin-top:0;margin-bottom:0;font-size:smaller;">
-                    <li style="margin-top:0;margin-bottom:0;"><b>Public:</b> Everyone including guests to the Forum will be able to view this product.</li>
-                    <li style="margin-top:0;margin-bottom:0;"><b>Forum:</b> Only Forum members will be able to view this product.</li>
-                </ul>
-            </div>
-        </td>
+    <tr id="title">
+        <td class="label">Title:</td>
+        <td class="field" colspan="2"><%= HTML.TextBox(this, 'title', {size: '50', style: 'box-sizing: border-box; width:100%;'}) %></td>
     </tr>
     <% if(this.model.getPossibleStatus().length > 0){ %>
         <tr>
@@ -77,10 +41,10 @@
                 Date:
             <% } %>
         </td>
-        <td class="field"><%= HTML.DatePicker(this, 'date', {format: 'yy-mm-dd'}) %></td>
+        <td class="field" style="min-width: 200px;"><%= HTML.DatePicker(this, 'date', {format: 'yy-mm-dd'}) %></td>
         <td valign="top" rowspan="<%= _.size(this.model.getPossibleFields()) + 1 %>" style="width:100%;">
             <div id="projects">
-                <h2 style="margin-top:0;padding-top:0;">Related Projects</h2>
+                <h2 style="margin-top: 0.25em;;padding-top:0;">Related Projects</h2>
                 <div><%= HTML.ProjectSelector(this, 'projects') %></div>
             </div>
         </td>
@@ -121,7 +85,51 @@
             </tr>
         <% } %>
     <% }, this) %>
+    <tr>
+        <td class="label"><%= this.model.getAuthorsLabel().pluralize() %>:<br />
+        
+        </td>
+        <td id="authors" class="value" colspan="2">
+            <div id="productAuthors"></div>
+            <a id="showInstructions" style="cursor: pointer;">Show <%= this.model.getAuthorsLabel() %> Instructions</a>
+            <div id="productAuthorsInstructions" style="display:none;">
+            
+            </div>
+        </td> 
+    </tr>
+    <tr id="visibility">
+        <td class="label">Visibility:</td>
+        <td class="field" colspan="2">
+            <%= HTML.Select(this, 'access', {options: allowedVisibility}) %>
+            <div style="display:inline-block;">
+                <ul style="margin-top:0;margin-bottom:0;font-size:smaller;">
+                    <li style="margin-top:0;margin-bottom:0;"><b>Public:</b> Everyone including guests to the Forum will be able to view this product.</li>
+                    <li style="margin-top:0;margin-bottom:0;"><b>Forum:</b> Only Forum members will be able to view this product.</li>
+                </ul>
+            </div>
+        </td>
+    </tr>
+    <tr id="tags">
+        <td class="label">Tags:</td>
+        <td class="field" colspan="2">
+            <div id="productTags" style="max-width:550px;width:100%;display:inline-block;vertical-align:middle;"></div>
+            <div style="display:inline-block;vertical-align: middle;margin-top:2px;">
+                <a id="btnViewAvailableTags" class="button">View Tags</a>
+                <div id="availableTagsDiv" style="display:none";>
+                    <ul id="availableTags">
+                    <% _.each(this.availableTags, function(tag) { %>
+                        <li><%= tag %></li>
+                    <% }) %>
+                    </ul>
+                </div>
+            </div>
+        </td>
+    </tr>
 </table>
+<div id="description">
+    <h2>Description</h2>
+    <%= HTML.TextArea(this, 'description', {style: 'height:175px;width:650px;'}) %>
+</div>
 <div id="projectsWarning" class="warning" style="display:none;">This <%= productsTerm.toLowerCase() %> has not been associated with any projects yet</div>
 <div id="doiWarning" class="error" style="display:none;">This <%= productsTerm.toLowerCase() %> is missing a DOI/URL</div>
 <% if(!this.isDialog){ %>
