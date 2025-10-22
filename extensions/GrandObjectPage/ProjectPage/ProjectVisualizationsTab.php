@@ -484,7 +484,7 @@ class ProjectVisualizationsTab extends AbstractTab {
 	        else {
 	            $newDesc = "";
 	            foreach($description as $key => $desc){
-	                $newDesc .= strip_tags($desc)."\n";
+	                $newDesc .= (is_array($desc)) ? strip_tags(implode(" ", $desc))."\n" : strip_tags($desc)."\n";
 	            }
 	            $description = $newDesc;
 	        }
