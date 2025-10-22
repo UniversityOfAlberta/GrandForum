@@ -127,7 +127,7 @@
     </tr>
 </table>
 <div id="description">
-    <h2>Description</h2>
+    <h2><%= this.model.getDescriptionLabel() %></h2>
     <%= HTML.TextArea(this, 'description', {style: 'height:175px;width:650px;'}) %>
 </div>
 <div id="projectsWarning" class="warning" style="display:none;">This <%= productsTerm.toLowerCase() %> has not been associated with any projects yet</div>

@@ -121,6 +121,24 @@ Product = Backbone.Model.extend({
         }
         return label;
     },
+    
+    getDescriptionLabel: function(){
+        var type = this.get('type').split(":")[0];
+        if(this.get('category') == ""){
+            return "Description";
+        }
+        var label = "";
+        if(productStructure.categories[this.get('category')].types[type] == undefined){
+            label = _.first(_.values(productStructure.categories[this.get('category')].types)).description_label;
+        }
+        else{
+            label = productStructure.categories[this.get('category')].types[type].description_label;
+        }
+        if(label == undefined){
+            return "Description";
+        }
+        return label;
+    },
 
     urlRoot: 'index.php?action=api.product',
     

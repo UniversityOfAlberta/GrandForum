@@ -605,7 +605,8 @@ class Paper extends BackboneModel{
                                                                                                          'placeholder' => $fplaceholder,
                                                                                                          'type' => $ftype,
                                                                                                          'options' => $foptions,
-                                                                                                         'hidden' => $fhidden);
+                                                                                                         'hidden' => $fhidden,
+                                                                                                         'description_label' => 'Description');
                             }
                         }
                         else if($child->getName() == "statuses"){
@@ -621,6 +622,10 @@ class Paper extends BackboneModel{
                         else if($child->getName() == "authors"){
                             $attrs = $child->attributes();
                             $categories['categories'][$cname]['types'][$tname]["authors_label"] = ("{$attrs->label}" != "") ? "{$attrs->label}" : "Author";
+                        }
+                        else if($child->getName() == "description"){
+                            $attrs = $child->attributes();
+                            $categories['categories'][$cname]['types'][$tname]["description_label"] = ("{$attrs->label}" != "") ? "{$attrs->label}" : "Description";
                         }
                     }
                     if(DBFunctions::isReady()){
