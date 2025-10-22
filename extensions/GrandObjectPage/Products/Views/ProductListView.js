@@ -226,19 +226,23 @@ ProductListView = Backbone.View.extend({
         this.$('#listTable thead tr th').each(function(i, el){
             if($(el).css("display") != "none"){
                 var title = $(el).text();
-                var input = '<input type="text" data-index="' + i + '" />';
+                var input = '<input type="text" data-index="' + i + '" style="width: 100%; box-sizing: border-box;" />';
                 if(title.indexOf("Date") !== -1){
                     input = '<input class="min" type="datepicker" value="" format="yy-mm-dd" style="width:6em;" data-index="' + i + '" />&nbsp;&nbsp;&nbsp;to&nbsp;&nbsp;&nbsp;<input class="max" type="datepicker" value="" format="yy-mm-dd" style="width:6em;" data-index="' + i + '" />';
                     this.$("#rightSearchTable").append("<tr><td class='label'>" + title + ":</td><td>" + input + "</td></tr>");
                     this.addDateRangeFilter(i);
                 }
+                else if(title == "Type"){
+                    var options = _.map(_.keys(productStructure.categories[this.model.category].types), function(type){ return "<option>" + type + "</option>"; });
+                    this.$("#leftSearchTable").append("<tr><td class='label'>" + title + ":</td><td style='width: 200px;'><select data-index='" + i + "' style='width:100%;'><option></option>" + options + "</select></td></tr>");
+                }
                 else{
-                    this.$("#leftSearchTable").append("<tr><td class='label'>" + title + ":</td><td>" + input + "</td></tr>");
+                    this.$("#leftSearchTable").append("<tr><td class='label'>" + title + ":</td><td style='width: 200px;'>" + input + "</td></tr>");
                 }
             }
         }.bind(this));
         
-        this.$('#filters #leftSearchTable').on('keyup change', 'input', function () {
+        this.$('#filters #leftSearchTable').on('keyup change', 'input, select', function () {
             table
                 .column($(this).data('index'))
                 .search(this.value)
