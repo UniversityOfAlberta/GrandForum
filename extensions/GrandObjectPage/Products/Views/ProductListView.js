@@ -222,6 +222,7 @@ ProductListView = Backbone.View.extend({
         
         this.$("#leftSearchTable tr").empty();
         this.$("#rightSearchTable tr").empty();
+        $.fn.dataTable.ext.search = [];
         this.$('#listTable thead tr th').each(function(i, el){
             if($(el).css("display") != "none"){
                 var title = $(el).text();
