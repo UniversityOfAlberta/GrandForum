@@ -8,12 +8,14 @@ Scenario: A Project Leader can create a new task
     When I go to "index.php/Phase1Project1:Main"
     Then I should see "Main"
     And I click "Activities"
+    And I wait "5000"
     And I press "Edit"
     Then I wait until I see "Add Task" up to "5000"
     And I press "Add Task"
-    And I fill in "task" with "Test Task"
+    And I fill in "task" with "New task for HQP User1"
     And I press "Save"
-    Then I wait until I see "Test Task" up to "5000"
+    Then I wait "5000"
+    And I should see "New task for HQP User1"
 
 Scenario: A guest user cannot see the Activities tab
     When I go to "index.php/Phase1Project1:Main"
@@ -24,21 +26,21 @@ Scenario: A logged-in user who is not a project member cannot see the Activities
     When I go to "index.php/Phase1Project1:Main"
     And I should not see "Activities"
 
-Scenario: A Project Leader can assign a new task to a project member
+Scenario: A Project Leader can assign a project member to a task
     Given I am logged in as "PL.User4" using password "PL.Pass4"
     When I go to "index.php/Phase1Project1:Main"
     And I click "Activities"
+    And I wait "5000"
+    And I should see "New task for HQP User1"
     And I press "Edit"
     And I wait "5000"
-    And I press "Add Task"
-    And I fill in "task" with "New task for HQP User1"
     And I select from Chosen "assignees" with "HQP User1"
     And I press "Save"
     And I wait "5000"
     Then I should see "New task for HQP User1"
     And I should see "HQP User1"
 
-Scenario: A Proejct Leader can assign a reviewer to a task
+Scenario: A Project Leader can assign a reviewer to a task
     Given I am logged in as "PL.User4" using password "PL.Pass4"
     When I go to "index.php/Phase1Project1:Main"
     And I click "Activities"
@@ -52,7 +54,7 @@ Scenario: A Proejct Leader can assign a reviewer to a task
     And I wait "5000"
     Then I should see "Change Task Status"
 
-    And I select from Select "displayReviewers_" with "HQP User4"
+    And I select "HQP User4" from "displayReviewers_25_id"
     And I wait "1000"
     And I close dialog "#change-status-modal"
 
@@ -77,7 +79,7 @@ Scenario: An assignee can change the status of their assigned task
     And I wait "5000"
     Then I should see "Change Task Status"
     
-    And I select from Select "displayStatuses_" with "Done"
+    And I select "Done" from "displayStatuses_25"
     And I wait "1000"
     And I close dialog "#change-status-modal"    
     Then I should see "Pending Review"
@@ -105,7 +107,7 @@ Scenario: A Reviewer can change status of a task
     And I wait "5000"
     Then I should see "Change Task Status"
 
-    And I select from Select "displayStatuses_" with "Closed"
+    And I select "Closed" from "displayStatuses_25"
     And I wait "1000"
     And I close dialog "#change-status-modal"    
     Then I should see "Completed"

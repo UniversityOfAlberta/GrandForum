@@ -450,24 +450,6 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
     }
 
     /**
-     * @Given /^I select from Select "(?P<id>(?:[^"]|\\")*)" with "(?P<text>(?:[^"]|\\")*)"$/
-     */
-    public function selectFromSelectWith($id, $text){
-        $text = addslashes($text);
-        $script = "selectText = '$text'; " .
-                "$('select[name^=$id]').each(function(){ " .
-                "  $(this).find('option').each(function(i, el){
-                    if($(el).val() == selectText ||
-                        $(el).text() == selectText){
-                        selectText = $(el).val();
-                    }
-                    }); " .
-                "  $(this).val(selectText).change(); " .
-                "});";
-        $this->getSession()->getDriver()->executeScript($script);
-    }
-    
-    /**
      * @Given /^I validate report xml$/
      */
     public function validateReportXML(){
