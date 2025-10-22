@@ -560,8 +560,10 @@ class Paper extends BackboneModel{
         if(!Cache::exists("product_structure")){
             $file = file_get_contents($fileName);
             $parser = simplexml_load_string($file);
+            $tags = (strtolower($parser->attributes()->tags) !== "false") ? true : false;
             $categories = array('categories' => array(),
-                                'time' => $fileTime);
+                                'time' => $fileTime,
+                                'tags' => $tags);
             foreach($parser->children() as $category){
                 $cattrs = $category->attributes();
                 $cname = "{$cattrs->category}";

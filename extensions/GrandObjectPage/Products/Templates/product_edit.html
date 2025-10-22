@@ -109,22 +109,24 @@
             </div>
         </td>
     </tr>
-    <tr id="tags">
-        <td class="label">Tags:</td>
-        <td class="field" colspan="2">
-            <div id="productTags" style="max-width:550px;width:100%;display:inline-block;vertical-align:middle;"></div>
-            <div style="display:inline-block;vertical-align: middle;margin-top:2px;">
-                <a id="btnViewAvailableTags" class="button">View Tags</a>
-                <div id="availableTagsDiv" style="display:none";>
-                    <ul id="availableTags">
-                    <% _.each(this.availableTags, function(tag) { %>
-                        <li><%= tag %></li>
-                    <% }) %>
-                    </ul>
+    <% if(productStructure.tags){ %>
+        <tr id="tags">
+            <td class="label">Tags:</td>
+            <td class="field" colspan="2">
+                <div id="productTags" style="max-width:550px;width:100%;display:inline-block;vertical-align:middle;"></div>
+                <div style="display:inline-block;vertical-align: middle;margin-top:2px;">
+                    <a id="btnViewAvailableTags" class="button">View Tags</a>
+                    <div id="availableTagsDiv" style="display:none";>
+                        <ul id="availableTags">
+                        <% _.each(this.availableTags, function(tag) { %>
+                            <li><%= tag %></li>
+                        <% }) %>
+                        </ul>
+                    </div>
                 </div>
-            </div>
-        </td>
-    </tr>
+            </td>
+        </tr>
+    <% } %>
 </table>
 <div id="description">
     <h2><%= this.model.getDescriptionLabel() %></h2>
