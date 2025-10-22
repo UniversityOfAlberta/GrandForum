@@ -17,19 +17,19 @@ class Messages {
     
     function __construct(){
         if(isset($_COOKIE['errors'])){
-            $this->errors = unserialize($_COOKIE['errors']);
+            $this->errors = json_decode($_COOKIE['errors']);
         }
         if(isset($_COOKIE['warnings'])){
-            $this->warnings = unserialize($_COOKIE['warnings']);
+            $this->warnings = json_decode($_COOKIE['warnings']);
         }
         if(isset($_COOKIE['success'])){
-            $this->success = unserialize($_COOKIE['success']);
+            $this->success = json_decode($_COOKIE['success']);
         }
         if(isset($_COOKIE['info'])){
-            $this->info = unserialize($_COOKIE['info']);
+            $this->info = json_decode($_COOKIE['info']);
         }
         if(isset($_COOKIE['purpleInfo'])){
-            $this->info = unserialize($_COOKIE['purpleInfo']);
+            $this->info = json_decode($_COOKIE['purpleInfo']);
         }
         //$this->clearCookies();
     }
@@ -42,7 +42,7 @@ class Messages {
         else{
             $this->errors[$this->errorIndex++] = $message;
         }
-        @setcookie('errors', serialize($this->errors), time()+3600, "/");
+        @setcookie('errors', json_encode($this->errors), time()+3600, "/");
     }
     
     // Adds a (yellow) warning message
@@ -53,7 +53,7 @@ class Messages {
         else{
             $this->warnings[$this->warningIndex++] = $message;
         }
-        @setcookie('warnings', serialize($this->warnings), time()+3600, "/");
+        @setcookie('warnings', json_encode($this->warnings), time()+3600, "/");
     }
     
     // Adds a (green) success message
@@ -64,7 +64,7 @@ class Messages {
         else{
             $this->success[$this->successIndex++] = $message;
         }
-        @setcookie('success', serialize($this->success), time()+3600, "/");
+        @setcookie('success', json_encode($this->success), time()+3600, "/");
     }
     
     // Adds a (blue) info message
@@ -89,11 +89,11 @@ class Messages {
     
     // Clears the message cookies
     function clearCookies(){
-        @setcookie('errors', serialize(array()), time()-3600, "/");
-        @setcookie('warnings', serialize(array()), time()-3600, "/");
-        @setcookie('success', serialize(array()), time()-360000, "/");
-        @setcookie('info', serialize(array()), time()-3600, "/");
-        @setcookie('purpleInfo', serialize(array()), time()-3600, "/");
+        @setcookie('errors', json_encode(array()), time()-3600, "/");
+        @setcookie('warnings', json_encode(array()), time()-3600, "/");
+        @setcookie('success', json_encode(array()), time()-360000, "/");
+        @setcookie('info', json_encode(array()), time()-3600, "/");
+        @setcookie('purpleInfo', json_encode(array()), time()-3600, "/");
     }
     
     // Empties all error messages

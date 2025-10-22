@@ -745,6 +745,58 @@ class ProjectMainTab extends AbstractEditableTab {
         }
     }
     
+    private function showSimpleManageOutputs(){
+        global $wgServer, $wgScriptPath;
+        $students = array();
+        $studentNames = array();
+        $studentFullNames = array();
+        $person = Person::newFromWgUser();
+        foreach($person->getHQP(true) as $hqp){
+            $students[] = $hqp->getId();
+            $studentNames[] = $hqp->getName();
+            $studentFullNames[] = $hqp->getNameForForms();
+        }
+    
+        $manageProducts = new ManageProducts();
+        $scripts = array_merge($manageProducts->loadTemplates(true),
+                               $manageProducts->loadModels(true),
+                               $manageProducts->loadViews(true));
+                               
+        $projectJSON = "project: new Project(".$this->project->toJSON().")";
+        $projectId = $this->project->getId();
+        
+        $html = "<style>
+                #manageProductsDescription { display: none; }
+                #manageOutputs #listTable_wrapper { display: none; }
+                #showAll { display: none; }
+                .ui-dialog #projects { display: none; }
+             </style>".
+             implode("", $scripts)."
+             <link href='$wgServer$wgScriptPath/extensions/GrandObjectPage/ManageProducts/style.css' type='text/css' rel='stylesheet' />
+             <script type='text/javascript'>
+                publicationsFrozen = false;
+                students = ".json_encode($students).";
+                studentNames = ".json_encode($studentNames).";
+                studentFullNames = ".json_encode($studentFullNames).";
+             </script>
+             <div id='manageOutputs' style='position: relative;'></div>
+             <script type='text/javascript'>
+                 var products = me.getManagedProducts($projectId, true);
+                 products.all = false;
+                 var view = new ManageProductsView({el: $('#manageOutputs'), model: products, project: new Project(".$this->project->toJSON().")});
+                 products.on('event:change', function(){
+                    if(!view.firstRender){
+                        _.delay(function(){
+                            $.cookie('success', JSON.stringify([productsTerm + ' saved']), {path: '/'}) 
+                            document.location = document.location;
+                        }, 500);
+                    }
+                 });
+                 
+             </script>";
+        return $html;
+    }
+    
     /**
      * Shows a table of this Person's products, and is filterable by the
      * visualizations which appear above it.
@@ -757,6 +809,9 @@ class ProjectMainTab extends AbstractEditableTab {
         if(count($products) > 0){
             $string = "<div class='pdfnodisplay'>";
             $string .= "<h2>".Inflect::pluralize($config->getValue('productsTerm'))."</h2>";
+            if($me->isMemberOf($this->project)){
+                $string .= $this->showSimpleManageOutputs();
+            }
             $string .= "<table id='projectProducts' rules='all' frame='box'>
                 <thead>
                     <tr>

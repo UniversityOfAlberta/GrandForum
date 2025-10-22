@@ -18,6 +18,7 @@ ManageProductsView = Backbone.View.extend({
     orcidDialog: null,
     crossForumExportDialog: null,
     duplicatesDialog: null,
+    firstRender: true,
 
     initialize: function(options){
         this.subViews = new Array();
@@ -175,6 +176,8 @@ ManageProductsView = Backbone.View.extend({
     },
     
     addRows: function(){
+        this.model.trigger("event:change");
+        this.firstRender = false;
         var searchStr = "";
         var order = [this.projects.length + 4, 'desc'];
         if(publicationsFrozen){
@@ -718,6 +721,7 @@ ManageProductsView = Backbone.View.extend({
                                            "<li>" + _.pluck(response.error, 'title').join("</li><li>") + 
                                            "</li></ul></div>";
                                 addInfo(info);
+                                this.model.trigger("event:change");
 	                        }
 	                        button.prop("disabled", false);
 	                        $("div.throbber", this.ccvDialog).hide();
@@ -793,6 +797,7 @@ ManageProductsView = Backbone.View.extend({
                                                "<li>" + response.messages.join("</li><li>") + 
                                                "</li></ul></div>";
                                     addInfo(info);
+                                    this.model.trigger("event:change");
                                 }
                             }
                             button.prop("disabled", false);
@@ -877,6 +882,7 @@ ManageProductsView = Backbone.View.extend({
                             }
                             if(nError > 0){
                                 addInfo("<b>" + nError + "</b> " + productsTerm.pluralize().toLowerCase() + " were ignored (probably duplicates)");
+                                this.model.trigger("event:change");
                             }
                         }
                         button.prop("disabled", false);
@@ -946,6 +952,7 @@ ManageProductsView = Backbone.View.extend({
                                                "<li>" + response.messages.join("</li><li>") + 
                                                "</li></ul></div>";
                                     addInfo(info);
+                                    this.model.trigger("event:change");
                                 }
                             }
                             button.prop("disabled", false);
@@ -999,6 +1006,7 @@ ManageProductsView = Backbone.View.extend({
 	                        }
 	                        if(nError > 0){
 	                            addInfo("<b>" + nError + "</b> " + productsTerm.pluralize().toLowerCase() + " were ignored (probably duplicates)");
+	                            this.model.trigger("event:change");
 	                        }
 	                        button.prop("disabled", false);
 	                        $("div.throbber", this.calendarDialog).hide();
@@ -1075,6 +1083,7 @@ ManageProductsView = Backbone.View.extend({
                                                "<li>" + response.messages.join("</li><li>") + 
                                                "</li></ul></div>";
                                     addInfo(info);
+                                    this.model.trigger("event:change");
                                 }
                             }
                             button.prop("disabled", false);
