@@ -196,6 +196,9 @@
                     }
                 </style>
                 <iframe id='downloadFrame' name='downloadFrame' src="" style="display:none;"></iframe>
+                <div style='float: left; margin-bottom: 1em;'>
+                    <b style='color: red;'>NOTE:</b> Only have one tab or browser with this page open at a time.
+                </div>
                 <div style='float:right; margin-top: -45px;display:flex;'>
                     <div><button id='downloadAll' class='noDisable' type='button'>Download All</button></div>
                 </div>
