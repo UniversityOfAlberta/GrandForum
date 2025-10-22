@@ -195,6 +195,16 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
     }
 
     /**
+     * @Then I close dialog :selector
+     */
+    public function iCloseDialog($selector){
+        $script = "$('$selector').dialog('close');";
+        $this->getSession()->getDriver()->executeScript($script);
+        $this->getSession()->wait(500);
+    }
+
+
+    /**
      * @Given /^I check "([^"]*)" from "([^"]*)"$/
      */
     public function iCheckFrom($value, $name) {
@@ -438,7 +448,7 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
                   "$('select[name=$id]').val(chosenText).trigger('chosen:updated').change();";
         $this->getSession()->getDriver()->executeScript($script);
     }
-    
+
     /**
      * @Given /^I validate report xml$/
      */
