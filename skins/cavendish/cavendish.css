@@ -1305,7 +1305,7 @@ del {
 }
 
 .label {
-    line-height: 29px;
+    line-height: 2em;
 }
 
 .label::after {
@@ -1348,6 +1348,10 @@ del {
 
 .field {
     vertical-align: top;
+}
+
+.field > input[type=checkbox] {
+    min-height: 22px;
 }
 
 /* Messages */

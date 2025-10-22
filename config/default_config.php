@@ -367,6 +367,7 @@
         //'CRM',
         //'RSSAlerts',
         //'EventRegistration',
+        'PMM'
     ));
     
     $config->setValue("reportingExtras", array('CreatePDF'              => false,
