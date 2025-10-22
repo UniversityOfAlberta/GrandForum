@@ -57,7 +57,7 @@ class PublicWordleTab extends AbstractTab {
 	            <ul>";
 	    foreach($projects as $project){
 	        $description = $project->getDescription();
-	        $description = (is_array($description)) ? implode(" ", $description) : $description;
+	        $description = (is_array($description)) ? implode(',', array_map(function($el){ return (is_array($el)) ? implode(',', $el) : $el; }, $description)) : $description;
 	        $this->html .= "<li style='display:none;'><a href='{$project->getUrl()}'>{$project->getName()} - {$project->getFullName()}</a> <span style='display:none;'>{$description}</span></li>\n";
 	    }
 	    $this->html .= "</ul>
