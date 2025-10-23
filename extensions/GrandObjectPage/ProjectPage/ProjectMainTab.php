@@ -805,13 +805,14 @@ class ProjectMainTab extends AbstractEditableTab {
         global $config;
         $me = Person::newFromWgUser();
         $products = $this->project->getPapers("all", "0000-00-00", EOT);
-        $string = "";
-        if(count($products) > 0){
-            $string = "<div class='pdfnodisplay'>";
+        $string = "<div class='pdfnodisplay'>";
+        if($me->isMemberOf($this->project) || count($products) > 0){
             $string .= "<h2>".Inflect::pluralize($config->getValue('productsTerm'))."</h2>";
-            if($me->isMemberOf($this->project)){
-                $string .= $this->showSimpleManageOutputs();
-            }
+        }
+        if($me->isMemberOf($this->project)){
+            $string .= $this->showSimpleManageOutputs();
+        }
+        if(count($products) > 0){
             $string .= "<table id='projectProducts' rules='all' frame='box'>
                 <thead>
                     <tr>
@@ -849,9 +850,9 @@ class ProjectMainTab extends AbstractEditableTab {
                         autoWidth: false,
                         drawCallback: renderProductLinks
                     });
-                </script>
-            </div>";
+                </script>";
         }
+        $string .= "</div>";
         return $string;
     }
 

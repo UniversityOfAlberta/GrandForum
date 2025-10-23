@@ -270,3 +270,21 @@ Feature: Products
         And I wait until I see "The Product has been saved sucessfully" up to "1000"
         Then I should see "Test1"
         And I should see "Test2"
+        
+    Scenario: Adding a new Publication on the project page
+        Given I am logged in as "NI.User1" using password "NI.Pass1"
+        When I go to "index.php/Phase1Project1:Main"
+        And I wait until I see "Add Product" up to "1000"
+        And I press "Add Product"
+        And I fill in "title" with "Publication with on project page"
+        And I select "Publication" from "category"
+        And I select "Proceedings Paper" from "type"
+        And I press "Save Product"
+        And I wait until I see "Product saved" up to "2000"
+        Then I should see "Publication with on project page"
+        
+    Scenario: Non-member shouldn't see the add product button on the project page
+        Given I am logged in as "NI.User2" using password "NI.Pass2"
+        When I go to "index.php/Phase1Project1:Main"
+        And I wait "100"
+        Then I should not see "Add Product"

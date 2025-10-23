@@ -99,7 +99,7 @@ class ProjectWikiTab extends AbstractTab {
             <form action='' onSubmit='clickButton'>
             <table>
                 <tr>
-                    <td><b>Title:</b></td><td><input id='newPageTitle' type='text' name='title' size='40' /></td><td><input type='submit' id='createPageButton' value='Create Page' /></td>
+                    <td><b>Title:</b></td><td><input id='newPageTitle' type='text' name='wikititle' size='40' /></td><td><input type='submit' id='createPageButton' value='Create Page' /></td>
                 </tr>
             </table>
             </form>
