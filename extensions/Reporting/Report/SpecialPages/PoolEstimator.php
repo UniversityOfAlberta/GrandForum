@@ -61,6 +61,7 @@ class PoolEstimator extends SpecialPage {
                 $contribution = 1.2;
                 $reason = "";
                 if($this->isAtCap($person)){ $contribution = 0; $reason = "At Cap"; }
+                if($person->isRoleDuring(DEAN, START, END)){ $contribution = 0; $reason = "Dean"; }
                 if(strstr($subroles, "NoPool") !== false){ $contribution = 0; $reason = "No Pool"; }
                 $wgOut->addHTML("<tr>
                     <td>{$case}</td>
