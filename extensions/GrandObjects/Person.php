@@ -1771,7 +1771,7 @@ class Person extends BackboneModel {
      * @return string The handle of this Person's twitter account
      */
     function getTwitter(){
-        return $this->twitter;
+        return trim($this->twitter);
     }
     
     /**
@@ -1782,7 +1782,7 @@ class Person extends BackboneModel {
         if (preg_match("#https?://#", $this->website) === 0) {
             $this->website = 'http://'.$this->website;
         }
-        return $this->website;
+        return trim($this->website);
     }
     
     /**
@@ -1793,7 +1793,7 @@ class Person extends BackboneModel {
         if (preg_match("#https?://#", $this->linkedin) === 0) {
             $this->linkedin = 'http://'.$this->linkedin;
         }
-        return $this->linkedin;
+        return trim($this->linkedin);
     }
     
     /**
@@ -1804,19 +1804,19 @@ class Person extends BackboneModel {
         if (preg_match("#https?://#", $this->googleScholar) === 0) {
             $this->googleScholar = 'https://'.$this->googleScholar;
         }
-        return $this->googleScholar;
+        return trim($this->googleScholar);
     }
     
     function getOrcid(){
-        return $this->orcid;
+        return trim($this->orcid);
     }
     
     function getScopus(){
-        return $this->scopus;
+        return trim($this->scopus);
     }
     
     function getResearcherId(){
-        return $this->researcherId;
+        return trim($this->researcherId);
     }
     
     function getOffice(){
