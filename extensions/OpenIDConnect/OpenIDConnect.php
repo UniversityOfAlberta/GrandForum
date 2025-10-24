@@ -17,7 +17,8 @@ $wgOpenIDConnect_ForceLogout = true;
 $wgOpenIDConnect_Config[$config->getValue('oidcUrl')] = [
     'clientID' => $config->getValue('oidcClientId'),
     'clientsecret' => $config->getValue('oidcSecret'),
-    'name' => "Auth0",
+    'name' => "Single Sign On",
+    'verifyPeer' => (strstr($config->getValue('server'), 'localhost') === false),
     'scope' => [ 'openid', 'profile', 'email', 'email_verified']
 ];
 
