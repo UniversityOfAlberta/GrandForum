@@ -245,11 +245,6 @@ class ProjectPage {
                         var dialogElement = $("div#requestJoinDialog");
                         var requestButton = $('#request-to-join-btn');
 
-                        var membersHeadline = $('span.mw-headline:contains("Members")').closest('h2');
-                        if (membersHeadline.length) {
-                            requestButton.css({ 'float': 'right', 'display': 'inline-block'}).prependTo(membersHeadline);
-                        }
-
                         dialogElement.dialog({
                             autoOpen: false,
                             width: '35em',
