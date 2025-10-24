@@ -119,7 +119,8 @@ class LIMSSendNotifications extends RESTAPI {
                 "Email Notification: " . $emailSubject, 
                 $filterPrefix . $emailContent, 
                 $project->getUrl() . "?tab=activities", 
-                true
+                true,
+                $assigneesToNotify
             );
         }
 
