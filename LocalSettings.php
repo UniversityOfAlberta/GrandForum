@@ -70,6 +70,31 @@ $objPatch->redefineFunction("
 }");
 eval($objPatch->getCode());
 
+// Hack to add text/html to the email headers
+$objPatch = new Patch("$IP/includes/user/User.php");
+$objPatch->redefineFunction("
+    public function sendMail( \$subject, \$body, \$from = null, \$replyto = null ) {
+	    global \$wgAllowHTMLEmail;
+		\$passwordSender = MediaWikiServices::getInstance()->getMainConfig()
+			->get( MainConfigNames::PasswordSender );
+
+		if ( \$from instanceof User ) {
+			\$sender = MailAddress::newFromUser( \$from );
+		} else {
+			\$sender = new MailAddress( \$passwordSender,
+				wfMessage( 'emailsender' )->inContentLanguage()->text() );
+		}
+		\$to = MailAddress::newFromUser( \$this );
+        \$options = [
+			'replyTo' => \$replyto,
+		];
+		if(\$wgAllowHTMLEmail){
+		    \$options['contentType'] = 'text/html; charset=UTF-8';
+		}
+		return UserMailer::send( \$to, \$sender, \$subject, \$body, \$options );
+	}");
+eval($objPatch->getCode());
+
 $wgDeprecationReleaseLimit = '1.0';
 
 $wgBaseDirectory = MW_INSTALL_PATH;
