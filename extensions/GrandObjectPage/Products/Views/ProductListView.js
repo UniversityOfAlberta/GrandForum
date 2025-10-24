@@ -90,20 +90,6 @@ ProductListView = Backbone.View.extend({
             
             var row = new Array();
             row.push("<span style='white-space: nowrap;'>" + model.date + "</span>");
-            if(networkType == "CFREF" && model.category == "Publication"){
-                if(model.data.date_submitted != undefined){
-                    row.push("<span style='white-space: nowrap;'>" + model.data.date_submitted  + "</span>");
-                }
-                else{
-                    row.push("");
-                }
-                if(model.data.date_accepted != undefined){
-                    row.push("<span style='white-space: nowrap;'>" + model.data.date_accepted  + "</span>");
-                }
-                else{
-                    row.push("");
-                }
-            }
             row.push("<span style='white-space: nowrap;'>" + model.type + "</span>");
             row.push("<span class='productTitle' data-id='" + model.id + "' data-href='" + model.url + "'>" + model.title + "</span>");
             row.push("<div style='display: -webkit-box;-webkit-line-clamp: 3;-webkit-box-orient: vertical;overflow: hidden;'>" + authors.join(', ') + "</div>");
@@ -150,10 +136,6 @@ ProductListView = Backbone.View.extend({
             return {};
         }
         var fields = _.reduce(productStructure.categories[this.model.category].types, function(memo, obj){ return Object.assign(memo, obj.data);}, {});
-        if(networkType == "CFREF" && this.model.category == "Publication"){
-            delete fields['date_accepted'];
-            delete fields['date_submitted'];
-        }
         return fields;
     },
     
@@ -190,9 +172,6 @@ ProductListView = Backbone.View.extend({
         var throbber = this.$(".throbber").detach();
         var data = this.processData(0);
         var targets = [ 4, 5, 6 ];
-        if(networkType == "CFREF" && this.model.category == "Publication"){
-            targets = [ 6, 7, 8 ];
-        }
         _.each(this.getFields(), function(field){
             targets.push(_.last(targets) + 1);
         });

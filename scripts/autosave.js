@@ -27,7 +27,10 @@ function Autosave(value){
     // Submits the form, using an ajax call.
     this.save = function(fn, failFn){
         var button = $('[type=submit]', this.value);
-        $(button).prop('disabled', true);
+        $(button).each(function(){
+            $(this).attr('data-last-state', $(this).prop('disabled'));
+            $(this).prop('disabled', true);
+        });
         var dataStr = $(this.value).serialize() + "&" + encodeURIComponent($(button).attr("name")) + "=" + encodeURIComponent($(button).val());
         var url = $(this.value).attr("action");
         this.auto.stop();
@@ -38,7 +41,11 @@ function Autosave(value){
         if(dataStr == lastSaveString){
             obj.auto.html("<b><en>Saved</en><fr>Enregistré</fr></b>");
             obj.auto.fadeOut(2500);
-            $(button).removeAttr('disabled');
+            $(button).each(function(){
+                if($(this).attr('data-last-state') == 'false'){
+                    $(this).removeAttr('disabled');
+                }
+            });
             //$('#submit_throbber').css('display', 'none');
             if(fn != null){
                 fn();
@@ -64,7 +71,11 @@ function Autosave(value){
                 lastSaveString = dataStr;
                 obj.auto.html("<b><en>Saved</en><fr>Enregistré</fr></b>");
                 obj.auto.fadeOut(2500);
-                $(button).removeAttr('disabled');
+                $(button).each(function(){
+                    if($(this).attr('data-last-state') == 'false'){
+                        $(this).removeAttr('disabled');
+                    }
+                });
                 $('#submit_throbber').css('display', 'none');
                 clearError();
                 if(fn != null){
@@ -75,7 +86,11 @@ function Autosave(value){
                 obj.auto.html("<b>Error Saving</b>");
                 clearError();
                 addError('There was an error saving this page.  Please verify that you are logged in, and not impersonating anyone.');
-                $(button).removeAttr('disabled');
+                $(button).each(function(){
+                    if($(this).attr('data-last-state') == 'false'){
+                        $(this).removeAttr('disabled');
+                    }
+                });
                 $('#submit_throbber').css('display', 'none');
                 if(failFn != null){
                     failFn(data);
