@@ -89,7 +89,8 @@
 			"Lliehu",
 			"Kimberli Mäkäräinen (WMNO)",
 			"Minilammas",
-			"Hdicu"
+			"Hdicu",
+			"Taavi"
 		]
 	},
 	"tog-underline": "Linkkien alleviivaus:",
@@ -634,7 +635,7 @@
 	"resetpass_forbidden": "Salasanoja ei voi vaihtaa.",
 	"resetpass_forbidden-reason": "Salasanoja ei voi muuttaa: $1",
 	"resetpass-no-info": "Et voi nähdä tätä sivua kirjautumatta sisään.",
-	"resetpass-submit-loggedin": "Muuta salasana",
+	"resetpass-submit-loggedin": "Vaihda salasana",
 	"resetpass-submit-cancel": "Peruuta",
 	"resetpass-wrong-oldpass": "Virheellinen väliaikainen tai nykyinen salasana.\nOlet saattanut jo vaihtaa salasanasi tai pyytää uutta väliaikaista salasanaa.",
 	"resetpass-recycled": "Sinun täytyy valita uudeksi salasanaksi jokin muu kuin nykyinen salasanasi.",
@@ -706,7 +707,7 @@
 	"anonpreviewwarning": "''Et ole kirjautunut sisään. Julkaiseminen kirjaa IP-osoitteesi tämän sivun muutoshistoriaan.''",
 	"autocreate-preview-warning": "<em>Et ole kirjautunut sisään. Muokkauksesi yhdistetään koneen keksimään nimeen ja IP-osoitteesi tulee näkymään ylläpitäjille.</em>",
 	"missingsummary": "<strong>Huomautus:</strong> Et ole antanut yhteenvetoa.\nJos painat ”$1” uudelleen, muokkauksesi julkaistaan ilman yhteenvetoa.",
-	"selfredirect": "<strong>Varoitus:</strong> Olet luomassa uudelleenohjausta, joka johtaa tästä sivusta tähän samaan sivuun.\nOlet ehkä määrittänyt ohjauksen kohteen väärin tai kenties muokkaat parhaillaan väärää sivua.\nJos painat ”$1” uudelleen, tämä ohjaussivu luodaan joka tapauksessa.",
+	"selfredirect": "<strong>Varoitus:</strong> Olet luomassa uudelleenohjausta, joka johtaa tästä sivusta tähän samaan sivuun.\nOlet ehkä määrittänyt ohjauksen kohteen väärin tai kenties muokkaat parhaillaan väärää sivua.\nJos napsautat ”$1” uudelleen, ohjaussivu luodaan joka tapauksessa.",
 	"missingcommenttext": "Kirjoita kommentti.",
 	"missingcommentheader": "<strong>Muistutus:</strong> Et ole antanut aiheotsikkoa tälle kommentille. Napsauta ”$1”, jos haluat julkaista kommenttisi ilman sellaista.",
 	"summary-preview": "Yhteenvedon esikatselu:",

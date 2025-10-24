@@ -10,7 +10,8 @@
 			"Ykhwong",
 			"孟天皓",
 			"REO2248",
-			"Herness17"
+			"Herness17",
+			"YeBoy371"
 		]
 	},
 	"tog-underline": "련결에 밑줄긋기:",
@@ -142,7 +143,7 @@
 	"mytalk": "토론",
 	"anontalk": "토론",
 	"navigation": "돌아보기",
-	"and": ",",
+	"and": "&#32;그리고",
 	"faq": "자주 묻는 질문",
 	"actions": "행위",
 	"namespaces": "이름공간",
