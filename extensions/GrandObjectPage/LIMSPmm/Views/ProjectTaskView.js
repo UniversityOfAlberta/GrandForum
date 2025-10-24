@@ -14,8 +14,13 @@ ProjectTaskView = Backbone.View.extend({
         this.project = new Project({ id: this.projectId });
         this.tasks = new LIMSTasksPmm([], { projectId: this.projectId });
         
-        var userRole = _.pluck(_.filter(me.get('roles'), function(el){return el.title == this.project.get("name") ||  el.role !== PL}.bind(this)), 'role');
-        this.isLeaderAllowedToEdit = _.intersection(userRole, [PL, STAFF, MANAGER, ADMIN]).length > 0 ;
+        var userRoles = _.pluck(_.filter(me.get('roles'), 
+            function(el) {
+                return el.title == this.project.get("name") 
+                       ||  el.role !== PL
+            }.bind(this)), 'role');
+                       
+        this.isManagement = _.intersection(userRoles, [PL, STAFF, MANAGER, ADMIN]).length > 0 ;
 
         this.listenTo(this.tasks, 'add', this.renderNewTaskRow);
         this.listenTo(this.tasks, 'change:toDelete', this.removeDeletedTaskView);
@@ -97,7 +102,7 @@ ProjectTaskView = Backbone.View.extend({
             project: this.project.toJSON(),
             tasks: this.tasks.toJSON(),
             isEditMode: this.isEditMode,
-            isLeaderAllowedToEdit: this.isLeaderAllowedToEdit
+            isManagement: this.isManagement
         };
         
         this.$el.html(this.template(templateData));

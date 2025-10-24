@@ -85,7 +85,7 @@ class LIMSSendNotifications extends RESTAPI {
                 $assignee, 
                 "Email Notification: " . $emailSubject, 
                 $emailContent, 
-                $project->getUrl() . "?tab=activity-management", 
+                $project->getUrl() . "?tab=activities", 
                 true
             );
         }
@@ -118,7 +118,7 @@ class LIMSSendNotifications extends RESTAPI {
                 $leader, 
                 "Email Notification: " . $emailSubject, 
                 $filterPrefix . $emailContent, 
-                $project->getUrl() . "?tab=activity-management", 
+                $project->getUrl() . "?tab=activities", 
                 true
             );
         }
