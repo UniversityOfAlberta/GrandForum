@@ -37,7 +37,7 @@
         </Publication>
 
         <Publication type="Book Chapter" ccv_id="fd8f2ffe3f5c43db8b5c3f72d8ffd994" ccv_name="Book Chapters">
-            <title ccv_id="52a699a6b0fe42a4851a7d5ae355360b" ccv_name="Chapter Title"></title>
+            <title ccv_id="52a699a6b0fe42a4851a7d5ae355360b" ccv_name="Chapter Title" label="Title of Chapter"></title>
             <data>
                 <field ccv_id="45b9d02a4bb04ec782357741b53dc135" ccv_name="Page Range" ccvtk="pages" label="Page Range" type="String">pages</field>
                 <field ccv_id="b864a9512e89482487f83ed22c454e9d" ccv_name="Book Title" ccvtk="booktitle" label="Book Title" type="String">book_title</field>
@@ -275,7 +275,6 @@
         
         <Publication type="Database">
             <data>
-                <field label="Lead Author">lead_author</field>
                 <field label="Event Title" type="String">conference</field>
                 <field label="Location" type="String">location</field>
                 <field label="Database Holder" type="String">organizing_body</field>
@@ -467,6 +466,7 @@
     <!-- Events -->
     <Events category="Event">
         <Event type="Workshop">
+            <title label="Presentation Title"></title>
             <authors label="Presenter"></authors>
             <data>
                 <field label="Event Title" type="String">conference</field>
@@ -480,6 +480,7 @@
         </Event>
         
         <Event type="Consultations">
+            <title label="Presentation Title"></title>
             <authors label="Presenter"></authors>
             <data>
                 <field label="Event Title" type="String">conference</field>
@@ -493,6 +494,7 @@
         </Event>
         
         <Event type="Conference / Symposium (Host)">
+            <title label="Presentation Title"></title>
             <authors label="Presenter"></authors>
             <data>
                 <field label="Event Title" type="String">conference</field>
@@ -506,6 +508,7 @@
         </Event>
         
         <Event type="Exhibition / Performance">
+            <title label="Presentation Title"></title>
             <authors label="Presenter"></authors>
             <data>
                 <field label="Event Title" type="String">conference</field>
@@ -519,6 +522,7 @@
         </Event>
         
         <Event type="Competition">
+            <title label="Presentation Title"></title>
             <authors label="Presenter"></authors>
             <data>
                 <field label="Event Title" type="String">conference</field>
@@ -532,6 +536,7 @@
         </Event>
         
         <Event type="Research Gym / Training">
+            <title label="Presentation Title"></title>
             <authors label="Presenter"></authors>
             <data>
                 <field label="Event Title" type="String">conference</field>
@@ -545,6 +550,7 @@
         </Event>
         
         <Event type="Training Program">
+            <title label="Presentation Title"></title>
             <authors label="Presenter"></authors>
             <data>
                 <field label="Event Title" type="String">conference</field>
@@ -558,6 +564,7 @@
         </Event>
         
         <Event type="Webinar">
+            <title label="Presentation Title"></title>
             <authors label="Presenter"></authors>
             <data>
                 <field label="Event Title" type="String">conference</field>
@@ -571,6 +578,7 @@
         </Event>
     
         <Event type="Misc">
+            <title label="Presentation Title"></title>
             <authors label="Presenter"></authors>
             <data>
                 <field label="Event Title" type="String">conference</field>
@@ -588,7 +596,6 @@
     <IPManagements category="IP Management" citationFormat="{%Authors} {(%YYYY).} &lt;i>{%Title.}&lt;/i> {%Issue} {%Url}">
         <IPManagement type="Patent">
             <data>
-                <field label="Lead Author">lead_author</field>
                 <field label="Location" type="String">location</field>
                 <field label="Article Number" type="String">number</field>
                 <field label="URL" type="URL">url</field>
@@ -599,7 +606,6 @@
         
         <IPManagement type="Policy">
             <data>
-                <field label="Lead Author">lead_author</field>
                 <field label="Location" type="String">location</field>
                 <field label="Article Number" type="String">number</field>
                 <field label="URL" type="URL">url</field>
@@ -610,7 +616,6 @@
         
         <IPManagement type="Copyright">
             <data>
-                <field label="Lead Author">lead_author</field>
                 <field label="Registration Number" type="String">number</field>
                 <field label="URL" type="URL">url</field>
                 <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
@@ -620,7 +625,6 @@
         
         <IPManagement type="Trademark">
             <data>
-                <field label="Lead Author">lead_author</field>
                 <field label="Type" type="String">type</field>
                 <field label="File Number" type="String">number</field>
                 <field label="URL" type="URL">url</field>
@@ -631,7 +635,6 @@
         
         <IPManagement type="Utility design">
             <data>
-                <field label="Lead Author">lead_author</field>
                 <field label="Type" type="String">type</field>
                 <field label="File Number" type="String">number</field>
                 <field label="URL" type="URL">url</field>
@@ -642,7 +645,6 @@
         
         <IPManagement type="License">
             <data>
-                <field label="Lead Author">lead_author</field>
                 <field label="Type" type="String">type</field>
                 <field label="Term" type="String">term</field>
                 <field label="File Number" type="String">number</field>
@@ -663,7 +665,6 @@
         
         <IPManagement type="Misc">
             <data>
-                <field label="Lead Author">lead_author</field>
                 <field label="URL" type="URL">url</field>
                 <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
             </data>
