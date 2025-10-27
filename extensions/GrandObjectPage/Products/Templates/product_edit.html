@@ -47,6 +47,18 @@
             </div>
         </td>
     </tr>
+    <tr>
+        <td class="label"><%= this.model.getAuthorsLabel().pluralize() %>:<br />
+        
+        </td>
+        <td id="authors" class="value" colspan="2">
+            <div id="productAuthors"></div>
+            <a id="showInstructions" style="cursor: pointer;">Show <%= this.model.getAuthorsLabel() %> Instructions</a>
+            <div id="productAuthorsInstructions" style="display:none;">
+            
+            </div>
+        </td> 
+    </tr>
     <% _.each(this.model.getPossibleFields(), function(val, index){ %>
         <% if(!val.hidden){ %>
             <tr>
@@ -83,18 +95,6 @@
             </tr>
         <% } %>
     <% }, this) %>
-    <tr>
-        <td class="label"><%= this.model.getAuthorsLabel().pluralize() %>:<br />
-        
-        </td>
-        <td id="authors" class="value" colspan="2">
-            <div id="productAuthors"></div>
-            <a id="showInstructions" style="cursor: pointer;">Show <%= this.model.getAuthorsLabel() %> Instructions</a>
-            <div id="productAuthorsInstructions" style="display:none;">
-            
-            </div>
-        </td> 
-    </tr>
     <tr id="visibility">
         <td class="label">Visibility:</td>
         <td class="field" colspan="2">
