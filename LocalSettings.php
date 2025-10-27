@@ -54,46 +54,8 @@ set_include_path( implode( PATH_SEPARATOR, $path ) . PATH_SEPARATOR . get_includ
 
 
 require_once("Classes/countries.php");
-require_once( "$IP/Classes/Patch.php" );
-require_once( "$IP/config/ForumConfig.php" );
-
-// Hack to change to MYSQLI_ASSOC in doFetchRow
-$objPatch = new Patch("$IP/includes/libs/rdbms/database/resultwrapper/MysqliResultWrapper.php");
-$objPatch->redefineFunction("
-    protected function doFetchRow() {
-	\$array = \$this->result->fetch_array(MYSQLI_ASSOC); // Changed to MYSQLI_ASSOC
-	\$this->checkFetchError();
-	if ( \$array === null ) {
-		return false;
-	}
-	return \$array;
-}");
-eval($objPatch->getCode());
-
-// Hack to add text/html to the email headers
-$objPatch = new Patch("$IP/includes/user/User.php");
-$objPatch->redefineFunction("
-    public function sendMail( \$subject, \$body, \$from = null, \$replyto = null ) {
-	    global \$wgAllowHTMLEmail;
-		\$passwordSender = MediaWikiServices::getInstance()->getMainConfig()
-			->get( MainConfigNames::PasswordSender );
-
-		if ( \$from instanceof User ) {
-			\$sender = MailAddress::newFromUser( \$from );
-		} else {
-			\$sender = new MailAddress( \$passwordSender,
-				wfMessage( 'emailsender' )->inContentLanguage()->text() );
-		}
-		\$to = MailAddress::newFromUser( \$this );
-        \$options = [
-			'replyTo' => \$replyto,
-		];
-		if(\$wgAllowHTMLEmail){
-		    \$options['contentType'] = 'text/html; charset=UTF-8';
-		}
-		return UserMailer::send( \$to, \$sender, \$subject, \$body, \$options );
-	}");
-eval($objPatch->getCode());
+require_once("$IP/config/ForumConfig.php");
+require_once("patches.php");
 
 $wgDeprecationReleaseLimit = '1.0';
 
