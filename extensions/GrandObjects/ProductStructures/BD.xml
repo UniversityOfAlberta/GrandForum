@@ -726,8 +726,7 @@
             <title label="Partner Name"></title>
             <authors label="Contact"></authors>
             <data>
-                <field label="Institution" type="String">institution</field>
-                <field label="URL" type="URL">url</field>
+                <field label="Canadian Indigenous Organization" type="Select" options="Yes|No">indigenous</field>
                 <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
             </data>
             <description label="Describe Collaboration"></description>
@@ -738,7 +737,6 @@
             <authors label="Contact"></authors>
             <data>
                 <field label="Canadian Indigenous Organization" type="Select" options="Yes|No">indigenous</field>
-                <field label="URL" type="URL">url</field>
                 <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
             </data>
             <description label="Describe Collaboration"></description>
@@ -749,7 +747,6 @@
             <authors label="Contact"></authors>
             <data>
                 <field label="Canadian Indigenous Organization" type="Select" options="Yes|No">indigenous</field>
-                <field label="URL" type="URL">url</field>
                 <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
             </data>
             <description label="Describe Collaboration"></description>
@@ -760,7 +757,6 @@
             <authors label="Contact"></authors>
             <data>
                 <field label="Canadian Indigenous Organization" type="Select" options="Yes|No">indigenous</field>
-                <field label="URL" type="URL">url</field>
                 <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
             </data>
             <description label="Describe Collaboration"></description>
@@ -771,7 +767,6 @@
             <authors label="Contact"></authors>
             <data>
                 <field label="Canadian Indigenous Organization" type="Select" options="Yes|No">indigenous</field>
-                <field label="URL" type="URL">url</field>
                 <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
             </data>
             <description label="Describe Collaboration"></description>
@@ -782,7 +777,6 @@
             <authors label="Contact"></authors>
             <data>
                 <field label="Canadian Indigenous Organization" type="Select" options="Yes|No">indigenous</field>
-                <field label="URL" type="URL">url</field>
                 <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
             </data>
             <description label="Describe Collaboration"></description>
@@ -793,7 +787,6 @@
             <authors label="Contact"></authors>
             <data>
                 <field label="Canadian Indigenous Organization" type="Select" options="Yes|No">indigenous</field>
-                <field label="URL" type="URL">url</field>
                 <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
             </data>
             <description label="Describe Collaboration"></description>
@@ -804,7 +797,6 @@
             <authors label="Contact"></authors>
             <data>
                 <field label="Canadian Indigenous Organization" type="Select" options="Yes|No">indigenous</field>
-                <field label="URL" type="URL">url</field>
                 <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
             </data>
             <description label="Describe Collaboration"></description>
@@ -815,7 +807,6 @@
             <authors label="Contact"></authors>
             <data>
                 <field label="Canadian Indigenous Organization" type="Select" options="Yes|No">indigenous</field>
-                <field label="URL" type="URL">url</field>
                 <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
             </data>
             <description label="Describe Collaboration"></description>
@@ -826,7 +817,6 @@
             <authors label="Contact"></authors>
             <data>
                 <field label="Canadian Indigenous Organization" type="Select" options="Yes|No">indigenous</field>
-                <field label="URL" type="URL">url</field>
                 <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
             </data>
             <description label="Describe Collaboration"></description>
@@ -837,7 +827,6 @@
             <authors label="Contact"></authors>
             <data>
                 <field label="Canadian Indigenous Organization" type="Select" options="Yes|No">indigenous</field>
-                <field label="URL" type="URL">url</field>
                 <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
             </data>
             <description label="Describe Collaboration"></description>
@@ -846,113 +835,113 @@
     
     <Collaborations category="Collaboration" citationFormat="{%Authors} {(%YYYY).} {%Title.}">
         <Collaboration type="Canadian academic institution">
+            <title label="Partner Name"></title>
             <authors label="Contact"></authors>
             <data>
-                <field label="Institution" type="String">institution</field>
-                <field label="URL" type="URL">url</field>
+                <field label="Canadian Indigenous Organization" type="Select" options="Yes|No">indigenous</field>
                 <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
             </data>
-            <description label="Comments"></description>
+            <description label="Describe Collaboration"></description>
         </Collaboration>
         
         <Collaboration type="Academic and research institution abroad" label="Academic and research institution abroad (including research hospitals)">
+            <title label="Partner Name"></title>
             <authors label="Contact"></authors>
             <data>
                 <field label="Canadian Indigenous Organization" type="Select" options="Yes|No">indigenous</field>
-                <field label="URL" type="URL">url</field>
                 <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
             </data>
-            <description label="Comments"></description>
+            <description label="Describe Collaboration"></description>
         </Collaboration>
         
         <Collaboration type="Private sector in Canada">
+            <title label="Partner Name"></title>
             <authors label="Contact"></authors>
             <data>
                 <field label="Canadian Indigenous Organization" type="Select" options="Yes|No">indigenous</field>
-                <field label="URL" type="URL">url</field>
                 <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
             </data>
-            <description label="Comments"></description>
+            <description label="Describe Collaboration"></description>
         </Collaboration>
         
         <Collaboration type="Private sector abroad">
+            <title label="Partner Name"></title>
             <authors label="Contact"></authors>
             <data>
                 <field label="Canadian Indigenous Organization" type="Select" options="Yes|No">indigenous</field>
-                <field label="URL" type="URL">url</field>
                 <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
             </data>
-            <description label="Comments"></description>
+            <description label="Describe Collaboration"></description>
         </Collaboration>
         
         <Collaboration type="Public sector in Canada">
+            <title label="Partner Name"></title>
             <authors label="Contact"></authors>
             <data>
                 <field label="Canadian Indigenous Organization" type="Select" options="Yes|No">indigenous</field>
-                <field label="URL" type="URL">url</field>
                 <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
             </data>
-            <description label="Comments"></description>
+            <description label="Describe Collaboration"></description>
         </Collaboration>
         
         <Collaboration type="Public sector abroad">
+            <title label="Partner Name"></title>
             <authors label="Contact"></authors>
             <data>
                 <field label="Canadian Indigenous Organization" type="Select" options="Yes|No">indigenous</field>
-                <field label="URL" type="URL">url</field>
                 <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
             </data>
-            <description label="Comments"></description>
+            <description label="Describe Collaboration"></description>
         </Collaboration>
         
         <Collaboration type="Philanthropic/not-for-profit/other in Canada">
+            <title label="Partner Name"></title>
             <authors label="Contact"></authors>
             <data>
                 <field label="Canadian Indigenous Organization" type="Select" options="Yes|No">indigenous</field>
-                <field label="URL" type="URL">url</field>
                 <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
             </data>
-            <description label="Comments"></description>
+            <description label="Describe Collaboration"></description>
         </Collaboration>
         
         <Collaboration type="Philanthropic/not-for-profit/other abroad">
+            <title label="Partner Name"></title>
             <authors label="Contact"></authors>
             <data>
                 <field label="Canadian Indigenous Organization" type="Select" options="Yes|No">indigenous</field>
-                <field label="URL" type="URL">url</field>
                 <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
             </data>
-            <description label="Comments"></description>
+            <description label="Describe Collaboration"></description>
         </Collaboration>
         
         <Collaboration type="Academic and research institution in Canada" label="Academic and research institution in Canada (inlcuding research hospitals)">
+            <title label="Partner Name"></title>
             <authors label="Contact"></authors>
             <data>
                 <field label="Canadian Indigenous Organization" type="Select" options="Yes|No">indigenous</field>
-                <field label="URL" type="URL">url</field>
                 <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
             </data>
-            <description label="Comments"></description>
+            <description label="Describe Collaboration"></description>
         </Collaboration>
         
         <Collaboration type="Community-based Interest Group in Canada">
+            <title label="Partner Name"></title>
             <authors label="Contact"></authors>
             <data>
                 <field label="Canadian Indigenous Organization" type="Select" options="Yes|No">indigenous</field>
-                <field label="URL" type="URL">url</field>
                 <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
             </data>
-            <description label="Comments"></description>
+            <description label="Describe Collaboration"></description>
         </Collaboration>
         
         <Collaboration type="Community-based Interest Groups Abroad">
+            <title label="Partner Name"></title>
             <authors label="Contact"></authors>
             <data>
                 <field label="Canadian Indigenous Organization" type="Select" options="Yes|No">indigenous</field>
-                <field label="URL" type="URL">url</field>
                 <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
             </data>
-            <description label="Comments"></description>
+            <description label="Describe Collaboration"></description>
         </Collaboration>
     </Collaborations>
     
