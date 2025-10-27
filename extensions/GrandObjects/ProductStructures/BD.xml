@@ -329,12 +329,12 @@
     </Publications>
     
     <!-- Conference -->
-    <Conferences category="Conference">
+    <Conferences category="Conference" citationFormat="{%Authors}, &lt;i>{%presentation_title.}&lt;/i> {%Title} {(%YYYY)}">
         <Conference type="Conference Presentation">
+            <title label="Conference/Symposium Name"></title>
             <authors label="Presenter"></authors>
             <data>
-                <field label="Event Type" type="String">event_type</field>
-                <field label="Event Title" type="String">conference</field>
+                <field label="Title of presentation / panel" type="String">presentation_title</field>
                 <field label="Location" type="String">location</field>
                 <field label="Organizing Body" type="String">organizing_body</field>
                 <field label="Chair Name" type="String">chair_name</field>
@@ -345,10 +345,10 @@
         </Conference>
         
         <Conference type="Panel Invitation">
+            <title label="Conference/Symposium Name"></title>
             <authors label="Presenter"></authors>
             <data>
-                <field label="Event Type" type="String">event_type</field>
-                <field label="Event Title" type="String">conference</field>
+                <field label="Title of presentation / panel" type="String">presentation</field>
                 <field label="Location" type="String">location</field>
                 <field label="Organizing Body" type="String">organizing_body</field>
                 <field label="Chair Name" type="String">chair_name</field>
@@ -359,10 +359,10 @@
         </Conference>
         
         <Conference type="Keynote Speech">
+            <title label="Conference/Symposium Name"></title>
             <authors label="Presenter"></authors>
             <data>
-                <field label="Event Type" type="String">event_type</field>
-                <field label="Event Title" type="String">conference</field>
+                <field label="Title of presentation / panel" type="String">presentation</field>
                 <field label="Location" type="String">location</field>
                 <field label="Organizing Body" type="String">organizing_body</field>
                 <field label="Chair Name" type="String">chair_name</field>
@@ -722,6 +722,7 @@
     
     <Partnerships category="Partnership" citationFormat="{%Authors} {(%YYYY).} {%Title.}">
         <Partnership type="Canadian academic institutions">
+            <title label="Partner Name"></title>
             <authors label="Contact"></authors>
             <data>
                 <field label="Institution" type="String">institution</field>
@@ -732,6 +733,7 @@
         </Partnership>
         
         <Partnership type="Academic and research institutions abroad" label="Academic and research institutions abroad (including research hospitals)">
+            <title label="Partner Name"></title>
             <authors label="Contact"></authors>
             <data>
                 <field label="Canadian Indigenous Organization" type="Select" options="Yes|No">indigenous</field>
@@ -742,6 +744,7 @@
         </Partnership>
         
         <Partnership type="Private sector in Canada">
+            <title label="Partner Name"></title>
             <authors label="Contact"></authors>
             <data>
                 <field label="Canadian Indigenous Organization" type="Select" options="Yes|No">indigenous</field>
@@ -752,6 +755,7 @@
         </Partnership>
         
         <Partnership type="Private sector abroad">
+            <title label="Partner Name"></title>
             <authors label="Contact"></authors>
             <data>
                 <field label="Canadian Indigenous Organization" type="Select" options="Yes|No">indigenous</field>
@@ -762,6 +766,7 @@
         </Partnership>
         
         <Partnership type="Public sector in Canada">
+            <title label="Partner Name"></title>
             <authors label="Contact"></authors>
             <data>
                 <field label="Canadian Indigenous Organization" type="Select" options="Yes|No">indigenous</field>
@@ -772,6 +777,7 @@
         </Partnership>
         
         <Partnership type="Public sector abroad">
+            <title label="Partner Name"></title>
             <authors label="Contact"></authors>
             <data>
                 <field label="Canadian Indigenous Organization" type="Select" options="Yes|No">indigenous</field>
@@ -782,6 +788,7 @@
         </Partnership>
         
         <Partnership type="Philanthropic/not-for-profit/other in Canada">
+            <title label="Partner Name"></title>
             <authors label="Contact"></authors>
             <data>
                 <field label="Canadian Indigenous Organization" type="Select" options="Yes|No">indigenous</field>
@@ -792,6 +799,7 @@
         </Partnership>
         
         <Partnership type="Philanthropic/not-for-profit/other abroad">
+            <title label="Partner Name"></title>
             <authors label="Contact"></authors>
             <data>
                 <field label="Canadian Indigenous Organization" type="Select" options="Yes|No">indigenous</field>
@@ -802,6 +810,7 @@
         </Partnership>
         
         <Partnership type="Academic and research institutions in Canada" label="Academic and research institutions in Canada (inlcuding research hospitals)">
+            <title label="Partner Name"></title>
             <authors label="Contact"></authors>
             <data>
                 <field label="Canadian Indigenous Organization" type="Select" options="Yes|No">indigenous</field>
@@ -812,6 +821,7 @@
         </Partnership>
         
         <Partnership type="Community-based Interest Group in Canada">
+            <title label="Partner Name"></title>
             <authors label="Contact"></authors>
             <data>
                 <field label="Canadian Indigenous Organization" type="Select" options="Yes|No">indigenous</field>
@@ -822,6 +832,7 @@
         </Partnership>
         
         <Partnership type="Community-based Interest Groups Abroad">
+            <title label="Partner Name"></title>
             <authors label="Contact"></authors>
             <data>
                 <field label="Canadian Indigenous Organization" type="Select" options="Yes|No">indigenous</field>

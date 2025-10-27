@@ -139,6 +139,24 @@ Product = Backbone.Model.extend({
         }
         return label;
     },
+    
+    getTitleLabel: function(){
+        var type = this.get('type').split(":")[0];
+        if(this.get('category') == ""){
+            return "Title";
+        }
+        var label = "";
+        if(productStructure.categories[this.get('category')].types[type] == undefined){
+            label = _.first(_.values(productStructure.categories[this.get('category')].types)).title_label;
+        }
+        else{
+            label = productStructure.categories[this.get('category')].types[type].title_label;
+        }
+        if(label == undefined){
+            return "Title";
+        }
+        return label;
+    },
 
     urlRoot: 'index.php?action=api.product',
     

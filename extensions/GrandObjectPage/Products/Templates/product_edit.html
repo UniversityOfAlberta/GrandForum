@@ -22,7 +22,7 @@
         </tr>
     <% } %>
     <tr id="title">
-        <td class="label">Title:</td>
+        <td class="label"><%= this.model.getTitleLabel() %>:</td>
         <td class="field" colspan="2"><%= HTML.TextBox(this, 'title', {size: '50', style: 'box-sizing: border-box; width:100%;'}) %></td>
     </tr>
     <% if(this.model.getPossibleStatus().length > 0){ %>

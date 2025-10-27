@@ -111,8 +111,8 @@
                         <tr>
                             <td>{$product_type}</td>
                             <td valign='top'>{$product_title}</td>
-                            <td style='white-space: nowrap;'>{date_format({strtotime({$product_date})}, M Y)}</td>
-                            <td>{if("{getProductData(url)}" != "", <a class='externalLink' href='{getProductData(url)}'>Link</a>)}</td>
+                            <td align='center' style='white-space: nowrap;'>{date_format({strtotime({$product_date})}, M Y)}</td>
+                            <td align='center'>{if("{getProductData(url)}" != "", <a class='externalLink' href='{getProductData(url)}'>Link</a>)}</td>
                             <td valign='top'>{$product_citation}</td>
                         </tr>
                     ]]>
@@ -145,14 +145,14 @@
                         </tr>
                 ]]>
             </Static>
-            <ReportItemSet type="ProjectProducts" start="{projectReportStartDate({GET(id)})}" end="{projectReportEndDate({GET(id)})}" category="Conferences">
+            <ReportItemSet type="ProjectProducts" start="{projectReportStartDate({GET(id)})}" end="{projectReportEndDate({GET(id)})}" category="Conference">
                 <Static>
                     <![CDATA[
                         <tr>
                             <td>{$product_type}</td>
                             <td valign='top'>{$product_title}</td>
-                            <td style='white-space: nowrap;'>{date_format({strtotime({$product_date})}, M Y)}</td>
-                            <td>{if("{getProductData(url)}" != "", <a class='externalLink' href='{getProductData(url)}'>Link</a>)}</td>
+                            <td align='center' style='white-space: nowrap;'>{date_format({strtotime({$product_date})}, M Y)}</td>
+                            <td align='center'>{if("{getProductData(url)}" != "", <a class='externalLink' href='{getProductData(url)}'>Link</a>)}</td>
                             <td valign='top'>{$product_citation}</td>
                         </tr>
                     ]]>
@@ -191,8 +191,8 @@
                         <tr>
                             <td>{$product_type}</td>
                             <td valign='top'>{$product_title}</td>
-                            <td style='white-space: nowrap;'>{date_format({strtotime({$product_date})}, M Y)}</td>
-                            <td>{if("{getProductData(url)}" != "", <a class='externalLink' href='{getProductData(url)}'>Link</a>)}</td>
+                            <td align='center' style='white-space: nowrap;'>{date_format({strtotime({$product_date})}, M Y)}</td>
+                            <td align='center'>{if("{getProductData(url)}" != "", <a class='externalLink' href='{getProductData(url)}'>Link</a>)}</td>
                             <td valign='top'>{$product_citation}</td>
                         </tr>
                     ]]>
@@ -231,8 +231,8 @@
                         <tr>
                             <td>{$product_type}</td>
                             <td valign='top'>{$product_title}</td>
-                            <td style='white-space: nowrap;'>{date_format({strtotime({$product_date})}, M Y)}</td>
-                            <td>{if("{getProductData(url)}" != "", <a class='externalLink' href='{getProductData(url)}'>Link</a>)}</td>
+                            <td align='center' style='white-space: nowrap;'>{date_format({strtotime({$product_date})}, M Y)}</td>
+                            <td align='center'>{if("{getProductData(url)}" != "", <a class='externalLink' href='{getProductData(url)}'>Link</a>)}</td>
                             <td valign='top'>{$product_citation}</td>
                         </tr>
                     ]]>
@@ -272,8 +272,8 @@
                         <tr>
                             <td>{$product_type}</td>
                             <td valign='top'>{$product_title}</td>
-                            <td style='white-space: nowrap;'>{date_format({strtotime({$product_date})}, M Y)}</td>
-                            <td>{getProductData(indigenous)}</td>
+                            <td align='center' style='white-space: nowrap;'>{date_format({strtotime({$product_date})}, M Y)}</td>
+                            <td align='center'>{getProductData(indigenous)}</td>
                             <td valign='top'>{$product_citation}</td>
                         </tr>
                     ]]>
@@ -303,8 +303,8 @@
                         <tr>
                             <td>{$product_type}</td>
                             <td valign='top'>{$product_title}</td>
-                            <td style='white-space: nowrap;'>{date_format({strtotime({$product_date})}, M Y)}</td>
-                            <td>{getProductData(indigenous)}</td>
+                            <td align='center' style='white-space: nowrap;'>{date_format({strtotime({$product_date})}, M Y)}</td>
+                            <td align='center'>{getProductData(indigenous)}</td>
                             <td valign='top'>{$product_citation}</td>
                         </tr>
                     ]]>
@@ -343,8 +343,8 @@
                         <tr>
                             <td>{$product_type}</td>
                             <td valign='top'>{$product_title}</td>
-                            <td style='white-space: nowrap;'>{date_format({strtotime({$product_date})}, M Y)}</td>
-                            <td>{if("{getProductData(url)}" != "", <a class='externalLink' href='{getProductData(url)}'>Link</a>)}</td>
+                            <td align='center' style='white-space: nowrap;'>{date_format({strtotime({$product_date})}, M Y)}</td>
+                            <td align='center'>{if("{getProductData(url)}" != "", <a class='externalLink' href='{getProductData(url)}'>Link</a>)}</td>
                             <td valign='top'>{$product_citation}</td>
                         </tr>
                     ]]>
@@ -383,8 +383,8 @@
                         <tr>
                             <td>{$product_type}</td>
                             <td valign='top'>{$product_title}</td>
-                            <td style='white-space: nowrap;'>{date_format({strtotime({$product_date})}, M Y)}</td>
-                            <td>{if("{getProductData(url)}" != "", <a class='externalLink' href='{getProductData(url)}'>Link</a>)}</td>
+                            <td align='center' style='white-space: nowrap;'>{date_format({strtotime({$product_date})}, M Y)}</td>
+                            <td align='center'>{if("{getProductData(url)}" != "", <a class='externalLink' href='{getProductData(url)}'>Link</a>)}</td>
                             <td valign='top'>{$product_citation}</td>
                         </tr>
                     ]]>

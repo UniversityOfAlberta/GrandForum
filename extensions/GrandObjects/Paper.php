@@ -607,8 +607,7 @@ class Paper extends BackboneModel{
                                                                                                          'placeholder' => $fplaceholder,
                                                                                                          'type' => $ftype,
                                                                                                          'options' => $foptions,
-                                                                                                         'hidden' => $fhidden,
-                                                                                                         'description_label' => 'Description');
+                                                                                                         'hidden' => $fhidden);
                             }
                         }
                         else if($child->getName() == "statuses"){
@@ -628,6 +627,10 @@ class Paper extends BackboneModel{
                         else if($child->getName() == "description"){
                             $attrs = $child->attributes();
                             $categories['categories'][$cname]['types'][$tname]["description_label"] = ("{$attrs->label}" != "") ? "{$attrs->label}" : "Description";
+                        }
+                        else if($child->getName() == "title"){
+                            $attrs = $child->attributes();
+                            $categories['categories'][$cname]['types'][$tname]["title_label"] = ("{$attrs->label}" != "") ? "{$attrs->label}" : "Title";
                         }
                     }
                     if(DBFunctions::isReady()){
@@ -1536,6 +1539,12 @@ class Paper extends BackboneModel{
             $url = $this->getData(array('url'));
             $match1 = str_ireplace("%url",      $url,        $match1);
             $match2 = str_ireplace("%url",    "",            $match2);
+        }
+        
+        if(strstr($match, "presentation_title") !== false){
+            $presentation_title = $this->getData(array('presentation_title'));
+            $match1 = str_ireplace("%presentation_title", $presentation_title, $match1);
+            $match2 = str_ireplace("%presentation_title", "",                  $match2);
         }
 
         if($match1 == $match2){
