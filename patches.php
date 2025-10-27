@@ -1,9 +1,10 @@
 <?php
+$dir = __DIR__;
 
-require_once("Classes/Patch.php");
+require_once("$dir/Classes/Patch.php");
 
 // Hack to change to MYSQLI_ASSOC in doFetchRow
-$objPatch = new Patch("includes/libs/rdbms/database/resultwrapper/MysqliResultWrapper.php");
+$objPatch = new Patch("$dir/includes/libs/rdbms/database/resultwrapper/MysqliResultWrapper.php");
 $objPatch->redefineFunction("
     protected function doFetchRow() {
 	\$array = \$this->result->fetch_array(MYSQLI_ASSOC); // Changed to MYSQLI_ASSOC
@@ -20,7 +21,7 @@ try{
 }
 
 // Hack to add text/html to the email headers
-$objPatch = new Patch("includes/user/User.php");
+$objPatch = new Patch("$dir/includes/user/User.php");
 $objPatch->redefineFunction("
     public function sendMail( \$subject, \$body, \$from = null, \$replyto = null ) {
 	    global \$wgAllowHTMLEmail;
