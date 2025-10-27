@@ -729,7 +729,7 @@
                 <field label="URL" type="URL">url</field>
                 <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
             </data>
-            <description label="Comments"></description>
+            <description label="Describe Collaboration"></description>
         </Partnership>
         
         <Partnership type="Academic and research institutions abroad" label="Academic and research institutions abroad (including research hospitals)">
@@ -740,7 +740,7 @@
                 <field label="URL" type="URL">url</field>
                 <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
             </data>
-            <description label="Comments"></description>
+            <description label="Describe Collaboration"></description>
         </Partnership>
         
         <Partnership type="Private sector in Canada">
@@ -751,7 +751,7 @@
                 <field label="URL" type="URL">url</field>
                 <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
             </data>
-            <description label="Comments"></description>
+            <description label="Describe Collaboration"></description>
         </Partnership>
         
         <Partnership type="Private sector abroad">
@@ -762,7 +762,7 @@
                 <field label="URL" type="URL">url</field>
                 <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
             </data>
-            <description label="Comments"></description>
+            <description label="Describe Collaboration"></description>
         </Partnership>
         
         <Partnership type="Public sector in Canada">
@@ -773,7 +773,7 @@
                 <field label="URL" type="URL">url</field>
                 <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
             </data>
-            <description label="Comments"></description>
+            <description label="Describe Collaboration"></description>
         </Partnership>
         
         <Partnership type="Public sector abroad">
@@ -784,7 +784,7 @@
                 <field label="URL" type="URL">url</field>
                 <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
             </data>
-            <description label="Comments"></description>
+            <description label="Describe Collaboration"></description>
         </Partnership>
         
         <Partnership type="Philanthropic/not-for-profit/other in Canada">
@@ -795,7 +795,7 @@
                 <field label="URL" type="URL">url</field>
                 <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
             </data>
-            <description label="Comments"></description>
+            <description label="Describe Collaboration"></description>
         </Partnership>
         
         <Partnership type="Philanthropic/not-for-profit/other abroad">
@@ -806,7 +806,7 @@
                 <field label="URL" type="URL">url</field>
                 <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
             </data>
-            <description label="Comments"></description>
+            <description label="Describe Collaboration"></description>
         </Partnership>
         
         <Partnership type="Academic and research institutions in Canada" label="Academic and research institutions in Canada (inlcuding research hospitals)">
@@ -817,7 +817,7 @@
                 <field label="URL" type="URL">url</field>
                 <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
             </data>
-            <description label="Comments"></description>
+            <description label="Describe Collaboration"></description>
         </Partnership>
         
         <Partnership type="Community-based Interest Group in Canada">
@@ -828,7 +828,7 @@
                 <field label="URL" type="URL">url</field>
                 <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
             </data>
-            <description label="Comments"></description>
+            <description label="Describe Collaboration"></description>
         </Partnership>
         
         <Partnership type="Community-based Interest Groups Abroad">
@@ -839,7 +839,7 @@
                 <field label="URL" type="URL">url</field>
                 <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
             </data>
-            <description label="Comments"></description>
+            <description label="Describe Collaboration"></description>
         </Partnership>
     </Partnerships>
     

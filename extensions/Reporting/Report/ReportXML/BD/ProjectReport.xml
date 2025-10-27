@@ -381,7 +381,7 @@
                 <h3>Project Summary <small style='font-weight: normal; font-size: 0.695em'>(From <a href='{$project_url}' target='_blank'>Project Profile</a>)</small></h3>
                 {project_description(summary)}
                 <h3>1. Description of work and next steps</h3>
-                <p>General description of the activities performed in the past 4 months in relation to the overall goals, objectives, and timelines of the project, mentioning any notable administrative or research outcome. Briefly explain next steps.</p>
+                <p>General description of the activities performed in the past 6 months in relation to the overall goals, objectives, and timelines of the project, mentioning any notable administrative or research outcome. Briefly explain next steps.</p>
                 {$item}
             ]]>
         </ReportItem>
@@ -402,28 +402,28 @@
         <ReportItem id="adjustments" type="Textarea" blobItem="ADJUSTMENTS" rich="true">
             <![CDATA[
                 <h3>4. Milestones adjustments</h3>
-                <p>Have you modified your project milestones because of activities/ challenges you’ve encountered in the past 4 months? If so, provide a brief description of the changes and the rationale that supports them.</p>
+                <p>Have you modified your project milestones because of activities/ challenges you’ve encountered in the past 6 months? If so, provide a brief description of the changes and the rationale that supports them.</p>
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="ktee" type="Textarea" blobItem="KTEE" rich="true">
             <![CDATA[
                 <h3>5. Knowledge mobilization and community engagement</h3>
-                <p>Have there been any updates regarding knowledge mobilization or community engagement in the past 4 months? Please provide a brief description of activities to include the type of organization or sector (public, private, not-for-profit), location or country (Canadian, international) and type of engagement (data collection, event). Please specify if you have engaged with a Canadian Indigenous Organization.</p>
+                <p>Have there been any updates regarding knowledge mobilization or community engagement in the past 6 months? Please provide a brief description of activities to include the type of organization or sector (public, private, not-for-profit), location or country (Canadian, international) and type of engagement (data collection, event). Please specify if you have engaged with a Canadian Indigenous Organization (please enter publications in the Outputs section of the report).</p>
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="changes" type="Textarea" blobItem="CHANGES" rich="true">
             <![CDATA[
                 <h3>6. Changes in the research team</h3>
-                <p>Have there been any changes to the research team in the past 4 months? This includes new HQP or affiliated researchers, extension or termination of contracts etc. For new team members, please add them as members on the Forum including their first and last names, roles, institutions, contract start and end dates, and position.</p>
+                <p>Have there been any changes to the research team in the past 6 months? This includes new HQP or affiliated researchers, extension or termination of contracts etc. Please note that all new hires and contract extensions should also be entered via the “People” Section.</p>
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="findings" type="Textarea" blobItem="FINDINGS" rich="true">
             <![CDATA[
                 <h3>7. Preliminary findings</h3>
-                <p>Have there been any significant preliminary findings or results from your research in the past 4 months? Please provide a brief summary of key insights, trends, or outcomes observed so far.</p>
+                <p>Have there been any significant preliminary findings or results from your research in the past 6 months? Please provide a brief summary of key insights, trends, or outcomes observed so far.</p>
                 {$item}
             ]]>
         </ReportItem>
