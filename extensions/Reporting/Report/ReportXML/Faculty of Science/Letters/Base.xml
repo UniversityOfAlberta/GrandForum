@@ -441,7 +441,7 @@
                 <table style="width: 100%;" cellspacing="0" cellpadding="0">
                     <tr>
                         <td align="left">
-                            <b>Faculty of Science</b><br />
+                            <b>{$networkName}</b><br />
                             Office of the Dean<br />
                             6-189 Centennial Centre for Interdisciplinary Science (CCIS)<br />
                             Edmonton, AB, Canada T6G 2E1
@@ -472,7 +472,7 @@
         <Static id="from">
             <![CDATA[
                             Anthony Singhal<br />
-                            Vice Dean of Science<br />
+                            Vice Dean of {$faculty}<br />
                             Chair Faculty Evaluation Committee
             ]]>
         </Static>
@@ -520,8 +520,8 @@
                 <div class='generatenodisplay'><img src='{$wgServer}{$wgScriptPath}/skins/Signature2.png' style='height: 3em;' /></div>
                 <br />
                 Anthony Singhal<br />
-                Vice Dean of Science<br />
-                Chair of the Science Faculty Evaluation Committee
+                Vice Dean of {$faculty}<br />
+                Chair of the {$faculty} Faculty Evaluation Committee
                 </div>
             ]]>
         </Static>

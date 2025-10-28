@@ -15,9 +15,9 @@
                                 <tr><td><span class='header'>Post-doctoral Fellows and Research Associates (Supervised or Co-supervised):</span>&nbsp;<b>{$user_fellow_count}</b></td></tr>
                                 <tr><td><span class='header'>Research/Technical Assistants:</span>&nbsp;<b>{$user_tech_count}</b></td></tr>
                                 <tr><td><span class='header'>Undergraduates (Supervised or Co-supervised):</span>&nbsp;<b>{$user_ugrad_count}</b></td></tr>
-                                <tr><td><span class='header'>Refereed Publications:&nbsp;</span><b>{getUserPublicationCount(CYCLE_START, CYCLE_END, Publication)}</b></td></tr>
-                                <tr><td><span class='header'>Books:&nbsp;</span><b>{getUserPublicationCount(CYCLE_START, CYCLE_END, Book)}</b></td></tr>
-                                <tr><td><span class='header'>Patents:&nbsp;</span><b>{getUserPublicationCount(CYCLE_START, CYCLE_END, Patent)}</b></td></tr>
+                                <tr class='publicationAggregate'><td><span class='header'>Refereed Publications:&nbsp;</span><b>{getUserPublicationCount(CYCLE_START, CYCLE_END, Publication)}</b></td></tr>
+                                <tr class='publicationAggregate'><td><span class='header'>Books:&nbsp;</span><b>{getUserPublicationCount(CYCLE_START, CYCLE_END, Book)}</b></td></tr>
+                                <tr class='publicationAggregate'><td><span class='header'>Patents:&nbsp;</span><b>{getUserPublicationCount(CYCLE_START, CYCLE_END, Patent)}</b></td></tr>
                             </table>
                         </td>
                         <td valign='top' align='right'>
@@ -325,7 +325,7 @@
         <If if="{or({contains({$my_roles},Faculty)},{>({getUserPublicationCount(CYCLE_START, CYCLE_END, AllPublication)},0)})}">
             <ReportItem id="publicationbookmark" type="BookmarkReportItem" title="Publications">
                 <![CDATA[
-                    <h2>Publications ({getUserPublicationCount(CYCLE_START, CYCLE_END, AllPublication)})</h2>
+                    <h2>Publications <span class='publicationAggregate'>({getUserPublicationCount(CYCLE_START, CYCLE_END, AllPublication)})</span></h2>
                 ]]>
             </ReportItem>
             <ReportItem id="reflections" type="Textarea" blobSection="FEC_PRODUCTS" blobItem="REFLECTIONS" rich="true" limit="200">
@@ -347,14 +347,24 @@
                 <If if="{>({getUserPublicationCount(CYCLE_START, CYCLE_END, Publication)},0)}">
                     <Static>
                         <![CDATA[
-                            <h3>Refereed Publications ({getUserPublicationCount(CYCLE_START, CYCLE_END, Publication)})</h3>
-                            <table class='wikitable' frame='box' rules='all' width='100%'>
+                            <h3>Refereed Publications <span class='publicationAggregate'>({getUserPublicationCount(CYCLE_START, CYCLE_END, Publication)})</span></h3>
                         ]]>
                     </Static>
                     <ReportItemSet type="String" array="Journal Paper|
                                                         Conference Paper\|Workshop Paper|
-                                                        Bachelors Thesis\|Book\|Book Chapter\|Collections Paper\|Edited Book\|Masters Thesis\|Misc\|Other\|PHD Thesis\|Journal Abstract\|White Paper\|Tech Report\|Poster\|Manual\|Preprint">
-                        <ReportItemSet id="products{$index}" type="PersonProductsReportItemSet" category="Publication" productType="{getExtra()}" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END" peerReviewed="Yes">
+                                                        Book Chapter|
+                                                        Book|
+                                                        Bachelors Thesis\|Collections Paper\|Edited Book\|Masters Thesis\|Misc\|Other\|PHD Thesis\|Journal Abstract\|White Paper\|Tech Report\|Poster\|Manual\|Preprint"
+                                                 array2="Journal Papers|Conference Papers|Book Chapters|Books|Other">
+                        <ReportItemSet id="products{$index}" type="PersonProductsReportItemSet" category="Publication" productType="{getExtra(value)}" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END" peerReviewed="Yes">
+                            <ReportItemSet type="First">
+                                <Static>
+                                    <![CDATA[
+                                        <h4>{getExtra(value2)} ({getUserPublicationCount(CYCLE_START, CYCLE_END, Publication:{getExtra(value)})})</h4>
+                                        <table class='wikitable' frame='box' rules='all' width='100%'>
+                                    ]]>
+                                </Static>
+                            </ReportItemSet>
                             <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" blobSection="FEC_PRODUCTS">
                                 <![CDATA[
                                     <tr><td>
@@ -363,17 +373,19 @@
                             </ReportItem>
                             <ReportItem id="annotation" type="AnnotateProductReportItem" blobSection="FEC_PRODUCTS" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" optional="true">
                                 <![CDATA[
-                                        <b>({$product_type})</b> {$item}
+                                        {if("{getExtra(value2)}" == "Other", <b>&#40;{$product_type}&#41; </b>)}{$item}
                                     </td></tr>
                                 ]]>
                             </ReportItem>
+                            <ReportItemSet type="Last">
+                                <Static>
+                                    <![CDATA[
+                                        </table><br />
+                                    ]]>
+                                </Static>
+                            </ReportItemSet>
                         </ReportItemSet>
                     </ReportItemSet>
-                    <Static>
-                        <![CDATA[
-                            </table>
-                        ]]>
-                    </Static>
                     <!-- Footnotes -->
                     <Static>
                         <![CDATA[

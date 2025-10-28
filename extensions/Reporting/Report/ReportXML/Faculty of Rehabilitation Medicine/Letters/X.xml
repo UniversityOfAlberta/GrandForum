@@ -3,8 +3,8 @@
     <ReportSection id="letter" title="Incrementation - Incrementation Awarded as Recommended">
         <ReportItem id="from">
             <![CDATA[
-                Declan Ali<br />
-                Dean of Science
+                Esther Kim<br />
+                Dean of {$faculty}
             ]]>
         </ReportItem>
         <ReportItem id="cc">
@@ -24,11 +24,11 @@
             <![CDATA[
                 Sincerely,<br />
                 <br />
-                <div class='previewnodisplay'><img src='skins/Signature.png' style='height: 3em;' /></div>
-                <div class='generatenodisplay'><img src='{$wgServer}{$wgScriptPath}/skins/Signature.png' style='height: 3em;' /></div>
+                <div class='previewnodisplay'><img src='skins/Signature4.png' style='height: 3em;' /></div>
+                <div class='generatenodisplay'><img src='{$wgServer}{$wgScriptPath}/skins/Signature4.png' style='height: 3em;' /></div>
                 <br />
-                Declan Ali<br />
-                Dean of Science
+                Esther Kim<br />
+                Dean of {$faculty}
                 </div>
             ]]>
         </ReportItem>

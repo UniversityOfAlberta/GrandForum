@@ -202,6 +202,7 @@ class ReportItemCallback {
             "wgScriptPath" => "getWgScriptPath",
             "GET" => "getGet",
             "networkName" => "getNetworkName",
+            "faculty" => "getFaculty",
             "id" => "getId",
             "strtotime" => "strtotime",
             "date_format" => "date_format",
@@ -1321,6 +1322,12 @@ class ReportItemCallback {
                 break;
         }
         
+        if(strstr($case, ":") !== false){
+            $exploded = explode(":", $case);
+            $category = $exploded[0];
+            $type = $exploded[1];
+        }
+        
         if(count($histories) > 0){
             return $histories[0]->getValue();
         }
@@ -1705,6 +1712,10 @@ class ReportItemCallback {
     function getNetworkName(){
         global $config;
         return $config->getValue('networkName');
+    }
+    
+    function getFaculty(){
+        return getFaculty();
     }
     
     function getId(){

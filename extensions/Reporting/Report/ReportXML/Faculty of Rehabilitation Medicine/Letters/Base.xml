@@ -439,16 +439,15 @@
                 <table style="width: 100%;" cellspacing="0" cellpadding="0">
                     <tr>
                         <td align="left">
-                            <b>Faculty of Science</b><br />
+                            <b>{$networkName}</b><br />
                             Office of the Dean<br />
-                            6-189 Centennial Centre for Interdisciplinary Science (CCIS)<br />
-                            Edmonton, AB, Canada T6G 2E1
+                            Corbett Hall, 8205 114 St NW<br />
+                            Edmonton, Alberta, Canada T6G 2G4
                         </td>
                         <td align="right">
-                            <b>T</b> 780.492.4757<br />
-                            <b>F</b> 780.492.9434<br />
-                            dean.science@ualberta.ca<br />
-                            www.ualberta.ca/science
+                            <b>T</b> 780.492.2903<br />
+                            <b>F</b> 780.492.1626<br />
+                            www.ualberta.ca/en/rehabilitation/
                         </td>
                     </tr>
                 </table>
@@ -469,8 +468,8 @@
         </Static>
         <Static id="from">
             <![CDATA[
-                            Eleni Stroulia<br />
-                            Vice Dean of Science<br />
+                            Esther Kim<br />
+                            Dean of {$faculty}<br />
                             Chair Faculty Evaluation Committee
             ]]>
         </Static>
@@ -514,12 +513,12 @@
             <![CDATA[
                 Sincerely,<br />
                 <br />
-                <div class='previewnodisplay'><img src='skins/Signature2.png' style='height: 3em;' /></div>
-                <div class='generatenodisplay'><img src='{$wgServer}{$wgScriptPath}/skins/Signature2.png' style='height: 3em;' /></div>
+                <div class='previewnodisplay'><img src='skins/Signature4.png' style='height: 3em;' /></div>
+                <div class='generatenodisplay'><img src='{$wgServer}{$wgScriptPath}/skins/Signature4.png' style='height: 3em;' /></div>
                 <br />
-                Eleni Stroulia<br />
-                Vice Dean of Science<br />
-                Chair of the Science Faculty Evaluation Committee
+                Esther Kim<br />
+                Dean of {$faculty}<br />
+                Chair of the {$faculty} Faculty Evaluation Committee
                 </div>
             ]]>
         </Static>

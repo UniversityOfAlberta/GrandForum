@@ -10,7 +10,7 @@
                 
                 <p>Please be advised that the date for your case has been scheduled for December 2 - 6 in {getText({$report_type}, TABLE, LOCATION, {$user_id}, 1, 0)}.</p>
                 
-                Should you decide to contest the recommendation, the following information is to be included in your written submission to the FEC Chair, Eleni Stroulia by {getText({$report_type}, TABLE, FOLLOWUP_DATE, {$user_id}, 1, 0)}, with a copy to me, as Dean:
+                Should you decide to contest the recommendation, the following information is to be included in your written submission to the FEC Chair, Esther Kim by {getText({$report_type}, TABLE, FOLLOWUP_DATE, {$user_id}, 1, 0)}, with a copy to me, as Dean:
                 <ul style='margin-left: 1em;'>
                     <li>a statement advising FEC whether or not you will be appearing in person before FEC to present your case;</li>
                     <li>any material in response to my recommendation and any other material relevant to your case;</li>

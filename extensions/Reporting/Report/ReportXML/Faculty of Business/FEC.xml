@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report pdfFiles="FECpdf" extends="../FEC">
+    <Script>
+        <![CDATA[
+            <style>
+                 .publicationAggregate {
+                    display: none;
+                 }
+            </style>
+        ]]>
+    </Script>
     <ReportSection id="information">
         <ReportItem id="executive_summary" type="Textarea" blobItem="EXECUTIVE_SUMMARY" rich="true" limit="500" after="top">
             <![CDATA[

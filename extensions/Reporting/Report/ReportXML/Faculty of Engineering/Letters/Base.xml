@@ -442,7 +442,7 @@
                 <table style="width: 100%;" cellspacing="0" cellpadding="0">
                     <tr>
                         <td align="left">
-                            <b>Faculty of Engineering</b><br />
+                            <b>{$networkName}</b><br />
                             Office of the Dean<br />
                             Donadeo Innovation Centre for Engineering – 9211 116 Street NW<br />
                             Edmonton, AB, Canada T6G 2E1
@@ -473,7 +473,7 @@
         <Static id="from">
             <![CDATA[
                             Simaan Abourizk<br />
-                            Dean of Engineering<br />
+                            Dean of {$faculty}<br />
                             Chair Faculty Evaluation Committee
             ]]>
         </Static>
@@ -521,8 +521,8 @@
                 <div class='generatenodisplay'><img src='{$wgServer}{$wgScriptPath}/skins/Signature3.png' style='height: 3em;' /></div>
                 <br />
                 Simaan Abourizk<br />
-                Dean of Engineering<br />
-                Chair of the Engineering Faculty Evaluation Committee
+                Dean of {$faculty}<br />
+                Chair of the {$faculty} Faculty Evaluation Committee
                 </div>
             ]]>
         </Static>

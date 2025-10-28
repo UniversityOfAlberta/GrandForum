@@ -4,7 +4,7 @@
         <ReportItem id="from">
             <![CDATA[
                 Anthony Singhal<br />
-                Vice Dean of Science<br />
+                Vice Dean of {$faculty}<br />
                 Chair, Academic Teaching Staff Evaluation Committee
             ]]>
         </ReportItem>
@@ -25,7 +25,7 @@
                 <div class='generatenodisplay'><img src='{$wgServer}{$wgScriptPath}/skins/Signature2.png' style='height: 3em;' /></div>
                 <br />
                 Anthony Singhal<br />
-                Vice Dean of Science<br />
+                Vice Dean of {$faculty}<br />
                 Chair of the Academic Teaching Staff Evaluation Committee
                 </div>
             ]]>

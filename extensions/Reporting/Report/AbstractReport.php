@@ -950,7 +950,9 @@ abstract class AbstractReport extends SpecialPage {
         global $wgOut;
         FootnoteReportItem::$nFootnotes = 0;
         $sections = $this->getPDFRenderableSections();
-        
+        foreach($this->scripts as $script){
+            $wgOut->addHTML($this->varSubstitute($script));
+        }
         $count = count($sections);
         $i = 0;
         if($this->header != null){

@@ -3,14 +3,14 @@
     <ReportSection id="letter" title="Preliminary Position of ATSEC">
         <ReportItem id="from">
             <![CDATA[
-                Eleni Stroulia<br />
-                Vice Dean of Science<br />
+                Esther Kim<br />
+                Dean of {$faculty}<br />
                 Chair Academic Teaching Staff Evaluation Committee
             ]]>
         </ReportItem>
         <ReportItem id="body">
             <![CDATA[
-                <p>Each year, the Academic Teaching Staff Evaluation Committee (ATSEC) is charged with the responsibility of awarding merit increments to its Academic Teaching Staff, from an increment pool that is currently equal to 1.2 times the number of eligible staff within the Faculty of Science.</p>
+                <p>Each year, the Academic Teaching Staff Evaluation Committee (ATSEC) is charged with the responsibility of awarding merit increments to its Academic Teaching Staff, from an increment pool that is currently equal to 1.2 times the number of eligible staff within the {$networkName}.</p>
                 
                 <p>As per Article D6 of Schedule D, I am informing you that at its meeting of April 3, {$next_year}, the ATSEC did not support the recommendation of a {getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)} increment made by your Department Chair and instead, is prepared to award an increment of {getText(RP_FEC_TABLE, TABLE, INCREMENT, {$user_id}, 1, 0)}. The Chair {getText({$report_type}, TABLE, CHAIR_POSITION, {$user_id}, 1, 0)}. Under Article D6 of Schedule D this becomes the preliminary position of ATSEC. This decision was based on the following: </p>
 
@@ -34,13 +34,12 @@
             <![CDATA[
                 Sincerely,<br />
                 <br />
-                <div class='previewnodisplay'><img src='skins/Signature2.png' style='height: 3em;' /></div>
-                <div class='generatenodisplay'><img src='{$wgServer}{$wgScriptPath}/skins/Signature.png' style='height: 3em;' /></div>
+                <div class='previewnodisplay'><img src='skins/Signature4.png' style='height: 3em;' /></div>
+                <div class='generatenodisplay'><img src='{$wgServer}{$wgScriptPath}/skins/Signature4.png' style='height: 3em;' /></div>
                 <br />
-                Eleni Stroulia<br />
-                Vice Dean of Science<br />
-                Chair of the Academic Teaching Staff Evaluation Committee<br />
-                ES/jb
+                Esther Kim<br />
+                Dean of {$faculty}<br />
+                Chair of the Academic Teaching Staff Evaluation Committee
                 </div>
             ]]>
         </ReportItem>
