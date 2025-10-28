@@ -3,8 +3,8 @@
     <ReportSection id="letter" title="ATSEC Decision Regarding Merit Increment">
         <ReportItem id="from">
             <![CDATA[
-                Anthony Singhal<br />
-                Vice Dean of {$faculty}<br />
+                Esther Kim<br />
+                Dean of {$faculty}<br />
                 Chair, Academic Teaching Staff Evaluation Committee
             ]]>
         </ReportItem>
@@ -25,8 +25,8 @@
                 <div class='previewnodisplay'><img src='skins/{get(signature)}' style='height: 3em;' /></div>
                 <div class='generatenodisplay'><img src='{$wgServer}{$wgScriptPath}/skins/{get(signature)}' style='height: 3em;' /></div>
                 <br />
-                Anthony Singhal<br />
-                Vice Dean of {$faculty}<br />
+                Esther Kim<br />
+                Dean of {$faculty}<br />
                 Chair of the Academic Teaching Staff Evaluation Committee
                 </div>
             ]]>
