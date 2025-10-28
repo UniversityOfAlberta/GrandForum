@@ -254,7 +254,7 @@ class MailingList extends BackboneModel {
                             $roleResult = ($roleResult || true);
                         }
                         else {
-                            $roleResult = ($roleResult || $person->isRoleDuring($value, EOT, EOT));
+                            $roleResult = ($roleResult || $person->isRoleOn($value, date('Y-m-d')));
                         }
                         $results['roleResult'] = $roleResult;
                         break;
