@@ -26,6 +26,11 @@
     <ReportSection id="atsec3" delete="true" />
     <ReportSection id="atsec4" delete="true" />
     <ReportSection id="variance" name="FEC Variance" blobReport="RP_LETTER5" title="FEC Letters Table" type="EditableReportSection" blobSection="TABLE" renderpdf="false" position="0">
+        <Static id="topmessage">
+            <![CDATA[
+                <p><b>Note:</b> If you are doing a letter which is takes effect on or after July 1 {$next_year}, you should use <a href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=Letters/VarianceNextBase'>this page</a> instead.</p>
+            ]]>
+        </Static>
         <Static>
             <![CDATA[
                 <iframe id='downloadFrame' name='downloadFrame' src="" style="display:none;"></iframe>
@@ -178,6 +183,13 @@
                 </Static>
             </If>
         </ReportItemSet>
+        <Static id="vartemplate">
+            <![CDATA[
+                <script type='text/javascript'>
+                    var template = "Variance";
+                </script>
+            ]]>
+        </Static>
         <Static>
             <![CDATA[
                     </tbody>
@@ -204,8 +216,6 @@
                     });
                     $('#letterTable a.preview').click(function(){
                         var userid = $(this).closest("tr").attr("data-userid");
-                        var template = $(".template select option:selected", $(this).closest("tr")).val();
-                        
                         var url = wgServer + wgScriptPath + "/index.php/Special:Report?report=Letters/" + template + 
                                                             "&n=" + "{$report_type}".slice(-1) + 
                                                             "&userId=" + userid + 
@@ -216,11 +226,11 @@
                     });
                     $('#letterTable input.generatePDF').click(function(){
                         var userid = $(this).closest("tr").attr("data-userid");
-                        var template = $(".template select option:selected", $(this).closest("tr")).val();
+                        var templateVal = $(".template select option:selected", $(this).closest("tr")).val();
                         $(this).prop("disabled", true);
                         $(this).siblings(".throbber").show();
                         saveAll(function(){
-                            if(template != ""){
+                            if(templateVal != ""){
                                 $.get(wgServer + wgScriptPath + "/index.php/Special:Report?report=Letters/" + template + 
                                                                 "&n=" + "{$report_type}".slice(-1) + 
                                                                 "&userId=" + userid + 

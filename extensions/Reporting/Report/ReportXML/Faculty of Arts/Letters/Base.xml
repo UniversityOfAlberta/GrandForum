@@ -280,6 +280,7 @@
                         <tr>
                             <th>Case#</th>
                             <th>Name</th>
+                            <th>Department</th>
                             <th>PDF</th>
                             <th style='width:14em;'>Generate</th>
                             <th>Template</th>
@@ -297,6 +298,7 @@
                     <tr data-fecid="{getExtra()}" data-userid="{$user_id}">
                         <td>{getExtra()}</td>
                         <td><a href="{$user_url}" target="_blank">{$user_name}</a></td>
+                        <td>{$user_dept}</td>
                 ]]>
             </Static>
             <ReportItem id="letter" type="PDFReportItem" class="letterPDF downloadButton{$user_id}" reportType="Letters/Base" pdfReport="{$report_type}" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
@@ -415,6 +417,12 @@
         </Static>
     </ReportSection>
     <ReportSection id="letter" tooltip="Letter" name="Letter" title="" blobSection="LETTER" type="HeaderReportSection" pagebreak="false">
+        <Static id="variables">
+            <![CDATA[
+                {set(hrContact, Lakhan Khara&#44; at sciea@ualberta.ca)}
+                {set(hrEmail, sciea@ualberta.ca)}
+            ]]>
+        </Static>
         <Static id="header">
             <![CDATA[
                 <style>
@@ -439,7 +447,7 @@
                 <table style="width: 100%;" cellspacing="0" cellpadding="0">
                     <tr>
                         <td align="left">
-                            <b>Faculty of Science</b><br />
+                            <b>{$networkName}</b><br />
                             Office of the Dean<br />
                             6-189 Centennial Centre for Interdisciplinary Science (CCIS)<br />
                             Edmonton, AB, Canada T6G 2E1
@@ -469,8 +477,8 @@
         </Static>
         <Static id="from">
             <![CDATA[
-                            Eleni Stroulia<br />
-                            Vice Dean of Science<br />
+                            Anthony Singhal<br />
+                            Vice Dean of {$faculty}<br />
                             Chair Faculty Evaluation Committee
             ]]>
         </Static>
@@ -517,9 +525,9 @@
                 <div class='previewnodisplay'><img src='skins/Signature2.png' style='height: 3em;' /></div>
                 <div class='generatenodisplay'><img src='{$wgServer}{$wgScriptPath}/skins/Signature2.png' style='height: 3em;' /></div>
                 <br />
-                Eleni Stroulia<br />
-                Vice Dean of Science<br />
-                Chair of the Science Faculty Evaluation Committee
+                Anthony Singhal<br />
+                Vice Dean of {$faculty}<br />
+                Chair of the {$faculty} Faculty Evaluation Committee
                 </div>
             ]]>
         </Static>

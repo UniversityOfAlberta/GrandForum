@@ -1,11 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report pdfFiles="Letters/22" extends="Letters/Base">
-    <ReportSection id="letter" title="Application for Promotion">
+    <ReportSection id="letter" title="Application for Promotion - Promotion Recommended">
+        <ReportItem id="from">
+            <![CDATA[
+                {getText({$report_type}, TABLE, CHAIR, {$user_id}, 1, 0)}
+            ]]>
+        </ReportItem>
         <ReportItem id="body">
             <![CDATA[
-                <p>This is to inform you that the Faculty Evaluation Committee (FEC) does not endorse your Department Chair's recommendation and has decided to award you promotion to Professor effective July 1, 2024.</p>
+                <p>I am pleased to inform you that I will be recommending to the Faculty Evaluation Committee (FEC) that you be awarded promotion to the rank of Professor.</p>
+                <p>My recommendation is based on the following rationale:</p>
+                <p>{getText({$report_type}, TABLE, COMMENT, {$user_id}, 1, 0)}</p>
                 
-                <p>Congratulations on this important achievement in your career. My very best wishes for continued success in your University endeavours.</p>
+                <p>The FEC will meet on November 12 - 15 to review your promotion case.</p>
+            ]]>
+        </ReportItem>
+        <ReportItem id="footer">
+            <![CDATA[
+                
             ]]>
         </ReportItem>
     </ReportSection>

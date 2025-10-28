@@ -26,7 +26,7 @@
                 <![CDATA[
                     <p>It is advisable that you consult the Association of Academic Staff University of Alberta (AASUA).</p>
                     
-                    <p>Should you have any procedural questions, please contact the FEC Administrator, Lakhan Khara, at sciea@ualberta.ca.</p>
+                    <p>Should you have any procedural questions, please contact the FEC Administrator, {get(hrContact)}.</p>
                 ]]>
             </Static>
         </ReportItemSet>

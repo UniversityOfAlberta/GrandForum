@@ -4,7 +4,7 @@
         <ReportItem id="from">
             <![CDATA[
                 Declan Ali<br />
-                Dean of Science
+                Dean of {$faculty}
             ]]>
         </ReportItem>
         <ReportItem id="cc">
@@ -28,7 +28,7 @@
                 <div class='generatenodisplay'><img src='{$wgServer}{$wgScriptPath}/skins/Signature.png' style='height: 3em;' /></div>
                 <br />
                 Declan Ali<br />
-                Dean of Science
+                Dean of {$faculty}
                 </div>
             ]]>
         </ReportItem>

@@ -16,7 +16,7 @@
 
                 <p>ATSEC would like to thank you for your contributions to the Faculty in the past year, and wishes you well in the coming year.</p>
                 
-                <p>Should you have any procedural questions, please contact sciea@ualberta.ca.</p>
+                <p>Should you have any procedural questions, please contact {get(hrEmail)}.</p>
             ]]>
         </ReportItem>
         <ReportItem id="footer">

@@ -8,13 +8,13 @@
                 
                 You may wish to consider the following options:
                 <ul>
-                    <li>Pursuant to Article A6.19.3 of Schedule A, I am willing to meet with you during the week of {getText({$report_type}, TABLE, FOLLOWUP_DATE, {$user_id}, 1, 0)} to discuss your individual case, as it was presented before FEC. Please contact my office at sciea@ualberta.ca for an appointment.</li>
+                    <li>Pursuant to Article A6.19.3 of Schedule A, I am willing to meet with you during the week of {getText({$report_type}, TABLE, FOLLOWUP_DATE, {$user_id}, 1, 0)} to discuss your individual case, as it was presented before FEC. Please contact my office at {get(hrEmail)} for an appointment.</li>
                     <li>Pursuant to Article A6.20.1 of Schedule A, you have the right to request reconsideration of FEC’s decision by informing me, in writing, within 5 working days from the receipt of this letter.</li>
                 </ul>
                 
                 <p>It is advisable that you consult the Association of Academic Staff University of Alberta (AASUA) for advice.</p>
                 
-                <p>If you have any procedural questions, please contact the FEC Administrator, Lakhan Khara, at sciea@ualberta.ca.</p>
+                <p>If you have any procedural questions, please contact the FEC Administrator, {get(hrContact)}.</p>
             ]]>
         </ReportItem>
     </ReportSection>

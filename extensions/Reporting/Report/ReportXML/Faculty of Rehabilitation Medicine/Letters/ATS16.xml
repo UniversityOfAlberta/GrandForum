@@ -14,7 +14,7 @@
 
                 <p>I would like to take this opportunity to thank you for your work this past year, and to wish you continued success in your teaching.</p>
 
-                <p>Should you have any procedural questions, please contact sciea@ualberta.ca.</p>
+                <p>Should you have any procedural questions, please contact {get(hrEmail)}.</p>
             ]]>
         </ReportItem>
         <ReportItem id="footer">

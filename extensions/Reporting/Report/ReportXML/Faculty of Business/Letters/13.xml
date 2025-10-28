@@ -17,7 +17,7 @@
                 
                 <p>Should you choose not to appeal to GAC, in accordance with A6.16.7 the decision of FEC shall be final and binding. Thus, your appointment with the {$user_dept} at the University of Alberta will terminate effective June 30, {$next_year}. You would be entitled to severance in accordance with Article A5.06 of Schedule A.</p>
                 
-                <p>Should you have any procedural questions, please contact the FEC Administrator, Lakhan Khara, at sciea@ualberta.ca.</p>
+                <p>Should you have any procedural questions, please contact the FEC Administrator, {get(hrContact)}.</p>
             ]]>
         </ReportItem>
     </ReportSection>

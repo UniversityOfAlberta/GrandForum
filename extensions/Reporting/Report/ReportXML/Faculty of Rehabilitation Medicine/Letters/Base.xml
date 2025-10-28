@@ -415,6 +415,12 @@
         </Static>
     </ReportSection>
     <ReportSection id="letter" tooltip="Letter" name="Letter" title="" blobSection="LETTER" type="HeaderReportSection" pagebreak="false">
+        <Static id="variables">
+            <![CDATA[
+                {set(hrContact, Lakhan Khara&#44; at sciea@ualberta.ca)}
+                {set(hrEmail, sciea@ualberta.ca)}
+            ]]>
+        </Static>
         <Static id="header">
             <![CDATA[
                 <style>

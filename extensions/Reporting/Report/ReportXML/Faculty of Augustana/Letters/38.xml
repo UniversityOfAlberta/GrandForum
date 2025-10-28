@@ -21,7 +21,7 @@
             </If>
             <Static>
                 <![CDATA[
-                    <p>Should you have any procedural questions, please contact the FEC Administrator, Lakhan Khara, at sciea@ualberta.ca.</p>
+                    <p>Should you have any procedural questions, please contact the FEC Administrator, {get(hrContact)}.</p>
                 ]]>
             </Static>
         </ReportItemSet>

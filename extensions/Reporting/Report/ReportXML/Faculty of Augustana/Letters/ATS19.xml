@@ -3,8 +3,8 @@
     <ReportSection id="letter" title="ATSEC Decision Regarding Application for Promotion">
         <ReportItem id="from">
             <![CDATA[
-                Eleni Stroulia<br />
-                Vice Dean of Science<br />
+                Anthony Singhal<br />
+                Vice Dean of {$faculty}<br />
                 Chair, Academic Teaching Staff Evaluation Committee
             ]]>
         </ReportItem>
@@ -22,8 +22,8 @@
                 <div class='previewnodisplay'><img src='skins/Signature2.png' style='height: 3em;' /></div>
                 <div class='generatenodisplay'><img src='{$wgServer}{$wgScriptPath}/skins/Signature2.png' style='height: 3em;' /></div>
                 <br />
-                Eleni Stroulia<br />
-                Vice Dean of Science<br />
+                Anthony Singhal<br />
+                Vice Dean of {$faculty}<br />
                 Chair of the Academic Teaching Staff Evaluation Committee
                 </div>
             ]]>

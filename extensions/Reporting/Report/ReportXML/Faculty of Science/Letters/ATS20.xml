@@ -16,7 +16,7 @@
 
                 <p>As you chose not to appear before ATSEC to present your case or submit documentation in support of your case, the decision will be final and binding.</p>
 
-                <p>Should you have any procedural questions, please contact sciea@ualberta.ca.</p>
+                <p>Should you have any procedural questions, please contact {get(hrEmail)}.</p>
             ]]>
         </ReportItem>
         <ReportItem id="footer">

@@ -24,7 +24,7 @@
                 
                 <p>Materials submitted to the FEC Chair and Department Chair should be submitted electronically, if feasible.</p>
                 
-                <p>If you have any procedural questions, please contact the FEC Administrator, Lakhan Khara, at sciea@ualberta.ca.</p>
+                <p>If you have any procedural questions, please contact the FEC Administrator, {get(hrContact)}.</p>
             ]]>
         </ReportItem>
     </ReportSection>

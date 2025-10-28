@@ -14,7 +14,7 @@
                 <p>You may wish to consider the following options:</p>
                 <ul style='margin-left: 1em;'>
                     <li>I am willing to meet with you during the week of {getText({$report_type}, TABLE, FOLLOWUP_DATE, {$user_id}, 1, 0)} to discuss your individual case as it was</li>
-presented before FEC. Please contact my office at sciea@ualberta.ca for an appointment.
+presented before FEC. Please contact my office at {get(hrEmail)} for an appointment.
                     <li>As per Article A6.20.1 of Schedule A, you have the right to request reconsideration of the FEC’s preliminary decision by informing me, in writing, within 5 working days from the receipt of this letter.</li>
                 </ul>
                 
@@ -24,7 +24,7 @@ presented before FEC. Please contact my office at sciea@ualberta.ca for an appoi
                 
                 <p>It is advisable that you consult the Association of Academic Staff University of Alberta (AASUA).</p>
                 
-                <p>Should you have any procedural questions, please contact the FEC Administrator, Lakhan Khara, at sciea@ualberta.ca.</p>
+                <p>Should you have any procedural questions, please contact the FEC Administrator, {get(hrContact)}.</p>
             ]]>
         </ReportItem>
     </ReportSection>

@@ -15,7 +15,7 @@
 
                 <p>I wish to thank you for your dedication and outstanding contributions to the {$networkName}.</p>
 
-                <p>Should you have any procedural questions, please contact sciea@ualberta.ca.</p>
+                <p>Should you have any procedural questions, please contact {get(hrEmail)}.</p>
             ]]>
         </ReportItem>
         <ReportItem id="footer">
