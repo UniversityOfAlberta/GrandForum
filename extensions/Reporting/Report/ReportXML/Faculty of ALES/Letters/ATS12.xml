@@ -29,8 +29,8 @@
             <![CDATA[
                 Sincerely,<br />
                 <br />
-                <div class='previewnodisplay'><img src='skins/Signature2.png' style='height: 3em;' /></div>
-                <div class='generatenodisplay'><img src='{$wgServer}{$wgScriptPath}/skins/Signature2.png' style='height: 3em;' /></div>
+                <div class='previewnodisplay'><img src='skins/{get(signature)}' style='height: 3em;' /></div>
+                <div class='generatenodisplay'><img src='{$wgServer}{$wgScriptPath}/skins/{get(signature)}' style='height: 3em;' /></div>
                 <br />
                 Anthony Singhal<br />
                 Vice Dean of {$faculty}<br />

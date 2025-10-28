@@ -24,8 +24,8 @@
             <![CDATA[
                 Sincerely,<br />
                 <br />
-                <div class='previewnodisplay'><img src='skins/Signature.png' style='height: 3em;' /></div>
-                <div class='generatenodisplay'><img src='{$wgServer}{$wgScriptPath}/skins/Signature.png' style='height: 3em;' /></div>
+                <div class='previewnodisplay'><img src='skins/{get(signatureX)}' style='height: 3em;' /></div>
+                <div class='generatenodisplay'><img src='{$wgServer}{$wgScriptPath}/skins/{get(signatureX)}' style='height: 3em;' /></div>
                 <br />
                 Declan Ali<br />
                 Dean of {$faculty}

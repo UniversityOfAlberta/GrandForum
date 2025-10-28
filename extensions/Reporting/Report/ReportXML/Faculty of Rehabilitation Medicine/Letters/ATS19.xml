@@ -3,9 +3,9 @@
     <ReportSection id="letter" title="ATSEC Decision Regarding Application for Promotion">
         <ReportItem id="from">
             <![CDATA[
-                Esther Kim<br />
-                Dean of {$faculty}<br />
-                Chair Academic Teaching Staff Evaluation Committee
+                Anthony Singhal<br />
+                Vice Dean of {$faculty}<br />
+                Chair, Academic Teaching Staff Evaluation Committee
             ]]>
         </ReportItem>
         <ReportItem id="body">
@@ -19,11 +19,11 @@
             <![CDATA[
                 Sincerely,<br />
                 <br />
-                <div class='previewnodisplay'><img src='skins/Signature4.png' style='height: 3em;' /></div>
-                <div class='generatenodisplay'><img src='{$wgServer}{$wgScriptPath}/skins/Signature4.png' style='height: 3em;' /></div>
+                <div class='previewnodisplay'><img src='skins/{get(signature)}' style='height: 3em;' /></div>
+                <div class='generatenodisplay'><img src='{$wgServer}{$wgScriptPath}/skins/{get(signature)}' style='height: 3em;' /></div>
                 <br />
-                Esther Kim<br />
-                Dean of {$faculty}<br />
+                Anthony Singhal<br />
+                Vice Dean of {$faculty}<br />
                 Chair of the Academic Teaching Staff Evaluation Committee
                 </div>
             ]]>

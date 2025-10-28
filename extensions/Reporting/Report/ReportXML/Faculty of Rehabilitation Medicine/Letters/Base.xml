@@ -280,6 +280,7 @@
                         <tr>
                             <th>Case#</th>
                             <th>Name</th>
+                            <th>Department</th>
                             <th>PDF</th>
                             <th style='width:14em;'>Generate</th>
                             <th>Template</th>
@@ -297,6 +298,7 @@
                     <tr data-fecid="{getExtra()}" data-userid="{$user_id}">
                         <td>{getExtra()}</td>
                         <td><a href="{$user_url}" target="_blank">{$user_name}</a></td>
+                        <td>{$user_dept}</td>
                 ]]>
             </Static>
             <ReportItem id="letter" type="PDFReportItem" class="letterPDF downloadButton{$user_id}" reportType="Letters/Base" pdfReport="{$report_type}" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
@@ -419,6 +421,8 @@
             <![CDATA[
                 {set(hrContact, Lakhan Khara&#44; at sciea@ualberta.ca)}
                 {set(hrEmail, sciea@ualberta.ca)}
+                {set(signature, Signature4.png)}
+                {set(signatureX, Signature4.png)}
             ]]>
         </Static>
         <Static id="header">
@@ -447,13 +451,14 @@
                         <td align="left">
                             <b>{$networkName}</b><br />
                             Office of the Dean<br />
-                            Corbett Hall, 8205 114 St NW<br />
-                            Edmonton, Alberta, Canada T6G 2G4
+                            6-189 Centennial Centre for Interdisciplinary Science (CCIS)<br />
+                            Edmonton, AB, Canada T6G 2E1
                         </td>
                         <td align="right">
-                            <b>T</b> 780.492.2903<br />
-                            <b>F</b> 780.492.1626<br />
-                            www.ualberta.ca/en/rehabilitation/
+                            <b>T</b> 780.492.4757<br />
+                            <b>F</b> 780.492.9434<br />
+                            dean.science@ualberta.ca<br />
+                            www.ualberta.ca/science
                         </td>
                     </tr>
                 </table>
@@ -474,8 +479,8 @@
         </Static>
         <Static id="from">
             <![CDATA[
-                            Esther Kim<br />
-                            Dean of {$faculty}<br />
+                            Anthony Singhal<br />
+                            Vice Dean of {$faculty}<br />
                             Chair Faculty Evaluation Committee
             ]]>
         </Static>
@@ -519,11 +524,11 @@
             <![CDATA[
                 Sincerely,<br />
                 <br />
-                <div class='previewnodisplay'><img src='skins/Signature4.png' style='height: 3em;' /></div>
-                <div class='generatenodisplay'><img src='{$wgServer}{$wgScriptPath}/skins/Signature4.png' style='height: 3em;' /></div>
+                <div class='previewnodisplay'><img src='skins/{get(signature)}' style='height: 3em;' /></div>
+                <div class='generatenodisplay'><img src='{$wgServer}{$wgScriptPath}/skins/{get(signature)}' style='height: 3em;' /></div>
                 <br />
-                Esther Kim<br />
-                Dean of {$faculty}<br />
+                Anthony Singhal<br />
+                Vice Dean of {$faculty}<br />
                 Chair of the {$faculty} Faculty Evaluation Committee
                 </div>
             ]]>
