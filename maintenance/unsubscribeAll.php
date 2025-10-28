@@ -5,15 +5,18 @@
 	$people = Person::getAllCandidates();
 	
 	$iterationsSoFar = 0;
-	$allLists = MailingList::getAllMailingLists();
+	$allLists = array();
+	foreach(MailingList::getAllMailingLists() as $list){
+	    $allLists[] = $list->name;
+	}
 	foreach($people as $person){
 	    if($person->isRole(INACTIVE)){
-	        $lists = MailingList::getPersonLists($person);
-	        foreach($lists as $list){
-	            if(in_array($list, $allLists)){ // Only unsubscribe from 'Managed' lists
+            $lists = MailingList::getPersonLists($person);
+            foreach($lists as $list){
+                if(in_array($list, $allLists)){ // Only unsubscribe from 'Managed' lists
                     MailingList::unsubscribe($list, $person);
                 }
-	        }
+            }
 	    }
 	    show_status(++$iterationsSoFar, count($people));
 	}
