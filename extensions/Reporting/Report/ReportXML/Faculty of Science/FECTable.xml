@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report extends="../FECTable" disabled="false">
-    
+    <Permissions>
+        <Role role="FEC Science" start="{$this_year}-07-01" end="{$next_year}-07-01">
+            <SectionPermission id="fec" permissions="rw" />
+            <SectionPermission id="fec_votes" permissions="" />
+            <SectionPermission id="summary" permissions="rw" />
+        </Role>
+    </Permissions>
 </Report>
