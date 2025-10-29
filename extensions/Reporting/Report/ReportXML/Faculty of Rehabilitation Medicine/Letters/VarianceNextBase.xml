@@ -1,13 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report extends="Letters/VarianceBase" year="YEAR">
-    <ReportSection id="variance">
-        <ReportItem id="topmessage" />
-        <ReportItem id="vartemplate">
-            <![CDATA[
-                <script type='text/javascript'>
-                    var template = "VarianceNext";
-                </script>
-            ]]>
-        </ReportItem>
-    </ReportSection>
+<Report extends="../Letters/VarianceBase">
+
 </Report>
