@@ -6,6 +6,7 @@ Feature: Products
     Scenario: Adding a new Publication
         Given I am logged in as "NI.User1" using password "NI.Pass1"
         When I follow "Manage Products"
+        And I wait until I see "Add Product" up to "1000"
         And I press "Add Product"
         And I fill in "title" with "New Publication"
         And I fill in "description" with "This is a description"

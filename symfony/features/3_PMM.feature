@@ -30,6 +30,7 @@ Scenario: A Project Leader can assign a project member to a task
     And I click "Activities"
     And I should see "New task for HQP User1"
     And I press "Edit"
+    And I wait "500"
     And I select from Chosen "assignees" with "HQP User1"
     And I press "Save"
     Then I should see "New task for HQP User1"
