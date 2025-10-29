@@ -145,6 +145,7 @@ class Report extends AbstractReport{
         }
         $url = "$wgServer$wgScriptPath/index.php/Special:Report?report=";
         $projects = $person->leadership();
+        $themes = $person->getLeadThemes();
         foreach($projects as $project){
             $last = "";
             $nQuarters = 0;
@@ -161,6 +162,30 @@ class Report extends AbstractReport{
                             $tabs["ProjectReports"]['subtabs'][] = TabUtils::createSubTab("{$project->getName()}", $link, $selected);
                         }
                         $tabs["ProjectReports"]['subtabs'][count($tabs["ProjectReports"]['subtabs'])-1]['dropdown'][] = TabUtils::createSubTab(str_replace("Q", "R", str_replace("_", " ", $quarter)), $link, $selected);
+                        if($nQuarters >= 2){
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+            
+        foreach($themes as $theme){
+            $last = "";
+            $nQuarters = 0;
+            for($i=0;$i<365;$i++){
+                $date = date('Y-m-d', time() - 3600*24*$i - (3600*24*30*3 - 1));
+                if($date >= $theme->getCreated()){
+                    $quarter = self::dateToThemeQuarter($date);
+                    if($last != $quarter){
+                        $nQuarters++;
+                        $last = $quarter;
+                        $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "ThemeReport" && @$_GET['project'] == $theme->getAcronym() && @$_GET['id'] == $quarter)) ? "selected" : false;
+                        $link = "{$url}ThemeReport&project={$theme->getAcronym()}&id={$quarter}";
+                        if($i == 0){
+                            $tabs["ThemeReports"]['subtabs'][] = TabUtils::createSubTab("{$theme->getAcronym()}", $link, $selected);
+                        }
+                        $tabs["ThemeReports"]['subtabs'][count($tabs["ThemeReports"]['subtabs'])-1]['dropdown'][] = TabUtils::createSubTab(str_replace("Q", "R", str_replace("_", " ", $quarter)), $link, $selected);
                         if($nQuarters >= 2){
                             break;
                         }

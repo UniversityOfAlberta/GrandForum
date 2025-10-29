@@ -15,13 +15,13 @@
             <SectionPermission id="submit" permissions="--" />
         </If>
     </Permissions>
-    <ReportSection id="report" type="EditableReportSection" name="Theme Report" title="{$theme_name}: {$theme_full_name}" saveText="Save as Draft">
+    <ReportSection id="report" type="ReportSection" name="Theme Report" title="{$theme_name}: {$theme_full_name}" saveText="Save as Draft">
         <!-- Variables -->
         <Static>
             {set(year,    {substr({GET(id)}, 0, 4)})}
             {set(quarter, {substr({GET(id)}, 6, 1)})}
         </Static>
-        <If if="{==({get(quarter)},1)}">
+        <!--If if="{==({get(quarter)},1)}">
             <![CDATA[
                 <h3>{get(year)}:R{get(quarter)} Report - Submit by: March 15, {get(year)}</h3>
             ]]>
@@ -35,7 +35,7 @@
             <![CDATA[
                 <h3>{get(year)}:R{get(quarter)} Report - Submit by: November 15, {get(year)}</h3>
             ]]>
-        </ElseIf>
+        </ElseIf-->
         
         <!-- Past Reports -->
         <Static>
@@ -248,7 +248,7 @@
         </Static>
         
         <!-- Start the Report -->
-        <ReportItem id="description" type="Textarea" blobItem="DESCRIPTION" rich="true">
+        <!--ReportItem id="description" type="Textarea" blobItem="DESCRIPTION" rich="true">
             <![CDATA[
                 <h3>1. Description of work and next steps</h3>
                 <p>Summarize and highlight relevant activities performed in the past 4 months in relation to the overall goals, objectives, and timelines of the theme, mentioning any notable administrative or research outcome. Briefly explain next steps.</p>
@@ -293,9 +293,9 @@
                 <p>Please provide a brief summary of any significant preliminary findings or results from the Theme's projects.</p>
                 {$item}
             ]]>
-        </ReportItem>
+        </ReportItem-->
     </ReportSection>
-    <ReportSection id="submit" tooltip="PDF generation and submission" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+    <!--ReportSection id="submit" tooltip="PDF generation and submission" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <ReportItem id="review" type="SimpleReviewSubmitReportItem" emails="{$my_email},martha.munezhi@torontomu.ca,anna.triandafyllidou@torontomu.ca,bagheri@torontomu.ca" />
-    </ReportSection>
+    </ReportSection-->
 </Report>
