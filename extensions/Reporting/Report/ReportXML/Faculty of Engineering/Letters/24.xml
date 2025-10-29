@@ -1,12 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report pdfFiles="Letters/24" extends="Letters/Base">
-    <ReportSection id="letter" title="Application for Promotion - Promotion Awarded">
-        <ReportItem id="body">
-            <![CDATA[
-                <p>I am pleased to inform you that the Faculty Evaluation Committee (FEC) supports your Department Chair’s recommendation to award you promotion to the rank of Professor, which will take effect July 1, {$next_year}.</p>
+<Report extends="../Letters/24">
 
-                <p>Congratulations on meeting this important achievement in your career. Thank you for your contributions to the University and I wish you great success.</p>
-            ]]>
-        </ReportItem>
-    </ReportSection>
 </Report>

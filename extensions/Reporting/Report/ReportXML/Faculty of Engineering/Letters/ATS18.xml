@@ -1,21 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report pdfFiles="Letters/ATS18" extends="Letters/Base">
-    <ReportSection id="letter" title="ATSEC Decision Regarding Merit Increment">
-        <ReportItem id="from">
-            <![CDATA[
-                Simaan Abourizk<br />
-                Dean of Engineering<br />
-                Chair of the Engineering Faculty Evaluation Committee
-            ]]>
-        </ReportItem>
-        <ReportItem id="body">
-            <![CDATA[
-                <p>I am writing to inform you that the Academic Teaching Staff Evaluation Committee (ATSEC) has accepted the recommendation of your Department Chair and awarded you 0D, as your academic performance is unsatisfactory and unacceptable.</p>
+<Report extends="../Letters/ATS18">
 
-                <p>I would like to take this opportunity to thank you for your work this past year, and to wish you continued success in your teaching.</p>
-
-                <p>Should you have any procedural questions, please contact Catherine Pretzlaw, at enggdeanea@ualberta.ca.</p>
-            ]]>
-        </ReportItem>
-    </ReportSection>
 </Report>

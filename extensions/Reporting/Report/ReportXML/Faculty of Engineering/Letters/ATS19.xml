@@ -1,19 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report pdfFiles="Letters/ATS19" extends="Letters/Base">
-    <ReportSection id="letter" title="ATSEC Decision Regarding Application for Promotion">
-        <ReportItem id="from">
-            <![CDATA[
-                Simaan Abourizk<br />
-                Dean of Engineering<br />
-                Chair of the Engineering Faculty Evaluation Committee
-            ]]>
-        </ReportItem>
-        <ReportItem id="body">
-            <![CDATA[
-                <p>I am pleased to inform you that the Academic Teaching Staff Evaluation Committee (ATSEC) has approved your Department Chair’s recommendation to award you promotion to {getText({$report_type}, TABLE, PROMOTION, {$user_id}, 1, 0)}, effective July 1, {$next_year}.</p>
+<Report extends="../Letters/ATS19">
 
-                <p>Congratulations on meeting this important achievement in your career. Welcome to the rank of {getText({$report_type}, TABLE, PROMOTION, {$user_id}, 1, 0)} and very best wishes for continued success in your University career.</p>
-            ]]>
-        </ReportItem>
-    </ReportSection>
 </Report>

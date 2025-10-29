@@ -1,23 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report pdfFiles="Letters/ATS20" extends="Letters/Base">
-    <ReportSection id="letter" title="ATSEC Decision Regarding Merit Increment">
-        <ReportItem id="from">
-            <![CDATA[
-                Simaan Abourizk<br />
-                Dean of {$faculty}<br />
-                Chair of the Engineering Faculty Evaluation Committee
-            ]]>
-        </ReportItem>
-        <ReportItem id="body">
-            <![CDATA[
-                <p>Each year, the Academic Teaching Staff Evaluation Committee (ATSEC) is charged with the responsibility of awarding merit increments to its Academic Teaching Staff, from an increment pool that is currently equal to 1.2 times the number of eligible staff within the {$networkName}.</p>
+<Report extends="../Letters/ATS20">
 
-                <p>At its meeting of April 3, {$next_year}, the ATSEC supported the recommendation of a {getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)} increment made by your Department Chair.</p>
-
-                <p>As you chose not to appear before ATSEC to present your case or submit documentation in support of your case, the decision will be final and binding. As per Article A8.03.1 of Schedule A, you may not appeal this decision to the GAC.</p>
-
-                <p>Should you have any procedural questions, please contact Catherine Pretzlaw, at enggdeanea@ualberta.ca.</p>
-            ]]>
-        </ReportItem>
-    </ReportSection>
 </Report>
