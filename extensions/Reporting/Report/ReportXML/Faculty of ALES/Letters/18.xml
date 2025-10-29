@@ -13,7 +13,7 @@
                 
                 You may wish to consider the following options:
                 <ul style='margin-left:1em;'>
-                    <li>Pursuant to Article A6.19.3 of Schedule A, I am able to meet with you during the week of December 2 - 6 to discuss your individual case, as it was presented before FEC. Please contact my office at enggdeanea@ualberta.ca for an appointment.</li>
+                    <li>Pursuant to Article A6.19.3 of Schedule A, I am able to meet with you during the week of {get(fecDates)} to discuss your individual case, as it was presented before FEC. Please contact my office at enggdeanea@ualberta.ca for an appointment.</li>
                     <li>Pursuant to Article A6.20.1 of Schedule A, you have the right to request reconsideration of the FEC’s decision by informing me, in writing, within 5 working days from the receipt of this letter</li>
                 </ul>
                 

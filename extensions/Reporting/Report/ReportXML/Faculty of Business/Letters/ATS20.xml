@@ -3,8 +3,8 @@
     <ReportSection id="letter" title="ATSEC Decision Regarding Merit Increment">
         <ReportItem id="from">
             <![CDATA[
-                Anthony Singhal<br />
-                Vice Dean of {$faculty}<br />
+                {get(fecChair)}<br />
+                {get(fecChairPos)} of {$faculty}<br />
                 Chair, Academic Teaching Staff Evaluation Committee
             ]]>
         </ReportItem>
@@ -12,7 +12,7 @@
             <![CDATA[
                 <p>Each year, the Academic Teaching Staff Evaluation Committee (ATSEC) is charged with the responsibility of awarding merit increments to its Academic Teaching Staff, from an increment pool that is currently equal to 1.2 times the number of eligible staff within the {$networkName}.</p>
 
-                <p>At its meeting of February 27, {$next_year}, the ATSEC supported the recommendation of a {getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)} increment made by your Department Chair.</p>
+                <p>At its meeting of {get(atsecDates)}, the ATSEC supported the recommendation of a {getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)} increment made by your Department Chair.</p>
 
                 <p>As you chose not to appear before ATSEC to present your case or submit documentation in support of your case, the decision will be final and binding.</p>
 
@@ -26,8 +26,8 @@
                 <div class='previewnodisplay'><img src='skins/{get(signature)}' style='height: 3em;' /></div>
                 <div class='generatenodisplay'><img src='{$wgServer}{$wgScriptPath}/skins/{get(signature)}' style='height: 3em;' /></div>
                 <br />
-                Anthony Singhal<br />
-                Vice Dean of {$faculty}<br />
+                {get(fecChair)}<br />
+                {get(fecChairPos)} of {$faculty}<br />
                 Chair of the Academic Teaching Staff Evaluation Committee
                 </div>
             ]]>

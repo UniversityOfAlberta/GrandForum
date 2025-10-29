@@ -3,9 +3,9 @@
     <ReportSection id="letter" title="End of Second Probationary Period - No Further Appointment Awarded">
         <ReportItem id="body">
             <![CDATA[
-                <p>This is to inform you that, following reconsideration on December 2 - 6 of its preliminary position determined at its meeting on December 2 - 6, the Faculty Evaluation Committee (FEC) has reconfirmed its preliminary position that you receive no further appointment at the end of your probationary period.</p>
+                <p>This is to inform you that, following reconsideration on {get(fecDates)} of its preliminary position determined at its meeting on {get(fecDates)}, the Faculty Evaluation Committee (FEC) has reconfirmed its preliminary position that you receive no further appointment at the end of your probationary period.</p>
                 
-                <p>Given that you appeared before the FEC on December 2 - 6 seeking reconsideration of your case, you have the right to appeal this decision in accordance with Article A6.16.8 of Schedule A, to the General Appeals Committee (GAC). A request must be made to the Chair of the GAC (Provost, cc’d to Faculty Relations), in writing, within 10 working days from the receipt of this letter.</p>
+                <p>Given that you appeared before the FEC on {get(fecDates)} seeking reconsideration of your case, you have the right to appeal this decision in accordance with Article A6.16.8 of Schedule A, to the General Appeals Committee (GAC). A request must be made to the Chair of the GAC (Provost, cc’d to Faculty Relations), in writing, within 10 working days from the receipt of this letter.</p>
                 
                 <p>It is advisable that you consult the Association of Academic Staff University of Alberta (AASUA) for advice.</p>
                 

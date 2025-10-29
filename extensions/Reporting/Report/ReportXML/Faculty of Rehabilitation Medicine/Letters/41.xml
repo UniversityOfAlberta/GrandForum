@@ -8,7 +8,7 @@
         </ReportItem>
         <ReportItem id="body">
             <![CDATA[
-                <p>Based on my review of your academic activities and your annual report, and our meeting to review such on December 2 - 6, I am writing to advise you that I will be making a recommendation to the Faculty Evaluation Committee (FEC) for incrementation of 0d.</p>
+                <p>Based on my review of your academic activities and your annual report, and our meeting to review such on {get(fecDates)}, I am writing to advise you that I will be making a recommendation to the Faculty Evaluation Committee (FEC) for incrementation of 0d.</p>
 
                 <p>My concerns are as follows:</p>
                 <p>{getText({$report_type}, TABLE, COMMENT, {$user_id}, 1, 0)}</p>
@@ -19,9 +19,9 @@
                     <li>It is advisable that you consult the Association of Academic Staff University of Alberta (AASUA).</li>
                 </ul>
                 
-                <p>Please be advised that the date for contested cases has been scheduled for December 5, {$this_year} in {getText({$report_type}, TABLE, LOCATION, {$user_id}, 1, 0)}.</p>
+                <p>Please be advised that the date for contested cases has been scheduled for {get(reconsiderationDate)} in {getText({$report_type}, TABLE, LOCATION, {$user_id}, 1, 0)}.</p>
                 
-                <p>Should you decide to contest the recommendation, the following information is to be included in your written submission to the FEC Chair, Esther Kim by {getText({$report_type}, TABLE, FOLLOWUP_DATE, {$user_id}, 1, 0)}, with a copy to your Department Chair:</p>
+                <p>Should you decide to contest the recommendation, the following information is to be included in your written submission to the FEC Chair, {get(fecChair)} by {getText({$report_type}, TABLE, FOLLOWUP_DATE, {$user_id}, 1, 0)}, with a copy to your Department Chair:</p>
                 
                 <ul style='margin-left: 1em;'>
                     <li>a statement advising FEC whether or not you will be appearing in person before FEC to present your case;</li>

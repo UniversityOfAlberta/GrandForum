@@ -8,7 +8,7 @@
                 
                 <p>Under Article A6.17.1 of Schedule A, you have a right to appear before FEC and contest the recommendation. It is advisable that you consult the Association of Academic Staff University of Alberta (AASUA) for advice.</p>
                 
-                Should you decide to contest the recommendation, the following information is to be included in your written submission to the FEC Chair, Esther Kim by {getText({$report_type}, TABLE, FOLLOWUP_DATE, {$user_id}, 1, 0)}, with a copy to me, as Department Chair:
+                Should you decide to contest the recommendation, the following information is to be included in your written submission to the FEC Chair, {get(fecChair)} by {getText({$report_type}, TABLE, FOLLOWUP_DATE, {$user_id}, 1, 0)}, with a copy to me, as Department Chair:
                 <ul style='margin-left:1em;'>
                     <li>a statement advising FEC whether or not you will be appearing in person before FEC to present your case;</li>
                     <li>any material in response to my recommendation and any other material relevant to your case;</li>

@@ -3,7 +3,7 @@
     <ReportSection id="letter" title="End of Second Probationary Period - Tenure Awarded">
         <ReportItem id="body">
             <![CDATA[
-                <p>This is to inform you that, following the FEC meeting on December 2 - 6 at which you appeared to contest the Department Chair’s recommendation that you not be awarded tenure, I can advise that the Faculty Evaluation Committee has decided to grant you tenure.</p>
+                <p>This is to inform you that, following the FEC meeting on {get(fecDates)} at which you appeared to contest the Department Chair’s recommendation that you not be awarded tenure, I can advise that the Faculty Evaluation Committee has decided to grant you tenure.</p>
                 <p>In accordance with Article A6.18.12, FEC arrived at the decision to award tenure based on it’s assessment of your</p>
                 <p>{getText({$report_type}, TABLE, COMMENT, {$user_id}, 1, 0)}</p>
                 

@@ -3,7 +3,7 @@
     <ReportSection id="letter" title="End of First Probationary Period - No Further Appointment">
         <ReportItem id="body">
             <![CDATA[
-                <p>This is to inform you that the Faculty Evaluation Committee (FEC) at its hearing of your contested case held on December 2 - 6, has agreed with your Department Chair’s recommendation that no further appointment be offered to you at the end of your first probationary period. Your appointment with the department at the University of Alberta will terminate effective June 30, {$next_year}</p>
+                <p>This is to inform you that the Faculty Evaluation Committee (FEC) at its hearing of your contested case held on {get(fecDates)}, has agreed with your Department Chair’s recommendation that no further appointment be offered to you at the end of your first probationary period. Your appointment with the department at the University of Alberta will terminate effective June 30, {$next_year}</p>
                 <p>The following matters are of concern to the FEC:</p>
                 <p>{getText({$report_type}, TABLE, COMMENT, {$user_id}, 1, 0)}</p>
                 

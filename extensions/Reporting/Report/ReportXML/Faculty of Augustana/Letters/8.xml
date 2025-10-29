@@ -3,7 +3,7 @@
     <ReportSection id="letter" title="End of First Probationary Period - 2nd Probation Awarded">
         <ReportItem id="body">
             <![CDATA[
-                <p>This is to inform you that the Faculty Evaluation Committee (FEC) at its meeting held on December 2 - 6 did not support your Department Chair’s recommendation that you be awarded tenure. Instead, you will be granted a second probationary period in accordance with Article A5.03.4(a) of Schedule A. This decision is final and binding.</p>
+                <p>This is to inform you that the Faculty Evaluation Committee (FEC) at its meeting held on {get(fecDates)} did not support your Department Chair’s recommendation that you be awarded tenure. Instead, you will be granted a second probationary period in accordance with Article A5.03.4(a) of Schedule A. This decision is final and binding.</p>
                 
                 <p>In accordance with the provisions of Article A5.02.8 of Schedule A, your second probationary appointment will be for the two-year period July 1, {$next_year} to June 30, {add({$next_year},2)}. Your appointment will be governed by the Common Agreement and Schedule A, as amended from time to time.</p>
                 
