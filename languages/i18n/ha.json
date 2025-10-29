@@ -27,7 +27,8 @@
 			"Juguson",
 			"Yusuf Sa'adu",
 			"Muhammad Idriss Criteria",
-			"Umar2z"
+			"Umar2z",
+			"Ezeone10"
 		]
 	},
 	"tog-underline": "Zana layin mahaɗa:",
@@ -750,7 +751,7 @@
 	"tooltip-undo": "\"Janyewa\" tana soke wannan gyaran ta kuma buɗa fom kin gyara mai rigya-gani.\nTana ba da damar bayyana dalilin soke gyaran.",
 	"simpleantispam-label": "Kar ku cika wannan!",
 	"pageinfo-toolboxlink": "Bayanin shafi",
-	"previousdiff": "Sauyin baya",
+	"previousdiff": "← Sauyin baya",
 	"nextdiff": "Gyaran gaba →",
 	"widthheightpage": "$1 ×$2, $3 {{{{PLURAL:$3|feji|fejina}}",
 	"file-info-size": "pikisal $1 × $2, girman fayil: $3, irin MIME: $4",

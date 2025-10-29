@@ -15,6 +15,7 @@
 # the other MediaWiki files. It will be used as a base to locate files.
 
 require_once( "$IP/config/Config.php" );
+require_once("patches.php");
 
 if(PHP_SAPI != 'cli'){
     error_reporting(E_ALL ^ E_DEPRECATED);

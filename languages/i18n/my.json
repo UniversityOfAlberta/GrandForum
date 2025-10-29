@@ -29,7 +29,8 @@
 			"Vlad5250",
 			"Zawthet",
 			"ကိုရာဝီ",
-			"아라"
+			"아라",
+			"Sithu015"
 		]
 	},
 	"tog-underline": "လင့်ကို မျဉ်းသားသည့် ပုံစံ:",
@@ -1534,7 +1535,7 @@
 	"nbytes": "$1 {{PLURAL:$1|ဘိုက်|ဘိုက်}}",
 	"ncategories": "$1 {{PLURAL:$1|ကဏ္ဍ|ကဏ္ဍများ}}",
 	"nlinks": "{{PLURAL:$1|လင့်|လင့်ခ်များ}} $1",
-	"nmembers": "အဖွဲ့ဝင် $1 {{PLURAL:$1|ခု|ခု}}",
+	"nmembers": "အဖွဲ့ဝင် $1 {{PLURAL:$1|ခု}}",
 	"nmemberschanged": "$1 → $2 {{PLURAL:$2|အဖွဲ့ဝင်|အဖွဲ့ဝင်များ}}",
 	"nrevisions": "$1 {{PLURAL:$1|ပြန်လည်ပြင်ဆင်မှု|ပြန်လည်ပြင်ဆင်မှုများ}}",
 	"nimagelinks": "$1 {{PLURAL:$1|စာမျက်နှာ|စာမျက်နှာများ}}ပေါ်တွင် သုံးထားသည်",
@@ -2340,7 +2341,7 @@
 	"confirm-markpatrolled-top": "$2 ၏ $3 အား စောင့်ကြပ်စစ်ဆေးပြီးကြောင်း မှတ်သားမည်လော။",
 	"filedeleteerror-short": "ဖိုင်ဖျက်ရာတွင် အမှားအယွင်း - $1",
 	"previousdiff": "← တည်းဖြတ်မူ အဟောင်း",
-	"nextdiff": "ပိုသစ်သော တည်းဖြတ်မှု",
+	"nextdiff": "ပိုသစ်သော တည်းဖြတ်မှု →",
 	"imagemaxsize": "ပုံအရွယ်အစား ကန့်သတ်ချက်:<br /><em>(ဖိုင်ဖော်ပြချက် စာမျက်နှာများအတွက်)</em>",
 	"thumbsize": "နမူနာပုံငယ် အရွယ်အစား:",
 	"widthheightpage": "$1 × $2, {{PLURAL:$3|စာမျက်နှာ|စာမျက်နှာများ}} $3 ခု",
@@ -2701,7 +2702,7 @@
 	"limitreport-cputime": "စီပီယူ အချိန်အသုံးပြုမှု",
 	"limitreport-cputime-value": "$1 {{PLURAL:$1|စက္ကန့်|စက္ကန့်}}",
 	"limitreport-walltime": "အချိန်နှင့်တပြေးညီအသုံးချမှု",
-	"limitreport-walltime-value": "$1 {{PLURAL:$1|စက္ကန့်|စက္ကန့်}}",
+	"limitreport-walltime-value": "$1 {{PLURAL:$1|စက္ကန့်}}",
 	"limitreport-postexpandincludesize-value": "$1/$2 {{PLURAL:$2|ဘိုက်|ဘိုက်}}",
 	"limitreport-templateargumentsize-value": "$1/$2 {{PLURAL:$2|ဘိုက်|ဘိုက်}}",
 	"limitreport-unstrip-size-value": "$1/$2 {{PLURAL:$2|ဘိုက်|ဘိုက်}}",
