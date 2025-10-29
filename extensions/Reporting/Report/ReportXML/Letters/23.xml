@@ -3,22 +3,22 @@
     <ReportSection id="letter" title="Application for Promotion - Promotion not Recommended">
         <ReportItem id="from">
             <![CDATA[
-                {getText({$report_type}, TABLE, CHAIR, {$user_id}, 1, 0)}
+                {ifEmpty({getText({$report_type}, TABLE, CHAIR, {$user_id}, 1, 0)}, <b>[CHAIR]</b>)}
             ]]>
         </ReportItem>
         <ReportItem id="body">
             <![CDATA[
                 <p>This is to inform you that I do not support and will not be recommending to the Faculty Evaluation Committee (FEC) your application for promotion to the rank of Professor. My recommendation is based on the following rationale:</p>
-                <p>{getText({$report_type}, TABLE, COMMENT, {$user_id}, 1, 0)}</p>
+                <p>{ifEmpty({getText({$report_type}, TABLE, COMMENT, {$user_id}, 1, 0)}, <b>[COMMENT]</b>)}</p>
                 
                 <p>Under Article A6.17.1 of Schedule A, you have the right to appear before FEC and contest the recommendation. It is advisable that you consult the Association of Academic Staff University of Alberta (AASUA) for advice.</p>
                 
-                <p>Please be advised that the date for your case has been scheduled for {get(fecDates)} in {getText({$report_type}, TABLE, LOCATION, {$user_id}, 1, 0)}.</p>
+                <p>Please be advised that the date for your case has been scheduled for {get(fecDates)} in {ifEmpty({getText({$report_type}, TABLE, LOCATION, {$user_id}, 1, 0)}, <b>[LOCATION]</b>)}.</p>
                 
-                Should you decide to contest the recommendation, the following information is to be included in your written submission to the FEC Chair, {get(fecChair)} by {getText({$report_type}, TABLE, FOLLOWUP_DATE, {$user_id}, 1, 0)}, with a copy to your Department Chair:
+                Should you decide to contest the recommendation, the following information is to be included in your written submission to the FEC Chair, {get(fecChair)} by {ifEmpty({getText({$report_type}, TABLE, FOLLOWUP_DATE, {$user_id}, 1, 0)}, <b>[DATE]</b>)}, with a copy to your Department Chair:
                 <ul style='margin-left: 1em;'>
                     <li>a statement advising FEC whether or not you will be appearing in person before FEC to present your case;</li>
-                    <li>any material in response to the Department Chair’s [Dean’s] recommendation and any other material relevant to your case;</li>
+                    <li>any material in response to the Department Chair’s recommendation and any other material relevant to your case;</li>
                     <li>a list of names of persons who will attend the FEC hearing as your witnesses.</li>
                 </ul>
                 

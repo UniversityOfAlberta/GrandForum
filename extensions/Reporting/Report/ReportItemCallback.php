@@ -218,6 +218,7 @@ class ReportItemCallback {
             "getBlobMD5" => "getBlobMD5",
             "getText" => "getText",
             "getNumber" => "getNumber",
+            "ifEmpty" => "ifEmpty",
             "getHTML" => "getHTML",
             "getArray" => "getArray",
             "getExtra" => "getExtra",
@@ -1926,6 +1927,10 @@ class ReportItemCallback {
     
     function getNumber($rp, $section, $blobId, $subId, $personId, $projectId, $year=null){
         return (float) $this->getText($rp, $section, $blobId, $subId, $personId, $projectId, $year);
+    }
+    
+    function ifEmpty($text, $else){
+        return ($text == "") ? $else : $text;
     }
     
     function getIncrement($personId, $year){
