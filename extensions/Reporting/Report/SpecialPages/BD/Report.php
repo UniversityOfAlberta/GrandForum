@@ -120,6 +120,7 @@ class Report extends AbstractReport{
      *  Q4: Jan 15, 2025 
      */
     static function dateToThemeQuarter($date){
+        return self::dateToProjectQuarter($date);
         $year = substr($date,0,4);
         $month = substr($date,5,5);
         if($month <= "03-15"){
