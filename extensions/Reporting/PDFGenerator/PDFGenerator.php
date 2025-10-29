@@ -634,8 +634,8 @@ EOF;
 		    }
 		    
 		    #pdfBody h4 {
-		        margin-top:0;
-		        margin-bottom:0;
+		        margin-top:0.25em;
+		        margin-bottom:0.25em;
 		        font-size: ".($fontSize+(1*$DPI_CONSTANT))."px;
 		        border-bottom: 0 !important;
 		    }

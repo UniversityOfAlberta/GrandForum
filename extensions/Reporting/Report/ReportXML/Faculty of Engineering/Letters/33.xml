@@ -3,7 +3,7 @@
     <ReportSection id="letter" title="Incrementation - Incrementation Awarded is Less than Recommendation">
         <ReportItem id="body">
             <![CDATA[
-                <p>This is to inform you that the Faculty Evaluation Committee (FEC) has approved the award of {getText(RP_FEC_TABLE, TABLE, INCREMENT, {$user_id}, 1, 0)} increment for you, rather than the {getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)} increment recommended by your Department Chair, in recognition of your performance during the {$last_year}/{substr({$this_year},2,2)} period under review.  This decision reflects your performance in comparison to your cohort within the Faculty of Engineering at large rather than within your own Department.</p>
+                <p>This is to inform you that the Faculty Evaluation Committee (FEC) has approved the award of {getText(RP_FEC_TABLE, TABLE, INCREMENT, {$user_id}, 1, 0)} increment for you, rather than the {getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)} increment recommended by your Department Chair, in recognition of your performance during the {$last_year}/{substr({$this_year},2,2)} period under review.  This decision reflects your performance in comparison to your cohort within the {$networkName} at large rather than within your own Department.</p>
 
                 <p>The award takes effect on July 1, {$next_year}.</p>
                 

@@ -204,6 +204,7 @@ class ReportItemCallback {
             "wgScriptPath" => "getWgScriptPath",
             "GET" => "getGet",
             "networkName" => "getNetworkName",
+            "faculty" => "getFaculty",
             "id" => "getId",
             "strtotime" => "strtotime",
             "date_format" => "date_format",
@@ -1354,6 +1355,12 @@ class ReportItemCallback {
                 $type = "*";
                 break;
         }
+
+        if(strstr($case, ":") !== false){
+            $exploded = explode(":", $case);
+            $category = $exploded[0];
+            $type = $exploded[1];
+        }
         
         $products = $person->getPapersAuthored($category, $start_date, $end_date, false, true, true, false, true, $includeContributors, $onlyContributors);
         $count = 0;
@@ -1720,6 +1727,10 @@ class ReportItemCallback {
     function getNetworkName(){
         global $config;
         return $config->getValue('networkName');
+    }
+    
+    function getFaculty(){
+        return getFaculty();
     }
     
     function getId(){

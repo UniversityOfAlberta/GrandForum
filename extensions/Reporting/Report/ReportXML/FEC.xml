@@ -140,9 +140,9 @@
                         <tr><td style='width:350px;'><b>Post-doctoral Fellows and Research Associates (Supervised or Co-supervised):</b></td><td>{$user_fellow_count}</td></tr>
                         <tr><td style='width:350px;'><b>Research/Technical Assistants:</b></td><td>{$user_tech_count}</td></tr>
                         <tr><td style='width:350px;'><b>Undergraduates (Supervised or Co-supervised):</b></td><td>{$user_ugrad_count}</td></tr>
-                        <tr><td><b>Refereed Publications:</b></td><td>{getUserPublicationCount(CYCLE_START, CYCLE_END, Publication)}</td></tr>
-                        <tr><td><b>Books:</b></td><td>{getUserPublicationCount(CYCLE_START, CYCLE_END, Book)}</td></tr>
-                        <tr><td><b>Patents:</b></td><td>{getUserPublicationCount(CYCLE_START, CYCLE_END, Patent)}</td></tr>
+                        <tr class='publicationAggregate'><td><b>Refereed Publications:</b></td><td>{getUserPublicationCount(CYCLE_START, CYCLE_END, Publication)}</td></tr>
+                        <tr class='publicationAggregate'><td><b>Books:</b></td><td>{getUserPublicationCount(CYCLE_START, CYCLE_END, Book)}</td></tr>
+                        <tr class='publicationAggregate'><td><b>Patents:</b></td><td>{getUserPublicationCount(CYCLE_START, CYCLE_END, Patent)}</td></tr>
                     </table>
                 </div>
                 <div style='display:inline-block;width:40%;vertical-align:top;'>
@@ -583,22 +583,32 @@
         <!-- Refereed Publications -->
         <Static>
             <![CDATA[
-                <h3>Refereed Publications ({getUserPublicationCount(CYCLE_START, CYCLE_END, Publication)})</h3>
-                <table class='wikitable' style='width:100%'>
-                    <thead>
-                    <tr>
-                        <th>Type</th>
-                        <th>Title</th>
-                        <th>Footnote</th>
-                    </tr>
-                    </thead>
-                    <tbody>
+                <h3>Refereed Publications <span class='publicationAggregate'>({getUserPublicationCount(CYCLE_START, CYCLE_END, Publication)})</span></h3>
             ]]>
         </Static>
         <ReportItemSet type="String" array="Journal Paper|
                                             Conference Paper\|Workshop Paper|
-                                            Bachelors Thesis\|Book\|Book Chapter\|Collections Paper\|Edited Book\|Masters Thesis\|Misc\|Other\|PHD Thesis\|Journal Abstract\|White Paper\|Tech Report\|Poster\|Manual\|Preprint">
-            <ReportItemSet id="products{$index}" type="PersonProductsReportItemSet" category="Publication" productType="{getExtra()}" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END" peerReviewed="Yes">
+                                            Book Chapter|
+                                            Book|
+                                            Bachelors Thesis\|Collections Paper\|Edited Book\|Masters Thesis\|Misc\|Other\|PHD Thesis\|Journal Abstract\|White Paper\|Tech Report\|Poster\|Manual\|Preprint"
+                                     array2="Journal Papers|Conference Papers|Book Chapters|Books|Other">
+            <ReportItemSet id="products{$index}" type="PersonProductsReportItemSet" category="Publication" productType="{getExtra(value)}" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END" peerReviewed="Yes">
+                <ReportItemSet type="First">
+                    <Static>
+                        <![CDATA[
+                            <h4>{getExtra(value2)} ({getUserPublicationCount(CYCLE_START, CYCLE_END, Publication:{getExtra(value)})})</h4>
+                            <table class='wikitable' style='width:100%'>
+                                <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Title</th>
+                                    <th>Footnote</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                        ]]>
+                    </Static>
+                </ReportItemSet>
                 <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" optional="true" encrypt="true">
                     <![CDATA[
                         <tr><td>{$product_type}</td><td>{$item}</td>
@@ -609,13 +619,15 @@
                         <td width="30px" align="center">{$item}</td></tr>
                     ]]>
                 </ReportItem>
+                <ReportItemSet type="Last">
+                    <Static>
+                        <![CDATA[
+                            </table>
+                        ]]>
+                    </Static>
+                </ReportItemSet>
             </ReportItemSet>
         </ReportItemSet>
-        <Static>
-            <![CDATA[
-                </tbody></table><br />
-            ]]>
-        </Static>
         
         <!-- Non-Refereed Publications -->
         <Static>

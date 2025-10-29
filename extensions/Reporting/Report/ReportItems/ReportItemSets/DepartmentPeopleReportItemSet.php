@@ -43,7 +43,7 @@ class DepartmentPeopleReportItemSet extends ReportItemSet {
             $person->getFecPersonalInfo();
             $depts = array_keys($person->departments);
             if(($dept == "") || 
-               (@$depts[0] == $dept) ||
+               (@$depts[0] == html_entity_decode($dept)) ||
                ($found)){
                 if($excludeMe && $person->isMe()){
                     // Should not see themselves in recommendations

@@ -87,6 +87,9 @@ EOF;
         $isTopAnchor = (strtolower($this->getAttr('isTopAnchor', 'true')) == 'true');
         $item = $this->getPDFHTML();
         if(trim($item) != "" || $isTopAnchor){
+            if($item != ""){
+                $item .= "&nbsp;";
+            }
             $item = $this->processCData($item);
             $wgOut->addHTML("$item");
         }
