@@ -5,7 +5,7 @@
     <div id="emailAccordion"></div>
 <% } %>
 <% if (canEdit) { %>
-    <button id="add-new-task-button" style="margin-top: 20px;" class="button">
+    <button id="add-new-task-button" style="margin-bottom: 20px;" class="button">
         Add Task
     </button>
 <% } %>
@@ -28,3 +28,9 @@
         </tbody>
     </table>
 </div>
+
+<% if (canEdit) { %>
+    <button id="add-new-task-button" style="margin-top: 20px;" class="button">
+        Add Task
+    </button>
+<% } %>
