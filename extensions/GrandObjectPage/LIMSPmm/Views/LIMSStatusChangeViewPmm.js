@@ -4,12 +4,19 @@ LIMSStatusChangeViewPmm = Backbone.View.extend({
     
     events: {
         'click .deleteFile': 'deleteTaskFile', // Button to delete a file
-        "click .view-comment-history": "showCommentHistory"
+        "click .view-comment-history": "showCommentHistory",
+        "click #cancel": "closeDialog",
+        "click #save": "saveDialog"
     },
 
     initialize: function(options) {
         this.project = options.project;
         this.isDialog = options.isDialog || false;
+        this.originalState = {
+            statuses: _.clone(this.model.get('statuses')),
+            files: _.clone(this.model.get('files')),
+            reviewers: _.clone(this.model.get('reviewers')),
+        };
         this.listenTo(this.model, 'change:displayFiles', this.handleFileChange);
         this.listenTo(this.model, 'change:needsReviewerValidation', this.handleAssigneesOptions);
         this.listenTo(this.model, 'change:statusOptions', this.render);
@@ -64,7 +71,6 @@ LIMSStatusChangeViewPmm = Backbone.View.extend({
             '#lims_status_change_template').html());
     },
 
-
     deleteTaskFile: function(e){
         var assigneeId = $(e.currentTarget).data('assignee').toString();
         var displayFiles = this.model.get('displayFiles') || {};
@@ -110,7 +116,21 @@ LIMSStatusChangeViewPmm = Backbone.View.extend({
         LIMSPmmHelper.showCommentsHistory(e, this.model, this.project);
     },
 
+    revertChanges: function() { 
+        this.model.set({
+            displayStatuses: _.clone(this.originalState.statuses),
+            displayFiles: _.clone(this.originalState.files),
+            displayReviewers: _.clone(this.originalState.reviewers),
+            displayComments: {}
+        }, {silent: true});
+    },
+
     closeDialog: function() {
+        this.revertChanges();
+        this.$el.dialog('close');
+    },
+
+    saveDialog: function() {
         var final = {};
         var data = this.model.toJSON();
         var finalAssignees = _.clone(data.assignees);
@@ -141,5 +161,6 @@ LIMSStatusChangeViewPmm = Backbone.View.extend({
         final.assignees = finalAssignees;
         // as assignes is modified, handleAssigneeChange will be called
         this.model.set(final);
+        this.model.save();
     }
 });
