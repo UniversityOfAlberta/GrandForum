@@ -5,7 +5,7 @@
             <![CDATA[
                 <p>This is to inform you that, following the FEC meeting on {get(fecDates)} at which you appeared to contest the Department Chair’s recommendation that you not be awarded tenure, I can advise that the Faculty Evaluation Committee has decided to grant you tenure.</p>
                 <p>In accordance with Article A6.18.12, FEC arrived at the decision to award tenure based on it’s assessment of your</p>
-                <p>{getText({$report_type}, TABLE, COMMENT, {$user_id}, 1, 0)}</p>
+                <p>{ifEmpty({getText({$report_type}, TABLE, COMMENT, {$user_id}, 1, 0)}, <b>[COMMENT]</b>)}</p>
                 
                 <p>In accordance with FEC’s decision, your appointment will be changed from a probationary to an appointment with tenure effective July 1, {$next_year}. Your appointment will continue to be governed by the Common Agreement and Schedule A, as amended from time to time.</p>
                 

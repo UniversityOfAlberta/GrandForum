@@ -8,12 +8,12 @@
         </ReportItem>
         <ReportItem id="body">
             <![CDATA[
-                <p>As per Article A6.19.3 of Schedule A, I am informing you that at its meeting of {get(fecDates)}, the FEC did not support your Department Chair’s recommendation. Instead it is prepared to award incrementation of {getText(RP_FEC_TABLE, TABLE, INCREMENT, {$user_id}, 1, 0)}. The Department Chair {getText({$report_type}, TABLE, CHAIR_POSITION, {$user_id}, 1, 0)}. Under Article A6.19.1 of Schedule A, this is the preliminary position of FEC. This decision was based on the following:</p>
-                <p>{getText({$report_type}, TABLE, COMMENT, {$user_id}, 1, 0)}</p>
+                <p>As per Article A6.19.3 of Schedule A, I am informing you that at its meeting of {get(fecDates)}, the FEC did not support your Department Chair’s recommendation. Instead it is prepared to award incrementation of {getText(RP_FEC_TABLE, TABLE, INCREMENT, {$user_id}, 1, 0)}. The Department Chair {ifEmpty({getText({$report_type}, TABLE, CHAIR_POSITION, {$user_id}, 1, 0)}, <b>[CHAIR POSITION]</b>)}. Under Article A6.19.1 of Schedule A, this is the preliminary position of FEC. This decision was based on the following:</p>
+                <p>{ifEmpty({getText({$report_type}, TABLE, COMMENT, {$user_id}, 1, 0)}, <b>[COMMENT]</b>)}</p>
                 
                 <p>You may wish to consider the following options:</p>
                 <ul style='margin-left: 1em;'>
-                    <li>I am willing to meet with you during the week of {getText({$report_type}, TABLE, FOLLOWUP_DATE, {$user_id}, 1, 0)} to discuss your individual case as it was</li>
+                    <li>I am willing to meet with you during the week of {ifEmpty({getText({$report_type}, TABLE, FOLLOWUP_DATE, {$user_id}, 1, 0)}, <b>[DATE]</b>)} to discuss your individual case as it was</li>
 presented before FEC. Please contact my office at {get(hrEmail)} for an appointment.
                     <li>As per Article A6.20.1 of Schedule A, you have the right to request reconsideration of the FEC’s preliminary decision by informing me, in writing, within 5 working days from the receipt of this letter.</li>
                 </ul>
