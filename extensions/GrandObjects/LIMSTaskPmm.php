@@ -330,9 +330,6 @@ class LIMSTaskPmm extends BackboneModel
             $assignees = $this->getAssignees();
             foreach ($assignees as $assignee) {
                 $comment = @$_POST['comments'][$assignee->id];
-
-                
-                // Create the notification for each assignee
                 Notification::addNotification(
                     $me, 
                     $assignee, 
@@ -341,6 +338,24 @@ class LIMSTaskPmm extends BackboneModel
                     $this->getProject()->getUrl() . "?tab=activity-management", 
                     true
                 );
+
+                $reviewers = $this->getReviewers();
+                if (isset($reviewers[$assigneeId]) && $reviewers[$assigneeId] !== null) {
+                    $reviewerId = $reviewers[$assigneeId]['id'];
+                    if ($reviewerId != $me->getId()) {
+                        $reviewer = Person::newFromId($reviewerId);
+                        $commentMsg = !empty($comment) ? " Comments: <b>{$comment}</b>" : "";
+                        
+                        Notification::addNotification(
+                            $me, 
+                            $reviewer, 
+                            "New Review Assignment: {$this->task}",
+                            "A new task <b>{$this->task}</b> has been assigned to <b>{$assignee->getNameForForms()}</b>, whom you are reviewing.{$commentMsg}", 
+                            $this->getProject()->getUrl() . "?tab=activity-management", 
+                            true
+                        );
+                    }
+                }
             }
 
         }
@@ -550,8 +565,27 @@ class LIMSTaskPmm extends BackboneModel
                     } else {
                         Notification::addNotification($me, $assignee, "Task Updated", "The task <b>{$this->task}</b> has been updated. Comments: <b>{$comment}</b>", $this->getProject()->getUrl() . "?tab=activity-management", true);
                     }
+
+                    $reviewers = $this->getReviewers();
+                    if (isset($reviewers[$assigneeId]) && $reviewers[$assigneeId] !== null) {
+                        $reviewerId = $reviewers[$assigneeId]['id'];
+                        if ($reviewerId != $me->getId()) {
+                            $reviewer = Person::newFromId($reviewerId);
+                            $commentMsg = $hasComment ? " Comments: <b>{$comment}</b>" : "";
+                            
+                            Notification::addNotification(
+                                $me, 
+                                $reviewer, 
+                                "Task Updated", 
+                                "The task <b>{$this->task}</b> has been updated.{$commentMsg}", 
+                                $this->getProject()->getUrl() . "?tab=activity-management", 
+                                true
+                            );
+                        }
+                    }
                 }
             }
+
             $comment = @$_POST['comments'][$me->getId()];
             if (!empty($comment)) {
                 $leaders = $this->getProject()->getLeaders();
