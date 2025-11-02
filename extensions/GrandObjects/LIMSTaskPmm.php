@@ -324,7 +324,7 @@ class LIMSTaskPmm extends BackboneModel
            
             // Send mail to assignee
             // $assignee = Person::newFromId($this->assignee);
-            // Notification::addNotification($me, $assignee, "Task Created", "The task <b>{$this->task}</b> has been created", $this->getOpportunity()->getContact()->getProject()->getUrl() . "?tab=activity-management", false);
+            // Notification::addNotification($me, $assignee, "Task Created", "The task <b>{$this->task}</b> has been created", $this->getOpportunity()->getContact()->getProject()->getUrl() . "?tab=activities", false);
 
             // Assume $assignees is an array of assignee objects (or IDs, depending on how you store them)
             $assignees = $this->getAssignees();
@@ -335,7 +335,7 @@ class LIMSTaskPmm extends BackboneModel
                     $assignee, 
                     "Task Created", 
                     "The task <b>{$this->task}</b> has been created. Comments: <b>{$comment}</b>", 
-                    $this->getProject()->getUrl() . "?tab=activity-management", 
+                    $this->getProject()->getUrl() . "?tab=activities", 
                     true
                 );
 
@@ -351,7 +351,7 @@ class LIMSTaskPmm extends BackboneModel
                             $reviewer, 
                             "New Review Assignment: {$this->task}",
                             "A new task <b>{$this->task}</b> has been assigned to <b>{$assignee->getNameForForms()}</b>, whom you are reviewing.{$commentMsg}", 
-                            $this->getProject()->getUrl() . "?tab=activity-management", 
+                            $this->getProject()->getUrl() . "?tab=activities", 
                             true
                         );
                     }
@@ -561,9 +561,9 @@ class LIMSTaskPmm extends BackboneModel
                         Your Impact:
                         Your work helps us maintain momentum and reach our goals in collaborative, open team science.
                         The insights or data you provided will guide the next steps for our project and benefit fellow team members.
-                        Comments: <b>{$comment}</b>", $this->getProject()->getUrl() . "?tab=activity-management", true);
+                        Comments: <b>{$comment}</b>", $this->getProject()->getUrl() . "?tab=activities", true);
                     } else {
-                        Notification::addNotification($me, $assignee, "Task Updated", "The task <b>{$this->task}</b> has been updated. Comments: <b>{$comment}</b>", $this->getProject()->getUrl() . "?tab=activity-management", true);
+                        Notification::addNotification($me, $assignee, "Task Updated", "The task <b>{$this->task}</b> has been updated. Comments: <b>{$comment}</b>", $this->getProject()->getUrl() . "?tab=activities", true);
                     }
 
                     $reviewers = $this->getReviewers();
@@ -578,7 +578,7 @@ class LIMSTaskPmm extends BackboneModel
                                 $reviewer, 
                                 "Task Updated", 
                                 "The task <b>{$this->task}</b> has been updated.{$commentMsg}", 
-                                $this->getProject()->getUrl() . "?tab=activity-management", 
+                                $this->getProject()->getUrl() . "?tab=activities", 
                                 true
                             );
                         }
@@ -596,7 +596,7 @@ class LIMSTaskPmm extends BackboneModel
                             $leader,
                             "New Comment on Task: <b>{$this->task}</b>",
                             "Assignee <b>{$me->getNameForForms()}</b> left a comment on the task <b>{$this->task}</b>:<br><b>{$comment}</b>",
-                            $this->getProject()->getUrl() . "?tab=activity-management",
+                            $this->getProject()->getUrl() . "?tab=activities",
                             true
                         );
                     }

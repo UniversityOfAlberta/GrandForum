@@ -90,26 +90,14 @@ class LIMSSendNotifications extends RESTAPI {
             );
         }
 
-        $filterPrefix = '';
-        $filterParts = [];
-
-        $filterLabels = [
-            'taskName' => 'Task Name',
-            'taskType' => 'Task Type',
-            'assigneeStatus' => 'Status'
-        ];
-
-        foreach ($filters as $key => $value) {
-            if (!empty($value)) {
-                $label = isset($filterLabels[$key]) ? $filterLabels[$key] : $key;
-                $filterParts[] = "$label: $value";
-            }
+        $projectName = $project->getName(); 
+        $taskNameFilter = $filters['taskName'] ?? null;
+        
+        $contentPrefix = "Project: <b>{$projectName}</b><br><br>";
+        if ($taskNameFilter) {
+            $contentPrefix .= "Task Name: <b>{$taskNameFilter}</b><br><br>";
         }
-
-        if (!empty($filterParts)) {
-            $filterString = implode(', ', $filterParts);
-            $filterPrefix = "(Filters: " . $filterString . ") ";
-        }
+        $finalEmailContent = $contentPrefix . "---<br><br>" . $emailContent;
 
         $projectLeaders = $project->getLeaders();
         foreach ($projectLeaders as $leader) {
@@ -117,10 +105,9 @@ class LIMSSendNotifications extends RESTAPI {
                 $me, 
                 $leader, 
                 "Email Notification: " . $emailSubject, 
-                $filterPrefix . $emailContent, 
+                $finalEmailContent, 
                 $project->getUrl() . "?tab=activities", 
-                true,
-                $assigneesToNotify
+                true
             );
         }
 
