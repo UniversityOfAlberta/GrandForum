@@ -127,7 +127,7 @@ ProjectTaskView = Backbone.View.extend({
     },
     
     saveAllTasks: function() {
-        var savePromises = [];
+        var tasksToSave = [];
         
         this.tasks.each(function(taskModel) {
             taskModel.unset('displayAssignees');
@@ -140,21 +140,45 @@ ProjectTaskView = Backbone.View.extend({
             
             if (!taskModel.toDelete) {
                 if (taskModel.unsavedAttributes() !== false) {
-                    savePromises.push(taskModel.save(null, {
-                        success: function(){ taskModel.saving = false; },
-                        error: function(){ taskModel.saving = false; }
-                    }));
+                    tasksToSave.push(taskModel);
                 } else {
                     taskModel.saving = false;
                 }
             } else if (!taskModel.isNew()) {
-                savePromises.push(taskModel.destroy({wait: true}));
+                tasksToSave.push(taskModel);
             } else {
                 taskModel.saving = false;
             }
         }, this);
         
-        return $.when.apply(null, savePromises);
+        var savePromise = $.Deferred().resolve();
+        
+        _.each(tasksToSave, function(taskModel) {
+            savePromise = savePromise.then(function() {
+                if (taskModel.toDelete && !taskModel.isNew()) {
+                    return taskModel.destroy({wait: true}).then(
+                        function() { 
+                            console.log("Task deleted:", taskModel.id);
+                        },
+                        function(xhr) {
+                            taskModel.saving = false;
+                            throw new Error(xhr.responseText || "Failed to delete task");
+                        }
+                    );
+                } else {
+                    return taskModel.save(null, {
+                        success: function(){ 
+                            taskModel.saving = false; 
+                        },
+                        error: function(model, xhr){ 
+                            taskModel.saving = false;
+                            throw new Error(xhr.responseText || "Failed to save task");
+                        }
+                    });
+                }
+            });
+        });
+        return savePromise;
     },
     
     cleanup: function() {
