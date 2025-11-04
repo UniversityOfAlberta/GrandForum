@@ -43,6 +43,9 @@
     // ORCID Secret Key
     $config->setValue("orcidSecret", "");
     
+    // Key for aims expert api
+    $config->setValue("aimsExpertApi", "");
+    
     // Localization Cache Directory
     $config->setValue("localizationCache", "");
     

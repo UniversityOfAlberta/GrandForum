@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Confirmation of University Responsibilities - Article A2.01.2" headerName="{$user_reversed_name}" reportType="RP_UNIVERSITY_RESPONSIBILITIES" pdfFiles="UniversityResponsibilitiesPDF" ajax="true">
+    <ReportSection id="form" tooltip="Confirmation of University Responsibilities - Article A2.01.2" name="Responsibilities" title="Confirmation of University Responsibilities - Article A2.01.2" blobSection="FORM" type="EditableReportSection" pagebreak="false">
+        <Static>
+            <![CDATA[
+                <p><i>A2.01.2 The responsibilities of an Academic Faculty member shall include Teaching, Research and Service as described below. [see remainder of Article A2] The proportion of Teaching, Research and Service shall be determined by agreement of the Department Chair and Academic Faculty member for the upcoming academic year, or as set out in the Academic Faculty member’s Letter of Appointment.</i></p><br />
+            ]]>
+        </Static>
+        <ReportItem id="start_date" type="Calendar" blobItem="START_DATE" width="80px">
+            <![CDATA[
+                <p>In accordance with Article A2.01.2, I am writing to confirm the following proportion of University responsibilities for the annual review period[s] of {time2date({$value}, F Y)}
+            ]]>
+        </ReportItem>
+        <ReportItem id="end_date" type="Calendar" blobItem="END_DATE" width="80px">
+            <![CDATA[
+                &nbsp;to {time2date({$value}, F Y)}
+            ]]>
+        </ReportItem>
+        <ReportItem id="role" type="Text" blobItem="ROLE" width="300px">
+            <![CDATA[
+                , during which period you will be holding the role of {$item}.</p>
+            ]]>
+        </ReportItem>
+        <ReportItem id="teaching" type="Integer" blobItem="TEACHING" min="0" max="100" default="40" width="30px">
+            <![CDATA[
+                <table>
+                    <tr><td align='right'>Teaching:</td><td align='right' style='width:3em;'>{$item}%</td></tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="research" type="Integer" blobItem="RESEARCH" min="0" max="100" default="40" width="30px">
+            <![CDATA[
+                    <tr><td align='right'>Research:</td><td align='right'>{$item}%</td></tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="service" type="Integer" blobItem="SERVICE" min="0" max="100" default="20" width="30px">
+            <![CDATA[
+                    <tr><td align='right'>Service:</td><td align='right'>{$item}%</td></tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="admin" type="Integer" blobItem="ADMIN" min="0" max="100" default="0" width="30px">
+            <![CDATA[
+                    <tr><td align='right'>Admin:</td><td align='right'>{$item}%</td></tr>
+                </table>
+            ]]>
+        </ReportItem>
+        <Static>
+            <![CDATA[
+                <p>In accordance with Article A6.13, the Department Chair will review the performance of each Academic Faculty Member in the  year under review in relation to these responsibilities and to the Faculty’s standards of performance.</p><br />
+            ]]>
+        </Static>
+        <If if="{!=({getText(RP_UNIVERSITY_RESPONSIBILITIES,FORM,FACULTY_SIG,0,{$user_id},0)},)}">
+            <ReportItem id="faculty_sig" type="Text" blobItem="FACULTY_SIG">
+                <![CDATA[
+                    <p id='faculty_sig_p'>Signed by <b>{$user_reversed_name}</b> on <span id='faculty_sig_date' style='font-weight: bold;'>{$value}</span></p>
+                ]]>
+            </ReportItem>
+        </If>
+    </ReportSection>
+</Report>
