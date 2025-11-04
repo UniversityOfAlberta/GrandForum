@@ -31,8 +31,18 @@
         return !($person == null || $person->getId() == 0 || $person->isSubRole("NoAR") || (!$person->isRoleDuring(NI, $start, $end1) && !$person->isRoleDuring("ATS", $start, $end1)));
     }
     
+    $cohorts = array();
+    $reviews = array();
     if(getFaculty() == "Engineering"){
         // Sort by Salary
+        foreach(explode("\n", file_get_contents("cohorts.csv")) as $line){
+            $csv = str_getcsv($line);
+            if(is_numeric(@$csv[7])){
+                $emplId = @sprintf("%07d", $csv[7]);
+                $cohorts[$emplId] = $csv[0];
+                $reviews[$emplId] = $csv[1];
+            }
+        } 
         $data = DBFunctions::execSQL("SELECT `user_id`
                                       FROM `grand_user_salaries`
                                       WHERE `year` = '$year'
@@ -114,7 +124,9 @@
         DBFunctions::insert('grand_case_numbers',
                             array('user_id' => $row['person']->getId(),
                                   'year' => $year,
-                                  'number' => $row['case']));
+                                  'number' => $row['case'],
+                                  'number2' => @$cohorts[$row['person']->getEmployeeId()],
+                                  'number3' => @$reviews[$row['person']->getEmployeeId()]));
     }
 
 ?>
