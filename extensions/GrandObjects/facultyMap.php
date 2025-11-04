@@ -58,8 +58,12 @@ $facultyMap = array(
         "Science",
         "Social Sciences"
     ),
+    // Non-Departmental
     "Kinesiology" => array(
         "Kinesiology"
+    ),
+    "Education" => array(
+        "Education"
     )
 );
 
