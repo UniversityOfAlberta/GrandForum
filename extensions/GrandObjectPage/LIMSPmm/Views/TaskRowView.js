@@ -14,11 +14,40 @@ var TaskRowView = Backbone.View.extend({
         this.model.set('isLeaderAllowedToEdit', isPLAllowed);
 
         if (this.isEditMode) {
+            // if (this.model.isNew() && this.model.get('needsReviewerValidation') === undefined) {
+            //     this.model.set('needsReviewerValidation', true);
+            // }
+            if (this.model.get('needsReviewerValidation') === undefined) {
+                this.model.set('needsReviewerValidation', true, { silent: true });
+            }
+            this.listenTo(this.model, "change:needsReviewerValidation", this.handleReviewerCheckboxChange);
             this.listenTo(this.model, "change:assignees", this.handleAssigneeChange);
             this.listenTo(this.model, "change:statuses", this.render);
             this.prepareDisplayState();
             this.model.startTracking();
         }
+    },
+    handleReviewerCheckboxChange: function() {
+        var currentAssignees = this.model.get('assignees') || [];
+        
+        var assigneeIds = _.pluck(currentAssignees, 'id');
+        
+        if (assigneeIds.includes(-1)) {
+            assigneeIds = [-1];
+        }
+
+        var currentReviewers = _.clone(this.model.get('reviewers')) || {};
+        var allMembers = this.project.members.toJSON();
+
+        if (this.model.get('needsReviewerValidation')) {
+            var updatedReviewers = LIMSPmmHelper.assignReviewersToNewUsers(assigneeIds, currentReviewers, allMembers);
+            this.model.set('reviewers', updatedReviewers);
+        } else {
+            this.model.set('reviewers', {});
+        }
+
+        this.prepareDisplayState();
+        this.updateCounts();
     },
 
     events: {
@@ -322,7 +351,10 @@ var TaskRowView = Backbone.View.extend({
 
         var currentReviewers = _.clone(this.model.get('reviewers')) || {};
         var allMembers = this.project.members.toJSON();
-        var updatedReviewers = LIMSPmmHelper.assignReviewersToNewUsers(allAssignees, currentReviewers, allMembers);
+        var updatedReviewers = {}
+        if (this.model.get('needsReviewerValidation')) {
+            updatedReviewers = LIMSPmmHelper.assignReviewersToNewUsers(allAssignees, currentReviewers, allMembers);
+        } 
         this.model.set('reviewers', updatedReviewers);
         this.prepareDisplayState();
         this.updateCounts();
@@ -356,7 +388,6 @@ var TaskRowView = Backbone.View.extend({
             chosenContainer.find('.chosen-choices .search-choice').show();
         }
         assigneesSelect.trigger("chosen:updated");
-
         assigneesSelect.hide();
     },
 

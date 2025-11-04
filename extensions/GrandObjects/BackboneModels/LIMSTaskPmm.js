@@ -28,7 +28,8 @@ LIMSTaskPmm = Backbone.Model.extend({
             reviewers: {},
             commentsHistory: {},
             taskFiles: [],
-            newTaskFile: {}
+            newTaskFile: {},
+            needsreviewerValidation: true
         };
     }
 
