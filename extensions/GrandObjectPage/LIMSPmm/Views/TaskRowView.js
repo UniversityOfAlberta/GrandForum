@@ -48,6 +48,11 @@ var TaskRowView = Backbone.View.extend({
         templateData.isEditMode = this.isEditMode;
         this.$el.html(this.template(templateData));
 
+        var taskId = this.model.get('id');
+        if (taskId) {
+            this.el.id = 'task-' + taskId; 
+        }
+
         if (this.isEditMode) {
             this.renderTinyMCE();
             _.defer(function() {
