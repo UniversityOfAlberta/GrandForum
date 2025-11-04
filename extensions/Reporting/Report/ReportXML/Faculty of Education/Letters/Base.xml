@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report extends="../Letters/Base">
+    <ReportSection id="letter">
+        <ReportItem id="variables">
+            <![CDATA[
+                {set(deanOffice, Office of the Dean<br />
+                                 6-189 Centennial Centre for Interdisciplinary Science &#40;CCIS&#41;<br />
+                                 Edmonton&#44; AB&#44; Canada T6G 2E1)}
+                {set(deanContact, <b>T</b> 780.492.4757<br />
+                                  <b>F</b> 780.492.9434<br />
+                                  dean.science@ualberta.ca<br />
+                                  www.ualberta.ca/science)}
+                {set(hrContact, Lakhan Khara&#44; at sciea@ualberta.ca)}
+                {set(hrEmail, sciea@ualberta.ca)}
+                {set(signature, Signature2.png)}
+                {set(signatureX, Signature.png)}
+                {set(fecChair, Anthony Singhal)}
+                {set(fecChairPos, Vice Dean)}
+                {set(dean, Declan Ali)}
+                {set(promotionDates, November 12 - 15)}
+                {set(fecDates, December 2 - 6)}
+                {set(atsecDates, February 27&#44; {$next_year})}
+                {set(reconsiderationDate, December 4&#44; {$this_year})}
+                {set(contestDate, November 7&#44; {$this_year})}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+</Report>

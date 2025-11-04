@@ -233,11 +233,13 @@
         </ReportItem>
         
         <!-- HQP Supervision -->
-        <ReportItem id="hqpbookmark" type="BookmarkReportItem" title="HQP Supervision">
-            <![CDATA[
-                <h2>HQP Supervision</h2>
-            ]]>
-        </ReportItem>
+        <If if="{or({contains({$my_roles},Faculty)},{>({getHQPCount()}, 0)})}">
+            <ReportItem id="hqpbookmark" type="BookmarkReportItem" title="HQP Supervision">
+                <![CDATA[
+                    <h2>HQP Supervision</h2>
+                ]]>
+            </ReportItem>
+        </If>
         <ReportItemSet id="hqps" type="String" array="phd|msc-thesis|msc-course|ugrad|pdf|visiting|tech|other|committee" labels="Doctoral Students|Master's Students - Thesis|Master's Students - Course|Undergraduates|Post-doctoral Fellows and Research Associates|Visiting Students|Research/Technical Assistants|Other|Student Committee Responsibilities">
             <If if="{>({getHQPCount({getExtra(value)})}, 0)}">
                 <Static>
@@ -1196,127 +1198,129 @@
         <ReportItem id="sabbatical" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="SABBATICAL" blobSection="FEC_ADDITIONAL_INFO" />
         
         <!-- HQP Publications -->
-        <ReportItem id="hqpactivitiesbookmark" type="BookmarkReportItem" title="HQP Activities">
-            <![CDATA[
-                <h2>HQP Activities</h2>
-            ]]>
-        </ReportItem>
-        <ReportItemSet id="hqppublications" type="PersonProductsReportItemSet" category="Publication" useProductYear="true" onlyHQP="true" start="CYCLE_START" end="CYCLE_END">
-            <ReportItemSet type="First">
-                <Static>
+        <If if="{contains({$my_roles},Faculty)}">
+            <ReportItem id="hqpactivitiesbookmark" type="BookmarkReportItem" title="HQP Activities">
+                <![CDATA[
+                    <h2>HQP Activities</h2>
+                ]]>
+            </ReportItem>
+            <ReportItemSet id="hqppublications" type="PersonProductsReportItemSet" category="Publication" useProductYear="true" onlyHQP="true" start="CYCLE_START" end="CYCLE_END">
+                <ReportItemSet type="First">
+                    <Static>
+                        <![CDATA[
+                            <h3>Publications</h3>
+                            <small>italic = <i>PDF/research associate</i>; bold = <b>graduate student</b>; underline = <u>undergraduate student</u>; light grey/underline = <span style='padding: 1px 3px; border-radius: 3px; background: #dfdfdf; text-decoration: underline;'>the AR owner</span>; light grey = <span style='padding: 1px 3px; border-radius: 3px; background: #dfdfdf;'>other UofA faculty member</span></small>
+                            <ul>
+                        ]]>
+                    </Static>
+                </ReportItemSet>
+                <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" blobSection="FEC_STUDENTS">
                     <![CDATA[
-                        <h3>Publications</h3>
-                        <small>italic = <i>PDF/research associate</i>; bold = <b>graduate student</b>; underline = <u>undergraduate student</u>; light grey/underline = <span style='padding: 1px 3px; border-radius: 3px; background: #dfdfdf; text-decoration: underline;'>the AR owner</span>; light grey = <span style='padding: 1px 3px; border-radius: 3px; background: #dfdfdf;'>other UofA faculty member</span></small>
-                        <ul>
+                        <li style="page-break-inside: avoid;">
+                            {$item} 
                     ]]>
-                </Static>
-            </ReportItemSet>
-            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" blobSection="FEC_STUDENTS">
-                <![CDATA[
-                    <li style="page-break-inside: avoid;">
-                        {$item} 
-                ]]>
-            </ReportItem>
-            <ReportItem id="annotation" type="AnnotateProductReportItem" blobSection="FEC_STUDENTS" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" optional="true">
-                <![CDATA[
-                        <b>({$product_type})</b> {$item}
-                    </li>
-                ]]>
-            </ReportItem>
-            <ReportItemSet type="Last">
-                <Static>
+                </ReportItem>
+                <ReportItem id="annotation" type="AnnotateProductReportItem" blobSection="FEC_STUDENTS" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" optional="true">
                     <![CDATA[
-                        </ul>
+                            <b>({$product_type})</b> {$item}
+                        </li>
                     ]]>
-                </Static>
+                </ReportItem>
+                <ReportItemSet type="Last">
+                    <Static>
+                        <![CDATA[
+                            </ul>
+                        ]]>
+                    </Static>
+                </ReportItemSet>
             </ReportItemSet>
-        </ReportItemSet>
-        
-        <!-- HQP Publications Footnotes -->
-        <Static>
-            <![CDATA[
-                <ul>
-            ]]>
-        </Static>
-        <ReportItemSet id="hqppublications" type="PersonProductsReportItemSet" category="Publication" useProductYear="true" onlyHQP="true" start="CYCLE_START" end="CYCLE_END">
-            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" isTopAnchor="false" blobSection="FEC_STUDENTS">
+            
+            <!-- HQP Publications Footnotes -->
+            <Static>
                 <![CDATA[
-                    <li style="page-break-inside: avoid;">
-                        {$item}
-                    </li>
+                    <ul>
                 ]]>
-            </ReportItem>
-        </ReportItemSet>
-        <Static>
-            <![CDATA[
-                </ul>
-            ]]>
-        </Static>
-        
-        <!-- HQP Presentations -->
-        <ReportItemSet id="hqppresentations" type="PersonProductsReportItemSet" category="Presentation" useProductYear="true" onlyHQP="true" start="CYCLE_START" end="CYCLE_END">
-            <ReportItemSet type="First">
-                <Static>
+            </Static>
+            <ReportItemSet id="hqppublications" type="PersonProductsReportItemSet" category="Publication" useProductYear="true" onlyHQP="true" start="CYCLE_START" end="CYCLE_END">
+                <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" isTopAnchor="false" blobSection="FEC_STUDENTS">
                     <![CDATA[
-                        <h3>Presentations</h3>
-                        <table class='wikitable' frame='box' rules='all' width='100%'>
-                            <thead>
-                                <tr>
-                                    <th style='width:30%;'>Title</th>
-                                    <th>Type</th>
-                                    <th>HQP/Contributors</th>
-                                    <th style='width:1%;'>Invited</th>
-                                    <th>Event/Organization</th>
-                                    <th>Location</th>
-                                    <th style='width:1%;'>Date</th>
-                                    <th style='width:1%;'>Length (minutes)</th>
-                                </tr>
-                            </thead>
+                        <li style="page-break-inside: avoid;">
+                            {$item}
+                        </li>
                     ]]>
-                </Static>
+                </ReportItem>
             </ReportItemSet>
-            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" blobSection="FEC_STUDENTS">
+            <Static>
                 <![CDATA[
-                    <tr><td align='left'>{$presentation_title} <sup>{$item}</sup></td>
-                        <td align='center'>{$presentation_type}</td>
-                        <td>{product_authors(true)}{if("{product_contributors(true)}" != "", <hr />{product_contributors(true)})}</td>
-                        <td align='center'>{$presentation_invited}</td>
-                        <td>{if("{getProductData(event_title)}" != "", {getProductData(event_title)}<br />)}{$presentation_organization}</td>
-                        <td align='center'>{$presentation_country}</td>
-                        <td align='center' style='white-space:nowrap;'>{$presentation_date}</td>
-                        <td align='right' style='white-space:nowrap;'>{$presentation_length}</td>
-                    </tr>
+                    </ul>
                 ]]>
-            </ReportItem>
-            <ReportItemSet type="Last">
-                <Static>
+            </Static>
+            
+            <!-- HQP Presentations -->
+            <ReportItemSet id="hqppresentations" type="PersonProductsReportItemSet" category="Presentation" useProductYear="true" onlyHQP="true" start="CYCLE_START" end="CYCLE_END">
+                <ReportItemSet type="First">
+                    <Static>
+                        <![CDATA[
+                            <h3>Presentations</h3>
+                            <table class='wikitable' frame='box' rules='all' width='100%'>
+                                <thead>
+                                    <tr>
+                                        <th style='width:30%;'>Title</th>
+                                        <th>Type</th>
+                                        <th>HQP/Contributors</th>
+                                        <th style='width:1%;'>Invited</th>
+                                        <th>Event/Organization</th>
+                                        <th>Location</th>
+                                        <th style='width:1%;'>Date</th>
+                                        <th style='width:1%;'>Length (minutes)</th>
+                                    </tr>
+                                </thead>
+                        ]]>
+                    </Static>
+                </ReportItemSet>
+                <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" blobSection="FEC_STUDENTS">
                     <![CDATA[
-                        </table><br />
+                        <tr><td align='left'>{$presentation_title} <sup>{$item}</sup></td>
+                            <td align='center'>{$presentation_type}</td>
+                            <td>{product_authors(true)}{if("{product_contributors(true)}" != "", <hr />{product_contributors(true)})}</td>
+                            <td align='center'>{$presentation_invited}</td>
+                            <td>{if("{getProductData(event_title)}" != "", {getProductData(event_title)}<br />)}{$presentation_organization}</td>
+                            <td align='center'>{$presentation_country}</td>
+                            <td align='center' style='white-space:nowrap;'>{$presentation_date}</td>
+                            <td align='right' style='white-space:nowrap;'>{$presentation_length}</td>
+                        </tr>
                     ]]>
-                </Static>
+                </ReportItem>
+                <ReportItemSet type="Last">
+                    <Static>
+                        <![CDATA[
+                            </table><br />
+                        ]]>
+                    </Static>
+                </ReportItemSet>
             </ReportItemSet>
-        </ReportItemSet>
-        
-        <!-- HQP Presentations Footnotes -->
-        <Static>
-            <![CDATA[
-                <ul>
-            ]]>
-        </Static>
-        <ReportItemSet id="hqppresentations" type="PersonProductsReportItemSet" category="Presentation" useProductYear="true" onlyHQP="true" start="CYCLE_START" end="CYCLE_END">
-            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" isTopAnchor="false" blobSection="FEC_STUDENTS">
+            
+            <!-- HQP Presentations Footnotes -->
+            <Static>
                 <![CDATA[
-                    <li style="page-break-inside: avoid;">
-                        {$item}
-                    </li>
+                    <ul>
                 ]]>
-            </ReportItem>
-        </ReportItemSet>
-        <Static>
-            <![CDATA[
-                </ul>
-            ]]>
-        </Static>
+            </Static>
+            <ReportItemSet id="hqppresentations" type="PersonProductsReportItemSet" category="Presentation" useProductYear="true" onlyHQP="true" start="CYCLE_START" end="CYCLE_END">
+                <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}" isTopAnchor="false" blobSection="FEC_STUDENTS">
+                    <![CDATA[
+                        <li style="page-break-inside: avoid;">
+                            {$item}
+                        </li>
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+            <Static>
+                <![CDATA[
+                    </ul>
+                ]]>
+            </Static>
+        </If>
 
         <!-- Only Used to Mark Products as Submitted -->
         <ReportItemSet id="submit1" type="PersonProductsReportItemSet" category="Publication" submitProductYear="true" useProductYear="true" includeHQP="true" start="CYCLE_START" end="CYCLE_END" />

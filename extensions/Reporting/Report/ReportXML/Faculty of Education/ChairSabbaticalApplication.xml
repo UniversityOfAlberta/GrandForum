@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name=" " title=" " headerName=" " reportType="RP_SABBATICAL_CHAIR" pdfType="RP_SABBATICAL_CHAIR" pdfFiles="ChairSabbaticalApplication" personId="0" ajax="true">
+    <Permissions>
+        <Role role="Chair">
+            <SectionPermission id="sabbatical" permissions="rw" />
+        </Role>
+    </Permissions>
+    <ReportSection id="sabbatical" tooltip="Sabbatical Application" name="Sabbatical Application" title="Sabbatical Application" blobSection="SABBATICAL" type="EditableReportSection" pagebreak="false">
+        <ReportItemSet type="PersonReportItemSet" userId="{GET(userId)}">
+            <Static>
+                <![CDATA[
+                    <table style='white-space:nowrap;'>
+                        <tr>
+                            <td><b>Email:&nbsp;</b></td>
+                            <td>{$user_email}</td>
+                        </tr>
+                        <tr>
+                            <td><b>First name:&nbsp;</b></td>
+                            <td>{$user_first_name}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Last name:&nbsp;</b></td>
+                            <td>{$user_last_name}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Rank:&nbsp;</b></td>
+                            <td>{$user_level}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Department:&nbsp;</b></td>
+                            <td>{$user_depts}</td>
+                        </tr>
+                    </table>
+                    <div id='length'>
+                        <h3>Length of Requested Sabbatical</h3>
+                        {getText(RP_SABBATICAL, SABBATICAL, LENGTH, 0, {$user_id}, 0)}<br />
+                    </div>
+                    <div id='start6' class='{if("{getText(RP_SABBATICAL, SABBATICAL, LENGTH, 0, {$user_id}, 0)}" == "12 months", pdfnodisplay)}'>
+                        <h3>Start Date</h3>
+                        {getText(RP_SABBATICAL, SABBATICAL, START6, 0, {$user_id}, 0)}<br />
+                    </div>
+                    <div id='start12' class='{if("{getText(RP_SABBATICAL, SABBATICAL, LENGTH, 0, {$user_id}, 0)}" == "6 months", pdfnodisplay)}'>
+                        <h3>Start Date</h3>
+                        {getText(RP_SABBATICAL, SABBATICAL, START12, 0, {$user_id}, 0)}<br />
+                    </div>
+                    <br />
+                    <h2>Eligibility</h2>
+                    <div id='eligibility1'>
+                        <h3>Is this your first career sabbatical?</h3>
+                        {getText(RP_SABBATICAL, SABBATICAL, ELIGIBILITY1, 0, {$user_id}, 0)}<br />
+                    </div>
+                    <div id='eligibility2' class='{if("{getText(RP_SABBATICAL, SABBATICAL, ELIGIBILITY1, 0, {$user_id}, 0)}" == "Yes", pdfnodisplay)}'>
+                        <h3>How many years of eligibility have you accumulated since your last sabbatical?</h3>
+                        {getText(RP_SABBATICAL, SABBATICAL, ELIGIBILITY2, 0, {$user_id}, 0)}<br />
+                        
+                        <h3>When was your last sabbatical?</h3>
+                        {getText(RP_SABBATICAL, SABBATICAL, ELIGIBILITY2_START, 0,{$user_id}, 0)}&nbsp;-&nbsp;{getText(RP_SABBATICAL, SABBATICAL, ELIGIBILITY2_END, 0, {$user_id}, 0)}
+                    </div>
+                    
+                    <br />
+                    <h2>Sabbatical Plan Details</h2>
+                    <div class='pdfnodisplay'>
+                        <p>To facilitate the evaluation of your sabbatical application, please provide a response to the following questions, ensuring your submission <b>does not exceed 500 words.</b></p>
+
+                        <ol style='font-weight: bold; font-style: italic;'>
+                            <li>What will you do and why will this be significant for your career and/or discipline?</li>
+                            <li>How will this advance your program of research?</li>
+                            <li>What are the expected outcomes of your proposed Sabbatical program?</li>
+                            <li>What is the general timeline of your proposed Sabbatical program?</li>
+                            <li>Have any special circumstances delayed or interrupted your career or your record of research/creative achievements since your last sabbatical leave?</li>
+                        </ol>
+                    </div>
+                    {getText(RP_SABBATICAL, SABBATICAL, PLAN1, 0, {$user_id}, 0)}<br />
+                    
+                    <h3>Are you currently supervising graduate students?</h3>
+                    {getText(RP_SABBATICAL, SABBATICAL, PLAN2, 0, {$user_id}, 0)}<br />
+                    
+                    <h3>What measures have been put in place to ensure effective supervision of graduate students during the sabbatical leave period?</h3>
+                    {getText(RP_SABBATICAL, SABBATICAL, PLAN3, 0, {$user_id}, 0)}<br />
+                    
+                    <h3>During your sabbatical leave, (if needed) to whom will you delegate your projects and any HCM/Peoplesoft approvals?</h3>
+                    {getText(RP_SABBATICAL, SABBATICAL, PLAN4, 0, {$user_id}, 0)}<br />
+                    
+                    <h3>If you have encountered any exceptional circumstances pertaining to your sabbatical application, such as deferrals, scheduling concerns, or eligibility issues, kindly provide an explanation and upload any pertinent supporting documentation below.</h3>
+                    {getText(RP_SABBATICAL, SABBATICAL, PLAN5, 0, {$user_id}, 0)}<br />
+                    
+                    <h3><a href='https://docs.google.com/document/d/1LFWE5f17Hud-PnKWFTAWoXK14NoBQUfV/edit?usp=sharing&ouid=115917600404000312422&rtpof=true&sd=true' target='_blank'>Template Sabbatical Agreement (Academic)</a></h3>
+                    {getArray(RP_SABBATICAL, SABBATICAL, PLAN6, 0, {$user_id}, 0, plan6)}<br />
+                ]]>
+            </Static>
+
+            <ReportItem id="plan7" type="Upload" blobReport="RP_SABBATICAL" blobType="BLOB_RAW" blobItem="PLAN7" personId="{$user_id}" mimeType=".pdf" fileSize="10" optional="true">
+                <![CDATA[
+                    <h3>Please consolidate all supporting documentation, including the above mentioned <a href='https://docs.google.com/document/d/1LFWE5f17Hud-PnKWFTAWoXK14NoBQUfV/edit?usp=sharing&ouid=115917600404000312422&rtpof=true&sd=true' target='_blank'>Sabbatical Agreement</a> into ONE SINGLE PDF file. Ensure that the file name includes your first and last name for clarity.</h3>
+                    {$item}<br />
+                ]]>
+            </ReportItem>
+            <Static>
+                <![CDATA[
+                    <hr />
+                    <h1>Chair's Decision</h1>
+                    <p>{getText(RP_CHAIR, FEC_SABBATICAL, DECISION, {$user_id}, 0, 0)}</p>
+                    <br />
+                    <p>{getText(RP_CHAIR, FEC_SABBATICAL, COMMENTS, {$user_id}, 0, 0)}</p>
+                ]]>
+            </Static>
+        </ReportItemSet>
+    </ReportSection>
+</Report>

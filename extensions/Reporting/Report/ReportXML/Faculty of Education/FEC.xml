@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report pdfFiles="FECpdf" extends="../FEC">
+    <ReportSection id="information">
+        <ReportItem id="executive_summary" type="Textarea" blobItem="EXECUTIVE_SUMMARY" rich="true" after="top">
+            <![CDATA[
+                <h2>Executive Summary</h2>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="if_faculty" if="0" />
+        <ReportItem id="showReducedTeaching" if="0" />
+        
+        <If if="1" after="if_faculty">
+            <Static>
+                <![CDATA[
+                    <h2>Variance of Responsibilities</h2>
+                ]]>
+            </Static>
+            <ReportItem id="teaching" type="Text" blobItem="TEACHING" width="2em">
+                <![CDATA[
+                    <table>
+                        <tr><td align='right'><b>Teaching:</b></td><td align='right' style='width:3em;white-space:nowrap;'>{$item}%</td></tr>
+                ]]>
+            </ReportItem>
+            <ReportItem id="research" type="Text" blobItem="RESEARCH" width="2em">
+                <![CDATA[
+                        <tr><td align='right'><b>Research:</b></td><td align='right' style='width:3em;white-space:nowrap;'>{$item}%</td></tr>
+                ]]>
+            </ReportItem>
+            <ReportItem id="service" type="Text" blobItem="SERVICE" width="2em">
+                <![CDATA[
+                        <tr><td align='right'><b>Service:</b></td><td align='right' style='width:3em;white-space:nowrap;'>{$item}%</td></tr>
+                ]]>
+            </ReportItem>
+            <ReportItem id="admin" type="Text" blobItem="ADMIN" width="2em">
+                <![CDATA[
+                        <tr><td align='right'><b>Admin:</b></td><td align='right' style='width:3em;white-space:nowrap;'>{$item}%</td></tr>
+                    </table>
+                ]]>
+            </ReportItem>
+        </If>
+    </ReportSection>
+</Report>
