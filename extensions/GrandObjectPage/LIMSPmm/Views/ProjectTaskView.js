@@ -119,11 +119,51 @@ ProjectTaskView = Backbone.View.extend({
             }
         }, this);
 
+        this.scrollToHash();
         this.$('#project-tasks-table').DataTable({
             iDisplayLength: 100
         });
         
         return this;
+    },
+   scrollToHash: function() {
+        var hash = window.location.hash;
+
+        if (hash && hash.startsWith('#task-')) {
+            _.defer(function() {
+                try {
+                    var element = $(hash)[0]; 
+                    
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+                        var $element = $(element);
+                        var blinkCount = 0;
+                        var maxBlinks = 6;
+                        
+                        $element.css('outline-offset', '2px');
+
+                        var blinkInterval = setInterval(function() {
+                            if (blinkCount % 2 === 0) {
+                                $element.css('outline', '3px solid #E0115F');
+                            } else {
+                                $element.css('outline', 'none');
+                            }
+                            
+                            blinkCount++;
+                            
+                            if (blinkCount >= maxBlinks) {
+                                clearInterval(blinkInterval);
+                                $element.css('outline', 'none');
+                                $element.css('outline-offset', '');
+                            }
+                        }, 500);
+                    }
+                } catch (e) {
+                    console.error("Error scrolling to hash:", e);
+                }
+            });
+        }
     },
     
     saveAllTasks: function() {
@@ -137,7 +177,11 @@ ProjectTaskView = Backbone.View.extend({
             taskModel.unset('displayComments');
             
             taskModel.saving = true;
-            
+            var taskName = taskModel.get('task');
+            if (!taskName || taskName.trim() === '') {
+                taskModel.toDelete = true;
+                console.log('Task name cannot be empty.');
+            }
             if (!taskModel.toDelete) {
                 if (taskModel.unsavedAttributes() !== false) {
                     tasksToSave.push(taskModel);
