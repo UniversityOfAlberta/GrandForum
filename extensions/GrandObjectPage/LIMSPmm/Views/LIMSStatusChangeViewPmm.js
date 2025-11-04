@@ -18,13 +18,19 @@ LIMSStatusChangeViewPmm = Backbone.View.extend({
     handleFileChange: function() {
         var displayFiles = this.model.get('displayFiles') || {};
         var displayStatuses = _.clone(this.model.get('displayStatuses')) || {};
+        var autoReviewIsOn = this.model.get('needsReviewerValidation');
 
         for (assigneeId in displayFiles) {
             var fileInfo = displayFiles[assigneeId];
             var changed = false;
+            var fileWasAdded = fileInfo && !_.isEmpty(fileInfo.data) && !fileInfo.delete;
 
-            if (displayStatuses[assigneeId] === 'Assigned' && fileInfo && !_.isEmpty(fileInfo.data) && !fileInfo.delete) {
-                displayStatuses[assigneeId] = 'Done';
+            if (displayStatuses[assigneeId] === 'Assigned' && fileWasAdded) {
+                if (autoReviewIsOn) {
+                    displayStatuses[assigneeId] = 'Done';
+                } else {
+                    displayStatuses[assigneeId] = 'Closed';
+                }
                 changed = true;
             }
 
