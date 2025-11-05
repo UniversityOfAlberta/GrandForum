@@ -112,11 +112,12 @@
             <description ccv_id="1167905d079c4400ae7a4a76a203a445" ccv_name="Description / Contribution Value" label="Comments"></description>
         </Publication>
         
-        <Publication type="Article in popular media">
+        <Publication type="Article in popular media or blog">
             <title ccv_id="f3fd4878d47c4e83aef6959620ba4870" ccv_name="Article Title"></title>
             <data>
                 <field label="Type of Media">type</field>
                 <field ccv_id="0c357193a93f4137a87394401ac81958" ccv_name="Publisher" bibtex="publisher" label="Publisher" type="String">publisher</field>
+                <field label="Name of Publication" type="String">publication</field>
                 <field ccv_id="478545acac5340c0a73b7e0d2a4bee06" ccv_name="URL" ccvtk="url" bibtex="url" label="Article URL" type="URL">url</field>
                 <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
             </data>
