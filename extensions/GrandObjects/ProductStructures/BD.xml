@@ -3,23 +3,6 @@
 
     <!-- Publications -->
     <Publications category="Publication">
-        <Publication type="Bachelor Thesis" ccv_id="88eee2e0553d47a5a0968a00084913cb" ccv_name="Supervised Student Publications">
-            <title ccv_id="d4a704abd690462589a1a259508cc1d8" ccv_name="Publication Title"></title>
-            <data>
-                <field bibtex="school" label="University" type="String">university</field>
-                <field label="Department" type="String">department</field>
-                <field label="Database or Archive Name" type="String">database</field>
-                <field bibtex="isbn" label="ISBN" type="String">isbn</field>
-                <field bibtex="issn" label="ISSN" type="String">issn</field>
-                <field bibtex="doi" label="Publication DOI" type="DOI">doi</field>
-                <field ccv_id="6f1c66fc402d4b0db3d9987e2c5d49e8" ccv_name="URL" bibtex="url" label="Publication URL" type="URL">url</field>
-                <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
-            </data>
-            <date ccv_id="c114eabcd4674f3c9467b2bf6820cbd6" ccv_name="Date"></date>
-            <authors ccv_id="5bc7b0b361f843d296e0e035b4b87176" ccv_name="Student"></authors>
-            <description ccv_id="959146d3ae8d4e4f9747bc0697adb5f5" ccv_name="Description / Contribution Value" label="Comments"></description>
-        </Publication>
-
         <Publication type="Book" ccv_id="4ef4df71a505469788b587f1a509eadf" ccv_name="Books">
             <title ccv_id="ef406ccb1fcc45d1b096380119649200" ccv_name="Book Title"></title>
             <data>
@@ -71,27 +54,6 @@
         </Publication>
 
         <Publication type="Peer-Reviewed Journal Article" ccv_id="9a34d6b273914f18b2273e8de7c48fd6" ccv_name="Journal Articles" status="|Under Review|Accepted">
-            <title ccv_id="f3fd4878d47c4e83aef6959620ba4870" ccv_name="Article Title"></title>
-            <data>
-                <field ccv_id="5c04ea4dae464499807d0b40b4cad049" ccv_name="Journal" ccvtk="journal" bibtex="journal" label="Journal" type="String">published_in</field>
-                <field ccv_id="5c04ea4dae464499807d0b40b4cad049" ccv_name="Journal" label="Journal" type="String" hidden="true">journal_title</field>
-                <field ccv_id="0a826c656ff34e579dfcbfb373771260" ccv_name="Volume" ccvtk="volume" bibtex="volume" label="Volume" type="String">volume</field>
-                <field ccv_id="cc1d9e14945b4e8496641dbe22b3448a" ccv_name="Issue" ccvtk="number" bibtex="number" label="Issue" type="String">number</field>
-                <field ccv_id="00ba1799ece344dc8d0779a3f05a4df8" ccv_name="Page Range" ccvtk="pages" bibtex="pages" label="Page Range" type="String">pages</field>
-                <field ccv_id="4ad593960aba4a21bf154fa8daf37f9f" ccv_name="Publisher" ccvtk="publisher" bibtex="publisher" label="Publisher" type="String">publisher</field>
-                <field ccv_id="707a6e0ca58341a5a82fb923b2842530" ccv_name="Editors" ccvtk="editors" label="Editors" type="String">editors</field>
-                <field bibtex="isbn" label="ISBN" type="String">isbn</field>
-                <field bibtex="issn" label="ISSN" type="String">issn</field>
-                <field bibtex="doi" label="Publication DOI" type="DOI">doi</field>
-                <field ccv_id="478545acac5340c0a73b7e0d2a4bee06" ccv_name="URL" ccvtk="url" bibtex="url" label="Publication URL" type="URL">url</field>
-                <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
-            </data>
-            <date ccv_id="6fafe258e19e49a7884428cb49d75424" ccv_name="Date"></date>
-            <authors ccv_id="bc3b428d99384b04bb749311bb804e1d" ccv_name="Authors"></authors>
-            <description ccv_id="1167905d079c4400ae7a4a76a203a445" ccv_name="Description / Contribution Value" label="Comments"></description>
-        </Publication>
-        
-        <Publication type="Article in professional or trade journals" ccv_id="9a34d6b273914f18b2273e8de7c48fd6" ccv_name="Journal Articles">
             <title ccv_id="f3fd4878d47c4e83aef6959620ba4870" ccv_name="Article Title"></title>
             <data>
                 <field ccv_id="5c04ea4dae464499807d0b40b4cad049" ccv_name="Journal" ccvtk="journal" bibtex="journal" label="Journal" type="String">published_in</field>
