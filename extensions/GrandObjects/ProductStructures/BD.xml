@@ -89,7 +89,7 @@
             <description ccv_id="c93cca57add34f15abd9fd72eb862757" ccv_name="Description / Contribution Value" label="Comments"></description>
         </Publication>
 
-        <Publication type="Conference Proceedings" ccv_id="4b9f909503cd4c8aa8d826c87d6d874d" ccv_name="Conference Publications">
+        <Publication type="Conference Paper" ccv_id="4b9f909503cd4c8aa8d826c87d6d874d" ccv_name="Conference Publications">
             <pub_type ccv_id="81ef87c09ded47ae8880b8d79e83406f" ccv_name="Conference Publication Type">
                 <type lov_id="00000000000000000000000100007000">Paper</type>
             </pub_type>
