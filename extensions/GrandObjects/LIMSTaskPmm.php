@@ -22,6 +22,8 @@ class LIMSTaskPmm extends BackboneModel
     var $reviewers;
     var $taskType;
     var $commentsHistory;
+    var $taskFiles;
+    var $newTaskFile;
 
     static function newFromId($id)
     {
@@ -122,6 +124,16 @@ class LIMSTaskPmm extends BackboneModel
                 $file['url'] = "{$wgServer}{$wgScriptPath}/index.php?action=api.limstaskpmm/{$this->id}/files/{$file['id']}";
                 $this->files[$file['assignee']] = $file;
             }
+            $taskFiles = DBFunctions::select(
+                array('grand_pmm_files'),
+                array('id', 'filename', 'type'),
+                array('task_id' => $this->id)
+            );
+            foreach($taskFiles as $file){
+                $file['data'] = '';
+                $file['url'] = "{$wgServer}{$wgScriptPath}/index.php?action=api.limstaskpmm/{$this->id}/taskfiles/{$file['id']}";
+                $this->taskFiles[] = $file;
+            }
             $existingComments = DBFunctions::select(array('grand_pmm_task_assignees_comments'),
                                          array('*'),
                                          array('task_id' => $this->id),
@@ -153,6 +165,16 @@ class LIMSTaskPmm extends BackboneModel
                                         array('id' => $id,
                                               'task_id' => $this->id));
             return @$file[0];
+        }
+        return "";
+    }
+
+    function getTaskFile($id){
+        if($this->isAllowedToView()){
+            $file = DBFunctions::select(array('grand_pmm_files'),
+                                        array('*'),
+                                        array('id' => $id));
+            return $file;
         }
         return "";
     }
@@ -266,11 +288,16 @@ class LIMSTaskPmm extends BackboneModel
                 'isAllowedToEdit' => $this->isAllowedToEdit(),
                 'files' => $this->getFiles(),
                 'reviewers' => $this->getReviewers(),
-                'commentsHistory' => $this->getCommentsHistory()
+                'commentsHistory' => $this->getCommentsHistory(),
+                'taskFiles' => $this->getTaskFiles(),
             );
             return $json;
         }
         return array();
+    }
+
+    function getTaskFiles() {
+        return $this->taskFiles;
     }
 
     function create()
@@ -320,6 +347,7 @@ class LIMSTaskPmm extends BackboneModel
 
             $this->addComments((int)$me->getId());
             $this->uploadFiles();
+            $this->uploadTaskFiles();
 
            
             // Send mail to assignee
@@ -357,7 +385,31 @@ class LIMSTaskPmm extends BackboneModel
                     }
                 }
             }
+        }
+    }
 
+    function uploadTaskFiles() {
+        if (isset($this->newTaskFile) && isset($this->newTaskFile->data) && $this->newTaskFile->data != '') {
+            DBFunctions::insert('grand_pmm_files',
+                array(
+                    'task_id' => $this->id,
+                    'filename' => $this->newTaskFile->filename,
+                    'type' => $this->newTaskFile->type,
+                    'data' => $this->newTaskFile->data
+                )
+            );
+        }
+        if (isset($this->taskFiles)) {
+            foreach($this->taskFiles as $file) {
+                if (isset($file->delete) && $file->delete == true && isset($file->id)) {
+                    DBFunctions::delete('grand_pmm_files', 
+                        array(
+                            'id' => $file->id,
+                            'task_id' => $this->id
+                        )
+                    );
+                }
+            }
         }
     }
 
@@ -453,6 +505,7 @@ class LIMSTaskPmm extends BackboneModel
                 'grand_pmm_task_assignees',
                 array('task_id' => $this->id)
             );
+            $this->uploadTaskFiles();
 
             $this->reviewers = isset($this->reviewers) ? (array)$this->reviewers : [];
             $isLeader = $this->getProject()->isAllowedToEdit();

@@ -26,7 +26,9 @@ LIMSTaskPmm = Backbone.Model.extend({
             isAllowedToEdit: true,
             files: {},
             reviewers: {},
-            commentsHistory: {}
+            commentsHistory: {},
+            taskFiles: [],
+            newTaskFile: {}
         };
     }
 
