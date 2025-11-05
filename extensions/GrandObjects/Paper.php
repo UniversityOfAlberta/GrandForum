@@ -81,11 +81,21 @@ class Paper extends BackboneModel{
         $bibtex_id = DBFunctions::escape($bibtex_id);
         $sql = "SELECT *
                 FROM grand_products
-                WHERE (bibtex_id = '{$bibtex_id}' OR data LIKE '%{$bibtex_id}\"%')
+                WHERE (bibtex_id = '{$bibtex_id}')
                 AND (access_id = '{$me->getId()}' OR access_id = 0)
                 AND (access = 'Public' OR (access = 'Forum' AND ".intVal($me->isLoggedIn())."))
                 LIMIT 1";
         $data = DBFunctions::execSQL($sql);
+        if(count($data) == 0){
+            // This is way slower, so only do it if entry wasn't found in bibtex_id
+            $sql = "SELECT *
+                    FROM grand_products
+                    WHERE (data LIKE '%{$bibtex_id}\"%')
+                    AND (access_id = '{$me->getId()}' OR access_id = 0)
+                    AND (access = 'Public' OR (access = 'Forum' AND ".intVal($me->isLoggedIn())."))
+                    LIMIT 1";
+            $data = DBFunctions::execSQL($sql);
+        }
         $paper = new Paper($data);
         
         if(!$paper->canView()){
