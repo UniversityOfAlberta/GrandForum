@@ -36,22 +36,6 @@
             <authors ccv_id="5bc7b0b361f843d296e0e035b4b87176" ccv_name="Authors"></authors>
             <description ccv_id="959146d3ae8d4e4f9747bc0697adb5f5" ccv_name="Description / Contribution Value" label="Comments"></description>
         </Publication>
-        
-        <Publication type="Edited Volume">
-            <title ccv_id="ef406ccb1fcc45d1b096380119649200" ccv_name="Book Title"></title>
-            <data>
-                <field ccv_id="5dbf3f3754c74f96bbf056939513eb8c" ccv_name="Publisher" bibtex="publisher" label="Publisher" type="String">publisher</field>
-                <!--field>address</field--> <!-- In some entried in DB, but not in UI -->
-                <field bibtex="isbn" label="ISBN" type="String">isbn</field>
-                <field bibtex="issn" label="ISSN" type="String">issn</field>
-                <field bibtex="doi" label="Publication DOI" type="DOI">doi</field>
-                <field ccv_id="6cb3f8ab7d7a435bb0b12847756a635d" ccv_name="URL" bibtex="url" label="Publication URL" type="URL">url</field>
-                <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
-            </data>
-            <date ccv_id="b9156e483a5a42a3b49d5ee599c73aee" ccv_name="Date"></date>
-            <authors ccv_id="e555fb44aaf14740b880693b01603a35" ccv_name="Authors"></authors>
-            <description ccv_id="6480fa19889345619e778b394ad1445e" ccv_name="Description / Contribution Value" label="Comments"></description>
-        </Publication>
 
         <Publication type="Peer-Reviewed Journal Article" ccv_id="9a34d6b273914f18b2273e8de7c48fd6" ccv_name="Journal Articles" status="|Under Review|Accepted">
             <title ccv_id="f3fd4878d47c4e83aef6959620ba4870" ccv_name="Article Title"></title>
