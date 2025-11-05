@@ -2,23 +2,23 @@
 
 class ImportBibTeXAPI extends API{
 
-    static $bibtexHash = array('proceedings' => array('Proceedings Paper', 'Conference Proceedings'),
-                               'inproceedings' => array('Proceedings Paper', 'Conference Proceedings'),
-                               'inbook' => array('Proceedings Paper', 'Conference Proceedings'),
-                               'conference' => array('Conference Paper', 'Conference Proceedings'),
+    static $bibtexHash = array('proceedings' => array('Proceedings Paper', 'Conference Proceedings', 'Conference Paper'),
+                               'inproceedings' => array('Proceedings Paper', 'Conference Proceedings', 'Conference Paper'),
+                               'inbook' => array('Proceedings Paper', 'Conference Proceedings', 'Conference Paper'),
+                               'conference' => array('Conference Paper', 'Conference Proceedings', 'Conference Paper'),
                                'book' => 'Book',
                                'article' => array('Journal Paper', 'Scholarly Refereed Journal', 'Peer-Reviewed Journal Article'),
                                'collection' => array('Collections Paper', 'Journal Paper', 'Scholarly Refereed Journal', 'Peer-Reviewed Journal Article'),
                                'incollection' => array('Collections Paper', 'Journal Paper', 'Scholarly Refereed Journal', 'Peer-Reviewed Journal Article'),
                                'manual' => 'Manual',
-                               'mastersthesis' => array('Masters Thesis', 'Master Thesis'),
-                               'bachelorsthesis' => array('Bachelors Thesis', 'Bachelor Thesis'),
-                               'phdthesis' => array('PHD Thesis', 'PhD Thesis', 'Doctoral Thesis/Dissertation'),
-                               'thesis' => array('PHD Thesis', 'PhD Thesis', 'Doctoral Thesis/Dissertation'),
+                               'mastersthesis' => array('Masters Thesis', 'Master Thesis', 'Journal Paper', 'Scholarly Refereed Journal', 'Peer-Reviewed Journal Article'),
+                               'bachelorsthesis' => array('Bachelors Thesis', 'Bachelor Thesis', 'Journal Paper', 'Scholarly Refereed Journal', 'Peer-Reviewed Journal Article'),
+                               'phdthesis' => array('PHD Thesis', 'PhD Thesis', 'Doctoral Thesis/Dissertation', 'Journal Paper', 'Scholarly Refereed Journal', 'Peer-Reviewed Journal Article'),
+                               'thesis' => array('PHD Thesis', 'PhD Thesis', 'Doctoral Thesis/Dissertation', 'Journal Paper', 'Scholarly Refereed Journal', 'Peer-Reviewed Journal Article'),
                                'poster' => 'Poster',
                                'techreport' => 'Tech Report',
                                'inbook' => 'Book Chapter',
-                               'misc' => 'Misc',
+                               'misc' => array('Misc', 'Journal Paper', 'Scholarly Refereed Journal', 'Peer-Reviewed Journal Article')
                                'patent' => array('Patent', 'Patent Issued'));
 
     var $structure = null;
