@@ -14,12 +14,6 @@ var TaskRowView = Backbone.View.extend({
         this.model.set('isLeaderAllowedToEdit', isPLAllowed);
 
         if (this.isEditMode) {
-            // if (this.model.isNew() && this.model.get('needsReviewerValidation') === undefined) {
-            //     this.model.set('needsReviewerValidation', true);
-            // }
-            if (this.model.get('needsReviewerValidation') === undefined) {
-                this.model.set('needsReviewerValidation', true, { silent: true });
-            }
             this.listenTo(this.model, "change:needsReviewerValidation", this.handleReviewerCheckboxChange);
             this.listenTo(this.model, "change:assignees", this.handleAssigneeChange);
             this.listenTo(this.model, "change:statuses", this.render);
