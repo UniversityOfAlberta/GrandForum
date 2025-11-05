@@ -14,7 +14,7 @@
                 
                 <p>As per Article D7 of Schedule D, I am informing you that at its meeting of {get(atsecDates)}, the ATSEC did not support the recommendation of a {getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)} increment made by your Department Chair and instead, is prepared to award an increment of {getText(RP_FEC_TABLE, TABLE, INCREMENT, {$user_id}, 1, 0)}. The Chair {ifEmpty({getText({$report_type}, TABLE, CHAIR_POSITION, {$user_id}, 1, 0)}, <b>[CHAIR POSITION]</b>)}. Under Article D6 of Schedule D this becomes the preliminary position of ATSEC. This decision was based on the following: </p>
 
-                <ul><li>{ifEmpty({getText({$report_type}, TABLE, COMMENT, {$user_id}, 1, 0)}, <b>[COMMENT]</b>)}</li></ul><br />
+                <ul><li>{getText({$report_type}, TABLE, COMMENT, {$user_id}, 1, 0)}</li></ul><br />
 
                 You may wish to consider the following options:
                 <ul>

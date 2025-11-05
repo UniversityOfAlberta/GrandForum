@@ -7,7 +7,7 @@
                 
                 <p>Your appointment will be governed by the Common Agreement and Schedule A, as amended from time to time.</p>
                 <p>It will be important to address the following matters that were of concern:</p>
-                <p>{ifEmpty({getText({$report_type}, TABLE, COMMENT, {$user_id}, 1, 0)}, <b>[COMMENT]</b>)}</p>
+                <p>{getText({$report_type}, TABLE, COMMENT, {$user_id}, 1, 0)}</p>
                 
                 <p>I encourage you to remain familiar with the standards for tenure and promotion of the Faculty and understand the expectations of your Department Chair. You may wish to consult with your Department Chair about the matters of concern to FEC.</p>
                 
