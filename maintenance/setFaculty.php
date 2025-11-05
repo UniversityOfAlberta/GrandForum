@@ -11,9 +11,9 @@
             $mydepts = array_keys($person->departments);
             $faculty = "";
             foreach($person->getUniversities() as $uni){
-                $dept = $uni['department'];
+                $dept = str_replace("Faculty of ", "", $uni['department']);
                 $faculty = @Person::$facultyMap[$dept];
-                if($faculty != ""){
+                if($faculty == getFaculty()){
                     $check = DBFunctions::select(array('grand_personal_fec_info'),
                                                  array('*'),
                                                  array('user_id' => $person->getId()));
@@ -21,7 +21,7 @@
                         DBFunctions::insert('grand_personal_fec_info',
                                             array('user_id' => $person->getId()));
                     }
-                    else if($check[0]['faculty'] == "" || !in_array(@$mydepts[0], $facultyMapSimple[$faculty])){
+                    else if($check[0]['faculty'] == ""){
                         if(!in_array($facultyMapSimple[$faculty], $facultyMapSimple[$faculty])){
                             $highest = 0;
                             $closest = "";
@@ -40,13 +40,10 @@
                                                       'departments' => json_encode(array($dept => 100))),
                                                 array('user_id' => $person->getId()));
                         }
-                        echo "{$person->getName()}: {$faculty}\n";
+                        echo "{$person->getName()}: {$faculty} / {$dept}\n";
                     }
                     break;
                 }
-            }
-            if($faculty == ""){
-                echo "MISSING {$person->getName()}: {$dept}\n";
             }
         }
     }
