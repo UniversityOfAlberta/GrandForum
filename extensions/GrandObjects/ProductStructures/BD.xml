@@ -70,7 +70,7 @@
             <description ccv_id="6480fa19889345619e778b394ad1445e" ccv_name="Description / Contribution Value" label="Comments"></description>
         </Publication>
 
-        <Publication type="Peer-Reviewed Journal Article" ccv_id="9a34d6b273914f18b2273e8de7c48fd6" ccv_name="Journal Articles">
+        <Publication type="Peer-Reviewed Journal Article" ccv_id="9a34d6b273914f18b2273e8de7c48fd6" ccv_name="Journal Articles" status="|Under Review|Accepted">
             <title ccv_id="f3fd4878d47c4e83aef6959620ba4870" ccv_name="Article Title"></title>
             <data>
                 <field ccv_id="5c04ea4dae464499807d0b40b4cad049" ccv_name="Journal" ccvtk="journal" bibtex="journal" label="Journal" type="String">published_in</field>
