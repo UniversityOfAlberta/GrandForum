@@ -198,6 +198,21 @@
             <description label="Comments / Description"></description>
         </Conference>
         
+        <Conference type="Conference/Symposium/Workshop Contribution">
+            <title label="Conference/Symposium Name"></title>
+            <data>
+                <field label="End Date" type="Date">end_date</field>
+                <field label="Involvement/Contribution Type" type="Select" options="Attendance only|Conference session|Event Chair/MC|Keynote|Oral Presentation|Poster Presentation|Session Chair|Symposium Contribution|Workshop Contribution">involvement</field>
+                <field label="Conference/Symposium/Workshop Name" type="String">conference</field>
+                <field label="Location" type="String">location</field>
+                <field label="Organizing Body" type="String">organizing_body</field>
+                <field label="Chair Name" type="String">chair_name</field>
+                <field label="URL" type="URL">url</field>
+                <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
+            </data>
+            <description label="Comments"></description>
+        </Conference>
+        
         <Conference type="Panel Invitation">
             <title label="Conference/Symposium Name"></title>
             <authors label="Presenter"></authors>
@@ -239,20 +254,6 @@
                 <field label="URL" type="URL">url</field>
                 <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
             </data>
-        </Activity>
-        
-        <Activity type="Conference/Symposium/Workshop Contribution">
-            <data>
-                <field label="End Date" type="Date">end_date</field>
-                <field label="Involvement/Contribution Type" type="Select" options="Attendance only|Conference session|Event Chair/MC|Keynote|Oral Presentation|Poster Presentation|Session Chair|Symposium Contribution|Workshop Contribution">involvement</field>
-                <field label="Conference/Symposium/Workshop Name" type="String">conference</field>
-                <field label="Location" type="String">location</field>
-                <field label="Organizing Body" type="String">organizing_body</field>
-                <field label="Chair Name" type="String">chair_name</field>
-                <field label="URL" type="URL">url</field>
-                <field label="Theme" type="Radio" options="TRS1 - Immigrant Health and Well-Being|TRS2 - Employment and Lifelong Learning|TRS3 - Place and Infrastructure|TRS4 - Citizenship and Participation|All Themes|Other">theme</field>
-            </data>
-            <description label="Comments"></description>
         </Activity>
         
         <Activity type="Government Briefings">
