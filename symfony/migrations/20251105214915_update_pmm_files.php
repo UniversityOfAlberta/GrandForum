@@ -20,8 +20,8 @@ final class UpdatePmmFiles extends AbstractMigration
     public function change(): void
     {
         $table = $this->table('grand_pmm_files');
-        $table->removeIndex('opportunity_id')
-        ->renameColumn('opportunity_id', 'task_id')
+        $table->removeIndex('opportunity_id')->update();
+        $table->renameColumn('opportunity_id', 'task_id')
         ->addIndex('task_id')
         ->update();
     }
