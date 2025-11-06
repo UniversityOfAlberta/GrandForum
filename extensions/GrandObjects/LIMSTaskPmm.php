@@ -506,7 +506,7 @@ class LIMSTaskPmm extends BackboneModel
                     'due_date' => $this->dueDate,
                     'details' => $this->details,
                     'task_type' => $this->taskType,
-                    'needs_reviewer_validation' => $this->needsReviewerValidation
+                    'needs_reviewer_validation' => (bool) $this->needsReviewerValidation
                 ),
                 array('id' => $this->id)
             );
