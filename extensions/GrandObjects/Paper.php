@@ -115,16 +115,6 @@ class Paper extends BackboneModel{
                 AND (access = 'Public' OR (access = 'Forum' AND ".intVal($me->isLoggedIn())."))
                 LIMIT 1";
         $data = DBFunctions::execSQL($sql);
-        if(count($data) == 0){
-            // This is way slower, so only do it if entry wasn't found in bibtex_id
-            $sql = "SELECT *
-                    FROM grand_products
-                    WHERE (data LIKE '%{$bibtex_id}\"%')
-                    AND (access_id = '{$me->getId()}' OR access_id = 0)
-                    AND (access = 'Public' OR (access = 'Forum' AND ".intVal($me->isLoggedIn())."))
-                    LIMIT 1";
-            $data = DBFunctions::execSQL($sql);
-        }
         $paper = new Paper($data);
         
         if(!$paper->canView()){
@@ -683,6 +673,15 @@ class Paper extends BackboneModel{
      */
     function getBibTexId(){
         return $this->bibtex_id;
+    }
+    
+    static function cleanDOI($doi){
+        $doi = str_replace("doi:", "", $doi);
+        $exploded = explode("doi.org/", $doi);
+        if(count($exploded) > 1){
+            $doi = $exploded[1];
+        }
+        return trim($doi);
     }
     
     /**
@@ -1916,7 +1915,7 @@ class Paper extends BackboneModel{
                 }
             }
             // Update products table
-            $this->bibtex_id = @$this->data['doi'];
+            $this->bibtex_id = @self::cleanDOI($this->data['doi']);
             $created_by = ($this->created_by == 0) ? $me->getId() : $this->created_by;
             $status = DBFunctions::insert('grand_products',
                                           array('category' => $this->category,
@@ -2015,7 +2014,7 @@ class Paper extends BackboneModel{
                 }
             }
             // Update products table
-            $this->bibtex_id = @$this->data['doi'];
+            $this->bibtex_id = @self::cleanDOI($this->data['doi']);
             $status = DBFunctions::update('grand_products',
                                           array('category' => $this->category,
                                                 'description' => $this->description,
