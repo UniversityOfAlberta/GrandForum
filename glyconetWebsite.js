@@ -1,4 +1,6 @@
 // Create IE + others compatible event handler
+var lang = document.getElementsByTagName('html')[0].getAttribute('lang').substr(0,2);
+
 var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
 var eventer = window[eventMethod];   
 var messageEvent = eventMethod == "attachEvent" ? "onmessage" : "message";   
@@ -50,26 +52,37 @@ function initSideBar(){
     jQuery("#" + firstTab).show();
     
     jQuery(".right-sidebar-wrapper").append("<div id='roles' class='custom-sidebar gdl-divider widget_nav_menu'>");
-    jQuery(".right-sidebar-wrapper").append("<div id='committees' class='custom-sidebar gdl-divider widget_nav_menu'>");
-    jQuery("#roles").append("<h3 class='custom-sidebar-title sidebar-title-color gdl-title'>Groups</h3>");
+    //jQuery(".right-sidebar-wrapper").append("<div id='committees' class='custom-sidebar gdl-divider widget_nav_menu'>");
+    if(lang == 'en'){
+        jQuery("#roles").append("<h3 class='custom-sidebar-title sidebar-title-color gdl-title'>Groups</h3>");
+    }
+    else{
+        jQuery("#roles").append("<h3 class='custom-sidebar-title sidebar-title-color gdl-title'>Groupes</h3>");
+    }
     jQuery("#roles").append("<div class='menu-members-container'>");
     jQuery("#roles > div.menu-members-container").append("<ul class='roleList' id='roles-members'>");
-    addTab("#roles-members", "executive-leadership", "Executive Leadership");
-    addTab("#roles-members", "network-investigators", "Network Investigators");
-    addTab("#roles-members", "collaborators", "Collaborators");
-    addTab("#roles-members", "administrative-centre", "Administrative Centre");
-    jQuery("#committees").append("<h3 class='custom-sidebar-title sidebar-title-color gdl-title'>Committees</h3>");
+    addTab("#roles-members", "executive-leadership", "Executive Leadership", "Direction Exécutive");
+    addTab("#roles-members", "network-investigators", "Network Investigators", "Chercheurs du Réseau");
+    //addTab("#roles-members", "collaborators", "Collaborators");
+    addTab("#roles-members", "administrative-centre", "Administrative Centre", "Centre Administratif");
+    /*if(lang == 'en'){
+        jQuery("#committees").append("<h3 class='custom-sidebar-title sidebar-title-color gdl-title'>Committees</h3>");
+    }
+    else{
+        jQuery("#committees").append("<h3 class='custom-sidebar-title sidebar-title-color gdl-title'>Committees</h3>");
+    }
     jQuery("#committees").append("<div class='menu-committees-container'>");
     jQuery("#committees > div.menu-committees-container").append("<ul class='roleList' id='committees-members'>");
-    addTab("#committees-members", "bod",  "Board of Directors");
-    addTab("#committees-members", "cc",   "Commercialization Committee");
-    addTab("#committees-members", "exec", "Executive Committee");
-    addTab("#committees-members", "fac",  "Finance and Audit Committee");
-    addTab("#committees-members", "gta",  "GlycoNet Trainee Association");
-    addTab("#committees-members", "nomc", "Nominating Committee");
-    addTab("#committees-members", "sab",  "Scientific Advisory Board");
-    addTab("#committees-members", "rmc",  "Research Management Committee");
-    addTab("#committees-members", "etc",  "Training Committee");
+    addTab("#committees-members", "bod",  "Board of Directors", "Conseil d'Administration");
+    addTab("#committees-members", "clc",  "Commercialization Committee", "Comité de Commercialisation");
+    addTab("#committees-members", "edi",  "EDI Committee", "Comité de l'EDI");
+    addTab("#committees-members", "exec", "Executive Committee", "Comité Exécutif");
+    addTab("#committees-members", "fac",  "Finance, Audit & Risk Committee", "Comité des Finances, de l'Audit et des Risques");
+    addTab("#committees-members", "gta",  "GlycoNet Trainee Association", "Association des Stagiaires de GlycoNet");
+    addTab("#committees-members", "nomc", "Nominating Committee", "Comité des Nominations");
+    addTab("#committees-members", "rmc",  "Research Management Committee", "Comité de Gestion de la Recherche");
+    addTab("#committees-members", "sab",  "Scientific Advisory Board", "Conseil Consultatif Scientifique");
+    addTab("#committees-members", "etc",  "Training Committee", "Comité de Formation");*/
                                    
     jQuery("ul.roleList li a").click(function(e){
         scroll(0,0);
@@ -88,7 +101,12 @@ function initSideBar(){
                                    
     jQuery.get("https://forum.glyconet.ca/index.php?action=api.university/current", function(response){
         jQuery(".right-sidebar-wrapper").append("<div id='unis' class='custom-sidebar gdl-divider widget_nav_menu'>");
-        jQuery("#unis").append("<h3 class='custom-sidebar-title sidebar-title-color gdl-title'>Participating Institutions</h3>");
+        if(lang == 'en'){
+            jQuery("#unis").append("<h3 class='custom-sidebar-title sidebar-title-color gdl-title'>Participating Institutions</h3>");
+        }
+        else{
+            jQuery("#unis").append("<h3 class='custom-sidebar-title sidebar-title-color gdl-title'>Institutions participantes</h3>");
+        }
         jQuery("#unis").append("<div class='menu-members-container'>");
         jQuery("#unis > div.menu-members-container").append("<ul id='menu-members'>");
         for(id in response){
@@ -137,7 +155,8 @@ function initSideBar(){
     });
 }
 
-function addTab(outerId, dataId, label){
+function addTab(outerId, dataId, labelEn, labelFr){
+    var label = (lang == "en") ? labelEn : labelFr;
     jQuery(outerId).append("<li class='menu-item menu-item-type-post_type menu-item-object-page' data-id='" + dataId + "'>" + 
                              "<a style='cursor:pointer;'>" + label + "</a>" + 
                            "</li>");
@@ -258,11 +277,12 @@ initTab("BOD", "#bod", "tab-4", ['position','university'], 4);
 initTab("SAB", "#sab", "tab-5", ['position','university'], 4);
 initTab("RMC", "#rmc", "tab-6", ['position','university'], 4);
 initTab("NI,NFI", "#network-investigators", "tab-1", ['university'], 4);
-initTab("Collaborator", "#collaborators", "tab-2", ['university'], 4);
+//initTab("Collaborator", "#collaborators", "tab-2", ['university'], 4);
 initTab("SD,Staff,Manager", "#administrative-centre", "tab-3", ['position','university', 'phone', 'email'], 4);
 initTab("GTA", "#gta", "tab-7", ['position','university'], 4);
-initTab("CC", "#cc", "tab-8", ['position','university'], 4);
+initTab("CLC", "#clc", "tab-8", ['position','university'], 4);
 initTab("EXEC", "#exec", "tab-9", ['position','university'], 4);
 initTab("FAC", "#fac", "tab-10", ['position','university'], 4);
 initTab("NOMC", "#nomc", "tab-11", ['position','university'], 4);
 initTab("ETC", "#etc", "tab-12", ['position','university'], 4);
+initTab("EDIC", "#edi", "tab-12", ['position','university'], 4);
