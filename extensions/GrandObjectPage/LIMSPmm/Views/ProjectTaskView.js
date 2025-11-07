@@ -170,25 +170,22 @@ ProjectTaskView = Backbone.View.extend({
         var tasksToSave = [];
         
         this.tasks.each(function(taskModel) {
-            taskModel.unset('displayAssignees');
-            taskModel.unset('displayStatuses');
-            taskModel.unset('displayFiles');
-            taskModel.unset('displayReviewers');
-            taskModel.unset('displayComments');
-            
             taskModel.saving = true;
-            var taskName = taskModel.get('task');
-            if (!taskName || taskName.trim() === '') {
-                taskModel.toDelete = true;
-                console.log('Task name cannot be empty.');
-            }
-            if (!taskModel.toDelete) {
-                if (taskModel.unsavedAttributes() !== false) {
-                    tasksToSave.push(taskModel);
-                } else {
-                    taskModel.saving = false;
-                }
-            } else if (!taskModel.isNew()) {
+
+            var unsaved = taskModel.unsavedAttributes();            
+            var needsSave = (unsaved !== false);
+            var needsDelete = (taskModel.toDelete && !taskModel.isNew());
+            var isNewAndDeleted = (taskModel.toDelete && taskModel.isNew());
+
+            if (isNewAndDeleted) {
+                taskModel.saving = false;
+            } else if (needsSave || needsDelete) {
+                taskModel.unset('displayAssignees');
+                taskModel.unset('displayStatuses');
+                taskModel.unset('displayFiles');
+                taskModel.unset('displayReviewers');
+                taskModel.unset('displayComments');
+                
                 tasksToSave.push(taskModel);
             } else {
                 taskModel.saving = false;
