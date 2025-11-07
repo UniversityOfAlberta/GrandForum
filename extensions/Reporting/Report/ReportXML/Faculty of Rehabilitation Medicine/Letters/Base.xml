@@ -17,7 +17,7 @@
                 {set(fecChairPos, Dean)}
                 {set(dean, EstherKim)}
                 {set(promotionDates, November 12 - 15)}
-                {set(fecDates, December 2 - 6)}
+                {set(fecDates, October 29th)}
                 {set(atsecDates, February 27&#44; {$next_year})}
                 {set(reconsiderationDate, December 4&#44; {$this_year})}
                 {set(contestDate, November 7&#44; {$this_year})}
