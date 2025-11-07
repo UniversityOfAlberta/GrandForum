@@ -141,8 +141,38 @@
             <% } %>
         <% } %>
 </td>
+<td valign="top">
+    <% if (isLeaderEditing) { %>
+        <% var files = taskFiles || []; %>
+        <% if (files.length > 0) { %>
+            <div style="margin-bottom: 8px;">
+                <% files.forEach(function(file, idx) { %>
+                    <% var toDelete = file.delete || false; %>
+                    <% if (!toDelete) { %>
+                        <div style="margin-bottom: 4px;">
+                            <a href="<%= file.url %>" target="_blank"><%= file.filename %></a>
+                            <span class="delete-icon deleteTaskFile" data-file-id="<%= file.id %>" style="cursor: pointer;" title="Delete file"></span>
+                        </div>
+                    <% } %>
+                <% }); %>
+            </div>
+        <% } %>
+        <div>
+            <%= HTML.File(this, 'newTaskFile', {}) %>
+        </div>
+    <% } else { %>
+        <% var files = taskFiles || []; %>
+        <% if (files.length > 0) { %>
+            <% files.forEach(function(file) { %>
+                <div><a href="<%= file.url %>" target="_blank"><%= file.filename %></a></div>
+            <% }); %>
+        <% } else { %>
+            <span>No files</span>
+        <% } %>
+    <% } %>
+</td>
 
-<td valign="top" style="width:40%">
+<td valign="top">
     <% if (isLeaderEditing) { %>
         <%= HTML.TextArea(this, 'details', {style: "height: 63px;width:100%;box-sizing:border-box;margin:0;"}) %> 
     <% } else { %>

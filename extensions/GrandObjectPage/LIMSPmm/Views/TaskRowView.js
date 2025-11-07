@@ -23,6 +23,7 @@ var TaskRowView = Backbone.View.extend({
 
     events: {
         "click #deleteTask": "deleteTask",
+        "click .deleteTaskFile": "handleDeleteTaskFile",
         "click #checkStatus": "checkStatus",
         'click #changeStatusButton': "changeStatus",
         "click .download-merged-files": "handleDownloadClick"
@@ -62,6 +63,21 @@ var TaskRowView = Backbone.View.extend({
         }
 
         return this;
+    },
+
+    handleDeleteTaskFile: function(e) {
+        var fileId = $(e.currentTarget).data('file-id');
+        var taskFiles = _.clone(this.model.get('taskFiles')) || [];
+
+        for (var i = 0; i < taskFiles.length; i++) {
+            if (taskFiles[i].id == fileId) {
+                taskFiles[i].delete = true;
+                break;
+            }
+        }
+        
+        this.model.set('taskFiles', taskFiles);
+        this.render();
     },
     
     deleteTask: function(){
