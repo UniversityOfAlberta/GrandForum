@@ -11,7 +11,10 @@ LIMSStatusChangeViewPmm = Backbone.View.extend({
         this.project = options.project;
         this.isDialog = options.isDialog || false;
         this.listenTo(this.model, 'change:displayFiles', this.handleFileChange);
+        this.listenTo(this.model, 'change:needsReviewerValidation', this.handleAssigneesOptions);
+        this.listenTo(this.model, 'change:statusOptions', this.render);
         this.selectTemplate();
+        this.handleAssigneesOptions();
         this.render();
     },
 
@@ -73,9 +76,33 @@ LIMSStatusChangeViewPmm = Backbone.View.extend({
         this.model.set('displayFiles', displayFiles);
         this.render();
     },
+    handleAssigneesOptions: function() {
+        const needsReviewerValidation = this.model.get('needsReviewerValidation');
 
+        const allStatusOptions = ['Assigned', 'Done', 'Closed'];
+
+        
+        const reviewerStatusOptions = ['Assigned', 'Done', 'Closed'];
+
+
+        console.log(needsReviewerValidation)
+        const isReviewNeeded = needsReviewerValidation === true ||
+                               needsReviewerValidation === 1 ||
+                               needsReviewerValidation === "1";
+        const assigneeStatusOptions = isReviewNeeded
+            ? ['Assigned', 'Done']
+            : ['Assigned', 'Closed'];
+        const statusOptions = {
+            all: allStatusOptions,
+            assignee: assigneeStatusOptions,
+            reviewer: reviewerStatusOptions,
+        };
+
+        this.model.set("statusOptions", statusOptions)
+    },
     render: function() {
-        this.$el.html(this.template(this.model.toJSON())); 
+        const data = this.model.toJSON();
+        this.$el.html(this.template(data));
         return this.$el;
     },
 

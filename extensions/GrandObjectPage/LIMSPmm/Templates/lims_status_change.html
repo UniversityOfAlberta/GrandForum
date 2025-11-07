@@ -23,14 +23,12 @@ if (displayAssignees && displayAssignees.length > 0) {
                     var reviewer = displayReviewers[assigneeId];
                     var isCurrentUserTheReviewer = reviewer && (me.get('id') == reviewer.id);
                     
-                    var allStatusOptions = ['Assigned', 'Done', 'Closed'];
-                    var assigneeStatusOptions = ['Assigned', 'Done'];
-                    var reviewerStatusOptions = [...assigneeStatusOptions, 'Closed'];
-
-                    var statusOptionsToShow = isLeaderAllowedToEdit 
-                                                ? allStatusOptions : (isCurrentUserTheReviewer
-                                                ? reviewerStatusOptions
-                                                : assigneeStatusOptions);    
+                    const statusOptions = this.model.get('statusOptions')
+                    const options = isLeaderAllowedToEdit
+                                ? statusOptions.all
+                                : (isCurrentUserTheReviewer
+                                    ? statusOptions.reviewer
+                                    : statusOptions.assignee);
                     
                     var canCurrentUserEdit = isLeaderAllowedToEdit || isCurrentUserTheAssignee;
                     var shouldShowRow = isLeaderAllowedToEdit || isCurrentUserTheAssignee || isCurrentUserTheReviewer;
@@ -44,7 +42,7 @@ if (displayAssignees && displayAssignees.length > 0) {
                         if (canCurrentUserEdit || isCurrentUserTheReviewer) { 
                         %> 
                             <%= HTML.Select(this, 'displayStatuses.' + assigneeId, { 
-                                options: statusOptionsToShow
+                                options: options
                             }) 
                         %>
                         <% } else { %> 
