@@ -1201,6 +1201,7 @@ class Paper extends BackboneModel{
             $cId = (isset($contributor->id)) ? $contributor->id : 0;
             if($cId != 0 && $cId != "" && !isset($inserts["{$cId}_{$this->getId()}"])){
                 $inserts["{$cId}_{$this->getId()}"] = "('{$cId}','{$this->getId()}',-1)";
+                $invalidate = true;
             }
         }
         
@@ -1208,7 +1209,7 @@ class Paper extends BackboneModel{
             // The Author data has changed, so invalidate the cache
             Cache::delete($this->getCacheId());
         }
-        if(!$massSync){
+        if(!$massSync && $invalidate){
             DBFunctions::begin();
             DBFunctions::execSQL($deleteSQL, true, true);
             if(count($inserts) > 0){
