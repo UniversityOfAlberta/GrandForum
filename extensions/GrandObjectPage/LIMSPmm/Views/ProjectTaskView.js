@@ -26,7 +26,7 @@ ProjectTaskView = Backbone.View.extend({
         this.listenTo(this.tasks, 'change:toDelete', this.removeDeletedTaskView);
         this.listenTo(this.project, 'sync', this.render);
         this.listenTo(this.project.members, 'sync', this.render);
-        this.listenTo(this.tasks, 'sync', this.render);
+        // this.listenTo(this.tasks, 'sync', this.render);
         
         this.project.fetch();
         this.project.getMembers();
