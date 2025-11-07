@@ -10,7 +10,7 @@
                                   <b>F</b> 780.492.1626<br />
                                   www.ualberta.ca/en/rehabilitation/)}
                 {set(hrContact, Deborah Palmer&#44; at dallen@ualberta.ca)}
-                {set(hrEmail, sciea@ualberta.ca)}
+                {set(hrEmail, dallen@ualberta.ca)}
                 {set(signature, Signature4.png)}
                 {set(signatureX, Signature4.png)}
                 {set(fecChair, Esther Kim)}
