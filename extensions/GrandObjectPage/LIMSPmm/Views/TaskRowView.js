@@ -65,19 +65,19 @@ var TaskRowView = Backbone.View.extend({
         return this;
     },
 
-    handleDeleteTaskFile: function() {
-        this.$el.on('click', '.deleteTaskFile', function(e) {
-            var fileId = $(e.target).data('file-id');
-            
-            var taskFiles = this.model.get('taskFiles') || [];
-            for (var i = 0; i < taskFiles.length; i++) {
-                if (taskFiles[i].id == fileId) {
-                    taskFiles[i].delete = true;
-                    break;
-                }
+    handleDeleteTaskFile: function(e) {
+        var fileId = $(e.currentTarget).data('file-id');
+        var taskFiles = _.clone(this.model.get('taskFiles')) || [];
+
+        for (var i = 0; i < taskFiles.length; i++) {
+            if (taskFiles[i].id == fileId) {
+                taskFiles[i].delete = true;
+                break;
             }
-            $(e.target).parent().hide();
-        }.bind(this));
+        }
+        
+        this.model.set('taskFiles', taskFiles);
+        this.render();
     },
     
     deleteTask: function(){
