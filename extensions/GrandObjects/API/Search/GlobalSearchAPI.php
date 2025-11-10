@@ -69,6 +69,9 @@ class GlobalSearchAPI extends RESTAPI {
                     if(!$person->isActive()){
                         $percent -= 10;
                     }
+                    if($person->inFaculty()){
+                        $percent += 10;
+                    }
                     if(count($myRelations) > 0){
                         $relFound = false;
                         foreach($myRelations as $type){

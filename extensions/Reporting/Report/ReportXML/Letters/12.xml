@@ -8,7 +8,7 @@
                 <p>Pursuant to Article A.6.19.1, this is the preliminary position of FEC which enables you to request a reconsideration by FEC.</p>
                 
                 <p>The matters of concern to FEC were as follows:</p>
-                <p>{ifEmpty({getText({$report_type}, TABLE, COMMENT, {$user_id}, 1, 0)}, <b>[COMMENT]</b>)}</p>
+                <p>{getText({$report_type}, TABLE, COMMENT, {$user_id}, 1, 0)}</p>
                 
                 <p>I was advised by your Department Chair that they continue to support their original recommendation to award tenure now support the preliminary position of the FEC to offer no further appointment.</p>
                 

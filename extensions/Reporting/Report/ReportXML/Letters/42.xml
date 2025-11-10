@@ -10,7 +10,7 @@
             <Static>
                 <![CDATA[
                     <p>As per Article A6.19.3 of Schedule A, I am informing you that at its meeting of {get(fecDates)}, the FEC did not support your Department Chair’s recommendation of {getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)} increment. Instead it is prepared to award an incrementation of 0d. The Department Chair {ifEmpty({getText({$report_type}, TABLE, CHAIR_POSITION, {$user_id}, 1, 0)}, <b>[CHAIR POSITION]</b>)}. Under Article A6.19.1 of Schedule A, this is the preliminary position of FEC. This decision was based on the following:</p>
-                    <p>{ifEmpty({getText({$report_type}, TABLE, COMMENT, {$user_id}, 1, 0)}, <b>[COMMENT]</b>)}</p>
+                    <p>{getText({$report_type}, TABLE, COMMENT, {$user_id}, 1, 0)}</p>
                     
                     <p>You may wish to consider the following option:</p>
                     <ul style='margin-left: 1em;'>

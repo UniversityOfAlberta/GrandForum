@@ -18,7 +18,7 @@
                         {if("{get(length)}" == "12 months", {get(end12)})}
                     was not recommended for approval by the FEC. The FEC had the following concerns:
                 </p>
-                <p>{ifEmpty({getText({$report_type}, TABLE, COMMENTS, {$user_id}, 1, 0)}, <b>[COMMENT]</b>)}</p>
+                <p>{getText({$report_type}, TABLE, COMMENT, {$user_id}, 1, 0)}</p>
             
                 <p>Your application has been denied as it was found not to be meritorious and of mutual advantage to you and the University. Should you choose to apply for a sabbatical again, I encourage you to address the concerns identified by the FEC. Sabbatical applications are to be submitted by {ifEmpty({getText({$report_type}, TABLE, FOLLOWUP_DATE, {$user_id}, 1, 0)}, <b>[DATE]</b>)}.</p>
             ]]>

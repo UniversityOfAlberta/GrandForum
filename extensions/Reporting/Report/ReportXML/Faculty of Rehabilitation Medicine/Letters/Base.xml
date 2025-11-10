@@ -9,15 +9,15 @@
                 {set(deanContact, <b>T</b> 780.492.2903<br />
                                   <b>F</b> 780.492.1626<br />
                                   www.ualberta.ca/en/rehabilitation/)}
-                {set(hrContact, Lakhan Khara&#44; at sciea@ualberta.ca)}
-                {set(hrEmail, sciea@ualberta.ca)}
+                {set(hrContact, Deborah Palmer&#44; at dallen@ualberta.ca)}
+                {set(hrEmail, dallen@ualberta.ca)}
                 {set(signature, Signature4.png)}
                 {set(signatureX, Signature4.png)}
                 {set(fecChair, Esther Kim)}
                 {set(fecChairPos, Dean)}
-                {set(dean, EstherKim)}
+                {set(dean, Esther Kim)}
                 {set(promotionDates, November 12 - 15)}
-                {set(fecDates, December 2 - 6)}
+                {set(fecDates, October 29th)}
                 {set(atsecDates, February 27&#44; {$next_year})}
                 {set(reconsiderationDate, December 4&#44; {$this_year})}
                 {set(contestDate, November 7&#44; {$this_year})}
