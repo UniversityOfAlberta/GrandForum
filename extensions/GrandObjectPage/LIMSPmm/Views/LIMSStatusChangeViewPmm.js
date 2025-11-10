@@ -12,17 +12,31 @@ LIMSStatusChangeViewPmm = Backbone.View.extend({
     initialize: function(options) {
         this.project = options.project;
         this.isDialog = options.isDialog || false;
-        this.originalState = {
-            statuses: _.clone(this.model.get('statuses')),
-            files: _.clone(this.model.get('files')),
-            reviewers: _.clone(this.model.get('reviewers')),
-        };
+        this.updateOriginalState();
         this.listenTo(this.model, 'change:displayFiles', this.handleFileChange);
         this.listenTo(this.model, 'change:needsReviewerValidation', this.handleAssigneesOptions);
         this.listenTo(this.model, 'change:statusOptions', this.render);
         this.selectTemplate();
         this.handleAssigneesOptions();
         this.render();
+    },
+
+    buildEmptyComments: function() {
+        var emptyComments = {};
+        var displayAssignees = this.model.get('displayAssignees') || [];
+        displayAssignees.forEach(function(assignee) {
+            emptyComments[assignee.id.toString()] = '';
+        });
+        return emptyComments;
+    },
+
+    updateOriginalState: function() {
+        this.originalState = {
+            statuses: _.clone(this.model.get('statuses')) || {},
+            files: _.clone(this.model.get('files')) || {},
+            reviewers: _.clone(this.model.get('reviewers')) || {},
+            comments: this.buildEmptyComments(),
+        };
     },
 
     handleFileChange: function() {
@@ -46,7 +60,7 @@ LIMSStatusChangeViewPmm = Backbone.View.extend({
 
             if (changed) {
                 this.model.set('displayStatuses', displayStatuses, {silent: true});
-                this.render();
+                // this.render();
             }
         }
     },
@@ -116,12 +130,12 @@ LIMSStatusChangeViewPmm = Backbone.View.extend({
         LIMSPmmHelper.showCommentsHistory(e, this.model, this.project);
     },
 
-    revertChanges: function() { 
+    revertChanges: function() {
         this.model.set({
             displayStatuses: _.clone(this.originalState.statuses),
             displayFiles: _.clone(this.originalState.files),
             displayReviewers: _.clone(this.originalState.reviewers),
-            displayComments: {}
+            displayComments: _.clone(this.originalState.comments)
         }, {silent: true});
     },
 
@@ -161,6 +175,33 @@ LIMSStatusChangeViewPmm = Backbone.View.extend({
         final.assignees = finalAssignees;
         // as assignes is modified, handleAssigneeChange will be called
         this.model.set(final);
-        this.model.save();
+
+        var saveButton = this.$('#save');
+        var cancelButton = this.$('#cancel');
+        var originalSaveText = saveButton.text();
+        saveButton.prop('disabled', true).text('Saving...');
+        cancelButton.prop('disabled', true);
+
+        var self = this;
+        this.model.save(null, {
+            success: function(model) {
+                model.fetch({
+                    success: function() {
+                        self.updateOriginalState();
+                        self.$el.dialog('close');
+                        addSuccess("Task status updated successfully");
+                    },
+                    error: function() {
+                        self.$el.dialog('close');
+                        addSuccess("Task status updated successfully");
+                    }
+                });
+            },
+            error: function() {
+                saveButton.prop('disabled', false).text(originalSaveText);
+                cancelButton.prop('disabled', false);
+                addError("Failed to update task status. Please try again.");
+            }
+        });
     }
 });

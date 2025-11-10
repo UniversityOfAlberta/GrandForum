@@ -181,10 +181,10 @@ var TaskRowView = Backbone.View.extend({
 
         displayAssignees.forEach(function(assignee) {
             var assigneeId = assignee.id.toString();
-            displayStatuses[assigneeId]  = primaryData.statuses[assigneeId]  || 'Assigned';
-            displayFiles[assigneeId]     = _.clone(primaryData.files[assigneeId]) || {};
-            displayReviewers[assigneeId] = primaryData.reviewers[assigneeId] || {};
-            displayComments[assigneeId] = primaryData.comments[assigneeId] || '';
+            displayStatuses[assigneeId]  = (primaryData.statuses && primaryData.statuses[assigneeId]) || 'Assigned';
+            displayFiles[assigneeId]     = _.clone((primaryData.files && primaryData.files[assigneeId])) || {};
+            displayReviewers[assigneeId] = (primaryData.reviewers && primaryData.reviewers[assigneeId]) || {};
+            displayComments[assigneeId] = '';
         }, this);
 
         var statusValues = Object.values(displayStatuses);
