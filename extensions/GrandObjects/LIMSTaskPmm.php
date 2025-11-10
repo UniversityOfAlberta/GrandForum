@@ -24,6 +24,7 @@ class LIMSTaskPmm extends BackboneModel
     var $commentsHistory;
     var $taskFiles;
     var $newTaskFile;
+    var $needsReviewerValidation;
 
     static function newFromId($id)
     {
@@ -115,6 +116,7 @@ class LIMSTaskPmm extends BackboneModel
             $this->dueDate = $data[0]['due_date'];
             $this->details = $data[0]['details'];
             $this->taskType = $data[0]['task_type'];
+            $this->needsReviewerValidation = $data[0]['needs_reviewer_validation'];
 
             $files = DBFunctions::select(array('grand_pmm_task_assignees'),
                                          array('id', 'filename', 'type', 'assignee'),
@@ -215,6 +217,11 @@ class LIMSTaskPmm extends BackboneModel
         return substr($this->dueDate, 0, 10);
     }
 
+    function getNeedsReviewerValidation()
+    {
+        return $this->needsReviewerValidation;
+    }
+
     function getTaskType()
     {
         return $this->taskType;
@@ -290,6 +297,7 @@ class LIMSTaskPmm extends BackboneModel
                 'reviewers' => $this->getReviewers(),
                 'commentsHistory' => $this->getCommentsHistory(),
                 'taskFiles' => $this->getTaskFiles(),
+                'needsReviewerValidation' => $this->getNeedsReviewerValidation()
             );
             return $json;
         }
@@ -312,7 +320,8 @@ class LIMSTaskPmm extends BackboneModel
                     'task' => $this->task,
                     'due_date' => $this->dueDate,
                     'details' => $this->details,
-                    'task_type' => $this->taskType
+                    'task_type' => $this->taskType,
+                    'needs_reviewer_validation' => $this->needsReviewerValidation
                 )
             );
             $this->id = DBFunctions::insertId();
@@ -496,7 +505,8 @@ class LIMSTaskPmm extends BackboneModel
                     'task' => $this->task,
                     'due_date' => $this->dueDate,
                     'details' => $this->details,
-                    'task_type' => $this->taskType
+                    'task_type' => $this->taskType,
+                    'needs_reviewer_validation' => (bool) $this->needsReviewerValidation
                 ),
                 array('id' => $this->id)
             );

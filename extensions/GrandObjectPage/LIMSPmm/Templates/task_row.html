@@ -34,12 +34,27 @@
         var allOptions = [
             {option: 'Everyone', value: -1}
         ].concat(memberOptions);
+        var uniqueCheckboxId = 'needsReviewerValidation_' + this.model.cid;
         %>
         <%= HTML.Select(this, 'assignees', { 
             style: 'width:200px;', 
             multiple: true, 
             options: allOptions
         }) %>
+
+        
+        <div style="margin-top: 10px; display: flex; align-items: center;">
+            <%= HTML.CheckBox(this, 'needsReviewerValidation', {
+                id: uniqueCheckboxId,  
+                style: "margin-right: 5px; vertical-align: middle;",
+                value: true,
+                default: false
+            }) %>
+            <label for="<%= uniqueCheckboxId %>" 
+                   style="font-weight: normal; display: inline; vertical-align: middle;">
+                Auto-assign random reviewer
+            </label>
+        </div>
     <% } else { %>
         <% 
         var assigneesList = assignees || [];

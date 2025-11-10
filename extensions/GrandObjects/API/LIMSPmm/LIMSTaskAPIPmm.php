@@ -64,6 +64,7 @@ class LIMSTaskAPIPmm extends RESTAPI {
             $task->commentsHistory = $this->POST('commentsHistory');
             $task->taskFiles = $this->POST('taskFiles');
             $task->newTaskFile = $this->POST('newTaskFile');
+            $task->needsReviewerValidation = $this->POST('needsReviewerValidation');
             $task->create();
             return $task->toJSON();
         }
@@ -88,6 +89,7 @@ class LIMSTaskAPIPmm extends RESTAPI {
             $task->commentsHistory = $this->POST('commentsHistory');
             $task->taskFiles = $this->POST('taskFiles');
             $task->newTaskFile = $this->POST('newTaskFile');
+            $task->needsReviewerValidation = $this->POST('needsReviewerValidation');
             $task->update();
             return $task->toJSON();
         }
