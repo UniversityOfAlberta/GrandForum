@@ -18,7 +18,7 @@ class ImportBibTeXAPI extends API{
                                'poster' => 'Poster',
                                'techreport' => 'Tech Report',
                                'inbook' => 'Book Chapter',
-                               'misc' => array('Misc', 'Journal Paper', 'Scholarly Refereed Journal', 'Peer-Reviewed Journal Article')
+                               'misc' => array('Misc', 'Journal Paper', 'Scholarly Refereed Journal', 'Peer-Reviewed Journal Article'),
                                'patent' => array('Patent', 'Patent Issued'));
 
     var $structure = null;
