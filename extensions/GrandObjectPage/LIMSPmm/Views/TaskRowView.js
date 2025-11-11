@@ -391,16 +391,47 @@ var TaskRowView = Backbone.View.extend({
         });
 
         $('body').append(changeStatusDialog);
-        
-        changeStatusDialog.dialog({
-            height: $(window).height() * 0.75,
+
+        var displayAssignees = this.model.get('displayAssignees') || [];
+        var hasAssignees = displayAssignees.length > 0;
+
+        var dialogConfig = {
+            maxHeight: $(window).height() * 0.75,
             width: 900,
             title: "Change Task Status",
+            modal: true,
             close: function(){
-                view.revertChanges(); 
-                $(this).dialog('destroy').remove(); 
+                view.revertChanges();
+                $(this).dialog('destroy').remove();
+            },
+            open: function() {
+                $(this).css({
+                    'overflow-y': 'auto',
+                    'overflow-x': 'hidden'
+                });
             }
-        });
+        };
+
+        if (hasAssignees) {
+            dialogConfig.buttons = [
+                {
+                    text: "Save",
+                    class: "primary",
+                    click: function() {
+                        view.saveDialog();
+                    }
+                },
+                {
+                    text: "Cancel",
+                    class: "primary",
+                    click: function() {
+                        view.closeDialog();
+                    }
+                }
+            ];
+        }
+
+        changeStatusDialog.dialog(dialogConfig);
     },
     
 });

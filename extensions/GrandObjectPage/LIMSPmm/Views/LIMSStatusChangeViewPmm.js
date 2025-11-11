@@ -4,9 +4,7 @@ LIMSStatusChangeViewPmm = Backbone.View.extend({
     
     events: {
         'click .deleteFile': 'deleteTaskFile', // Button to delete a file
-        "click .view-comment-history": "showCommentHistory",
-        "click #cancel": "closeDialog",
-        "click #save": "saveDialog"
+        "click .view-comment-history": "showCommentHistory"
     },
 
     initialize: function(options) {
@@ -16,6 +14,7 @@ LIMSStatusChangeViewPmm = Backbone.View.extend({
         this.listenTo(this.model, 'change:displayFiles', this.handleFileChange);
         this.listenTo(this.model, 'change:needsReviewerValidation', this.handleAssigneesOptions);
         this.listenTo(this.model, 'change:statusOptions', this.render);
+        this.listenTo(this.model, 'change:displayReviewers', this.render);
         this.selectTemplate();
         this.handleAssigneesOptions();
         this.render();
@@ -176,8 +175,9 @@ LIMSStatusChangeViewPmm = Backbone.View.extend({
         // as assignes is modified, handleAssigneeChange will be called
         this.model.set(final);
 
-        var saveButton = this.$('#save');
-        var cancelButton = this.$('#cancel');
+        var dialogButtons = this.$el.parent().find('.ui-dialog-buttonpane button');
+        var saveButton = dialogButtons.filter(':contains("Save")');
+        var cancelButton = dialogButtons.filter(':contains("Cancel")');
         var originalSaveText = saveButton.text();
         saveButton.prop('disabled', true).text('Saving...');
         cancelButton.prop('disabled', true);
