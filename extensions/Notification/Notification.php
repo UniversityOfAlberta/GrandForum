@@ -75,7 +75,8 @@ class Notification{
 				$headers .= "Bcc: $bccString\r\n";
 			}
             $wUser = User::newFromId($user->getId());
-            mail($wUser->getEmail(), $name, nl2br($message)."<br /><br /><a href='$url'>Notification URL</a><br /><br /><a href='{$wgServer}{$wgScriptPath}'>{$config->getValue('siteName')}</a>", $headers, $wgAdditionalMailParams);
+            $emailSubject = html_entity_decode(strip_tags($name), ENT_QUOTES | ENT_HTML5, 'UTF-8');
+            mail($wUser->getEmail(), $emailSubject, nl2br($message)."<br /><br /><a href='$url'>Notification URL</a><br /><br /><a href='{$wgServer}{$wgScriptPath}'>{$config->getValue('siteName')}</a>", $headers, $wgAdditionalMailParams);
         }
         DBFunctions::execSQL($sql, true);
 	}
