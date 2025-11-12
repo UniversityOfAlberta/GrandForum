@@ -2,6 +2,10 @@
 
 class LIMSSendNotifications extends RESTAPI {
 
+    function isLoginRequired() {
+        return true;
+    }
+
     function doPOST() {
         $input = file_get_contents('php://input');
         $data = json_decode($input, true);
