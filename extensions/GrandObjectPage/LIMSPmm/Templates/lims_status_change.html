@@ -14,22 +14,26 @@ if (displayAssignees && displayAssignees.length > 0) {
         </thead>
         <tbody>
             <% displayAssignees.forEach(function(assignee, index) { %>
-                 <% 
-                    var assigneeId = (assignee.id != undefined) ? assignee.id : assignee; 
+                 <%
+                    var assigneeId = (assignee.id != undefined) ? assignee.id : assignee;
                     var currentStatus = displayStatuses[assigneeId];
 
                     var isCurrentUserTheAssignee = (me.get('id') == assigneeId);
                     
                     var reviewer = displayReviewers[assigneeId];
                     var isCurrentUserTheReviewer = reviewer && (me.get('id') == reviewer.id);
-                    
+                    var hasReviewer = reviewer && reviewer.id;
                     const statusOptions = this.model.get('statusOptions')
-                    const options = isLeaderAllowedToEdit
+                    var options = isLeaderAllowedToEdit
                                 ? statusOptions.all
                                 : (isCurrentUserTheReviewer
                                     ? statusOptions.reviewer
                                     : statusOptions.assignee);
-                    
+
+                    if (isCurrentUserTheAssignee && hasReviewer && !isLeaderAllowedToEdit) {
+                        options = ['Assigned', 'Done'];
+                    }
+
                     var canCurrentUserEdit = isLeaderAllowedToEdit || isCurrentUserTheAssignee;
                     var shouldShowRow = isLeaderAllowedToEdit || isCurrentUserTheAssignee || isCurrentUserTheReviewer;
                 %>
@@ -112,7 +116,7 @@ if (displayAssignees && displayAssignees.length > 0) {
             <% }.bind(this)); %>
         </tbody>
     </table>
-<% 
+<%
 } else { 
 %>
     <div>No assignees</div>

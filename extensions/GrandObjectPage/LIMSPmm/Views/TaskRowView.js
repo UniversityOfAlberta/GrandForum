@@ -12,14 +12,11 @@ var TaskRowView = Backbone.View.extend({
         var isPLAllowed = _.intersection(userRole, [PL, STAFF, MANAGER, ADMIN]).length > 0 ;
         
         this.model.set('isLeaderAllowedToEdit', isPLAllowed);
-
-        if (this.isEditMode) {
-            this.listenTo(this.model, "change:needsReviewerValidation", this.handleReviewerCheckboxChange);
-            this.listenTo(this.model, "change:assignees", this.handleAssigneeChange);
-            this.listenTo(this.model, "change:statuses", this.render);
-            this.prepareDisplayState();
-            this.model.startTracking();
-        }
+        this.listenTo(this.model, "change:needsReviewerValidation", this.handleReviewerCheckboxChange);
+        this.listenTo(this.model, "change:assignees", this.handleAssigneeChange);
+        this.listenTo(this.model, "change:statuses", this.render);
+        this.prepareDisplayState();
+        this.model.startTracking();
     },
     handleReviewerCheckboxChange: function() {
         var currentAssignees = this.model.get('assignees') || [];
@@ -53,7 +50,6 @@ var TaskRowView = Backbone.View.extend({
     },
 
     saveTask: function() {
-        if (!this.isEditMode) return null;
         if (this.model.unsavedAttributes() !== false) {
             return this.model.save();
         }
@@ -185,10 +181,10 @@ var TaskRowView = Backbone.View.extend({
 
         displayAssignees.forEach(function(assignee) {
             var assigneeId = assignee.id.toString();
-            displayStatuses[assigneeId]  = primaryData.statuses[assigneeId]  || 'Assigned';
-            displayFiles[assigneeId]     = _.clone(primaryData.files[assigneeId]) || {};
-            displayReviewers[assigneeId] = primaryData.reviewers[assigneeId] || {};
-            displayComments[assigneeId] = primaryData.comments[assigneeId] || '';
+            displayStatuses[assigneeId]  = (primaryData.statuses && primaryData.statuses[assigneeId]) || 'Assigned';
+            displayFiles[assigneeId]     = _.clone((primaryData.files && primaryData.files[assigneeId])) || {};
+            displayReviewers[assigneeId] = (primaryData.reviewers && primaryData.reviewers[assigneeId]) || {};
+            displayComments[assigneeId] = '';
         }, this);
 
         var statusValues = Object.values(displayStatuses);
@@ -387,20 +383,55 @@ var TaskRowView = Backbone.View.extend({
 
     changeStatus: function(){
         var changeStatusDialog = $('<div id="change-status-modal"></div>');
-        var view = new LIMSStatusChangeViewPmm({el: changeStatusDialog, model: this.model, isDialog: true, project: this.project});
+        var view = new LIMSStatusChangeViewPmm({
+            el: changeStatusDialog,
+            model: this.model,
+            isDialog: true,
+            project: this.project
+        });
 
         $('body').append(changeStatusDialog);
-        
-        changeStatusDialog.dialog({
-            height: $(window).height() * 0.75,
+
+        var displayAssignees = this.model.get('displayAssignees') || [];
+        var hasAssignees = displayAssignees.length > 0;
+
+        var dialogConfig = {
+            maxHeight: $(window).height() * 0.75,
             width: 900,
             title: "Change Task Status",
+            modal: true,
             close: function(){
-                if (view.closeDialog) {
-                    view.closeDialog();
-                }
+                view.revertChanges();
+                $(this).dialog('destroy').remove();
+            },
+            open: function() {
+                $(this).css({
+                    'overflow-y': 'auto',
+                    'overflow-x': 'hidden'
+                });
             }
-        });
+        };
+
+        if (hasAssignees) {
+            dialogConfig.buttons = [
+                {
+                    text: "Save",
+                    class: "primary",
+                    click: function() {
+                        view.saveDialog();
+                    }
+                },
+                {
+                    text: "Cancel",
+                    class: "primary",
+                    click: function() {
+                        view.closeDialog();
+                    }
+                }
+            ];
+        }
+
+        changeStatusDialog.dialog(dialogConfig);
     },
     
 });

@@ -17,10 +17,11 @@ class ProjectLIMSPmmTab extends AbstractEditableTab {
          if ($this->project->getStatus() == 'Ended') {
             return false;
         }
-        return $this->project->isAllowedToView();
+        return $this->visibility['isLead'];
     }
 
     function generateEditBody(){
+        
         return $this->generateView(true);
     }
 
