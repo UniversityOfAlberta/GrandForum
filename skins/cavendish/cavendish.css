@@ -1905,7 +1905,6 @@ div.otherSubProjects {
 }
 
 .checkboxOuter > input[type=checkbox], .checkboxOuter > input[type=checkbox][disabled] {
-    width: 50%;
     margin: 0;
     text-align: center;
     vertical-align: middle;
