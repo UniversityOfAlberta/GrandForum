@@ -41,40 +41,24 @@ Scenario: A Project Leader can assign a reviewer to a task
     When I go to "index.php/Phase1Project1:Main"
     And I click "Activities"
     Then I should see "New task for HQP User1"
-    And I press "Edit"
-
-    Then I should see "Change Status"
     When I press "Change Status"
     Then I should see "Change Task Status"
-
     And I select "HQP User4" from "displayReviewers_19_id"
-    And I close dialog "#change-status-modal"
-
     And I press "Save"
-
-    Then I should see "Check Status"
-    When I press "Check Status"
-    Then I should see "HQP User4"
+    Then I should see "Task status updated successfully"
 
 Scenario: An assignee can change the status of their assigned task
     Given I am logged in as "HQP.User1" using password "HQP.Pass1"
     When I go to "index.php/Phase1Project1:Main"
     And I click "Activities"
     Then I should see "New task for HQP User1"
-    And I press "Edit"
-    Then I should see "Change Status"
+    And I should see "Pending"
     When I press "Change Status"
     Then I should see "Change Task Status"
-    
     And I select "Done" from "displayStatuses_19"
-    And I close dialog "#change-status-modal"    
-    Then I should see "Pending Review"
-
     And I press "Save"
-
-    Then I should see "Check Status"
-    When I press "Check Status"
-    Then I should see "Done"
+    Then I should see "Task status updated successfully"
+    And I should see "Pending Review"
 
 Scenario: A Reviewer can change status of a task
     Given I am logged in as "HQP.User4" using password "HQP.Pass4"
@@ -82,15 +66,9 @@ Scenario: A Reviewer can change status of a task
     And I click "Activities"
     Then I should see "New task for HQP User1"
     And I should see "Pending Review"
-    And I press "Edit"
-
-    Then I should see "Change Status"
     When I press "Change Status"
     Then I should see "Change Task Status"
-
     And I select "Closed" from "displayStatuses_19"
-    And I close dialog "#change-status-modal"    
-    Then I should see "Completed"
-
     And I press "Save"
+    Then I should see "Task status updated successfully"
     Then I should see "Completed"

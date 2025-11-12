@@ -790,8 +790,11 @@ class ProjectMainTab extends AbstractEditableTab {
              <script type='text/javascript'>
                  var products = me.getManagedProducts($projectId, true);
                  products.all = false;
-                 var view = new ManageProductsView({el: $('#manageOutputs'), model: products, project: new Project(".$this->project->toJSON().")});
+                 view = new ManageProductsView({el: $('#manageOutputs'), model: products, project: new Project(".$this->project->toJSON().")});
                  products.on('event:change', function(){
+                    _.defer(function(){ 
+                        $('#manageOutputs #listTable_wrapper').remove(); 
+                    });
                     if(!view.firstRender){
                         _.delay(function(){
                             $.cookie('success', JSON.stringify([productsTerm + ' saved']), {path: '/'}) 
