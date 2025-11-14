@@ -229,26 +229,22 @@
      */
     $config->setConst("INACTIVE",   "Inactive");
     $config->setConst("HQP",        "HQP");
-    $config->setConst("PS",         "PS");
-    $config->setConst("EXTERNAL",   "External");
+    $config->setConst("EXTERNAL",   "Assistant");
     $config->setConst("ACHAIR",     "AssocChair");
     $config->setConst("CHAIR",      "Chair");
-    $config->setConst("ADEAN",      "AssocDean");
     $config->setConst("VDEAN",      "ViceDean");
     $config->setConst("DEAN",       "Dean");
     $config->setConst("DEANEA",     "DeanEA");
     $config->setConst("FEC_CHAIR",  "FECChair");
-    $config->setConst("SRC",        "SRC");
     $config->setConst("EA",         "EA");
-    $config->setConst("NI",         "NI");
-    $config->setConst("AR",         "AR");
-    $config->setConst("CI",         "CI");
+    $config->setConst("NI",         "FacultyNI");
+    $config->setConst("AR",         "Faculty");
+    $config->setConst("CI",         "Faculty");
     $config->setConst("PL",         "PL");
-    $config->setConst("APL",        "APL");
-    $config->setConst("TL",         "TL");
-    $config->setConst("TC",         "TC");
+    $config->setConst("TL",         "WPL");
+    $config->setConst("TC",         "WPC");
     $config->setConst("HR",         "HR");
-    $config->setConst("RMC",        "RMC");
+    $config->setConst("RMC",        "FEC");
     $config->setConst("EVALUATOR",  "Evaluator");
     $config->setConst("STAFF",      "Staff");
     $config->setConst("MANAGER",    "Manager");
@@ -256,30 +252,73 @@
     
     $config->setValue("roleDefs", array(
         $config->getConst('INACTIVE')       => "Inactive",
-        $config->getConst('HQP')            => "Highly Qualified Person",
-        $config->getConst('PS')             => "Project Support",
-        $config->getConst('EXTERNAL')       => "External",
-        $config->getConst('ACHAIR')         => "Associate Chair",
+        $config->getConst('HQP')            => "Highly Qualified Personnel",
+        $config->getConst('EXTERNAL')       => "Assistant",
         $config->getConst('CHAIR')          => "Chair",
-        $config->getConst('SRC')            => "Scientific Research Committee",
         $config->getConst('EA')             => "Executive Assistant",
-        $config->getConst('NI')             => "Network Investigator",
-        $config->getConst('AR')             => "Affiliated Researcher",
-        $config->getConst('CI')             => "Co-Investigator",
+        $config->getConst('VDEAN')          => "Vice Dean",
+        $config->getConst('DEAN')           => "Dean",
+        $config->getConst('DEANEA')         => "Executive Assistant to the Dean",
+        $config->getConst('FEC_CHAIR')      => "FEC Chair",
+        $config->getConst('NI')             => "Faculty",
+        $config->getConst('AR')             => "Faculty",
+        $config->getConst('CI')             => "Faculty",
         $config->getConst('PL')             => "Project Leader",
-        $config->getConst('APL')            => "Admin Project Leader",
-        $config->getConst('TL')             => "Theme Leader",
-        $config->getConst('TC')             => "Work Package Coordinator",
+        $config->getConst('TL')             => "Workpackage Leader",
+        $config->getConst('TC')             => "Workpackage Coordinator",
         $config->getConst('HR')             => "Human Resources",
-        $config->getConst('RMC')            => "Research Management Comittee",
+        $config->getConst('RMC')            => "Faculty Evaluation Committee",
         $config->getConst('EVALUATOR')      => "Evaluator",
         $config->getConst('STAFF')          => "Staff",
         $config->getConst('MANAGER')        => "Manager",
         $config->getConst('ADMIN')          => "Admin"));
-        
-    $config->setValue("subRoles", array());
     
-    $config->setValue("roleAliases", array());
+    $config->setValue("wgRoles", array(
+        $config->getConst('HQP'), 
+        $config->getConst('EXTERNAL'), 
+        $config->getConst('CI'),
+        $config->getConst('CHAIR'),
+        $config->getConst('EA'),
+        $config->getConst('VDEAN'),
+        $config->getConst('DEAN'),
+        $config->getConst('DEANEA'),
+        $config->getConst('FEC_CHAIR'),
+        $config->getConst('HR'),
+        $config->getConst('RMC'),
+        $config->getConst('STAFF'),
+        $config->getConst('MANAGER'),
+        $config->getConst('ADMIN')
+    ));
+    $config->setValue("wgAllRoles", array(
+        $config->getConst('EXTERNAL'),
+        $config->getConst('CHAIR'),
+        $config->getConst('EA'),
+        $config->getConst('VDEAN'),
+        $config->getConst('DEAN'),
+        $config->getConst('DEANEA'),
+        $config->getConst('FEC_CHAIR'),
+        $config->getConst('CI'),
+        $config->getConst('HR'),
+        $config->getConst('RMC')
+    ));
+    
+    $config->setValue("subRoles", array(
+        "DD" => "Dean's Decision",
+        "DR" => "Dean's Recommendation",
+        "DA" => "Dean's Advice",
+        "CA" => "Chair's Advice",
+        "CR" => "Chair's Recommendation",
+        "NoAR" => "No Annual Report",
+        "NoPool" => "No Pool"
+    ));
+    
+    $config->setValue("roleAliases", array("ATS" => $config->getConst('CI'),
+                                           "Chair Science" => $config->getConst('CHAIR'),
+                                           "Chair Engineering" => $config->getConst('CHAIR'),
+                                           "ATSEC" => $config->getConst('RMC'),
+                                           "ATSEC Science" => $config->getConst('RMC'),
+                                           "FEC Engineering" => $config->getConst('RMC'),
+                                           "FEC Science" => $config->getConst('RMC')));
         
     /* Other */
     $config->setValue("analyticsCode", "");

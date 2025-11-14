@@ -240,7 +240,6 @@ define("FROZEN", false);
 
 $wgRoleValues = array(INACTIVE => 0,
                       HQP => 1,
-                      PS => 1,
                       EXTERNAL => 2,
                       NI => 5,
                       AR => 5,
@@ -250,14 +249,11 @@ $wgRoleValues = array(INACTIVE => 0,
                       'PL' => 9,
                       TL => 11,
                       'TL' => 11,
-                      APL => 11,
                       TC => 11,
                       CHAIR => 11,
-                      SRC => 11,
                       EA => 11,
                       HR => 11,
                       FEC_CHAIR => 12,
-                      ADEAN => 12,
                       VDEAN => 12,
                       DEAN => 12,
                       DEANEA => 12,
@@ -269,11 +265,11 @@ $wgRoleValues = array(INACTIVE => 0,
 
 $wgRoles = ($config->hasValue('wgRoles')) ? 
     $config->getValue('wgRoles') : 
-    array(HQP, PS, EXTERNAL, ACHAIR, CHAIR, SRC, EA, AR, CI, HR, RMC, STAFF, MANAGER, ADMIN);
+    array(HQP, PS, EXTERNAL, ACHAIR, CHAIR, EA, AR, CI, HR, RMC, STAFF, MANAGER, ADMIN);
 
 $wgAllRoles = ($config->hasValue('wgAllRoles')) ? 
     $config->getValue('wgAllRoles') :
-    array(HQP, PS, STUDENT, EXTERNAL, ACHAIR, CHAIR, SRC, EA, AR, CI, PL, APL, TL, TC, HR, RMC, EVALUATOR, STAFF, MANAGER, ADMIN);
+    array(HQP, PS, STUDENT, EXTERNAL, ACHAIR, CHAIR, EA, AR, CI, PL, APL, TL, TC, HR, RMC, EVALUATOR, STAFF, MANAGER, ADMIN);
 
 foreach($config->getValue('roleAliases') as $alias => $role){
     define($alias, $alias);

@@ -12,6 +12,17 @@
             <SectionPermission id="dept_hqp" permissions="rw" />
             <SectionPermission id="sabbatical" permissions="rw" />
         </Role>
+        <Role role="Chair {$faculty}">
+            <SectionPermission id="evaluations" permissions="rw" />
+            <SectionPermission id="dean_evaluations" permissions="" />
+            <SectionPermission id="recommendations" permissions="rw" />
+            <SectionPermission id="deans_advice" permissions="" />
+            <SectionPermission id="deans_decision" permissions="" />
+            <SectionPermission id="chairs_advice" permissions="rw" />
+            <SectionPermission id="atsec" permissions="rw" />
+            <SectionPermission id="dept_hqp" permissions="rw" />
+            <SectionPermission id="sabbatical" permissions="rw" />
+        </Role>
         <Role role="EA">
             <SectionPermission id="evaluations" permissions="rw" />
             <SectionPermission id="dean_evaluations" permissions="" />
