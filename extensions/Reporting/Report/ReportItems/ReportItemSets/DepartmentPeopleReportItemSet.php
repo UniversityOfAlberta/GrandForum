@@ -72,7 +72,7 @@ class DepartmentPeopleReportItemSet extends ReportItemSet {
                     // Not reviewed by BioSci, only Math
                     continue;
                 }
-                if($me->getName() == "Benjamin.Dyson" && $person->getRole("Faculty")){
+                if($me->getName() == "Benjamin.Dyson" && $person->isRole("Faculty")){
                     // Only show ATS for Benjamin
                     continue;
                 }
