@@ -481,12 +481,12 @@ class Paper extends BackboneModel{
                                 'time' => $fileTime);
             foreach($files as $file){
                 $parser = simplexml_load_string($file);
-                
                 foreach($parser->children() as $category){
                     $cattrs = $category->attributes();
                     $cname = "{$cattrs->category}";
                     if(isset($cattrs->citationFormat)){
                         foreach($categories['categories'][$cname]['types'] as $tname => $type){
+                            // Override base citation format
                             $categories['categories'][$cname]['types'][$tname]['citationFormat'] = "{$cattrs->citationFormat}";
                         }
                     }
