@@ -424,113 +424,12 @@ class Paper extends BackboneModel{
         }
         $baseName = "$IP/extensions/GrandObjects/ProductStructures/Base.xml";
         $fileName = "$IP/extensions/GrandObjects/ProductStructures/{$config->getValue('networkName')}.xml";
-<<<<<<< HEAD
-        $fileTime = filemtime($fileName);
-=======
         $fileTime = max(filemtime($fileName), filemtime($baseName));
->>>>>>> c852728aab256d1de7f15f9a1d11f5ab8c3d969e
         if(!Cache::exists("product_structure")){
             $files = array(file_get_contents($baseName), 
                            file_get_contents($fileName));
             $categories = array('categories' => array(),
                                 'time' => $fileTime);
-<<<<<<< HEAD
-            foreach($parser->children() as $category){
-                $cattrs = $category->attributes();
-                $cname = "{$cattrs->category}";
-                foreach($category->children() as $type){
-                    $tattrs = $type->attributes();
-                    $citationFormat = @("{$tattrs->citationFormat}" != "") ? "{$tattrs->citationFormat}" : "{$cattrs->citationFormat}";
-                    $tname = "{$tattrs->type}";
-                    $tname = str_replace('{$networkName}', $config->getValue('networkName'), $tname);
-                    $visible = @(strtolower("{$tattrs->visible}") != "false");
-                    if(trim("{$tattrs->status}") != ""){
-                        $tstatus = explode("|", "{$tattrs->status}");
-                    }
-                    else{
-                        $tstatus = array();
-                    }
-                    $titles = array();
-                    if("{$tattrs->titles}" != ""){
-                        $titles = @explode("|", "{$tattrs->titles}");
-                        foreach($titles as $key => $title){
-                            $titles[$key] = trim($title);
-                        }
-                    }
-                    $categories['categories'][$cname]['types'][$tname] = array('data' => array(),
-                                                                               'status' => $tstatus,
-                                                                               'tname' => $tname,
-                                                                               'titles' => $titles,
-                                                                               'visible' => $visible,
-                                                                               'description' => '',
-                                                                               'citationFormat' => $citationFormat,
-                                                                               'authors_label' => "Author",
-                                                                               'authors_text' => "");
-                    foreach($type->children() as $child){
-                        if($child->getName() == "data"){
-                            foreach($child->children() as $field){
-                                $fattrs = $field->attributes();
-                                $fid = "$field";
-                                $flabel = "{$fattrs->label}";
-                                $ftype = str_replace('{$networkName}', $config->getValue('networkName'), "{$fattrs->type}");
-                                $fbibtex = "{$fattrs->bibtex}";
-                                $fhidden = (strtolower("{$fattrs->hidden}") == "true");
-                                $foptions = explode("|", "{$fattrs->options}");
-                                
-                                if($config->getValue('elsevierApi') != ""){
-                                    // Modify data attributes for Elsevier
-                                    if($fid == "eigen_factor"){
-                                        $fhidden = true;
-                                    }
-                                    else if($fid == "category_ranking"){
-                                        $fhidden = true;
-                                    }
-                                    else if($fid == "impact_factor"){
-                                        $fhidden = true;
-                                    }
-                                    else if($fid == "category_ranking_override"){
-                                        $fhidden = true;
-                                    }
-                                    else if($fid == "impact_factor_override"){
-                                        $fhidden = true;
-                                    }
-                                    else if($fid == "snip"){
-                                        $fhidden = false;
-                                        $flabel = "SNIP<sup><span class='clicktooltip' style='font-size:17px; font-weight: normal;' title='The Source Normalised Impact per Paper <b>(SNIP)</b> is the ratio of the average number of citations received by articles in a journal (categorised in a particular field), and the citation potential of the field (i.e., the average length of the reference list of articles in that field). The SNIP allows comparisons between fields with different publication and citation rates. The SNIP is calculated using <a target=_blank href=https://www.scopus.com/sources>Scopus data</a>.'>&#9432;</span></sup>";
-                                    }
-                                }
-                                
-                                $categories['categories'][$cname]['types'][$tname]['data'][$fid] = array('bibtex' => $fbibtex,
-                                                                                                         'label' => $flabel,
-                                                                                                         'type' => $ftype,
-                                                                                                         'options' => $foptions,
-                                                                                                         'hidden' => $fhidden);
-                            }
-                        }
-                        else if($child->getName() == "description"){
-                            $categories['categories'][$cname]['types'][$tname]['description'] = "$child";
-                        }
-                        else if($child->getName() == "date"){
-                            $attrs = $child->attributes();
-                            $categories['categories'][$cname]['types'][$tname]["date_label"] = ("{$attrs->label}" != "") ? "{$attrs->label}" : "Date";
-                        }
-                        else if($child->getName() == "acceptance_date"){
-                            $attrs = $child->attributes();
-                            $categories['categories'][$cname]['types'][$tname]["acceptance_date_label"] = ("{$attrs->label}" != "") ? "{$attrs->label}" : "Acceptance Date";
-                        }
-                        else if($child->getName() == "authors"){
-                            $attrs = $child->attributes();
-                            $text = "$child";
-                            $categories['categories'][$cname]['types'][$tname]["authors_single"] = ("{$attrs->single}" != "") ? (strtolower("{$attrs->single}") == "true") : false;
-                            $categories['categories'][$cname]['types'][$tname]["authors_label"] = ("{$attrs->label}" != "") ? "{$attrs->label}" : "Author";
-                            $categories['categories'][$cname]['types'][$tname]["authors_text"] = $text;
-                        }
-                        else if($child->getName() == "contributors"){
-                            $attrs = $child->attributes();
-                            $text = "$child";
-                            $categories['categories'][$cname]['types'][$tname]["contributors_label"] = ("{$attrs->label}" != "") ? "{$attrs->label}" : "Contributor";
-                            $categories['categories'][$cname]['types'][$tname]["contributors_text"] = $text;
-=======
             foreach($files as $file){
                 $parser = simplexml_load_string($file);
                 foreach($parser->children() as $category){
@@ -547,8 +446,6 @@ class Paper extends BackboneModel{
                         $citationFormat = @("{$tattrs->citationFormat}" != "") ? "{$tattrs->citationFormat}" : "{$cattrs->citationFormat}";
                         $tname = "{$tattrs->type}";
                         $tname = str_replace('{$networkName}', $config->getValue('networkName'), $tname);
-                        $ccvType = "{$tattrs->ccv_name}";
-                        $ccvType = ($ccvType == "") ? $tname : $ccvType;
                         $visible = @(strtolower("{$tattrs->visible}") != "false");
                         if(trim("{$tattrs->status}") != ""){
                             $tstatus = explode("|", "{$tattrs->status}");
@@ -565,13 +462,11 @@ class Paper extends BackboneModel{
                         }
                         $categories['categories'][$cname]['types'][$tname] = array('data' => array(),
                                                                                    'status' => $tstatus,
-                                                                                   'type' => $ccvType,
                                                                                    'tname' => $tname,
                                                                                    'titles' => $titles,
                                                                                    'visible' => $visible,
                                                                                    'description' => '',
                                                                                    'citationFormat' => $citationFormat,
-                                                                                   'ccv_status' => array(),
                                                                                    'authors_label' => "Author",
                                                                                    'authors_text' => "");
                         foreach($type->children() as $child){
@@ -581,7 +476,6 @@ class Paper extends BackboneModel{
                                     $fid = "$field";
                                     $flabel = "{$fattrs->label}";
                                     $ftype = str_replace('{$networkName}', $config->getValue('networkName'), "{$fattrs->type}");
-                                    $fccvtk = "{$fattrs->ccvtk}";
                                     $fbibtex = "{$fattrs->bibtex}";
                                     $fhidden = (strtolower("{$fattrs->hidden}") == "true");
                                     $foptions = explode("|", "{$fattrs->options}");
@@ -609,8 +503,7 @@ class Paper extends BackboneModel{
                                         }
                                     }
                                     
-                                    $categories['categories'][$cname]['types'][$tname]['data'][$fid] = array('ccvtk' => $fccvtk,
-                                                                                                             'bibtex' => $fbibtex,
+                                    $categories['categories'][$cname]['types'][$tname]['data'][$fid] = array('bibtex' => $fbibtex,
                                                                                                              'label' => $flabel,
                                                                                                              'type' => $ftype,
                                                                                                              'options' => $foptions,
@@ -619,16 +512,6 @@ class Paper extends BackboneModel{
                             }
                             else if($child->getName() == "description"){
                                 $categories['categories'][$cname]['types'][$tname]['description'] = "$child";
-                            }
-                            else if($child->getName() == "statuses"){
-                                foreach($child->children() as $status){
-                                    $sattrs = $status->attributes();
-                                    $sid = "{$sattrs->lov_id}";
-                                    $sname = "$status";
-                                    if($sid != ""){
-                                        $categories['categories'][$cname]['types'][$tname]['ccv_status'][$sid] = $sname;
-                                    }
-                                }
                             }
                             else if($child->getName() == "date"){
                                 $attrs = $child->attributes();
@@ -658,7 +541,6 @@ class Paper extends BackboneModel{
                                 $misc_types[$key] = str_replace("\"", "\\\"", $type);
                             }
                             $categories['categories'][$cname]['misc'] = $misc_types;
->>>>>>> c852728aab256d1de7f15f9a1d11f5ab8c3d969e
                         }
                         $categories['categories'][$cname]['visible'] = @(strtolower("{$cattrs->visible}") != "false");
                     }
