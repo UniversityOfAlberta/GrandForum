@@ -539,7 +539,7 @@ abstract class AbstractReport extends SpecialPage {
         $pResult = false;
         $nProjectTags = 0;
         $me->getFecPersonalInfo();
-        if(!$rResult && !$me->inFaculty() && !$me->isRole("FEC ".getFaculty())){
+        if(!$rResult && !$me->inFaculty() && !$me->isRole("FEC ".getFaculty()) && !$me->isRole("ATSEC ".getFaculty())){
             return false;
         }
         foreach($this->permissions as $type => $perms){

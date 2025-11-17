@@ -187,6 +187,7 @@
         $config->getConst('VDEAN')          => "Vice Dean",
         $config->getConst('DEAN')           => "Dean",
         $config->getConst('DEANEA')         => "Executive Assistant to the Dean",
+        $config->getConst('FEC_CHAIR')      => "FEC Chair",
         $config->getConst('NI')             => "Faculty",
         $config->getConst('AR')             => "Faculty",
         $config->getConst('CI')             => "Faculty",
@@ -205,6 +206,7 @@
         $config->getConst('VDEAN'),
         $config->getConst('DEAN'),
         $config->getConst('DEANEA'),
+        $config->getConst('FEC_CHAIR'),
         $config->getConst('HR'),
         $config->getConst('FEC'),
         $config->getConst('STAFF'),
@@ -218,6 +220,7 @@
         $config->getConst('VDEAN'),
         $config->getConst('DEAN'),
         $config->getConst('DEANEA'),
+        $config->getConst('FEC_CHAIR'),
         $config->getConst('CI'),
         $config->getConst('HR'),
         $config->getConst('FEC')
@@ -229,16 +232,15 @@
         "DA" => "Dean's Advice",
         "CA" => "Chair's Advice",
         "CR" => "Chair's Recommendation",
-        "FEC" => "Faculty Evaluation Committee",
-        "ATSEC" => "Academic Teaching Staff Evaluation Committee",
-        //"SPECIAL2020" => "Special2020",
-        "ViewProfile" => "View Profile",
         "NoAR" => "No Annual Report",
         "NoPool" => "No Pool"
     ));
     
     $config->setValue("roleAliases", array("ATS" => $config->getConst('CI'),
+                                           "Chair Science" => $config->getConst('CHAIR'),
+                                           "Chair Engineering" => $config->getConst('CHAIR'),
                                            "ATSEC" => $config->getConst('FEC'),
+                                           "ATSEC Science" => $config->getConst('FEC'),
                                            "FEC Engineering" => $config->getConst('FEC'),
                                            "FEC Science" => $config->getConst('FEC')));
         

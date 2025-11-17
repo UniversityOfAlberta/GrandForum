@@ -15,6 +15,7 @@
                $me->isRole(ADMIN) || 
                $me->isRole("FEC") ||
                $me->isRole("FEC ".getFaculty()) ||
+               $me->isRole("ATSEC ".getFaculty()) ||
                $me->isRole("ATSEC")){
                 $freeze = DBFunctions::execSQL("SELECT rp_subitem, data, encrypted
                                                 FROM grand_report_blobs

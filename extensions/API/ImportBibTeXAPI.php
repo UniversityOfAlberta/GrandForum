@@ -237,7 +237,7 @@ class ImportBibTeXAPI extends API{
                 require_once($dir."/../../Classes/CCCVTK/bibtex-bib.lib.php");
                 $md5 = md5($_POST['bibtex']);
                 $fileName = "/tmp/".$md5;
-                $_POST['bibtex'] = preg_replace('/((\w+?)\s*=\s*\{(.*?)\},*)([\s|}])/ms', "\n$1\n$4", $_POST['bibtex']);
+                $_POST['bibtex'] = preg_replace('/((\w+?)\s*=\s*\{(.*?)\},*)([\s|}])?/ms', "\n$1\n$4", $_POST['bibtex']);
                 file_put_contents($fileName, $_POST['bibtex']);
                 $bib = new Bibliography($fileName);
                 unlink($fileName);

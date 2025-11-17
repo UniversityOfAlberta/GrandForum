@@ -37,8 +37,8 @@ class TemplateReport extends AbstractReport{
         $person = Person::newFromWgUser();
         if($person->isLoggedIn() && $person instanceof FullPerson){
             $person->getFecPersonalInfo();
+            $url = "$wgServer$wgScriptPath/index.php/Special:Report?report=";
             if($person->inFaculty()){
-                $url = "$wgServer$wgScriptPath/index.php/Special:Report?report=";
                 if($person->isRole(NI) || $person->isRole("ATS")){
                     if(getFaculty() == 'Engineering' && $person->isRole("ATS")){
                         $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "ATS")) ? "selected" : false;
@@ -52,20 +52,10 @@ class TemplateReport extends AbstractReport{
                     //$selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "QACV")) ? "selected" : false;
                     //$tabs["CV"]['subtabs'][] = TabUtils::createSubTab("QA CV", "{$url}QACV", $selected);
                 }
-                
-                if($person->isRole(CHAIR) || $person->isRoleDuring(CHAIR, CYCLE_START, CYCLE_END) || $person->isRole(EA) || $person->isRole(ACHAIR)){
-                    $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "ChairTable")) ? "selected" : false;
-                    $tabs["Chair"]['subtabs'][] = TabUtils::createSubTab("Annual Reports", "{$url}ChairTable", $selected);
-                }
-                
+
                 if($person->isRole(DEAN) || $person->isRoleDuring(DEAN, CYCLE_START, CYCLE_END) || $person->isRole(DEANEA)){
                     $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "ChairTable")) ? "selected" : false;
                     $tabs["Dean"]['subtabs'][] = TabUtils::createSubTab("Annual Reports", "{$url}ChairTable", $selected);
-                }
-                
-                if($person->isRole(FEC_CHAIR) || $person->isRole(HR) || $person->isRole("FEC")){
-                    $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "FECTable")) ? "selected" : false;
-                    $tabs["FEC"]['subtabs'][] = TabUtils::createSubTab("Annual Reports", "{$url}FECTable", $selected);
                 }
                 
                 if($person->isRole(CHAIR) || $person->isRole(EA)){
@@ -92,6 +82,24 @@ class TemplateReport extends AbstractReport{
                     $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "Letters/VarianceBase")) ? "selected" : false;
                     $tabs["Manager"]['subtabs'][] = TabUtils::createSubTab("Variances", "{$url}Letters/VarianceBase", $selected);
                 }
+            }
+            
+            // Chair Table
+            if(($person->inFaculty() && ($person->isRole(CHAIR) || $person->isRoleDuring(CHAIR, CYCLE_START, CYCLE_END) || $person->isRole(EA) || $person->isRole(ACHAIR))) || $person->isRole("Chair ".getFaculty())){
+                $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "ChairTable")) ? "selected" : false;
+                $tabs["Chair"]['subtabs'][] = TabUtils::createSubTab("Annual Reports", "{$url}ChairTable", $selected);
+            }
+            
+            // FEC Table
+            if(($person->inFaculty() && ($person->isRole(FEC_CHAIR) || $person->isRole(HR) || $person->isRole("FEC"))) || $person->isRole(ADMIN) || $person->isRole("FEC ".getFaculty())){
+                $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "FECTable")) ? "selected" : false;
+                $tabs["FEC"]['subtabs'][] = TabUtils::createSubTab("Annual Reports", "{$url}FECTable", $selected);
+            }
+            
+            // ATSEC Table
+            if(($person->inFaculty() && ($person->isRole(FEC_CHAIR) || $person->isRole(HR) || $person->isRole("ATSEC"))) || $person->isRole(ADMIN) || $person->isRole("ATSEC ".getFaculty())){
+                $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "ATSECTable")) ? "selected" : false;
+                $tabs["ATSEC"]['subtabs'][] = TabUtils::createSubTab("Annual Reports", "{$url}ATSECTable", $selected);
             }
         }
         return true;

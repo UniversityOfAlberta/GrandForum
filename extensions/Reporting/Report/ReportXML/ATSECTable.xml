@@ -6,6 +6,11 @@
             <SectionPermission id="atsec_votes" permissions="" />
             <SectionPermission id="summary" permissions="rw" />
         </Role>
+        <Role role="ATSEC {$faculty}" start="{$this_year}-07-01" end="{$next_year}-07-01">
+            <SectionPermission id="atsec" permissions="rw" />
+            <SectionPermission id="atsec_votes" permissions="" />
+            <SectionPermission id="summary" permissions="rw" />
+        </Role>
         <Role role="FEC_CHAIR" start="{$this_year}-07-01" end="{$next_year}-07-01">
             <SectionPermission id="atsec" permissions="rw" />
             <SectionPermission id="atsec_votes" permissions="rw" />

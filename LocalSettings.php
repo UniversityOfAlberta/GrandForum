@@ -261,6 +261,7 @@ $wgAllRoles = ($config->hasValue('wgAllRoles')) ?
     $config->getValue('wgAllRoles') :
     array(HQP, STUDENT, EXTERNAL, ACHAIR, CHAIR, EA, AR, CI, HR, FEC, STAFF, MANAGER, ADMIN);
 
+
 foreach($config->getValue('roleAliases') as $alias => $role){
     define($alias, $alias);
     $wgRoleValues[$alias] = $wgRoleValues[$role];

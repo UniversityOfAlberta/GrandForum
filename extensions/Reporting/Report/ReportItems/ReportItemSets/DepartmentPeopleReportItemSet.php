@@ -12,7 +12,9 @@ class DepartmentPeopleReportItemSet extends ReportItemSet {
         $excludeMe = (strtolower($this->getAttr("excludeMe", "false")) == "true");
         $me = Person::newFromWgUser();
 
-        if($me->getName() != "Christopher.Sturdy" && !$me->isRole(CHAIR) && !$me->isRole(EA) && !$me->isRoleDuring(CHAIR, CYCLE_START, CYCLE_END)){
+        if($me->getName() != "Christopher.Sturdy" && !$me->isRole(CHAIR) && !$me->isRole(CHAIR." ".getFaculty()) && !$me->isRole(EA) && 
+                                                     !$me->isRoleDuring(CHAIR, CYCLE_START, CYCLE_END) &&
+                                                     !$me->isRoleDuring(CHAIR." ".getFaculty(), CYCLE_START, CYCLE_END)){
             // Person isn't a Chair/EA, so don't return anyone
             return $data;
         }
@@ -68,6 +70,10 @@ class DepartmentPeopleReportItemSet extends ReportItemSet {
                 // SPECIAL CASES BELOW
                 if(($me->getName() == "Linda.Christensen" || $me->getName() == "Tracy.Raivio") && ($person->getName() == "Mark.Lewis")){
                     // Not reviewed by BioSci, only Math
+                    continue;
+                }
+                if($me->getName() == "Benjamin.Dyson" && $person->isRole("Faculty")){
+                    // Only show ATS for Benjamin
                     continue;
                 }
                 create:

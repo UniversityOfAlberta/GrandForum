@@ -279,6 +279,7 @@ class ReportXMLParser {
                 if($end == null){
                     $this->errors[] = "Start time '{$attributes->end}' does not exist";
                 }
+                $role = $this->report->varSubstitute($role);
                 $this->parseRoleSectionPermissions($child, $role);
                 $this->report->addPermission("Role", array("role" => "{$role}", "subType" => "{$subType}"), "{$start}", "{$end}");
             }
