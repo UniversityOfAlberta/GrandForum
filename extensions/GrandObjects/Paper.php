@@ -471,137 +471,144 @@ class Paper extends BackboneModel{
         if(self::$structure != null){
             return self::$structure;
         }
+        $baseName = "$IP/extensions/GrandObjects/ProductStructures/Base.xml";
         $fileName = "$IP/extensions/GrandObjects/ProductStructures/{$config->getValue('networkName')}.xml";
-        if(!file_exists($fileName)){
-            $fileName = "$IP/extensions/GrandObjects/ProductStructures/NETWORK.xml";
-        }
-        $fileTime = filemtime($fileName);
+        $fileTime = max(filemtime($fileName), filemtime($baseName));
         if(!Cache::exists("product_structure")){
-            $file = file_get_contents($fileName);
-            $parser = simplexml_load_string($file);
+            $files = array(file_get_contents($baseName), 
+                           file_get_contents($fileName));
             $categories = array('categories' => array(),
                                 'time' => $fileTime);
-            foreach($parser->children() as $category){
-                $cattrs = $category->attributes();
-                $cname = "{$cattrs->category}";
-                foreach($category->children() as $type){
-                    $tattrs = $type->attributes();
-                    $citationFormat = @("{$tattrs->citationFormat}" != "") ? "{$tattrs->citationFormat}" : "{$cattrs->citationFormat}";
-                    $tname = "{$tattrs->type}";
-                    $tname = str_replace('{$networkName}', $config->getValue('networkName'), $tname);
-                    $ccvType = "{$tattrs->ccv_name}";
-                    $ccvType = ($ccvType == "") ? $tname : $ccvType;
-                    $visible = @(strtolower("{$tattrs->visible}") != "false");
-                    if(trim("{$tattrs->status}") != ""){
-                        $tstatus = explode("|", "{$tattrs->status}");
-                    }
-                    else{
-                        $tstatus = array();
-                    }
-                    $titles = array();
-                    if("{$tattrs->titles}" != ""){
-                        $titles = @explode("|", "{$tattrs->titles}");
-                        foreach($titles as $key => $title){
-                            $titles[$key] = trim($title);
+            foreach($files as $file){
+                $parser = simplexml_load_string($file);
+                
+                foreach($parser->children() as $category){
+                    $cattrs = $category->attributes();
+                    $cname = "{$cattrs->category}";
+                    if(isset($cattrs->citationFormat)){
+                        foreach($categories['categories'][$cname]['types'] as $tname => $type){
+                            $categories['categories'][$cname]['types'][$tname]['citationFormat'] = "{$cattrs->citationFormat}";
                         }
                     }
-                    $categories['categories'][$cname]['types'][$tname] = array('data' => array(),
-                                                                               'status' => $tstatus,
-                                                                               'type' => $ccvType,
-                                                                               'tname' => $tname,
-                                                                               'titles' => $titles,
-                                                                               'visible' => $visible,
-                                                                               'description' => '',
-                                                                               'citationFormat' => $citationFormat,
-                                                                               'ccv_status' => array(),
-                                                                               'authors_label' => "Author",
-                                                                               'authors_text' => "");
-                    foreach($type->children() as $child){
-                        if($child->getName() == "data"){
-                            foreach($child->children() as $field){
-                                $fattrs = $field->attributes();
-                                $fid = "$field";
-                                $flabel = "{$fattrs->label}";
-                                $ftype = str_replace('{$networkName}', $config->getValue('networkName'), "{$fattrs->type}");
-                                $fccvtk = "{$fattrs->ccvtk}";
-                                $fbibtex = "{$fattrs->bibtex}";
-                                $fhidden = (strtolower("{$fattrs->hidden}") == "true");
-                                $foptions = explode("|", "{$fattrs->options}");
-                                
-                                if($config->getValue('elsevierApi') != ""){
-                                    // Modify data attributes for Elsevier
-                                    if($fid == "eigen_factor"){
-                                        $fhidden = true;
-                                    }
-                                    else if($fid == "category_ranking"){
-                                        $fhidden = true;
-                                    }
-                                    else if($fid == "impact_factor"){
-                                        $fhidden = true;
-                                    }
-                                    else if($fid == "category_ranking_override"){
-                                        $fhidden = true;
-                                    }
-                                    else if($fid == "impact_factor_override"){
-                                        $fhidden = true;
-                                    }
-                                    else if($fid == "snip"){
-                                        $fhidden = false;
-                                        $flabel = "SNIP<sup><span class='clicktooltip' style='font-size:17px; font-weight: normal;' title='The Source Normalised Impact per Paper <b>(SNIP)</b> is the ratio of the average number of citations received by articles in a journal (categorised in a particular field), and the citation potential of the field (i.e., the average length of the reference list of articles in that field). The SNIP allows comparisons between fields with different publication and citation rates. The SNIP is calculated using <a target=_blank href=https://www.scopus.com/sources>Scopus data</a>.'>&#9432;</span></sup>";
-                                    }
-                                }
-                                
-                                $categories['categories'][$cname]['types'][$tname]['data'][$fid] = array('ccvtk' => $fccvtk,
-                                                                                                         'bibtex' => $fbibtex,
-                                                                                                         'label' => $flabel,
-                                                                                                         'type' => $ftype,
-                                                                                                         'options' => $foptions,
-                                                                                                         'hidden' => $fhidden);
+                    foreach($category->children() as $type){
+                        $tattrs = $type->attributes();
+                        $citationFormat = @("{$tattrs->citationFormat}" != "") ? "{$tattrs->citationFormat}" : "{$cattrs->citationFormat}";
+                        $tname = "{$tattrs->type}";
+                        $tname = str_replace('{$networkName}', $config->getValue('networkName'), $tname);
+                        $ccvType = "{$tattrs->ccv_name}";
+                        $ccvType = ($ccvType == "") ? $tname : $ccvType;
+                        $visible = @(strtolower("{$tattrs->visible}") != "false");
+                        if(trim("{$tattrs->status}") != ""){
+                            $tstatus = explode("|", "{$tattrs->status}");
+                        }
+                        else{
+                            $tstatus = array();
+                        }
+                        $titles = array();
+                        if("{$tattrs->titles}" != ""){
+                            $titles = @explode("|", "{$tattrs->titles}");
+                            foreach($titles as $key => $title){
+                                $titles[$key] = trim($title);
                             }
                         }
-                        else if($child->getName() == "description"){
-                            $categories['categories'][$cname]['types'][$tname]['description'] = "$child";
-                        }
-                        else if($child->getName() == "statuses"){
-                            foreach($child->children() as $status){
-                                $sattrs = $status->attributes();
-                                $sid = "{$sattrs->lov_id}";
-                                $sname = "$status";
-                                if($sid != ""){
-                                    $categories['categories'][$cname]['types'][$tname]['ccv_status'][$sid] = $sname;
+                        $categories['categories'][$cname]['types'][$tname] = array('data' => array(),
+                                                                                   'status' => $tstatus,
+                                                                                   'type' => $ccvType,
+                                                                                   'tname' => $tname,
+                                                                                   'titles' => $titles,
+                                                                                   'visible' => $visible,
+                                                                                   'description' => '',
+                                                                                   'citationFormat' => $citationFormat,
+                                                                                   'ccv_status' => array(),
+                                                                                   'authors_label' => "Author",
+                                                                                   'authors_text' => "");
+                        foreach($type->children() as $child){
+                            if($child->getName() == "data"){
+                                foreach($child->children() as $field){
+                                    $fattrs = $field->attributes();
+                                    $fid = "$field";
+                                    $flabel = "{$fattrs->label}";
+                                    $ftype = str_replace('{$networkName}', $config->getValue('networkName'), "{$fattrs->type}");
+                                    $fccvtk = "{$fattrs->ccvtk}";
+                                    $fbibtex = "{$fattrs->bibtex}";
+                                    $fhidden = (strtolower("{$fattrs->hidden}") == "true");
+                                    $foptions = explode("|", "{$fattrs->options}");
+                                    
+                                    if($config->getValue('elsevierApi') != ""){
+                                        // Modify data attributes for Elsevier
+                                        if($fid == "eigen_factor"){
+                                            $fhidden = true;
+                                        }
+                                        else if($fid == "category_ranking"){
+                                            $fhidden = true;
+                                        }
+                                        else if($fid == "impact_factor"){
+                                            $fhidden = true;
+                                        }
+                                        else if($fid == "category_ranking_override"){
+                                            $fhidden = true;
+                                        }
+                                        else if($fid == "impact_factor_override"){
+                                            $fhidden = true;
+                                        }
+                                        else if($fid == "snip"){
+                                            $fhidden = false;
+                                            $flabel = "SNIP<sup><span class='clicktooltip' style='font-size:17px; font-weight: normal;' title='The Source Normalised Impact per Paper <b>(SNIP)</b> is the ratio of the average number of citations received by articles in a journal (categorised in a particular field), and the citation potential of the field (i.e., the average length of the reference list of articles in that field). The SNIP allows comparisons between fields with different publication and citation rates. The SNIP is calculated using <a target=_blank href=https://www.scopus.com/sources>Scopus data</a>.'>&#9432;</span></sup>";
+                                        }
+                                    }
+                                    
+                                    $categories['categories'][$cname]['types'][$tname]['data'][$fid] = array('ccvtk' => $fccvtk,
+                                                                                                             'bibtex' => $fbibtex,
+                                                                                                             'label' => $flabel,
+                                                                                                             'type' => $ftype,
+                                                                                                             'options' => $foptions,
+                                                                                                             'hidden' => $fhidden);
                                 }
                             }
+                            else if($child->getName() == "description"){
+                                $categories['categories'][$cname]['types'][$tname]['description'] = "$child";
+                            }
+                            else if($child->getName() == "statuses"){
+                                foreach($child->children() as $status){
+                                    $sattrs = $status->attributes();
+                                    $sid = "{$sattrs->lov_id}";
+                                    $sname = "$status";
+                                    if($sid != ""){
+                                        $categories['categories'][$cname]['types'][$tname]['ccv_status'][$sid] = $sname;
+                                    }
+                                }
+                            }
+                            else if($child->getName() == "date"){
+                                $attrs = $child->attributes();
+                                $categories['categories'][$cname]['types'][$tname]["date_label"] = ("{$attrs->label}" != "") ? "{$attrs->label}" : "Date";
+                            }
+                            else if($child->getName() == "acceptance_date"){
+                                $attrs = $child->attributes();
+                                $categories['categories'][$cname]['types'][$tname]["acceptance_date_label"] = ("{$attrs->label}" != "") ? "{$attrs->label}" : "Acceptance Date";
+                            }
+                            else if($child->getName() == "authors"){
+                                $attrs = $child->attributes();
+                                $text = "$child";
+                                $categories['categories'][$cname]['types'][$tname]["authors_single"] = ("{$attrs->single}" != "") ? (strtolower("{$attrs->single}") == "true") : false;
+                                $categories['categories'][$cname]['types'][$tname]["authors_label"] = ("{$attrs->label}" != "") ? "{$attrs->label}" : "Author";
+                                $categories['categories'][$cname]['types'][$tname]["authors_text"] = $text;
+                            }
+                            else if($child->getName() == "contributors"){
+                                $attrs = $child->attributes();
+                                $text = "$child";
+                                $categories['categories'][$cname]['types'][$tname]["contributors_label"] = ("{$attrs->label}" != "") ? "{$attrs->label}" : "Contributor";
+                                $categories['categories'][$cname]['types'][$tname]["contributors_text"] = $text;
+                            }
                         }
-                        else if($child->getName() == "date"){
-                            $attrs = $child->attributes();
-                            $categories['categories'][$cname]['types'][$tname]["date_label"] = ("{$attrs->label}" != "") ? "{$attrs->label}" : "Date";
+                        if(DBFunctions::isReady()){
+                            $misc_types = Paper::getAllMiscTypes($cname);
+                            foreach($misc_types as $key => $type){
+                                $misc_types[$key] = str_replace("\"", "\\\"", $type);
+                            }
+                            $categories['categories'][$cname]['misc'] = $misc_types;
                         }
-                        else if($child->getName() == "acceptance_date"){
-                            $attrs = $child->attributes();
-                            $categories['categories'][$cname]['types'][$tname]["acceptance_date_label"] = ("{$attrs->label}" != "") ? "{$attrs->label}" : "Acceptance Date";
-                        }
-                        else if($child->getName() == "authors"){
-                            $attrs = $child->attributes();
-                            $text = "$child";
-                            $categories['categories'][$cname]['types'][$tname]["authors_single"] = ("{$attrs->single}" != "") ? (strtolower("{$attrs->single}") == "true") : false;
-                            $categories['categories'][$cname]['types'][$tname]["authors_label"] = ("{$attrs->label}" != "") ? "{$attrs->label}" : "Author";
-                            $categories['categories'][$cname]['types'][$tname]["authors_text"] = $text;
-                        }
-                        else if($child->getName() == "contributors"){
-                            $attrs = $child->attributes();
-                            $text = "$child";
-                            $categories['categories'][$cname]['types'][$tname]["contributors_label"] = ("{$attrs->label}" != "") ? "{$attrs->label}" : "Contributor";
-                            $categories['categories'][$cname]['types'][$tname]["contributors_text"] = $text;
-                        }
+                        $categories['categories'][$cname]['visible'] = @(strtolower("{$cattrs->visible}") != "false");
                     }
-                    if(DBFunctions::isReady()){
-                        $misc_types = Paper::getAllMiscTypes($cname);
-                        foreach($misc_types as $key => $type){
-                            $misc_types[$key] = str_replace("\"", "\\\"", $type);
-                        }
-                        $categories['categories'][$cname]['misc'] = $misc_types;
-                    }
-                    $categories['categories'][$cname]['visible'] = @(strtolower("{$cattrs->visible}") != "false");
                 }
             }
             Cache::store("product_structure", $categories);
