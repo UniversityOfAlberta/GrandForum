@@ -94,6 +94,10 @@ table.dataTable tr.even td.sorting_3 { background-color: #F8F8F8; }
     vertical-align: middle;
 }
 
+.dataTables_length button span {
+    vertical-align: revert;
+}
+
 
 /*
  * Filter

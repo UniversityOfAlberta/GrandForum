@@ -94,7 +94,7 @@
     &nbsp;
     &nbsp;
     <% if(orcidId != ""){ %>
-        <button id="importOrcidButton" style="height: 27px;"><img src="https://orcid.org/sites/default/files/images/orcid_16x16.png" />&nbsp;Import ORCID</button>
+        <button id="importOrcidButton" style="height: 32px;"><img src="https://orcid.org/sites/default/files/images/orcid_16x16.png" />&nbsp;Import ORCID</button>
     <% } %>
     <% if(productStructure.categories['Activity'] != undefined && 
           productStructure.categories['Activity'].types['Meeting'] != undefined){ %>
@@ -123,8 +123,8 @@
 <%= subview('addProduct') %>
 <table id="listTable" frame="box" rules="all" style="display:none;">
     <thead>
-        <tr style="border-bottom: 2px solid #C8C8C8;">
-            <th width="1%" style="border-left: 2px solid #C8C8C8;">Edit</th>
+        <tr style="border-bottom: 2px solid #DDD;">
+            <th width="1%" style="border-left: 2px solid #DDD;">Edit</th>
             <th width="1%">Private&nbsp;<span class="tooltip" title="If a Product is marked as private, it will NOT show up anywhere else on the Forum.">&#9432;</span></th>
             <th width="1%">Exclude&nbsp;<span class="tooltip" title="If a Product is marked as excluded, it will NOT show up in your profile or Annual Report.">&#9432;</span></th>
             <th width="3%" style="min-width: 70px;">Acceptance/<br />Start&nbsp;Date</th>

@@ -513,15 +513,14 @@ select[disabled] {
 }
 
 input[type=button], input[type=submit], .button, .button:visited, .dt-button, .ui-button, .button:link , :not(.mce-btn) > :not(.mce-btn):not(.mce-window-head) >  button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose):not([disabled]) {
-    color: #333;
-    background: white;
+    color: white;
     border-width: 2px !important;
     border-style: solid !important;
     display:inline-block;
     font-family: "Roboto", Verdana, sans-serif !important;
     font-size:14px;
     line-height:16px;
-    padding:5px 20px;
+    padding:6px 20px;
     text-decoration:none;
     font-weight: bold !important;
     white-space:nowrap;
@@ -558,7 +557,7 @@ input[type=button]:hover, input[type=submit]:hover, .button:hover, .dt-button:ho
     font-weight: bold;
     text-decoration:none; 
     cursor:pointer;
-    padding:5px 20px;
+    padding:6px 20px;
 	margin:2px;
 	white-space:nowrap;
 }
@@ -608,13 +607,14 @@ input[type=submit][disabled], input[type=submit][disabled]:hover, input[type=sub
 button[disabled], a.disabledButton, a.disabledButton:hover, a.disabledButton:active, .ui-dialog .ui-dialog-buttonpane button[disabled] {
     background: #f2f2f2 !important;
     color: #777777 !important;
+    border-style: solid !important;
     border-color: #AAA !important;
     top:0;
     display:inline-block;
     font-family: "Roboto", Verdana, sans-serif !important;
     font-size:14px;
     line-height:15px;
-    padding:5px 20px;
+    padding:6px 20px;
     text-decoration:none;
     font-weight: bold !important;
     white-space:nowrap;

@@ -62,6 +62,10 @@ h1, h2, h3, h4, h5, h6, h7 {
     border-color: $thc;
 }
 
+#showMoreResults:hover {
+    color: $hl !important;
+}
+
 /* Input */
 
 .selected .highlights-tab, .highlights-tab:hover {
@@ -77,17 +81,18 @@ input:focus, textarea:focus {
 }
 
 input[type=button]:active, input[type=submit]:active, .button:active, .dt-button, .ui-button:active, .ui-state button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose):not([disabled]):active {
-    color: white !important;
-    background: {$hl} !important;
+    color: {$hl} !important;
+    background: white !important;
 }
 
 input[type=button]:hover, input[type=submit]:hover, .button:hover, .dt-button:hover, .ui-button:hover, :not(.mce-btn):not(.mce-window-head) >  button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose):not([disabled]):hover {
-    color: white !important;
-    background: {$hl} !important;
+    color: {$hl} !important;
+    background: white !important;
 }
 
 input[type=button], input[type=submit], .button, .button:visited, .dt-button, .ui-button, .button:link , :not(.mce-btn):not(.mce-window-head) >  button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose):not([disabled]) {
     border-color: {$hl} !important;
+    background: {$hl} !important;
     transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out;
 }
 
