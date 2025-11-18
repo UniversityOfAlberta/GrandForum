@@ -53,6 +53,7 @@ class CavendishTemplate extends QuickTemplate {
 		<meta name="robots" content="noindex" />
 		<title><?php $this->text('pagetitle') ?></title>
 		<link type="image/x-icon" href="<?php echo $wgServer.$wgScriptPath.'/favicon.ico'; ?>" rel="shortcut icon" />
+		<link rel='stylesheet' id='roboto-css'  href='//fonts.googleapis.com/css?family=Roboto%3A400%2C400i%2C500%2C500i%2C700%2C700i&#038;ver=4.9.13' type='text/css' media='all' />
 		<link type="text/css" href="<?php $this->text('stylepath') ?>/smoothness/jquery-ui-1.8.21.custom.css" rel="Stylesheet" />
 		
 		<link rel="stylesheet" href="<?php echo $wgServer.$wgScriptPath; ?>/skins/cavendish/autocomplete.css" type="text/css" />
@@ -64,12 +65,15 @@ class CavendishTemplate extends QuickTemplate {
 		<link rel="stylesheet" href="<?php echo $wgServer.$wgScriptPath; ?>/skins/common/shared.css" type="text/css" media="screen" />
 		<link rel="stylesheet" href="<?php echo $wgServer.$wgScriptPath; ?>/skins/common/commonPrint.css" type="text/css" media="print" />
 		<link rel="stylesheet" href="<?php echo $wgServer.$wgScriptPath; ?>/skins/cavendish/print.css" type="text/css" media="print" />
-		<link type="text/css" rel="stylesheet" href="<?php echo $wgServer.$wgScriptPath; ?>/skins/cavendish/cavendish.css?<?php echo filemtime('skins/cavendish/cavendish.css'); ?>" />
 		
 		<link type="text/css" href="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/DataTables/css/jquery.dataTables.css" rel="Stylesheet" />
 		<link type="text/css" href="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/DataTables/css/fixedHeader.dataTables.min.css" rel="Stylesheet" />
 		
-		<style type="text/css" media="screen,projection">/*<![CDATA[*/ @import "<?php echo $wgServer.$wgScriptPath; ?>/skins/cavendish/main.css"; /*]]>*/</style>
+		<link type="text/css" rel="stylesheet" href="<?php echo "$wgServer$wgScriptPath"; ?>/skins/cavendish/content.css?<?php echo filemtime('skins/cavendish/content.css'); ?>" />
+		<link type="text/css" rel="stylesheet" href="<?php echo "$wgServer$wgScriptPath"; ?>/skins/cavendish/template.css?<?php echo filemtime('skins/cavendish/template.css'); ?>" />
+		<link type="text/css" rel="stylesheet" href="<?php echo "$wgServer$wgScriptPath"; ?>/skins/cavendish/basetemplate.css?<?php echo filemtime('skins/cavendish/basetemplate.css'); ?>" />
+		<link type="text/css" rel="stylesheet" href="<?php echo "$wgServer$wgScriptPath"; ?>/skins/cavendish/cavendish.css?<?php echo filemtime('skins/cavendish/cavendish.css'); ?>" />
+		<link type="text/css" rel="stylesheet" href="<?php echo "$wgServer$wgScriptPath"; ?>/skins/cavendish/main.css?<?php echo filemtime('skins/cavendish/main.css'); ?>" />
 		<style type="text/css" media="screen,projection">/*<![CDATA[*/ @import "<?php echo $wgServer.$wgScriptPath; ?>/skins/cavendish/extensions.css"; /*]]>*/</style>
 		<style <?php if(empty($this->data['printable']) ) { ?>media="print"<?php } ?> type="text/css">/*<![CDATA[*/ @import "<?php echo $wgServer.$wgScriptPath; ?>/skins/cavendish/print.css"; /*]]>*/</style>
 		
@@ -472,13 +476,13 @@ class CavendishTemplate extends QuickTemplate {
 		            if((sideToggled == 'out' && force == null) || force == 'in'){
 		                $("#sideToggle").html("&gt;");
 		                $("#side").animate({
-		                    'left': '-200px'
+		                    'left': '-201px'
 		                }, 200, 'swing');
 		                $("#outerHeader").animate({
 		                    'left': '0'
 		                }, 200, 'swing');
 		                $("#bodyContent").animate({
-		                    'left': '30px'
+		                    'left': '0'
 		                }, 200, 'swing', function(){
 		                    // Run re-render functions
 		                });
@@ -494,7 +498,7 @@ class CavendishTemplate extends QuickTemplate {
 		                    'left': '200px'
 		                }, 200, 'swing');
 		                $("#bodyContent").animate({
-		                    'left': '230px'
+		                    'left': '201px'
 		                }, 200, 'swing', function(){
 		                    // Run re-render functions
 		                });
@@ -616,18 +620,20 @@ class CavendishTemplate extends QuickTemplate {
             echo "<div class='smallLogo'><a href='{$this->data['nav_urls']['mainpage']['href']}' title='$wgSitename'><img src='$wgServer$wgScriptPath/{$config->getValue('logo')}' /></a></div>";
             echo "<div class='search'><div id='globalSearch'></div></div>";
             echo "<div class='login'>";
-            echo "<a id='status_help_faq' name='question_mark_8x16' class='menuTooltip changeImg highlights-text-hover' target='_blank' title='Help/FAQ' href='$wgServer$wgScriptPath/index.php/Help:Contents'><img src='$wgServer$wgScriptPath/{$config->getValue('iconPath')}question_mark_8x16.png' /></a>";
+            echo "<a id='status_help_faq' class='menuTooltip changeImg highlights-text-hover' target='_blank' title='Help/FAQ' href='$wgServer$wgScriptPath/index.php/Help:Contents'><img src='$wgServer$wgScriptPath/skins/icons/white/question_mark_16x32.png' style='height: 16px;' /></a>";
 	        if($wgUser->isRegistered()){
 		        $p = Person::newFromId($wgUser->getId());
 		        
-		        $smallNotificationText = "";
+		        $notificationAnimation = "";
 		        $notificationText = "";
+		        $notificationExtra = "";
 		        if(count($notifications) > 0){
+		            $notificationAnimation = "animation: shake 2s; animation-iteration-count: infinite;";
 		            $notificationText = " (".count($notifications).")";
-		            $smallNotificationText = "<img class='overlay' style='margin-left:-16px;' src='$wgServer$wgScriptPath/{$config->getValue('iconPath')}mail_16x12_red.png' />*";
+		            $notificationExtra = "<div style='background:#F33; position: absolute; top:5px; right: 5px; height: 7px; width: 7px; border-radius: 7px; border: 2px solid {$config->getValue('topHeaderColor')}; text-decoration: none;'>&nbsp;</div>";
 		        }
-		        echo "<a id='status_notifications' name='mail_16x12' class='menuTooltip changeImg highlights-text-hover' title='Notifications$notificationText' href='$wgServer$wgScriptPath/index.php?action=viewNotifications' style='color:#EE0000;'><img src='$wgServer$wgScriptPath/{$config->getValue('iconPath')}mail_16x12.png' />$smallNotificationText</a>";
-		        echo "<a id='status_profile' class='highlights-text-hover' title='Profile' href='{$p->getUrl()}'>{$p->getNameForForms()}</a>";
+		        echo "<a id='status_notifications' name='mail_32x24' class='menuTooltip' style='position:relative;' title='Notifications$notificationText' href='$wgServer$wgScriptPath/index.php?action=viewNotifications'><img src='$wgServer$wgScriptPath/skins/icons/white/bell.png' alt='Notifications' style='$notificationAnimation;height:18px;' />{$notificationExtra}</a>";
+		        echo "<a id='status_profile' class='menuTooltip' title='Profile' href='{$p->getUrl()}'>{$p->getNameForForms()}</a>";
 		        echo "<a id='status_profile_photo' class='menuTooltip highlights-text-hover' title='Profile' href='{$p->getUrl()}'><img class='photo' src='{$p->getPhoto()}' /></a>";
 		        if(!$wgImpersonating && !$wgDelegating){
 		            $logout = $this->data['personal_urls']['logout'];
@@ -645,7 +651,7 @@ class CavendishTemplate extends QuickTemplate {
                         }
                     }
 	                $logout['href'] .= urlencode($getStr);
-	                echo "<a id='status_logout' name='arrow_right_16x16' class='menuTooltip changeImg highlights-text-hover' title='Logout' href='{$logout['href']}'><img src='$wgServer$wgScriptPath/{$config->getValue('iconPath')}arrow_right_16x16.png' /></a>";
+	                echo "<a id='status_logout' name='arrow_right_32x32' class='menuTooltip' style='cursor: pointer;' title='Logout' href='{$logout['href']}'><img src='$wgServer$wgScriptPath/skins/icons/white/arrow_right_32x32.png' alt='Logout' style='height: 16px;' /></a>";
 	            }
 	        }
 	        echo "</div>";
@@ -803,7 +809,6 @@ class CavendishTemplate extends QuickTemplate {
     <?php 			}
 			    }
 		    }
-	    echo "<li id='f-disclaimer'><a href='mailto:{$config->getValue('supportEmail')}'>Support</a></li>\n";
     ?>
     </ul>
     </td></tr></table><img style='display:none;' src='<?php echo "$wgServer$wgScriptPath"; ?>/skins/Throbber.gif' alt='Throbber' />

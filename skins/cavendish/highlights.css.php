@@ -11,12 +11,30 @@ require_once("../../config/Config.php");
 
 $hl = $config->getValue("highlightColor");
 $hc = $config->getValue("headerColor");
+$thc = $config->getValue("topHeaderColor");
 $iconPath = $config->getValue("iconPath");
 $iconPathHighlighted = $config->getValue("iconPathHighlighted");
 
 echo <<<EOF
 
 /* General */
+
+#side, #nav, #sideFooter {
+    background: #F8F8F8;
+    color: #ccc;
+}
+
+#outerHeader {
+    background: #F8F8F8;
+}
+
+#header {
+    background: #F8F8F8;
+}
+
+#submenu, #submenu li:not(.action) {
+    background: #F8F8F8 !important;
+}
 
 .highlights-text {
     color: $hl !important;
@@ -40,6 +58,10 @@ h1, h2, h3, h4, h5, h6, h7 {
     color: $hc !important;
 }
 
+#globalSearchResults {
+    border-color: $thc;
+}
+
 /* Input */
 
 .selected .highlights-tab, .highlights-tab:hover {
@@ -51,26 +73,26 @@ h1, h2, h3, h4, h5, h6, h7 {
 
 input:focus, textarea:focus {
     outline: none;
-    border: 1px solid $hl !important;
-	box-shadow: inset 0 0 2px $hl;
-    -moz-box-shadow: inset 0 0 2px $hl;
-    -webkit-box-shadow: inset 0 0 2px $hl;
+    border: 1px solid $hl;
 }
 
 input[type=button]:active, input[type=submit]:active, .button:active, .dt-button, .ui-button:active, .ui-state button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose):not([disabled]):active {
-    color: $hl !important;
+    color: white !important;
+    background: {$hl} !important;
 }
 
 input[type=button]:hover, input[type=submit]:hover, .button:hover, .dt-button:hover, .ui-button:hover, :not(.mce-btn):not(.mce-window-head) >  button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose):not([disabled]):hover {
-    color: $hl !important;
+    color: white !important;
+    background: {$hl} !important;
 }
 
 input[type=button], input[type=submit], .button, .button:visited, .dt-button, .ui-button, .button:link , :not(.mce-btn):not(.mce-window-head) >  button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose):not([disabled]) {
-    color:#606060 !important;
+    border-color: {$hl} !important;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out;
 }
 
 input[disabled] , input[disabled]:hover , input[disabled]:active , select[disabled], button[disabled], a.disabledButton, a.disabledButton:hover, a.disabledButton:active {
-    color:#606060 !important;
+    border-color: #aaa !important;
 }
 
 /* Icons */
@@ -110,8 +132,8 @@ input[disabled] , input[disabled]:hover , input[disabled]:active , select[disabl
     vertical-align: bottom;
     width: 16px;
     height: 16px;
-    margin-left: 1px;
-    margin-right:1px;
+    margin-left: 5px;
+    margin-right:5px;
     background: url("../../{$iconPath}glyphicons_207_remove_2.png");
 }
 
@@ -150,6 +172,10 @@ input[disabled] , input[disabled]:hover , input[disabled]:active , select[disabl
 
 .ui-widget-content a {
     color: $hl;
+}
+
+#topheader {
+    background: {$thc};
 }
 
 .ui-dialog .ui-dialog-titlebar {

@@ -259,11 +259,11 @@
             <![CDATA[
                 <style>
                     table#chairTable * {
-                        font-size:11px !important;
+                        font-size:12px !important;
                     }
                     
                     table.fixedHeader-floating * {
-                        font-size:11px !important;
+                        font-size:12px !important;
                     }
                 </style>
                 <iframe id='downloadFrame' name='downloadFrame' src="" style="display:none;"></iframe>
@@ -624,11 +624,11 @@
             <![CDATA[
                 <style>
                     table#chairTable * {
-                        font-size:11px !important;
+                        font-size:12px !important;
                     }
                     
                     table.fixedHeader-floating * {
-                        font-size:11px !important;
+                        font-size:12px !important;
                     }
                 </style>
                 <button id='refresh' class='noDisable' type='button' style='margin-bottom: 1em;'>Refresh</button>

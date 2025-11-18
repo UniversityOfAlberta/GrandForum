@@ -111,9 +111,9 @@
 }
 
 table#grants tr.ar.even td {
-    background-color: rgba(0, 100, 50, 0.15);
+    background-color: rgba(51, 204, 99, 0.15);
 }
 
 table#grants tr.ar.odd td {
-    background-color: rgba(0, 100, 50, 0.17);
+    background-color: rgba(51, 204, 99, 0.17);
 }

@@ -107,7 +107,7 @@ class SimpleReviewSubmitReportItem extends ReviewSubmitReportItem {
 		
 		$gmt_date = date('P');
 		$temp_html =<<<EOF
-		<p><table cellspacing='5'>
+		<p><table cellspacing='0'>
 EOF;
 
 		$wgOut->addHTML($temp_html);
