@@ -651,19 +651,29 @@ class Person extends BackboneModel {
      * Caches the resultset of the product authors
      */
     static function generateAuthorshipCache($id="%"){
-        if(!isset(self::$authorshipCache[$id])){
+        $data = array();
+        if(is_array($id)){
+            foreach($id as $i){
+                self::$authorshipCache[$i] = array();
+            }
+            $data = DBFunctions::select(array('grand_product_authors'),
+                                        array('author', 'product_id', '`order`'),
+                                        array('type' => 'id',
+                                              'author' => IN($id)));
+        }
+        else if(!isset(self::$authorshipCache[$id])){
             self::$authorshipCache[$id] = array();
             $data = DBFunctions::select(array('grand_product_authors'),
                                         array('author', 'product_id', '`order`'),
                                         array('type' => 'id',
                                               'author' => LIKE($id)));
-            foreach($data as $row){
-                if($row['order'] == -1){
-                    self::$contributorCache[$row['author']][] = $row['product_id'];
-                }
-                else{
-                    self::$authorshipCache[$row['author']][] = $row['product_id'];
-                }
+        }
+        foreach($data as $row){
+            if($row['order'] == -1){
+                self::$contributorCache[$row['author']][] = $row['product_id'];
+            }
+            else{
+                self::$authorshipCache[$row['author']][] = $row['product_id'];
             }
         }
     }
@@ -2653,6 +2663,11 @@ class Person extends BackboneModel {
         $papersArray = array();
         $papers = array();
         if(!$nested){
+            $ids = array();
+            foreach($this->getHQP($history, true) as $hqp){
+                $ids[] = $hqp->getId();
+            }
+            self::generateAuthorshipCache($ids);
             foreach($this->getHQP($history, true) as $hqp){
                 $ps = $hqp->getPapers($category, $history, $grand, $onlyPublic, $access, true, true, $includeContributors);
                 foreach($ps as $p){
