@@ -615,7 +615,7 @@ EOF;
 		    }
 		    
 		    #pdfBody h2 {
-		        color: #00713B !important;
+		        color: #275d38 !important;
 		        font-size: ".($fontSize+(4*$DPI_CONSTANT))."px;
 		        font-weight: bold;
 		        padding: ".max(2, (2*$DPI_CONSTANT))."px 0 ".(2*$DPI_CONSTANT)."px 0;

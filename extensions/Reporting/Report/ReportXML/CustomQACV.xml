@@ -221,7 +221,7 @@
 		            }
 		            
 		            #pdfBody h2 {
-		                color: #00713B !important;
+		                color: #275d38 !important;
 		                font-size: 20px;
 		                font-weight: bold;
 		                padding: 3.3333333333333px 0 3.3333333333333px 0;
