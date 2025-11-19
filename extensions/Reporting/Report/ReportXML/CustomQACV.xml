@@ -376,7 +376,7 @@
                     }
                     
                     #pdfBody .externalLink {
-                        color: #007d43 !important;
+                        color: #275d38 !important;
                         text-decoration: none;
                     }
                     

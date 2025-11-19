@@ -221,6 +221,10 @@ ul.tagit li.tagit-choice .tagit-close .text-icon {
     color: $hl;
 }
 
+.qtip-content a {
+    color: $hl;
+}
+
 #bodyContent a.extiw,#bodyContent a.extiw:active {
     color: $hl;
     background: none;

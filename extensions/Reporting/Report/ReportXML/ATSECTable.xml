@@ -447,7 +447,7 @@
                     
                         .target {
                             padding: 0 !important;
-                            border: 2px solid #007d43 !important;
+                            border: 2px solid #275d38 !important;
                         }
                         
                         .target input {

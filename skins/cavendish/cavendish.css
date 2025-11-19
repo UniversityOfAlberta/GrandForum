@@ -460,6 +460,7 @@ input[type=radio][disabled]:hover {
 	margin-right: 0 !important;
 	max-height: 15px !important;
 	min-width: 100px;
+	vertical-align: middle;
 }
 
 .custom-combobox {
@@ -482,8 +483,8 @@ input[type=radio][disabled]:hover {
     padding-left: 10px !important;
     padding-right: 10px !important;
     
-    line-height: 15px !important;
-    vertical-align: top;
+    line-height: 17px !important;
+    vertical-align: middle;
 }
 
 input.dark {
@@ -513,7 +514,7 @@ select[disabled] {
 }
 
 input[type=button], input[type=submit], .button, .button:visited, .dt-button, .ui-button, .button:link , :not(.mce-btn) > :not(.mce-btn):not(.mce-window-head) >  button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose):not([disabled]) {
-    color: white;
+    color: white !important;
     border-width: 2px !important;
     border-style: solid !important;
     display:inline-block;
@@ -528,6 +529,7 @@ input[type=button], input[type=submit], .button, .button:visited, .dt-button, .u
 	text-align:center;
 	border-radius: 0;
 	outline: none;
+	border-radius: 3px;
 	-webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;

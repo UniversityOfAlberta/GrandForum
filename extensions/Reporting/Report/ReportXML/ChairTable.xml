@@ -373,7 +373,7 @@
                         
                         .histogram td div {
                             width: 100%;
-                            background: #007d43;
+                            background: #275d38;
                             color: white;
                             text-align: center;
                             font-size: smaller;
@@ -610,7 +610,7 @@
                     
                         .target {
                             padding: 0 !important;
-                            border: 2px solid #007d43 !important;
+                            border: 2px solid #275d38 !important;
                         }
                         
                         .target input {
