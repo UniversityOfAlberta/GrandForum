@@ -259,7 +259,8 @@ class Report extends AbstractReport{
             
             $data = DBFunctions::select(array('grand_report_blobs'),
                                         array('*'),
-                                        array('rp_type'     => EQ('RP_HQP_SUMMER'),
+                                        array('year'        => EQ('2026'),
+                                              'rp_type'     => EQ('RP_HQP_SUMMER'),
                                               'rp_section'  => EQ('APPLICATION'),
                                               'rp_item'     => EQ('SUPNAME'),
                                               'data'        => EQ($person->getNameForForms())));
