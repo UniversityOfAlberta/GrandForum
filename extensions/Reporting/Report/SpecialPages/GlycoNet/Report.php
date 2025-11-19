@@ -241,7 +241,7 @@ class Report extends AbstractReport{
                 $tabs["Awards"]['subtabs'][] = TabUtils::createSubTab("Summer Award", "{$url}HQPApplications/SummerAward", $selected);
             }
             
-            if(date('Y-m-d') < '2025-01-27'){
+            if(date('Y-m-d') < '2026-01-27'){
                 $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "HQPApplications/ATOP")) ? "selected" : false;
                 $tabs["Awards"]['subtabs'][] = TabUtils::createSubTab("ATOP", "{$url}HQPApplications/ATOP", $selected);
             }
