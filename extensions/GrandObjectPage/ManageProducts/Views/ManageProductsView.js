@@ -211,7 +211,7 @@ ManageProductsView = Backbone.View.extend({
     createDataTable: function(order, searchStr){
         var creating = true;
         this.table = this.$('#listTable').DataTable({'autoWidth': false,
-                                                     'fixedHeader': true,
+                                                     'scrollY': true,
                                                      'preDrawCallback': function(){
                                                         return !creating;
                                                      },

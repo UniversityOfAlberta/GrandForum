@@ -458,6 +458,30 @@ class CavendishTemplate extends QuickTemplate {
 		            }
 		        });
 		        
+		        var lastBodyWidth = 0;
+		        var resizeTableHeader = _.throttle(function(){
+		            if($("#bodyContent").width() != lastBodyWidth){
+		                $("div.dataTables_scroll table.dataTable").DataTable().columns.adjust();
+		                lastBodyWidth = $("#bodyContent").width();
+		            }
+		        }, 500);
+		        
+		        setInterval(function(){
+		            $(".dataTables_wrapper").each(function(){
+		                if($(".dataTables_scrollBody", this).length > 0){
+		                    var top = $(this).position().top;
+		                    var bodyHeight = $(window).height() - $("#bodyContent").offset().top;
+		                    var headerHeight = $(".dataTables_length", this).outerHeight() + $(".dataTables_scrollHead", this).outerHeight();
+		                    var footerHeight = $(".dataTables_info", this).outerHeight();
+		                    var margin = ($("#reportFooter").length > 0 ) ? $("#reportFooter").outerHeight() + 40 : 20;
+		                    var height = Math.round(bodyHeight - top - headerHeight - footerHeight - margin);
+		                    $(".dataTables_scrollBody", this).css({'height': 'auto', 'max-height': height});
+		                }
+		            });
+		            
+		            resizeTableHeader();
+		        }, 100);
+		        
 		        if($("img.overlay")[0] != undefined){
 		            var notificationOverlay = $("img.overlay")[0];
 		            var delta = 0.05;
@@ -786,38 +810,11 @@ class CavendishTemplate extends QuickTemplate {
 			<?php if($this->data['catlinks']) { ?><div id="catlinks"><?php       $this->html('catlinks') ?></div><?php } ?>
 			<!-- end content -->
 			<?php if($this->data['dataAfterContent']) { $this->html ('dataAfterContent'); } ?>
-				<div id="footer"><table style="width:100%"><tr><td align="left" width="1%" nowrap="nowrap">
-		    </td><td align="center">
-    <?php	// Generate additional footer links
-		    $footerlinks = array(
-			    'lastmod', 'viewcount', 'numberofwatchingusers', 'credits', 'copyright',
-			    'tagline',
-		    );
-		    $validFooterLinks = array();
-		    foreach( $footerlinks as $aLink ) {
-			    if( isset( $this->data[$aLink] ) && $this->data[$aLink] ) {
-				    $validFooterLinks[] = $aLink;
-			    }
-		    }
-		    echo '<ul id="f-list">';
-		    if ( count( $validFooterLinks ) > 0 ) {
-    ?>			
-    <?php
-			    foreach( $validFooterLinks as $aLink ) {
-				    if( isset( $this->data[$aLink] ) && $this->data[$aLink] ) {
-    ?>					<li id="f-<?php echo$aLink?>"><?php $this->html($aLink) ?></li>
-    <?php 			}
-			    }
-		    }
-    ?>
-    </ul>
-    </td></tr></table><img style='display:none;' src='<?php echo "$wgServer$wgScriptPath"; ?>/skins/Throbber.gif' alt='Throbber' />
-	    </div><!-- end of the FOOTER div -->
 		</div><!-- end of MAINCONTENT div -->	
 	</div><!-- end of MBODY div -->
 </div><!-- end of the CONTAINER div -->
 <?php echo wfReportTimeOld(); ?>
-
+<img style='display:none;' src='<?php echo "$wgServer$wgScriptPath"; ?>/skins/Throbber.gif' alt='Throbber' />
 </body>
 </html>
 

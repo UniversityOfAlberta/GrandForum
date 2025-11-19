@@ -86,8 +86,8 @@ ManagePeopleView = Backbone.View.extend({
                                                      'preDrawCallback': function(){
                                                         return !creating;
                                                      },
-                                                     'autoWidth': false,
-                                                     'fixedHeader': true,
+                                                     'autoWidth': true,
+                                                     'scrollY': true,
 	                                                 'aLengthMenu': [[-1], ['All']]});
 	    creating = false;
 	    this.table.order(order);

@@ -262,7 +262,7 @@
                         font-size:12px !important;
                     }
                     
-                    table.fixedHeader-floating * {
+                    .dataTables_scrollHead table * {
                         font-size:12px !important;
                     }
                 </style>
@@ -607,7 +607,7 @@
                     table = $('#chairTable').DataTable({
                         "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
                         "iDisplayLength": -1,
-                        'fixedHeader': true
+                        'scrollY': true
                     });
                     $('#chairTable select, #chairTable textarea, #chairTable input').change(function(){
                         saveAll();
@@ -627,7 +627,7 @@
                         font-size:12px !important;
                     }
                     
-                    table.fixedHeader-floating * {
+                    .dataTables_scrollHead table * {
                         font-size:12px !important;
                     }
                 </style>
