@@ -608,9 +608,9 @@ input[type=button][disabled], input[type=button][disabled]:hover, input[type=but
 input[type=submit][disabled], input[type=submit][disabled]:hover, input[type=submit][disabled]:active, 
 button[disabled], a.disabledButton, a.disabledButton:hover, a.disabledButton:active, .ui-dialog .ui-dialog-buttonpane button[disabled] {
     background: #f2f2f2 !important;
-    color: #777777 !important;
+    color: #AAA !important;
     border-style: solid !important;
-    border-color: #AAA !important;
+    border-color: #CCC !important;
     border-radius: 3px;
     top:0;
     display:inline-block;
