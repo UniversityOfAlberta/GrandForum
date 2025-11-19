@@ -116,15 +116,6 @@
     <% if(isExtensionEnabled('CrossForumExport')){ %>
         <button id="crossForumExport">Import from other Forum</button>
     <% } %>
-    <% if(_.contains(allowedRoles, MANAGER)){ %>
-        <span style="margin-left:30px;">
-        <% if(!this.model.all){ %>
-            <a class="button" href="#/all">Show All</a>
-        <% } else { %>
-            <a class="button" href="#">Show Only Mine</a>
-        <% } %>
-        </span>
-    <% } %>
     <button id="openColVis" style="margin-left:25px; float: right;">Col Vis</button>
     <span style="margin-left:25px; float:right; line-height: 30px;" title="If checked, excluded <%= productsTerm.toLowerCase().pluralize() %> will be hidden.  If any <%= productsTerm.toLowerCase().pluralize() %> have any pending changes they will show up regardless." class="tooltip">
         <input style="vertical-align:middle;" id="hideExcluded" type="checkbox" <% if(this.hideExcluded){ %> checked <% } %> /> Hide Excluded
