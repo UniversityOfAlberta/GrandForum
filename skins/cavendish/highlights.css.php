@@ -9,11 +9,36 @@ else{
 }
 require_once("../../config/Config.php");
 
+function adjustBrightness($hex, $steps) {
+    // Steps should be between -255 and 255. Negative = darker, positive = lighter
+    $steps = max(-255, min(255, $steps));
+
+    // Normalize into a six character long hex string
+    $hex = str_replace('#', '', $hex);
+    if (strlen($hex) == 3) {
+        $hex = str_repeat(substr($hex,0,1), 2).str_repeat(substr($hex,1,1), 2).str_repeat(substr($hex,2,1), 2);
+    }
+
+    // Split into three parts: R, G and B
+    $color_parts = str_split($hex, 2);
+    $return = '#';
+
+    foreach ($color_parts as $color) {
+        $color   = hexdec($color); // Convert to decimal
+        $color   = max(0,min(255,$color + $steps)); // Adjust color
+        $return .= str_pad(dechex($color), 2, '0', STR_PAD_LEFT); // Make two char hex code
+    }
+
+    return $return;
+}
+
 $hl = $config->getValue("highlightColor");
 $hc = $config->getValue("headerColor");
 $thc = $config->getValue("topHeaderColor");
 $iconPath = $config->getValue("iconPath");
 $iconPathHighlighted = $config->getValue("iconPathHighlighted");
+
+$darkerHl = adjustBrightness($hl, -25);
 
 echo <<<EOF
 
@@ -80,20 +105,24 @@ input:focus, textarea:focus {
     border: 1px solid $hl;
 }
 
-input[type=button]:active, input[type=submit]:active, .button:active, .dt-button, .ui-button:active, .ui-state button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose):not([disabled]):active {
-    color: {$hl} !important;
-    background: white !important;
-}
-
-input[type=button]:hover, input[type=submit]:hover, .button:hover, .dt-button:hover, .ui-button:hover, :not(.mce-btn):not(.mce-window-head) >  button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose):not([disabled]):hover {
-    color: {$hl} !important;
-    background: white !important;
-}
-
 input[type=button], input[type=submit], .button, .button:visited, .dt-button, .ui-button, .button:link , :not(.mce-btn):not(.mce-window-head) >  button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose):not([disabled]) {
     border-color: {$hl} !important;
     background: {$hl} !important;
-    transition: color .1s ease-in-out,background-color .1s ease-in-out,border-color .1s ease-in-out;
+    transition: color .15s ease-in-out, 
+                background-color .15s ease-in-out, 
+                border-color .15s ease-in-out;
+}
+
+input[type=button]:active, input[type=submit]:active, .button:active, .dt-button, .ui-button:active, .ui-state button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose):not([disabled]):active {
+    color: white !important;
+    border-color: {$darkerHl} !important;
+    background: {$darkerHl} !important;
+}
+
+input[type=button]:hover, input[type=submit]:hover, .button:hover, .dt-button:hover, .ui-button:hover, :not(.mce-btn):not(.mce-window-head) >  button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose):not([disabled]):hover {
+    color: white !important;
+    border-color: {$darkerHl} !important;
+    background: {$darkerHl} !important;
 }
 
 input[disabled] , input[disabled]:hover , input[disabled]:active , select[disabled], button[disabled], a.disabledButton, a.disabledButton:hover, a.disabledButton:active {
