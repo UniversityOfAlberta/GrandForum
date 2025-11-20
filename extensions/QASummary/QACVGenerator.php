@@ -17,11 +17,12 @@ class QACVGenerator extends SpecialPage{
         global $wgOut, $wgServer, $wgScriptPath, $facultyMapSimple;
         $tabbedPage = new TabbedAjaxPage("qacv");
         $person = Person::newFromWgUser();
-        
+
         $departments = $facultyMapSimple[getFaculty()];
         foreach($departments as $key => $department){
             $tabbedPage->addTab(new QACVDepartmentTab($department, array($key)));
         }
+
         $tabbedPage->showPage();
         
         $wgOut->addHTML("<script type='text/javascript'>

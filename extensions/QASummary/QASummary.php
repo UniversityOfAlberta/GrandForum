@@ -19,13 +19,17 @@ class QASummary extends SpecialPage{
 
     function execute($par){
         global $wgOut, $wgServer, $wgScriptPath, $facultyMapSimple;
+        
         $tabbedPage = new TabbedAjaxPage("qasummary");
         $person = Person::newFromWgUser();
-        
-        $departments = $facultyMapSimple[getFaculty()];
-        foreach($departments as $key => $department){
-            $tabbedPage->addTab(new DepartmentTab($department, array($key)));
+        $person->getFecPersonalInfo();
+        $departments = @array_keys($person->departments);
+        $department = @$departments[0];
+        foreach($facultyMapSimple[getFaculty()] as $key => $dept){
+            if(self::checkRole($person) || $department == $dept)
+            $tabbedPage->addTab(new DepartmentTab($dept, array($key)));
         }
+
         $tabbedPage->showPage();
         
         $wgOut->addHTML("<script type='text/javascript'>
@@ -42,8 +46,7 @@ class QASummary extends SpecialPage{
     
     function userCanExecute($user){
         $me = Person::newFromUser($user);
-        return (self::checkRole($me) || 
-                $me->isRole(CHAIR));
+        return (self::checkRole($me) || $me->isRole(CHAIR));
     }
     
     static function createSubTabs(&$tabs){
