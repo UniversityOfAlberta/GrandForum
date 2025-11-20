@@ -294,9 +294,9 @@
         </Static>
         <Static id="header">
             <![CDATA[
-                <div style='text-align: right; width: 50%; float: right; width: 50%;'>
+                <div style='text-align: right; width: 50%; float: right; width: 50%; margin-top: -50px;'>
                     <button id='downloadAll' class='noDisable' type='button'>Download All</button><br />
-                    <small style='width:525px; line-height: 1.5em;'>This function is provided for the convenience of the Faculty Evaluation Committee, while reviewing the materials. Please make sure to destroy any information stored locally immediately after the FEC week.</small>
+                    <small style='display: inline-block; margin-top: 8px; line-height: 1.5em;'>This function is provided for the convenience of the Faculty Evaluation Committee, while reviewing the materials. Please make sure to destroy any information stored locally immediately after the FEC week.</small>
                 </div>
                 <table id='chairTable' class='wikitable' frame='box' rules='all'>
                     <thead>
@@ -750,17 +750,19 @@
                     table = $('#chairTable').DataTable({
                         "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
                         "autoWidth": false,
+                        'scrollY': true,
                         "iDisplayLength": -1
                     });
                     if(typeof order != 'undefined'){
                         table.order(order);
 	                    table.search(searchStr);
 	                    table.draw();
-	                    $(".dataTables_scrollBody").scrollTop(scrollTop);
 	                    order = undefined;
 	                    search = undefined;
-	                    scrollTop = 0;
 	                }
+	                if(typeof scrollTop != 'undefined'){
+                        _.defer(function(){$('.dataTables_scrollBody').scrollTop(scrollTop); });
+                    }
                     $('#chairTable select, #chairTable textarea').change(function(){
                         saveAll(function(){
                             $("#refresh").click();

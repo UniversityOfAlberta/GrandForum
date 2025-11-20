@@ -126,7 +126,7 @@ input[type=button]:hover, input[type=submit]:hover, .button:hover, .dt-button:ho
 }
 
 input[disabled] , input[disabled]:hover , input[disabled]:active , select[disabled], button[disabled], a.disabledButton, a.disabledButton:hover, a.disabledButton:active {
-    border-color: #aaa !important;
+    border-color: #CCC !important;
 }
 
 /* Icons */
