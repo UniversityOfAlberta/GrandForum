@@ -5,7 +5,7 @@ function COL($value){
 }
 
 function queryNumeric($value){
-    if(!is_numeric($value)){
+    if(!is_numeric($value) || is_string($value)){
         if(is_array($value)){
             $value = $value[1];
         }

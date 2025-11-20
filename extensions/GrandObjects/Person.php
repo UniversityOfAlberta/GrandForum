@@ -172,8 +172,11 @@ class Person extends BackboneModel {
      */
     static function newFromName($name){
         $name = strtolower(str_replace(' ', '.', $name));
-        if(isset(Person::$cache[$name])){
-            return Person::$cache[$name];
+        if(array_key_exists($name, Person::$cache)){
+            if(Person::$cache[$name] != null){
+                return Person::$cache[$name];
+            }
+            return new LimitedPerson(array());
         }
         $namesCache = DBFunctions::select(array('grand_names_cache'),
                                           array('user_id'),
@@ -303,8 +306,11 @@ class Person extends BackboneModel {
     static function newFromNameLike($name, $multiple=false){
         $name = Person::cleanName($name);
         $name = unaccentChars(strtolower($name));
-        if(isset(Person::$cache[$name]) && !$multiple){
-            return Person::$cache[$name];
+        if(array_key_exists($name, Person::$cache) && !$multiple){
+            if(Person::$cache[$name] != null){
+                return Person::$cache[$name];
+            }
+            return array();
         }
         $namesCache = DBFunctions::select(array('grand_names_cache'),
                                           array('user_id'),
@@ -322,6 +328,9 @@ class Person extends BackboneModel {
                 }
                 return $people;
             }
+        }
+        else{
+            Person::$cache[$name] = null;
         }
         return array();
     }
@@ -666,7 +675,7 @@ class Person extends BackboneModel {
             $data = DBFunctions::select(array('grand_product_authors'),
                                         array('author', 'product_id', '`order`'),
                                         array('type' => 'id',
-                                              'author' => LIKE($id)));
+                                              'author' => LIKE("{$id}")));
         }
         foreach($data as $row){
             if($row['order'] == -1){
@@ -2665,7 +2674,7 @@ class Person extends BackboneModel {
         if(!$nested){
             $ids = array();
             foreach($this->getHQP($history, true) as $hqp){
-                $ids[] = $hqp->getId();
+                $ids[] = "{$hqp->getId()}";
             }
             self::generateAuthorshipCache($ids);
             foreach($this->getHQP($history, true) as $hqp){
@@ -3652,7 +3661,7 @@ class FullPerson extends Person {
     }
     
     function getGrants($exclude=true){
-        if($this->grants == null){
+        if($this->grants === null){
             $this->grants = array();
             $data = DBFunctions::select(array('grand_grants'),
                                         array('*'),
