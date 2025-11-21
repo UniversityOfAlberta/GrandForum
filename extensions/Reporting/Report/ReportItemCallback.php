@@ -327,7 +327,7 @@ class ReportItemCallback {
         $relation = Relationship::newFromId($this->reportItem->projectId);
         $hqp = $relation->getUser2();
         $award_names = array();
-        $awards = $hqp->getPapers("Award", false, true, "Public");
+        $awards = $hqp->getPapers("Award", false, true);
         foreach($awards as $award){
             $award_names[] = str_replace("Misc: ", "", str_replace("Other: ", "", $award->type));
         }

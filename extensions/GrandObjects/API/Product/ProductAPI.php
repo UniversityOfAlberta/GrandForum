@@ -35,7 +35,6 @@ class ProductAPI extends RESTAPI {
                 $papers = array();
                 $ps = Paper::getAllPapers($this->getParam('category'), 
                                           true,
-                                          'Public',
                                           $start,
                                           $count);
                 foreach($ps as $p){
@@ -45,7 +44,7 @@ class ProductAPI extends RESTAPI {
                 $papers = array_values($papers);
             }
             else{
-                $papers = Paper::getAllPapers('all', true, 'Public', $start, $count);
+                $papers = Paper::getAllPapers('all', true, $start, $count);
             }
             
             foreach($papers as $paper){
@@ -69,7 +68,6 @@ class ProductAPI extends RESTAPI {
         $paper->contributors = $this->POST('contributors');
         $paper->data = (array)($this->POST('data'));
         $paper->access_id = $this->POST('access_id');
-        $paper->access = $this->POST('access');
         $paper->exclude = $this->POST('exclude');
         $status = $paper->create();
         if(!$status){
@@ -96,7 +94,6 @@ class ProductAPI extends RESTAPI {
         $paper->contributors = $this->POST('contributors');
         $paper->data = (array)($this->POST('data'));
         $paper->access_id = $this->POST('access_id');
-        $paper->access = $this->POST('access');
         $paper->exclude = $this->POST('exclude');
         $paper->deleted = $this->POST('deleted');
         $status = $paper->update();

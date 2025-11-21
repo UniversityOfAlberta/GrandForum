@@ -31,7 +31,6 @@ class Paper extends BackboneModel{
     var $deleted;
     var $access_id = 0;
     var $exclude = false; // This is sort of a weird one since it relates to the current logged in user
-    var $access = "Forum"; // Either 'Public' or 'Forum'
     var $created_by = 0;
     var $bibtex_id;
     var $orcid;
@@ -51,8 +50,7 @@ class Paper extends BackboneModel{
         $sql = "SELECT *
                 FROM grand_products
                 WHERE id = '$id'
-                AND (access_id = '{$me->getId()}' OR access_id = 0)
-                AND (access = 'Public' OR (access = 'Forum' AND ".intVal($me->isLoggedIn())."))";
+                AND (access_id = '{$me->getId()}' OR access_id = 0)";
         $data = DBFunctions::execSQL($sql);
         $paper = new Paper($data);
         
@@ -83,7 +81,6 @@ class Paper extends BackboneModel{
                 FROM grand_products
                 WHERE (bibtex_id = '{$bibtex_id}')
                 AND (access_id = '{$me->getId()}' OR access_id = 0)
-                AND (access = 'Public' OR (access = 'Forum' AND ".intVal($me->isLoggedIn())."))
                 LIMIT 1";
         $data = DBFunctions::execSQL($sql);
         $paper = new Paper($data);
@@ -116,7 +113,6 @@ class Paper extends BackboneModel{
                 FROM grand_products
                 WHERE (orcid = '{$orcid}')
                 AND (access_id = '{$me->getId()}' OR access_id = 0)
-                AND (access = 'Public' OR (access = 'Forum' AND ".intVal($me->isLoggedIn())."))
                 LIMIT 1";
         $data = DBFunctions::execSQL($sql);
         $paper = new Paper($data);
@@ -145,8 +141,7 @@ class Paper extends BackboneModel{
         $ids = array_clean($ids);
         $sql = "SELECT p.*
                 FROM grand_products p LEFT JOIN grand_product_owners o ON (p.id = o.product_id AND o.user_id = '{$me->getId()}')
-                WHERE p.id IN (".implode(",", $ids).")
-                AND (p.access = 'Public' OR (p.access = 'Forum' AND ".intVal($me->isLoggedIn())."))";
+                WHERE p.id IN (".implode(",", $ids).")";
         if(!$onlyPublic){
             $me = Person::newFromWgUser();
             $sql .= "\nAND (p.access_id = '{$me->getId()}' OR p.created_by = '{$me->getId()}' OR p.access_id = '0' OR o.user_id = '{$me->getId()}')";
@@ -192,7 +187,6 @@ class Paper extends BackboneModel{
                 AND `type` LIKE '$type'
                 AND `status` LIKE '$status'
                 AND (access_id = '0' OR access_id = '{$me->getId()}')
-                AND (access = 'Public' OR (access = 'Forum' AND ".intVal($me->isLoggedIn())."))
                 ORDER BY `id` desc";
         $data = DBFunctions::execSQL($sql);
         $paper = new Paper($data);
@@ -227,8 +221,7 @@ class Paper extends BackboneModel{
             $sql = "SELECT *
                     FROM grand_products
                     WHERE id IN (".implode(",", $ids).")
-                    AND access_id = 0
-                    AND (access = 'Public' OR (access = 'Forum' AND ".intVal($me->isLoggedIn())."))";
+                    AND access_id = 0";
             $data = DBFunctions::execSQL($sql);
             foreach($data as $row){
                 $paper = new Paper(array($row));
@@ -246,15 +239,14 @@ class Paper extends BackboneModel{
      * Returns all of the Products in the database
      * @param string $category Specifies which category the returned Products should be of('Publication', 'Artifact' etc.)
      * @param boolean $onlyPublic Whether or not to only include Products with access_id = 0
-     * @param string $access Whether to include 'Forum' or 'Public' access
      * @param integer $start The index to start at
      * @param integer $count The max number of Products to return 
      * @return array All of the Products
      */
-    static function getAllPapers($category='all', $onlyPublic=true, $access='Public', $start=0, $count=9999999999){
+    static function getAllPapers($category='all', $onlyPublic=true, $start=0, $count=9999999999){
         $data = array();
-        if(isset(self::$dataCache[$category.strval($onlyPublic).$access.$start.$count])){
-            return self::$dataCache[$category.strval($onlyPublic).$access.$start.$count];
+        if(isset(self::$dataCache[$category.strval($onlyPublic).$start.$count])){
+            return self::$dataCache[$category.strval($onlyPublic).$start.$count];
         }
         else{
             $papers = array();
@@ -262,7 +254,6 @@ class Paper extends BackboneModel{
             $sql = "SELECT id, category, type, title, date, status, authors, contributors, date_changed, deleted, access_id, created_by, access, bibtex_id, orcid, date_created, acceptance_date
                     FROM `grand_products` p
                     WHERE 1";
-            $sql .= "\nAND (access = '{$access}' OR (access = 'Forum' AND ".intVal($me->isLoggedIn())."))";
             $sql .= "\nAND p.`deleted` = '0'";
             if($category != "all"){
                 $sql .= "\nAND p.`category` = '$category'";
@@ -292,7 +283,7 @@ class Paper extends BackboneModel{
                 }
                 $i++;
             }
-            self::$dataCache[$category.strval($onlyPublic).$access.$start.$count] = $papers;
+            self::$dataCache[$category.strval($onlyPublic).$start.$count] = $papers;
         }
         return $papers;
     }
@@ -323,7 +314,6 @@ class Paper extends BackboneModel{
             $sql = "SELECT *
                     FROM `grand_products` p
                     WHERE 1";
-            $sql .= "\nAND (access = 'Public' OR (access = 'Forum' AND ".intVal($me->isLoggedIn())."))";
             $sql .= "\nAND p.`deleted` = '0'";
             if($category != "all"){
                 $sql .= "\nAND p.`category` = '$category'";
@@ -569,7 +559,6 @@ class Paper extends BackboneModel{
             $this->deleted = $data[0]['deleted'];
             $this->access_id = $data[0]['access_id'];
             $this->created_by = $data[0]['created_by'];
-            $this->access = $data[0]['access'];
             $this->bibtex_id = $data[0]['bibtex_id'];
             $this->orcid = $data[0]['orcid'];
             $this->authors = $data[0]['authors'];
@@ -687,14 +676,6 @@ class Paper extends BackboneModel{
      */
     function getCreatedBy(){
         return $this->created_by;
-    }
-    
-    /**
-     * Returns the access level of this Paper (either 'Public' or 'Forum')
-     * @return string The access level of this Paper
-     */
-    function getAccess(){
-        return $this->access;
     }
     
     /**
@@ -1768,7 +1749,6 @@ class Paper extends BackboneModel{
                                                 'data' => serialize($this->data),
                                                 'access_id' => $this->access_id,
                                                 'created_by' => $created_by,
-                                                'access' => $this->access,
                                                 'bibtex_id' => $this->bibtex_id,
                                                 'orcid' => $this->orcid,
                                                 'date_created' => EQ(COL('CURRENT_TIMESTAMP'))),
@@ -1865,7 +1845,6 @@ class Paper extends BackboneModel{
                                                 'data' => serialize($this->data),
                                                 'deleted' => $this->deleted,
                                                 'access_id' => $this->access_id,
-                                                'access' => $this->access,
                                                 'bibtex_id' => $this->bibtex_id,
                                                 'orcid' => $this->orcid),
                                           array('id' => EQ($this->id)),
@@ -2010,8 +1989,7 @@ class Paper extends BackboneModel{
                           'lastModified' => $this->lastModified,
                           'deleted' => $this->isDeleted(),
                           'access_id' => $this->getAccessId(),
-                          'created_by' => $this->getCreatedBy(),
-                          'access' => $this->getAccess());
+                          'created_by' => $this->getCreatedBy());
             if($me->isLoggedIn()){
                 Cache::store($this->getCacheId(), $json, 60*60);
             }

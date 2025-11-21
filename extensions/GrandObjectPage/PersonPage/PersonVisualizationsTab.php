@@ -270,7 +270,7 @@ class PersonVisualizationsTab extends AbstractTab {
             $levels[$i]['labels'] = array();
             $levels[$i]['values'] = array();
             
-            $products = $person->getPapers("all", false, true, "Public");
+            $products = $person->getPapers("all", false, true);
             
             $labelIndicies = array();
             $index = 0;
@@ -339,7 +339,7 @@ class PersonVisualizationsTab extends AbstractTab {
 	    global $wgServer, $wgScriptPath, $config;
 	    if($action == "getChordData"){
 	        $person = Person::newFromId($_GET['person']);
-	        $authors = array_merge(array($person->getName() => 10000), $person->getCoAuthors("all", false, true, "Public"));
+	        $authors = array_merge(array($person->getName() => 10000), $person->getCoAuthors("all", false, true));
 	        
 	        asort($authors);
 	        $authors = array_reverse($authors);

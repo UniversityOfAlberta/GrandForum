@@ -148,7 +148,6 @@ class ImportORCIDAPI extends API{
         if(!$product->exists()){
             $product->access_id = $me->getId();
         }
-        $product->access = "Public";
         if(empty($product->authors)){
             $authors = $work->contributors->contributor;
             foreach($authors as $author){

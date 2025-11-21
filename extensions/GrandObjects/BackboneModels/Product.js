@@ -24,16 +24,6 @@ Product = Backbone.Model.extend({
                 this.set('status', _.first(productStructure.categories[this.get('category')].types[this.getType()].status));
             }
         });
-        
-        this.on("change:status", function(){
-            var status = this.get('status');
-            if(status == "Published"){
-                this.set('access', 'Public');
-            }
-            else{
-                this.set('access', 'Forum');
-            }
-        });
     },
     
     getType: function(){
@@ -219,7 +209,6 @@ Product = Backbone.Model.extend({
             access_id: 0,
             created_by: 0,
             reported: "",
-            access: "Forum",
             exclude: false,
             canDelete: true,
         };

@@ -34,7 +34,7 @@ if($hqp != null && $dupHQP != null &&
     DBFunctions::update('mw_user',
                         array('deleted' => 1),
                         array('user_id' => $hqp->getId()));
-    $products = $hqp->getPapers("all", true, 'both', false, 'Public');
+    $products = $hqp->getPapers("all", true, false);
     foreach($products as $product){
         $changed = false;
         $authors = unserialize($product->authors);

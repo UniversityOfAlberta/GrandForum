@@ -150,7 +150,6 @@ class ImportBibTeXAPI extends API{
         if(!$product->exists()){
             $product->access_id = $me->getId();
         }
-        $product->access = "Public";
         if(empty($product->authors)){
             if(strstr($paper['author'], " and ") === false && substr_count($paper['author'], ",") > 1){
                 // Must be using ',' as a delimiter...

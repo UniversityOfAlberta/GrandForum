@@ -1054,7 +1054,7 @@ class Person extends BackboneModel {
         DBFunctions::update('mw_user',
                             array('deleted' => 1),
                             array('user_id' => $personToDelete->getId()));
-        $products = $personToDelete->getPapers("all", true, 'both', false, 'Public');
+        $products = $personToDelete->getPapers("all", true, false);
         foreach($products as $product){
             $changed = false;
             $authors = unserialize($product->authors);
@@ -2659,12 +2659,11 @@ class Person extends BackboneModel {
      * @param string $category The category of Paper to get
      * @param boolean $history Whether or not to include past publications (ie. written by past HQP)
      * @param boolean $onlyPublic Whether or not to only include Papers with access_id = 0
-     * @param string $access Whether to include 'Forum' or 'Public' access
      * @param string $exclude Whether or not to obey exclusion
      * @param boolean $nested Whether this was called recursively (so as not to keep checking HQP of HQP etc.
      * @return array Returns an array of Paper(s) authored or co-authored by this Person _or_ their HQP
      */ 
-    function getPapers($category="all", $history=false, $onlyPublic=true, $access='Forum', $exclude=true, $nested=false, $includeContributors=false){
+    function getPapers($category="all", $history=false, $onlyPublic=true, $exclude=true, $nested=false, $includeContributors=false){
         $me = Person::newFromWgUser();
         self::generateAuthorshipCache($this->id);
         $processed = array();
@@ -2678,7 +2677,7 @@ class Person extends BackboneModel {
             }
             self::generateAuthorshipCache($ids);
             foreach($hqps as $hqp){
-                $ps = $hqp->getPapers($category, $history, $onlyPublic, $access, true, true, $includeContributors);
+                $ps = $hqp->getPapers($category, $history, $onlyPublic, true, true, $includeContributors);
                 foreach($ps as $p){
                     if(!isset($processed[$p->getId()])){
                         if(!$hqp->isRoleOn(NI, $p->getAcceptanceDate()) && 
@@ -2719,8 +2718,7 @@ class Person extends BackboneModel {
         }
         foreach($papers as $pId){
             $paper = Paper::newFromId($pId);
-            if(($paper->getAccess() == $access || ($paper->getAccess() == 'Forum' && $me->isLoggedIn())) &&
-               !$paper->deleted && 
+            if(!$paper->deleted && 
                $paper->getId() != 0 &&
                ($category == 'all' || $paper->getCategory() == $category)){
                 if($paper->getAccessId() == 0 || !$onlyPublic){
@@ -2857,7 +2855,7 @@ class Person extends BackboneModel {
         }
         if($onlyContributors){
             // Get rid of HQP outputs
-            $hqpPubs = $this->getPapersAuthored($category, $startRange, $endRange, true, $networkRelated, $useReported, $onlyUseStartDate);
+            $hqpPubs = $this->getPapersAuthored($category, $startRange, $endRange, true, $useReported, $onlyUseStartDate);
             foreach($papersArray as $key => $paper){
                 foreach($hqpPubs as $pub){
                     if($pub->getId() == $paper->getId()){
@@ -2875,12 +2873,11 @@ class Person extends BackboneModel {
      * @param string $category The category of Papers to get
      * @param boolean $history Whether or not to include past publications (ie. written by past HQP)
      * @param boolean $onlyPublic Whether or not to only include Papers with access_id = 0
-     * @param string $access Whether to include 'Forum' or 'Public' access
      * @return array Returns an array of People who are authors of Products writted by this Person or their HQP
      */
-    function getCoAuthors($category="all", $history=false, $onlyPublic=true, $access='Forum'){
+    function getCoAuthors($category="all", $history=false, $onlyPublic=true){
         $coauthors = array();
-        $papers = $this->getPapers($category, $history, $onlyPublic, $access);
+        $papers = $this->getPapers($category, $history, $onlyPublic);
         foreach($papers as $paper){
             $authors = $paper->getAuthors();
             foreach($authors as $author){
