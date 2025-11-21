@@ -20,7 +20,8 @@
                 {set(promotionDates, November 12 - 15)}
                 {set(fecDates, December 2 - 6)}
                 {set(atsecDates, February 27&#44; {$next_year})}
-                {set(reconsiderationDate, December 4&#44; {$this_year})}
+                {set(reconsiderationDeadline, January 16&#44; {$next_year})}
+                {set(reconsiderationDate, February 6&#44; {$next_year})}
                 {set(contestDate, November 7&#44; {$this_year})}
             ]]>
         </ReportItem>

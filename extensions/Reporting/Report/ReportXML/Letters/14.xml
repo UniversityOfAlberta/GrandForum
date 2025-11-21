@@ -3,7 +3,7 @@
     <ReportSection id="letter" title="End of Second Probationary Period - Tenure Awarded">
         <ReportItem id="body">
             <![CDATA[
-                <p>This is to inform you that the Faculty Evaluation Committee (FEC) at its meeting held on {get(fecDates)} has agreed with your Department Chair’s recommendation and has awarded you tenure. In accordance with its decision, your appointment has been changed from a probationary to a tenured appointment effective July 1, {$next_year}. Your appointment will continue to be governed by the Common Agreement and Schedule A, as amended from time to time.</p>
+                <p>This is to inform you that the Faculty Evaluation Committee (FEC) has agreed with your Department Chair’s recommendation and has awarded you tenure. In accordance with its decision, your appointment has been changed from a probationary to a tenured appointment effective July 1, {$next_year}. Your appointment will continue to be governed by the Common Agreement and Schedule A, as amended from time to time.</p>
                 
                 <p>With the awarding of tenure your rank will be that of Associate Professor, effective July 1, {$next_year}.</p>
                 

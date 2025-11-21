@@ -8,7 +8,7 @@
         </ReportItem>
         <ReportItem id="body">
             <![CDATA[
-                <p>As per Article A6.19.3 of Schedule A, I am informing you that at its meeting of {get(fecDates)}, the FEC did not support your Department Chair's recommendation of {getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)} increment instead, FEC is prepared to award incrementation of {getText(RP_FEC_TABLE, TABLE, INCREMENT, {$user_id}, 1, 0)}.</p>
+                <p>As per Article A6.19.3 of Schedule A, I am informing you that the FEC did not support your Department Chair's recommendation of {getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)} increment instead, FEC is prepared to award incrementation of {getText(RP_FEC_TABLE, TABLE, INCREMENT, {$user_id}, 1, 0)}.</p>
             
                 <p>Under Article A6.19.1 of Schedule A, this becomes the preliminary position of FEC. The Department Chair {ifEmpty({getText({$report_type}, TABLE, CHAIR_POSITION, {$user_id}, 1, 0)}, <b>[CHAIR POSITION]</b>)}. This decision was based on the following concerns with your performance:</p>
                 <p>{getText({$report_type}, TABLE, COMMENT, {$user_id}, 1, 0)}</p>
@@ -19,14 +19,14 @@
                     <li>As per Article A6.20.1 of Schedule A, you have the right to request reconsideration of the FEC’s preliminary position by informing me, in writing, within 5 working days from the receipt of this letter.</li>
                 </ul>
                 
-                <p>Should you decide to have your case reconsidered, the following information is to be included in your written submission to the FEC Chair, {get(fecChair)} by January 15, {$next_year} with a copy to your Department Chair:</p>
+                <p>Should you decide to have your case reconsidered, the following information is to be included in your written submission to the FEC Chair, {get(fecChair)} by {get(reconsiderationDeadline)} with a copy to your Department Chair:</p>
                 <ul style='margin-left:1em;'>
                     <li>a statement advising FEC whether or not you will be appearing in person before FEC to present your case;</li>
                     <li>any material in response to FEC's preliminary position recommendation and any other material relevant to your case;</li>
                     <li>a list of names of persons who will attend the FEC hearing as your witnesses.</li>
                 </ul>
                 
-                <p>Please be advised that reconsideration cases are scheduled for January 31, {$next_year} in {ifEmpty({getText({$report_type}, TABLE, LOCATION, {$user_id}, 1, 0)}, <b>[LOCATION]</b>)}. Materials submitted to the FEC Chair and Department Chair should be submitted electronically, if feasible.</p>
+                <p>Please be advised that reconsideration cases are scheduled for {get(reconsiderationDate)} in {ifEmpty({getText({$report_type}, TABLE, LOCATION, {$user_id}, 1, 0)}, <b>[LOCATION]</b>)}. Materials submitted to the FEC Chair and Department Chair should be submitted electronically, if feasible.</p>
 
                 <p>If you choose not to request reconsideration of FECs preliminary decision, the FEC decision will be final and binding; pursuant to Article A8.03.1 of Schedule A, you may not appeal this decision to the GAC. If you have your case reconsidered by FEC and it stands by its preliminary position, you have the right to appeal to the General Appeals Committee (GAC) under Article A8.03.1 of Schedule A.</p>
                 

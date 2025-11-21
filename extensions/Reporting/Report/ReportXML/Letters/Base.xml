@@ -436,6 +436,7 @@
                 {set(promotionDates, November 12 - 15)}
                 {set(fecDates, December 2 - 6)}
                 {set(atsecDates, February 27&#44; {$next_year})}
+                {set(reconsiderationDeadline, December 4&#44; {$this_year})}
                 {set(reconsiderationDate, December 4&#44; {$this_year})}
                 {set(contestDate, November 7&#44; {$this_year})}
             ]]>

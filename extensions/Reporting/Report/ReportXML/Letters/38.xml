@@ -9,7 +9,7 @@
         <ReportItemSet id="bodyset">
             <Static>
                 <![CDATA[
-                    <p>At the FEC meeting of {get(fecDates)}, the FEC endorsed the recommendation of a {getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)} increment made by your Department Chair.</p>
+                    <p>At this year's Faculty Evaluation Committee (FEC) meeting, the FEC endorsed the recommendation of a {getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)} increment made by your Department Chair.</p>
 
                     <p>As you chose not to contest your Department Chair’s recommendation, the decision is final and binding. Pursuant to Article A8.03.1 of Schedule A, you may not appeal this decision to the GAC.</p>
                 ]]>
