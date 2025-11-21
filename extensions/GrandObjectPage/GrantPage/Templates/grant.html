@@ -71,7 +71,7 @@
     <% } %>
     <tr>
         <td class="label">Exclude<sup><span class="clicktooltip" style="font-size:1.25em;" title="If a Grant is marked as excluded, it will NOT show up in your profile or Annual Report.">&#9432;</span></sup>:</td>
-        <td><%= HTML.CheckBox(this, 'exclude', {value: 1, default: 0, style: 'vertical-align:bottom;'}) %></td>
+        <td><%= HTML.CheckBox(this, 'exclude', {value: 1, default: 0}) %></td>
     </tr>
 </table><br />
 <button id="edit">Edit Grant</button>&nbsp;<button id="delete">Delete Grant</button>

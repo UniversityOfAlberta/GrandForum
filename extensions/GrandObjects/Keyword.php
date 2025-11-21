@@ -95,10 +95,6 @@ class Keyword extends Grant {
                 $this->title = $row['title'];
                 $this->scientific_title = $row['scientific_title'];
                 $this->description = $row['description'];
-                $this->role = $row['role'];
-                $this->seq_no = $row['seq_no'];
-                $this->prog_description = $row['prog_description'];
-                $this->request = $row['request'];
                 $this->start_date = ZERO_DATE($row['start_date']);
                 $this->end_date = ZERO_DATE($row['end_date']);
                 $this->deleted = $row['deleted'];
@@ -151,10 +147,6 @@ class Keyword extends Grant {
                                   'title' => $this->title,
                                   'scientific_title' => $this->scientific_title,
                                   'description' => $this->description,
-                                  'role' => $this->role,
-                                  'seq_no' => $this->seq_no,
-                                  'prog_description' => $this->prog_description,
-                                  'request' => $this->request,
                                   'start_date' => ZERO_DATE($this->start_date, zull),
                                   'end_date' => ZERO_DATE($this->end_date, zull)));
         $this->id = DBFunctions::insertId();
@@ -208,10 +200,6 @@ class Keyword extends Grant {
                                   'title' => $this->title,
                                   'scientific_title' => $this->scientific_title,
                                   'description' => $this->description,
-                                  'role' => $this->role,
-                                  'seq_no' => $this->seq_no,
-                                  'prog_description' => $this->prog_description,
-                                  'request' => $this->request,
                                   'start_date' => ZERO_DATE($this->start_date, zull),
                                   'end_date' => ZERO_DATE($this->end_date, zull)),
                             array('id' => EQ($this->id)));
@@ -268,10 +256,6 @@ class Keyword extends Grant {
             'title' => $this->title,
             'scientific_title' => $this->scientific_title,
             'description' => $this->description,
-            'role' => $this->role,
-            'seq_no' => $this->seq_no,
-            'prog_description' => $this->prog_description,
-            'request' => $this->request,
             'start_date' => time2date($this->getStartDate(), "Y-m-d"),
             'end_date' => time2date($this->getEndDate(), "Y-m-d"),
             'deleted' => $this->deleted,

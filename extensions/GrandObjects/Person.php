@@ -3672,10 +3672,9 @@ class FullPerson extends Person {
     function getGrants($exclude=true){
         if($this->grants === null){
             $this->grants = array();
-            $data = DBFunctions::select(array('grand_grants'),
-                                        array('*'),
-                                        array('user_id' => EQ($this->getId()),
-                                              WHERE_OR('copi') => LIKE("%\"{$this->getId()}\";%") ));
+            $data = DBFunctions::execSQL("(SELECT g.* FROM `grand_grants` g WHERE user_id = '{$this->id}')
+                                          UNION
+                                          (SELECT g.* FROM `grand_grants` g, `grand_grants_copi` gc WHERE g.id = gc.grant_id AND gc.copi = '{$this->id}')");
             foreach($data as $row){
                 $grant = new Grant(array($row));
                 if($grant != null && $grant->getId() != 0 && !$grant->deleted){

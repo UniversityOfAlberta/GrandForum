@@ -19,10 +19,6 @@ class Grant extends BackboneModel {
     var $title;
     var $scientific_title;
     var $description;
-    var $role;
-    var $seq_no;
-    var $prog_description;
-    var $request;
     var $start_date;
     var $end_date;
     var $deleted;
@@ -103,10 +99,6 @@ class Grant extends BackboneModel {
                 $this->title = $row['title'];
                 $this->scientific_title = $row['scientific_title'];
                 $this->description = $row['description'];
-                $this->role = $row['role'];
-                $this->seq_no = $row['seq_no'];
-                $this->prog_description = $row['prog_description'];
-                $this->request = $row['request'];
                 $this->start_date = ZERO_DATE($row['start_date']);
                 $this->end_date = ZERO_DATE($row['end_date']);
                 $this->deleted = $row['deleted'];
@@ -213,22 +205,6 @@ class Grant extends BackboneModel {
         return $this->description;
     }
     
-    function getRole(){
-        return $this->role;
-    }
-    
-    function getSeqNo(){
-        return $this->seq_no;
-    }
-    
-    function getProgDescription(){
-        return $this->prog_description;
-    }
-    
-    function getRequest(){
-        return $this->request;
-    }
-    
     function getStartDate(){
         return $this->start_date;
     }
@@ -286,17 +262,22 @@ class Grant extends BackboneModel {
                                   'title' => $this->title,
                                   'scientific_title' => $this->scientific_title,
                                   'description' => $this->description,
-                                  'role' => $this->role,
-                                  'seq_no' => $this->seq_no,
-                                  'prog_description' => $this->prog_description,
-                                  'request' => $this->request,
                                   'start_date' => ZERO_DATE($this->start_date, zull),
                                   'end_date' => ZERO_DATE($this->end_date, zull)));
         $this->id = DBFunctions::insertId();
+        // Update Exclusions
         if($this->exclude){
             DBFunctions::insert('grand_grants_exclude',
                                 array('grant_id' => $this->id,
                                       'user_id' => $me->id));
+        }
+        // Update CoPIs
+        foreach($copis as $copi){
+            if(is_numeric($copi)){
+                DBFunctions::insert('grand_grants_copi',
+                                    array('copi' => $copi,
+                                          'grant_id' => $this->id));
+            }
         }
         $this->copi = $copis;
         self::$exclusionCache = null;
@@ -330,13 +311,10 @@ class Grant extends BackboneModel {
                                   'title' => $this->title,
                                   'scientific_title' => $this->scientific_title,
                                   'description' => $this->description,
-                                  'role' => $this->role,
-                                  'seq_no' => $this->seq_no,
-                                  'prog_description' => $this->prog_description,
-                                  'request' => $this->request,
                                   'start_date' => ZERO_DATE($this->start_date, zull),
                                   'end_date' => ZERO_DATE($this->end_date, zull)),
                             array('id' => EQ($this->id)));
+        // Update Exclusion
         DBFunctions::delete('grand_grants_exclude',
                             array('grant_id' => $this->id,
                                   'user_id' => $me->id));
@@ -344,6 +322,16 @@ class Grant extends BackboneModel {
             DBFunctions::insert('grand_grants_exclude',
                                 array('grant_id' => $this->id,
                                       'user_id' => $me->id));
+        }
+        // Update CoPIs
+        DBFunctions::delete('grand_grants_copi',
+                            array('grant_id' => $this->id));
+        foreach($copis as $copi){
+            if(is_numeric($copi)){
+                DBFunctions::insert('grand_grants_copi',
+                                    array('copi' => $copi,
+                                          'grant_id' => $this->id));
+            }
         }
         $this->copi = $copis;
         self::$exclusionCache = null;
@@ -407,10 +395,6 @@ class Grant extends BackboneModel {
             'title' => $this->title,
             'scientific_title' => $this->scientific_title,
             'description' => $this->description,
-            'role' => $this->role,
-            'seq_no' => $this->seq_no,
-            'prog_description' => $this->prog_description,
-            'request' => $this->request,
             'start_date' => substr($this->getStartDate(),0,10),
             'end_date' => substr($this->getEndDate(),0,10),
             'deleted' => $this->deleted,
