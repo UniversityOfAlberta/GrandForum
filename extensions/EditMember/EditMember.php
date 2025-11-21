@@ -151,7 +151,7 @@ class EditMember extends SpecialPage{
         global $wgServer, $wgScriptPath, $wgUser, $config;
         $me = Person::newFromId($wgUser->getId());
         $person = Person::newFromName(str_replace(" ", ".", $_GET['name']));
-        $wgOut->addHTML("<form id='editMember' action='$wgServer$wgScriptPath/index.php/Special:EditMember?project' method='post'>
+        $wgOut->addHTML("<form id='editMember' action='$wgServer$wgScriptPath/index.php/Special:EditMember' method='post'>
         <p>Select the Sub-Roles to which <b>{$person->getNameForForms()}</b> should be a member of.</p>");
         EditMember::generateSubRoleFormHTML($wgOut);
         $wgOut->addHTML("<br />
@@ -170,7 +170,6 @@ class EditMember extends SpecialPage{
         $wgOut->addHTML("<table style='min-width:300px;'><tr>
                         <td class='mw-input'>");
         $boxes = "";
-        $projects = "";
         
         $subRoles = $config->getValue("subRoles");
         

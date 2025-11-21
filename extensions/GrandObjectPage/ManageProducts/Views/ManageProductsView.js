@@ -184,7 +184,6 @@ ManageProductsView = Backbone.View.extend({
         this.createDataTable(order, searchStr);
         
         this.productChanged();
-        this.$("#listTable").show();
         this.table.draw();
         
         if(this.category == "Presentation"){
@@ -256,17 +255,20 @@ ManageProductsView = Backbone.View.extend({
 	            this.$("#showOnly select").append(el);
 	        }
 	    }.bind(this));
+	    this.table.draw();
 	    this.createColVis();
+	    _.defer(this.table.columns.adjust);
     },
     
     createColVis: function(){
         if(this.colVisDialog == null){
-            this.$("#listTable thead tr th").each(function(i, th){
+            this.$("#listTable thead tr th div").each(function(i, th){
                 var text = $(th).contents().filter(function(){ return this.nodeType == 3; }).text();
                 this.$("#colvis").append("<input id='" + i + "' type='checkbox' value='" + text + "' style='vertical-align: bottom;' checked />&nbsp;" + text + "<br />");
             }.bind(this));
             this.$("#colvis input").change(function(){
                 this.table.draw();
+                this.table.columns.adjust();
             }.bind(this));
             this.colVisDialog = this.$("#colvis").dialog({
                 autoOpen: false,

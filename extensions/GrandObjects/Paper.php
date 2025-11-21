@@ -369,16 +369,14 @@ class Paper extends BackboneModel{
             return self::$dataCache["me".$category];
         }
         $me = Person::newFromWgUser();
-        $sql = "SELECT p.*
-             FROM grand_products p LEFT JOIN grand_product_owners o ON (p.id = o.product_id AND o.user_id = '{$me->getId()}') WHERE
-            (p.access_id = '{$me->getId()}'
-            OR p.created_by = '{$me->getId()}'
-            OR o.user_id = '{$me->getId()}')
-            ";
+        $sql = "SELECT r.* FROM 
+                ((SELECT p.* FROM grand_products p WHERE p.access_id = '{$me->getId()}' OR p.created_by = '{$me->getId()}')
+                UNION
+                (SELECT p.* FROM grand_products p, grand_product_owners o WHERE p.id = o.product_id AND o.user_id = '{$me->getId()}')) r";
         if($category != "all"){
-            $sql .= "\nAND p.`category` = '$category'";
+            $sql .= "\nWHERE r.`category` = '$category'";
         }
-        $sql .= "\nORDER BY p.`type`, p.`title`";
+        $sql .= "\nORDER BY r.`type`, r.`title`";
         $data = DBFunctions::execSQL($sql);
         $papers = array();
         foreach($data as $row){
