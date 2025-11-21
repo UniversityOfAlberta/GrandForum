@@ -43,7 +43,7 @@ class PersonProductsReportItemSet extends ReportItemSet {
                     }
                 }
             }
-            $products = array_merge($products, $person->getPapersAuthored($cat, $start_date, $end_date, $includeHQP, true, false, $onlyUseStartDate, true, $includeContributors, $onlyContributors));
+            $products = array_merge($products, $person->getPapersAuthored($cat, $start_date, $end_date, $includeHQP, false, $onlyUseStartDate, true, $includeContributors, $onlyContributors));
             if($onlyHQP){
                 foreach($products as $key => $product){
                     if($person->isAuthorOf($product)){

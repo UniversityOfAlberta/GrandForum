@@ -1265,7 +1265,7 @@ class ReportItemCallback {
     
     function getUserServiceCount($start_date, $end_date, $type, $position=""){
         $person = Person::newFromId($this->reportItem->personId);
-        $products = $person->getPapersAuthored("Activity", $start_date, $end_date, false, true, true);
+        $products = $person->getPapersAuthored("Activity", $start_date, $end_date, false, true);
         $count = 0;
         foreach($products as $product){
             if(($product->getType() == $type || strstr($product->getType(), $type) !== false || $type == "") && 
@@ -1363,7 +1363,7 @@ class ReportItemCallback {
             $type = $exploded[1];
         }
         
-        $products = $person->getPapersAuthored($category, $start_date, $end_date, false, true, true, false, true, $includeContributors, $onlyContributors);
+        $products = $person->getPapersAuthored($category, $start_date, $end_date, false, true, false, true, $includeContributors, $onlyContributors);
         $count = 0;
         $types = explode("|", $type);
         foreach($products as $product){

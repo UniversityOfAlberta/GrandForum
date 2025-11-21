@@ -435,7 +435,7 @@ class Paper extends BackboneModel{
                 foreach($parser->children() as $category){
                     $cattrs = $category->attributes();
                     $cname = "{$cattrs->category}";
-                    if(isset($cattrs->citationFormat)){
+                    if(isset($cattrs->citationFormat) && isset($categories['categories'][$cname]['types'])){
                         foreach($categories['categories'][$cname]['types'] as $tname => $type){
                             // Override base citation format
                             $categories['categories'][$cname]['types'][$tname]['citationFormat'] = "{$cattrs->citationFormat}";
@@ -468,7 +468,9 @@ class Paper extends BackboneModel{
                                                                                    'description' => '',
                                                                                    'citationFormat' => $citationFormat,
                                                                                    'authors_label' => "Author",
-                                                                                   'authors_text' => "");
+                                                                                   'authors_text' => "",
+                                                                                   'date_label' => "Date",
+                                                                                   'acceptance_date_label' => "Acceptance Date");
                         foreach($type->children() as $child){
                             if($child->getName() == "data"){
                                 foreach($child->children() as $field){
@@ -1261,14 +1263,17 @@ class Paper extends BackboneModel{
         if($field != null){
             if(is_array($field)){
                 foreach($field as $key){
-                    if(isset($this->data[$key]) && $this->data[$key] != ""){
+                    if(array_key_exists($key, $this->data) && $this->data[$key] != ""){
                         return $this->data[$key];
                     }
                 }
                 return "";
             }
             else{
-                return @$this->data[$field];
+                if(array_key_exists($field, $this->data)){
+                    return $this->data[$field];
+                }
+                return null;
             }
         }
         return $this->data;

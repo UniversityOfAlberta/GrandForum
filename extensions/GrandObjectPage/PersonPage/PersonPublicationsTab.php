@@ -88,11 +88,11 @@ class PersonPublicationsTab extends AbstractTab {
         if(is_array($this->category)){
             $products = array();
             foreach($this->category as $category){
-                $products = array_merge($products, $person->getPapersAuthored($category, $this->startRange, $this->endRange, false, false));
+                $products = array_merge($products, $person->getPapersAuthored($category, $this->startRange, $this->endRange, false));
             }
         }
         else{
-            $products = $person->getPapersAuthored($this->category, $this->startRange, $this->endRange, false, false);
+            $products = $person->getPapersAuthored($this->category, $this->startRange, $this->endRange, false);
         }
         $string = "";
         if(count($products) > 0){

@@ -228,7 +228,7 @@ class PersonVisualizationsTab extends AbstractTab {
             }
             
             
-            foreach($person->getPapersAuthored('all', SOT, EOT, false, false) as $paper){
+            foreach($person->getPapersAuthored('all', SOT, EOT, false) as $paper){
                 $start = $paper->getDate();
                 if($start == ZOT){
                     $start = $paper->getAcceptanceDate();
