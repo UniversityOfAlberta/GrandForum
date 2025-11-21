@@ -140,7 +140,7 @@ class GlobalSearchAPI extends RESTAPI {
                     }
                 }
                 $results = array();
-                $papers = $me->getPapers('all', false, 'both');
+                $papers = $me->getPapers('all', false);
                 $myProducts = new Collection($papers);
                 $productIds = $myProducts->pluck('id');
                 $flippedProductIds = @array_flip($productIds);

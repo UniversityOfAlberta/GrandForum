@@ -31,27 +31,21 @@ class ProductAPI extends RESTAPI {
                 $start = $this->getParam('start');
                 $count = $this->getParam('count');
             }
-            if($this->getParam('category') != "" && 
-               $this->getParam('projectId') != "" &&
-               $this->getParam('grand') != ""){
-                $projectId = explode(",", $this->getParam('projectId'));
+            if($this->getParam('category') != ""){
                 $papers = array();
-                foreach($projectId as $pId){
-                    $ps = Paper::getAllPapers($this->getParam('category'), 
-                                              $this->getParam('grand'),
-                                              true,
-                                              'Public',
-                                              $start,
-                                              $count);
-                    foreach($ps as $p){
-                        $papers["{$p->getType()}_{$p->getTitle()}"] = $p;
-                    }
+                $ps = Paper::getAllPapers($this->getParam('category'), 
+                                          true,
+                                          'Public',
+                                          $start,
+                                          $count);
+                foreach($ps as $p){
+                    $papers["{$p->getType()}_{$p->getTitle()}"] = $p;
                 }
                 ksort($papers);
                 $papers = array_values($papers);
             }
             else{
-                $papers = Paper::getAllPapers('all', 'both', true, 'Public', $start, $count);
+                $papers = Paper::getAllPapers('all', true, 'Public', $start, $count);
             }
             
             foreach($papers as $paper){
@@ -73,7 +67,6 @@ class ProductAPI extends RESTAPI {
         $paper->status = $this->POST('status');
         $paper->authors = $this->POST('authors');
         $paper->contributors = $this->POST('contributors');
-        $paper->projects = $this->POST('projects');
         $paper->data = (array)($this->POST('data'));
         $paper->access_id = $this->POST('access_id');
         $paper->access = $this->POST('access');
@@ -101,7 +94,6 @@ class ProductAPI extends RESTAPI {
         $paper->status = $this->POST('status');
         $paper->authors = $this->POST('authors');
         $paper->contributors = $this->POST('contributors');
-        $paper->projects = $this->POST('projects');
         $paper->data = (array)($this->POST('data'));
         $paper->access_id = $this->POST('access_id');
         $paper->access = $this->POST('access');

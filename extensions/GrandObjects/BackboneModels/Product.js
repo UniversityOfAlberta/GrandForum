@@ -233,11 +233,7 @@ Products = Backbone.Collection.extend({
     
     model: Product,
     
-    project: 'all',
-    
     category: 'all',
-    
-    grand: 'both',
     
     fetch: function(options) {
         if(_.isFunction(this.url)){
@@ -290,7 +286,7 @@ Products = Backbone.Collection.extend({
     },
     
     url: function(){
-        var url = 'index.php?action=api.product/' + this.project + '/' + this.category + '/' + this.grand;
+        var url = 'index.php?action=api.product/category/' + this.category;
         return url;
     }
 });

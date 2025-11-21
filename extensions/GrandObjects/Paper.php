@@ -245,18 +245,16 @@ class Paper extends BackboneModel{
     /**
      * Returns all of the Products in the database
      * @param string $category Specifies which category the returned Products should be of('Publication', 'Artifact' etc.)
-     * @param string $grand Whether to include grand-only, non-grand-only or both
      * @param boolean $onlyPublic Whether or not to only include Products with access_id = 0
      * @param string $access Whether to include 'Forum' or 'Public' access
      * @param integer $start The index to start at
      * @param integer $count The max number of Products to return 
      * @return array All of the Products
      */
-    static function getAllPapers($category='all', $grand='grand', $onlyPublic=true, $access='Public', $start=0, $count=9999999999){
-        $grand = 'both';
+    static function getAllPapers($category='all', $onlyPublic=true, $access='Public', $start=0, $count=9999999999){
         $data = array();
-        if(isset(self::$dataCache[$category.$grand.strval($onlyPublic).$access.$start.$count])){
-            return self::$dataCache[$category.$grand.strval($onlyPublic).$access.$start.$count];
+        if(isset(self::$dataCache[$category.strval($onlyPublic).$access.$start.$count])){
+            return self::$dataCache[$category.strval($onlyPublic).$access.$start.$count];
         }
         else{
             $papers = array();
@@ -294,7 +292,7 @@ class Paper extends BackboneModel{
                 }
                 $i++;
             }
-            self::$dataCache[$category.$grand.strval($onlyPublic).$access.$start.$count] = $papers;
+            self::$dataCache[$category.strval($onlyPublic).$access.$start.$count] = $papers;
         }
         return $papers;
     }
@@ -302,23 +300,21 @@ class Paper extends BackboneModel{
     /**
      * Returns all of the Papers in the database
      * @param string $category Specifies which category the returned papers should be of('Publication', 'Artifact' etc.)
-     * @param string $grand Whether to include grand-only, non-grand-only or both
      * @param string $startRange The start date
      * @param string $endRange The end date
      * @param boolean $strict whether to stick with the date range for everything(true), or show anything 'to appear' as well (false)
      * @param boolean $onlyPublic Whether or not to only include Papers with access_id = 0
      * @return array All of the Papers
      */
-    static function getAllPapersDuring($category='all', $grand='grand', $startRange = false, $endRange = false, $strict = true, $onlyPublic = true){
+    static function getAllPapersDuring($category='all', $startRange = false, $endRange = false, $strict = true, $onlyPublic = true){
         global $config;
-        $grand = 'both';
         if($startRange === false || $endRange === false){
             $startRange = date(YEAR."-01-01 00:00:00");
             $endRange = date(YEAR."-12-31 23:59:59");
         }
         $str = ($strict) ? 'true' : 'false';
-        if(isset(self::$dataCache[$category.$grand.$startRange.$endRange.$str])){
-            return self::$dataCache[$category.$grand.$startRange.$endRange.$str];
+        if(isset(self::$dataCache[$category.$startRange.$endRange.$str])){
+            return self::$dataCache[$category.$startRange.$endRange.$str];
         }
         else{
             $papers = array();
@@ -363,14 +359,14 @@ class Paper extends BackboneModel{
                 }
                 $papers[] = $paper;
             }
-            self::$dataCache[$category.$grand.$startRange.$endRange.$str] = $papers;
+            self::$dataCache[$category.$startRange.$endRange.$str] = $papers;
             return $papers;
         }
     }
 
-    static function getAllPrivatePapers($category='all', $grand='grand'){
-        if(isset(self::$dataCache["me".$category.$grand])){
-            return self::$dataCache["me".$category.$grand];
+    static function getAllPrivatePapers($category='all'){
+        if(isset(self::$dataCache["me".$category])){
+            return self::$dataCache["me".$category];
         }
         $me = Person::newFromWgUser();
         $sql = "SELECT p.*
@@ -398,7 +394,7 @@ class Paper extends BackboneModel{
             }
             $papers[] = $paper;
         }
-        self::$dataCache["me".$category.$grand] = $papers;
+        self::$dataCache["me".$category] = $papers;
         return $papers;
     }
     

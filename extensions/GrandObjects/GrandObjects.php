@@ -48,8 +48,8 @@ $apiRequest->addAction('Hidden','role/:id', 'RoleAPI');
 
 // Product
 $apiRequest->addAction('Hidden','product', 'ProductAPI');
-$apiRequest->addAction('Hidden','product/:projectId/:category/:grand', 'ProductAPI');
-$apiRequest->addAction('Hidden','product/:projectId/:category/:grand/:start/:count', 'ProductAPI');
+$apiRequest->addAction('Hidden','product/category/:category', 'ProductAPI');
+$apiRequest->addAction('Hidden','product/category/:category/:start/:count', 'ProductAPI');
 $apiRequest->addAction('Hidden','product/:id', 'ProductAPI');
 $apiRequest->addAction('Hidden','product/:id/authors', 'PersonProductAPI');
 $apiRequest->addAction('Hidden','product/:id/authors/:personId', 'PersonProductAPI');

@@ -72,7 +72,7 @@ class PersonVisualTab extends AbstractTab {
 	        $names[$person->getReversedName()] = $person;
 	        $doneLinks = array();
 		$key = 1;
-	        foreach($person->getCoAuthors('all', true, 'both', false) as $name => $value){
+	        foreach($person->getCoAuthors('all', true, false) as $name => $value){
 			$pers = Person::newFromName($name);
 			if($pers->getId() != 0 && $pers->getId() != $person->getId()){
 	                    $nodes[] = array("name" => $pers->getReversedName(),
@@ -91,7 +91,7 @@ class PersonVisualTab extends AbstractTab {
 	            foreach($nodes as $key1 => $node){
 	                if($node['name'] != $person->getName()){
 	                    $pers = $names[$node['name']];
-	                    foreach($pers->getCoAuthors('all', true, 'both', false) as $name => $value){
+	                    foreach($pers->getCoAuthors('all', true, false) as $name => $value){
 	                            $p = Person::newFromName($name);
 	                   
                             	if(!isset($names[$p->getReversedName()]) && $p->getId() !=0){

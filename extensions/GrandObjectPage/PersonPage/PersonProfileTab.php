@@ -378,7 +378,7 @@ EOF;
             $person = Person::newFromId($_GET['person']);
             $text .= $person->getProfile()."\n";
             
-            $products = $person->getPapers("Publication", false, 'both', true, 'Public');
+            $products = $person->getPapers("Publication", false, true, 'Public');
             $grants = $person->getGrants();
             foreach($products as $product){
                 $text .= $product->getTitle()."\n";
@@ -619,7 +619,7 @@ EOF;
     private function selectList($person, $value){
         $productStructure = Product::structure();
         $categories = @array_keys($productStructure['categories']);
-        $allProducts = $person->getPapers('all', true, 'grand', true, 'Public', true, true);
+        $allProducts = $person->getPapers('all', true, true, 'Public', true, true);
         $products = array();
         foreach($allProducts as $product){
             $date = $product->getDate();
